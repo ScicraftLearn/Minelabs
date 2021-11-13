@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "package": "be.uantwerpen.scicraft.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": []
+}

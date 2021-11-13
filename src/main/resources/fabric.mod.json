@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "scicraft",
+  "version": "${version}",
+  "name": "Scicraft",
+  "description": "Mod Description: TODO",
+  "authors": [
+    "Joey De Pauw",
+    "TODO: Extend"
+  ],
+  "contact": {
+    "homepage": "https://scicraft.be/",
+    "issues": "TODO",
+    "sources": "TODO"
+  },
+  "license": "TODO",
+  "icon": "assets/scicraft/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "be.uantwerpen.scicraft.Scicraft"
+    ],
+    "client": [
+      "be.uantwerpen.scicraft.ScicraftClient"
+    ]
+  },
+  "mixins": [
+    "scicraft.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.7",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  }
+}
