@@ -23,6 +23,8 @@ public class Scicraft implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Hello Fabric world!");
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "proton"), Items.PROTON);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pion_nul"), Items.PION_NUL);
         Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "proton"), Blocks.PROTON_BLOCK);
+        Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "pion_nul"), Blocks.PION_NUL_BLOCK);
     }
 }

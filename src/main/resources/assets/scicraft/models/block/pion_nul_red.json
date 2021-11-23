@@ -1,0 +1,6 @@
+{
+	"parent": "scicraft:block/cross",
+	"textures": {
+		"cross": "scicraft:block/pionnul_red"
+	}
+}

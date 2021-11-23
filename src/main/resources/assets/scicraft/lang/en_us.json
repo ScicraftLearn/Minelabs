@@ -2,5 +2,7 @@
   "itemGroup.scicraft.quantum_fields" : "Quantum Fields",
   "itemGroup.scicraft.elementary_particles" : "Elementary Particles",
   "block.scicraft.proton" : "proton block",
-  "item.scicraft.proton": "Proton"
+  "block.scicraft.pion_nul" : "pion block",
+  "item.scicraft.proton": "Proton",
+  "item.scicraft.pion_nul" : "pion"
 }

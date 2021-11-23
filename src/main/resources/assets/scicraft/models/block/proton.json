@@ -1,5 +1,5 @@
 {
-  "parent": "block/cross",
+  "parent": "scicraft:block/cross",
   "textures": {
     "cross": "scicraft:block/proton"
   }

@@ -11,6 +11,7 @@ public class ItemGroup {
             .icon(() -> new ItemStack(Blocks.PROTON_BLOCK))
             .appendItems(stacks -> {
                 stacks.add(new ItemStack(Blocks.PROTON_BLOCK));
+                stacks.add(new ItemStack(Blocks.PION_NUL_BLOCK));
             })
             .build();
 
@@ -19,6 +20,7 @@ public class ItemGroup {
             .icon(() -> new ItemStack(Items.PROTON))
             .appendItems(stacks -> {
                 stacks.add(new ItemStack(Items.PROTON));
+                stacks.add(new ItemStack(Items.PION_NUL));
             })
             .build();
 }

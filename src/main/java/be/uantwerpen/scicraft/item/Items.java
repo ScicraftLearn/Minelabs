@@ -7,5 +7,6 @@ import be.uantwerpen.scicraft.block.Blocks;
 
 public class Items {
     // BlockItems
-    public static final Item PROTON = new BlockItem(Blocks.PROTON_BLOCK, new FabricItemSettings().group(ItemGroup.QUANTUM_FIELDS));
+    public static final Item PROTON= new BlockItem(Blocks.PROTON_BLOCK, new FabricItemSettings().group(ItemGroup.QUANTUM_FIELDS));
+    public static final Item PION_NUL  = new BlockItem(Blocks.PION_NUL_BLOCK, new FabricItemSettings().group(ItemGroup.QUANTUM_FIELDS));
 }
