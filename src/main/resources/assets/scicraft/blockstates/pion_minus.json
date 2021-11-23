@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "scicraft:block/pion_minus_red"
+    },
+    "age=1": {
+      "model": "scicraft:block/pion_minus_green"
+    },
+    "age=2": {
+      "model": "scicraft:block/pion_minus_blue"
+    }
+  }
+}
