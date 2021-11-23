@@ -1,6 +1,6 @@
 {
 	"parent": "block/cross",
 	"textures": {
-		"cross": "scicraft:block/pionnul_green"
+		"cross": "scicraft:block/pionminus_blue"
 	}
 }

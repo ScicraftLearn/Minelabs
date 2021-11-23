@@ -8,4 +8,6 @@ import net.minecraft.block.Material;
 public class Blocks {
     public static final Block PROTON_BLOCK = new Block(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
     public static final Block PION_NUL_BLOCK = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
+    public static final Block PION_MINUS_BLOCK = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
+    public static final Block PION_PLUS_BLOCK = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
 }

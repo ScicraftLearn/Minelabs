@@ -11,16 +11,16 @@ public class ItemGroup {
             .icon(() -> new ItemStack(Blocks.PROTON_BLOCK))
             .appendItems(stacks -> {
                 stacks.add(new ItemStack(Blocks.PROTON_BLOCK));
-                stacks.add(new ItemStack(Blocks.PION_NUL_BLOCK));
             })
             .build();
 
     public static final net.minecraft.item.ItemGroup ELEMENTARY_PARTICLES = FabricItemGroupBuilder.create(
                     new Identifier("scicraft", "elementary_particles"))
-            .icon(() -> new ItemStack(Items.PROTON))
+            .icon(() -> new ItemStack(Blocks.PION_NUL_BLOCK))
             .appendItems(stacks -> {
-                stacks.add(new ItemStack(Items.PROTON));
-                stacks.add(new ItemStack(Items.PION_NUL));
+                stacks.add(new ItemStack(Blocks.PION_NUL_BLOCK));
+                stacks.add(new ItemStack(Blocks.PION_MINUS_BLOCK));
+                stacks.add(new ItemStack(Blocks.PION_PLUS_BLOCK));
             })
             .build();
 }
