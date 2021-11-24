@@ -1,14 +1,32 @@
 package be.uantwerpen.scicraft.item;
 
+import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import be.uantwerpen.scicraft.block.Blocks;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class Items {
+    // Items
+
+
     // BlockItems
-    public static final Item PROTON= new BlockItem(Blocks.PROTON_BLOCK, new FabricItemSettings().group(ItemGroup.QUANTUM_FIELDS));
-    public static final Item PION_NUL  = new BlockItem(Blocks.PION_NUL_BLOCK, new FabricItemSettings().group(ItemGroup.QUANTUM_FIELDS));
-    public static final Item PION_MINUS  = new BlockItem(Blocks.PION_MINUS_BLOCK, new FabricItemSettings().group(ItemGroup.QUANTUM_FIELDS));
-    public static final Item PION_PLUS  = new BlockItem(Blocks.PION_PLUS_BLOCK, new FabricItemSettings().group(ItemGroup.QUANTUM_FIELDS));
+    public static final Item PROTON = new BlockItem(Blocks.PROTON, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS));
+    public static final Item PION_NUL = new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
+    public static final Item PION_MINUS = new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
+    public static final Item PION_PLUS = new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
+
+    private static Item registerItem(Item item, String identifier) {
+        return Registry.register(Registry.ITEM, new Identifier(Scicraft.MOD_ID, identifier), item);
+    }
+
+    public static void registerItems() {
+        registerItem(PROTON, "proton");
+        registerItem(PION_NUL, "pion_nul");
+        registerItem(PION_MINUS, "pion_minus");
+        registerItem(PION_PLUS, "pion_plus");
+    }
+
 }

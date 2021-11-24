@@ -14,21 +14,13 @@ public class Scicraft implements ModInitializer {
     public static final String MOD_ID = "scicraft";
 
     // This logger is used to write text to the console and the log file.
-    // It is considered best practice to use your mod id as the logger's name.
-    // That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LogManager.getLogger("scicraft");
-    // TODO: Move to dedicated classes
 
     @Override
     public void onInitialize() {
         LOGGER.info("Hello Fabric world!");
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "proton"), Items.PROTON);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pion_nul"), Items.PION_NUL);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pion_minus"), Items.PION_MINUS);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pion_plus"), Items.PION_PLUS);
-        Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "proton"), Blocks.PROTON_BLOCK);
-        Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "pion_nul"), Blocks.PION_NUL_BLOCK);
-        Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "pion_minus"), Blocks.PION_MINUS_BLOCK);
-        Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "pion_plus"), Blocks.PION_PLUS_BLOCK);
+
+        Items.registerItems();
+        Blocks.registerBlocks();
     }
 }
