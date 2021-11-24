@@ -19,10 +19,22 @@ public class Items {
     public static final Item PION_MINUS = new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
     public static final Item PION_PLUS = new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
 
+    /**
+     * Register an Item
+     *
+     * @param item: Item Object to register
+     * @param identifier: String name of the Item
+     *
+     * @return Item
+     */
     private static Item registerItem(Item item, String identifier) {
         return Registry.register(Registry.ITEM, new Identifier(Scicraft.MOD_ID, identifier), item);
     }
 
+    /**
+     * Main class method
+     * Registers all (Block)Items
+     */
     public static void registerItems() {
         registerItem(ELECTRON, "electron");
         registerItem(PROTON, "proton");
