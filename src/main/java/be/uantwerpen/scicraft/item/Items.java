@@ -13,6 +13,7 @@ public class Items {
 
 
     // BlockItems
+    public static final Item ELECTRON = new BlockItem(Blocks.ELECTRON, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS));
     public static final Item PROTON = new BlockItem(Blocks.PROTON, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS));
     public static final Item PION_NUL = new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
     public static final Item PION_MINUS = new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
@@ -23,6 +24,7 @@ public class Items {
     }
 
     public static void registerItems() {
+        registerItem(ELECTRON, "electron");
         registerItem(PROTON, "proton");
         registerItem(PION_NUL, "pion_nul");
         registerItem(PION_MINUS, "pion_minus");
