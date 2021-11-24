@@ -4,7 +4,6 @@ import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import be.uantwerpen.scicraft.block.Blocks;
 
 public class ItemGroups {
     public static final net.minecraft.item.ItemGroup QUANTUM_FIELDS = FabricItemGroupBuilder.create(

@@ -1,12 +1,10 @@
 package be.uantwerpen.scicraft;
 
-import net.fabricmc.api.ModInitializer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.item.Items;
+import net.fabricmc.api.ModInitializer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 @SuppressWarnings("UNUSED")
