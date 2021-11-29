@@ -4,6 +4,7 @@ import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.item.Items;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,6 +1,6 @@
 package be.uantwerpen.scicraft.entity;
 
-import be.uantwerpen.scicraft.ScicraftClient;
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,6 +15,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
@@ -45,7 +46,7 @@ public class ElectronEntity extends ThrownItemEntity {
 
     @Override
     public Packet createSpawnPacket() {
-        return EntitySpawnPacket.create(this, ScicraftClient.PacketID);
+        return EntitySpawnPacket.create(this, new Identifier(Scicraft.MOD_ID, "spawn_packet"));
     }
 
     //TODO change particle effect from snowball particles to custom particles?

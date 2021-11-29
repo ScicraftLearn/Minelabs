@@ -21,8 +21,6 @@ import java.util.UUID;
 
 @SuppressWarnings("UNUSED")
 public class ScicraftClient implements ClientModInitializer {
-    public static final Identifier PacketID = new Identifier(Scicraft.MOD_ID, "spawn_packet");
-
     @Override()
     public void onInitializeClient() {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ELECTRON, RenderLayer.getCutout());
@@ -36,6 +34,7 @@ public class ScicraftClient implements ClientModInitializer {
     }
 
     public void receiveEntityPacket() {
+        Identifier PacketID = new Identifier(Scicraft.MOD_ID, "spawn_packet");
         ClientSidePacketRegistry.INSTANCE.register(PacketID, (ctx, byteBuf) -> {
             EntityType<?> et = Registry.ENTITY_TYPE.get(byteBuf.readVarInt());
             UUID uuid = byteBuf.readUuid();
