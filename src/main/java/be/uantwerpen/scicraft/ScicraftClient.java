@@ -21,6 +21,5 @@ public class ScicraftClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_PLUS, RenderLayer.getCutout());
 
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
-
     }
 }

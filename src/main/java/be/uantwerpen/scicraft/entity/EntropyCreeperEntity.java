@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.entity;
 
+import be.uantwerpen.scicraft.Scicraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.world.World;
@@ -10,16 +11,23 @@ public class EntropyCreeperEntity extends CreeperEntity {
         super(entityType, world);
     }
 
-    /**
-     * New On Explode method
-     * Thanks Mixin!
-     * <p>
+     /**
+     * Mixin Injected explosion method
+     *
      * Make sure to "kill" the entity
-     * TODO custom explosion
+     *
+     * @return boolean: cancel default explosion or not
      */
-    public void onExplode() {
-        this.dead = true;
+    public boolean preExplode() {
         // BOOM !!
+        this.dead = true;
+        this.discard();
+        Scicraft.LOGGER.info("Entropy creeper exploded");
+
+        // TODO: Custom exposion
+
+        return false;   // make sure the original 'explode' function doesn't run.
     }
+
 
 }
