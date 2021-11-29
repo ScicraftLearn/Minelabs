@@ -11,9 +11,12 @@ public class EntropyCreeperEntity extends CreeperEntity {
         super(entityType, world);
     }
 
-    /**
-     * Hook into explode method
-     * Thanks Mixin!
+     /**
+     * Mixin Injected explosion method
+     *
+     * Make sure to "kill" the entity
+     *
+     * @return boolean: cancel default explosion or not
      */
     public boolean preExplode() {
         // BOOM !!
