@@ -105,6 +105,7 @@ public class ElectronEntity extends ThrownItemEntity {
         super.onEntityHit(entityHitResult);
     }
 
+    //TODO what to do with collision?
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         if (!this.world.isClient) {
