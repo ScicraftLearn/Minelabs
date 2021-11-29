@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.entity;
 
-import be.uantwerpen.scicraft.Scicraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.world.World;
@@ -11,11 +10,16 @@ public class EntropyCreeperEntity extends CreeperEntity {
         super(entityType, world);
     }
 
+    /**
+     * New On Explode method
+     * Thanks Mixin!
+     * <p>
+     * Make sure to "kill" the entity
+     * TODO custom explosion
+     */
     public void onExplode() {
-        Scicraft.LOGGER.debug("I'm exploding!");
         this.dead = true;
-        //TODO custom explosion
-
+        // BOOM !!
     }
 
 }
