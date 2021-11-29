@@ -5,12 +5,13 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import be.uantwerpen.scicraft.block.Blocks;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class Items {
     // Items
-
+    public static final Item ELECTRON_ITEM = new ElectronItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
 
     // BlockItems
     public static final Item ELECTRON = new BlockItem(Blocks.ELECTRON, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS));
@@ -29,6 +30,6 @@ public class Items {
         registerItem(PION_NUL, "pion_nul");
         registerItem(PION_MINUS, "pion_minus");
         registerItem(PION_PLUS, "pion_plus");
+        registerItem(ELECTRON_ITEM, "electron_item");
     }
-
 }
