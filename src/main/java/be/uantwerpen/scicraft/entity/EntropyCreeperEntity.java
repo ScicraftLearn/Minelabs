@@ -20,12 +20,13 @@ public class EntropyCreeperEntity extends CreeperEntity {
      */
     public boolean preExplode() {
         // BOOM !!
-        this.dead = true;
-        this.discard();
-        Scicraft.LOGGER.info("Entropy creeper exploded");
+        if (!this.world.isClient) {
+            this.dead = true;
+            this.discard();
+            Scicraft.LOGGER.info("Entropy creeper exploded");
 
-        // TODO: Custom exposion
-
+            // TODO: Custom exposion
+        }
         return false;   // make sure the original 'explode' function doesn't run.
     }
 
