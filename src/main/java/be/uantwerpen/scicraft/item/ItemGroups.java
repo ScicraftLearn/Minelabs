@@ -4,14 +4,15 @@ import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.item.ItemGroup;
 
 public class ItemGroups {
-    public static final net.minecraft.item.ItemGroup QUANTUM_FIELDS = FabricItemGroupBuilder.create(
+    public static final ItemGroup QUANTUM_FIELDS = FabricItemGroupBuilder.create(
                     new Identifier(Scicraft.MOD_ID, "quantum_fields"))
             .icon(() -> new ItemStack(Items.ELECTRON))
             .build();
 
-    public static final net.minecraft.item.ItemGroup ELEMENTARY_PARTICLES = FabricItemGroupBuilder.create(
+    public static final ItemGroup ELEMENTARY_PARTICLES = FabricItemGroupBuilder.create(
                     new Identifier(Scicraft.MOD_ID, "elementary_particles"))
             .icon(() -> new ItemStack(Items.PION_NUL))
             .build();
