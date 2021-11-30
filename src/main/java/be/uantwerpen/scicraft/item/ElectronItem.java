@@ -14,21 +14,31 @@ public class ElectronItem extends Item {
         super(settings);
     }
 
+    /**
+     * When ElectronItem is right-clicked, use up the item if necessary and spawn the entity
+     * @param world minecraft world
+     * @param user player invoking the right click action
+     * @param hand the hand of the user
+     * @return TypedActionResult, indicates if the use of the item succeeded or not
+     */
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand); // creates a new ItemStack instance of the user's itemStack in-hand
 
-        //TODO add custom sound maybe
-//        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 1F); // plays a globalSoundEvent
+        /* TODO sound effect of Electron throw
+         * Example with snowball sound
+         * world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 1F);
+         */
 
-        /* TODO throw cooldown
-		user.getItemCooldownManager().set(this, 5);
-		Optionally, you can add a cooldown to your item's right-click use, similar to Ender Pearls.
-		*/
+        /* TODO cooldown on the throw of an electron (like the cooldown on Ender Pearls)
+         * Example cooldown of 5 ticks
+         * user.getItemCooldownManager().set(this, 5);
+         */
         if (!world.isClient) {
+            // Spawns the electron entity with correct initial velocity (velocity has the same direction as the players looking direction)
             ElectronEntity electronEntity = new ElectronEntity(world, user);
             electronEntity.setItem(itemStack);
             electronEntity.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
-            world.spawnEntity(electronEntity); // spawns entity
+            world.spawnEntity(electronEntity);
         }
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));

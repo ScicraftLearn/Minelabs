@@ -29,13 +29,19 @@ public class ScicraftClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_PLUS, RenderLayer.getCutout());
 
+        // Register rendering for electron entity
         EntityRendererRegistry.INSTANCE.register(Entities.ELECTRON_ENTITY, FlyingItemEntityRenderer::new);
+        // Initialize receiving of custom packets for ProjectileEntities
         receiveEntityPacket();
     }
 
+    /**
+     * Receives packets from the integrated or dedicated server and renders the ProjectileEntities on the client
+     */
     public void receiveEntityPacket() {
         Identifier PacketID = new Identifier(Scicraft.MOD_ID, "spawn_packet");
         ClientSidePacketRegistry.INSTANCE.register(PacketID, (ctx, byteBuf) -> {
+            // Read packet data
             EntityType<?> et = Registry.ENTITY_TYPE.get(byteBuf.readVarInt());
             UUID uuid = byteBuf.readUuid();
             int entityId = byteBuf.readVarInt();
@@ -43,17 +49,20 @@ public class ScicraftClient implements ClientModInitializer {
             float pitch = EntitySpawnPacket.PacketBufUtil.readAngle(byteBuf);
             float yaw = EntitySpawnPacket.PacketBufUtil.readAngle(byteBuf);
             ctx.getTaskQueue().execute(() -> {
+                // Create entity
                 if (MinecraftClient.getInstance().world == null)
                     throw new IllegalStateException("Tried to spawn entity in a null world!");
                 Entity e = et.create(MinecraftClient.getInstance().world);
                 if (e == null)
                     throw new IllegalStateException("Failed to create instance of entity \"" + Registry.ENTITY_TYPE.getId(et) + "\"!");
+                // Update data from the entity to be the same on client and server
                 e.updateTrackedPosition(pos);
                 e.setPos(pos.x, pos.y, pos.z);
                 e.setPitch(pitch);
                 e.setYaw(yaw);
                 e.setId(entityId);
                 e.setUuid(uuid);
+                // Add entity to the world
                 MinecraftClient.getInstance().world.addEntity(entityId, e);
             });
         });

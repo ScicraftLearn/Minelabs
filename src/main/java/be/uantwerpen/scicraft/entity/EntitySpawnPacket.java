@@ -10,8 +10,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 
-// Class needed to register projectileEntities
-// https://fabricmc.net/wiki/tutorial:projectiles
+/**
+ * Class that creates spawn packets for custom projectileEntities like ElectronEntity
+ * Packets are created on the server with all entity data and send to the client this way
+ * Client will receive all the data and render it with the data provided by the server
+ *
+ * This class is needed for custom projectileEntities and all derived classes
+ * https://fabricmc.net/wiki/tutorial:projectiles
+ */
 public class EntitySpawnPacket {
     public static Packet<?> create(Entity e, Identifier packetID) {
         if (e.world.isClient)

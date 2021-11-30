@@ -23,8 +23,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ElectronEntity extends ThrownItemEntity {
-    //TODO configure despawn time of throwing electron
-    private static final int DESPAWN_AGE = 100; // Despawn time of 5 sec
+    /**
+     * Change the DESPAWN_AGE variable to change the time after which ElectronEntity will despawn
+     * Game runs at 20 ticks per second, so DESPAWN_AGE = 100 -> ElectronEntity despawns after 5 seconds
+     */
+    private static final int DESPAWN_AGE = 100;
     private int itemAge;
 
     public ElectronEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
@@ -44,18 +47,29 @@ public class ElectronEntity extends ThrownItemEntity {
         return Items.ELECTRON_ITEM;
     }
 
+    /**
+     * Packet to inform integrated or dedicated server about spawned ThrownItemEntity
+     * @return Packet
+     */
     @Override
     public Packet createSpawnPacket() {
         return EntitySpawnPacket.create(this, new Identifier(Scicraft.MOD_ID, "spawn_packet"));
     }
 
-    //TODO change particle effect from snowball particles to custom particles?
+    /**
+     * TODO change ths snowball particle effect to custom particle effect?
+     * @return ParticleEffect used on collision
+     */
     @Environment(EnvType.CLIENT)
     private ParticleEffect getParticleParameters() { // Needed for particles on collision with the world
         ItemStack itemStack = this.getItem();
         return (ParticleEffect)(itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack));
     }
 
+    /**
+     * Handle status 3 -> generate particles onCollision
+     * @param status byte with status to handle
+     */
     @Environment(EnvType.CLIENT)
     public void handleStatus(byte status) { // Needed for particles on collision with the world
         if (status == 3) {
@@ -67,7 +81,14 @@ public class ElectronEntity extends ThrownItemEntity {
         }
     }
 
-    // Remove randomness from throwing the electron
+    /**
+     * Removes the initial random adjustment on throw of projectiles in minecraft
+     * @param x distance along x-axis
+     * @param y distance along y-axis
+     * @param z distance along z-axis
+     * @param speed velocity of the item
+     * @param divergence unused parameter
+     */
     @Override
     public void setVelocity(double x, double y, double z, float speed, float divergence) {
         Vec3d vec3d = (new Vec3d(x, y, z)).normalize().multiply((double)speed);
@@ -79,21 +100,27 @@ public class ElectronEntity extends ThrownItemEntity {
         this.prevPitch = this.getPitch();
     }
 
-    // Removes gravity effects on electron
+    /**
+     * Return gravity = 0 -> no gravity effect on ElectronEntity
+     * @return float
+     */
     @Override
     protected float getGravity() {
         return 0.0F;
     }
 
-    // Removes the electron when throwing player dies
+    /**
+     * Updates the ElectronEntity every tick
+     */
     public void tick() {
         Entity entity = this.getOwner();
         if (entity instanceof PlayerEntity && !entity.isAlive()) {
+            // Removes the electron when throwing player dies
             this.discard();
         } else {
             super.tick();
 
-            // Logic to remove entity after 5 seconds
+            // Logic to despawn electron after 5 seconds
             ++this.itemAge;
             if (!this.world.isClient && this.itemAge >= DESPAWN_AGE) {
                 this.discard();
@@ -101,16 +128,20 @@ public class ElectronEntity extends ThrownItemEntity {
         }
     }
 
-    //TODO what to do on entity hit?
+    /** TODO custom EntityHit
+     * implement custom behaviour for hitting entities like other electrons, protons, neutrons, ...
+    */
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
     }
 
-    //TODO what to do with collision?
+    //TODO implement custom collision for different kind of blocks
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
         if (!this.world.isClient) {
+            // Generates clientside particles
             this.world.sendEntityStatus(this, (byte)3);
+            // Remove Entity from the server
             this.kill();
         }
     }
