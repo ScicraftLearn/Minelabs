@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.entity;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -11,11 +10,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
@@ -45,15 +42,6 @@ public class ElectronEntity extends ThrownItemEntity {
     @Override
     protected Item getDefaultItem() {
         return Items.ELECTRON_ITEM;
-    }
-
-    /**
-     * Packet to inform integrated or dedicated server about spawned ThrownItemEntity
-     * @return Packet
-     */
-    @Override
-    public Packet createSpawnPacket() {
-        return EntitySpawnPacket.create(this, new Identifier(Scicraft.MOD_ID, "spawn_packet"));
     }
 
     /**
