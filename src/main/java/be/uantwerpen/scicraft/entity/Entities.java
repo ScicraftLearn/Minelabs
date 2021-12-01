@@ -1,6 +1,8 @@
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
+
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -15,6 +17,10 @@ public class Entities {
             .trackRangeBlocks(4).trackedUpdateRate(10) // necessary for all thrown projectiles (as it prevents it from breaking)
             .build();
 
+    public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
+            .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
+
+
     /**
      * Register a single entity
      *
@@ -26,11 +32,12 @@ public class Entities {
         return Registry.register(Registry.ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), entityType);
     }
 
-
     /**
      * Register All entities
      */
     public static void registerEntities() {
+        FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
+        registerEntity(ENTROPY_CREEPER, "entropy_creeper");
         registerEntity(ELECTRON_ENTITY, "electron_entity");
     }
 }
