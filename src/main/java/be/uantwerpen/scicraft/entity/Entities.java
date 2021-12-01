@@ -30,7 +30,7 @@ public class Entities {
      * @param identifier : String name of the entity
      * @return registered EntityType
      */
-    private static EntityType<? extends Entity> registerEntity(EntityType<?> entityType, String identifier) {
+    private static EntityType<?> registerEntity(EntityType<?> entityType, String identifier) {
         return Registry.register(Registry.ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), entityType);
     }
 
