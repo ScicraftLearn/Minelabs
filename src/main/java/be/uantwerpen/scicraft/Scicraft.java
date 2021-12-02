@@ -22,5 +22,6 @@ public class Scicraft implements ModInitializer {
         Items.registerItems();
         Blocks.registerBlocks();
         Entities.registerEntities();
+        ExtraDispenserBehavior.registerBehaviors();
     }
 }
