@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.entity;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,8 +15,6 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ElectronEntity extends ThrownItemEntity {
