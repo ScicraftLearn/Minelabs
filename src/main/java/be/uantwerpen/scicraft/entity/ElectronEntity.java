@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.entity;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,14 +30,17 @@ public class ElectronEntity extends ThrownItemEntity {
 
     public ElectronEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
+        setNoGravity(true);
     }
 
     public ElectronEntity(World world, LivingEntity owner) {
         super(Entities.ELECTRON_ENTITY, owner, world);
+        setNoGravity(true);
     }
 
     public ElectronEntity(World world, double x, double y, double z) {
         super(Entities.ELECTRON_ENTITY, x, y, z, world);
+        setNoGravity(true);
     }
 
     @Override
@@ -46,16 +50,18 @@ public class ElectronEntity extends ThrownItemEntity {
 
     /**
      * TODO change ths snowball particle effect to custom particle effect?
+     *
      * @return ParticleEffect used on collision
      */
     @Environment(EnvType.CLIENT)
     private ParticleEffect getParticleParameters() { // Needed for particles on collision with the world
         ItemStack itemStack = this.getItem();
-        return (ParticleEffect)(itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack));
+        return (ParticleEffect) (itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack));
     }
 
     /**
      * Handle status 3 -> generate particles onCollision
+     *
      * @param status byte with status to handle
      */
     @Environment(EnvType.CLIENT)
@@ -63,38 +69,20 @@ public class ElectronEntity extends ThrownItemEntity {
         if (status == 3) {
             ParticleEffect particleEffect = this.getParticleParameters();
 
-            for(int i = 0; i < 8; ++i) {
+            for (int i = 0; i < 8; ++i) {
                 this.world.addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
     }
 
     /**
-     * Removes the initial random adjustment on throw of projectiles in minecraft
-     * @param x distance along x-axis
-     * @param y distance along y-axis
-     * @param z distance along z-axis
-     * @param speed velocity of the item
-     * @param divergence unused parameter
-     */
-    @Override
-    public void setVelocity(double x, double y, double z, float speed, float divergence) {
-        Vec3d vec3d = (new Vec3d(x, y, z)).normalize().multiply((double)speed);
-        this.setVelocity(vec3d);
-        double d = vec3d.horizontalLength();
-        this.setYaw((float)(MathHelper.atan2(vec3d.x, vec3d.z) * 57.2957763671875D));
-        this.setPitch((float)(MathHelper.atan2(vec3d.y, d) * 57.2957763671875D));
-        this.prevYaw = this.getYaw();
-        this.prevPitch = this.getPitch();
-    }
-
-    /**
      * Return gravity = 0 -> no gravity effect on ElectronEntity
+     *
      * @return float
      */
     @Override
     protected float getGravity() {
-        return 0.0F;
+        return 0F;
     }
 
     /**
@@ -110,15 +98,18 @@ public class ElectronEntity extends ThrownItemEntity {
 
             // Logic to despawn electron after 5 seconds
             ++this.itemAge;
+            Scicraft.LOGGER.info("item age: " + Integer.toString(this.itemAge));
             if (!this.world.isClient && this.itemAge >= DESPAWN_AGE) {
+                Scicraft.LOGGER.info("Killing electron entity");
                 this.discard();
             }
         }
     }
 
-    /** TODO custom EntityHit
+    /**
+     * TODO custom EntityHit
      * implement custom behaviour for hitting entities like other electrons, protons, neutrons, ...
-    */
+     */
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
     }
@@ -128,7 +119,7 @@ public class ElectronEntity extends ThrownItemEntity {
         super.onCollision(hitResult);
         if (!this.world.isClient) {
             // Generates clientside particles
-            this.world.sendEntityStatus(this, (byte)3);
+            this.world.sendEntityStatus(this, (byte) 3);
             // Remove Entity from the server
             this.kill();
         }
