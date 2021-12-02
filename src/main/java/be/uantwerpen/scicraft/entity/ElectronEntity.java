@@ -98,9 +98,7 @@ public class ElectronEntity extends ThrownItemEntity {
 
             // Logic to despawn electron after 5 seconds
             ++this.itemAge;
-            Scicraft.LOGGER.info("item age: " + Integer.toString(this.itemAge));
             if (!this.world.isClient && this.itemAge >= DESPAWN_AGE) {
-                Scicraft.LOGGER.info("Killing electron entity");
                 this.discard();
             }
         }
