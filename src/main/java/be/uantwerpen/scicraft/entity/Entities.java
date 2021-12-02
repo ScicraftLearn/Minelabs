@@ -57,6 +57,6 @@ public class Entities {
         FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
         registerEntity(ENTROPY_CREEPER, "entropy_creeper");
         registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld(),
-                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100,4,4)); // Same as normal creeper
+                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100,1,2)); // Same as normal creeper
     }
 }
