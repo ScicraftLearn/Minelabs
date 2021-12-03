@@ -29,8 +29,8 @@ public class NeutronEntity extends SubatomicParticle {
     }
 
     /**
-     * Change getDespawnAge() to change the time after which ElectronEntity will despawn
-     * Game normally runs at 20 ticks per second, so return 100 -> ElectronEntity despawns after 5 seconds
+     * Change getDespawnAge() to change the time after which NeutronEntity will despawn
+     * Game normally runs at 20 ticks per second, so return 100 -> NeutronEntity despawns after 5 seconds
      */
     protected int getDespawnAge() {
         return 100;
@@ -53,7 +53,7 @@ public class NeutronEntity extends SubatomicParticle {
     }
 
     /**
-     * Updates the ElectronEntity every tick
+     * Updates the NeutronEntity every tick
      */
     public void tick() {
         super.tick();

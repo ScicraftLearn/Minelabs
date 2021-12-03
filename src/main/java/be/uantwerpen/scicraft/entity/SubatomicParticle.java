@@ -66,7 +66,7 @@ public abstract class SubatomicParticle extends ThrownItemEntity {
     }
 
     /**
-     * Updates the ElectronEntity every tick
+     * Updates the SubatomicParticle every tick
      */
     public void tick() {
         Entity entity = this.getOwner();
