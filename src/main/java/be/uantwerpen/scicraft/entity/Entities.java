@@ -16,6 +16,8 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
     public static final EntityType<ProtonEntity> PROTON_ENTITY = FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
+    public static final EntityType<NeutronEntity> NEUTRON_ENTITY = FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
 
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
@@ -40,5 +42,6 @@ public class Entities {
         registerEntity(ENTROPY_CREEPER, "entropy_creeper");
         registerEntity(ELECTRON_ENTITY, "electron_entity");
         registerEntity(PROTON_ENTITY, "proton_entity");
+        registerEntity(NEUTRON_ENTITY, "neutron_entity");
     }
 }

@@ -49,6 +49,7 @@ public abstract class ThrownEntityMixin extends ProjectileEntity{
 //            Scicraft.LOGGER.info(this.getPos());
             this.setVelocity(blockPos.multiply(getSlowdownFactor()));
             // Gravity gets applied here in the tick method of ThrownEntity that code isn't needed for entities of this class
+            // If modified/original gravity code is needed it can be inserted here
             this.setPosition(blockState, d, e);
             ci.cancel();
         }
