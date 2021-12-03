@@ -1,11 +1,9 @@
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.mixins.CreeperEntityMixin;
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.CreeperEntity;
@@ -33,39 +31,37 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @return boolean: cancel default explosion or not
      */
     public boolean preExplode() {
-        if (!this.world.isClient) {
-            this.dead = true;
-            this.discard();
-            //Scicraft.LOGGER.info("Entropy creeper exploded");
-            Iterable<BlockPos> blockpos = BlockPos.iterateRandomly(this.random, (explosionRadius * explosionRadius * explosionRadius * 8),
-                    this.getBlockPos(), explosionRadius);
-            List<BlockPos> blockPosList = Lists.newArrayList(blockpos);
+        this.dead = true;
+        this.discard();
+        //Scicraft.LOGGER.info("Entropy creeper exploded");
+        Iterable<BlockPos> blockpos = BlockPos.iterateRandomly(this.random, (explosionRadius * explosionRadius * explosionRadius * 8),
+                this.getBlockPos(), explosionRadius);
 
-            PlayerEntity player = world.getClosestPlayer(this.getX(), this.getY(), this.getZ(), explosionRadius, false);
+        List<BlockPos> blockPosList = Lists.newArrayList(blockpos);
+        if (!this.world.isClient) {
+            PlayerEntity player = world.getClosestPlayer(this.getX(), this.getY(), this.getZ(), explosionRadius, true);
             if (player != null) {
                 BlockPos teleportpos = blockPosList.get(random.nextInt(blockPosList.size()));
                 //Teleport player inside the explosionRadius
                 player.teleport(teleportpos.getX(), teleportpos.getY(), teleportpos.getZ());
             }
 
-            // TODO: Custom exposion
             // Shuffle blocks in a 5 block radius
             if (world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
                 blockPosList.clear();
-                for (BlockPos pos : blockpos) { //Supposed to only have shuffleable blocks
-                    Scicraft.LOGGER.info(world.getBlockState(pos));
+                for (BlockPos pos : blockpos) {
                     if (isShuffleable(pos)) {
-                        Scicraft.LOGGER.info("Shuffle");
-                        blockPosList.add(pos);
+                        blockPosList.add(pos.toImmutable());
                     }
                 }
                 for (BlockPos pos : blockPosList) {
                     if (isShuffleable(pos)) {
-                        // Don't use blocks like barrier, air, bedrock and any block with BlockStates (furnace,chest,..)
-                        // BOOM !!
+                        // Don't use blocks like barrier, air, bedrock
                         BlockPos newPos = blockPosList.get(random.nextInt(blockPosList.size()));
-                        Scicraft.LOGGER.info(world.getBlockState(pos) + " -> " + world.getBlockState(newPos));
+                        Scicraft.LOGGER.debug(world.getBlockState(pos) + " <-> " + world.getBlockState(newPos));
+                        BlockState shuffle = world.getBlockState(pos);
                         world.setBlockState(pos, world.getBlockState(newPos));
+                        world.setBlockState(newPos, shuffle);
                     }
                 }
             }
@@ -80,7 +76,6 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @return boolean, Block is not AIR or BEDROCK or BARRIER
      */
     private boolean isShuffleable(BlockPos pos) {
-        //TODO check for bedrock
         return world.getBlockState(pos).getPistonBehavior() != PistonBehavior.BLOCK &&
                 !world.getBlockState(pos).getBlock().equals(Blocks.BEDROCK) &&
                 !world.getBlockState(pos).isAir();
