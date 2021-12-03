@@ -9,6 +9,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,6 +21,14 @@ public abstract class ThrownEntityMixin extends ProjectileEntity{
         super(entityType, world);
     }
 
+    @Unique
+    public float getSlowdownFactor(){
+        if (this.isTouchingWater()){
+            return 0.8f;
+        }
+        return 0.99f;
+    }
+
     /**
      * Mixin that hooks into the tick() method of ThrownEntity
      * This method injects before the following function call: this.setVelocity(blockPos.multiply((double)g));
@@ -29,17 +38,21 @@ public abstract class ThrownEntityMixin extends ProjectileEntity{
      */
     @Inject(method = "tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/thrown/ThrownEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void injected(CallbackInfo ci, HitResult hitResult, boolean bl, Vec3d blockPos, double blockState, double d, double e, float g) {
-        ProjectileEntity self = this;
-        // IDE might say the following expression is always false.
+        g = getSlowdownFactor();
+        Scicraft.LOGGER.info("slowdown" + g);
+
+//        ProjectileEntity self = this;
+//         IDE might say the following expression is always false.
         // This is not the case, I tested it ingame.
-        if (self instanceof ElectronEntity) {
-            // I used command: /tp @p 0 100 0 0 0
-            // This teleports player to block x=0 y=100 z=0 and sets the looking direction of the player
-            // Then don't move and use an electron. It is easy to verify that the electron flies straight and constant speed.
-            Scicraft.LOGGER.info(this.getVelocity());
-            Scicraft.LOGGER.info(this.getPos());
-            this.setPosition(blockState, d, e);
-            ci.cancel();
-        }
+
+//        if (self instanceof ElectronEntity) {
+//            // I used command: /tp @p 0 100 0 0 0
+//            // This teleports player to block x=0 y=100 z=0 and sets the looking direction of the player
+//            // Then don't move and use an electron. It is easy to verify that the electron flies straight and constant speed.
+//            Scicraft.LOGGER.info(this.getVelocity());
+//            Scicraft.LOGGER.info(this.getPos());
+//            this.setPosition(blockState, d, e);
+//            ci.cancel();
+//        }
     }
 }

@@ -16,6 +16,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Unique;
 
 public class ElectronEntity extends ThrownItemEntity {
     /**
@@ -38,6 +39,10 @@ public class ElectronEntity extends ThrownItemEntity {
     public ElectronEntity(World world, double x, double y, double z) {
         super(Entities.ELECTRON_ENTITY, x, y, z, world);
         setNoGravity(true);
+    }
+
+    public float getSlowdownFactor(){
+        return 1f;
     }
 
     @Override
