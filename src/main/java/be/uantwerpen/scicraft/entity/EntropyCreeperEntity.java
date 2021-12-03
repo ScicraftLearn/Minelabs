@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,14 +25,14 @@ public class EntropyCreeperEntity extends CreeperEntity {
         super(entityType, world);
     }
 
-     /**
-      * Mixin Injected explosion method
-      * Make sure to "kill" the entity
-      *
-      * Shuffle blocks in a 5 block radius
-      *
-      * @return boolean: cancel default explosion or not
-      */
+    /**
+     * Mixin Injected explosion method
+     * Make sure to "kill" the entity
+     *
+     * Shuffle blocks in a 5 block radius
+     *
+     * @return boolean: cancel default explosion or not
+     */
     public boolean preExplode() {
         if (!this.world.isClient) {
             this.dead = true;
@@ -40,30 +41,49 @@ public class EntropyCreeperEntity extends CreeperEntity {
             // TODO: Custom exposion
             // Shuffle blocks in a 5 block radius
             if (world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)){
-                Iterable<BlockPos> blockpos = BlockPos.iterateRandomly(this.random, (explosionRadius^2), this.getBlockPos(), explosionRadius);
+                Iterable<BlockPos> blockpos = BlockPos.iterateRandomly(this.random, explosionRadius*explosionRadius*explosionRadius,
+                        this.getBlockPos(), explosionRadius);
                 List<BlockPos> blockPosList = Lists.newArrayList(blockpos);
 
-                PlayerEntity player = world.getClosestPlayer(this.getX(), this.getY(), this.getZ(), (explosionRadius^2), true);
+                PlayerEntity player = world.getClosestPlayer(this.getX(), this.getY(), this.getZ(), explosionRadius, true);
                 if (player != null){
-                    BlockPos teleportpos = blockPosList.get(random.nextInt(explosionRadius^2));
+                    BlockPos teleportpos = blockPosList.get(random.nextInt(blockPosList.size()));
                     //Teleport player inside the explosionRadius
                     player.teleport(teleportpos.getX(), teleportpos.getY(), teleportpos.getZ());
                 }
 
-                for (BlockPos pos: blockpos) {
-                    if (world.getBlockState(pos).getBlock() != Blocks.BARRIER && 
-                            world.getBlockState(pos).getBlock() != Blocks.AIR &&
-                            world.getBlockState(pos).getBlock() != Blocks.BEDROCK && world.getBlockState(pos) == null){
-                        Scicraft.LOGGER.info("Shuffleable block");
+                blockPosList.clear();
+                for (BlockPos pos: blockpos) { //Supposed to only have shuffleable blocks
+                    if (isShuffleable(pos)){
+                        blockPosList.add(pos);
+                    }
+                }
+
+                for (BlockPos pos: blockPosList) {
+                    if (isShuffleable(pos)){
                         // Don't use blocks like barrier, air, bedrock and any block with BlockStates (furnace,chest,..)
                         // BOOM !!
-
+                        BlockPos newPos = blockPosList.get(random.nextInt(blockPosList.size()));
+                        //Scicraft.LOGGER.info(world.getBlockState(pos) + " -> " +world.getBlockState(newPos));
+                        world.setBlockState(pos, world.getBlockState(newPos));
                     }
                 }
             }
-
         }
         return false;   // make sure the original 'explode' function doesn't run.
     }
 
+    /**
+     * Check if the block at pos is a shuffleable block
+     *
+     * @param pos : {@link BlockPos} position of block in the world
+     * @return boolean, Block is not AIR or BEDROCK or BARRIER
+     */
+    private boolean isShuffleable(BlockPos pos){
+        //TODO check for bedrock
+        return  world.getBlockState(pos).getPistonBehavior() != PistonBehavior.BLOCK &&
+                !world.getBlockState(pos).isAir();
+
+
+    }
 }
