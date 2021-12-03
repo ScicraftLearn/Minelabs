@@ -19,7 +19,6 @@ import java.util.function.Predicate;
 
 public class Entities {
 
-    // EntityTypes
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
 
