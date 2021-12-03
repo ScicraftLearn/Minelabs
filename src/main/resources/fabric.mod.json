@@ -17,6 +17,7 @@
   "license": "TODO",
   "icon": "assets/scicraft/icon.png",
   "environment": "*",
+  "accessWidener" : "scicraft.accesswidener",
   "entrypoints": {
     "main": [
       "be.uantwerpen.scicraft.Scicraft"
