@@ -16,6 +16,7 @@ import net.minecraft.util.registry.Registry;
 public class Items {
     // Items
     public static final Item ELECTRON_ITEM = new ElectronItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
+    public static final Item PROTON_ITEM = new ProtonItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
 
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC));
@@ -51,6 +52,7 @@ public class Items {
         registerItem(PION_MINUS, "pion_minus");
         registerItem(PION_PLUS, "pion_plus");
         registerItem(ELECTRON_ITEM, "electron_item");
+        registerItem(PROTON_ITEM, "proton_item");
         registerItem(ENTROPY_CREEPER_SPAWN_EGG, "entropy_creeper_spawn_egg");
     }
 }

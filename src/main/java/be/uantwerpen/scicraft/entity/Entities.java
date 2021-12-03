@@ -13,8 +13,9 @@ import net.minecraft.util.registry.Registry;
 public class Entities {
     // EntityTypes
     public static final EntityType<ElectronEntity> ELECTRON_ENTITY = FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
-            .build();
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
+    public static final EntityType<ProtonEntity> PROTON_ENTITY = FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
 
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
@@ -38,5 +39,6 @@ public class Entities {
         FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
         registerEntity(ENTROPY_CREEPER, "entropy_creeper");
         registerEntity(ELECTRON_ENTITY, "electron_entity");
+        registerEntity(PROTON_ENTITY, "proton_entity");
     }
 }
