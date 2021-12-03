@@ -21,6 +21,7 @@ public class ElectronItem extends Item {
      * @param hand the hand of the user
      * @return TypedActionResult, indicates if the use of the item succeeded or not
      */
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand); // creates a new ItemStack instance of the user's itemStack in-hand
 
