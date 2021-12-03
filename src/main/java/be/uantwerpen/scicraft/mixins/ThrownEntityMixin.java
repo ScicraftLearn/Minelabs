@@ -1,6 +1,6 @@
 package be.uantwerpen.scicraft.mixins;
 
-import be.uantwerpen.scicraft.entity.ElectronEntity;
+import be.uantwerpen.scicraft.entity.SubatomicParticle;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
@@ -41,7 +41,7 @@ public abstract class ThrownEntityMixin extends ProjectileEntity{
         // IDE might say the following expression is always false.
         // This is not the case, I tested it ingame.
 
-        if (self instanceof ElectronEntity) {
+        if (self instanceof SubatomicParticle) {
             // I used command: /tp @p 0 100 0 0 0
             // This teleports player to block x=0 y=100 z=0 and sets the looking direction of the player
             // Then don't move and use an electron. It is easy to verify that the electron flies straight and constant speed.
