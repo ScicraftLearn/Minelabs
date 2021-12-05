@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -56,6 +55,6 @@ public class Entities {
         FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
         registerEntity(ENTROPY_CREEPER, "entropy_creeper");
         registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld(),
-                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100,1,2)); // Same as normal creeper
+                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1)); // Same as normal creeper
     }
 }
