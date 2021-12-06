@@ -15,22 +15,22 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
-public class ElectronEntity extends SubatomicParticle {
-    public ElectronEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
+public class ProtonEntity extends SubatomicParticle {
+    public ProtonEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    public ElectronEntity(World world, LivingEntity owner) {
-        super(Entities.ELECTRON_ENTITY, owner, world);
+    public ProtonEntity(World world, LivingEntity owner) {
+        super(Entities.PROTON_ENTITY, owner, world);
     }
 
-    public ElectronEntity(World world, double x, double y, double z) {
-        super(Entities.ELECTRON_ENTITY, x, y, z, world);
+    public ProtonEntity(World world, double x, double y, double z) {
+        super(Entities.PROTON_ENTITY, x, y, z, world);
     }
 
     /**
-     * Change getDespawnAge() to change the time after which ElectronEntity will despawn
-     * Game normally runs at 20 ticks per second, so return 100 -> ElectronEntity despawns after 5 seconds
+     * Change getDespawnAge() to change the time after which ProtonEntity will despawn
+     * Game normally runs at 20 ticks per second, so return 100 -> ProtonEntity despawns after 5 seconds
      */
     protected int getDespawnAge() {
         return 100;
@@ -38,7 +38,7 @@ public class ElectronEntity extends SubatomicParticle {
 
     @Override
     protected Item getDefaultItem() {
-        return Items.ELECTRON_ITEM;
+        return Items.PROTON_ITEM;
     }
 
     /**
@@ -53,7 +53,7 @@ public class ElectronEntity extends SubatomicParticle {
     }
 
     /**
-     * Updates the ElectronEntity every tick
+     * Updates the ProtonEntity every tick
      */
     public void tick() {
         super.tick();

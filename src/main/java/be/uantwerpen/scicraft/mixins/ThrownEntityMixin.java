@@ -1,7 +1,6 @@
 package be.uantwerpen.scicraft.mixins;
 
-import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.entity.ElectronEntity;
+import be.uantwerpen.scicraft.entity.SubatomicParticle;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
@@ -38,21 +37,21 @@ public abstract class ThrownEntityMixin extends ProjectileEntity{
      */
     @Inject(method = "tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/thrown/ThrownEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void injected(CallbackInfo ci, HitResult hitResult, boolean bl, Vec3d blockPos, double blockState, double d, double e, float g) {
-        g = getSlowdownFactor();
-        Scicraft.LOGGER.info("slowdown" + g);
-
-//        ProjectileEntity self = this;
-//         IDE might say the following expression is always false.
+        ProjectileEntity self = this;
+        // IDE might say the following expression is always false.
         // This is not the case, I tested it ingame.
 
-//        if (self instanceof ElectronEntity) {
-//            // I used command: /tp @p 0 100 0 0 0
-//            // This teleports player to block x=0 y=100 z=0 and sets the looking direction of the player
-//            // Then don't move and use an electron. It is easy to verify that the electron flies straight and constant speed.
+        if (self instanceof SubatomicParticle) {
+            // I used command: /tp @p 0 100 0 0 0
+            // This teleports player to block x=0 y=100 z=0 and sets the looking direction of the player
+            // Then don't move and use an electron. It is easy to verify that the electron flies straight and constant speed.
 //            Scicraft.LOGGER.info(this.getVelocity());
 //            Scicraft.LOGGER.info(this.getPos());
-//            this.setPosition(blockState, d, e);
-//            ci.cancel();
-//        }
+            this.setVelocity(blockPos.multiply(getSlowdownFactor()));
+            // Gravity gets applied here in the tick method of ThrownEntity that code isn't needed for entities of this class
+            // If modified/original gravity code is needed it can be inserted here
+            this.setPosition(blockState, d, e);
+            ci.cancel();
+        }
     }
 }
