@@ -1,6 +1,6 @@
 package be.uantwerpen.scicraft.item;
 
-import be.uantwerpen.scicraft.entity.ElectronEntity;
+import be.uantwerpen.scicraft.entity.ProtonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,13 +9,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class ElectronItem extends Item {
-    public ElectronItem(Settings settings) {
+public class ProtonItem extends Item {
+    public ProtonItem(Item.Settings settings) {
         super(settings);
     }
 
     /**
-     * When ElectronItem is right-clicked, use up the item if necessary and spawn the entity
+     * When ProtonItem is right-clicked, use up the item if necessary and spawn the entity
      * @param world minecraft world
      * @param user player invoking the right click action
      * @param hand the hand of the user
@@ -25,21 +25,21 @@ public class ElectronItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand); // creates a new ItemStack instance of the user's itemStack in-hand
 
-        /* TODO sound effect of Electron throw
+        /* TODO sound effect of Proton throw
          * Example with snowball sound
          * world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 1F);
          */
 
-        /* TODO cooldown on the throw of an electron (like the cooldown on Ender Pearls)
+        /* TODO cooldown on the throw of an proton (like the cooldown on Ender Pearls)
          * Example cooldown of 5 ticks
          * user.getItemCooldownManager().set(this, 5);
          */
         if (!world.isClient) {
-            // Spawns the electron entity with correct initial velocity (velocity has the same direction as the players looking direction)
-            ElectronEntity electronEntity = new ElectronEntity(world, user);
-            electronEntity.setItem(itemStack);
-            electronEntity.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
-            world.spawnEntity(electronEntity);
+            // Spawns the proton entity with correct initial velocity (velocity has the same direction as the players looking direction)
+            ProtonEntity protonEntity = new ProtonEntity(world, user);
+            protonEntity.setItem(itemStack);
+            protonEntity.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
+            world.spawnEntity(protonEntity);
         }
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));

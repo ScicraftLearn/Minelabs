@@ -9,8 +9,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class Blocks {
-    public static final Block PROTON = new Block(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
-    public static final Block ELECTRON = new Block(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
     public static final Block PION_NUL = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
     public static final Block PION_MINUS = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
     public static final Block PION_PLUS = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
@@ -20,8 +18,6 @@ public class Blocks {
     }
 
     public static void registerBlocks(){
-        registerBlock(PROTON, "proton");
-        registerBlock(ELECTRON, "electron");
         registerBlock(PION_NUL, "pion_nul");
         registerBlock(PION_MINUS, "pion_minus");
         registerBlock(PION_PLUS, "pion_plus");
