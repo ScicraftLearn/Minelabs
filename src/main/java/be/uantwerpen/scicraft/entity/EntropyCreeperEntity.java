@@ -2,16 +2,27 @@ package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
 import com.google.common.collect.Lists;
+import net.minecraft.block.BarrierBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import org.apache.commons.io.input.TaggedInputStream;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntropyCreeperEntity extends CreeperEntity {
@@ -34,35 +45,38 @@ public class EntropyCreeperEntity extends CreeperEntity {
         this.dead = true;
         this.discard();
         //Scicraft.LOGGER.info("Entropy creeper exploded");
+        BlockPos center = this.getBlockPos();
         Iterable<BlockPos> blockpos = BlockPos.iterateRandomly(this.random, (explosionRadius * explosionRadius * explosionRadius * 8),
-                this.getBlockPos(), explosionRadius);
+                center, explosionRadius);
 
-        List<BlockPos> blockPosList = Lists.newArrayList(blockpos);
+        List<BlockPos> blockPosList = new ArrayList<>();
+        for (BlockPos pos : blockpos) {
+            if (isShuffleable(world.getBlockState(pos))) {
+                blockPosList.add(pos.toImmutable());
+            }
+        }
+
+        Box area = new Box(center.getX() - explosionRadius, center.getY() - explosionRadius, center.getZ() - explosionRadius,
+                center.getX() + explosionRadius, center.getY() + explosionRadius, center.getZ() + explosionRadius);
+
         if (!this.world.isClient) {
-            PlayerEntity player = world.getClosestPlayer(this.getX(), this.getY(), this.getZ(), explosionRadius, true);
-            if (player != null) {
-                BlockPos teleportpos = blockPosList.get(random.nextInt(blockPosList.size()));
-                //Teleport player inside the explosionRadius
-                player.teleport(teleportpos.getX(), teleportpos.getY(), teleportpos.getZ());
+            List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, area, EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR);
+            for(LivingEntity entity: entities) {
+                if (entity != null) {
+                    BlockPos teleportpos = blockPosList.get(random.nextInt(blockPosList.size()));
+                    //Teleport mob inside the explosionRadius
+                    entity.teleport(teleportpos.getX(), teleportpos.getY(), teleportpos.getZ());
+                }
             }
 
             // Shuffle blocks in a 5 block radius
             if (world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
-                blockPosList.clear();
-                for (BlockPos pos : blockpos) {
-                    if (isShuffleable(pos)) {
-                        blockPosList.add(pos.toImmutable());
-                    }
-                }
                 for (BlockPos pos : blockPosList) {
-                    if (isShuffleable(pos)) {
-                        // Don't use blocks like barrier, air, bedrock
-                        BlockPos newPos = blockPosList.get(random.nextInt(blockPosList.size()));
-                        Scicraft.LOGGER.debug(world.getBlockState(pos) + " <-> " + world.getBlockState(newPos));
-                        BlockState shuffle = world.getBlockState(pos);
-                        world.setBlockState(pos, world.getBlockState(newPos));
-                        world.setBlockState(newPos, shuffle);
-                    }
+                    BlockPos newPos = blockPosList.get(random.nextInt(blockPosList.size()));
+                    Scicraft.LOGGER.debug(world.getBlockState(pos) + " <-> " + world.getBlockState(newPos));
+                    BlockState shuffle = world.getBlockState(pos);
+                    world.setBlockState(pos, world.getBlockState(newPos));
+                    world.setBlockState(newPos, shuffle);
                 }
             }
         }
@@ -71,13 +85,10 @@ public class EntropyCreeperEntity extends CreeperEntity {
 
     /**
      * Check if the block at pos is a shuffleable block
-     *
-     * @param pos : {@link BlockPos} position of block in the world
-     * @return boolean, Block is not AIR or BEDROCK or BARRIER
+     * @param blockState: block
+     * @return whether the block should be movable.
      */
-    private boolean isShuffleable(BlockPos pos) {
-        return world.getBlockState(pos).getPistonBehavior() != PistonBehavior.BLOCK &&
-                !world.getBlockState(pos).getBlock().equals(Blocks.BEDROCK) &&
-                !world.getBlockState(pos).isAir();
+    private boolean isShuffleable(BlockState blockState) {
+        return !BlockTags.DRAGON_IMMUNE.contains(blockState.getBlock());
     }
 }
