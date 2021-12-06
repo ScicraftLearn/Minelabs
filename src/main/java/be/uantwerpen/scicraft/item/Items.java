@@ -15,17 +15,14 @@ import net.minecraft.util.registry.Registry;
 
 public class Items {
     // Items
-    public static final Item ELECTRON_ITEM = new ElectronItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
-    public static final Item PROTON_ITEM = new ProtonItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
-    public static final Item NEUTRON_ITEM = new NeutronItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
+    public static final Item ELECTRON = new ElectronItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
+    public static final Item PROTON = new ProtonItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
+    public static final Item NEUTRON = new NeutronItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
 
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC));
 
-
     // BlockItems
-    public static final Item ELECTRON = new BlockItem(Blocks.ELECTRON, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS));
-    public static final Item PROTON = new BlockItem(Blocks.PROTON, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS));
     public static final Item PION_NUL = new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
     public static final Item PION_MINUS = new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
     public static final Item PION_PLUS = new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
@@ -49,12 +46,10 @@ public class Items {
     public static void registerItems() {
         registerItem(ELECTRON, "electron");
         registerItem(PROTON, "proton");
+        registerItem(NEUTRON, "neutron");
         registerItem(PION_NUL, "pion_nul");
         registerItem(PION_MINUS, "pion_minus");
         registerItem(PION_PLUS, "pion_plus");
-        registerItem(ELECTRON_ITEM, "electron_item");
-        registerItem(PROTON_ITEM, "proton_item");
-        registerItem(NEUTRON_ITEM, "neutron_item");
         registerItem(ENTROPY_CREEPER_SPAWN_EGG, "entropy_creeper_spawn_egg");
     }
 }

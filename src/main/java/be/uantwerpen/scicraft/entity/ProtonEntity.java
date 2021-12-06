@@ -38,7 +38,7 @@ public class ProtonEntity extends SubatomicParticle {
 
     @Override
     protected Item getDefaultItem() {
-        return Items.PROTON_ITEM;
+        return Items.PROTON;
     }
 
     /**

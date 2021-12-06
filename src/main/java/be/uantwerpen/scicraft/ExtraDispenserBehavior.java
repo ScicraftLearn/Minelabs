@@ -25,7 +25,7 @@ public class ExtraDispenserBehavior {
          * The entity is shot up slight as defined in dispenseSilently in ProjectileDispenserBehavior:
          * direction.getOffsetY() + 0.1F
          */
-        DispenserBlock.registerBehavior(Items.ELECTRON_ITEM, new ProjectileDispenserBehavior() {
+        DispenserBlock.registerBehavior(Items.ELECTRON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                 return Util.make(new ElectronEntity(world, position.getX(), position.getY(), position.getZ()), (electronEntity) -> {
@@ -41,7 +41,7 @@ public class ExtraDispenserBehavior {
          * The entity is shot up slight as defined in dispenseSilently in ProjectileDispenserBehavior:
          * direction.getOffsetY() + 0.1F
          */
-        DispenserBlock.registerBehavior(Items.PROTON_ITEM, new ProjectileDispenserBehavior() {
+        DispenserBlock.registerBehavior(Items.PROTON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                 return Util.make(new ProtonEntity(world, position.getX(), position.getY(), position.getZ()), (protonEntity) -> {
@@ -57,7 +57,7 @@ public class ExtraDispenserBehavior {
          * The entity is shot up slight as defined in dispenseSilently in ProjectileDispenserBehavior:
          * direction.getOffsetY() + 0.1F
          */
-        DispenserBlock.registerBehavior(Items.NEUTRON_ITEM, new ProjectileDispenserBehavior() {
+        DispenserBlock.registerBehavior(Items.NEUTRON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                 return Util.make(new NeutronEntity(world, position.getX(), position.getY(), position.getZ()), (neutronEntity) -> {

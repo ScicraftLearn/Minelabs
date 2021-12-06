@@ -38,7 +38,7 @@ public class ElectronEntity extends SubatomicParticle {
 
     @Override
     protected Item getDefaultItem() {
-        return Items.ELECTRON_ITEM;
+        return Items.ELECTRON;
     }
 
     /**
