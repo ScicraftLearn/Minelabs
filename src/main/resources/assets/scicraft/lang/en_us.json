@@ -1,11 +1,14 @@
 {
   "itemGroup.scicraft.quantum_fields": "Quantum Fields",
   "itemGroup.scicraft.elementary_particles": "Elementary Particles",
+
   "block.scicraft.proton": "Proton",
   "block.scicraft.electron": "Electron",
   "block.scicraft.pion_nul": "Pion Nul",
   "block.scicraft.pion_minus": "Pion Minus",
   "block.scicraft.pion_plus": "Pion Plus",
+
+  "item.scicraft.electron_item": "Throwable electron",
   "item.scicraft.electron": "Electron",
   "item.scicraft.proton": "Proton",
   "item.scicraft.pion_nul": "Pion Nul",

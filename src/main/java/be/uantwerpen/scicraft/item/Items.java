@@ -2,10 +2,12 @@ package be.uantwerpen.scicraft.item;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.block.Blocks;
+
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import be.uantwerpen.scicraft.block.Blocks;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
@@ -13,8 +15,11 @@ import net.minecraft.util.registry.Registry;
 
 public class Items {
     // Items
+    public static final Item ELECTRON_ITEM = new ElectronItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64));
+
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC));
+
 
     // BlockItems
     public static final Item ELECTRON = new BlockItem(Blocks.ELECTRON, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS));
@@ -45,8 +50,7 @@ public class Items {
         registerItem(PION_NUL, "pion_nul");
         registerItem(PION_MINUS, "pion_minus");
         registerItem(PION_PLUS, "pion_plus");
-
+        registerItem(ELECTRON_ITEM, "electron_item");
         registerItem(ENTROPY_CREEPER_SPAWN_EGG, "entropy_creeper_spawn_egg");
     }
-
 }

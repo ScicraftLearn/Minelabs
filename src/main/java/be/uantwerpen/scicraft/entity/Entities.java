@@ -1,10 +1,14 @@
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
+<<<<<<< HEAD
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+=======
+
+>>>>>>> main
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
@@ -17,9 +21,14 @@ import net.minecraft.world.biome.SpawnSettings;
 import java.util.function.Predicate;
 
 public class Entities {
+    // EntityTypes
+    public static final EntityType<ElectronEntity> ELECTRON_ENTITY = FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
+            .build();
 
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
+
 
     /**
      * Register a single entity
@@ -56,5 +65,6 @@ public class Entities {
         registerEntity(ENTROPY_CREEPER, "entropy_creeper");
         registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld(),
                 new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1)); // Same as normal creeper
+        registerEntity(ELECTRON_ENTITY, "electron_entity");
     }
 }
