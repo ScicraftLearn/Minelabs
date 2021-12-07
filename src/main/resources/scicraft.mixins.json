@@ -8,5 +8,6 @@
   "mixins": [
     "ThrownEntityMixin",
     "CreeperEntityMixin"
-  ]
+  ],
+  "client": []
 }
