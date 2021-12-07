@@ -1,26 +1,16 @@
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
-import com.google.common.collect.Lists;
-import net.minecraft.block.BarrierBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import org.apache.commons.io.input.TaggedInputStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +34,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
     public boolean preExplode() {
         this.dead = true;
         this.discard();
-        //Scicraft.LOGGER.info("Entropy creeper exploded");
+        Scicraft.LOGGER.debug("Entropy creeper exploded");
         BlockPos center = this.getBlockPos();
         Iterable<BlockPos> blockpos = BlockPos.iterateRandomly(this.random, (explosionRadius * explosionRadius * explosionRadius * 8),
                 center, explosionRadius);
@@ -84,7 +74,8 @@ public class EntropyCreeperEntity extends CreeperEntity {
     }
 
     /**
-     * Check if the block at pos is a shuffleable block
+     * Check if the block is a shuffleable block
+     *
      * @param blockState: block
      * @return whether the block should be movable.
      */
