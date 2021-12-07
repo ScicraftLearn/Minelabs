@@ -38,7 +38,7 @@ public class ElectronItem extends Item {
             // Spawns the electron entity with correct initial velocity (velocity has the same direction as the players looking direction)
             ElectronEntity electronEntity = new ElectronEntity(world, user);
             electronEntity.setItem(itemStack);
-            electronEntity.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
+            electronEntity.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 1.5F, 0F);
             world.spawnEntity(electronEntity);
         }
 

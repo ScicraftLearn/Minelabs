@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft.mixins;
 
 import net.minecraft.entity.mob.CreeperEntity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,6 +22,7 @@ public abstract class CreeperEntityMixin {
      *
      * @return Whether to run original explode code.
      */
+    @Unique
     public boolean preExplode() {
         return true;
     }

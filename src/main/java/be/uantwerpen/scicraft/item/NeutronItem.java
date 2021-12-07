@@ -38,7 +38,7 @@ public class NeutronItem extends Item {
             // Spawns the neutron entity with correct initial velocity (velocity has the same direction as the players looking direction)
             NeutronEntity neutronEntity = new NeutronEntity(world, user);
             neutronEntity.setItem(itemStack);
-            neutronEntity.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
+            neutronEntity.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 1.5F, 0F);
             world.spawnEntity(neutronEntity);
         }
 

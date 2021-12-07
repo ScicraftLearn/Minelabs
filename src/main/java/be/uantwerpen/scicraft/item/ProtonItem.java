@@ -16,9 +16,10 @@ public class ProtonItem extends Item {
 
     /**
      * When ProtonItem is right-clicked, use up the item if necessary and spawn the entity
+     *
      * @param world minecraft world
-     * @param user player invoking the right click action
-     * @param hand the hand of the user
+     * @param user  player invoking the right click action
+     * @param hand  the hand of the user
      * @return TypedActionResult, indicates if the use of the item succeeded or not
      */
     @Override
@@ -38,7 +39,7 @@ public class ProtonItem extends Item {
             // Spawns the proton entity with correct initial velocity (velocity has the same direction as the players looking direction)
             ProtonEntity protonEntity = new ProtonEntity(world, user);
             protonEntity.setItem(itemStack);
-            protonEntity.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
+            protonEntity.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 1.5F, 0F);
             world.spawnEntity(protonEntity);
         }
 
