@@ -1,13 +1,12 @@
 {
   "itemGroup.scicraft.quantum_fields": "Kwantumvelden",
   "itemGroup.scicraft.elementary_particles": "Elementaire Deeltjes",
-  "block.scicraft.proton": "Proton",
-  "block.scicraft.electron": "Elektron",
+  
   "block.scicraft.pion_nul": "Pion Nul",
   "block.scicraft.pion_minus": "Pion Min",
   "block.scicraft.pion_plus": "Pion Plus",
 
-  "item.scicraft.electron_item": "Gooibaar elektron",
+  "item.scicraft.neutron": "Neutron",
   "item.scicraft.electron": "Elektron",
   "item.scicraft.proton": "Proton",
   "item.scicraft.pion_nul": "Pion Nul",

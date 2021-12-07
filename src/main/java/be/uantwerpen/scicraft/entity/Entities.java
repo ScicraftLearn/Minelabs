@@ -20,8 +20,11 @@ import java.util.function.Predicate;
 public class Entities {
     // EntityTypes
     public static final EntityType<ElectronEntity> ELECTRON_ENTITY = FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
-            .build();
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
+    public static final EntityType<ProtonEntity> PROTON_ENTITY = FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
+    public static final EntityType<NeutronEntity> NEUTRON_ENTITY = FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
 
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
@@ -63,5 +66,7 @@ public class Entities {
         registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld(),
                 new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1)); // Same as normal creeper
         registerEntity(ELECTRON_ENTITY, "electron_entity");
+        registerEntity(PROTON_ENTITY, "proton_entity");
+        registerEntity(NEUTRON_ENTITY, "neutron_entity");
     }
 }

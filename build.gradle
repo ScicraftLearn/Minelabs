@@ -60,6 +60,10 @@ jar {
 	}
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/scicraft.accesswidener")
+}
+
 // configure the maven publication
 publishing {
 	publications {
