@@ -1,0 +1,7 @@
+{
+    "parent": "scicraft:block/chest_template",
+    "textures": {
+        "0": "scicraft:entity/chest/schrodingers_box",
+        "particle": "scicraft:block/schrodingers_box"
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "scicraft:block/schrodingers_box" },
+    "facing=east":  { "model": "scicraft:block/schrodingers_box", "y":  90},
+    "facing=south": { "model": "scicraft:block/schrodingers_box", "y": 180 },
+    "facing=west":  { "model": "scicraft:block/schrodingers_box", "y": 270 }
+  }
+}

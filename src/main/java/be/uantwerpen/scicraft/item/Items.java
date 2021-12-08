@@ -27,6 +27,7 @@ public class Items {
     public static final Item PION_NUL = new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
     public static final Item PION_MINUS = new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
     public static final Item PION_PLUS = new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
+    public static final Item SCHRODINGERS_BOX = new BlockItem(Blocks.SCHRODINGERS_BOX, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS));
 
     /**
      * Register an Item
@@ -52,5 +53,6 @@ public class Items {
         registerItem(PION_PLUS, "pion_plus");
         registerItem(ELECTRON_ITEM, "electron_item");
         registerItem(ENTROPY_CREEPER_SPAWN_EGG, "entropy_creeper_spawn_egg");
+        registerItem(SCHRODINGERS_BOX, "schrodingers_box");
     }
 }
