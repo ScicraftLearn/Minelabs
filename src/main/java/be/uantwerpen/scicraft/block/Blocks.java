@@ -14,7 +14,7 @@ public class Blocks {
     public static final Block PION_NUL = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
     public static final Block PION_MINUS = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
     public static final Block PION_PLUS = new PionBlock(FabricBlockSettings.of(Material.WOOL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false));
-    public static final Block SCHRODINGERS_BOX = new SchrodingersBox(FabricBlockSettings.of(Material.METAL));
+    public static final Block SCHRODINGERS_BOX = new SchrodingersBox();
 
     private static Block registerBlock(Block block, String identifier) {
         return Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, identifier), block);

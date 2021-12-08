@@ -1,15 +1,16 @@
 package be.uantwerpen.scicraft.block;
 
-import be.uantwerpen.scicraft.entity.SchrodingersBoxEntity;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -20,42 +21,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class SchrodingersBox extends BlockWithEntity {
+public class SchrodingersBox extends ChestBlock {
 
-    protected SchrodingersBox(Settings settings) {
-        super(settings);
-    }
-
-    @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        if (itemStack.hasCustomName()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof SchrodingersBoxEntity) {
-                ((SchrodingersBoxEntity)blockEntity).setCustomName(itemStack.getName());
-            }
-        }
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new SchrodingersBoxEntity();
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return super.getTicker(world, state, type);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> GameEventListener getGameEventListener(World world, T blockEntity) {
-        return super.getGameEventListener(world, blockEntity);
+    protected SchrodingersBox() {
+        super(FabricBlockSettings.of(Material.STONE)
+                .hardness(3.0F)
+                .resistance(3.0F)
+                .sounds(BlockSoundGroup.STONE)
+                .requiresTool(), ExtraChestTypes.SCHRODINGERS_BOX::getBlockEntityType);
     }
 }

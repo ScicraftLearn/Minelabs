@@ -1,9 +1,11 @@
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
-
+import be.uantwerpen.scicraft.block.Blocks;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -19,6 +21,9 @@ public class Entities {
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
 
+    public static final BlockEntityType<SchrodingersBoxEntity> SCHRODINGERS_BOX_ENTITY = FabricBlockEntityTypeBuilder.create(SchrodingersBoxEntity::new, Blocks.SCHRODINGERS_BOX).build(null);
+
+
 
     /**
      * Register a single entity
@@ -31,6 +36,10 @@ public class Entities {
         return Registry.register(Registry.ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), entityType);
     }
 
+    private static BlockEntityType<?> registerBlockEntity(BlockEntityType<?> entityType, String identifier) {
+        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), SCHRODINGERS_BOX_ENTITY);
+    }
+
     /**
      * Register All entities
      */
@@ -38,5 +47,6 @@ public class Entities {
         FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
         registerEntity(ENTROPY_CREEPER, "entropy_creeper");
         registerEntity(ELECTRON_ENTITY, "electron_entity");
+        registerBlockEntity(SCHRODINGERS_BOX_ENTITY, "schrodingers_box");
     }
 }

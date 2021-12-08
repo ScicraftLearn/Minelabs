@@ -18,7 +18,6 @@ public class Scicraft implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Hello Scicraft world!");
-
         Items.registerItems();
         Blocks.registerBlocks();
         Entities.registerEntities();
