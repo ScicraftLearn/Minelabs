@@ -6,8 +6,9 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "ThrownEntityMixin",
-    "CreeperEntityMixin"
+    "CreeperEntityMixin",
+    "ExplosionAccessor",
+    "ThrownEntityMixin"
   ],
   "client": []
 }
