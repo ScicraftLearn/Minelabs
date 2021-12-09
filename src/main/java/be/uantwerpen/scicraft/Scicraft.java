@@ -15,6 +15,8 @@ public class Scicraft implements ModInitializer {
     // This logger is used to write text to the console and the log file.
     public static final Logger LOGGER = LogManager.getLogger("scicraft");
 
+    public static final CustomDimension DIMENSION = new CustomDimension();
+
     @Override
     public void onInitialize() {
         LOGGER.info("Hello Scicraft world!");
@@ -23,5 +25,7 @@ public class Scicraft implements ModInitializer {
         Blocks.registerBlocks();
         Entities.registerEntities();
         ExtraDispenserBehavior.registerBehaviors();
+
+        DIMENSION.onInitialize();
     }
 }
