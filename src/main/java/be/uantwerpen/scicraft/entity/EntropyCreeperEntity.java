@@ -33,7 +33,7 @@ import java.util.function.Predicate;
 public class EntropyCreeperEntity extends CreeperEntity {
 
     // Total amount of ticks the animation runs for.
-    private static final int ANIMATION_TICKS = 5;
+    private static final int ANIMATION_TICKS = 10;
 
     // Portion of affected blocks to shuffle
     private static final double SHUFFLE_PERCENTAGE = 0.2;
@@ -134,10 +134,13 @@ public class EntropyCreeperEntity extends CreeperEntity {
      */
     @Override
     public void tick() {
-        if (ticksToGo == 0) {
-            discard();
-        } else if (ticksToGo > 0) {
-            shuffle();
+        if (ticksToGo >= 0) {
+            if (ticksToGo % 5 == 0) {
+                shuffle();
+            }
+            if (ticksToGo == 0) {
+                discard();
+            }
             ticksToGo--;
         } else {
             super.tick();
@@ -212,8 +215,8 @@ public class EntropyCreeperEntity extends CreeperEntity {
 
         // Shuffle blocks
         Scicraft.LOGGER.debug("size: " + blocksToShuffle.size());
-        if (world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && !blocksToShuffle.isEmpty()) {
-            for (int i = 0; i <= blocksToShuffle.size() * SHUFFLE_PERCENTAGE; i++) {
+        if (world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+            for (int i = 0; i < blocksToShuffle.size() * SHUFFLE_PERCENTAGE; i++) {
                 BlockPos pos = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
                 BlockPos newPos = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
                 Scicraft.LOGGER.debug(world.getBlockState(pos) + " <-> " + world.getBlockState(newPos));
