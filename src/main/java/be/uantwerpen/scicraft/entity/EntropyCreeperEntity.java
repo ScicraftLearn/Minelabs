@@ -2,16 +2,19 @@ package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.mixins.ExplosionAccessor;
+import be.uantwerpen.scicraft.sound.SoundEvents;
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
@@ -48,6 +51,32 @@ public class EntropyCreeperEntity extends CreeperEntity {
 
     public EntropyCreeperEntity(EntityType<? extends CreeperEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_ENTROPY_CREEPER_DEATH;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ENTITY_ENTROPY_CREEPER_HURT;
+    }
+
+    /**
+     * We don't care what the Effectiveness is
+     *
+     * @param explosion  : explosion object
+     * @param world      : in what world
+     * @param pos        : position
+     * @param blockState : blockstate but a block
+     * @param fluidState : blockstate but a fluid
+     * @param max        max resistance
+     * @return 0f, Float
+     */
+    @Override
+    public float getEffectiveExplosionResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, float max) {
+        return 0f;
     }
 
     /**
@@ -156,38 +185,26 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @return boolean: cancel default explosion or not
      */
     public boolean preExplode() {
-        dead = true;
+        if (!this.world.isClient) {
+            dead = true;
 
-        // Use explosion code to determine affected blocks
-        Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
-        Explosion explosion = new Explosion(this.world, this, null, null, getX(), getY(), getZ(), explosionRadius, false, destructionType);
+            this.playSound(SoundEvents.ENTITY_ENTROPY_CREEPER_EXPLODE, 1.0f, 2.0f);
 
-        // Adapted from the Explosion class
-        Set<BlockPos> blockposSet = getAffectedBlocks((ExplosionAccessor) explosion);
-        blocksToShuffle.addAll(blockposSet);
+            // Use explosion code to determine affected blocks
+            Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
+            Explosion explosion = new Explosion(this.world, this, null, null, getX(), getY(), getZ(), explosionRadius, false, destructionType);
 
-        Collection<LivingEntity> entities = getAffectedEntities((ExplosionAccessor) explosion);
-        entitiesToShuffle.addAll(entities);
+            // Adapted from the Explosion class
+            Set<BlockPos> blockposSet = getAffectedBlocks((ExplosionAccessor) explosion);
+            blocksToShuffle.addAll(blockposSet);
 
-        shuffle();
-        ticksToGo = ANIMATION_TICKS - 1;
+            Collection<LivingEntity> entities = getAffectedEntities((ExplosionAccessor) explosion);
+            entitiesToShuffle.addAll(entities);
+
+            shuffle();
+            ticksToGo = ANIMATION_TICKS - 1;
+        }
         return false;  // make sure the original 'explode' function doesn't run.
-    }
-
-    /**
-     * We don't care what the Effectiveness is
-     *
-     * @param explosion  : explosion object
-     * @param world      : in what world
-     * @param pos        : position
-     * @param blockState : blockstate but a block
-     * @param fluidState : blockstate but a fluid
-     * @param max        max resistance
-     * @return 0f, Float
-     */
-    @Override
-    public float getEffectiveExplosionResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, float max) {
-        return 0f;
     }
 
     /**
