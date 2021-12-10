@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
@@ -32,7 +33,7 @@ import java.util.function.Predicate;
 public class EntropyCreeperEntity extends CreeperEntity {
 
     // Total amount of ticks the animation runs for.
-    private static final int ANIMATION_TICKS = 5;
+    private static final int ANIMATION_TICKS = 10;
 
     // Portion of affected blocks to shuffle
     private static final double SHUFFLE_PERCENTAGE = 0.2;
@@ -133,10 +134,13 @@ public class EntropyCreeperEntity extends CreeperEntity {
      */
     @Override
     public void tick() {
-        if (ticksToGo == 0) {
-            discard();
-        } else if (ticksToGo > 0) {
-            shuffle();
+        if (ticksToGo >= 0) {
+            if (ticksToGo % 5 == 0) {
+                shuffle();
+            }
+            if (ticksToGo == 0) {
+                discard();
+            }
             ticksToGo--;
         } else {
             super.tick();
@@ -171,6 +175,22 @@ public class EntropyCreeperEntity extends CreeperEntity {
     }
 
     /**
+     * We don't care what the Effectiveness is
+     *
+     * @param explosion  : explosion object
+     * @param world      : in what world
+     * @param pos        : position
+     * @param blockState : blockstate but a block
+     * @param fluidState : blockstate but a fluid
+     * @param max        max resistance
+     * @return 0f, Float
+     */
+    @Override
+    public float getEffectiveExplosionResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, float max) {
+        return 0f;
+    }
+
+    /**
      * Actual shuffle of the Entropy Creeper
      * <p>
      * Teleports the Entities (+ Colors sheep in random color)
@@ -182,8 +202,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
         // Teleport affected entities
         for (LivingEntity entity : entitiesToShuffle) {
             if (entity != null) {
-                if (entity instanceof SheepEntity) {
-                    SheepEntity sheep = (SheepEntity) entity;
+                if (entity instanceof SheepEntity sheep) {
                     DyeColor old = sheep.getColor();
                     sheep.setColor(DyeColor.byId(random.nextInt(15)));
                     Scicraft.LOGGER.debug(old + " -> " + sheep.getColor());
@@ -197,7 +216,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
         // Shuffle blocks
         Scicraft.LOGGER.debug("size: " + blocksToShuffle.size());
         if (world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
-            for(int i = 0; i <= blocksToShuffle.size() * SHUFFLE_PERCENTAGE; i++){
+            for (int i = 0; i < blocksToShuffle.size() * SHUFFLE_PERCENTAGE; i++) {
                 BlockPos pos = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
                 BlockPos newPos = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
                 Scicraft.LOGGER.debug(world.getBlockState(pos) + " <-> " + world.getBlockState(newPos));
