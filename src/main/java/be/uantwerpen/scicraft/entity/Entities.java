@@ -5,9 +5,9 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -19,31 +19,31 @@ import java.util.function.Predicate;
 
 public class Entities {
     // EntityTypes
-    public static final EntityType<ElectronEntity> ELECTRON_ENTITY = FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
-    public static final EntityType<ProtonEntity> PROTON_ENTITY = FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
-    public static final EntityType<NeutronEntity> NEUTRON_ENTITY = FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build();
-
-    public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
-            .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
+    public static final EntityType<ElectronEntity> ELECTRON_ENTITY = registerEntity(FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "electron_entity");
+    public static final EntityType<ProtonEntity> PROTON_ENTITY = registerEntity(FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "proton_entity");
+    public static final EntityType<NeutronEntity> NEUTRON_ENTITY = registerEntity(FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "neutron_entity");
+    public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = registerEntity(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
+            .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
 
 
     /**
      * Register a single entity
+     * <p>
      *
      * @param entityType : EntityType to register
      * @param identifier : String name of the entity
      * @return registered EntityType
      */
-    private static EntityType<?> registerEntity(EntityType<?> entityType, String identifier) {
+    private static <T extends Entity> EntityType<T> registerEntity(EntityType<T> entityType, String identifier) {
         return Registry.register(Registry.ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), entityType);
     }
 
     /**
      * Modify the Entity spawns
-     *
+     * <p>
      * @param entityType : EntityType to add Spawns for
      * @param selector: Predicate BiomeSelection, what biome(s) the entity can spawn in
      * @param spawnEntry: no documentation found
@@ -58,15 +58,13 @@ public class Entities {
     }
 
     /**
+     * Main class method
      * Register All entities
      */
     public static void registerEntities() {
+        Scicraft.LOGGER.info("registering entities");
         FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
-        registerEntity(ENTROPY_CREEPER, "entropy_creeper");
-        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld(),
-                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1)); // Same as normal creeper
-        registerEntity(ELECTRON_ENTITY, "electron_entity");
-        registerEntity(PROTON_ENTITY, "proton_entity");
-        registerEntity(NEUTRON_ENTITY, "neutron_entity");
+        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.all(),
+                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1));
     }
 }
