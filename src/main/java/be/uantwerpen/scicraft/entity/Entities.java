@@ -37,7 +37,7 @@ public class Entities {
     }
 
     private static BlockEntityType<?> registerBlockEntity(BlockEntityType<?> entityType, String identifier) {
-        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), SCHRODINGERS_BOX_ENTITY);
+        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), entityType);
     }
 
     /**

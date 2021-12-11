@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 public enum ExtraChestTypes {
 
-    SCHRODINGERS_BOX(54, 9, new Identifier(Scicraft.MOD_ID, "schrodingers_box"));
+    SCHRODINGERS_BOX(54, 9, new Identifier(Scicraft.MOD_ID, "textures/entity/chest/schrodingers_box"));
 
     public final int size;
     public final int rowLength;
