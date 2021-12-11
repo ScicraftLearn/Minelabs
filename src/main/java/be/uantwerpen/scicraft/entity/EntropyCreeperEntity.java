@@ -188,7 +188,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
         if (!this.world.isClient) {
             dead = true;
 
-            this.playSound(SoundEvents.ENTITY_ENTROPY_CREEPER_EXPLODE, 1.0f, 2.0f);
+            this.playSound(SoundEvents.ENTITY_ENTROPY_CREEPER_EXPLODE, 1.0f, 1.0f);
 
             // Use explosion code to determine affected blocks
             Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
