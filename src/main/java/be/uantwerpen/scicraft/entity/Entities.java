@@ -19,13 +19,13 @@ import java.util.function.Predicate;
 
 public class Entities {
     // EntityTypes
-    public static final EntityType<ElectronEntity> ELECTRON_ENTITY = registerEntity(FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
+    public static final EntityType<ElectronEntity> ELECTRON_ENTITY = register(FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "electron_entity");
-    public static final EntityType<ProtonEntity> PROTON_ENTITY = registerEntity(FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
+    public static final EntityType<ProtonEntity> PROTON_ENTITY = register(FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "proton_entity");
-    public static final EntityType<NeutronEntity> NEUTRON_ENTITY = registerEntity(FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
+    public static final EntityType<NeutronEntity> NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "neutron_entity");
-    public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = registerEntity(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
+    public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
 
 
@@ -37,7 +37,7 @@ public class Entities {
      * @param identifier : String name of the entity
      * @return registered EntityType
      */
-    private static <T extends Entity> EntityType<T> registerEntity(EntityType<T> entityType, String identifier) {
+    private static <T extends Entity> EntityType<T> register(EntityType<T> entityType, String identifier) {
         return Registry.register(Registry.ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), entityType);
     }
 

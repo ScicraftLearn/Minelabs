@@ -10,11 +10,11 @@ import net.minecraft.util.registry.Registry;
 
 public class Blocks {
 
-    public static final Block PION_NUL = registerBlock(new PionBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block PION_NUL = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_nul");
-    public static final Block PION_MINUS = registerBlock(new PionBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block PION_MINUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_minus");
-    public static final Block PION_PLUS = registerBlock(new PionBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block PION_PLUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_plus");
 
     /**
@@ -25,7 +25,7 @@ public class Blocks {
      * @param identifier : String name of the Item
      * @return {@link Block}
      */
-    private static Block registerBlock(Block block, String identifier) {
+    private static Block register(Block block, String identifier) {
         return Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, identifier), block);
     }
 
