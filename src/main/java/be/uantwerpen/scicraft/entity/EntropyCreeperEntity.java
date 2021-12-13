@@ -26,6 +26,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import org.apache.commons.compress.utils.Lists;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Collection;
 import java.util.List;
@@ -61,6 +62,13 @@ public class EntropyCreeperEntity extends CreeperEntity {
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.ENTITY_ENTROPY_CREEPER_HURT;
+    }
+
+    /**
+     * Called due to mixin
+     */
+    protected void playPrimedSound() {
+        this.playSound(SoundEvents.ENTITY_ENTROPY_CREEPER_PRIMED, 1.0f, 1.0f);
     }
 
     /**
