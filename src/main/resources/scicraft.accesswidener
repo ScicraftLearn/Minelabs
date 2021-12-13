@@ -1,0 +1,7 @@
+accessWidener	v1	named
+# https://www.fabricmc.net/wiki/tutorial:accesswideners
+
+# IMPORTANT NOTE: with descriptors you always need the L in front and the ; at the back without these it won't work.
+# This doesn't get mentioned on the wiki and doesn't generate errors if you don't do it.
+extendable class net/minecraft/entity/projectile/ProjectileEntity
+extendable method net/minecraft/entity/projectile/ProjectileEntity <init> (Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V

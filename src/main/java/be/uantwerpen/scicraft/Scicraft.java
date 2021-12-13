@@ -8,8 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-@SuppressWarnings("UNUSED")
 public class Scicraft implements ModInitializer {
+
     public static final String MOD_ID = "scicraft";
 
     // This logger is used to write text to the console and the log file.

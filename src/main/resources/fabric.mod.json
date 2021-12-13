@@ -6,7 +6,8 @@
   "description": "Mod Description: TODO",
   "authors": [
     "Joey De Pauw",
-    "Bert Jorissen", 
+    "Bert Jorissen",
+    "pixar02",
     "TODO: Extend"
   ],
   "contact": {
@@ -17,6 +18,7 @@
   "license": "TODO",
   "icon": "assets/scicraft/icon.png",
   "environment": "*",
+  "accessWidener" : "scicraft.accesswidener",
   "entrypoints": {
     "main": [
       "be.uantwerpen.scicraft.Scicraft"
@@ -31,7 +33,7 @@
   "depends": {
     "fabricloader": ">=0.11.7",
     "fabric": "*",
-    "minecraft": "1.17.x",
-    "java": ">=16"
+    "minecraft": "1.18.x",
+    "java": ">=17"
   }
 }
