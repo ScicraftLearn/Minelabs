@@ -5,6 +5,8 @@ import be.uantwerpen.scicraft.mixins.ExplosionAccessor;
 import be.uantwerpen.scicraft.sound.SoundEvents;
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -26,7 +28,6 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import org.apache.commons.compress.utils.Lists;
-import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Collection;
 import java.util.List;
@@ -195,6 +196,9 @@ public class EntropyCreeperEntity extends CreeperEntity {
     public boolean preExplode() {
         if (!this.world.isClient) {
             dead = true;
+            setInvisible(true);     // so we can't see it (discard happens after animation)
+            // TODO: entity can still be attacked in this state.
+            //  Either prevent this or have the entropy creeper spawn an entropy bomb upon explode?
 
             this.playSound(SoundEvents.ENTITY_ENTROPY_CREEPER_EXPLODE, 1.0f, 1.0f);
 
@@ -244,7 +248,17 @@ public class EntropyCreeperEntity extends CreeperEntity {
             for (int i = 0; i < blocksToShuffle.size() * SHUFFLE_PERCENTAGE; i++) {
                 BlockPos pos = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
                 BlockPos newPos = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
-                Scicraft.LOGGER.debug(world.getBlockState(pos) + " <-> " + world.getBlockState(newPos));
+
+                BlockState b1 = world.getBlockState(pos);
+                BlockState b2 =world.getBlockState(newPos);
+                if (b1.getPistonBehavior() == PistonBehavior.DESTROY){
+                    world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                }
+                if (b2.getPistonBehavior() == PistonBehavior.DESTROY){
+                    world.setBlockState(newPos, Blocks.AIR.getDefaultState());
+                }
+                Scicraft.LOGGER.debug(b1 + " <-> " + b2);
+
                 BlockState shuffle = world.getBlockState(pos);
                 world.setBlockState(pos, world.getBlockState(newPos));
                 world.setBlockState(newPos, shuffle);
