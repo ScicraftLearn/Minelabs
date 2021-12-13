@@ -16,5 +16,13 @@ public class SoundEvents {
         return Registry.register(Registry.SOUND_EVENT, id, new SoundEvent(new Identifier(Scicraft.MOD_ID, id)));
     }
 
+    /**
+     * Main class method
+     * Registers all sounds
+     */
+    public static void registerSounds() {
+        Scicraft.LOGGER.info("registering sounds");
+    }
+
 
 }
