@@ -41,7 +41,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
     private static final int ANIMATION_TICKS = 10;
 
     // Portion of affected blocks to shuffle
-    private static final double SHUFFLE_PERCENTAGE = 0.2;
+    private static final double SHUFFLE_PERCENTAGE = 0.25;
 
     private final int explosionRadius = 3;
 
@@ -246,22 +246,22 @@ public class EntropyCreeperEntity extends CreeperEntity {
         Scicraft.LOGGER.debug("size: " + blocksToShuffle.size());
         if (world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
             for (int i = 0; i < blocksToShuffle.size() * SHUFFLE_PERCENTAGE; i++) {
-                BlockPos pos = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
-                BlockPos newPos = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
+                BlockPos pos1 = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
+                BlockPos pos2 = blocksToShuffle.get(random.nextInt(blocksToShuffle.size()));
 
-                BlockState b1 = world.getBlockState(pos);
-                BlockState b2 =world.getBlockState(newPos);
-                if (b1.getPistonBehavior() == PistonBehavior.DESTROY){
-                    world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                BlockState b1 = world.getBlockState(pos1);
+                BlockState b2 = world.getBlockState(pos2);
+                if (b1.getPistonBehavior() == PistonBehavior.DESTROY) {
+                    world.setBlockState(pos1, Blocks.AIR.getDefaultState());
                 }
-                if (b2.getPistonBehavior() == PistonBehavior.DESTROY){
-                    world.setBlockState(newPos, Blocks.AIR.getDefaultState());
+                if (b2.getPistonBehavior() == PistonBehavior.DESTROY) {
+                    world.setBlockState(pos2, Blocks.AIR.getDefaultState());
                 }
                 Scicraft.LOGGER.debug(b1 + " <-> " + b2);
 
-                BlockState shuffle = world.getBlockState(pos);
-                world.setBlockState(pos, world.getBlockState(newPos));
-                world.setBlockState(newPos, shuffle);
+                BlockState shuffle = world.getBlockState(pos1);
+                world.setBlockState(pos1, world.getBlockState(pos2));
+                world.setBlockState(pos2, shuffle);
             }
         }
     }
