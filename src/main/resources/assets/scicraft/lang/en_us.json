@@ -13,5 +13,7 @@
   "item.scicraft.pion_minus": "Pion Minus",
   "item.scicraft.pion_plus": "Pion Plus",
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
-  "entity.scicraft.entropy_creeper": "Entropy Creeper"
+  "entity.scicraft.entropy_creeper": "Entropy Creeper",
+  "item.scicraft.scientific_villager_spawn_egg": "Scientific Villager Spawn Egg",
+  "entity.scicraft.scientific_villager": "Scientific Villager"
 }

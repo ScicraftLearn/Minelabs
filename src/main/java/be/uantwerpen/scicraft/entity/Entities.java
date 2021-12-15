@@ -29,6 +29,9 @@ public class Entities {
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
 
+    public static final EntityType<ScientificVillagerEntity> SCIENTIFIC_VILLAGER = FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ScientificVillagerEntity::new)
+            .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
+
 
     /**
      * Register a single entity
@@ -44,17 +47,17 @@ public class Entities {
     /**
      * Modify the Entity spawns
      *
-     * @param entityType : EntityType to add Spawns for
-     * @param selector: Predicate BiomeSelection, what biome(s) the entity can spawn in
+     * @param entityType  : EntityType to add Spawns for
+     * @param selector:   Predicate BiomeSelection, what biome(s) the entity can spawn in
      * @param spawnEntry: no documentation found
-     *
-     * While testing set Selector to BiomeSelectors.all(), this will spawn you Entity in "The End"/"Nether" when entering
+     *                    <p>
+     *                    While testing set Selector to BiomeSelectors.all(), this will spawn you Entity in "The End"/"Nether" when entering
      */
     private static void registerEntitySpawns(EntityType<?> entityType, Predicate<BiomeSelectionContext> selector, SpawnSettings.SpawnEntry spawnEntry) {
         BiomeModifications.create(Registry.ENTITY_TYPE.getId(entityType))
                 .add(ModificationPhase.ADDITIONS, selector, context -> {
-                context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry);
-        });
+                    context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry);
+                });
     }
 
     /**
@@ -68,5 +71,9 @@ public class Entities {
         registerEntity(ELECTRON_ENTITY, "electron_entity");
         registerEntity(PROTON_ENTITY, "proton_entity");
         registerEntity(NEUTRON_ENTITY, "neutron_entity");
+
+        FabricDefaultAttributeRegistry.register(SCIENTIFIC_VILLAGER, ScientificVillagerEntity.createVillagerAttributes());
+        registerEntity(SCIENTIFIC_VILLAGER, "scientific_villager");
+//        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld(), new SpawnSettings.SpawnEntry(SCIENTIFIC_VILLAGER, 100, 1, 1));
     }
 }

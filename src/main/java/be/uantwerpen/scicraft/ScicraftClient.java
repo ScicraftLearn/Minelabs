@@ -4,6 +4,7 @@ import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
 
+import be.uantwerpen.scicraft.renderer.ScientificVillagerEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -25,5 +26,6 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.SCIENTIFIC_VILLAGER, ScientificVillagerEntityRenderer::new);
     }
 }
