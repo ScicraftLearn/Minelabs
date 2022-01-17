@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft;
+package be.uantwerpen.scicraft.dimension;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;

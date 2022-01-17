@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft;
+package be.uantwerpen.scicraft.dimension;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;

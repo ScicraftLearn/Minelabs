@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.dimension.CustomDimension;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.item.Items;
 import net.fabricmc.api.ModInitializer;
