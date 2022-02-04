@@ -21,6 +21,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
+// https://github.com/FabricMC/fabric/blob/1.18/fabric-dimensions-v1/src/testmod/java/net/fabricmc/fabric/test/dimension/VoidChunkGenerator.java
 public class VoidChunkGenerator extends ChunkGenerator {
     // Just an example of adding a custom boolean
     protected final boolean customBool;
