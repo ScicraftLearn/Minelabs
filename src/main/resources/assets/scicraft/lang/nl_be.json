@@ -1,11 +1,10 @@
 {
   "itemGroup.scicraft.quantum_fields": "Kwantumvelden",
   "itemGroup.scicraft.elementary_particles": "Elementaire Deeltjes",
-  
+  "itemGroup.scicraft.scicraft_misc": "Scicraft Diversen",
   "block.scicraft.pion_nul": "Pion Nul",
   "block.scicraft.pion_minus": "Pion Min",
   "block.scicraft.pion_plus": "Pion Plus",
-
   "item.scicraft.neutron": "Neutron",
   "item.scicraft.electron": "Elektron",
   "item.scicraft.proton": "Proton",
@@ -13,5 +12,8 @@
   "item.scicraft.pion_minus": "Pion Min",
   "item.scicraft.pion_plus": "Pion Plus",
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeperspawnei",
-  "entity.scicraft.entropy_creeper": "Entropy Creeper"
+  "entity.scicraft.entropy_creeper": "Entropy Creeper",
+  "entity.scicraft.electron_entity": "Vliegend Elektron",
+  "entity.scicraft.proton_entity": "Vliegend Proton",
+  "entity.scicraft.neutron_entity": "Vliegend Neutron"
 }

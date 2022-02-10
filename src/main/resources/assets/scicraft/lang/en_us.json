@@ -1,11 +1,10 @@
 {
   "itemGroup.scicraft.quantum_fields": "Quantum Fields",
   "itemGroup.scicraft.elementary_particles": "Elementary Particles",
-
+  "itemGroup.scicraft.scicraft_misc": "Scicraft Miscellaneous",
   "block.scicraft.pion_nul": "Pion Nul",
   "block.scicraft.pion_minus": "Pion Minus",
   "block.scicraft.pion_plus": "Pion Plus",
-
   "item.scicraft.proton": "Proton",
   "item.scicraft.electron": "Electron",
   "item.scicraft.neutron": "Neutron",
@@ -13,5 +12,8 @@
   "item.scicraft.pion_minus": "Pion Minus",
   "item.scicraft.pion_plus": "Pion Plus",
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
-  "entity.scicraft.entropy_creeper": "Entropy Creeper"
+  "entity.scicraft.entropy_creeper": "Entropy Creeper",
+  "entity.scicraft.electron_entity": "Flying Electron",
+  "entity.scicraft.proton_entity": "Flying Proton",
+  "entity.scicraft.neutron_entity": "Flying Neutron"
 }
