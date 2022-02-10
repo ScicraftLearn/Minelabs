@@ -36,8 +36,6 @@ public class Tags {
 
     public static class Items {
 
-        public static final Tag<Item> COPPER_BLOCKS = createTag("copper_blocks");
-
         /**
          * Create an Item tag (tag is only used inside this mod)
          * Don't forget the json file (data/scicraft/items)
