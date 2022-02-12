@@ -1,4 +1,5 @@
 {
+  "itemGroup.scicraft.scicraft": "Scicraft",
   "itemGroup.scicraft.quantum_fields": "Quantum Fields",
   "itemGroup.scicraft.elementary_particles": "Elementary Particles",
 
@@ -13,5 +14,25 @@
   "item.scicraft.pion_minus": "Pion Minus",
   "item.scicraft.pion_plus": "Pion Plus",
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
-  "entity.scicraft.entropy_creeper": "Entropy Creeper"
+
+  "entity.scicraft.entropy_creeper": "Entropy Creeper",
+
+  "item.scicraft.hydrogen_atom": "Hydrogen",
+  "item.scicraft.helium_atom": "Helium",
+  "item.scicraft.lithium_atom": "Lithium",
+  "item.scicraft.beryllium_atom": "Beryllium",
+  "item.scicraft.boron_atom": "Boron",
+  "item.scicraft.carbon_atom": "Carbom",
+  "item.scicraft.nitrogen_atom": "Nitrogen",
+  "item.scicraft.oxygen_atom": "Oxygen",
+  "item.scicraft.fluorine_atom": "Fluorine",
+  "item.scicraft.neon_atom": "Neon",
+  "item.scicraft.sodium_atom": "Sodium",
+  "item.scicraft.magnesium_atom": "Magnesium",
+  "item.scicraft.aluminium_atom": "Alguminium",
+  "item.scicraft.silicon_atom": "Silicon",
+  "item.scicraft.phosphorus_atom": "Phosphorus",
+  "item.scicraft.sulfur_atom": "Sulfur",
+  "item.scicraft.chlorine_atom": "Chlorine",
+  "item.scicraft.argon_atom": "Argon"
 }

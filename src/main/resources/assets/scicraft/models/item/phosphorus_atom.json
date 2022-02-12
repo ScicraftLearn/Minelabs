@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "scicraft:item/atom_orange",
+    "layer1": "scicraft:item/phosphorus",
+    "layer2": "scicraft:item/electrons5"
+  }
+}

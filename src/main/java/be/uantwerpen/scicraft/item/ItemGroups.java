@@ -7,6 +7,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.item.ItemGroup;
 
 public class ItemGroups {
+    public static final ItemGroup SCICRAFT = FabricItemGroupBuilder.create(
+                    new Identifier(Scicraft.MOD_ID, "scicraft"))
+            .icon(() -> new ItemStack(Items.HYDROGEN_ATOM))
+            .build();
+
     public static final ItemGroup QUANTUM_FIELDS = FabricItemGroupBuilder.create(
                     new Identifier(Scicraft.MOD_ID, "quantum_fields"))
             .icon(() -> new ItemStack(Items.ELECTRON))
