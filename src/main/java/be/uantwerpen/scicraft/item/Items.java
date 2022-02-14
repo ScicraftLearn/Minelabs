@@ -17,6 +17,8 @@ public class Items {
     public static final Item PROTON = register(new ProtonItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64)), "proton");
     public static final Item NEUTRON = register(new NeutronItem(new Item.Settings().group(ItemGroup.MISC).maxCount(64)), "neutron");
 
+    public static final Item GLUON = register(new Item(new Item.Settings().group(ItemGroup.MISC).maxCount(64)), "gluon");
+
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
