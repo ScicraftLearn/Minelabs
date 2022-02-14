@@ -16,7 +16,7 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_minus");
     public static final Block PION_PLUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_plus");
-
+//testing
     /**
      * Register a Block
      * <p>
