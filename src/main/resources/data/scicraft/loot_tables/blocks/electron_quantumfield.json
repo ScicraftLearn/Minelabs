@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:group",
+                    "children": [
+                        {
+                            "type": "minecraft:item",
+                            "name": "scicraft:electron"
+                        },
+                        {
+                            "type": "minecraft:item",
+                            "name": "scicraft:positron"
+                        }
+                    ]
+                }
+            ],
+            "conditions": [
+            ]
+        }
+    ]
+}

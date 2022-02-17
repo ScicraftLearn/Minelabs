@@ -1,0 +1,51 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:sequence",
+                    "children": [
+                        {
+                            "type": "minecraft:item",
+                            "name": "scicraft:upquark_red"
+                        },
+                        {
+                            "type": "minecraft:item",
+                            "name": "scicraft:anti_upquark_red"
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:sequence",
+                    "children": [
+                        {
+                            "type": "minecraft:item",
+                            "name": "scicraft:upquark_blue"
+                        },
+                        {
+                            "type": "minecraft:item",
+                            "name": "scicraft:anti_upquark_blue"
+                        }
+                    ]
+                },
+                {
+                    "type": "minecraft:sequence",
+                    "children": [
+                        {
+                            "type": "minecraft:item",
+                            "name": "scicraft:upquark_green"
+                        },
+                        {
+                            "type": "minecraft:item",
+                            "name": "scicraft:anti_upquark_green"
+                        }
+                    ]
+                }
+            ],
+            "conditions": [
+            ]
+        }
+    ]
+}
