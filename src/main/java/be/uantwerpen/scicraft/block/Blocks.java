@@ -28,6 +28,7 @@ public class Blocks {
     public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "electron_quantumfield");
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "neutrino_quantumfield");
     public static final Block UPQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "upquark_quantumfield");
+    public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "downquark_quantumfield");
 
 
     /**
