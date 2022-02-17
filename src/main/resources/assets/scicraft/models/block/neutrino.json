@@ -1,0 +1,7 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "scicraft:block/neutrino",
+        "particle": "scicraft:block/neutrino"
+    }
+}

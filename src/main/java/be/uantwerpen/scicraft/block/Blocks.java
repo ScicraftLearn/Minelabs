@@ -18,6 +18,8 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_plus");
 
     public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)), "weak_boson");
+    public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)), "neutrino");
+    public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)), "antineutrino");
 
     /**
      * Register a Block
