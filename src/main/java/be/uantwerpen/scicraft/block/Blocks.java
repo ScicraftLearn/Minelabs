@@ -26,6 +26,7 @@ public class Blocks {
     public static final Block PHOTON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "photon_quantumfield");
     public static final Block WEAK_BOSON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "weak_boson_quantumfield");
     public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "electron_quantumfield");
+    public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "neutrino_quantumfield");
 
 
     /**

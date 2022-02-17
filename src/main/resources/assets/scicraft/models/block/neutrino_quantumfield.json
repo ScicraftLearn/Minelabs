@@ -1,0 +1,12 @@
+{
+ "parent": "block/cube",
+ "textures": {
+     "down": "scicraft:block/quantumfield/neutrino/down",
+     "up": "scicraft:block/quantumfield/neutrino/up",
+     "north": "scicraft:block/quantumfield/neutrino/north",
+     "east": "scicraft:block/quantumfield/neutrino/east",
+     "south": "scicraft:block/quantumfield/neutrino/south",
+     "west": "scicraft:block/quantumfield/neutrino/west",
+     "particle": "scicraft:block/quantumfield/neutrino/down"
+ }
+}
