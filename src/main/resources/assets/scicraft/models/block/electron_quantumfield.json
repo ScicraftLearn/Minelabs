@@ -1,6 +1,6 @@
 {
     "parent": "block/cube",
-    "texutres": {
+    "textures": {
         "down": "scicraft:block/quantumfield/electron/down",
         "up": "scicraft:block/quantumfield/electron/up",
         "north": "scicraft:block/quantumfield/electron/north",
