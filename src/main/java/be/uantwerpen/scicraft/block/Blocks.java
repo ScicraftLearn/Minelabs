@@ -17,18 +17,21 @@ public class Blocks {
     public static final Block PION_PLUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_plus");
 
-    public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)), "weak_boson");
-    public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)), "neutrino");
-    public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)), "antineutrino");
+    public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "weak_boson");
+    public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "neutrino");
+    public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "antineutrino");
 
     // Quantumfields
-    public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "gluon_quantumfield");
-    public static final Block PHOTON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "photon_quantumfield");
-    public static final Block WEAK_BOSON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "weak_boson_quantumfield");
-    public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "electron_quantumfield");
-    public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "neutrino_quantumfield");
-    public static final Block UPQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "upquark_quantumfield");
-    public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "downquark_quantumfield");
+    public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(), "gluon_quantumfield");
+    public static final Block PHOTON_QUANTUMFIELD = register(new QuantumfieldBlock(), "photon_quantumfield");
+    public static final Block WEAK_BOSON_QUANTUMFIELD = register(new QuantumfieldBlock(), "weak_boson_quantumfield");
+    public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(), "electron_quantumfield");
+    public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "neutrino_quantumfield");
+    public static final Block UPQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "upquark_quantumfield");
+    public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "downquark_quantumfield");
 
 
     /**
