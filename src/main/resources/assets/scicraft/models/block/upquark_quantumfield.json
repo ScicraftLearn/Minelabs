@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "scicraft:block/quantumfield/upquark/down",
+        "up": "scicraft:block/quantumfield/upquark/up",
+        "north": "scicraft:block/quantumfield/upquark/north",
+        "east": "scicraft:block/quantumfield/upquark/east",
+        "south": "scicraft:block/quantumfield/upquark/south",
+        "west": "scicraft:block/quantumfield/upquark/west",
+        "particle": "scicraft:block/quantumfield/upquark/down"
+    }
+}
