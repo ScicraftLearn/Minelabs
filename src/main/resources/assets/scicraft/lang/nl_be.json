@@ -5,13 +5,16 @@
   "block.scicraft.pion_nul": "Pion Nul",
   "block.scicraft.pion_minus": "Pion Min",
   "block.scicraft.pion_plus": "Pion Plus",
-  
+  "block.scicraft.positron": "Positron",
+
+
   "item.scicraft.neutron": "Neutron",
   "item.scicraft.electron": "Elektron",
   "item.scicraft.proton": "Proton",
   "item.scicraft.pion_nul": "Pion Nul",
   "item.scicraft.pion_minus": "Pion Min",
   "item.scicraft.pion_plus": "Pion Plus",
+  "item.scicraft.positron": "Positron",
   "item.scicraft.gluon": "Gluon",
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeperspawnei",
   "entity.scicraft.entropy_creeper": "Entropy Creeper"

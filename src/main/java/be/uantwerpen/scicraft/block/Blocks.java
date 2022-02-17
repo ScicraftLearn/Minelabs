@@ -11,18 +11,20 @@ import net.minecraft.util.registry.Registry;
 public class Blocks {
 
     public static final Block PION_NUL = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_nul");
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");
     public static final Block PION_MINUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_minus");
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_minus");
     public static final Block PION_PLUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_plus");
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_plus");
 
     public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "weak_boson");
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "weak_boson");
     public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "neutrino");
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutrino");
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "antineutrino");
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "antineutrino");
+    public static final Block POSITRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "positron");
 
     // Quantumfields
     public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(), "gluon_quantumfield");
