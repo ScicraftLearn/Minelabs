@@ -1,12 +1,12 @@
 {
     "parent": "block/cube",
     "texutres": {
-        "down": "scicraft:block/quantumfield/electron_down",
-        "up": "scicraft:block/quantumfield/electron_up",
-        "north": "scicraft:block/quantumfield/electron_north",
-        "east": "scicraft:block/quantumfield/electron_east",
-        "south": "scicraft:block/quantumfield/electron_south",
-        "west": "scicraft:block/quantumfield/electron_west",
-        "particle": "scicraft:block/quantumfield/electron_down"
+        "down": "scicraft:block/quantumfield/electron/down",
+        "up": "scicraft:block/quantumfield/electron/up",
+        "north": "scicraft:block/quantumfield/electron/north",
+        "east": "scicraft:block/quantumfield/electron/east",
+        "south": "scicraft:block/quantumfield/electron/south",
+        "west": "scicraft:block/quantumfield/electron/west",
+        "particle": "scicraft:block/quantumfield/electron/down"
     }
 }
