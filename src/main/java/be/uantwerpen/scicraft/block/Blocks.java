@@ -21,6 +21,10 @@ public class Blocks {
     public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)), "neutrino");
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)), "antineutrino");
 
+    // Quantumfields
+    public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(FabricBlockSettings.of(Material.WOOL)), "electron_quantumfield");
+
+
     /**
      * Register a Block
      * <p>
