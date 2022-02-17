@@ -17,6 +17,8 @@ public class Blocks {
     public static final Block PION_PLUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_plus");
 
+    public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)), "weak_boson");
+
     /**
      * Register a Block
      * <p>
