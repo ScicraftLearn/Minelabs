@@ -5,43 +5,16 @@
             "rolls": 1,
             "entries": [
                 {
-                    "type": "minecraft:group",
-                    "children": [
-                        {
-                            "type": "minecraft:item",
-                            "name": "scicraft:downquark_red"
-                        },
-                        {
-                            "type": "minecraft:item",
-                            "name": "scicraft:anti_downquark_red"
-                        }
-                    ]
+                    "type": "minecraft:loot_table",
+                    "name": "scicraft:blocks/helper_loottables/downquark_red"
                 },
                 {
-                    "type": "minecraft:group",
-                    "children": [
-                        {
-                            "type": "minecraft:item",
-                            "name": "scicraft:downquark_blue"
-                        },
-                        {
-                            "type": "minecraft:item",
-                            "name": "scicraft:anti_downquark_blue"
-                        }
-                    ]
+                    "type": "minecraft:loot_table",
+                    "name": "scicraft:blocks/helper_loottables/downquark_blue"
                 },
                 {
-                    "type": "minecraft:group",
-                    "children": [
-                        {
-                            "type": "minecraft:item",
-                            "name": "scicraft:downquark_green"
-                        },
-                        {
-                            "type": "minecraft:item",
-                            "name": "scicraft:anti_downquark_green"
-                        }
-                    ]
+                    "type": "minecraft:loot_table",
+                    "name": "scicraft:blocks/helper_loottables/downquark_green"
                 }
             ],
             "conditions": [

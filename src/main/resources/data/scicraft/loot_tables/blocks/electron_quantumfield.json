@@ -5,17 +5,19 @@
             "rolls": 1,
             "entries": [
                 {
-                    "type": "minecraft:group",
-                    "children": [
-                        {
-                            "type": "minecraft:item",
-                            "name": "scicraft:electron"
-                        },
-                        {
-                            "type": "minecraft:item",
-                            "name": "scicraft:positron"
-                        }
-                    ]
+                    "type": "minecraft:item",
+                    "name": "scicraft:electron"
+                }
+            ],
+            "conditions": [
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "scicraft:positron"
                 }
             ],
             "conditions": [

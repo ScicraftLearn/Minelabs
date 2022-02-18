@@ -1,12 +1,11 @@
 {
-    "type": "minecraft:block",
     "pools": [
         {
             "rolls": 1,
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "scicraft:neutrino"
+                    "name": "scicraft:downquark_blue"
                 }
             ],
             "conditions": [
@@ -17,7 +16,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "scicraft:antineutrino"
+                    "name": "scicraft:anti_downquark_blue"
                 }
             ],
             "conditions": [
