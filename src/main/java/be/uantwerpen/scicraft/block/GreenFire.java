@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.block;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.util.Tags;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
@@ -14,12 +13,9 @@ public class GreenFire extends AbstractFireBlock {
 
     public GreenFire(Settings settings, float damage) {
         super(settings, damage);
-        //Scicraft.LOGGER.info(" register green fire");
     }
 
     public static boolean isCopperBase(BlockState state){
-        Scicraft.LOGGER.info("Copper base check");
-        Scicraft.LOGGER.info(state.isIn(Tags.Blocks.COPPER_BLOCKS));
         return state.isIn(Tags.Blocks.COPPER_BLOCKS);
     }
 

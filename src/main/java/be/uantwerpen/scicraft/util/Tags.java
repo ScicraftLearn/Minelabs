@@ -8,6 +8,13 @@ import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
+/**
+ * Use these tags for NEW tags.
+ * Using old tags just add a json in our mod:
+ *    "data/minecraft/blocks/", "data/minecraft/items/", "data/minecraft/fluids/"
+ *
+ * @author pixar02
+ */
 public class Tags {
     public static class Blocks {
 
@@ -15,7 +22,7 @@ public class Tags {
 
         /**
          * Create a Block tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/blocks)
+         * Don't forget the json file (data/scicraft/tags/blocks)
          *
          * @param name : name of the tag
          * @return {@link Tag}
@@ -26,7 +33,7 @@ public class Tags {
 
         /**
          * Create a Block tag (tag for usage outside this mod)
-         * Don't forget the json file (data/c/blocks)
+         * Don't forget the json file (data/c/tags/blocks)
          *
          * @param name : name of the tag
          * @return {@link Tag}
@@ -38,11 +45,9 @@ public class Tags {
 
     public static class Items {
 
-        public static final Tag<Item> COPPER_BLOCKS = createTag("copper_blocks");
-
         /**
          * Create an Item tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/items)
+         * Don't forget the json file (data/scicraft/tags/items)
          *
          * @param name : name of the tag
          * @return {@link Tag}
@@ -53,7 +58,7 @@ public class Tags {
 
         /**
          * Create an Item tag (tag for usage outside this mod)
-         * Don't forget the json file (data/c/items)
+         * Don't forget the json file (data/c/tags/items)
          *
          * @param name : name of the tag
          * @return {@link Tag}
@@ -67,7 +72,7 @@ public class Tags {
 
         /**
          * Create a Fluid tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/items)
+         * Don't forget the json file (data/scicraft/tags/fluids)
          *
          * @param name : name of the tag
          * @return {@link Tag}
@@ -78,7 +83,7 @@ public class Tags {
 
         /**
          * Create a Fluid tag (tag for usage outside this mod)
-         * Don't forget the json file (data/c/items)
+         * Don't forget the json file (data/c/tags/fluids)
          *
          * @param name : name of the tag
          * @return {@link Tag}
