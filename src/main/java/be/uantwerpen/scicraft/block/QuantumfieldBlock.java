@@ -21,10 +21,7 @@ public class QuantumfieldBlock extends Block {
 
     @Override
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
-        player.incrementStat(Stats.MINED.getOrCreateStat(this));
-        player.addExhaustion(0.005f);
-        Block.dropStacks(state, world, pos, blockEntity, player, stack);
-        // Added code compared to minecraft block code from here
+        super.afterBreak(world, player, pos, state, blockEntity, stack);
         world.setBlockState(pos, state);
     }
 }
