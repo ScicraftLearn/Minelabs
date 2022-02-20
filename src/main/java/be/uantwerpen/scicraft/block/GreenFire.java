@@ -11,6 +11,7 @@ import net.minecraft.world.WorldView;
 
 /**
  * TODO ART + Animation
+ * TODO Half slab fire ??
  * @author pixar02
  */
 public class GreenFire extends AbstractFireBlock {
