@@ -17,6 +17,9 @@ public class Blocks {
     public static final Block PION_PLUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().collidable(false)), "pion_plus");
 
+    public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
+                    5.0f), "green_fire");
+
     /**
      * Register a Block
      * <p>
