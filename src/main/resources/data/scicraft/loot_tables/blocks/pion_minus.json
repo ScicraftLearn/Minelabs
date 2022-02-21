@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "scicraft:electron"
+          "name": "scicraft:pion_minus"
         }
       ],
       "conditions": [

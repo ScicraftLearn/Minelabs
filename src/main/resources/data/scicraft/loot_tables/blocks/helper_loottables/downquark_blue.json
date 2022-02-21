@@ -1,0 +1,26 @@
+{
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "scicraft:downquark_blue"
+                }
+            ],
+            "conditions": [
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "scicraft:anti_downquark_blue"
+                }
+            ],
+            "conditions": [
+            ]
+        }
+    ]
+}
