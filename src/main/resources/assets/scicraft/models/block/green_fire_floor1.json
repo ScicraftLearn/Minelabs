@@ -1,0 +1,6 @@
+{
+  "parent": "scicraft:block/template_fire_floor",
+  "textures": {
+    "fire": "scicraft:block/green_fire_1"
+  }
+}
