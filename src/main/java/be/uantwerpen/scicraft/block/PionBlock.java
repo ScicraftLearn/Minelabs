@@ -29,9 +29,6 @@ public class PionBlock extends Block {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
         double R = Math.random();
         int i = 0;
         if ((R <= 0.333333333333333)){
