@@ -36,6 +36,9 @@ public class Blocks {
     public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "downquark_quantumfield");
 
 
+    public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
+                    5.0f), "green_fire");
+
     /**
      * Register a Block
      * <p>
