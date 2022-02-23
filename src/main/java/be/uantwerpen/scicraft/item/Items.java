@@ -76,6 +76,12 @@ public class Items {
     public static final Item ANTI_DOWNQUARK_GREEN = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_green");
     public static final Item ANTI_DOWNQUARK_BLUE = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_blue");
 
+    // items -> Ores
+    public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE, new FabricItemSettings().group(ItemGroups.SCICRAFT)), "salt_ore");
+
+    // items -> powder
+
+
     /**
      * Register an Item
      *

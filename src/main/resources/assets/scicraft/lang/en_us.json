@@ -20,6 +20,8 @@
   "block.scicraft.upquark_quantumfield": "Upquark Quantumfield",
   "block.scicraft.downquark_quantumfield": "Downquark Quantumfield",
 
+  "block.scicraft.salt_ore": "Salt Ore",
+
   "entity.scicraft.entropy_creeper": "Entropy Creeper",
 
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
@@ -44,6 +46,8 @@
   "item.scicraft.neutrino_quantumfield": "Neutrino Quantumfield",
   "item.scicraft.upquark_quantumfield": "Upquark Quantumfield",
   "item.scicraft.downquark_quantumfield": "Downquark Quantumfield",
+
+  "item.scicraft.salt_ore": "Salt Ore",
 
   "item.scicraft.upquark_red": "Upquark",
   "item.scicraft.upquark_green": "Upquark",

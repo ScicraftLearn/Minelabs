@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
@@ -25,6 +26,9 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "antineutrino");
     public static final Block POSITRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "positron");
+
+    public static final Block SALT_ORE = register(new Block(FabricBlockSettings.of(Material.STONE)
+            .mapColor(MapColor.WHITE).requiresTool().strength(3.0f)),"salt_ore");
 
     // Quantumfields
     public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(), "gluon_quantumfield");
