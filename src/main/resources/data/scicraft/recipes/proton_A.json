@@ -1,45 +1,28 @@
 {
+  "group":"scicraft",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    "scicraft:upquark_red",
-    "scicraft:upquark_green",
-    "scicraft:downquark_blue",
-    "scicraft:gluon",
-    "scicraft:gluon",
-    "scicraft:gluon",
+    {
+      "item": "scicraft:upquark_red"
+    },
+    {
+      "item": "scicraft:upquark_green"
+    },
+    {
+      "item": "scicraft:downquark_blue"
+    },
+    {
+      "item": "scicraft:gluon"
+    },
+    {
+      "item": "scicraft:gluon"
+    },
+    {
+      "item": "scicraft:gluon"
+    }
   ],
   "result": {
     "item": "scicraft:proton",
     "count": 1
   }
-},
-{
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    "scicraft:upquark_green",
-    "scicraft:upquark_blue",
-    "scicraft:downquark_red",
-    "scicraft:gluon",
-    "scicraft:gluon",
-    "scicraft:gluon",
-  ],
-  "result": {
-    "item": "scicraft:proton",
-    "count": 1
-  }
-},
-{
-"type": "minecraft:crafting_shapeless",
-"ingredients": [
-"scicraft:upquark_green",
-"scicraft:upquark_blue",
-"scicraft:downquark_red",
-"scicraft:gluon",
-"scicraft:gluon",
-"scicraft:gluon",
-],
-"result": {
-"item": "scicraft:proton",
-"count": 1
-}
 }
