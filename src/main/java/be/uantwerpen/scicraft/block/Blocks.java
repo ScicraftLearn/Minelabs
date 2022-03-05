@@ -34,10 +34,11 @@ public class Blocks {
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "neutrino_quantumfield");
     public static final Block UPQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "upquark_quantumfield");
     public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "downquark_quantumfield");
-
+    public static final Block LEWIS_CRAFTING_TABLE = register(new LewisCraftingTableBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "lewis_crafting_table");
 
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
-                    5.0f), "green_fire");
+            5.0f), "green_fire");
 
     /**
      * Register a Block
