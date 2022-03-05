@@ -40,6 +40,7 @@ public class Blocks {
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
             5.0f), "green_fire");
 
+    public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.WOOD).strength(2f)),"lewis_block");
     /**
      * Register a Block
      * <p>

@@ -5,8 +5,10 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -14,8 +16,13 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
+import be.uantwerpen.scicraft.entity.LewisBlockEntity;
+import be.uantwerpen.scicraft.block.Blocks;
 
 import java.util.function.Predicate;
+
+import static be.uantwerpen.scicraft.block.Blocks.LEWIS_BLOCK;
+
 
 public class Entities {
     // EntityTypes
@@ -28,6 +35,7 @@ public class Entities {
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
 
+    public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.<LewisBlockEntity>create(LewisBlockEntity::new, LEWIS_BLOCK).build(null));
 
     /**
      * Register a single entity
@@ -44,17 +52,18 @@ public class Entities {
     /**
      * Modify the Entity spawns
      * <p>
-     * @param entityType : EntityType to add Spawns for
-     * @param selector: Predicate BiomeSelection, what biome(s) the entity can spawn in
-     * @param spawnEntry: no documentation found
      *
-     * While testing set Selector to BiomeSelectors.all(), this will spawn you Entity in "The End"/"Nether" when entering
+     * @param entityType  : EntityType to add Spawns for
+     * @param selector:   Predicate BiomeSelection, what biome(s) the entity can spawn in
+     * @param spawnEntry: no documentation found
+     *                    <p>
+     *                    While testing set Selector to BiomeSelectors.all(), this will spawn you Entity in "The End"/"Nether" when entering
      */
     private static void registerEntitySpawns(EntityType<?> entityType, Predicate<BiomeSelectionContext> selector, SpawnSettings.SpawnEntry spawnEntry) {
         BiomeModifications.create(Registry.ENTITY_TYPE.getId(entityType))
                 .add(ModificationPhase.ADDITIONS, selector, context -> {
-                context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry);
-        });
+                    context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry);
+                });
     }
 
     /**
