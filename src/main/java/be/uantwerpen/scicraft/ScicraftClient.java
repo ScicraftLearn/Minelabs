@@ -37,15 +37,18 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-            return tintIndex == 1 ? 0x00FF00 : 0x000000;
-        }, Items.ERLENMEYER_GREEN);
-
-        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
             if (tintIndex == 2) return  0x000FF;
             else {
                 return 0XFFFFF;
             }
         }, Items.ERLENMEYER_GAS);
+
+        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+            if (tintIndex == 1) return  0x000FF;
+            else {
+                return 0XFFFFF;
+            }
+        }, Items.ERLENMEYER_FLUID);
 
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.scicraft.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
     }

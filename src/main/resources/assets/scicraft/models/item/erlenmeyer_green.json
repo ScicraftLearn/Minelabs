@@ -1,6 +1,0 @@
-{
-  "parent": "scicraft:item/erlenmeyer_empty",
-  "textures": {
-    "layer1": "scicraft:item/erlenmeyer_filling"
-  }
-}

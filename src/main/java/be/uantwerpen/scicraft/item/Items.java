@@ -3,11 +3,7 @@ package be.uantwerpen.scicraft.item;
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
-import be.uantwerpen.scicraft.fluid.AbstractFluid;
-import be.uantwerpen.scicraft.fluid.AcidFluid;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -78,8 +74,8 @@ public class Items {
     public static final Item ANTI_DOWNQUARK_BLUE = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_blue");
 
     // Erlenmeyer
-    public static final Item ERLENMEYER_EMPTY = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_empty");
-    public static final Item ERLENMEYER_GREEN = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_green");
+    public static final Item ERLENMEYER = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer");
+    public static final Item ERLENMEYER_FLUID = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_fluid");
     public static final Item ERLENMEYER_GAS = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_gas");
 
     // Fluids
