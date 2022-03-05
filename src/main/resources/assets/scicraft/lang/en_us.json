@@ -75,5 +75,7 @@
   "item.scicraft.phosphorus_atom": "Phosphorus",
   "item.scicraft.sulfur_atom": "Sulfur",
   "item.scicraft.chlorine_atom": "Chlorine",
-  "item.scicraft.argon_atom": "Argon"
+  "item.scicraft.argon_atom": "Argon",
+
+  "item.scicraft.erlenmeyer_empty": "Erlenmeyer"
 }
