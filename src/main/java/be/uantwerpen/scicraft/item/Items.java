@@ -3,11 +3,12 @@ package be.uantwerpen.scicraft.item;
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.fluid.AbstractFluid;
+import be.uantwerpen.scicraft.fluid.AcidFluid;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.SpawnEggItem;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -78,6 +79,15 @@ public class Items {
 
     // Erlenmeyer
     public static final Item ERLENMEYER_EMPTY = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_empty");
+    public static final Item ERLENMEYER_GREEN = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_green");
+    public static final Item ERLENMEYER_GAS = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_gas");
+
+    // Fluids
+//    public static final AbstractFluid STILL_ACID = Registry.register(Registry.FLUID, new Identifier(Scicraft.MOD_ID, "acid"), new AcidFluid.Still());
+//    public static final AbstractFluid FLOWING_ACID = Registry.register(Registry.FLUID, new Identifier(Scicraft.MOD_ID, "flowing_acid"), new AcidFluid.Flowing());
+//    public static final Item ACID_BUCKET = Registry.register(Registry.ITEM, new Identifier(Scicraft.MOD_ID, "acid_bucket"),
+//        new BucketItem(STILL_ACID, new Item.Settings().recipeRemainder(net.minecraft.item.Items.BUCKET).maxCount(1)));
+
 
     /**
      * Register an Item

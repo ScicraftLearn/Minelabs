@@ -2,12 +2,18 @@ package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 
 @SuppressWarnings("UNUSED")
@@ -29,5 +35,18 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+
+        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+            return tintIndex == 1 ? 0x00FF00 : 0x000000;
+        }, Items.ERLENMEYER_GREEN);
+
+        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+            if (tintIndex == 2) return  0x000FF;
+            else {
+                return 0XFFFFF;
+            }
+        }, Items.ERLENMEYER_GAS);
+
+//        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.scicraft.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
     }
 }
