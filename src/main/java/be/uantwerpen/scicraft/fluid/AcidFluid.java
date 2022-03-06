@@ -7,6 +7,13 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.WorldView;
+
+import java.util.Map;
 
 public abstract class AcidFluid extends AbstractFluid {
     @Override
@@ -21,7 +28,7 @@ public abstract class AcidFluid extends AbstractFluid {
 
     @Override
     public Item getBucketItem() {
-        return Items.ACID_BUCKET;
+        return Items.ERLENMEYER_HNO3;
     }
 
     @Override
@@ -46,12 +53,22 @@ public abstract class AcidFluid extends AbstractFluid {
         public boolean isStill(FluidState fluidState) {
             return false;
         }
+
+        @Override
+        public Vec3d getVelocity(BlockView world, BlockPos pos, FluidState state) {
+            return super.getVelocity(world, pos, state);
+        }
+
+        @Override
+        protected Map<Direction, FluidState> getSpread(WorldView world, BlockPos pos, BlockState state) {
+            return super.getSpread(world, pos, state);
+        }
     }
 
     public static class Still extends AcidFluid {
         @Override
         public int getLevel(FluidState fluidState) {
-            return 8;
+            return 2;
         }
 
         @Override

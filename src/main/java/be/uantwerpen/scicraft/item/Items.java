@@ -79,7 +79,7 @@ public class Items {
     public static final Item ERLENMEYER_GAS = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_gas");
     public static final Item ERLENMEYER_FLUID = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_fluid");
 
-    public static final Item ACID_BUCKET = register(new BucketItem(Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "acid_bucket");
+//    public static final Item ACID_BUCKET = register(new BucketItem(Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_fluid");
 
     public static final Item ERLENMEYER_02 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_o2");
     public static final Item ERLENMEYER_N2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2");
@@ -94,7 +94,7 @@ public class Items {
     public static final Item ERLENMEYER_N2O = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2o");
     public static final Item ERLENMEYER_HCl = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hcl");
 
-    public static final Item ERLENMEYER_HNO3 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hno3");
+    public static final Item ERLENMEYER_HNO3 = register(new BucketItem(Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hno3");
 
     /**
      * Register an Item
