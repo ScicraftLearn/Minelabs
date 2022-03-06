@@ -10,6 +10,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.lwjgl.system.CallbackI;
 
 public class Items {
     // Items
@@ -17,7 +18,8 @@ public class Items {
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
     // Items > Crafting Tables
-    public static final Item LEWIS_CRAFTING_TABLE = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), "lewis_crafting_table"),"lewis_crafting_table");
+    public static final Item LEWIS_BLOCK = register(new BlockItem(Blocks.LEWIS_BLOCK, new FabricItemSettings().group(ItemGroups.SCICRAFT)) , "lewis_block");
+    public static final Item LEWIS_CRAFTING_TABLE = register(new BlockItem(Blocks.LEWIS_CRAFTING_TABLE, new FabricItemSettings().group(ItemGroups.SCICRAFT)),"lewis_crafting_table");
 
     //     public static final Block LEWIS_CRAFTING_TABLE = register(new LewisCraftingTableBlock(FabricBlockSettings.of(Material.WOOL)
     //            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "lewis_crafting_table");
