@@ -15,9 +15,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
-public class LewisCraftingTableBlock extends Block {
+public class LewisCraftingTableBlock extends Block implements Inventory {
 
-    private LewisCraftingInventory inventory;
 
     public LewisCraftingTableBlock(Settings settings) {
         super(settings);
@@ -26,5 +25,50 @@ public class LewisCraftingTableBlock extends Block {
     public boolean analyse() {
 
         return false;
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public ItemStack getStack(int slot) {
+        return null;
+    }
+
+    @Override
+    public ItemStack removeStack(int slot, int amount) {
+        return null;
+    }
+
+    @Override
+    public ItemStack removeStack(int slot) {
+        return null;
+    }
+
+    @Override
+    public void setStack(int slot, ItemStack stack) {
+
+    }
+
+    @Override
+    public void markDirty() {
+
+    }
+
+    @Override
+    public boolean canPlayerUse(PlayerEntity player) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

@@ -1,14 +1,12 @@
 package be.uantwerpen.scicraft.inventory;
 
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
-public interface ImplementedInventory extends Inventory {
-
+public interface LewisCraftingInventory extends Inventory {
     /**
      * Retrieves the item list of this inventory.
      * Must return the same instance every time it's called.
@@ -18,14 +16,14 @@ public interface ImplementedInventory extends Inventory {
     /**
      * Creates an inventory from the item list.
      */
-    static ImplementedInventory of(DefaultedList<ItemStack> items) {
+    static LewisCraftingInventory of(DefaultedList<ItemStack> items) {
         return () -> items;
     }
 
     /**
      * Creates a new inventory with the specified size.
      */
-    static ImplementedInventory ofSize(int size) {
+    static LewisCraftingInventory ofSize(int size) {
         return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
     }
 
@@ -124,4 +122,5 @@ public interface ImplementedInventory extends Inventory {
     default boolean canPlayerUse(PlayerEntity player) {
         return true;
     }
+
 }
