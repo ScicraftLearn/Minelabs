@@ -39,10 +39,6 @@ public class ScicraftClient implements ClientModInitializer {
 
         // Gas
 
-
-        registerErlenmeyer(Items.ERLENMEYER_GAS, 0x7F7F7F, 1);
-        registerErlenmeyer(Items.ERLENMEYER_FLUID,0x000FF, 1);
-
         // TODO - toevoegen van 02, N2, ... als extra texture voor kleurloze gassen.
         // TODO - enchanement visuals voor zeldzame stoffen
 
