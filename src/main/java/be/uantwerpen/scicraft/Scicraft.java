@@ -24,7 +24,6 @@ public class Scicraft implements ModInitializer {
         Blocks.registerBlocks();
         Entities.registerEntities();
         ExtraDispenserBehavior.registerBehaviors();
-
         SoundEvents.registerSounds();
     }
 }

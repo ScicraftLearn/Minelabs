@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "scicraft:block/quantumfield/weak_boson/vertical",
+        "up": "scicraft:block/quantumfield/weak_boson/vertical",
+        "north": "scicraft:block/quantumfield/weak_boson/horizontal",
+        "east": "scicraft:block/quantumfield/weak_boson/horizontal",
+        "south": "scicraft:block/quantumfield/weak_boson/horizontal",
+        "west": "scicraft:block/quantumfield/weak_boson/horizontal",
+        "particle": "scicraft:block/quantumfield/weak_boson/vertical"
+    }
+}

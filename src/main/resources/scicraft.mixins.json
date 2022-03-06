@@ -9,6 +9,7 @@
     "CreeperEntityMixin",
     "ExplosionAccessor",
     "InGameHudMixin",
+    "FireMixin",
     "ThrownEntityMixin"
   ],
   "client": []
