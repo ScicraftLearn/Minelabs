@@ -19,9 +19,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
+    //Mixin for rendering picture of the molecule structure
     @Inject(method = "renderSpyglassOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Tessellator;getInstance()Lnet/minecraft/client/render/Tessellator;"))
     private void renderSpyglassOverlay(float scale, CallbackInfo ci) {
-        final Identifier TESTING = new Identifier("scicraft:textures/block/electron.png");
+        final Identifier TESTING = new Identifier("scicraft:textures/item/electron.png");
         PlayerEntity user = MinecraftClient.getInstance().player;
         World world = MinecraftClient.getInstance().world;
         HitResult lookingAt = MinecraftClient.getInstance().crosshairTarget;
