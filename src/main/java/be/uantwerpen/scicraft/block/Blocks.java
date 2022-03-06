@@ -2,9 +2,13 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -41,6 +45,10 @@ public class Blocks {
             5.0f), "green_fire");
 
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.WOOD).strength(2f)),"lewis_block");
+
+    public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "lewis_entity",
+            FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, LEWIS_BLOCK).build(null));
+
     /**
      * Register a Block
      * <p>

@@ -1,7 +1,8 @@
-package be.uantwerpen.scicraft.entity;
+package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.inventory.LewisCraftingInventory;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.CraftingTableBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventories;
@@ -10,13 +11,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
-public class LewisBlockEntity extends BlockEntity implements LewisCraftingInventory {
+import static be.uantwerpen.scicraft.block.Blocks.LEWIS_BLOCK_ENTITY;
 
+public class LewisBlockEntity extends BlockEntity implements LewisCraftingInventory {
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
-    public LewisBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
+    public LewisBlockEntity(BlockPos pos, BlockState state) {
+        super(LEWIS_BLOCK_ENTITY, pos, state);
     }
 
     @Override

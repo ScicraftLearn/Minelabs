@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.block;
 
-import be.uantwerpen.scicraft.entity.LewisBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;

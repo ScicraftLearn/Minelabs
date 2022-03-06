@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.LewisBlockEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -16,12 +17,12 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
-import be.uantwerpen.scicraft.entity.LewisBlockEntity;
-import be.uantwerpen.scicraft.block.Blocks;
+//import be.uantwerpen.scicraft.block.LewisBlockEntity;
+//import be.uantwerpen.scicraft.block.Blocks;
 
 import java.util.function.Predicate;
 
-import static be.uantwerpen.scicraft.block.Blocks.LEWIS_BLOCK;
+//import static be.uantwerpen.scicraft.block.Blocks.LEWIS_BLOCK;
 
 
 public class Entities {
@@ -34,8 +35,6 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "neutron_entity");
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
-
-    public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.<LewisBlockEntity>create(LewisBlockEntity::new, LEWIS_BLOCK).build(null));
 
     /**
      * Register a single entity
