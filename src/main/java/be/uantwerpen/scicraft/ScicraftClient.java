@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -36,20 +37,30 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
 
-        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-            if (tintIndex == 2) return  0x000FF;
-            else {
-                return 0XFFFFF;
-            }
-        }, Items.ERLENMEYER_GAS);
+        // Gas
 
-        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-            if (tintIndex == 1) return  0x000FF;
-            else {
-                return 0XFFFFF;
-            }
-        }, Items.ERLENMEYER_FLUID);
+        registerErlenmeyer(Items.ERLENMEYER_GAS, 0x7F7F7F, 1);
+        registerErlenmeyer(Items.ERLENMEYER_FLUID,0x000FF, 1);
+
+        // TODO - toevoegen van 02, N2, ... als extra texture voor kleurloze gassen.
+
+        // Tier 1
+        registerErlenmeyer(Items.ERLENMEYER_02,0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_N2,0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_CH4,0x7F7F7F, 2);
+
+        // Tier 2
+        registerErlenmeyer(Items.ERLENMEYER_H2,0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_N0,0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_N02,0x991c00, 2);
 
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.scicraft.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
+    }
+
+    public void registerErlenmeyer(Item item, int color, int index) {
+        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+            if (tintIndex == index) return color;
+            return 0x7F7F7F;
+        }, item);
     }
 }
