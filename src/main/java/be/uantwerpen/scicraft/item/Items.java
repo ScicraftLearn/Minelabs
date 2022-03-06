@@ -84,16 +84,14 @@ public class Items {
     public static final Item ERLENMEYER_H2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_h2");
     public static final Item ERLENMEYER_N0 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n0");
     public static final Item ERLENMEYER_N02 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_no2");
-
     public static final Item ERLENMEYER_Cl2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_cl2");
     public static final Item ERLENMEYER_CO2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_co2");
     public static final Item ERLENMEYER_CO = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_co");
-
     public static final Item ERLENMEYER_NH3 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_nh3");
     public static final Item ERLENMEYER_N2O = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2o");
     public static final Item ERLENMEYER_HCl = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hcl");
 
-
+    public static final Item ERLENMEYER_HNO3 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hno3");
 
 
     // Fluids
