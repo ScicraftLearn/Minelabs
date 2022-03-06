@@ -17,5 +17,20 @@
   "item.scicraft.positron": "Positron",
   "item.scicraft.gluon": "Gluon",
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeperspawnei",
-  "entity.scicraft.entropy_creeper": "Entropy Creeper"
+  "entity.scicraft.entropy_creeper": "Entropy Creeper",
+
+  "item.scicraft.erlenmeyer_empty": "Erlenmeyer",
+  "item.scicraft.ERLENMEYER_02": "Zuurstofgas (O2)",
+  "item.scicraft.ERLENMEYER_N2": "Stikstofgas (N2)",
+  "item.scicraft.ERLENMEYER_CH4": "Methaan (CH4)",
+  "item.scicraft.ERLENMEYER_H2": "Waterstofgas (H2)",
+  "item.scicraft.ERLENMEYER_NO": "Stikstofoxide (NO)",
+  "item.scicraft.ERLENMEYER_NO2": "Stikstofdioxide (NO2)",
+  "item.scicraft.ERLENMEYER_Cl2": "Chloorgas (Cl2)",
+  "item.scicraft.ERLENMEYER_CO2": "Koolstofdioxide (CO2)",
+  "item.scicraft.ERLENMEYER_CO": "Koolstofmonoxide (CO)",
+  "item.scicraft.ERLENMEYER_NH3": "Ammoniak (NH3)",
+  "item.scicraft.ERLENMEYER_N2O": "Lachgas (N2O)",
+  "item.scicraft.ERLENMEYER_HCl": "Waterstofchloride (HCl)",
+  "item.scicraft.ERLENMEYER_HNO3": "Salpeterzuur (HNO3)"
 }

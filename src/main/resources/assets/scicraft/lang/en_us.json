@@ -77,5 +77,18 @@
   "item.scicraft.chlorine_atom": "Chlorine",
   "item.scicraft.argon_atom": "Argon",
 
-  "item.scicraft.erlenmeyer_empty": "Erlenmeyer"
+  "item.scicraft.erlenmeyer_empty": "Erlenmeyer",
+  "item.scicraft.ERLENMEYER_02": "Oxygen gas (O2)",
+  "item.scicraft.ERLENMEYER_N2": "Nytrogen gas (N2)",
+  "item.scicraft.ERLENMEYER_CH4": "Methane (CH4)",
+  "item.scicraft.ERLENMEYER_H2": "Hydrogen gas (H2)",
+  "item.scicraft.ERLENMEYER_NO": "Nitric oxide (NO)",
+  "item.scicraft.ERLENMEYER_NO2": "Nitrogen dioxide (NO2)",
+  "item.scicraft.ERLENMEYER_Cl2": "Chlorine gas (Cl2)",
+  "item.scicraft.ERLENMEYER_CO2": "Carbon dioxide (CO2)",
+  "item.scicraft.ERLENMEYER_CO": "Carbon monoxide (CO)",
+  "item.scicraft.ERLENMEYER_NH3": "Ammonia (NH3)",
+  "item.scicraft.ERLENMEYER_N2O": "Laughing gas (N2O)",
+  "item.scicraft.ERLENMEYER_HCl": "Hydrogen chloride (HCl)",
+  "item.scicraft.ERLENMEYER_HNO3": "Nitric acid (HNO3)"
 }
