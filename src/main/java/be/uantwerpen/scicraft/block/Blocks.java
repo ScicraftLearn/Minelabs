@@ -44,9 +44,9 @@ public class Blocks {
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
             5.0f), "green_fire");
 
-    public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.WOOD).strength(2f)),"lewis_block");
+    public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.WOOL).strength(2f)),"lewis_block");
 
-    public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "lewis_entity",
+    public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID,"lewis_entity"),
             FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, LEWIS_BLOCK).build(null));
 
     /**

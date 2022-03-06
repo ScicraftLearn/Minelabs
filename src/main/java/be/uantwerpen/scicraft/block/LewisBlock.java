@@ -25,7 +25,7 @@ public class LewisBlock extends Block implements BlockEntityProvider {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return null;
+        return new LewisBlockEntity(pos,state);
     }
 
     @Nullable
