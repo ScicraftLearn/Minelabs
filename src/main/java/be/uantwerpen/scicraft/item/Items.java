@@ -78,7 +78,6 @@ public class Items {
     public static final Item ERLENMEYER_GAS = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_gas");
     public static final Item ERLENMEYER_FLUID = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_fluid");
 
-
     public static final Item ERLENMEYER_02 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_o2");
     public static final Item ERLENMEYER_N2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2");
     public static final Item ERLENMEYER_CH4 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_ch4");
@@ -86,7 +85,13 @@ public class Items {
     public static final Item ERLENMEYER_N0 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n0");
     public static final Item ERLENMEYER_N02 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_no2");
 
+    public static final Item ERLENMEYER_Cl2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_cl2");
+    public static final Item ERLENMEYER_CO2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_co2");
+    public static final Item ERLENMEYER_CO = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_co");
 
+    public static final Item ERLENMEYER_NH3 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_nh3");
+    public static final Item ERLENMEYER_N2O = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2o");
+    public static final Item ERLENMEYER_HCl = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hcl");
 
 
 
