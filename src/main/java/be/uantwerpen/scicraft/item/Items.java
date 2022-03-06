@@ -18,7 +18,7 @@ public class Items {
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
     // Items > Crafting Tables
-    public static final Item LEWIS_BLOCK = register(new BlockItem(Blocks.LEWIS_BLOCK, new FabricItemSettings().group(ItemGroups.SCICRAFT)) , "lewis_block");
+    //public static final Item LEWIS_TABLE = register(new BlockItem(Scicraft.LEWIS_BLOCK, new FabricItemSettings().group(ItemGroups.SCICRAFT)) , "lewis_block");
     public static final Item LEWIS_CRAFTING_TABLE = register(new BlockItem(Blocks.LEWIS_CRAFTING_TABLE, new FabricItemSettings().group(ItemGroups.SCICRAFT)),"lewis_crafting_table");
 
     //     public static final Block LEWIS_CRAFTING_TABLE = register(new LewisCraftingTableBlock(FabricBlockSettings.of(Material.WOOL)

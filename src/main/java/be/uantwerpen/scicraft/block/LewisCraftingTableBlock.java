@@ -11,7 +11,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class LewisCraftingTableBlock extends CraftingTableBlock{
+public class LewisCraftingTableBlock extends CraftingTableBlock {
 
     private static final Text SCREEN_TITLE = new TranslatableText("container.upgrade");
 
