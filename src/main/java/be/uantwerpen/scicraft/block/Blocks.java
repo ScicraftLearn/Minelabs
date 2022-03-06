@@ -1,11 +1,10 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.fluid.Fluids;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -39,6 +38,11 @@ public class Blocks {
 
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
                     5.0f), "green_fire");
+
+//    public static final Block ACID = Registry.register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
+
+    public static final Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)){});
+
 
     /**
      * Register a Block
