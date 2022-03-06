@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:acid",
-    "minecraft:flowing_acid"
+    "scicraft:acid",
+    "scicraft:flowing_acid"
   ]
 }

@@ -3,6 +3,8 @@ package be.uantwerpen.scicraft.item;
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.fluid.Fluids;
+import be.uantwerpen.scicraft.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
@@ -78,28 +80,22 @@ public class Items {
     public static final Item ERLENMEYER_GAS = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_gas");
     public static final Item ERLENMEYER_FLUID = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_fluid");
 
-    public static final Item ERLENMEYER_02 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_o2");
-    public static final Item ERLENMEYER_N2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2");
-    public static final Item ERLENMEYER_CH4 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_ch4");
-    public static final Item ERLENMEYER_H2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_h2");
-    public static final Item ERLENMEYER_N0 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n0");
-    public static final Item ERLENMEYER_N02 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_no2");
-    public static final Item ERLENMEYER_Cl2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_cl2");
-    public static final Item ERLENMEYER_CO2 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_co2");
-    public static final Item ERLENMEYER_CO = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_co");
-    public static final Item ERLENMEYER_NH3 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_nh3");
-    public static final Item ERLENMEYER_N2O = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2o");
-    public static final Item ERLENMEYER_HCl = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hcl");
+//    public static final Item ACID_BUCKET = register(new BucketItem(Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_fluid");
 
-    public static final Item ERLENMEYER_HNO3 = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hno3");
+    public static final Item ERLENMEYER_02 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_o2");
+    public static final Item ERLENMEYER_N2 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2");
+    public static final Item ERLENMEYER_CH4 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_ch4");
+    public static final Item ERLENMEYER_H2 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_h2");
+    public static final Item ERLENMEYER_N0 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n0");
+    public static final Item ERLENMEYER_N02 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_no2");
+    public static final Item ERLENMEYER_Cl2 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_cl2");
+    public static final Item ERLENMEYER_CO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_co2");
+    public static final Item ERLENMEYER_CO = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_co");
+    public static final Item ERLENMEYER_NH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_nh3");
+    public static final Item ERLENMEYER_N2O = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_n2o");
+    public static final Item ERLENMEYER_HCl = register(new GasPotion(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hcl");
 
-
-    // Fluids
-//    public static final AbstractFluid STILL_ACID = Registry.register(Registry.FLUID, new Identifier(Scicraft.MOD_ID, "acid"), new AcidFluid.Still());
-//    public static final AbstractFluid FLOWING_ACID = Registry.register(Registry.FLUID, new Identifier(Scicraft.MOD_ID, "flowing_acid"), new AcidFluid.Flowing());
-//    public static final Item ACID_BUCKET = Registry.register(Registry.ITEM, new Identifier(Scicraft.MOD_ID, "acid_bucket"),
-//        new BucketItem(STILL_ACID, new Item.Settings().recipeRemainder(net.minecraft.item.Items.BUCKET).maxCount(1)));
-
+    public static final Item ERLENMEYER_HNO3 = register(new BucketItem(Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_hno3");
 
     /**
      * Register an Item
