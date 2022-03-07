@@ -38,7 +38,7 @@ public class Blocks {
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
             5.0f), "green_fire");
 
-    public static final Block LEWIS_BLOCK = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "lewis_block"), new LewisBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST)));
+    public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST)),"lewis_block");
 
     /**
      * Register a Block

@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -37,9 +38,9 @@ public class Entities {
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
 
+    public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = register(
+            FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, Blocks.LEWIS_BLOCK).build(null),"lewis_block");
 
-    public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = Registry.register(
-            Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, "lewis_block"), FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, Blocks.LEWIS_BLOCK).build(null));
     /**
      * Register a single entity
      * <p>
@@ -50,6 +51,18 @@ public class Entities {
      */
     private static <T extends Entity> EntityType<T> register(EntityType<T> entityType, String identifier) {
         return Registry.register(Registry.ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), entityType);
+    }
+
+    /**
+     * Register a single block entity
+     * <p>
+     *
+     * @param blockEntityType : BlockEntityType to register
+     * @param identifier : String name of the entity
+     * @return registered BlockEntityType
+     */
+    private static <T extends BlockEntity> BlockEntityType<T> register(BlockEntityType<T> blockEntityType, String identifier) {
+        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), blockEntityType);
     }
 
     /**
