@@ -17,10 +17,6 @@ public class Items {
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
-    // Items > Crafting Tables
-    //public static final Item LEWIS_TABLE = register(new BlockItem(Scicraft.LEWIS_BLOCK, new FabricItemSettings().group(ItemGroups.SCICRAFT)) , "lewis_block");
-    public static final Item LEWIS_CRAFTING_TABLE = register(new BlockItem(Blocks.LEWIS_CRAFTING_TABLE, new FabricItemSettings().group(ItemGroups.SCICRAFT)),"lewis_crafting_table");
-
     //     public static final Block LEWIS_CRAFTING_TABLE = register(new LewisCraftingTableBlock(FabricBlockSettings.of(Material.WOOL)
     //            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "lewis_crafting_table");
     // Items > Atoms
@@ -82,6 +78,9 @@ public class Items {
     public static final Item ANTI_DOWNQUARK_RED = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_red");
     public static final Item ANTI_DOWNQUARK_GREEN = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_green");
     public static final Item ANTI_DOWNQUARK_BLUE = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_blue");
+
+
+    public static final BlockItem LEWIS_BLOCK_ITEM = Registry.register(Registry.ITEM, new Identifier(Scicraft.MOD_ID, "lewis_block"), new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
 
     /**
      * Register an Item

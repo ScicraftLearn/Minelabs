@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
 import net.minecraft.block.BlockState;
@@ -21,7 +22,7 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(9, ItemStack.EMPTY);
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
-        super(Scicraft.LEWIS_BLOCK_ENTITY, pos, state);
+        super(Entities.LEWIS_BLOCK_ENTITY, pos, state);
     }
 
 

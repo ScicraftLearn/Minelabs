@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.LewisScreen;
+import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -34,7 +35,7 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
-        ScreenRegistry.register(Scicraft.LEWIS_SCREEN_HANDLER, LewisScreen::new);
+        ScreenRegistry.register(Screens.LEWIS_SCREEN_HANDLER, LewisScreen::new);
     }
 }
 

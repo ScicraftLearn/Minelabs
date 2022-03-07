@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "scicraft:Scicraft/lewis_block" }
+    "": { "model": "scicraft:block/lewis_block" }
   }
 }

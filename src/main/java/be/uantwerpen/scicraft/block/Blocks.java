@@ -34,16 +34,11 @@ public class Blocks {
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "neutrino_quantumfield");
     public static final Block UPQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "upquark_quantumfield");
     public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "downquark_quantumfield");
-    public static final Block LEWIS_CRAFTING_TABLE = register(new LewisCraftingTableBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f)), "lewis_crafting_table");
 
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
             5.0f), "green_fire");
 
-//    public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.WOOL).strength(2f)),"lewis_block");
-//
-//    public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID,"lewis_entity"),
-//            FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, LEWIS_BLOCK).build(null));
+    public static final Block LEWIS_BLOCK = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "lewis_block"), new LewisBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST)));
 
     /**
      * Register a Block
