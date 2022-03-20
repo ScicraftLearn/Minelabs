@@ -38,7 +38,7 @@ public class Blocks {
 
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
                     5.0f), "green_fire");
-    public static final Block ERLENMEYER_STAND = register(new Block(FabricBlockSettings.of(Material.METAL)
+    public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(FabricBlockSettings.of(Material.METAL)
             .strength(4.0f)), "erlenmeyer_stand");
 
 
