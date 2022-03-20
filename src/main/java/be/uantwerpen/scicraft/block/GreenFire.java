@@ -23,7 +23,7 @@ public class GreenFire extends AbstractFireBlock {
     /**
      * Check if the lit block is of copper
      *
-     * @param state : stat of the base
+     * @param state : state of the base
      *
      * @return boolean
      */
