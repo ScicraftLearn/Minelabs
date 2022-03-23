@@ -75,5 +75,20 @@
   "item.scicraft.phosphorus_atom": "Phosphorus",
   "item.scicraft.sulfur_atom": "Sulfur",
   "item.scicraft.chlorine_atom": "Chlorine",
-  "item.scicraft.argon_atom": "Argon"
+  "item.scicraft.argon_atom": "Argon",
+
+  "item.scicraft.erlenmeyer": "Erlenmeyer",
+  "item.scicraft.erlenmeyer_o2.effect.empty": "Oxygen gas (O2)",
+  "item.scicraft.erlenmeyer_n2.effect.empty": "Nytrogen gas (N2)",
+  "item.scicraft.erlenmeyer_ch4.effect.empty": "Methane (CH4)",
+  "item.scicraft.erlenmeyer_h2.effect.empty": "Hydrogen gas (H2)",
+  "item.scicraft.erlenmeyer_no.effect.empty": "Nitric oxide (NO)",
+  "item.scicraft.erlenmeyer_no2.effect.empty": "Nitrogen dioxide (NO2)",
+  "item.scicraft.erlenmeyer_cl2.effect.empty": "Chlorine gas (Cl2)",
+  "item.scicraft.erlenmeyer_co2.effect.empty": "Carbon dioxide (CO2)",
+  "item.scicraft.erlenmeyer_co.effect.empty": "Carbon monoxide (CO)",
+  "item.scicraft.erlenmeyer_nh3.effect.empty": "Ammonia (NH3)",
+  "item.scicraft.erlenmeyer_n2o.effect.empty": "Laughing gas (N2O)",
+  "item.scicraft.erlenmeyer_hcl.effect.empty": "Hydrogen chloride (HCl)",
+  "item.scicraft.erlenmeyer_hno3": "Nitric acid (HNO3)"
 }
