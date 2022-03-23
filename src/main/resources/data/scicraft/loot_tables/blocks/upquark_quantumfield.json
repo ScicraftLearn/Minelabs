@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:loot_table",
+                    "name": "scicraft:blocks/helper_loottables/upquark_red"
+                },
+                {
+                    "type": "minecraft:loot_table",
+                    "name": "scicraft:blocks/helper_loottables/upquark_blue"
+                },
+                {
+                    "type": "minecraft:loot_table",
+                    "name": "scicraft:blocks/helper_loottables/upquark_green"
+                }
+            ],
+            "conditions": [
+            ]
+        }
+    ]
+}
