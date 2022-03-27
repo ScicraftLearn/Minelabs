@@ -40,21 +40,18 @@ public class GasPotion extends LingeringPotionItem {
     public ActionResult useOnBlock(ItemUsageContext context) {
 
         if (context.getPlayer().isSneaking()) {
-            ActionResult actionResult = this.place(new ItemPlacementContext(context));
+            //ActionResult actionResult = this.place(new ItemPlacementContext(context));
+            // create BlockItem class object to use its functions? instead of copy-pasting
+            BlockItem temp_stand = new BlockItem(Blocks.ERLENMEYER_STAND, new Item.Settings());
+            ActionResult actionResult = temp_stand.place(new ItemPlacementContext(context));
             return actionResult;
-
         }
         else {
             TypedActionResult<ItemStack> actionResult = this.use(context.getWorld(), context.getPlayer(), context.getHand());
             return actionResult.getResult();
         }
-        //return ActionResult.FAIL;
-        //ItemPlacementContext a = new ItemPlacementContext(context);
-
-        //World world = a.getWorld();
-        //return ActionResult.success(world.isClient);
     }
-
+/*
     public ActionResult place(ItemPlacementContext context) {
         if (!context.canPlace()) {
             return ActionResult.FAIL;
@@ -137,4 +134,6 @@ public class GasPotion extends LingeringPotionItem {
     protected SoundEvent getPlaceSound(BlockState state) {
         return state.getSoundGroup().getPlaceSound();
     }
+
+ */
 }
