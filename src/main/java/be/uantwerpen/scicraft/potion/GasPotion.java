@@ -1,29 +1,12 @@
 package be.uantwerpen.scicraft.potion;
 
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import be.uantwerpen.scicraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Iterator;
 
 public class GasPotion extends LingeringPotionItem {
     public GasPotion(Settings settings) {
@@ -38,10 +21,10 @@ public class GasPotion extends LingeringPotionItem {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-
         if (context.getPlayer().isSneaking()) {
             //ActionResult actionResult = this.place(new ItemPlacementContext(context));
             // create BlockItem class object to use its functions? instead of copy-pasting
+            // create this object each time or add this as a class property?
             BlockItem temp_stand = new BlockItem(Blocks.ERLENMEYER_STAND, new Item.Settings());
             ActionResult actionResult = temp_stand.place(new ItemPlacementContext(context));
             return actionResult;
