@@ -1,8 +1,7 @@
 {
   "variants": {
-    "facing=north": { "model": "scicraft:block/erlenmeyer_stand", "y": 180},
-    "facing=east":  { "model": "scicraft:block/erlenmeyer_stand", "y": 270},
-    "facing=south": { "model": "scicraft:block/erlenmeyer_stand"},
-    "facing=west":  { "model": "scicraft:block/erlenmeyer_stand", "y": 90}
+    "": {
+      "model": "scicraft:block/erlenmeyer_stand"
+    }
   }
 }
