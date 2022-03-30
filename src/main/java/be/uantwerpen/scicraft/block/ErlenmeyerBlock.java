@@ -17,7 +17,6 @@ public class ErlenmeyerBlock extends HorizontalFacingBlock {
     public ErlenmeyerBlock(Settings settings) {
         super(settings);
         setDefaultState(this.stateManager.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
-        // TODO USE ROTATION AS IN SIGNBLOCK CLASS -> this.stateManager.getDefaultState()).with(ROTATION, 0))
     }
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
