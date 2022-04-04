@@ -11,12 +11,13 @@ import net.minecraft.util.registry.Registry;
 
 public class Blocks {
 
+    // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block PION_NUL = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");
-    public static final Block PION_MINUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_minus");
-    public static final Block PION_PLUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_plus");
+    public static final Block PION_MINUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), -1.0), "pion_minus");
+    public static final Block PION_PLUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), 1.0), "pion_plus");
 
     public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "weak_boson");
@@ -26,10 +27,6 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "antineutrino");
     public static final Block POSITRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "positron");
-
-    // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
-    public static final Block CHARGED_BLOCK = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), 1.0), "charged_block");
 
     // Quantumfields
     public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(), "gluon_quantumfield");

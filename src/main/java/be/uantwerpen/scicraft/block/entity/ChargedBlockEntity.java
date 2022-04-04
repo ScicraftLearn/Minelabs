@@ -6,13 +6,13 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 
 public class ChargedBlockEntity extends BlockEntity {
-    private final double charge;
+    private double charge = 0.0;
     private double field_x = 2.0;
     private double field_y = 3.55;
     private double field_z = -5.0;
 
     public ChargedBlockEntity(BlockPos pos, BlockState state, double charge_in) {
-        super(BlockEntities.CHARGED_BLOCK_ENTITY, pos, state);
+        super(BlockEntities.ABSTRACT_CHARGED_BLOCK_ENTITY, pos, state);
         this.charge = charge_in;
     }
 
@@ -37,5 +37,8 @@ public class ChargedBlockEntity extends BlockEntity {
         field_x = tag.getDouble("field_x");
         field_y = tag.getDouble("field_y");
         field_z = tag.getDouble("field_z");
+        charge = tag.getDouble("charge");
     }
+
+
 }

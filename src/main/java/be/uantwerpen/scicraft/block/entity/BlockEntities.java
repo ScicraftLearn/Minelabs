@@ -10,17 +10,18 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
-import static be.uantwerpen.scicraft.block.Blocks.CHARGED_BLOCK;
+import static be.uantwerpen.scicraft.block.Blocks.PION_MINUS;
+import static be.uantwerpen.scicraft.block.Blocks.PION_PLUS;
 
 
 public class BlockEntities {
 
-    //BlockEntities
-    // Value of charge here will be used when saved and restored
-    public static final BlockEntityType<ChargedBlockEntity> CHARGED_BLOCK_ENTITY = register(
+    // BlockEntities
+    // Value of charge here will be used when saved and restored if not saved under NBT-tag. (default value for BlkEn.)
+    public static final BlockEntityType<ChargedBlockEntity> ABSTRACT_CHARGED_BLOCK_ENTITY = register(
             FabricBlockEntityTypeBuilder.create(
-                    (BlockPos pos, BlockState state) -> {return new ChargedBlockEntity(pos, state, 1.0);},
-                    CHARGED_BLOCK).build(null), "charged_block");
+                    (BlockPos pos, BlockState state) -> {return new ChargedBlockEntity(pos, state, 0.0);},
+                    PION_MINUS).build(null), "charged_block");
 
     /**
      * Register a BlockEntity
