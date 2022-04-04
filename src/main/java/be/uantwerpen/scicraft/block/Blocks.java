@@ -27,8 +27,9 @@ public class Blocks {
     public static final Block POSITRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "positron");
 
+    // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block CHARGED_BLOCK = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "charged_block");
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), 1.0), "charged_block");
 
     // Quantumfields
     public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(), "gluon_quantumfield");

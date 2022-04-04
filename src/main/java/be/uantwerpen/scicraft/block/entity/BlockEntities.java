@@ -1,13 +1,13 @@
-package be.uantwerpen.scicraft.entity;
+package be.uantwerpen.scicraft.block.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.block.ChargedBlock;
-import be.uantwerpen.scicraft.entity.ChargedBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 import static be.uantwerpen.scicraft.block.Blocks.CHARGED_BLOCK;
@@ -16,8 +16,11 @@ import static be.uantwerpen.scicraft.block.Blocks.CHARGED_BLOCK;
 public class BlockEntities {
 
     //BlockEntities
+    // Value of charge here will be used when saved and restored
     public static final BlockEntityType<ChargedBlockEntity> CHARGED_BLOCK_ENTITY = register(
-            FabricBlockEntityTypeBuilder.<ChargedBlockEntity>create(ChargedBlockEntity::new, CHARGED_BLOCK).build(null), "charged_block");
+            FabricBlockEntityTypeBuilder.create(
+                    (BlockPos pos, BlockState state) -> {return new ChargedBlockEntity(pos, state, 1.0);},
+                    CHARGED_BLOCK).build(null), "charged_block");
 
     /**
      * Register a BlockEntity
