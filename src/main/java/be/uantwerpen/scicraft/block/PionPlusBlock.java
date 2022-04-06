@@ -44,6 +44,7 @@ public class PionPlusBlock extends BlockWithEntity {
             i = 2;
         }
         world.setBlockState(pos, state.with(COLOUR, i));
+        ChargedBlockEntity.placed(world, pos, state);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class PionPlusBlock extends BlockWithEntity {
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         ChargedBlockEntity.removed(world, pos, state);
+        super.onBreak(world, pos, state, player);
     }
 
     @Override

@@ -27,14 +27,14 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutrino");
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "antineutrino");
-    public static final Block POSITRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
+    public static final Block POSITRON = register(new PositronBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "positron");
-    public static final Block ELECTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
+    public static final Block ELECTRON = register(new ElectronBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "electron");
 
     public static final Block NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutron");
-    public static final Block PROTON = register(new Block(FabricBlockSettings.of(Material.WOOL)
+    public static final Block PROTON = register(new ProtonBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "proton");
 
     // Quantumfields

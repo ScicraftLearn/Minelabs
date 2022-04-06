@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block.entity;
 
-import be.uantwerpen.scicraft.block.PionPlusBlock;
+import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.util.Tags;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
@@ -13,8 +14,7 @@ public class ChargedBlockEntity {
     private static final double e_move = 1;
 
     public static void placed(World world, BlockPos pos, BlockState state) {
-        if ((world == null) || !(world.getBlockState(pos).getBlock() instanceof PionPlusBlock)) {return;}
-
+        if (!Tags.Blocks.CHARGED_BLOCKS.contains(world.getBlockState(pos).getBlock())) {return;}
         NbtCompound my_nbt = world.getBlockEntity(pos).createNbt();
         double my_field_x = my_nbt.getDouble("ex");
         double my_field_y = my_nbt.getDouble("ey");
@@ -35,7 +35,7 @@ public class ChargedBlockEntity {
         double d_E_x_other, d_E_y_other, d_E_z_other;
 
         for (BlockPos pos_block : blocks_in_radius) {
-            if ((world.getBlockState(pos_block).getBlock() instanceof PionPlusBlock)
+            if ((Tags.Blocks.CHARGED_BLOCKS.contains(world.getBlockState(pos_block).getBlock()))
                     && (pos_block.asLong() != pos.asLong())) {
                 NbtCompound nbt_other = world.getBlockEntity(pos_block).createNbt();
                 d_x = my_x - pos_block.getX();
@@ -68,7 +68,8 @@ public class ChargedBlockEntity {
     }
 
     public static void removed(World world, BlockPos pos, BlockState state) {
-        if ((world == null) || !(world.getBlockState(pos).getBlock() instanceof PionPlusBlock)) {return;}
+        Scicraft.LOGGER.debug(world.getBlockState(pos).getBlock());
+        if (!Tags.Blocks.CHARGED_BLOCKS.contains(world.getBlockState(pos).getBlock())) {return;}
 
         NbtCompound my_nbt = world.getBlockEntity(pos).createNbt();
         double my_charge = my_nbt.getDouble("q");
@@ -87,7 +88,7 @@ public class ChargedBlockEntity {
         double d_E_x_other, d_E_y_other, d_E_z_other;
 
         for (BlockPos pos_block : blocks_in_radius) {
-            if ((world.getBlockState(pos_block).getBlock() instanceof PionPlusBlock)
+            if ((Tags.Blocks.CHARGED_BLOCKS.contains(world.getBlockState(pos_block).getBlock()))
                     && (pos_block.asLong() != pos.asLong())) {
                 NbtCompound nbt_other = world.getBlockEntity(pos_block).createNbt();
                 d_x = my_x - pos_block.getX();

@@ -21,6 +21,17 @@ public class BlockEntities {
             FabricBlockEntityTypeBuilder.create(PionPlusBlockEntity::new, Blocks.PION_PLUS).build(null),
             "pion_plus_block_entity");
 
+    public static final BlockEntityType<ElectronBlockEntity> ELECTRON_BLOCK_ENTITY = register(
+            FabricBlockEntityTypeBuilder.create(ElectronBlockEntity::new, Blocks.ELECTRON).build(null),
+            "electron_block_entity");
+    public static final BlockEntityType<PositronBlockEntity> POSTIRON_BLOCK_ENTITY = register(
+            FabricBlockEntityTypeBuilder.create(PositronBlockEntity::new, Blocks.POSITRON).build(null),
+            "positron_block_entity");
+
+    public static final BlockEntityType<ProtonBlockEntity> PROTON_BLOCK_ENTITY = register(
+            FabricBlockEntityTypeBuilder.create(ProtonBlockEntity::new, Blocks.PROTON).build(null),
+            "proton_block_entity");
+
     /**
      * Register a BlockEntity
      * <p>
