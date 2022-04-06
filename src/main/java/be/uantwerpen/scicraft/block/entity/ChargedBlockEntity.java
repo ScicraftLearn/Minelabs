@@ -4,6 +4,7 @@ import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.ChargedBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -23,8 +24,8 @@ public class ChargedBlockEntity extends BlockEntity {
     private double field_z = 0.0;
     private boolean update_next_tick = false;
 
-    public ChargedBlockEntity(BlockPos pos, BlockState state, double charge_in) {
-        super(BlockEntities.ABSTRACT_CHARGED_BLOCK_ENTITY, pos, state);
+    public <T extends BlockEntity> ChargedBlockEntity(BlockEntityType<T> NAME, BlockPos pos, BlockState state, double charge_in) {
+        super(NAME, pos, state);
         this.charge = charge_in;
     }
 
@@ -164,7 +165,7 @@ public class ChargedBlockEntity extends BlockEntity {
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, ChargedBlockEntity be) {
-        return; //it seems to complain here for some odd reason....
+        Scicraft.LOGGER.debug("test");
     }
 
     private static void updateSurrounding(World world, BlockPos pos, BlockState state, ChargedBlockEntity be) {

@@ -1,7 +1,10 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.block.entity.ChargedBlockEntity;
+import be.uantwerpen.scicraft.block.entity.PionPlusBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
@@ -10,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class ChargedPionBlock extends ChargedBlock {
+public class ChargedPionBlock<T extends  ChargedBlockEntity> extends ChargedBlock<T> {
     public static final IntProperty COLOUR = IntProperty.of("age", 0, 2);
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
@@ -21,8 +24,8 @@ public class ChargedPionBlock extends ChargedBlock {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    public ChargedPionBlock(Settings settings, double charge) {
-        super(settings, charge);
+    public ChargedPionBlock(Settings settings, double charge, BlockEntityType<T> NAME) {
+        super(settings, charge, NAME);
         setDefaultState(getStateManager().getDefaultState().with(COLOUR, getRandomNumber(0, 2)));
     }
 

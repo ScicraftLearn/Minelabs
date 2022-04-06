@@ -11,20 +11,21 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-public class ChargedBlock extends BlockWithEntity {
+public class ChargedBlock<T extends BlockEntity> extends BlockWithEntity {
     private final double charge;
+    private final BlockEntityType<T> entity_name;
 
-    public ChargedBlock(Settings settings, double charge_in) {
+    public ChargedBlock(Settings settings, double charge_in, BlockEntityType<T> NAME) {
         super(settings);
         this.charge = charge_in;
+        this.entity_name = NAME;
     }
 
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new ChargedBlockEntity(pos, state, this.charge);
+        return new ChargedBlockEntity(entity_name, pos, state, this.charge);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ChargedBlock extends BlockWithEntity {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.ABSTRACT_CHARGED_BLOCK_ENTITY, ChargedBlockEntity::tick);
+    public <t extends BlockEntity> BlockEntityTicker<t> getTicker(World world, BlockState state, BlockEntityType<t> type) {
+        return checkType(type, entity_name, ChargedBlockEntity::tick);
     }
 }

@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.Blocks;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -10,18 +11,19 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
-import static be.uantwerpen.scicraft.block.Blocks.PION_MINUS;
-import static be.uantwerpen.scicraft.block.Blocks.PION_PLUS;
-
 
 public class BlockEntities {
 
     // BlockEntities
     // Value of charge here will be used when saved and restored if not saved under NBT-tag. (default value for BlkEn.)
-    public static final BlockEntityType<ChargedBlockEntity> ABSTRACT_CHARGED_BLOCK_ENTITY = register(
+    public static final BlockEntityType<PionMinusBlockEntity> PION_MINUS_BLOCK_ENTITY = register(
             FabricBlockEntityTypeBuilder.create(
-                    (BlockPos pos, BlockState state) -> {return new ChargedBlockEntity(pos, state, 0.0);},
-                    PION_MINUS).build(null), "charged_block");
+                    (BlockPos pos, BlockState state) -> {return new PionMinusBlockEntity(pos, state, 0.0);},
+                    Blocks.PION_MINUS).build(null), "pion_minus_block_entity");
+    public static final BlockEntityType<PionPlusBlockEntity> PION_PLUS_BLOCK_ENTITY = register(
+            FabricBlockEntityTypeBuilder.create(
+                    (BlockPos pos, BlockState state) -> {return new PionPlusBlockEntity(pos, state, 0.0);},
+                    Blocks.PION_PLUS).build(null), "pion_plus_block_entity");
 
     /**
      * Register a BlockEntity

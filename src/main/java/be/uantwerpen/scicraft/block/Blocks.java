@@ -1,6 +1,9 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
+import be.uantwerpen.scicraft.block.entity.PionMinusBlockEntity;
+import be.uantwerpen.scicraft.block.entity.PionPlusBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -14,10 +17,10 @@ public class Blocks {
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block PION_NUL = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");
-    public static final Block PION_MINUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), -1.0), "pion_minus");
-    public static final Block PION_PLUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), 1.0), "pion_plus");
+    public static final Block PION_MINUS = register(new ChargedPionBlock<PionMinusBlockEntity>(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), -1.0, BlockEntities.PION_MINUS_BLOCK_ENTITY), "pion_minus");
+    public static final Block PION_PLUS = register(new ChargedPionBlock<PionPlusBlockEntity>(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), 1.0, BlockEntities.PION_PLUS_BLOCK_ENTITY), "pion_plus");
 
     public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "weak_boson");
