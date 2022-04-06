@@ -1,11 +1,14 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.entity.ChargedBlockEntity;
-import be.uantwerpen.scicraft.block.entity.PionPlusBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import be.uantwerpen.scicraft.block.entity.PionMinusBlockEntity;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
@@ -13,8 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class ChargedPionBlock<T extends  ChargedBlockEntity> extends ChargedBlock<T> {
+public class PionMinusBlock extends BlockWithEntity {
     public static final IntProperty COLOUR = IntProperty.of("age", 0, 2);
+
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
         stateManager.add(COLOUR);
@@ -24,8 +28,8 @@ public class ChargedPionBlock<T extends  ChargedBlockEntity> extends ChargedBloc
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    public ChargedPionBlock(Settings settings, double charge, BlockEntityType<T> NAME) {
-        super(settings, charge, NAME);
+    public PionMinusBlock(Settings settings) {
+        super(settings);
         setDefaultState(getStateManager().getDefaultState().with(COLOUR, getRandomNumber(0, 2)));
     }
 
@@ -40,5 +44,26 @@ public class ChargedPionBlock<T extends  ChargedBlockEntity> extends ChargedBloc
             i = 2;
         }
         world.setBlockState(pos, state.with(COLOUR, i));
+    }
+
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new PionMinusBlockEntity(pos, state);
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
+        return BlockRenderType.MODEL;
+    }
+
+    @Override
+    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        ChargedBlockEntity.removed(world, pos, state);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, BlockEntities.PION_MINUS_BLOCK_ENTITY, PionMinusBlockEntity::tick);
     }
 }
