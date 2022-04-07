@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 public class ChargedBlockEntity {
     private static final int e_radius = 5;
     private static final double kc = 1;
-    private static final double e_move = 1;
+    private static final double e_move = .8;
 
     public static void placed(World world, BlockPos pos, BlockState state) {
         if (!Tags.Blocks.CHARGED_BLOCKS.contains(world.getBlockState(pos).getBlock())) {return;}

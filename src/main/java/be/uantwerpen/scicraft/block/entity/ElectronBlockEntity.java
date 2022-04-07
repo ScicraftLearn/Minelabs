@@ -1,6 +1,8 @@
 package be.uantwerpen.scicraft.block.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
@@ -17,6 +19,9 @@ public class ElectronBlockEntity extends BlockEntity {
     private double field_y = 0.0;
     private double field_z = 0.0;
     private boolean update_next_tick = false;
+    public long time = 0;
+    public boolean is_moving = false;
+    public int mark_delete;
 
     public ElectronBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.ELECTRON_BLOCK_ENTITY, pos, state);
@@ -30,6 +35,9 @@ public class ElectronBlockEntity extends BlockEntity {
         tag.putDouble("ez", field_z);
         tag.putDouble("q", charge);
         tag.putBoolean("ut", update_next_tick);
+        tag.putBoolean("is", is_moving);
+        tag.putLong("time", time);
+        tag.putInt("md", mark_delete);
         super.writeNbt(tag);
     }
 
@@ -42,6 +50,9 @@ public class ElectronBlockEntity extends BlockEntity {
         field_z = tag.getDouble("ez");
         charge = tag.getDouble("q");
         update_next_tick = tag.getBoolean("ut");
+        is_moving = tag.getBoolean("is");
+        time = tag.getLong("time");
+        mark_delete = tag.getInt("md");
     }
 
     @Nullable
@@ -56,6 +67,21 @@ public class ElectronBlockEntity extends BlockEntity {
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, ElectronBlockEntity be) {
-        return;
+        if (be.update_next_tick && !be.is_moving) {
+            NbtCompound my_nbt = be.createNbt();
+            my_nbt.putBoolean("ut", false);
+            my_nbt.putBoolean("is", true);
+            my_nbt.putLong("time", world.getTime());
+            be.readNbt(my_nbt);
+        } else if (be.mark_delete != 0) {
+            int x_new = Math.abs(be.mark_delete) == 1 ?  Math.abs(be.mark_delete) / be.mark_delete : 0;
+            int y_new = Math.abs(be.mark_delete) == 2 ?  Math.abs(be.mark_delete) / be.mark_delete : 0;
+            int z_new = Math.abs(be.mark_delete) == 3 ?  Math.abs(be.mark_delete) / be.mark_delete : 0;
+            be.world.removeBlockEntity(be.pos);
+            be.markRemoved();
+            BlockState blockState = Block.postProcessState(be.getCachedState().getBlock().getDefaultState(), be.world, be.pos);
+            be.world.setBlockState(be.pos.add(x_new, y_new, z_new), blockState, Block.NOTIFY_ALL);
+            be.world.updateNeighbor(be.pos, blockState.getBlock(), be.pos);
+        }
     }
 }

@@ -17,6 +17,8 @@ public class PionPlusBlockEntity extends BlockEntity {
     private double field_y = 0.0;
     private double field_z = 0.0;
     private boolean update_next_tick = false;
+    public long time = 0;
+    public boolean is_moving = false;
 
     public PionPlusBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.PION_PLUS_BLOCK_ENTITY, pos, state);
@@ -30,6 +32,8 @@ public class PionPlusBlockEntity extends BlockEntity {
         tag.putDouble("ez", field_z);
         tag.putDouble("q", charge);
         tag.putBoolean("ut", update_next_tick);
+        tag.putBoolean("is", is_moving);
+        tag.putLong("time", time);
         super.writeNbt(tag);
     }
 
@@ -42,6 +46,8 @@ public class PionPlusBlockEntity extends BlockEntity {
         field_z = tag.getDouble("ez");
         charge = tag.getDouble("q");
         update_next_tick = tag.getBoolean("ut");
+        is_moving = tag.getBoolean("is");
+        time = tag.getLong("time");
     }
 
     @Nullable
@@ -56,6 +62,12 @@ public class PionPlusBlockEntity extends BlockEntity {
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, PionPlusBlockEntity be) {
-        return;
+        if (be.update_next_tick && !be.is_moving) {
+            NbtCompound my_nbt = be.createNbt();
+            my_nbt.putBoolean("ut", false);
+            my_nbt.putBoolean("is", true);
+            my_nbt.putLong("time", world.getTime());
+            be.readNbt(my_nbt);
+        }
     }
 }
