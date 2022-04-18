@@ -27,10 +27,10 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutrino");
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "antineutrino");
-    public static final Block POSITRON = register(new PositronBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "positron");
-    public static final Block ELECTRON = register(new ElectronBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "electron");
+    public static final ParticleBlock POSITRON = register(new ParticleBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.POSTIRON_BLOCK_ENTITY), "positron");
+    public static final ParticleBlock ELECTRON = register(new ParticleBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(),() -> BlockEntities.ELECTRON_BLOCK_ENTITY) , "electron");
 
     public static final Block NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutron");
@@ -55,9 +55,10 @@ public class Blocks {
      *
      * @param block      : Block Object to register
      * @param identifier : String name of the Item
+     * @return 
      * @return {@link Block}
      */
-    private static Block register(Block block, String identifier) {
+    private static <T extends Block> T register(T block, String identifier) {
         return Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, identifier), block);
     }
 

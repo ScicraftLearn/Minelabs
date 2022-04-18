@@ -68,19 +68,19 @@ public class ElectronBlockEntity extends BlockEntity {
 
     public static void tick(World world, BlockPos pos, BlockState state, ElectronBlockEntity be) {
         if (be.update_next_tick && !be.is_moving) {
-            NbtCompound my_nbt = be.createNbt();
-            my_nbt.putBoolean("ut", false);
-            my_nbt.putBoolean("is", true);
-            my_nbt.putLong("time", world.getTime());
-            be.readNbt(my_nbt);
+            be.update_next_tick = false;
+            be.is_moving = false;
+            be.time = world.getTime();
+            be.markDirty();
         } else if (be.mark_delete != 0) {
+        	System.out.println(world.isClient);
             int x_new = Math.abs(be.mark_delete) == 1 ?  Math.abs(be.mark_delete) / be.mark_delete : 0;
             int y_new = Math.abs(be.mark_delete) == 2 ?  Math.abs(be.mark_delete) / be.mark_delete : 0;
             int z_new = Math.abs(be.mark_delete) == 3 ?  Math.abs(be.mark_delete) / be.mark_delete : 0;
             be.world.removeBlockEntity(be.pos);
             be.markRemoved();
             BlockState blockState = Block.postProcessState(be.getCachedState().getBlock().getDefaultState(), be.world, be.pos);
-            be.world.setBlockState(be.pos.add(x_new, y_new, z_new), blockState, Block.NOTIFY_ALL);
+            be.world.setBlockState(be.pos.add(x_new, y_new, z_new), blockState);
             be.world.updateNeighbor(be.pos, blockState.getBlock(), be.pos);
         }
     }

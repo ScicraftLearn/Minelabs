@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block;
 
-import be.uantwerpen.scicraft.block.entity.BlockEntities;
+import org.jetbrains.annotations.Nullable;
+
 import be.uantwerpen.scicraft.block.entity.ChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.ElectronBlockEntity;
 import net.minecraft.block.BlockRenderType;
@@ -14,7 +15,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class ElectronBlock extends BlockWithEntity {
 
@@ -47,6 +47,6 @@ public class ElectronBlock extends BlockWithEntity {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.ELECTRON_BLOCK_ENTITY, ElectronBlockEntity::tick);
+        return checkType(type, null, ElectronBlockEntity::tick);
     }
 }

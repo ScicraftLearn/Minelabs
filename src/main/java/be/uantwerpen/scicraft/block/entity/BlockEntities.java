@@ -20,13 +20,22 @@ public class BlockEntities {
     public static final BlockEntityType<PionPlusBlockEntity> PION_PLUS_BLOCK_ENTITY = register(
             FabricBlockEntityTypeBuilder.create(PionPlusBlockEntity::new, Blocks.PION_PLUS).build(null),
             "pion_plus_block_entity");
-
-    public static final BlockEntityType<ElectronBlockEntity> ELECTRON_BLOCK_ENTITY = register(
-            FabricBlockEntityTypeBuilder.create(ElectronBlockEntity::new, Blocks.ELECTRON).build(null),
-            "electron_block_entity");
-    public static final BlockEntityType<PositronBlockEntity> POSTIRON_BLOCK_ENTITY = register(
-            FabricBlockEntityTypeBuilder.create(PositronBlockEntity::new, Blocks.POSITRON).build(null),
-            "positron_block_entity");
+    
+    
+    public static BlockEntityType<ParticleBlockEntity> ELECTRON_BLOCK_ENTITY;
+    public static BlockEntityType<ParticleBlockEntity> POSTIRON_BLOCK_ENTITY;
+    
+    static {
+    	ELECTRON_BLOCK_ENTITY = register(
+    			FabricBlockEntityTypeBuilder.create((p,s) -> new ParticleBlockEntity(ELECTRON_BLOCK_ENTITY, p, s, -1), Blocks.ELECTRON).build(null),
+    			"electron_block_entity");
+    	
+    	POSTIRON_BLOCK_ENTITY = register(
+    			FabricBlockEntityTypeBuilder.create((p,s) -> new ParticleBlockEntity(POSTIRON_BLOCK_ENTITY, p, s, 1), Blocks.POSITRON).build(null),
+    			"positron_block_entity");
+    }
+    
+    
 
     public static final BlockEntityType<ProtonBlockEntity> PROTON_BLOCK_ENTITY = register(
             FabricBlockEntityTypeBuilder.create(ProtonBlockEntity::new, Blocks.PROTON).build(null),
