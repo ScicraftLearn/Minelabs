@@ -6,6 +6,7 @@ import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
@@ -89,12 +90,12 @@ public class ChargedBlockEntity extends BlockEntity{
             for (BlockPos pos_block : blocks_in_radius) {
                 if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block)) {
                     Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
-                    float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(Math.sqrt(vec_pos.dot(vec_pos)), 3.));
+                    float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
                     vec_pos.scale(d_E);
                     field.subtract(vec_pos);
+                    needsUpdate(field.dot(field) > e_move); // putting it here makes it so the field stays zero.
                 }
             }
-            needsUpdate(field.dot(field) > e_move);
             markDirty();
         }
     }
@@ -103,9 +104,11 @@ public class ChargedBlockEntity extends BlockEntity{
         // Find x, y, z blocks to hop to
         // Determine if hoppable
         Vec3d field2 = new Vec3d(field.getX() * field.getX(), field.getY() * field.getY(), field.getZ() * field.getZ());
-        double sum_field2 = field2.dotProduct(Vec3d.ZERO);
-        double random = Math.random();
-        Vec3i movement =Vec3i.ZERO;
+        double sum_field2 = field2.dotProduct(new Vec3d(1, 1, 1));
+        System.out.println(sum_field2);
+        System.out.println(field2);
+        double random = Math.random(); //Random movement makes it so the client and server can desync
+        Vec3i movement = Vec3i.ZERO;
         if (random < (field2.getX() / sum_field2)) {
             movement = movement.add((int) Math.signum(field.getX()), 0, 0);
         } else if (random < (field2.getY() / sum_field2)) {
@@ -135,10 +138,11 @@ public class ChargedBlockEntity extends BlockEntity{
             is_moving = false;
             update_next_tick = false;
             BlockPos nPos = pos.mutableCopy().add(movement_direction); //TODO to late, moving has already finished and we only now check if it's possible
-            if (world.getBlockState(nPos).isAir()) {
+            if (world.getBlockState(nPos).isAir() && !world.isClient) { //Random movement makes it so the client and server can desync, only listen to the server
                 world.setBlockState(nPos, state.getBlock().getDefaultState(), Block.NOTIFY_ALL);
                 world.removeBlockEntity(pos);
                 world.removeBlock(pos, false);
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
             }
             movement_direction = Vec3i.ZERO;
             markDirty();
