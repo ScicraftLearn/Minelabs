@@ -2,7 +2,7 @@ package be.uantwerpen.scicraft.block;
 
 import java.util.function.Supplier;
 
-import be.uantwerpen.scicraft.block.entity.ParticleBlockEntity;
+import be.uantwerpen.scicraft.block.entity.ChargedBlockEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -12,11 +12,11 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ParticleBlock extends BlockWithEntity{
+public class ChargedBlock extends BlockWithEntity{
 
-	private Supplier<BlockEntityType<? extends ParticleBlockEntity>> lazy;
+	private Supplier<BlockEntityType<? extends ChargedBlockEntity>> lazy;
 
-	public ParticleBlock(Settings settings, Supplier<BlockEntityType<? extends ParticleBlockEntity>> lazy) {
+	public ChargedBlock(Settings settings, Supplier<BlockEntityType<? extends ChargedBlockEntity>> lazy) {
 		super(settings);
 		this.lazy = lazy;
 	}
@@ -34,7 +34,7 @@ public class ParticleBlock extends BlockWithEntity{
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, this.lazy.get(), ParticleBlockEntity::tick);
+        return checkType(type, this.lazy.get(), ChargedBlockEntity::tick);
     }
 
 }

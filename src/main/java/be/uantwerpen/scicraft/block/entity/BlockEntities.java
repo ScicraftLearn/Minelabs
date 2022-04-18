@@ -11,35 +11,33 @@ import net.minecraft.util.registry.Registry;
 
 
 public class BlockEntities {
-
-    // BlockEntities
-    // Value of charge here will be used when saved and restored if not saved under NBT-tag. (default value for BlkEn.)
-    public static final BlockEntityType<PionMinusBlockEntity> PION_MINUS_BLOCK_ENTITY = register(
-            FabricBlockEntityTypeBuilder.create(PionMinusBlockEntity::new,Blocks.PION_MINUS).build(null),
-            "pion_minus_block_entity");
-    public static final BlockEntityType<PionPlusBlockEntity> PION_PLUS_BLOCK_ENTITY = register(
-            FabricBlockEntityTypeBuilder.create(PionPlusBlockEntity::new, Blocks.PION_PLUS).build(null),
-            "pion_plus_block_entity");
-    
-    
-    public static BlockEntityType<ParticleBlockEntity> ELECTRON_BLOCK_ENTITY;
-    public static BlockEntityType<ParticleBlockEntity> POSTIRON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> ELECTRON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> POSTIRON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> PROTON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> PION_MINUS_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     
     static {
+        PION_MINUS_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_MINUS_BLOCK_ENTITY, p, s, -1), Blocks.PION_MINUS).build(null),
+                "pion_minus_block_entity");
+
+        PION_PLUS_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_PLUS_BLOCK_ENTITY, p, s, -1), Blocks.PION_PLUS).build(null),
+                "pion_plus_block_entity");
+
     	ELECTRON_BLOCK_ENTITY = register(
-    			FabricBlockEntityTypeBuilder.create((p,s) -> new ParticleBlockEntity(ELECTRON_BLOCK_ENTITY, p, s, -1), Blocks.ELECTRON).build(null),
+    			FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(ELECTRON_BLOCK_ENTITY, p, s, -1), Blocks.ELECTRON).build(null),
     			"electron_block_entity");
     	
     	POSTIRON_BLOCK_ENTITY = register(
-    			FabricBlockEntityTypeBuilder.create((p,s) -> new ParticleBlockEntity(POSTIRON_BLOCK_ENTITY, p, s, 1), Blocks.POSITRON).build(null),
+    			FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(POSTIRON_BLOCK_ENTITY, p, s, 1), Blocks.POSITRON).build(null),
     			"positron_block_entity");
-    }
-    
-    
 
-    public static final BlockEntityType<ProtonBlockEntity> PROTON_BLOCK_ENTITY = register(
-            FabricBlockEntityTypeBuilder.create(ProtonBlockEntity::new, Blocks.PROTON).build(null),
-            "proton_block_entity");
+        PROTON_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PROTON_BLOCK_ENTITY, p, s, 1), Blocks.PROTON).build(null),
+                "proton_block_entity");
+    }
 
     /**
      * Register a BlockEntity

@@ -14,12 +14,12 @@ import net.minecraft.util.registry.Registry;
 public class Blocks {
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
-    public static final Block PION_NUL = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block PION_NUL = register(new PionNulBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");
-    public static final Block PION_MINUS = register(new PionMinusBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_minus");
-    public static final Block PION_PLUS = register(new PionPlusBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_plus");
+    public static final Block PION_MINUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_MINUS_BLOCK_ENTITY), "pion_minus");
+    public static final Block PION_PLUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_PLUS_BLOCK_ENTITY), "pion_plus");
 
     public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "weak_boson");
@@ -27,15 +27,17 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutrino");
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "antineutrino");
-    public static final ParticleBlock POSITRON = register(new ParticleBlock(FabricBlockSettings.of(Material.WOOL)
+
+    public static final ChargedBlock POSITRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.POSTIRON_BLOCK_ENTITY), "positron");
-    public static final ParticleBlock ELECTRON = register(new ParticleBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlock ELECTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(),() -> BlockEntities.ELECTRON_BLOCK_ENTITY) , "electron");
+
+    public static final ChargedBlock PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PROTON_BLOCK_ENTITY), "proton");
 
     public static final Block NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutron");
-    public static final Block PROTON = register(new ProtonBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "proton");
 
     // Quantumfields
     public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(), "gluon_quantumfield");

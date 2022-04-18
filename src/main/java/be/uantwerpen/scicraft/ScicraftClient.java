@@ -3,7 +3,7 @@ package be.uantwerpen.scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
-import be.uantwerpen.scicraft.renderer.ElectronBlockEntityRenderer;
+import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -36,10 +36,10 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
 
-        BlockEntityRendererRegistry.register(BlockEntities.ELECTRON_BLOCK_ENTITY, ElectronBlockEntityRenderer::new);
-        //BlockEntityRendererRegistry.register(BlockEntities.POSTIRON_BLOCK_ENTITY, ElectronBlockEntityRenderer::new);
-        //BlockEntityRendererRegistry.register(BlockEntities.PROTON_BLOCK_ENTITY, ElectronBlockEntityRenderer::new);
-        //BlockEntityRendererRegistry.register(BlockEntities.PION_MINUS_BLOCK_ENTITY, ElectronBlockEntityRenderer::new);
-        //BlockEntityRendererRegistry.register(BlockEntities.PION_PLUS_BLOCK_ENTITY, ElectronBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntities.ELECTRON_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntities.POSTIRON_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntities.PROTON_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntities.PION_MINUS_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntities.PION_PLUS_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
     }
 }
