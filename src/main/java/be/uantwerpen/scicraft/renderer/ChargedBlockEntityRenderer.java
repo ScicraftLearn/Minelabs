@@ -23,7 +23,7 @@ public class ChargedBlockEntityRenderer<T extends ChargedBlockEntity> implements
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
 		if (blockEntity.is_moving) {
-			double offset = (blockEntity.getWorld().getTime() + tickDelta - blockEntity.time) / 4;
+			double offset = (blockEntity.getWorld().getTime() + tickDelta - blockEntity.time) / blockEntity.time_move_ticks;
 			matrices.translate(blockEntity.movement_direction.getX() * offset, blockEntity.movement_direction.getY() * offset, blockEntity.movement_direction.getZ() * offset);
 			MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(blockEntity.getCachedState(), matrices, vertexConsumers, light, overlay);
         }

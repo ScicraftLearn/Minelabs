@@ -19,6 +19,7 @@ public class ChargedPionBlock extends ChargedBlock {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
+        super.appendProperties(stateManager);
         stateManager.add(COLOUR);
     }
 

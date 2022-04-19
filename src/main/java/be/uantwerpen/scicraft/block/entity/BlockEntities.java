@@ -23,7 +23,7 @@ public class BlockEntities {
                 "pion_minus_block_entity");
 
         PION_PLUS_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_PLUS_BLOCK_ENTITY, p, s, -1), Blocks.PION_PLUS).build(null),
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_PLUS_BLOCK_ENTITY, p, s, 1), Blocks.PION_PLUS).build(null),
                 "pion_plus_block_entity");
 
     	ELECTRON_BLOCK_ENTITY = register(
