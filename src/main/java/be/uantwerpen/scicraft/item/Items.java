@@ -21,8 +21,6 @@ public class Items {
 
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC));
-    public static final Item SCIENTIFIC_VILLAGER_SPAWN_EGG = new SpawnEggItem(Entities.SCIENTIFIC_VILLAGER,
-            0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC));
 
     // BlockItems
     public static final Item PION_NUL = new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES));
@@ -53,6 +51,5 @@ public class Items {
         registerItem(PION_MINUS, "pion_minus");
         registerItem(PION_PLUS, "pion_plus");
         registerItem(ENTROPY_CREEPER_SPAWN_EGG, "entropy_creeper_spawn_egg");
-        registerItem(SCIENTIFIC_VILLAGER_SPAWN_EGG, "scientific_villager_spawn_egg");
     }
 }

@@ -26,6 +26,5 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.SCIENTIFIC_VILLAGER, ScientificVillagerEntityRenderer::new);
     }
 }

@@ -29,9 +29,6 @@ public class Entities {
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
 
-    public static final EntityType<ScientificVillagerEntity> SCIENTIFIC_VILLAGER = FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ScientificVillagerEntity::new)
-            .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build();
-
 
     /**
      * Register a single entity
@@ -72,8 +69,6 @@ public class Entities {
         registerEntity(PROTON_ENTITY, "proton_entity");
         registerEntity(NEUTRON_ENTITY, "neutron_entity");
 
-        FabricDefaultAttributeRegistry.register(SCIENTIFIC_VILLAGER, ScientificVillagerEntity.createVillagerAttributes());
-        registerEntity(SCIENTIFIC_VILLAGER, "scientific_villager");
 //        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld(), new SpawnSettings.SpawnEntry(SCIENTIFIC_VILLAGER, 100, 1, 1));
     }
 }
