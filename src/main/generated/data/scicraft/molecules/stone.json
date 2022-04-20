@@ -1,0 +1,11 @@
+{
+  "blocks": [
+    "minecraft:stone"
+  ],
+  "molecules": [
+    "SiO_2"
+  ],
+  "distribution": [
+    100
+  ]
+}

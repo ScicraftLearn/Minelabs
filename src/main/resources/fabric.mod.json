@@ -25,6 +25,9 @@
     ],
     "client": [
       "be.uantwerpen.scicraft.ScicraftClient"
+    ],
+    "fabric-datagen": [
+      "be.uantwerpen.scicraft.ScicraftDatagen"
     ]
   },
   "mixins": [
