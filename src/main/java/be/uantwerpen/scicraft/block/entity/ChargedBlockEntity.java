@@ -23,7 +23,7 @@ import java.util.Objects;
 
 public class ChargedBlockEntity extends BlockEntity{
     private double charge;
-    private Vec3f field = Vec3f.ZERO;
+    private Vec3f field;
     private boolean update_next_tick = false;
     public long time = 0;
     public boolean is_moving = false;
@@ -50,9 +50,7 @@ public class ChargedBlockEntity extends BlockEntity{
         tag.putBoolean("is", is_moving);
         tag.putBoolean("wp", waiting_placement);
         tag.putLong("time", time);
-        tag.putInt("mdx", movement_direction.getX());
-        tag.putInt("mdy", movement_direction.getY());
-        tag.putInt("mdz", movement_direction.getZ());
+        tag.putInt("md", vec2int(movement_direction));
         super.writeNbt(tag);
     }
 
@@ -66,7 +64,7 @@ public class ChargedBlockEntity extends BlockEntity{
         is_moving = tag.getBoolean("is");
         waiting_placement = tag.getBoolean("wp");
         time = tag.getLong("time");
-        movement_direction = new Vec3i(tag.getInt("mdx"), tag.getInt("mdy"), tag.getInt("mdz"));
+        movement_direction = int2vec(tag.getInt("md"));
     }
 
     @Nullable
@@ -92,9 +90,44 @@ public class ChargedBlockEntity extends BlockEntity{
         this.update_next_tick = b;
     }
 
+    public Vec3i int2vec(int movement) {
+        if (movement == 1) {
+            return new Vec3i(1, 0, 0);
+        } else if (movement == -1) {
+            return new Vec3i(-1, 0, 0);
+        } else if (movement == 2) {
+            return new Vec3i(0, 1, 0);
+        } else if (movement == -2) {
+            return new Vec3i(0,-1, 0);
+        } else if (movement == 3) {
+            return new Vec3i(0,0,1);
+        } else if (movement == -3) {
+            return new Vec3i(0,0,-1);
+        } else {
+            return new Vec3i(0,0,0);
+        }
+    }
+
+    public int vec2int(Vec3i movement) {
+        if (Objects.equals(movement, new Vec3i(1, 0, 0))) {
+            return 1;
+        } else if (movement.equals(new Vec3i(-1, 0, 0))) {
+            return -1;
+        } else if (movement.equals(new Vec3i(0, 1, 0))) {
+            return 2;
+        } else if (movement.equals(new Vec3i(0,-1, 0))) {
+            return -2;
+        } else if (movement.equals(new Vec3i(0,0,1))) {
+            return 3;
+        } else if (movement.equals(new Vec3i(0,0,-1))) {
+            return -3;
+        } else {
+            return 0;
+        }
+    }
     private void updateField(World world, BlockPos pos) {
         if ((world.getTime() + pos.asLong()) % 10 == 0) {
-            int e_radius = 5;
+            int e_radius = 6;
             double kc = 1;
             double e_move = .8;
             Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
@@ -113,29 +146,26 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     private Vec3i movementDirection(World world, BlockPos pos) {
-        // Find x, y, z blocks to hop to
-        // Determine if hoppable
-        // TODO: remove the randomness or update with server to agree on the direction
-        Vec3d field2 = new Vec3d(field.getX() * field.getX(), field.getY() * field.getY(), field.getZ() * field.getZ());
-        double sum_field2 = field2.dotProduct(new Vec3d(1, 1, 1));
-        double random = Math.random(); //Random movement makes it so the client and server can desync
-        Vec3i movement = Vec3i.ZERO;
-        if (random < (field2.getX() / sum_field2)) {
-            movement = field.getX() > 0 ? new Vec3i(1, 0, 0) : new Vec3i(-1, 0, 0);
-        } else if (random < ((field2.getX() + field2.getY() )/ sum_field2)) {
-            movement = field.getY() > 0 ? new Vec3i(0,1, 0) : new Vec3i(0,-1, 0);
+        Vec3d field_abs = new Vec3d(Math.abs(field.getX()), Math.abs(field.getY()), Math.abs(field.getZ()));
+        int movement = 0;
+        if (field_abs.getX() >= field_abs.getY()) {
+            if (field_abs.getX() >= field_abs.getZ()) {
+                movement = field.getX() > 0 ? 1 : -1; // XYZ & XZY
+            } else {
+                movement = field.getZ() > 0 ? 3 : -3; // ZXY
+            }
+        } else if (field_abs.getY() >= field_abs.getZ()) {
+            movement = field.getY() > 0 ? 2 : -2; // YZX & YXZ
         } else {
-            movement = field.getZ() > 0 ? new Vec3i(0,0,1) : new Vec3i(0,0,-1);
+            movement = field.getZ() > 0 ? 3 : -3; // ZYX
         }
-        if (!world.getBlockState(pos.add(movement)).isAir()) {
-            movement = Vec3i.ZERO;
-        }
-        return movement;
+        return int2vec(movement);
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
+        // TODO: create a whole "lifecycle" for a charged particle, begining from either placement by user or by algorithm and checking if algorithms in client and server are still in sync.
         this.updateField(world, pos);
-        if (update_next_tick && !is_moving) { //TODO check if moving is possible first
+        if (update_next_tick && !is_moving) {
             Vec3i movement = movementDirection(world, pos);
             if (!movement.equals(Vec3i.ZERO)) {
                 time = world.getTime();
@@ -146,7 +176,13 @@ public class ChargedBlockEntity extends BlockEntity{
                     is_moving = true;
                     if (!world.isClient) { //Random movement makes it so the client and server can desync, only listen to the server
                         world.setBlockState(nPos, state.getBlock().getDefaultState().with(ChargedBlock.PLACEMENT, false), Block.NOTIFY_ALL);
-
+                        //((ChargedBlockEntity) Objects.requireNonNull(world.getBlockEntity(nPos))).movement_direction = movement_direction;
+                    }
+                } else if (world.getBlockEntity(pos.mutableCopy().add(movement_direction)) instanceof ChargedBlockEntity particle2 && world.isClient) { // The server can be faster then the client so that the initial check for free space returns bad. See if the server is faster then us.
+                    if (!particle2.waiting_placement) {
+                        movement_direction = movement;
+                        update_next_tick = false;
+                        is_moving = true; // TODO: remove 'is_moving' is movement isn't possible/needed anymore because the server has done some changes on the game.
                     }
                 }
                 markDirty();
@@ -154,14 +190,17 @@ public class ChargedBlockEntity extends BlockEntity{
         }
         if (is_moving && world.getTime() - time > time_move_ticks) {
             is_moving = false;
-            update_next_tick = false; //TODO to late, moving has already finished and we only now check if it's possible
-            if (world.getBlockEntity(pos.mutableCopy().add(movement_direction)) instanceof ChargedBlockEntity particle2 && !world.isClient) {
-                world.removeBlockEntity(pos);
-                world.removeBlock(pos, false);
-                world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+            update_next_tick = false;
+            if (world.getBlockEntity(pos.mutableCopy().add(movement_direction)) instanceof ChargedBlockEntity particle2) { //also change other particle for client
                 particle2.waiting_placement = true;
+                //particle2.movement_direction = new Vec3i(0, 0, 0);
+                if (!world.isClient) {
+                    world.removeBlockEntity(pos);
+                    world.removeBlock(pos, false);
+                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+                }
             }
-            movement_direction = Vec3i.ZERO;
+            movement_direction = new Vec3i(0,0,0);
             markDirty();
         }
     }
