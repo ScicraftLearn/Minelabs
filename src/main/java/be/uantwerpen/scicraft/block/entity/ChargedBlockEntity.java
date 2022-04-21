@@ -1,14 +1,10 @@
 package be.uantwerpen.scicraft.block.entity;
 
-import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.block.ChargedBlock;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
@@ -25,17 +21,9 @@ public class ChargedBlockEntity extends BlockEntity{
     private double charge;
     private Vec3f field;
     private boolean update_next_tick = false;
-    public long time = 0;
-    public boolean is_moving = false;
-    public Vec3i movement_direction = Vec3i.ZERO;
-    public final int time_move_ticks = 10;
-    public boolean waiting_placement;
 
     public ChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, double charge) {
         super(type, pos, state);
-        for (Property<?> prop : state.getProperties()) {
-            if (prop.getName().equals("placement")) {waiting_placement = (Boolean) state.get(prop);}
-        }
         this.charge = charge;
         field = Vec3f.ZERO;
     }
@@ -47,10 +35,6 @@ public class ChargedBlockEntity extends BlockEntity{
         tag.putFloat("ez", field.getZ());
         tag.putDouble("q", charge);
         tag.putBoolean("ut", update_next_tick);
-        tag.putBoolean("is", is_moving);
-        tag.putBoolean("wp", waiting_placement);
-        tag.putLong("time", time);
-        tag.putInt("md", vec2int(movement_direction));
         super.writeNbt(tag);
     }
 
@@ -61,10 +45,6 @@ public class ChargedBlockEntity extends BlockEntity{
         field = new Vec3f(tag.getFloat("ex"), tag.getFloat("ey"), tag.getFloat("ez"));
         charge = tag.getDouble("q");
         update_next_tick = tag.getBoolean("ut");
-        is_moving = tag.getBoolean("is");
-        waiting_placement = tag.getBoolean("wp");
-        time = tag.getLong("time");
-        movement_direction = int2vec(tag.getInt("md"));
     }
 
     @Nullable
@@ -83,14 +63,14 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public double getCharge() {
-        return waiting_placement ? charge : 0;
+         return charge;
     }
 
     public void needsUpdate(boolean b) {
         this.update_next_tick = b;
     }
 
-    public Vec3i int2vec(int movement) {
+    public static Vec3i int2vec(int movement) {
         if (movement == 1) {
             return new Vec3i(1, 0, 0);
         } else if (movement == -1) {
@@ -108,7 +88,7 @@ public class ChargedBlockEntity extends BlockEntity{
         }
     }
 
-    public int vec2int(Vec3i movement) {
+    public static int vec2int(Vec3i movement) {
         if (Objects.equals(movement, new Vec3i(1, 0, 0))) {
             return 1;
         } else if (movement.equals(new Vec3i(-1, 0, 0))) {
@@ -164,44 +144,28 @@ public class ChargedBlockEntity extends BlockEntity{
 
     public void tick(World world, BlockPos pos, BlockState state) {
         // TODO: create a whole "lifecycle" for a charged particle, begining from either placement by user or by algorithm and checking if algorithms in client and server are still in sync.
-        this.updateField(world, pos);
-        if (update_next_tick && !is_moving) {
-            Vec3i movement = movementDirection(world, pos);
-            if (!movement.equals(Vec3i.ZERO)) {
-                time = world.getTime();
-                BlockPos nPos = pos.mutableCopy().add(movement);
-                if (world.getBlockState(nPos).isAir()) {
-                    movement_direction = movement;
-                    update_next_tick = false;
-                    is_moving = true;
-                    if (!world.isClient) { //Random movement makes it so the client and server can desync, only listen to the server
-                        world.setBlockState(nPos, state.getBlock().getDefaultState().with(ChargedBlock.PLACEMENT, false), Block.NOTIFY_ALL);
-                        //((ChargedBlockEntity) Objects.requireNonNull(world.getBlockEntity(nPos))).movement_direction = movement_direction;
-                    }
-                } else if (world.getBlockEntity(pos.mutableCopy().add(movement_direction)) instanceof ChargedBlockEntity particle2 && world.isClient) { // The server can be faster then the client so that the initial check for free space returns bad. See if the server is faster then us.
-                    if (!particle2.waiting_placement) {
-                        movement_direction = movement;
+        if (!world.isClient) {
+            this.updateField(world, pos);
+            if (update_next_tick) {
+                Vec3i movement = movementDirection(world, pos);
+                if (!movement.equals(Vec3i.ZERO)) {
+                    BlockPos nPos = pos.mutableCopy().add(movement);
+                    if (world.getBlockState(nPos).isAir()) {
                         update_next_tick = false;
-                        is_moving = true; // TODO: remove 'is_moving' is movement isn't possible/needed anymore because the server has done some changes on the game.
+                        world.removeBlockEntity(pos);
+                        world.removeBlock(pos, false);
+                        world.setBlockState(pos, be.uantwerpen.scicraft.block.Blocks.ANIMATED_CHARGED.getDefaultState(), Block.NOTIFY_ALL);
+                        world.setBlockState(nPos, be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER.getDefaultState(), Block.NOTIFY_ALL);
+                        if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity particle2) {
+                            particle2.movement_direction = movement;
+                            particle2.render_state = getCachedState();
+                        }
                     }
-                }
-                markDirty();
-            }
-        }
-        if (is_moving && world.getTime() - time > time_move_ticks) {
-            is_moving = false;
-            update_next_tick = false;
-            if (world.getBlockEntity(pos.mutableCopy().add(movement_direction)) instanceof ChargedBlockEntity particle2) { //also change other particle for client
-                particle2.waiting_placement = true;
-                //particle2.movement_direction = new Vec3i(0, 0, 0);
-                if (!world.isClient) {
-                    world.removeBlockEntity(pos);
-                    world.removeBlock(pos, false);
-                    world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+                    markDirty();
+                } else {
+                    update_next_tick = false;
                 }
             }
-            movement_direction = new Vec3i(0,0,0);
-            markDirty();
         }
     }
 

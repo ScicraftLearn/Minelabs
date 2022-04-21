@@ -29,6 +29,7 @@ public class ScicraftClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PROTON, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ANIMATED_CHARGED, RenderLayer.getCutout());
 
         // Register rendering for electron entity
         EntityRendererRegistry.register(Entities.ELECTRON_ENTITY, FlyingItemEntityRenderer::new);
@@ -36,10 +37,6 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
 
-        BlockEntityRendererRegistry.register(BlockEntities.ELECTRON_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntities.POSTIRON_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntities.PROTON_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntities.PION_MINUS_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntities.PION_PLUS_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
     }
 }
