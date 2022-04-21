@@ -17,6 +17,7 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_MINUS_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
     
     static {
         PION_MINUS_BLOCK_ENTITY = register(
@@ -42,6 +43,10 @@ public class BlockEntities {
         ANIMATED_CHARGED_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new AnimatedChargedBlockEntity(ANIMATED_CHARGED_BLOCK_ENTITY, p, s), Blocks.ANIMATED_CHARGED).build(null),
                 "animated_charged_block_entity");
+
+        CHARGED_PLACEHOLDER_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
+                "charged_placeholder_block_entity");
     }
 
     /**
