@@ -1,14 +1,22 @@
 package be.uantwerpen.scicraft.block.entity;
 
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.network.NetworkingConstants;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -19,7 +27,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     public long time = 0;
     public Vec3i movement_direction = Vec3i.ZERO;
     public final int time_move_ticks = 10;
-    public BlockState render_state = Blocks.ELECTRON.getDefaultState();
+    public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
 
     public AnimatedChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -55,6 +63,14 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
         if (!world.isClient) {
             if (time == 0) {
                 time = world.getTime();
+
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeBlockPos(pos);
+                buf.writeString(render_state.getBlock().toString().split(":",2)[1].split("}",2)[0].toUpperCase());
+                for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
+                    System.out.println(render_state.getBlock().toString());
+                    ServerPlayNetworking.send(player, NetworkingConstants.CHARGED_MOVE_STATE, buf);
+                }
             }
             if (world.getTime() - time > time_move_ticks) {
                 world.removeBlockEntity(pos);

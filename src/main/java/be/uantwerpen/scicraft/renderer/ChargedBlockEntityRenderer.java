@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft.renderer;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
