@@ -1,13 +1,20 @@
 package be.uantwerpen.scicraft.block.entity;
 
+import be.uantwerpen.scicraft.network.NetworkingConstants;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
@@ -18,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class ChargedPlaceholderBlockEntity extends BlockEntity{
+    private Long time = 0L;
 
     public ChargedPlaceholderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -43,5 +51,23 @@ public class ChargedPlaceholderBlockEntity extends BlockEntity{
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
+    }
+
+    public void tick(World world, BlockPos pos, BlockState state) {
+        // TODO: create a whole "lifecycle" for a charged particle, begining from either placement by user or by algorithm and checking if algorithms in client and server are still in sync.
+        if (!world.isClient) {
+            if (time == 0) {
+                time = world.getTime();
+            }
+            if (world.getTime() - time > AnimatedChargedBlockEntity.time_move_ticks) {
+                world.removeBlockEntity(pos);
+                world.removeBlock(pos, false);
+                markDirty();
+            }
+        }
+    }
+
+    public static void tick(World world, BlockPos pos, BlockState state, ChargedPlaceholderBlockEntity be) {
+        be.tick(world, pos, state);
     }
 }

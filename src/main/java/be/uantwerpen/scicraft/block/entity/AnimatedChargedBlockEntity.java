@@ -1,8 +1,9 @@
 package be.uantwerpen.scicraft.block.entity;
 
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.block.ChargedBlock;
+import be.uantwerpen.scicraft.block.ChargedPionBlock;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -17,16 +18,18 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
+import java.util.Objects;
+
 public class AnimatedChargedBlockEntity extends BlockEntity {
     public long time = 0;
     public Vec3i movement_direction = Vec3i.ZERO;
-    public final int time_move_ticks = 10;
+    public final static int time_move_ticks = 10;
     public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
 
     public AnimatedChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -37,6 +40,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     public void writeNbt(NbtCompound tag) {
         tag.putLong("time", time);
         tag.putInt("md", ChargedBlockEntity.vec2int(movement_direction));
+        tag.putString("rs", render_state.toString());
         super.writeNbt(tag);
     }
 
@@ -45,7 +49,44 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound tag) {
         time = tag.getLong("time");
         movement_direction = ChargedBlockEntity.int2vec(tag.getInt("md"));
+        render_state = string2BlockState(tag.getString("rs"));
         super.readNbt(tag);
+    }
+
+    public BlockState string2BlockState(String blockNameState) {
+        boolean withProperty = false;
+        String blockValue = "0";
+        String[] blockNames = blockNameState.toUpperCase().split("}",2);
+        String blockName = blockNames[0].split(":",2)[1];
+        String[] blockStates = blockNames[1].split("=",2);
+        if (blockStates.length == 2) {
+            String blockState = blockStates[0].split("\\[",2)[1];
+            blockValue = blockStates[1].split("\\]",2)[0];
+            if (Objects.equals(blockState, "AGE")) {
+                withProperty = true;
+            }
+        }
+        Object o = new Blocks();
+        Class<?> c = o.getClass();
+        Field f = null;
+        try {
+            f = c.getDeclaredField(blockName);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        assert f != null;
+        f.setAccessible(true);
+        BlockState outState = net.minecraft.block.Blocks.AIR.getDefaultState();
+        try {
+            if (withProperty) {
+                outState = ((ChargedBlock) f.get(o)).getDefaultState().with(ChargedPionBlock.COLOUR, Integer.parseInt(blockValue));
+            } else {
+                outState = ((ChargedBlock) f.get(o)).getDefaultState();
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return outState;
     }
 
     @Nullable
@@ -66,9 +107,9 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
 
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeBlockPos(pos);
-                buf.writeString(render_state.getBlock().toString().split(":",2)[1].split("}",2)[0].toUpperCase());
+                buf.writeString(render_state.toString());
+                System.out.println(render_state.toString());
                 for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
-                    System.out.println(render_state.getBlock().toString());
                     ServerPlayNetworking.send(player, NetworkingConstants.CHARGED_MOVE_STATE, buf);
                 }
             }

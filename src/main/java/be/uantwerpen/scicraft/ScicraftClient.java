@@ -54,22 +54,7 @@ public class ScicraftClient implements ClientModInitializer {
             client.execute(() -> {
                 if (client.world!=null){
                     if (client.world.getBlockEntity(target) instanceof AnimatedChargedBlockEntity particle2) {
-                        System.out.println(block_name);
-                        Object o = new Blocks();
-                        Class<?> c = o.getClass();
-                        Field f = null;
-                        try {
-                            f = c.getDeclaredField(block_name);
-                        } catch (NoSuchFieldException e) {
-                            e.printStackTrace();
-                        }
-                        assert f != null;
-                        f.setAccessible(true);
-                        try {
-                            particle2.render_state = ((ChargedBlock) f.get(o)).getDefaultState(); //instead of this, write the "saved" blockstate to the render_state of the client.
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
+                        particle2.render_state = particle2.string2BlockState(block_name);
                     }
                 }
             });
