@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft.block.entity;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.ChargedBlock;
 import be.uantwerpen.scicraft.block.ChargedPionBlock;
+import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -11,11 +12,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -31,6 +35,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     public Vec3i movement_direction = Vec3i.ZERO;
     public final static int time_move_ticks = 8;
     public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
+    public boolean annihilation = false;
 
     public AnimatedChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -108,7 +113,9 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeBlockPos(pos);
                 buf.writeString(render_state.toString());
+                buf.writeBoolean(annihilation);
                 for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
+                    // update client on the block for the animation
                     ServerPlayNetworking.send(player, NetworkingConstants.CHARGED_MOVE_STATE, buf);
                 }
             }
@@ -117,6 +124,14 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
                 world.removeBlock(pos, false);
                 if (world.getBlockState(pos.mutableCopy().add(movement_direction)).getBlock().equals(be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER)) { //also change other particle for client
                     world.setBlockState(pos.mutableCopy().add(movement_direction), render_state, Block.NOTIFY_ALL);
+                }
+                if (annihilation) {
+                    ItemStack itemStack = new ItemStack(Items.PHOTON, 1);
+                    double a = pos.getX() + movement_direction.getX() / 2d;
+                    double b = pos.getY() + movement_direction.getY() / 2d;
+                    double c = pos.getZ() + movement_direction.getZ() / 2d;
+                    ItemEntity itemEntity = new ItemEntity(world, a, b, c, itemStack);
+                    world.spawnEntity(itemEntity);
                 }
                 markDirty();
             }

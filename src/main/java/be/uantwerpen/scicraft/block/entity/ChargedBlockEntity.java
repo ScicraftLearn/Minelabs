@@ -1,5 +1,7 @@
 package be.uantwerpen.scicraft.block.entity;
 
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.Nullable;
@@ -15,6 +17,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 public class ChargedBlockEntity extends BlockEntity{
@@ -22,10 +27,16 @@ public class ChargedBlockEntity extends BlockEntity{
     private Vec3f field;
     private boolean update_next_tick = false;
     private static final double e_move = 0.5;
+    private final Block anti_block;
+    private final double decay_time;
+    private final ItemStack decay_drop;
 
-    public ChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, double charge) {
+    public ChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, double charge, Block anit_block, double decay_time, ItemStack decay_drop) {
         super(type, pos, state);
         this.charge = charge;
+        this.anti_block = anit_block;
+        this.decay_time = decay_time;
+        this.decay_drop = decay_drop;
         field = Vec3f.ZERO;
     }
     @Override
@@ -107,22 +118,20 @@ public class ChargedBlockEntity extends BlockEntity{
         }
     }
     private void updateField(World world, BlockPos pos) {
-        if ((world.getTime() + pos.asLong()) % 10 == 0) {
-            int e_radius = 8;
-            double kc = 1;
-            Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
-            field = new Vec3f(0f, 0f, 0f);
-            for (BlockPos pos_block : blocks_in_radius) {
-                if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block)) {
-                    Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
-                    float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                    vec_pos.scale(d_E);
-                    field.add(vec_pos);
-                    needsUpdate(field.dot(field) > e_move); // putting it here makes it so the field stays zero.
-                }
+        int e_radius = 8;
+        double kc = 1;
+        Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
+        field = new Vec3f(0f, 0f, 0f);
+        for (BlockPos pos_block : blocks_in_radius) {
+            if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block)) {
+                Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
+                vec_pos.scale(d_E);
+                field.add(vec_pos);
+                needsUpdate(field.dot(field) > e_move); // putting it here makes it so the field stays zero.
             }
-            markDirty();
         }
+        markDirty();
     }
 
     private Vec3i movementDirection(World world, BlockPos pos) {
@@ -246,28 +255,86 @@ public class ChargedBlockEntity extends BlockEntity{
         return int2vec(movement);
     }
 
+    public int checkAnnihilation() {
+        if (anti_block == null) {
+            return 0;
+        }
+        java.util.List<Integer> direction_neighbours = new ArrayList<Integer>(Arrays.asList(1, -1, 2, -2, 3, -3));
+        Collections.shuffle(direction_neighbours);
+        for (int direction : direction_neighbours) {
+            if (world.getBlockState(pos.mutableCopy().add(int2vec(direction))).getBlock().equals(anti_block)) {
+                return direction;
+            }
+        }
+        return 0;
+    }
+
+    private boolean decay() {
+        if (this.decay_time == 0) {
+            return false;
+        }
+        if (this.decay_drop == null) {
+            return false;
+        }
+        return Math.random() <= (1 / this.decay_time);
+    }
+
     public void tick(World world, BlockPos pos, BlockState state) {
-        // TODO: create a whole "lifecycle" for a charged particle, begining from either placement by user or by algorithm and checking if algorithms in client and server are still in sync.
         if (!world.isClient) {
-            this.updateField(world, pos);
-            if (update_next_tick) {
-                Vec3i movement = movementDirection(world, pos);
-                if (!movement.equals(Vec3i.ZERO)) {
-                    BlockPos nPos = pos.mutableCopy().add(movement);
-                    if (world.getBlockState(nPos).isAir()) {
-                        update_next_tick = false;
-                        world.removeBlockEntity(pos);
-                        world.removeBlock(pos, false);
-                        world.setBlockState(pos, be.uantwerpen.scicraft.block.Blocks.ANIMATED_CHARGED.getDefaultState(), Block.NOTIFY_ALL);
-                        world.setBlockState(nPos, be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER.getDefaultState(), Block.NOTIFY_ALL);
-                        if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity particle2) {
-                            particle2.movement_direction = movement;
-                            particle2.render_state = getCachedState();
-                        }
-                    }
+            if ((world.getTime() + pos.asLong()) % 10 == 0) {
+                if (decay()) {
+                    world.removeBlockEntity(pos);
+                    world.removeBlock(pos, false);
+                    ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), decay_drop);
+                    world.spawnEntity(itemEntity);
                     markDirty();
                 } else {
-                    update_next_tick = false;
+                    int movement_annihilation = this.checkAnnihilation();
+                    if (movement_annihilation != 0) {
+                        BlockPos nPos = pos.mutableCopy().add(int2vec(movement_annihilation));
+                        if (world.getBlockEntity(nPos) instanceof ChargedBlockEntity particle2) {
+                            BlockState render_state2 = particle2.getCachedState();
+                            world.removeBlockEntity(pos);
+                            world.removeBlockEntity(nPos);
+                            world.removeBlock(pos, false);
+                            world.removeBlock(nPos, false);
+                            world.setBlockState(pos, be.uantwerpen.scicraft.block.Blocks.ANIMATED_CHARGED.getDefaultState(), Block.NOTIFY_ALL);
+                            world.setBlockState(nPos, be.uantwerpen.scicraft.block.Blocks.ANIMATED_CHARGED.getDefaultState(), Block.NOTIFY_ALL);
+                            if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity animation1) {
+                                animation1.movement_direction = int2vec(movement_annihilation);
+                                animation1.render_state = getCachedState();
+                                animation1.annihilation = true;
+                            }
+                            if (world.getBlockEntity(nPos) instanceof AnimatedChargedBlockEntity animation2) {
+                                animation2.movement_direction = int2vec(-movement_annihilation);
+                                animation2.render_state = render_state2;
+                                animation2.annihilation = true;
+                            }
+                        }
+                        markDirty();
+                    } else {
+                        this.updateField(world, pos);
+                    }
+                }
+                if (update_next_tick) {
+                    Vec3i movement = movementDirection(world, pos);
+                    if (!movement.equals(Vec3i.ZERO)) {
+                        BlockPos nPos = pos.mutableCopy().add(movement);
+                        if (world.getBlockState(nPos).isAir()) {
+                            update_next_tick = false;
+                            world.removeBlockEntity(pos);
+                            world.removeBlock(pos, false);
+                            world.setBlockState(pos, be.uantwerpen.scicraft.block.Blocks.ANIMATED_CHARGED.getDefaultState(), Block.NOTIFY_ALL);
+                            world.setBlockState(nPos, be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER.getDefaultState(), Block.NOTIFY_ALL);
+                            if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity animation1) {
+                                animation1.movement_direction = movement;
+                                animation1.render_state = getCachedState();
+                            }
+                        }
+                        markDirty();
+                    } else {
+                        update_next_tick = false;
+                    }
                 }
             }
         }
