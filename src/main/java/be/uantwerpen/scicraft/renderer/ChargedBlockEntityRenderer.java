@@ -32,26 +32,27 @@ public class ChargedBlockEntityRenderer<T extends AnimatedChargedBlockEntity> im
 		double offset = 0;
 		if (blockEntity.time != 0) {
 			double time_fraction = Math.max(0, Math.min(1, (blockEntity.getWorld().getTime() + tickDelta - blockEntity.time) / AnimatedChargedBlockEntity.time_move_ticks));
-
 			if (blockEntity.annihilation) {
 				offset = .5 * time_fraction * time_fraction;
 			} else {
 				offset = time_fraction < 0.5 ? 2 * time_fraction * time_fraction : 2 * time_fraction * (-time_fraction + 2) - 1;
 			}
 		}
-		matrices.translate(blockEntity.movement_direction.getX() * offset, blockEntity.movement_direction.getY() * offset, blockEntity.movement_direction.getZ() * offset);
-		BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
-		blockRenderManager.getModelRenderer().render(
-				world,
-				blockRenderManager.getModel(blockEntity.render_state),
-				blockEntity.render_state,
-				blockEntity.getPos(),
-				matrices,
-				vertexConsumerProvider.getBuffer(RenderLayers.getMovingBlockLayer(blockEntity.render_state)),
-				false,
-				new Random(),
-				blockEntity.render_state.getRenderingSeed(blockEntity.getPos()),
-				OverlayTexture.DEFAULT_UV);
+		if (!(blockEntity.annihilation && offset ==.5)) {
+			matrices.translate(blockEntity.movement_direction.getX() * offset, blockEntity.movement_direction.getY() * offset, blockEntity.movement_direction.getZ() * offset);
+			BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
+			blockRenderManager.getModelRenderer().render(
+					world,
+					blockRenderManager.getModel(blockEntity.render_state),
+					blockEntity.render_state,
+					blockEntity.getPos(),
+					matrices,
+					vertexConsumerProvider.getBuffer(RenderLayers.getMovingBlockLayer(blockEntity.render_state)),
+					false,
+					new Random(),
+					blockEntity.render_state.getRenderingSeed(blockEntity.getPos()),
+					OverlayTexture.DEFAULT_UV);
+		}
     	matrices.pop();
 	}
 }
