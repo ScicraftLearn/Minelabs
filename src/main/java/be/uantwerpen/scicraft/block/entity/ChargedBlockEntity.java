@@ -21,6 +21,7 @@ public class ChargedBlockEntity extends BlockEntity{
     private double charge;
     private Vec3f field;
     private boolean update_next_tick = false;
+    private static final double e_move = 0.5;
 
     public ChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, double charge) {
         super(type, pos, state);
@@ -107,9 +108,8 @@ public class ChargedBlockEntity extends BlockEntity{
     }
     private void updateField(World world, BlockPos pos) {
         if ((world.getTime() + pos.asLong()) % 10 == 0) {
-            int e_radius = 6;
+            int e_radius = 8;
             double kc = 1;
-            double e_move = .8;
             Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
             field = new Vec3f(0f, 0f, 0f);
             for (BlockPos pos_block : blocks_in_radius) {
@@ -129,15 +129,119 @@ public class ChargedBlockEntity extends BlockEntity{
         Vec3d field_abs = new Vec3d(Math.abs(field.getX()), Math.abs(field.getY()), Math.abs(field.getZ()));
         int movement = 0;
         if (field_abs.getX() >= field_abs.getY()) {
-            if (field_abs.getX() >= field_abs.getZ()) {
-                movement = field.getX() > 0 ? 1 : -1; // XYZ & XZY
+            if (field_abs.getX() >= field_abs.getZ()) { // XYZ & XZY
+                movement = field.getX() > 0 ? 1 : -1;
+                if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> (X)YZ or (X)ZY
+                    if (field_abs.getY() >= field_abs.getZ()) { //(X)YZ
+                        if (field_abs.getY() >= e_move) {
+                            movement = field.getY() > 0 ? 2 : -2; // (X)YZ
+                            if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> (XY)Z
+                                if (field_abs.getZ() >= e_move) {
+                                    movement = field.getZ() > 0 ? 3 : -3; // (XY)Z
+                                    if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> don't move (XYZ)
+                                        movement = 0;
+                                    }
+                                } else {
+                                    movement = 0; // Z too small
+                                }
+                            }
+                        } else {
+                            movement = 0; // Y too small. Z<Y, so no Z movement.
+                        }
+                    } else { //(X)ZY
+                        if (field_abs.getZ() >= e_move) {
+                            movement = field.getZ() > 0 ? 3 : -3; // (X)ZY
+                            if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> (XZ)Y
+                                if (field_abs.getY() >= e_move) {
+                                    movement = field.getY() > 0 ? 2 : -2; // (XZ)Y
+                                    if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> don't move (XZY)
+                                        movement = 0;
+                                    }
+                                } else {
+                                    movement = 0; // Y too small
+                                }
+                            }
+                        } else {
+                            movement = 0; // Z too small. Y<Z, so no Y movement.
+                        }
+                    }
+                }
             } else {
                 movement = field.getZ() > 0 ? 3 : -3; // ZXY
+                if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> (Z)XY
+                    if (field_abs.getX() >= e_move) {
+                        movement = field.getX() > 0 ? 1 : -1;
+                        if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> (ZX)Y
+                            if (field_abs.getY() >= e_move) {
+                                movement = field.getY() > 0 ? 2 : -2; // (ZX)Y
+                                if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> don't move (ZXY)
+                                    movement = 0;
+                                }
+                            } else {
+                                movement = 0; // Y too small
+                            }
+                        }
+                    } else {
+                        movement = 0; // X too small. Y<X, so no Y movement
+                    }
+                }
             }
         } else if (field_abs.getY() >= field_abs.getZ()) {
             movement = field.getY() > 0 ? 2 : -2; // YZX & YXZ
+            if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> (Y)ZX or (Y)XZ
+                if (field_abs.getZ() >= field_abs.getX()) { //(Y)ZX
+                    if (field_abs.getZ() >= e_move) {
+                        movement = field.getZ() > 0 ? 3 : -3; // (Y)ZX
+                        if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> (YZ)X
+                            if (field_abs.getX() >= e_move) {
+                                movement = field.getX() > 0 ? 1 : -1; // (YZ)X
+                                if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> don't move (YZX)
+                                    movement = 0;
+                                }
+                            } else {
+                                movement = 0; // X too small
+                            }
+                        }
+                    } else {
+                        movement = 0; // Z too small. X<Z, so no X movement.
+                    }
+                } else { //(Y)XZ
+                    if (field_abs.getX() >= e_move) {
+                        movement = field.getX() > 0 ? 1 : -1; // (Y)XZ
+                        if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> (YX)Z
+                            if (field_abs.getZ() >= e_move) {
+                                movement = field.getZ() > 0 ? 3 : -3; // (YX)Z
+                                if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> don't move (YXZ)
+                                    movement = 0;
+                                }
+                            } else {
+                                movement = 0; // Z too small
+                            }
+                        }
+                    } else {
+                        movement = 0; // X too small. Z<X, so no Z movement.
+                    }
+                }
+            }
         } else {
             movement = field.getZ() > 0 ? 3 : -3; // ZYX
+            if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> (Z)YX
+                if (field_abs.getY() >= e_move) {
+                    movement = field.getY() > 0 ? 2 : -2;
+                    if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> (ZY)X
+                        if (field_abs.getX() >= e_move) {
+                            movement = field.getX() > 0 ? 1 : -1; // (ZY)X
+                            if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> don't move (ZYX)
+                                movement = 0;
+                            }
+                        } else {
+                            movement = 0; // X too small
+                        }
+                    }
+                } else {
+                    movement = 0; // Y too small. X<Y, so no X movement
+                }
+            }
         }
         return int2vec(movement);
     }

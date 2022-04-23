@@ -29,7 +29,7 @@ import java.util.Objects;
 public class AnimatedChargedBlockEntity extends BlockEntity {
     public long time = 0;
     public Vec3i movement_direction = Vec3i.ZERO;
-    public final static int time_move_ticks = 10;
+    public final static int time_move_ticks = 8;
     public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
 
     public AnimatedChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -108,7 +108,6 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeBlockPos(pos);
                 buf.writeString(render_state.toString());
-                System.out.println(render_state.toString());
                 for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
                     ServerPlayNetworking.send(player, NetworkingConstants.CHARGED_MOVE_STATE, buf);
                 }
