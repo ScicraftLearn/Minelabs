@@ -20,6 +20,8 @@
   "block.scicraft.upquark_quantumfield": "Upquark Quantumfield",
   "block.scicraft.downquark_quantumfield": "Downquark Quantumfield",
 
+  "blockEntity.scicraft.charged_block": "Charged Block",
+
   "entity.scicraft.entropy_creeper": "Entropy Creeper",
 
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
