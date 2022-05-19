@@ -3,6 +3,9 @@
   "itemGroup.scicraft.quantum_fields": "Quantum Fields",
   "itemGroup.scicraft.elementary_particles": "Elementary Particles",
 
+  "block.scicraft.proton": "Proton",
+  "block.scicraft.electron": "Electron",
+  "block.scicraft.neutron": "Neutron",
   "block.scicraft.pion_nul": "Pion Nul",
   "block.scicraft.pion_minus": "Pion Minus",
   "block.scicraft.pion_plus": "Pion Plus",
@@ -11,6 +14,7 @@
   "block.scicraft.weak_boson": "Weak Boson",
   "block.scicraft.neutrino": "Neutrino",
   "block.scicraft.antineutrino": "Antineutrino",
+  "block.scicraft.helium": "Helium Gas",
 
   "block.scicraft.gluon_quantumfield": "Gluon Quantumfield",
   "block.scicraft.photon_quantumfield": "Photon Quantumfield",

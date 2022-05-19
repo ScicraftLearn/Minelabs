@@ -1,0 +1,29 @@
+{
+  "group":"scicraft",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "lll",
+    "lhl",
+    " s "
+  ],
+  "key": {
+    "l": [
+      {
+      "item": "minecraft:leather"
+      },
+      {
+        "item": "minecraft:wool"
+      }
+      ],
+    "h": {
+      "item": "scicraft:helium"
+    },
+    "s": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "scicraft:balloon",
+    "count": 1
+  }
+}

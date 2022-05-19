@@ -1,0 +1,25 @@
+{
+  "group":"scicraft",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "scicraft:upquark_blue"
+    },
+    {
+      "item": "scicraft:anti_upquark_blue"
+    },
+    {
+      "item": "scicraft:gluon"
+    },
+    {
+      "item": "scicraft:gluon"
+    },
+    {
+      "item": "scicraft:gluon"
+    }
+  ],
+  "result": {
+    "item": "scicraft:pion_nul",
+    "count": 1
+  }
+}
