@@ -12,7 +12,7 @@
       "item": "minecraft:leather"
       },
       {
-        "item": "minecraft:wool"
+        "tag": "minecraft:wool"
       }
       ],
     "h": {
