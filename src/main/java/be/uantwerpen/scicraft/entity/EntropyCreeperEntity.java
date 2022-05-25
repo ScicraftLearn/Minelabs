@@ -1,3 +1,4 @@
+/*
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
@@ -65,14 +66,17 @@ public class EntropyCreeperEntity extends CreeperEntity {
         return SoundEvents.ENTITY_ENTROPY_CREEPER_HURT;
     }
 
-    /**
+    */
+/**
      * Called due to mixin
-     */
+     *//*
+
     protected void playPrimedSound() {
         this.playSound(SoundEvents.ENTITY_ENTROPY_CREEPER_PRIMED, 1.0f, 1.0f);
     }
 
-    /**
+    */
+/**
      * We don't care what the Effectiveness is
      *
      * @param explosion  : explosion object
@@ -82,19 +86,22 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @param fluidState : blockstate but a fluid
      * @param max        max resistance
      * @return 0f, Float
-     */
+     *//*
+
     @Override
     public float getEffectiveExplosionResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, float max) {
         return 0f;
     }
 
-    /**
+    */
+/**
      * Based on Explosion::collectBlocksAndDamageEntities
      * Get all the affected blocks in the explosion radius
      *
      * @param explosion ExplosionAccessor
      * @return Set of {@link BlockPos}
-     */
+     *//*
+
     protected Set<BlockPos> getAffectedBlocks(ExplosionAccessor explosion) {
         Set<BlockPos> blocks = Sets.newHashSet();
         for (int j = 0; j < 16; ++j) {
@@ -133,13 +140,15 @@ public class EntropyCreeperEntity extends CreeperEntity {
         return blocks;
     }
 
-    /**
+    */
+/**
      * Based on Explosion::collectBlocksAndDamageEntities
      * Get all the affected entities in the explosion radius
      *
      * @param explosion ExplosionAccessor
      * @return List of {@link LivingEntity}
-     */
+     *//*
+
     protected List<LivingEntity> getAffectedEntities(ExplosionAccessor explosion) {
         List<LivingEntity> entities = Lists.newArrayList();
         float j = explosion.getPower() * 2.0f;
@@ -166,10 +175,12 @@ public class EntropyCreeperEntity extends CreeperEntity {
         return entities;
     }
 
-    /**
+    */
+/**
      * Override Tick()
      * What to do while exploding
-     */
+     *//*
+
     @Override
     public void tick() {
         if (ticksToGo >= 0) {
@@ -185,14 +196,16 @@ public class EntropyCreeperEntity extends CreeperEntity {
         }
     }
 
-    /**
+    */
+/**
      * Mixin Injected explosion method
      * Make sure to "kill" the entity
      * <p>
      * Shuffle blocks in the explosion radius around the entity.
      *
      * @return boolean: cancel default explosion or not
-     */
+     *//*
+
     public boolean preExplode() {
         if (!this.world.isClient) {
             dead = true;
@@ -219,12 +232,14 @@ public class EntropyCreeperEntity extends CreeperEntity {
         return false;  // make sure the original 'explode' function doesn't run.
     }
 
-    /**
+    */
+/**
      * Actual shuffle of the Entropy Creeper
      * <p>
      * Teleports the Entities (+ Colors sheep in random color)
      * Shuffles the blocks
-     */
+     *//*
+
     private void shuffle() {
         if (this.world.isClient) return;
 
@@ -266,13 +281,15 @@ public class EntropyCreeperEntity extends CreeperEntity {
         }
     }
 
-    /**
+    */
+/**
      * Check if the block is a shuffleable block
      *
      * @param blockState: block
      * @return whether the block should be movable.
-     */
+     *//*
+
     private boolean isShuffleable(BlockState blockState) {
         return !BlockTags.DRAGON_IMMUNE.contains(blockState.getBlock());
     }
-}
+}*/
