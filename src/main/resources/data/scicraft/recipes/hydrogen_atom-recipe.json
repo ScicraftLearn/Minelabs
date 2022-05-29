@@ -1,0 +1,25 @@
+{
+  "group":"scicraft",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "scicraft:proton"
+    },
+    {
+      "item": "scicraft:electron"
+    },
+    {
+      "item": "scicraft:photon"
+    },
+    {
+      "item": "scicraft:photon"
+    },
+    {
+      "item": "scicraft:photon"
+    }
+  ],
+  "result": {
+    "item": "scicraft:hydrogen_atom",
+    "count": 1
+  }
+}
