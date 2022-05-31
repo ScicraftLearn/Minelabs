@@ -55,7 +55,7 @@ public class Blocks {
 
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
                     5.0f), "green_fire");
-    public static final Block HELIUM = register(new PionNulBlock(FabricBlockSettings.of(Material.AIR)
+    public static final Block HELIUM = register(new Block(FabricBlockSettings.of(Material.AIR)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
     /**
