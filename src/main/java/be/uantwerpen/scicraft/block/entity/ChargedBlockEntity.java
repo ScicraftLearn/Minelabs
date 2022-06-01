@@ -26,7 +26,7 @@ public class ChargedBlockEntity extends BlockEntity{
     private double charge;
     private Vec3f field;
     private boolean update_next_tick = false;
-    private static final double e_move = 0.5;
+    private static final double e_move = 0.01d;
     private final Block anti_block;
     private final double decay_time;
     private final ItemStack decay_drop;

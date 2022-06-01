@@ -82,7 +82,7 @@ public class ExtraDispenserBehavior {
          * Register dispenser behavior for using Entropy Creeper Spawn Egg
          * Implements abstract class {@link ItemDispenserBehavior} to summon the correct entity
          */
-        DispenserBlock.registerBehavior(Items.ENTROPY_CREEPER_SPAWN_EGG, new ItemDispenserBehavior() {
+        /*DispenserBlock.registerBehavior(Items.ENTROPY_CREEPER_SPAWN_EGG, new ItemDispenserBehavior() {
             @Override
             protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
                 Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
@@ -99,6 +99,6 @@ public class ExtraDispenserBehavior {
                 pointer.getWorld().emitGameEvent(GameEvent.ENTITY_PLACE, pointer.getPos());
                 return stack;
             }
-        });
+        });*/
     }
 }

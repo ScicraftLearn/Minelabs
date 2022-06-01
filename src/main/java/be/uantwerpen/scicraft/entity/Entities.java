@@ -25,8 +25,8 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "proton_entity");
     public static final EntityType<NeutronEntity> NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "neutron_entity");
-    public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
-            .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
+    //public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
+    //        .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
 
 
     /**
@@ -63,8 +63,8 @@ public class Entities {
      */
     public static void registerEntities() {
         Scicraft.LOGGER.info("registering entities");
-        FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
-        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.all(),
-                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1));
+    //    FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
+    //    registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.all(),
+    //            new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1));
     }
 }

@@ -16,18 +16,24 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> ELECTRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> POSTIRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PROTON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> NEUTRON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> PION_NUL_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PION_MINUS_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
     
     static {
+        PION_NUL_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_NUL_BLOCK_ENTITY, p, s, 0, Blocks.PION_NUL, 30, new ItemStack(Items.PHOTON, 2)), Blocks.PION_NUL).build(null),
+                "pion_nul_block_entity");
+
         PION_MINUS_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_MINUS_BLOCK_ENTITY, p, s, -1, Blocks.PION_PLUS, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PION_MINUS).build(null),
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_MINUS_BLOCK_ENTITY, p, s, -1, Blocks.PION_PLUS, 43, new ItemStack(Items.WEAK_BOSON)), Blocks.PION_MINUS).build(null),
                 "pion_minus_block_entity");
 
         PION_PLUS_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_PLUS_BLOCK_ENTITY, p, s, 1, Blocks.PION_MINUS, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PION_PLUS).build(null),
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_PLUS_BLOCK_ENTITY, p, s, 1, Blocks.PION_MINUS, 43, new ItemStack(Items.WEAK_BOSON)), Blocks.PION_PLUS).build(null),
                 "pion_plus_block_entity");
 
     	ELECTRON_BLOCK_ENTITY = register(
@@ -39,8 +45,12 @@ public class BlockEntities {
     			"positron_block_entity");
 
         PROTON_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PROTON_BLOCK_ENTITY, p, s, 1, null, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PROTON).build(null),
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PROTON_BLOCK_ENTITY, p, s, 1, null, 0, new ItemStack(Items.WEAK_BOSON)), Blocks.PROTON).build(null),
                 "proton_block_entity");
+
+        NEUTRON_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(NEUTRON_BLOCK_ENTITY, p, s, 0, null, 360, new ItemStack(Items.WEAK_BOSON)), Blocks.NEUTRON).build(null),
+                "neutron_block_entity");
 
         ANIMATED_CHARGED_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new AnimatedChargedBlockEntity(ANIMATED_CHARGED_BLOCK_ENTITY, p, s), Blocks.ANIMATED_CHARGED).build(null),
