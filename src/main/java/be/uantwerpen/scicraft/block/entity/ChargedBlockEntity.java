@@ -142,10 +142,10 @@ public class ChargedBlockEntity extends BlockEntity{
                 movement = field.getX() > 0 ? 1 : -1;
                 if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> (X)YZ or (X)ZY
                     if (field_abs.getY() >= field_abs.getZ()) { //(X)YZ
-                        if (field_abs.getY() >= e_move) {
+                        if (field_abs.getY()*field_abs.getY() >= e_move) {
                             movement = field.getY() > 0 ? 2 : -2; // (X)YZ
                             if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> (XY)Z
-                                if (field_abs.getZ() >= e_move) {
+                                if (field_abs.getZ()*field_abs.getZ() >= e_move) {
                                     movement = field.getZ() > 0 ? 3 : -3; // (XY)Z
                                     if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> don't move (XYZ)
                                         movement = 0;
@@ -158,10 +158,10 @@ public class ChargedBlockEntity extends BlockEntity{
                             movement = 0; // Y too small. Z<Y, so no Z movement.
                         }
                     } else { //(X)ZY
-                        if (field_abs.getZ() >= e_move) {
+                        if (field_abs.getZ()*field_abs.getZ() >= e_move) {
                             movement = field.getZ() > 0 ? 3 : -3; // (X)ZY
                             if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> (XZ)Y
-                                if (field_abs.getY() >= e_move) {
+                                if (field_abs.getY()*field_abs.getY() >= e_move) {
                                     movement = field.getY() > 0 ? 2 : -2; // (XZ)Y
                                     if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> don't move (XZY)
                                         movement = 0;
@@ -199,10 +199,10 @@ public class ChargedBlockEntity extends BlockEntity{
             movement = field.getY() > 0 ? 2 : -2; // YZX & YXZ
             if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> (Y)ZX or (Y)XZ
                 if (field_abs.getZ() >= field_abs.getX()) { //(Y)ZX
-                    if (field_abs.getZ() >= e_move) {
+                    if (field_abs.getZ()*field_abs.getZ() >= e_move) {
                         movement = field.getZ() > 0 ? 3 : -3; // (Y)ZX
                         if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> (YZ)X
-                            if (field_abs.getX() >= e_move) {
+                            if (field_abs.getX()*field_abs.getX() >= e_move) {
                                 movement = field.getX() > 0 ? 1 : -1; // (YZ)X
                                 if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> don't move (YZX)
                                     movement = 0;
@@ -215,10 +215,10 @@ public class ChargedBlockEntity extends BlockEntity{
                         movement = 0; // Z too small. X<Z, so no X movement.
                     }
                 } else { //(Y)XZ
-                    if (field_abs.getX() >= e_move) {
+                    if (field_abs.getX()*field_abs.getX() >= e_move) {
                         movement = field.getX() > 0 ? 1 : -1; // (Y)XZ
                         if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> (YX)Z
-                            if (field_abs.getZ() >= e_move) {
+                            if (field_abs.getZ()*field_abs.getZ() >= e_move) {
                                 movement = field.getZ() > 0 ? 3 : -3; // (YX)Z
                                 if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> don't move (YXZ)
                                     movement = 0;
@@ -235,10 +235,10 @@ public class ChargedBlockEntity extends BlockEntity{
         } else {
             movement = field.getZ() > 0 ? 3 : -3; // ZYX
             if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Z is taken -> (Z)YX
-                if (field_abs.getY() >= e_move) {
+                if (field_abs.getY()*field_abs.getY() >= e_move) {
                     movement = field.getY() > 0 ? 2 : -2;
                     if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // Y is taken -> (ZY)X
-                        if (field_abs.getX() >= e_move) {
+                        if (field_abs.getX()*field_abs.getX() >= e_move) {
                             movement = field.getX() > 0 ? 1 : -1; // (ZY)X
                             if (!world.getBlockState(pos.mutableCopy().add(int2vec(movement))).isAir()) { // X is taken -> don't move (ZYX)
                                 movement = 0;
