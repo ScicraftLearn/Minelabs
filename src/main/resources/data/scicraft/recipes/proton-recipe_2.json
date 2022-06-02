@@ -1,5 +1,5 @@
 {
-  "group":"scicraft",
+  "group": "scicraft:proton",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
