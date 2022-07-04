@@ -1,26 +1,21 @@
 package be.uantwerpen.scicraft.gui;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.RecipeUnlocker;
-import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.collection.DefaultedList;
 
-public class LewisCraftingResultSlot extends Slot {
+public class LewisInputSlot extends Slot {
     private int amount;
-    private boolean isReady;
+    private boolean isValid;
 
-    public LewisCraftingResultSlot(Inventory inventory, int index, int x, int y) {
+    public LewisInputSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
-        this.isReady = false;
+        this.isValid = false;
     }
 
     public boolean canInsert(ItemStack stack) {
-        return false;
+        return isValid;
     }
 
     public ItemStack takeStack(int amount) {
@@ -41,14 +36,14 @@ public class LewisCraftingResultSlot extends Slot {
 
     @Override
     public boolean canTakeItems(PlayerEntity playerEntity) {
-        return isReady;
+        return true;
     }
 
-    public boolean isReady() {
-        return isReady;
+    public boolean isValid() {
+        return isValid;
     }
 
-    public void setReady(boolean ready) {
-        isReady = ready;
+    public void setValid(boolean valid) {
+        isValid = valid;
     }
 }
