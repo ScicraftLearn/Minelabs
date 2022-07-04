@@ -17,25 +17,25 @@ public class Items {
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
     // Items > Atoms
-    public static final Item HYDROGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 1, "H"), "hydrogen_atom");
-    public static final Item HELIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 2, "He"), "helium_atom");
-    public static final Item LITHIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 3, "Li"), "lithium_atom");
-    public static final Item BERYLLIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 4, "Be"), "beryllium_atom");
-    public static final Item BORON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 5, "B"), "boron_atom");
-    public static final Item CARBON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 6, "C"), "carbon_atom");
-    public static final Item NITROGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 7, "N"), "nitrogen_atom");
-    public static final Item OXYGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 8, "O"), "oxygen_atom");
-    public static final Item FLUORINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 9, "F"), "fluorine_atom");
-    public static final Item NEON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 10, "Ne"), "neon_atom");
+    public static final Item HYDROGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 1, "H", 2.1), "hydrogen_atom");
+    public static final Item HELIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 2, "He", 0), "helium_atom");
+    public static final Item LITHIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 3, "Li", 1), "lithium_atom");
+    public static final Item BERYLLIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 4, "Be", 1.5), "beryllium_atom");
+    public static final Item BORON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 5, "B", 2), "boron_atom");
+    public static final Item CARBON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 6, "C", 2.5), "carbon_atom");
+    public static final Item NITROGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 7, "N", 3.0), "nitrogen_atom");
+    public static final Item OXYGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 8, "O", 3.5), "oxygen_atom");
+    public static final Item FLUORINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 9, "F", 4.0), "fluorine_atom");
+    public static final Item NEON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 10, "Ne", 0), "neon_atom");
 
-    public static final Item SODIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 11, "Na"), "sodium_atom");
-    public static final Item MAGNESIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 12, "Mg"), "magnesium_atom");
-    public static final Item ALUMINIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 13, "Al"), "aluminium_atom");
-    public static final Item SILICON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 14, "Si"), "silicon_atom");
-    public static final Item PHOSPHORUS_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 15, "P"), "phosphorus_atom");
-    public static final Item SULFUR_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 16, "S"), "sulfur_atom");
-    public static final Item CHLORINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 17, "Cl"), "chlorine_atom");
-    public static final Item ARGON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 18, "Ar"), "argon_atom");
+    public static final Item SODIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 11, "Na", 0.9), "sodium_atom");
+    public static final Item MAGNESIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 12, "Mg", 1.2), "magnesium_atom");
+    public static final Item ALUMINIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 13, "Al", 1.5), "aluminium_atom");
+    public static final Item SILICON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 14, "Si", 1.8), "silicon_atom");
+    public static final Item PHOSPHORUS_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 15, "P", 2.1), "phosphorus_atom");
+    public static final Item SULFUR_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 16, "S", 2.5), "sulfur_atom");
+    public static final Item CHLORINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 17, "Cl", 3.0), "chlorine_atom");
+    public static final Item ARGON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 18, "Ar", 0), "argon_atom");
 
     // Items > Quantum fields
     public static final Item GLUON_QUANTUMFIELD = register(new BlockItem(Blocks.GLUON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "gluon_quantumfield");
