@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 
 
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("minecraft", "textures/gui/container/generic_54.png");
+    private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory.png");
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -20,6 +20,9 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         backgroundHeight += (18 * 3 + 4);
     }
 
+    /**
+     * draw function is called every tick
+     */
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
