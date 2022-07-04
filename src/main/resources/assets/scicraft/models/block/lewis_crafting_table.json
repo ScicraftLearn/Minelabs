@@ -1,12 +1,4 @@
 {
-  "parent": "block/cube",
-  "textures": {
-    "down": "scicraft:block/lewiscrafting/planks_oak",
-    "up": "scicraft:block/lewiscrafting/crafting_table_top",
-    "north": "scicraft:block/lewiscrafting/crafting_table_side",
-    "east": "scicraft:block/lewiscrafting/crafting_table_side",
-    "south": "scicraft:block/lewiscrafting/crafting_table_side",
-    "west": "scicraft:block/lewiscrafting/crafting_table_side",
-    "particle": "scicraft:block/lewiscrafting/planks_oak"
-  }
+  "parent": "block/cube"
+
 }
