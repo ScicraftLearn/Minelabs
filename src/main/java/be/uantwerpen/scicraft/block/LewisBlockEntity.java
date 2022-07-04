@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.text.Text;
 
 public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(9, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(25, ItemStack.EMPTY);
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(Entities.LEWIS_BLOCK_ENTITY, pos, state);

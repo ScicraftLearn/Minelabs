@@ -17,14 +17,14 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     //The client will call the other constructor with an empty Inventory and the screenHandler will automatically
     //sync this empty inventory with the inventory on the server.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(9));
+        this(syncId, playerInventory, new SimpleInventory(25));
     }
 
     //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
     //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(Screens.LEWIS_SCREEN_HANDLER, syncId);
-        checkSize(inventory, 9);
+        checkSize(inventory, 25);
         this.inventory = inventory;
         //some inventories do custom logic when a player opens it.
         inventory.onOpen(playerInventory.player);
@@ -34,9 +34,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         int m;
         int l;
         //Our inventory
-        for (m = 0; m < 3; ++m) {
-            for (l = 0; l < 3; ++l) {
-                this.addSlot(new Slot(inventory, l + m * 3, 62 + l * 18, 17 + m * 18));
+        for (m = 0; m < 5; ++m) {
+            for (l = 0; l < 5; ++l) {
+                //62 en 17
+                this.addSlot(new Slot(inventory, l + m * 5, 8 + l * 18, -1*18 - 1 + m * 18));
             }
         }
         //The player inventory

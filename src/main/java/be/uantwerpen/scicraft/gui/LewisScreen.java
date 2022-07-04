@@ -10,8 +10,8 @@ import net.minecraft.util.Identifier;
 
 
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
-    //A path to the gui texture. In this example we use the texture from the dispenser
-    private static final Identifier TEXTURE = new Identifier("minecraft", "textures/gui/container/shulker_box.png");
+    // textures/gui/container/shulker_box.png
+    private static final Identifier TEXTURE = new Identifier("minecraft", "textures/gui/container/generic_54.png");
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -24,6 +24,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
+        y -= 18*3 + 4;
+
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
     }
 
@@ -39,5 +41,13 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         super.init();
         // Center the title
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+
+        // move height 3x 18slots heigher so that it fits the double chest entity
+        // then move it 2 pixels up to match the CHEST configuration
+        // in doing so, we can copy all the slot properties from a double chest
+        backgroundHeight += 18*3 + 4;
+
+        height += 18*3 + 4;
+
     }
 }
