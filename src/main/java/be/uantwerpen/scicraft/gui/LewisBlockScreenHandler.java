@@ -8,6 +8,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import org.lwjgl.system.CallbackI;
 
 
 public class LewisBlockScreenHandler extends ScreenHandler {
@@ -17,14 +18,15 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     //The client will call the other constructor with an empty Inventory and the screenHandler will automatically
     //sync this empty inventory with the inventory on the server.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(25));
+        this(syncId, playerInventory, new SimpleInventory(35));
+
     }
 
     //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
     //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(Screens.LEWIS_SCREEN_HANDLER, syncId);
-        checkSize(inventory, 25);
+        checkSize(inventory, 35);
         this.inventory = inventory;
         //some inventories do custom logic when a player opens it.
         inventory.onOpen(playerInventory.player);
@@ -33,22 +35,35 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         //This will not render the background of the slots however, this is the Screens job
         int m;
         int l;
-        //Our inventory
+
+        // offset
+        int o = 11-29;
+
+        // Lewis Crafting Table Inventory (5x5 grid)
         for (m = 0; m < 5; ++m) {
             for (l = 0; l < 5; ++l) {
                 //62 en 17
-                this.addSlot(new Slot(inventory, l + m * 5, 8 + l * 18, -1*18 - 1 + m * 18));
+                this.addSlot(new Slot(inventory, l + m * 5, 8 + l * 18,  m * 18-o));
             }
         }
+
+        // Lewis Crafting Table Inventory (9 input slots)
+        for (m = 0; m < 9; ++m) {
+            this.addSlot(new Slot(inventory, m + 25, 8 + m * 18,5 * 18-o));
+        }
+
+        // Lewis Crafting Table Inventory (1 output slot)
+        this.addSlot((new Slot(inventory, 34, 8 + 7 * 18, 2 * 18-o)));
+
         //The player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18-o));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180-o));
         }
 
     }
