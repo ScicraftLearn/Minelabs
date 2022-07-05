@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum Molecules {
+public enum Molecule {
     WATER(List.of(Atom.HYDROGEN, Atom.OXYGEN), List.of(2, 1)),
     DIOXYGEN(Collections.singletonList(Atom.OXYGEN), Collections.singletonList(2)),
     DINITROGEN(Collections.singletonList(Atom.NITROGEN), Collections.singletonList(2)),
@@ -30,10 +30,14 @@ public enum Molecules {
 
     private Map<Atom, Integer> ingredients;
 
-    Molecules(List<Atom> atoms, List<Integer> amounts) {
+    Molecule(List<Atom> atoms, List<Integer> amounts) {
         HashMap<Atom, Integer> ingredients = new HashMap<>();
         for (int i = 0; i < atoms.size(); i++)
             ingredients.put(atoms.get(i), amounts.get(i));
         this.ingredients = ingredients;
+    }
+
+    public Map<Atom, Integer> getIngredients() {
+        return ingredients;
     }
 }
