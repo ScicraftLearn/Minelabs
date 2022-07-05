@@ -1,17 +1,25 @@
 package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeManager;
+import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.LiteralText;
-import org.lwjgl.system.CallbackI;
+import be.uantwerpen.scicraft.gui.LewisCraftingResultSlot;
+import be.uantwerpen.scicraft.gui.LewisInputSlot;
+//import be.uantwerpen.scicraft.lewisrecipes.RecipeManager;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 
@@ -46,11 +54,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (5x5 grid)
         for (m = 0; m < 5; ++m) {
             for (l = 0; l < 5; ++l) {
-                //62 en 17
-                this.addSlot(new Slot(inventory, l + m * 5, 8 + l * 18,  m * 18-o));
+                this.addSlot(new LewisGridSlot(inventory, l + m * 5, 8 + l * 18,  m * 18-o));
             }
         }
-
         // Lewis Crafting Table Inventory (9 input slots)
         for (m = 0; m < 9; ++m) {
             this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18,5 * 18-o+5));
@@ -59,16 +65,28 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (1 output slot)
         this.addSlot((new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18-o)));
 
-        //The player inventory
+        //The player inventory (3x9 slots)
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
                 this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18-o+5));
             }
         }
-        //The player Hotbar
+        //The player Hotbar (9 slots)
         for (m = 0; m < 9; ++m) {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180-o+5));
         }
+
+        this.addListener(new ScreenHandlerListener() {
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                // System.out.println("TEsT!!pls1");
+                onContentChanged(inventory);
+            }
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+                // System.out.println("TEsT!!pls2");
+            }
+        });
 
     }
 
@@ -106,5 +124,80 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     @Override
     public void onContentChanged(Inventory inventory) {
         super.onContentChanged(inventory);
+        //System.out.println(inventory.getStack(0));
+
+//        RecipeManager recipeManager;
+//        Atom[] atoms = {};
+//        for (int i = 0; i < 25; i++) {
+//            atoms[i] = this.inventory.getStack(i).getItem();
+//        }
+
+
+        //call to check if a molecule is matched, example:
+        //in 5x5 grid: H H H O -> return null
+        //in 5x5 grid: H H O -> return "water"
+        /** FUNCTION TO MATCH A MOLECULE **/
+
+
+        //if return from last function is not null
+        //call this function to verify whether the molecules are placed correctly in the 5x5 grid
+        //this means putting the correct atoms next to each other and in the right angles
+        //if valid -> return true, else return false
+        /** FUNTION TO VERIFY POSITION OF MOLECULE **/
+
+
+        //if valid and input slots are closed:
+        /** FUNCTION TO SHOW BONDS **/
+        /** FUNCTION TO OPEN INPUTSLOTS AND PUT CORRECT ITEM IN OUTPUTSLOT **/
+        this.openInputSlots(9);
+
+
+        //else if not valid
+        /** FUNCTION TO CLOSE INPUTSLOTS **/
+        this.closeInputSlots();
+
+
+        //else if input slots are open
+        /** FUNCTION TO SHOW BONDS **/
+        /** FUNCTION TO VERIFY WHETHER THERE ARE ENOUGH ITEMS IN INPUT **/
+
+        //if there are items in the input slots, lock the 5x5 grid
+        /** FUNCTION TO LOCK THE 5X5 GRID **/
+        this.closeGridSlots();
+
+        //if there are no items in the input slots, open the 5x5 grid
+        /** FUNCTION TO OPEN 5X5 GRID **/
+        this.openGridSlots();
+
+
+
+
+
+
+        //
+    }
+
+    protected void openGridSlots() {
+
+    }
+
+    protected void openInputSlots(int amount) {
+
+    }
+
+    protected void openOutputSlot() {
+
+    }
+
+    protected void closeGridSlots() {
+
+    }
+
+    protected void closeInputSlots() {
+
+    }
+
+    protected void closeOutputSlot() {
+
     }
 }

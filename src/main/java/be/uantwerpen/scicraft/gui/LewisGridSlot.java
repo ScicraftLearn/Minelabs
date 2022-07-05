@@ -5,13 +5,13 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
-public class LewisInputSlot extends Slot {
+public class LewisGridSlot extends Slot {
     private int amount;
     private boolean isValid;
 
-    public LewisInputSlot(Inventory inventory, int index, int x, int y) {
+    public LewisGridSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
-        this.isValid = false;
+        this.isValid = true;
     }
 
     public boolean canInsert(ItemStack stack) {
@@ -37,11 +37,6 @@ public class LewisInputSlot extends Slot {
     @Override
     public boolean canTakeItems(PlayerEntity playerEntity) {
         return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isValid;
     }
 
     public boolean isValid() {
