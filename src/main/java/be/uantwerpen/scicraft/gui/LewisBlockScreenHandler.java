@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -9,13 +10,16 @@ import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeManager;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import be.uantwerpen.scicraft.gui.LewisCraftingResultSlot;
 import be.uantwerpen.scicraft.gui.LewisInputSlot;
+//import be.uantwerpen.scicraft.lewisrecipes.RecipeManager;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 
@@ -50,7 +54,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (5x5 grid)
         for (m = 0; m < 5; ++m) {
             for (l = 0; l < 5; ++l) {
-                this.addSlot(new Slot(inventory, l + m * 5, 8 + l * 18,  m * 18-o));
+                this.addSlot(new LewisGridSlot(inventory, l + m * 5, 8 + l * 18,  m * 18-o));
             }
         }
         // Lewis Crafting Table Inventory (9 input slots)
@@ -122,26 +126,78 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         super.onContentChanged(inventory);
         //System.out.println(inventory.getStack(0));
 
-        // todo: Bindingen
-//        for (int i = 0; i < inventory.size(); i++) {
-//            if(inventory.getStack(i).toString().equals("1 air")) {
-//                continue;
-//            }
-//        }
-
-
-//        boolean update = false;
+//        RecipeManager recipeManager;
+//        Atom[] atoms = {};
 //        for (int i = 0; i < 25; i++) {
-//            if(inventory.getStack(i).toString().equals("1 air")) {
-//                update = false;
-//            } else {
-//                update = true;
-//                break;
-//            }
+//            atoms[i] = this.inventory.getStack(i).getItem();
 //        }
-//
-//        if(update) {
-//
-//        }
+
+
+        //call to check if a molecule is matched, example:
+        //in 5x5 grid: H H H O -> return null
+        //in 5x5 grid: H H O -> return "water"
+        /** FUNCTION TO MATCH A MOLECULE **/
+
+
+        //if return from last function is not null
+        //call this function to verify whether the molecules are placed correctly in the 5x5 grid
+        //this means putting the correct atoms next to each other and in the right angles
+        //if valid -> return true, else return false
+        /** FUNTION TO VERIFY POSITION OF MOLECULE **/
+
+
+        //if valid and input slots are closed:
+        /** FUNCTION TO SHOW BONDS **/
+        /** FUNCTION TO OPEN INPUTSLOTS AND PUT CORRECT ITEM IN OUTPUTSLOT **/
+        this.openInputSlots(9);
+
+
+        //else if not valid
+        /** FUNCTION TO CLOSE INPUTSLOTS **/
+        this.closeInputSlots();
+
+
+        //else if input slots are open
+        /** FUNCTION TO SHOW BONDS **/
+        /** FUNCTION TO VERIFY WHETHER THERE ARE ENOUGH ITEMS IN INPUT **/
+
+        //if there are items in the input slots, lock the 5x5 grid
+        /** FUNCTION TO LOCK THE 5X5 GRID **/
+        this.closeGridSlots();
+
+        //if there are no items in the input slots, open the 5x5 grid
+        /** FUNCTION TO OPEN 5X5 GRID **/
+        this.openGridSlots();
+
+
+
+
+
+
+        //
+    }
+
+    protected void openGridSlots() {
+
+    }
+
+    protected void openInputSlots(int amount) {
+
+    }
+
+    protected void openOutputSlot() {
+
+    }
+
+    protected void closeGridSlots() {
+
+    }
+
+    protected void closeInputSlots() {
+
+    }
+
+    protected void closeOutputSlot() {
+
     }
 }

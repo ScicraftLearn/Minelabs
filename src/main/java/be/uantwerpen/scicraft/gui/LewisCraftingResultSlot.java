@@ -44,6 +44,11 @@ public class LewisCraftingResultSlot extends Slot {
         return isReady;
     }
 
+    @Override
+    public boolean isEnabled() {
+        return isReady;
+    }
+
     public boolean isReady() {
         return isReady;
     }
