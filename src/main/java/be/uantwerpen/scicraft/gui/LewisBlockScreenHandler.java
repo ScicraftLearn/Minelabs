@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.Scicraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -8,7 +9,10 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.text.LiteralText;
 import org.lwjgl.system.CallbackI;
+
+import java.util.logging.Logger;
 
 
 public class LewisBlockScreenHandler extends ScreenHandler {
@@ -49,21 +53,21 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         // Lewis Crafting Table Inventory (9 input slots)
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(inventory, m + 25, 8 + m * 18,5 * 18-o));
+            this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18,5 * 18-o+5));
         }
 
         // Lewis Crafting Table Inventory (1 output slot)
-        this.addSlot((new Slot(inventory, 34, 8 + 7 * 18, 2 * 18-o)));
+        this.addSlot((new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18-o)));
 
         //The player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18-o));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18-o+5));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180-o));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180-o+5));
         }
 
     }
@@ -97,5 +101,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
 
         return newStack;
+    }
+
+    @Override
+    public void onContentChanged(Inventory inventory) {
+        super.onContentChanged(inventory);
     }
 }

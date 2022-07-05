@@ -18,6 +18,7 @@ public class LewisBlock extends BlockWithEntity {
         super(settings);
     }
 
+
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new LewisBlockEntity(pos, state);

@@ -31,7 +31,6 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
     @Override
     public DefaultedList<ItemStack> getItems() {
         return inventory;
-
     }
 
     //These Methods are from the NamedScreenHandlerFactory Interface

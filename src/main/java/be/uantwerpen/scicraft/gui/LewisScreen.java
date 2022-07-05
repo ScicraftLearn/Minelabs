@@ -17,7 +17,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
         // 3x18 for 3 inventory slots
         // +4 for extra offset to match the double chest
-        backgroundHeight += (18 * 3 + 4);
+        // +5 for the row between the 5x5 grid and the input slots
+        backgroundHeight += (18 * 3 + 4) + 5;
     }
 
     /**
@@ -49,7 +50,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         playerInventoryTitleX = (backgroundWidth - textRenderer.getWidth(playerInventoryTitle)) / 2;
 
         // move the title to the correct place
-        playerInventoryTitleY += 56;
+        playerInventoryTitleY += 61;
 
 
     }
