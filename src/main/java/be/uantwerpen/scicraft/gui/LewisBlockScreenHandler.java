@@ -4,9 +4,12 @@ import be.uantwerpen.scicraft.Scicraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
@@ -47,11 +50,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (5x5 grid)
         for (m = 0; m < 5; ++m) {
             for (l = 0; l < 5; ++l) {
-                //62 en 17
                 this.addSlot(new Slot(inventory, l + m * 5, 8 + l * 18,  m * 18-o));
             }
         }
-
         // Lewis Crafting Table Inventory (9 input slots)
         for (m = 0; m < 9; ++m) {
             this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18,5 * 18-o+5));
@@ -60,13 +61,13 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (1 output slot)
         this.addSlot((new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18-o)));
 
-        //The player inventory
+        //The player inventory (3x9 slots)
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
                 this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18-o+5));
             }
         }
-        //The player Hotbar
+        //The player Hotbar (9 slots)
         for (m = 0; m < 9; ++m) {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180-o+5));
         }
@@ -119,7 +120,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     @Override
     public void onContentChanged(Inventory inventory) {
         super.onContentChanged(inventory);
-        System.out.println(inventory.getStack(0));
+        //System.out.println(inventory.getStack(0));
 
         // todo: Bindingen
 //        for (int i = 0; i < inventory.size(); i++) {
@@ -127,18 +128,20 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 //                continue;
 //            }
 //        }
-        boolean update = false;
-        for (int i = 0; i < 25; i++) {
-            if(inventory.getStack(i).toString().equals("1 air")) {
-                update = false;
-            } else {
-                update = true;
-                break;
-            }
-        }
 
-        if(update) {
 
-        }
+//        boolean update = false;
+//        for (int i = 0; i < 25; i++) {
+//            if(inventory.getStack(i).toString().equals("1 air")) {
+//                update = false;
+//            } else {
+//                update = true;
+//                break;
+//            }
+//        }
+//
+//        if(update) {
+//
+//        }
     }
 }
