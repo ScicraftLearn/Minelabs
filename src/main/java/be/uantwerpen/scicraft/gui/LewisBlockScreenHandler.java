@@ -124,14 +124,15 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     @Override
     public void onContentChanged(Inventory inventory) {
         super.onContentChanged(inventory);
+
+        if (true) return;
         //System.out.println(inventory.getStack(0));
 
-//        RecipeManager recipeManager;
-//        Atom[] atoms = {};
-//        for (int i = 0; i < 25; i++) {
-//            atoms[i] = this.inventory.getStack(i).getItem();
-//        }
-
+        RecipeManager recipeManager;
+        Atom[] atoms = new Atom[25];
+        for (int i = 0; i < 25; i++) {
+            atoms[i] = Atom.getByItem(this.inventory.getStack(i).getItem());
+        }
 
         //call to check if a molecule is matched, example:
         //in 5x5 grid: H H H O -> return null
@@ -178,26 +179,34 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     protected void openGridSlots() {
-
+        for (int i = 0; i < 25; i++) {
+            ((LewisGridSlot) this.getSlot(i)).setValid(true);
+        }
     }
 
     protected void openInputSlots(int amount) {
-
+        for (int i = 25; i < 25+amount; i++) {
+            ((LewisInputSlot) this.getSlot(i)).setValid(true);
+        }
     }
 
     protected void openOutputSlot() {
-
+        ((LewisCraftingResultSlot) this.getSlot(34)).setReady(true);
     }
 
     protected void closeGridSlots() {
-
+        for (int i = 0; i < 25; i++) {
+            ((LewisGridSlot) this.getSlot(i)).setValid(false);
+        }
     }
 
     protected void closeInputSlots() {
-
+        for (int i = 25; i < 34; i++) {
+            ((LewisInputSlot) this.getSlot(i)).setValid(false);
+        }
     }
 
     protected void closeOutputSlot() {
-
+        ((LewisCraftingResultSlot) this.getSlot(34)).setReady(false);
     }
 }

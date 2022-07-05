@@ -36,7 +36,7 @@ public class LewisGridSlot extends Slot {
 
     @Override
     public boolean canTakeItems(PlayerEntity playerEntity) {
-        return true;
+        return isValid;
     }
 
     public boolean isValid() {
