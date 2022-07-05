@@ -8,9 +8,10 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.LiteralText;
-import org.lwjgl.system.CallbackI;
+import be.uantwerpen.scicraft.gui.LewisCraftingResultSlot;
+import be.uantwerpen.scicraft.gui.LewisInputSlot;
 
 import java.util.logging.Logger;
 
@@ -70,6 +71,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180-o+5));
         }
 
+        this.addListener(new ScreenHandlerListener() {
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                // System.out.println("TEsT!!pls1");
+                onContentChanged(inventory);
+            }
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+                // System.out.println("TEsT!!pls2");
+            }
+        });
+
     }
 
     @Override
@@ -106,5 +119,26 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     @Override
     public void onContentChanged(Inventory inventory) {
         super.onContentChanged(inventory);
+        System.out.println(inventory.getStack(0));
+
+        // todo: Bindingen
+//        for (int i = 0; i < inventory.size(); i++) {
+//            if(inventory.getStack(i).toString().equals("1 air")) {
+//                continue;
+//            }
+//        }
+        boolean update = false;
+        for (int i = 0; i < 25; i++) {
+            if(inventory.getStack(i).toString().equals("1 air")) {
+                update = false;
+            } else {
+                update = true;
+                break;
+            }
+        }
+
+        if(update) {
+
+        }
     }
 }

@@ -10,7 +10,9 @@ import net.minecraft.util.Identifier;
 
 
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory.png");
+    private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
+    private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
+    private final Identifier currentTexture = TEXTURE2;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -28,7 +30,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderTexture(0, currentTexture);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
 
@@ -51,7 +53,12 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
         // move the title to the correct place
         playerInventoryTitleY += 61;
-
-
     }
+
+    @Override
+    protected void handledScreenTick() {
+        super.handledScreenTick();
+        // do something later
+    }
+
 }
