@@ -3,14 +3,18 @@ package be.uantwerpen.scicraft.item;
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
+import com.mojang.serialization.Lifecycle;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
-import org.lwjgl.system.CallbackI;
+import net.minecraft.util.registry.RegistryKey;
+
+import java.util.OptionalInt;
 
 public class Items {
     // Items
@@ -88,6 +92,10 @@ public class Items {
      */
     private static Item register(Item item, String identifier) {
         return Registry.register(Registry.ITEM, new Identifier(Scicraft.MOD_ID, identifier), item);
+    }
+
+    public static Item registerReplace(Item item, String identifier) {
+        return (Item)((MutableRegistry)Registry.ITEM).replace(OptionalInt.empty(), RegistryKey.of(Registry.ITEM.getKey(), new Identifier(identifier)), item, Lifecycle.stable());
     }
 
     /**
