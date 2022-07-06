@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "scicraft:item/erlenmeyer",
+    "layer1": "scicraft:item/erlenmeyer_fluid"
+  }
+}
