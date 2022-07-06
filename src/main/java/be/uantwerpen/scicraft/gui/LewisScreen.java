@@ -8,18 +8,18 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
     private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
-    private final Identifier currentTexture = TEXTURE2;
+    private Identifier currentTexture = TEXTURE2;
+    LewisBlockScreenHandler screenHandler;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
+        screenHandler = (LewisBlockScreenHandler) handler;
+        this.currentTexture = TEXTURE2;
 
-        // 3x18 for 3 inventory slots
-        // +4 for extra offset to match the double chest
-        // +5 for the row between the 5x5 grid and the input slots
+        // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
     }
 
@@ -28,9 +28,16 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
      */
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+        int textureID = screenHandler.getSyncedNumber();
+        if(textureID == 0) {
+            this.currentTexture = TEXTURE2;
+        } else if(textureID == 1) {
+            this.currentTexture = TEXTURE;
+        }
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, currentTexture);
+
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
 
