@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -39,16 +40,16 @@ public class LewisInputSlot extends Slot {
         return true;
     }
 
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
-
     public boolean isValid() {
         return isValid;
     }
 
     public void setValid(boolean valid) {
-        isValid = valid;
+        this.isValid = valid;
+    }
+
+    @Override
+    public int getMaxItemCount() {
+        return 10;
     }
 }

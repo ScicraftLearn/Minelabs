@@ -1,17 +1,25 @@
 package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
+import be.uantwerpen.scicraft.lewisrecipes.Molecule;
+import be.uantwerpen.scicraft.lewisrecipes.RecipeManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeManager;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class LewisBlockScreenHandler extends ScreenHandler {
@@ -23,13 +31,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     //The client will call the other constructor with an empty Inventory and the screenHandler will automatically
     //sync this empty inventory with the inventory on the server.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
-        //this(syncId, playerInventory, new SimpleInventory(35));
         this(syncId, playerInventory, new SimpleInventory(36), new ArrayPropertyDelegate(1));
     }
 
     //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
     //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
-    public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
+    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
         super(Screens.LEWIS_SCREEN_HANDLER, syncId);
         checkSize(inventory, 36);
         this.inventory = inventory;
@@ -102,7 +109,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 handler.updateToClient();
             }
         });
-
     }
 
     public int getPropertyDelegate(){
@@ -124,7 +130,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.sendContentUpdates();
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
-        if (slot != null && slot.hasStack()) {
+        if (slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
             if (invSlot < this.inventory.size()) {
@@ -148,9 +154,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     @Override
     public void onContentChanged(Inventory inventory) {
         super.onContentChanged(inventory);
-        this.sendContentUpdates();
 
-        boolean on = false;
+        /*boolean on = false;
         for (int i = 0; i < 25; i++) {
             if(this.inventory.getStack(i).toString().equals("1 air")) {
                 continue;
@@ -158,67 +163,82 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             on = true;
         }
 
-        this.sendContentUpdates();
-
         if(on) {
             setPropertyDelegate(1);
-            openInputSlots(9);
-            openErlenmeyer();
         } else {
             setPropertyDelegate(0);
-            closeInputSlots();
         }
 
-        if (true) return;
+        // TEMPORARY!!!!
 
-        RecipeManager recipeManager;
+        if (true) return;*/
+
+        // TODO: Show bonds where possible
+
+        boolean inputEmpty = true;
+        for (int i = 25; i < 34; i++) {
+            if (this.getSlot(i).getStack().getCount() != 0) {
+                inputEmpty = false;
+                break;
+            }
+        }
+
+        if (inputEmpty) openGridSlots();
+        else closeGridSlots();
+
         Atom[] atoms = new Atom[25];
         for (int i = 0; i < 25; i++) {
             atoms[i] = Atom.getByItem(this.inventory.getStack(i).getItem());
         }
 
-        //call to check if a molecule is matched, example:
-        //in 5x5 grid: H H H O -> return null
-        //in 5x5 grid: H H O -> return "water"
-        /** FUNCTION TO MATCH A MOLECULE **/
+        Map<Atom, Integer> ingredients = new HashMap<>();
+        for (Atom atom : atoms)
+            if (atom != null)
+                ingredients.put(atom, ingredients.getOrDefault(atom, 0) + 1);
 
+        Molecule molecule = RecipeManager.getMolecule(ingredients);
+        if (molecule == null) {
+            if (isInputOpen()) closeInputSlots();
+            return;
+        }
 
-        //if return from last function is not null
-        //call this function to verify whether the molecules are placed correctly in the 5x5 grid
-        //this means putting the correct atoms next to each other and in the right angles
-        //if valid -> return true, else return false
-        /** FUNTION TO VERIFY POSITION OF MOLECULE **/
+        if (!RecipeManager.isCorrectMolecule(molecule, atoms)) {
+            if (isInputOpen()) closeInputSlots();
+            return;
+        }
 
+        if (!isInputOpen()) {
+            System.out.println("Opening input");
+            openInputSlots(molecule.getIngredients().values().stream().reduce(0, Integer::sum));
+            // TODO: Fix Slot#getBackgroundSprite
+        }
 
-        //if valid and input slots are closed:
-        /** FUNCTION TO SHOW BONDS **/
-        /** FUNCTION TO OPEN INPUTSLOTS AND PUT CORRECT ITEM IN OUTPUTSLOT **/
-        this.openInputSlots(9);
+        if (hasCorrectInput(molecule)) {
+            // TODO: if (arrow is niet bezig) -> start arrow
+        } else {
+            // TODO: if (arrow is bezig) -> stop arrow
+        }
+    }
 
+    protected boolean hasCorrectInput(Molecule molecule) {
+        List<Atom> ingredients = this.getIngredients(molecule);
+        for (int i = 0; i < ingredients.size(); i++) {
+            ItemStack stack = inventory.getStack(i + 25);
+            if (stack == null || stack.getItem().equals(Items.AIR)
+                    || ingredients.get(i).getItem().equals(stack.getItem())
+                    || stack.getCount() != 10)
+                return false;
+        }
+        return true;
+    }
 
-        //else if not valid
-        /** FUNCTION TO CLOSE INPUTSLOTS **/
-        this.closeInputSlots();
-
-
-        //else if input slots are open
-        /** FUNCTION TO SHOW BONDS **/
-        /** FUNCTION TO VERIFY WHETHER THERE ARE ENOUGH ITEMS IN INPUT **/
-
-        //if there are items in the input slots, lock the 5x5 grid
-        /** FUNCTION TO LOCK THE 5X5 GRID **/
-        this.closeGridSlots();
-
-        //if there are no items in the input slots, open the 5x5 grid
-        /** FUNCTION TO OPEN 5X5 GRID **/
-        this.openGridSlots();
-
-
-
-
-
-
-        //
+    public List<Atom> getIngredients(@NotNull Molecule molecule) {
+        List<Atom> ingr = new ArrayList<>();
+        molecule.getIngredients().keySet().forEach(atom -> {
+            for (int i = 0; i < molecule.getIngredients().get(atom); i++)
+                ingr.add(atom);
+        });
+        return ingr;
     }
 
     protected void openGridSlots() {
@@ -228,15 +248,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     protected void openInputSlots(int amount) {
+        setPropertyDelegate(1);
         for (int i = 25; i < 25+amount; i++) {
-//            System.out.println(i);
-//            System.out.println(((LewisInputSlot) this.getSlot(i)).isValid());
-            ((LewisInputSlot)this.getSlot(i)).setValid(true);
+            ((LewisInputSlot) this.getSlot(i)).setValid(true);
             this.sendContentUpdates();
-//            System.out.println(((LewisInputSlot) this.getSlot(i)).isValid());
-//            System.out.println(this.getSlot(i).isEnabled());
-//            System.out.println("\n");
         }
+        openErlenmeyer();
     }
 
     protected void openOutputSlot() {
@@ -254,10 +271,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     protected void closeInputSlots() {
+        setPropertyDelegate(0);
         for (int i = 25; i < 34; i++) {
             ((LewisInputSlot) this.getSlot(i)).setValid(false);
             this.sendContentUpdates();
         }
+        closeErlenmeyer();
     }
 
     protected void closeOutputSlot() {
@@ -266,5 +285,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     protected void closeErlenmeyer() {
         ((LewisErlenmeyerSlot) this.getSlot(35)).setValid(false);
+    }
+
+    protected boolean isInputOpen() {
+        return this.getSlot(25).isEnabled();
     }
 }

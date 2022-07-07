@@ -89,10 +89,11 @@ public class RecipeManager {
     }
 
     private static int countBoundAtoms(Atom[] atoms, Atom base, Atom bound) {
-        int boundFound = 0;
         int baseAtom = ArrayUtils.indexOf(atoms, base);
+        if (baseAtom == -1 || ArrayUtils.indexOf(atoms, bound) == -1) return -1;
         int[] allowed = new int[]{baseAtom - 5, baseAtom - 1, baseAtom + 1, baseAtom + 5};
         BitSet bitSet = ArrayUtils.indexesOf(atoms, bound);
+        int boundFound = 0;
         if (bitSet.get(allowed[0])) boundFound++;
         if (bitSet.get(allowed[1])) boundFound++;
         if (bitSet.get(allowed[2])) boundFound++;
@@ -100,10 +101,11 @@ public class RecipeManager {
         return boundFound;
     }
     private static int countBoundAtomsToSecond(Atom[] atoms, Atom base, Atom bound) {
-        int boundFound = 0;
         int baseAtom = ArrayUtils.indexOf(atoms, base, ArrayUtils.indexOf(atoms, base) + 1);
+        if (baseAtom == -1 || ArrayUtils.indexOf(atoms, bound) == -1) return -1;
         int[] allowed = new int[]{baseAtom - 5, baseAtom - 1, baseAtom + 1, baseAtom + 5};
         BitSet bitSet = ArrayUtils.indexesOf(atoms, bound);
+        int boundFound = 0;
         if (bitSet.get(allowed[0])) boundFound++;
         if (bitSet.get(allowed[1])) boundFound++;
         if (bitSet.get(allowed[2])) boundFound++;
@@ -113,10 +115,15 @@ public class RecipeManager {
     private static boolean hasBoundAtom(Atom[] atoms, Atom base, Atom bound) {
         if (bound == null) return false;
         int baseAtom = ArrayUtils.indexOf(atoms, base);
-        return bound.equals(atoms[baseAtom - 5])
-                || bound.equals(atoms[baseAtom - 1])
-                || bound.equals(atoms[baseAtom + 1])
-                || bound.equals(atoms[baseAtom + 5]);
+        if (baseAtom == -1 || ArrayUtils.indexOf(atoms, bound) == -1) return false;
+        try {
+            return bound.equals(atoms[baseAtom - 5])
+                    || bound.equals(atoms[baseAtom - 1])
+                    || bound.equals(atoms[baseAtom + 1])
+                    || bound.equals(atoms[baseAtom + 5]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
     }
     private static boolean isDoubleAtom(Atom[] atoms, Atom type) {
         return hasBoundAtom(atoms, type, type);

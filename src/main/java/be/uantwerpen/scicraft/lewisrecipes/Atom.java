@@ -56,5 +56,4 @@ public enum Atom {
         return null;
     }
 
-
 }

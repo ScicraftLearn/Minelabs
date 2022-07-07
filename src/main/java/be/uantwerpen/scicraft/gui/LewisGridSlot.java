@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.item.AtomItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class LewisGridSlot extends Slot {
     }
 
     public boolean canInsert(ItemStack stack) {
-        return isValid;
+        return isValid && stack != null && stack.getItem() instanceof AtomItem;
     }
 
     public ItemStack takeStack(int amount) {
@@ -45,5 +46,10 @@ public class LewisGridSlot extends Slot {
 
     public void setValid(boolean valid) {
         isValid = valid;
+    }
+
+    @Override
+    public int getMaxItemCount() {
+        return 1;
     }
 }
