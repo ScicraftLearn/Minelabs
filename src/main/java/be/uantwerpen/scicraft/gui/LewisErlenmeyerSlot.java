@@ -5,11 +5,11 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
-public class LewisInputSlot extends Slot {
+public class LewisErlenmeyerSlot extends Slot {
     private int amount;
     private boolean isValid;
 
-    public LewisInputSlot(Inventory inventory, int index, int x, int y) {
+    public LewisErlenmeyerSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
         this.isValid = false;
     }

@@ -19,7 +19,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
 public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(35, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(36, ItemStack.EMPTY);
 
     private int textureID = 0;
 
@@ -82,4 +82,5 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, this.inventory);
     }
+
 }

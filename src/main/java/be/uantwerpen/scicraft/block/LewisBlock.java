@@ -1,6 +1,8 @@
 package be.uantwerpen.scicraft.block;
 
-import net.minecraft.block.*;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -39,6 +41,7 @@ public class LewisBlock extends BlockWithEntity {
 
             if (screenHandlerFactory != null) {
                 //With this call the server will request the client to open the appropriate Screenhandler
+                //world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
                 player.openHandledScreen(screenHandlerFactory);
             }
         }

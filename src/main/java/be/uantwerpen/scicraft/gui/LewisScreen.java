@@ -28,7 +28,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
      */
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        int textureID = screenHandler.getSyncedNumber();
+        int textureID = screenHandler.getPropertyDelegate();
         if(textureID == 0) {
             this.currentTexture = TEXTURE2;
         } else if(textureID == 1) {
@@ -42,6 +42,13 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         int y = (height - backgroundHeight) / 2;
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+
+
+//        ItemStack test = new ItemStack(Items.HYDROGEN_ATOM);
+//        test.setCount(10);
+
+        //this randers a model for a certain item is a certain position
+        //this.itemRenderer.renderInGuiWithOverrides(test, x+8,  18-(11-29)+12+4*18+5);
     }
 
     @Override
@@ -55,8 +62,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     protected void init() {
         super.init();
         // Center the title
-        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        playerInventoryTitleX = (backgroundWidth - textRenderer.getWidth(playerInventoryTitle)) / 2;
+//        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+//        playerInventoryTitleX = (backgroundWidth - textRenderer.getWidth(playerInventoryTitle)) / 2;
 
         // move the title to the correct place
         playerInventoryTitleY += 61;

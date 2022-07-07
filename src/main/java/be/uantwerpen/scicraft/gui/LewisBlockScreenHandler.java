@@ -18,19 +18,20 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     PropertyDelegate propertyDelegate;
 
+
     //This constructor gets called on the client when the server wants it to open the screenHandler,
     //The client will call the other constructor with an empty Inventory and the screenHandler will automatically
     //sync this empty inventory with the inventory on the server.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
         //this(syncId, playerInventory, new SimpleInventory(35));
-        this(syncId, playerInventory, new SimpleInventory(35),new ArrayPropertyDelegate(1));
+        this(syncId, playerInventory, new SimpleInventory(36), new ArrayPropertyDelegate(1));
     }
 
     //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
     //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
         super(Screens.LEWIS_SCREEN_HANDLER, syncId);
-        checkSize(inventory, 35);
+        checkSize(inventory, 36);
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         this.addProperties(propertyDelegate);
@@ -53,11 +54,29 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
         // Lewis Crafting Table Inventory (9 input slots)
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18,5 * 18-o+5));
+            this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18,5 * 18-o+5) {
+                @Override
+                public boolean isEnabled() {
+                    return propertyDelegate.get(0) == 1;
+                }
+            });
         }
 
         // Lewis Crafting Table Inventory (1 output slot)
-        this.addSlot((new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18-o)));
+        this.addSlot(new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18-o) {
+            @Override
+            public boolean isEnabled() {
+                return propertyDelegate.get(0) == 1;
+            }
+        });
+
+        // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
+        this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18 - 27, 2 * 18-o + 18) {
+            @Override
+            public boolean isEnabled() {
+                return propertyDelegate.get(0) == 1;
+            }
+        });
 
         //The player inventory (3x9 slots)
         for (m = 0; m < 3; ++m) {
@@ -73,15 +92,20 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                onContentChanged(inventory);
+                handler.sendContentUpdates();
+                handler.onContentChanged(inventory);
+                handler.sendContentUpdates();
             }
             @Override
             public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+                //maybe use later
+                handler.updateToClient();
             }
         });
+
     }
 
-    public int getSyncedNumber(){
+    public int getPropertyDelegate(){
         return propertyDelegate.get(0);
     }
 
@@ -97,6 +121,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     // Shift + Player Inv Slot
     @Override
     public ItemStack transferSlot(PlayerEntity player, int invSlot) {
+        this.sendContentUpdates();
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
@@ -116,13 +141,14 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 slot.markDirty();
             }
         }
-
+        this.sendContentUpdates();
         return newStack;
     }
 
     @Override
     public void onContentChanged(Inventory inventory) {
         super.onContentChanged(inventory);
+        this.sendContentUpdates();
 
         boolean on = false;
         for (int i = 0; i < 25; i++) {
@@ -132,10 +158,15 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             on = true;
         }
 
+        this.sendContentUpdates();
+
         if(on) {
             setPropertyDelegate(1);
+            openInputSlots(9);
+            openErlenmeyer();
         } else {
             setPropertyDelegate(0);
+            closeInputSlots();
         }
 
         if (true) return;
@@ -198,12 +229,22 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     protected void openInputSlots(int amount) {
         for (int i = 25; i < 25+amount; i++) {
-            ((LewisInputSlot) this.getSlot(i)).setValid(true);
+//            System.out.println(i);
+//            System.out.println(((LewisInputSlot) this.getSlot(i)).isValid());
+            ((LewisInputSlot)this.getSlot(i)).setValid(true);
+            this.sendContentUpdates();
+//            System.out.println(((LewisInputSlot) this.getSlot(i)).isValid());
+//            System.out.println(this.getSlot(i).isEnabled());
+//            System.out.println("\n");
         }
     }
 
     protected void openOutputSlot() {
         ((LewisCraftingResultSlot) this.getSlot(34)).setReady(true);
+    }
+
+    protected void openErlenmeyer() {
+        ((LewisErlenmeyerSlot) this.getSlot(35)).setValid(true);
     }
 
     protected void closeGridSlots() {
@@ -215,10 +256,15 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     protected void closeInputSlots() {
         for (int i = 25; i < 34; i++) {
             ((LewisInputSlot) this.getSlot(i)).setValid(false);
+            this.sendContentUpdates();
         }
     }
 
     protected void closeOutputSlot() {
         ((LewisCraftingResultSlot) this.getSlot(34)).setReady(false);
+    }
+
+    protected void closeErlenmeyer() {
+        ((LewisErlenmeyerSlot) this.getSlot(35)).setValid(false);
     }
 }
