@@ -22,24 +22,52 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(36, ItemStack.EMPTY);
 
     private int textureID = 0;
+    private int craftingProgress = -1;
+    private int slotItems = 77;
+    private int slotReady = 6;
 
-    //PropertyDelegate is an interface which we will implement inline here.
-    //It can normally contain multiple integers as data identified by the index, but in this example we only have one.
+    //PropertyDelegate is an interface which is implemented inline here.
+    //It can normally contain multiple integers as data identified by the index.
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int index) {
-            return textureID;
+            if(index == 0) {
+                return textureID;
+            }
+            else if(index == 1) {
+                return craftingProgress;
+            }
+            else if(index == 2) {
+                return slotItems;
+            }
+            else if(index == 3) {
+                return slotReady;
+            }
+
+            //the code may never reach this point
+            return 0;
         }
 
         @Override
         public void set(int index, int value) {
-            textureID = value;
+            if(index == 0) {
+                textureID = value;
+            }
+            else if(index == 1) {
+                craftingProgress = value;
+            }
+            else if(index == 2) {
+                slotItems = value;
+            }
+            else if(index == 3) {
+                slotReady = value;
+            }
         }
 
-        //this is supposed to return the amount of integers you have in your delegate, in our example only one
+        //this is supposed to return the amount of integers you have in your delegate
         @Override
         public int size() {
-            return 1;
+            return 4;
         }
     };
 

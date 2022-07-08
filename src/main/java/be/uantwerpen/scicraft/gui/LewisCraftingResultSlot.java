@@ -36,7 +36,7 @@ public class LewisCraftingResultSlot extends Slot {
 
     @Override
     public boolean canTakeItems(PlayerEntity playerEntity) {
-        return isReady;
+        return true;
     }
 
 //    @Override

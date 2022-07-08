@@ -11,7 +11,7 @@ public class LewisErlenmeyerSlot extends Slot {
 
     public LewisErlenmeyerSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
-        this.isValid = false;
+        this.isValid = true;
     }
 
     public boolean canInsert(ItemStack stack) {
