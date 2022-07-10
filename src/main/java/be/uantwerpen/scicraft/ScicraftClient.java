@@ -45,6 +45,7 @@ public class ScicraftClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.CHARGED_MOVE_STATE, (client, handler, buf, responseSender) -> {
+            // packet to send to the client to specify what block to render, the blockstate (for the pion) and a boolean to render as an annihilation (only half block of movement) or as displacement (1 blokc movement)
             BlockPos target = buf.readBlockPos();
             String block_name = buf.readString();
             boolean annihilation = buf.readBoolean();

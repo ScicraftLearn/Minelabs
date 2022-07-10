@@ -33,12 +33,15 @@ public class ChargedBlockEntityRenderer<T extends AnimatedChargedBlockEntity> im
 		if (blockEntity.time != 0) {
 			double time_fraction = Math.max(0, Math.min(1, (blockEntity.getWorld().getTime() + tickDelta - blockEntity.time) / AnimatedChargedBlockEntity.time_move_ticks));
 			if (blockEntity.annihilation) {
+				// Quadratic speed up
 				offset = .5 * time_fraction * time_fraction;
 			} else {
+				// Quadratic slowdown
 				offset = time_fraction < 0.5 ? 2 * time_fraction * time_fraction : 2 * time_fraction * (-time_fraction + 2) - 1;
 			}
 		}
 		if (!(blockEntity.annihilation && offset ==.5)) {
+			// Animate, displace the block. The normal 'block' is used as input, and this gets moved for the animation.
 			matrices.translate(blockEntity.movement_direction.getX() * offset, blockEntity.movement_direction.getY() * offset, blockEntity.movement_direction.getZ() * offset);
 			BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
 			blockRenderManager.getModelRenderer().render(

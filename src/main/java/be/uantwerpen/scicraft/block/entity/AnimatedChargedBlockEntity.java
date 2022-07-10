@@ -19,7 +19,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -43,6 +42,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
 
     @Override
     public void writeNbt(NbtCompound tag) {
+        // Inputs from the packet from the server
         tag.putLong("time", time);
         tag.putInt("md", ChargedBlockEntity.vec2int(movement_direction));
         tag.putString("rs", render_state.toString());
@@ -59,6 +59,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     }
 
     public BlockState string2BlockState(String blockNameState) {
+        // write the lines for the packet to the client/nbt tag
         boolean withProperty = false;
         String blockValue = "0";
         String[] blockNames = blockNameState.toUpperCase().split("}",2);
@@ -108,6 +109,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     public void tick(World world, BlockPos pos, BlockState state) {
         if (!world.isClient) {
             if (time == 0) {
+                //start animation
                 time = world.getTime();
 
                 PacketByteBuf buf = PacketByteBufs.create();
@@ -120,12 +122,14 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
                 }
             }
             if (world.getTime() - time > time_move_ticks) {
+                // remove block after animation
                 world.removeBlockEntity(pos);
                 world.removeBlock(pos, false);
                 if (world.getBlockState(pos.mutableCopy().add(movement_direction)).getBlock().equals(be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER)) { //also change other particle for client
                     world.setBlockState(pos.mutableCopy().add(movement_direction), render_state, Block.NOTIFY_ALL);
                 }
                 if (annihilation) {
+                    // also spawn some photons for the annihilation.
                     ItemStack itemStack = new ItemStack(Items.PHOTON, 1);
                     double a = pos.getX() + movement_direction.getX() / 2d;
                     double b = pos.getY() + movement_direction.getY() / 2d;
@@ -137,6 +141,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
             }
         } else {
             if (time == 0) {
+                // client --> do nothing, only render.
                 time = world.getTime();
             }
         }

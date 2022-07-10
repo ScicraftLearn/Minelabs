@@ -23,6 +23,7 @@ public class ChargedPlaceholderBlockEntityRenderer<T extends ChargedPlaceholderB
 
 	@Override
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		// This is a placeholder, so render nothing.
 		matrices.push();
         matrices.pop();
     }

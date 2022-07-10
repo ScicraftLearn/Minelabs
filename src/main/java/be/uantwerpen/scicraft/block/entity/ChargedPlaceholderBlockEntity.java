@@ -54,11 +54,11 @@ public class ChargedPlaceholderBlockEntity extends BlockEntity{
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        // TODO: create a whole "lifecycle" for a charged particle, begining from either placement by user or by algorithm and checking if algorithms in client and server are still in sync.
         if (!world.isClient) {
             if (time == 0) {
                 time = world.getTime();
             }
+            // This part shouldn't be used, but is as a backup if the 'parent' block that does the animation doesn't remove this placeholder. The placeholder thus auto-removes itself after a number of ticks.
             if (world.getTime() - time > AnimatedChargedBlockEntity.time_move_ticks) {
                 world.removeBlockEntity(pos);
                 world.removeBlock(pos, false);

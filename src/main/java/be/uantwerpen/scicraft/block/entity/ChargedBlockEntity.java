@@ -83,6 +83,7 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public static Vec3i int2vec(int movement) {
+        // Easy way to describe the movement of 1 block, in which direction. Save the amount of NBT data to use.
         if (movement == 1) {
             return new Vec3i(1, 0, 0);
         } else if (movement == -1) {
@@ -101,6 +102,7 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public static int vec2int(Vec3i movement) {
+        // Easy way to describe the movement of 1 block, in which direction. Save the amount of NBT data to use.
         if (Objects.equals(movement, new Vec3i(1, 0, 0))) {
             return 1;
         } else if (movement.equals(new Vec3i(-1, 0, 0))) {
@@ -118,6 +120,7 @@ public class ChargedBlockEntity extends BlockEntity{
         }
     }
     private void updateField(World world, BlockPos pos) {
+        // Search for all the charged block in the neighbourhood and update the field. If the field is large enough, mark the particle for an update on the next tick.
         int e_radius = 8;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
@@ -125,8 +128,11 @@ public class ChargedBlockEntity extends BlockEntity{
         for (BlockPos pos_block : blocks_in_radius) {
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block)) {
                 Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                // This way, we only need to do the 'large' calculation of the field once
                 float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
+                // find the componnts of the fields
                 vec_pos.scale(d_E);
+                // add the the other parts of the fields already calculated
                 field.add(vec_pos);
                 needsUpdate(field.dot(field) > e_move); // putting it here makes it so the field stays zero.
             }
@@ -135,6 +141,7 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     private Vec3i movementDirection(World world, BlockPos pos) {
+        // Determine which way to move (in essence, sorting the order from large to small and seeing if the force is large enough for a movement).
         Vec3d field_abs = new Vec3d(Math.abs(field.getX()), Math.abs(field.getY()), Math.abs(field.getZ()));
         int movement = 0;
         if (field_abs.getX() >= field_abs.getY()) {
@@ -270,6 +277,7 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     private boolean decay() {
+        // For radioactive decay
         if (this.decay_time == 0) {
             return false;
         }
@@ -281,18 +289,24 @@ public class ChargedBlockEntity extends BlockEntity{
 
     public void tick(World world, BlockPos pos, BlockState state) {
         if (!world.isClient) {
+            //server
+            // skip some ticks to not overload the server with updates
             if ((world.getTime() + pos.asLong()) % 10 == 0) {
                 if (decay()) {
+                    // some random chance for a decay, so remove particle if it has decayed, and spawn some items.
                     world.removeBlockEntity(pos);
                     world.removeBlock(pos, false);
                     ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), decay_drop);
                     world.spawnEntity(itemEntity);
                     markDirty();
                 } else {
+                    // see if we can annihilate
                     int movement_annihilation = this.checkAnnihilation();
                     if (movement_annihilation != 0) {
+                        // save the position of the block to annihilate
                         BlockPos nPos = pos.mutableCopy().add(int2vec(movement_annihilation));
                         if (world.getBlockEntity(nPos) instanceof ChargedBlockEntity particle2) {
+                            // remove the other block and place a placeholder there
                             BlockState render_state2 = particle2.getCachedState();
                             world.removeBlockEntity(pos);
                             world.removeBlockEntity(nPos);
@@ -300,12 +314,15 @@ public class ChargedBlockEntity extends BlockEntity{
                             world.removeBlock(nPos, false);
                             world.setBlockState(pos, be.uantwerpen.scicraft.block.Blocks.ANIMATED_CHARGED.getDefaultState(), Block.NOTIFY_ALL);
                             world.setBlockState(nPos, be.uantwerpen.scicraft.block.Blocks.ANIMATED_CHARGED.getDefaultState(), Block.NOTIFY_ALL);
+                            // give information about the way the blocks should render
                             if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity animation1) {
+                                // this is only given to the server-side block. The client doesn't see this update. The BlockEntity thus also submits a packet to the client with these values.
                                 animation1.movement_direction = int2vec(movement_annihilation);
                                 animation1.render_state = getCachedState();
                                 animation1.annihilation = true;
                             }
                             if (world.getBlockEntity(nPos) instanceof AnimatedChargedBlockEntity animation2) {
+                                // this is only given to the server-side block. The client doesn't see this update. The BlockEntity thus also submits a packet to the client with these values.
                                 animation2.movement_direction = int2vec(-movement_annihilation);
                                 animation2.render_state = render_state2;
                                 animation2.annihilation = true;
@@ -313,26 +330,33 @@ public class ChargedBlockEntity extends BlockEntity{
                         }
                         markDirty();
                     } else {
+                        // update the field if we don't need to annihilate
                         this.updateField(world, pos);
                     }
                 }
+                // If we can move (from updateField()), we should move accordingly
                 if (update_next_tick) {
                     Vec3i movement = movementDirection(world, pos);
+                    // check if movement is allowed
                     if (!movement.equals(Vec3i.ZERO)) {
                         BlockPos nPos = pos.mutableCopy().add(movement);
                         if (world.getBlockState(nPos).isAir()) {
+                            // remove block and place placeholders in the current position (also for animation) and the new position (no 2 blokcs rendering the same position)
                             update_next_tick = false;
                             world.removeBlockEntity(pos);
                             world.removeBlock(pos, false);
                             world.setBlockState(pos, be.uantwerpen.scicraft.block.Blocks.ANIMATED_CHARGED.getDefaultState(), Block.NOTIFY_ALL);
                             world.setBlockState(nPos, be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER.getDefaultState(), Block.NOTIFY_ALL);
+                            // update for the animation
                             if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity animation1) {
+                                // this is only given to the server-side block. The client doesn't see this update. The BlockEntity thus also submits a packet to the client with these values.
                                 animation1.movement_direction = movement;
                                 animation1.render_state = getCachedState();
                             }
                         }
                         markDirty();
                     } else {
+                        // The block can't move anymore
                         update_next_tick = false;
                     }
                 }
