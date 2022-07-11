@@ -1,23 +1,18 @@
 package be.uantwerpen.scicraft.item;
 
+import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import net.minecraft.item.Item;
 
 public class AtomItem extends Item {
 
-    private final int atomicNumber;
-    private final String symbol;
+    private final Atom atom;
 
-    public AtomItem(Item.Settings settings, int atomicNumber, String symbol) {
+    public AtomItem(Item.Settings settings, Atom atom) {
         super(settings);
-        this.atomicNumber = atomicNumber;
-        this.symbol = symbol;
+        this.atom = atom;
     }
 
-    public int getAtomicNumber(){
-        return atomicNumber;
-    }
-
-    public String getSymbol() {
-        return symbol;
+    public Atom getAtom() {
+        return atom;
     }
 }
