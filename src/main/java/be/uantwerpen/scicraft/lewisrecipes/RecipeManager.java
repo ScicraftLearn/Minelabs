@@ -1,21 +1,23 @@
 package be.uantwerpen.scicraft.lewisrecipes;
 
-import org.apache.commons.lang3.ArrayUtils;
+import com.mojang.datafixers.util.Pair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.BitSet;
 import java.util.Map;
 
 public class RecipeManager {
 
+    @Nullable
     public static Molecule getMolecule(Map<Atom, Integer> ingredients) {
         for (Molecule molecule : Molecule.values()) {
             if (molecule.getIngredients().equals(ingredients)) return molecule;
         }
-
         return null;
     }
 
-    public static boolean isCorrectMolecule(Molecule molecule, Atom[] atoms) {
+    public static boolean isCorrectMolecule(@NotNull Molecule molecule, Atom[][] atoms) {
         switch (molecule) {
             case WATER -> {
                 return countBoundAtoms(atoms, Atom.OXYGEN, Atom.HYDROGEN) == 2;
@@ -64,19 +66,19 @@ public class RecipeManager {
                         && countBoundAtoms(atoms, Atom.NITROGEN, Atom.OXYGEN) == 3;
             }
             case AMMONIA -> {
-                return countBoundAtoms(atoms, Atom.NITROGEN, Atom.HYDROGEN) == 2;
+                return countBoundAtoms(atoms, Atom.NITROGEN, Atom.HYDROGEN) == 3;
             }
             case AMMONIUM_NITRATE -> {
                 return (countBoundAtoms(atoms, Atom.NITROGEN, Atom.HYDROGEN) == 4
-                        && countBoundAtomsToSecond(atoms, Atom.NITROGEN, Atom.OXYGEN) == 3)
+                        && countBoundAtoms(atoms, Atom.NITROGEN, Atom.OXYGEN, 1) == 3)
                         ||
-                        (countBoundAtomsToSecond(atoms, Atom.NITROGEN, Atom.HYDROGEN) == 4
+                        (countBoundAtoms(atoms, Atom.NITROGEN, Atom.HYDROGEN, 1) == 4
                         && countBoundAtoms(atoms, Atom.NITROGEN, Atom.OXYGEN) == 3);
             }
             case NITROUS_OXIDE -> {
                 return countBoundAtoms(atoms, Atom.OXYGEN, Atom.NITROGEN) == 2;
             }
-            case HYDROGEN_CLORIDE -> {
+            case HYDROGEN_CHLORIDE -> {
                 return hasBoundAtom(atoms, Atom.HYDROGEN, Atom.CHLORINE);
             }
             case SODIUM_OXIDE -> {
@@ -88,44 +90,64 @@ public class RecipeManager {
         }
     }
 
-    private static int countBoundAtoms(Atom[] atoms, Atom base, Atom bound) {
-        int baseAtom = ArrayUtils.indexOf(atoms, base);
-        if (baseAtom == -1 || ArrayUtils.indexOf(atoms, bound) == -1) return -1;
-        int[] allowed = new int[]{baseAtom - 5, baseAtom - 1, baseAtom + 1, baseAtom + 5};
-        BitSet bitSet = ArrayUtils.indexesOf(atoms, bound);
-        int boundFound = 0;
-        if (bitSet.get(allowed[0])) boundFound++;
-        if (bitSet.get(allowed[1])) boundFound++;
-        if (bitSet.get(allowed[2])) boundFound++;
-        if (bitSet.get(allowed[3])) boundFound++;
-        return boundFound;
-    }
-    private static int countBoundAtomsToSecond(Atom[] atoms, Atom base, Atom bound) {
-        int baseAtom = ArrayUtils.indexOf(atoms, base, ArrayUtils.indexOf(atoms, base) + 1);
-        if (baseAtom == -1 || ArrayUtils.indexOf(atoms, bound) == -1) return -1;
-        int[] allowed = new int[]{baseAtom - 5, baseAtom - 1, baseAtom + 1, baseAtom + 5};
-        BitSet bitSet = ArrayUtils.indexesOf(atoms, bound);
-        int boundFound = 0;
-        if (bitSet.get(allowed[0])) boundFound++;
-        if (bitSet.get(allowed[1])) boundFound++;
-        if (bitSet.get(allowed[2])) boundFound++;
-        if (bitSet.get(allowed[3])) boundFound++;
-        return boundFound;
-    }
-    private static boolean hasBoundAtom(Atom[] atoms, Atom base, Atom bound) {
-        if (bound == null) return false;
-        int baseAtom = ArrayUtils.indexOf(atoms, base);
-        if (baseAtom == -1 || ArrayUtils.indexOf(atoms, bound) == -1) return false;
+    @Contract(pure = true)
+    private static boolean isAtom(@NotNull Atom[][] atoms, int i, int j, Atom atom) {
         try {
-            return bound.equals(atoms[baseAtom - 5])
-                    || bound.equals(atoms[baseAtom - 1])
-                    || bound.equals(atoms[baseAtom + 1])
-                    || bound.equals(atoms[baseAtom + 5]);
+            return atoms[i][j].equals(atom);
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }
     }
-    private static boolean isDoubleAtom(Atom[] atoms, Atom type) {
+
+    @Contract("_, _ -> new")
+    @NotNull
+    private static Pair<Integer, Integer> findAtom(Atom[][] atoms, Atom toFind) {
+        return findAtom(atoms, toFind, 0);
+    }
+    @Contract("_, _, _ -> new")
+    @NotNull
+    private static Pair<Integer, Integer> findAtom(Atom[][] atoms, Atom toFind, int atomsToSkip) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (atoms[i][j].equals(toFind)) {
+                    if (atomsToSkip > 0) atomsToSkip--;
+                    else return new Pair<>(i, j);
+                }
+            }
+        }
+        return new Pair<>(-1, -1);
+    }
+
+    private static int countBoundAtoms(Atom[][] atoms, Atom base, Atom bound) {
+        return countBoundAtoms(atoms, base, bound, 0);
+    }
+    private static int countBoundAtoms(Atom[][] atoms, Atom base, Atom bound, int baseAtomsToSkip) {
+        int baseX, baseY;
+        Pair<Integer, Integer> baseFind = findAtom(atoms, base, baseAtomsToSkip);
+        baseX = baseFind.getFirst();
+        baseY = baseFind.getSecond();
+        if (baseX == -1 || baseY == -1) return -1;
+        int boundFound = 0;
+        if (isAtom(atoms, baseX - 1, baseY, bound)) boundFound++;
+        if (isAtom(atoms, baseX + 1, baseY, bound)) boundFound++;
+        if (isAtom(atoms, baseX, baseY - 1, bound)) boundFound++;
+        if (isAtom(atoms, baseX, baseY + 1, bound)) boundFound++;
+        return boundFound;
+    }
+
+    private static boolean hasBoundAtom(Atom[][] atoms, Atom base, Atom bound) {
+        int baseX, baseY;
+        Pair<Integer, Integer> baseFind = findAtom(atoms, base);
+        baseX = baseFind.getFirst();
+        baseY = baseFind.getSecond();
+        if (baseX == -1 || baseY == -1) return false;
+        return isAtom(atoms, baseX - 1, baseY, bound)
+                || isAtom(atoms, baseX + 1, baseY, bound)
+                || isAtom(atoms, baseX, baseY - 1, bound)
+                || isAtom(atoms, baseX, baseY + 1, bound);
+    }
+
+    private static boolean isDoubleAtom(Atom[][] atoms, Atom type) {
         return hasBoundAtom(atoms, type, type);
     }
 }
