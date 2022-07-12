@@ -95,28 +95,7 @@ public class Items {
     public static Item MERCURY_ATOM_INTERNAL;
     public static Item LEAD_ATOM_INTERNAL;
     public static Item URANIUM_ATOM_INTERNAL;
-//    public static final Item URANIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 92, "K"),
-//    public static final Item LEAD_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 82, "K"),
-//    public static final Item MERCURY_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 80, "K"),
-//    public static final Item GOLD_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 79, "K"),
-//    public static final Item IODINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 53, "K"),
-//    public static final Item TIN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 50, "K"),
-//    public static final Item CADMIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 48, "K"),
-//    public static final Item SILVER_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 47, "K"),
-//    public static final Item BROMINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 35, "K"),
-//    public static final Item ZINC_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 30, "Zn"),
-//    public static final Item COPPER_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 29, "Cu"),
-//    public static final Item IRON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 26, "Fe"),
-//    public static final Item CALCIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 20, "Ca"),
-//    public static final Item POTASSIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 19, "K"),
-//    public static final Item ARGON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 18, "Ar"), "argon_atom");
-//    public static final Item CHLORINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 17, "Cl"), "chlorine_atom");
-//    public static final Item SULFUR_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 16, "S"), "sulfur_atom");
-//    public static final Item PHOSPHORUS_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 15, "P"), "phosphorus_atom");
-//    public static final Item SILICON_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 14, "Si"), "silicon_atom");
-//    public static final Item ALUMINIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 13, "Al"), "aluminium_atom");
-//    public static final Item MAGNESIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 12, "Mg"), "magnesium_atom");
-//    public static final Item SODIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 11, "Na"), "sodium_atom");
+
 
     // Items > Bindings (internal)
     public static Item BINDING_HORIZONTAL;
