@@ -1,51 +1,41 @@
 package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.item.AtomItem;
+import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 
 public class LewisGridSlot extends Slot {
-    private int amount;
-    private boolean isValid;
+    private boolean locked;
 
     public LewisGridSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
-        this.isValid = true;
+        this.locked = false;
     }
 
+    @Override
     public boolean canInsert(ItemStack stack) {
-        return isValid && stack != null && stack.getItem() instanceof AtomItem;
-    }
-
-    public ItemStack takeStack(int amount) {
-        if (this.hasStack()) {
-            this.amount += Math.min(amount, this.getStack().getCount());
+        if (stack == null || stack.getItem().equals(Items.AIR))
+            this.setStack(stack);
+        else if (!locked && stack.getItem() instanceof AtomItem) {
+            Atom atom = ((AtomItem) stack.getItem()).getAtom();
+            if (atom != null) {
+                this.setStack(atom.getInternalItem().getDefaultStack());
+            }
         }
-        return super.takeStack(amount);
-    }
-
-    protected void onCrafted(ItemStack stack, int amount) {
-        this.amount += amount;
-        this.onCrafted(stack);
-    }
-
-    protected void onTake(int amount) {
-        this.amount += amount;
+        return false;
     }
 
     @Override
     public boolean canTakeItems(PlayerEntity playerEntity) {
-        return isValid;
+        return false;
     }
 
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setValid(boolean valid) {
-        isValid = valid;
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     @Override
