@@ -180,19 +180,28 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Override
     public void onSlotClick(int slotIndex, int button, @NotNull SlotActionType actionType, PlayerEntity player) {
-        if (actionType.equals(SlotActionType.QUICK_MOVE)) {
+        if (actionType.equals(SlotActionType.QUICK_CRAFT)) {
+            this.endQuickCraft();
+        } else if (actionType.equals(SlotActionType.QUICK_MOVE)) {
             if (slotIndex < 0) return;
 
             Slot slot = this.slots.get(slotIndex);
             if (!slot.canTakeItems(player)) return;
 
+            // Ik weet dat de for loop leeg is maar zo werkt het in vanilla ook, geen idee hoe maar het werkt.
+            //noinspection StatementWithEmptyBody
             for (ItemStack itemStack = this.transferSlot(player, slotIndex);
                  !itemStack.isEmpty() && ItemStack.areItemsEqualIgnoreDamage(slot.getStack(), itemStack);
                  itemStack = this.transferSlot(player, slotIndex)) {
             }
-        } else if (slotIndex < 25 && actionType == SlotActionType.PICKUP && this.getCursorStack().isEmpty())
-            this.getSlot(slotIndex).setStack(Items.AIR.getDefaultStack());
-        else super.onSlotClick(slotIndex, button, actionType, player);
+        } else if (slotIndex < 25 && actionType == SlotActionType.PICKUP) {
+            if (slotIndex < 0) return;
+            Slot slot = this.slots.get(slotIndex);
+            if (this.getCursorStack().isEmpty())
+                this.getSlot(slotIndex).setStack(Items.AIR.getDefaultStack());
+            else if (slot instanceof LewisGridSlot)
+                slot.canInsert(getCursorStack());
+        } else super.onSlotClick(slotIndex, button, actionType, player);
     }
 
     @Override
