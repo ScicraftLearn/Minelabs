@@ -17,18 +17,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
     private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
 
-    private static final Identifier CRAFTINGTEXTURE0 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp0.png");
-    private static final Identifier CRAFTINGTEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp2.png");
-    private static final Identifier CRAFTINGTEXTURE4 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp4.png");
-    private static final Identifier CRAFTINGTEXTURE6 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp6.png");
-    private static final Identifier CRAFTINGTEXTURE8 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp8.png");
-    private static final Identifier CRAFTINGTEXTURE10 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp10.png");
-    private static final Identifier CRAFTINGTEXTURE12 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp12.png");
-    private static final Identifier CRAFTINGTEXTURE14 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp14.png");
-    private static final Identifier CRAFTINGTEXTURE16 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp16.png");
-    private static final Identifier CRAFTINGTEXTURE18 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp18.png");
-    private static final Identifier CRAFTINGTEXTURE20 = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp20.png");
-    private Identifier currentTexture = TEXTURE2;
+    private Identifier currentTexture;
 
     private int tickCounter = 0;
     LewisBlockScreenHandler screenHandler;
@@ -73,7 +62,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
         // we are at the end of the crafting animation, so we reset the animation status back to -1
         if(craftingProgress >= 23) {
-            screenHandler.setOutput(screenHandler.getInventory());
+            screenHandler.setOutput();
 //            screenHandler.setStackInSlot(34, 1, new ItemStack(net.minecraft.item.Items.AIR));
 //            screenHandler.setStackInSlot(34, 1, new ItemStack(Items.ANTI_DOWNQUARK_RED));
         }
@@ -118,7 +107,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
             // reset the offset and create a new list where all the indexes of the ready slots are stored
             offset = 0;
-            List<Integer> readyIndex = new ArrayList<Integer>();
+            List<Integer> readyIndex = new ArrayList<>();
 
             // loop over the hashed indexes and retrieve the corresponding index from the map, then render it as 'ready'
             for(int r : P_ready) {
@@ -174,19 +163,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     }
 
     protected void setCorrectTexture(int craftingProgress) {
-        switch (craftingProgress) {
-            case 0 -> this.currentTexture = CRAFTINGTEXTURE0;
-            case 2 -> this.currentTexture = CRAFTINGTEXTURE2;
-            case 4 -> this.currentTexture = CRAFTINGTEXTURE4;
-            case 6 -> this.currentTexture = CRAFTINGTEXTURE6;
-            case 8 -> this.currentTexture = CRAFTINGTEXTURE8;
-            case 10 -> this.currentTexture = CRAFTINGTEXTURE10;
-            case 12 -> this.currentTexture = CRAFTINGTEXTURE12;
-            case 14 -> this.currentTexture = CRAFTINGTEXTURE14;
-            case 16 -> this.currentTexture = CRAFTINGTEXTURE16;
-            case 18 -> this.currentTexture = CRAFTINGTEXTURE18;
-            case 20 -> this.currentTexture = CRAFTINGTEXTURE20;
-        }
+        this.currentTexture = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp" + craftingProgress + ".png");
     }
 
     protected List<Integer> getSlotList(int N) {
