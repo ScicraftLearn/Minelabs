@@ -1,9 +1,6 @@
 package be.uantwerpen.scicraft.fluid;
 
 import be.uantwerpen.scicraft.Scicraft;
-import net.minecraft.block.Block;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 

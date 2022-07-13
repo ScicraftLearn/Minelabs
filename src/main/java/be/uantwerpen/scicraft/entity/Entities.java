@@ -19,8 +19,6 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
-//import be.uantwerpen.scicraft.block.LewisBlockEntity;
-//import be.uantwerpen.scicraft.block.Blocks;
 
 import java.util.function.Predicate;
 
@@ -39,7 +37,7 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
 
     public static final BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY = register(
-            FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, Blocks.LEWIS_BLOCK).build(null),"lewis_block");
+            FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, Blocks.LEWIS_BLOCK).build(null), "lewis_block");
 
     /**
      * Register a single entity
@@ -58,7 +56,7 @@ public class Entities {
      * <p>
      *
      * @param blockEntityType : BlockEntityType to register
-     * @param identifier : String name of the entity
+     * @param identifier      : String name of the entity
      * @return registered BlockEntityType
      */
     private static <T extends BlockEntity> BlockEntityType<T> register(BlockEntityType<T> blockEntityType, String identifier) {

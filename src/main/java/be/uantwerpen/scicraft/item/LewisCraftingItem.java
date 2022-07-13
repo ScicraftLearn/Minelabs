@@ -19,6 +19,7 @@ public class LewisCraftingItem extends AtomItem {
         return stack.getOrCreateNbt().contains(CURRENT_VALENCE_ELECTRONS, 3 /* type INT */)
                 ? stack.getOrCreateNbt().getInt(CURRENT_VALENCE_ELECTRONS) : this.getAtom().getInitialValenceElectrons();
     }
+
     public void setCurrentValenceElectrons(@NotNull ItemStack stack, int currentValenceElectrons) {
         stack.getOrCreateNbt().putInt(CURRENT_VALENCE_ELECTRONS, currentValenceElectrons);
     }
@@ -27,6 +28,7 @@ public class LewisCraftingItem extends AtomItem {
         return stack.getOrCreateNbt().contains(CURRENT_BONDS, 3 /* type INT */)
                 ? stack.getOrCreateNbt().getInt(CURRENT_BONDS) : 0;
     }
+
     public void setCurrentBonds(@NotNull ItemStack stack, int currentBonds) {
         stack.getOrCreateNbt().putInt(CURRENT_BONDS, currentBonds);
     }
@@ -35,6 +37,7 @@ public class LewisCraftingItem extends AtomItem {
         return stack.getOrCreateNbt().contains(CURRENT_NEUTRONS, 3 /* type INT */)
                 ? stack.getOrCreateNbt().getInt(CURRENT_NEUTRONS) : this.getAtom().getInitialNeutrons();
     }
+
     public void setCurrentNeutrons(@NotNull ItemStack stack, int currentNeutrons) {
         stack.getOrCreateNbt().putInt(CURRENT_NEUTRONS, currentNeutrons);
     }

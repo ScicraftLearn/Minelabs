@@ -24,7 +24,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        screenHandler = (LewisBlockScreenHandler) handler;
+        screenHandler = handler;
         this.currentTexture = TEXTURE2;
 
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
@@ -46,22 +46,22 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         int craftingProgress = screenHandler.getPropertyDelegate(1);
 
         //if the animation status is in the interval [0,22], we continue the animation
-        if(craftingProgress >= 0 && craftingProgress < 23) {
+        if (craftingProgress >= 0 && craftingProgress < 23) {
             this.setCorrectTexture(craftingProgress);
         }
 
         //if there is no animation going on, use the default texture
         else {
             int textureID = screenHandler.getPropertyDelegate(0);
-            if(textureID == 0) {
+            if (textureID == 0) {
                 this.currentTexture = TEXTURE2;
-            } else if(textureID == 1) {
+            } else if (textureID == 1) {
                 this.currentTexture = TEXTURE;
             }
         }
 
         // we are at the end of the crafting animation, so we reset the animation status back to -1
-        if(craftingProgress >= 23) {
+        if (craftingProgress >= 23) {
             screenHandler.setOutput();
 //            screenHandler.setStackInSlot(34, 1, new ItemStack(net.minecraft.item.Items.AIR));
 //            screenHandler.setStackInSlot(34, 1, new ItemStack(Items.ANTI_DOWNQUARK_RED));
@@ -84,7 +84,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
 
         // if it is allowed to put items in slots:
-        if(slotItems > 1) {
+        if (slotItems > 1) {
 
             // hashed mappings for the slots
             List<Integer> P_slots = this.getSlotList(slotItems);
@@ -99,9 +99,9 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
             int offset = 0;
 
             // loop over the slots and place the correct atom on the index
-            for(int P_slot : P_slots) {
+            for (int P_slot : P_slots) {
                 ItemStack temp = new ItemStack(DelegateSettings.ATOM_MAPPINGS.inverse().get(P_slot));
-                this.itemRenderer.renderInGuiWithOverrides(temp, x+8 + offset, y_val);
+                this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + offset, y_val);
                 offset += 18;
             }
 
@@ -110,18 +110,18 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
             List<Integer> readyIndex = new ArrayList<>();
 
             // loop over the hashed indexes and retrieve the corresponding index from the map, then render it as 'ready'
-            for(int r : P_ready) {
+            for (int r : P_ready) {
                 offset = DelegateSettings.SLOT_MAPPINGS.inverse().get(r) * 18;
-                this.itemRenderer.renderInGuiWithOverrides(ready, x+8 + offset, y_val);
+                this.itemRenderer.renderInGuiWithOverrides(ready, x + 8 + offset, y_val);
                 readyIndex.add(DelegateSettings.SLOT_MAPPINGS.inverse().get(r));
             }
 
             // for each slot, check if it maybe isn't ready yet
-            for(int i = 0; i < P_slots.size(); ++i) {
+            for (int i = 0; i < P_slots.size(); ++i) {
 
                 // if the slot isn't ready
-                if(!readyIndex.contains(i)) {
-                    this.itemRenderer.renderInGuiWithOverrides(notReady, x+8 + i*18, y_val);
+                if (!readyIndex.contains(i)) {
+                    this.itemRenderer.renderInGuiWithOverrides(notReady, x + 8 + i * 18, y_val);
                 }
             }
         }
@@ -151,11 +151,11 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         super.handledScreenTick();
 
         // increase the animation counter by 1
-        if(tickCounter % 6 == 0) {
+        if (tickCounter % 6 == 0) {
 
             // if the crafting is ongoing (aka it's not -1), keep going
-            if(this.screenHandler.getPropertyDelegate(1) != -1) {
-                this.screenHandler.setPropertyDelegate(1, this.screenHandler.getPropertyDelegate(1)+1);
+            if (this.screenHandler.getPropertyDelegate(1) != -1) {
+                this.screenHandler.setPropertyDelegate(1, this.screenHandler.getPropertyDelegate(1) + 1);
             }
             tickCounter = 1;
         }

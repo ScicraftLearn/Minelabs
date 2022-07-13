@@ -144,7 +144,7 @@ public class Items {
     public static final Item ANTI_DOWNQUARK_GREEN = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_green");
     public static final Item ANTI_DOWNQUARK_BLUE = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_blue");
 
-    public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroup.MISC)) ,"lewis_block");
+    public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroup.MISC)), "lewis_block");
 
     // Erlenmeyer
     public static final Item ERLENMEYER = register(new Item(new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer");
@@ -197,8 +197,8 @@ public class Items {
         BROMINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.BROMINE), "bromine_atom");
 
         SILVER_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.SILVER), "silver_atom");
-        CADMIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT),Atom.CADMIUM), "cadmium_atom");
-        TIN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.TIN), "tim_atom");
+        CADMIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.CADMIUM), "cadmium_atom");
+        TIN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.TIN), "tin_atom");
         IODINE_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.IODINE), "iodine_atom");
 
         GOLD_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.GOLD), "gold_atom");
@@ -237,7 +237,7 @@ public class Items {
 
         SILVER_ATOM_INTERNAL = register(new LewisCraftingItem(new Item.Settings(), Atom.SILVER), "internal_atoms/silver_atom_internal");
         CADMIUM_ATOM_INTERNAL = register(new LewisCraftingItem(new Item.Settings(), Atom.CADMIUM), "internal_atoms/cadmium_atom_internal");
-        TIN_ATOM_INTERNAL = register(new LewisCraftingItem(new Item.Settings(), Atom.TIN), "internal_atoms/tim_atom_internal");
+        TIN_ATOM_INTERNAL = register(new LewisCraftingItem(new Item.Settings(), Atom.TIN), "internal_atoms/tin_atom_internal");
         IODINE_ATOM_INTERNAL = register(new LewisCraftingItem(new Item.Settings(), Atom.IODINE), "internal_atoms/iodine_atom_internal");
 
         GOLD_ATOM_INTERNAL = register(new LewisCraftingItem(new Item.Settings(), Atom.GOLD), "internal_atoms/gold_atom_internal");

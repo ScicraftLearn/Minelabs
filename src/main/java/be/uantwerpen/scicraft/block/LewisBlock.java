@@ -55,9 +55,9 @@ public class LewisBlock extends BlockWithEntity {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LewisBlockEntity) {
-                ItemScatterer.spawn(world, pos, (LewisBlockEntity)blockEntity);
+                ItemScatterer.spawn(world, pos, (LewisBlockEntity) blockEntity);
                 // update comparators
-                world.updateComparators(pos,this);
+                world.updateComparators(pos, this);
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
