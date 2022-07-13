@@ -11,10 +11,10 @@ public class DelegateSettings {
     public static final BiMap<Item, Integer> ATOM_MAPPINGS = HashBiMap.create(Map.of(
             Items.HYDROGEN_ATOM, 2,
             Items.OXYGEN_ATOM, 3,
-            Items.NITROGEN_ATOM, 5,
-            Items.SODIUM_ATOM, 7,
-            Items.CHLORINE_ATOM, 11,
-            Items.CARBON_ATOM, 13
+            Items.CARBON_ATOM, 5,
+            Items.NITROGEN_ATOM, 7,
+            Items.SODIUM_ATOM, 11,
+            Items.CHLORINE_ATOM, 13
     ));
 
     public static final BiMap<Integer, Integer> SLOT_MAPPINGS = HashBiMap.create(Map.of(
