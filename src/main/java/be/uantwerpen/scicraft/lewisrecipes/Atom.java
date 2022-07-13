@@ -32,22 +32,22 @@ public enum Atom {
 
 
     //valence electrons of transition metals may not be correct
-    POTASSIUM(19, "K", 0.8, AtomType.METAL, 1, 1, Items.POTASSIUM_ATOM, Items.POTASSIUM_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    CALCIUM(20, "Ca", 1.0, AtomType.METAL, 2, 1, Items.CALCIUM_ATOM, Items.CALCIUM_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    IRON(26, "Fe", 1.8, AtomType.METAL, 2, 1, Items.IRON_ATOM, Items.IRON_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    COPPER(29, "Cu", 1.9, AtomType.METAL, 1, 1, Items.COPPER_ATOM, Items.COPPER_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    ZINC(30, "Zn", 1.6, AtomType.METAL, 2, 1, Items.ZINC_ATOM, Items.ZINC_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    BROMINE(35, "Br", 2.8, AtomType.NON_METAL, 7, 1, Items.BROMINE_ATOM, Items.BROMINE_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
+    POTASSIUM(19, "K", 0.8, AtomType.METAL, 1, 20, Items.POTASSIUM_ATOM, Items.POTASSIUM_ATOM_INTERNAL),
+    CALCIUM(20, "Ca", 1.0, AtomType.METAL, 2, 20, Items.CALCIUM_ATOM, Items.CALCIUM_ATOM_INTERNAL),
+    IRON(26, "Fe", 1.8, AtomType.METAL, 2, 30, Items.IRON_ATOM, Items.IRON_ATOM_INTERNAL), /*Valence electrons may not be correct */
+    COPPER(29, "Cu", 1.9, AtomType.METAL, 1, 34, Items.COPPER_ATOM, Items.COPPER_ATOM_INTERNAL), /*Valence electrons may not be correct */
+    ZINC(30, "Zn", 1.6, AtomType.METAL, 2, 34, Items.ZINC_ATOM, Items.ZINC_ATOM_INTERNAL), /*Valence electrons may not be correct */
+    BROMINE(35, "Br", 2.8, AtomType.NON_METAL, 7, 44, Items.BROMINE_ATOM, Items.BROMINE_ATOM_INTERNAL),
 
-    SILVER(47, "Ag", 1.9, AtomType.METAL, 1, 1, Items.SILVER_ATOM, Items.SILVER_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    CADMIUM(48, "Cd", 1.7, AtomType.METAL, 2, 1, Items.CADMIUM_ATOM, Items.CADMIUM_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    TIN(50, "Sn", 1.8, AtomType.METAL, 4, 1, Items.TIN_ATOM, Items.TIN_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    IODINE(53, "I", 2.5, AtomType.NON_METAL, 7, 1, Items.IODINE_ATOM, Items.IODINE_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
+    SILVER(47, "Ag", 1.9, AtomType.METAL, 1, 60, Items.SILVER_ATOM, Items.SILVER_ATOM_INTERNAL), /*Valence electrons may not be correct */
+    CADMIUM(48, "Cd", 1.7, AtomType.METAL, 2, 66, Items.CADMIUM_ATOM, Items.CADMIUM_ATOM_INTERNAL), /*Valence electrons may not be correct */
+    TIN(50, "Sn", 1.8, AtomType.METAL, 4, 70, Items.TIN_ATOM, Items.TIN_ATOM_INTERNAL),
+    IODINE(53, "I", 2.5, AtomType.NON_METAL, 7, 74, Items.IODINE_ATOM, Items.IODINE_ATOM_INTERNAL),
 
-    GOLD(79, "Au", 2.4, AtomType.METAL, 1, 1, Items.GOLD_ATOM, Items.GOLD_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    MERCURY(80, "Hg", 2, AtomType.METAL, 2, 1, Items.MERCURY_ATOM, Items.MERCURY_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    LEAD(82, "Pb", 1.8, AtomType.METAL, 4, 1, Items.LEAD_ATOM, Items.LEAD_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    URANIUM(92, "U", 1.7, AtomType.METAL, 2, 1, Items.URANIUM_ATOM, Items.URANIUM_ATOM_INTERNAL /* TODO: Add correct number of neutrons */);
+    GOLD(79, "Au", 2.4, AtomType.METAL, 1, 118, Items.GOLD_ATOM, Items.GOLD_ATOM_INTERNAL), /*Valence electrons may not be correct */
+    MERCURY(80, "Hg", 2, AtomType.METAL, 2, 122, Items.MERCURY_ATOM, Items.MERCURY_ATOM_INTERNAL), /*Valence electrons may not be correct */
+    LEAD(82, "Pb", 1.8, AtomType.METAL, 4, 126, Items.LEAD_ATOM, Items.LEAD_ATOM_INTERNAL),
+    URANIUM(92, "U", 1.7, AtomType.METAL, 2, 146, Items.URANIUM_ATOM, Items.URANIUM_ATOM_INTERNAL); /*Valence electrons may not be correct */
 
 
     private final int atomNumber;
