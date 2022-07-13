@@ -23,7 +23,8 @@ public class LewisGridSlot extends Slot {
         else if (!locked && stack.getItem() instanceof AtomItem) {
             Atom atom = ((AtomItem) stack.getItem()).getAtom();
             if (atom != null) {
-                this.setStack(atom.getInternalItem().getDefaultStack());
+                this.setStack(atom.getItem().getDefaultStack());
+                this.getStack().getOrCreateNbt().putBoolean("ScicraftItemInLCT", true);
             }
         }
         return false;

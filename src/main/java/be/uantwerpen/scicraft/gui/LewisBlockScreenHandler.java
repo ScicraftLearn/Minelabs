@@ -270,7 +270,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (int i = 0; i < ingredients.size(); i++) {
             ItemStack stack = inventory.getStack(i + 25);
             if (stack == null || stack.getItem().equals(net.minecraft.item.Items.AIR)
-                    || ingredients.get(i).getInternalItem().equals(stack.getItem())
+                    || ingredients.get(i).getItem().equals(stack.getItem())
                     || stack.getCount() != 10)
                 return false;
         }

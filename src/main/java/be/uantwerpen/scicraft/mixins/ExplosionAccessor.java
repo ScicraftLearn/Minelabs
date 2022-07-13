@@ -14,18 +14,18 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(Explosion.class)
 public interface ExplosionAccessor {
     @Accessor("x")
-    public double getX();
+    double getX();
 
     @Accessor("y")
-    public double getY();
+    double getY();
 
     @Accessor("z")
-    public double getZ();
+    double getZ();
 
     @Accessor("power")
-    public float getPower();
+    float getPower();
 
     @Accessor("behavior")
-    public ExplosionBehavior getBehavior();
+    ExplosionBehavior getBehavior();
 
 }

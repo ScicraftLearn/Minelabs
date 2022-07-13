@@ -75,9 +75,7 @@ public class Entities {
      */
     private static void registerEntitySpawns(EntityType<?> entityType, Predicate<BiomeSelectionContext> selector, SpawnSettings.SpawnEntry spawnEntry) {
         BiomeModifications.create(Registry.ENTITY_TYPE.getId(entityType))
-                .add(ModificationPhase.ADDITIONS, selector, context -> {
-                    context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry);
-                });
+                .add(ModificationPhase.ADDITIONS, selector, context -> context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry));
     }
 
     /**
