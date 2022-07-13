@@ -12,6 +12,11 @@ public class ItemGroups {
             .icon(() -> new ItemStack(Items.HYDROGEN_ATOM))
             .build();
 
+    public static final ItemGroup CHEMICALS = FabricItemGroupBuilder.create(
+                    new Identifier(Scicraft.MOD_ID, "chemicals"))
+            .icon(() -> new ItemStack(Items.ERLENMEYER))
+            .build();
+
     public static final ItemGroup QUANTUM_FIELDS = FabricItemGroupBuilder.create(
                     new Identifier(Scicraft.MOD_ID, "quantum_fields"))
             .icon(() -> new ItemStack(Items.ELECTRON))
