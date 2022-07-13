@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.lewisrecipes.Molecule;
 import be.uantwerpen.scicraft.lewisrecipes.RecipeManager;
@@ -7,12 +8,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -51,17 +55,17 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         int l;
 
         // offset
-        int o = 11-29;
+        int o = 11 - 29;
 
         // Lewis Crafting Table Inventory (5x5 grid)
         for (m = 0; m < 5; ++m) {
             for (l = 0; l < 5; ++l) {
-                this.addSlot(new LewisGridSlot(inventory, l + m * 5, 8 + l * 18,  m * 18-o));
+                this.addSlot(new LewisGridSlot(inventory, l + m * 5, 8 + l * 18, m * 18 - o));
             }
         }
         // Lewis Crafting Table Inventory (9 input slots)
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18,5 * 18-o+5) {
+            this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18, 5 * 18 - o + 5) {
                 @Override
                 public boolean isEnabled() {
                     return propertyDelegate.get(0) == 1;
@@ -70,7 +74,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
 
         // Lewis Crafting Table Inventory (1 output slot)
-        this.addSlot(new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18-o) {
+        this.addSlot(new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18 - o) {
             @Override
             public boolean isEnabled() {
                 return propertyDelegate.get(0) >= 0;
@@ -78,7 +82,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         });
 
         // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
-        this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18, 2 * 18-o + 36) {
+        this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18 - 27, 2 * 18 - o + 36) {
             @Override
             public boolean isEnabled() {
                 return propertyDelegate.get(0) >= 0;
@@ -88,12 +92,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         //The player inventory (3x9 slots)
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18-o+5));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18 - o + 5));
             }
         }
         //The player Hotbar (9 slots)
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180-o+5));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - o + 5));
         }
 
         this.addListener(new ScreenHandlerListener() {
@@ -103,17 +107,16 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 handler.onContentChanged(inventory);
                 handler.sendContentUpdates();
             }
+
             @Override
             public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
                 //maybe use later
                 handler.updateToClient();
-                setOutput(inventory);
-                System.out.println("test");
             }
         });
     }
 
-    public int getPropertyDelegate(int index){
+    public int getPropertyDelegate(int index) {
         return propertyDelegate.get(index);
     }
 
@@ -157,7 +160,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return newStack;
     }
 
-    public void craftingAnimation(Inventory inventory, ItemStack itemStack) {
+    public void craftingAnimation(ItemStack itemStack) {
         System.out.println("starting");
         if (getPropertyDelegate(1) >= 0) {
             return;
@@ -166,11 +169,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.output = itemStack;
     }
 
-    public void setOutput(Inventory inventory) {
-
+    public void setOutput() {
         // if the crafting animation is over
-        if(propertyDelegate.get(1) > 23) {
-
+        if (propertyDelegate.get(1) > 23) {
             // reset the crafting animation so it can start over later
             propertyDelegate.set(1, -1);
             inventory.setStack(34, output);
@@ -178,9 +179,25 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     @Override
+    public void onSlotClick(int slotIndex, int button, @NotNull SlotActionType actionType, PlayerEntity player) {
+        if (actionType.equals(SlotActionType.QUICK_MOVE)) {
+            if (slotIndex < 0) return;
+
+            Slot slot = this.slots.get(slotIndex);
+            if (!slot.canTakeItems(player)) return;
+
+            for (ItemStack itemStack = this.transferSlot(player, slotIndex);
+                 !itemStack.isEmpty() && ItemStack.areItemsEqualIgnoreDamage(slot.getStack(), itemStack);
+                 itemStack = this.transferSlot(player, slotIndex)) {
+            }
+        } else if (slotIndex < 25 && actionType == SlotActionType.PICKUP && this.getCursorStack().isEmpty())
+            this.getSlot(slotIndex).setStack(Items.AIR.getDefaultStack());
+        else super.onSlotClick(slotIndex, button, actionType, player);
+    }
+
+    @Override
     public void onContentChanged(Inventory inventory) {
         super.onContentChanged(inventory);
-        //this.craftingAnimation(inventory, new ItemStack(Items.ANTI_DOWNQUARK_RED));
         this.sendContentUpdates();
 
         // TODO: Show bonds where possible
@@ -196,15 +213,20 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         if (inputEmpty) openGridSlots();
         else closeGridSlots();
 
-        Atom[] atoms = new Atom[25];
-        for (int i = 0; i < 25; i++) {
-            atoms[i] = Atom.getByItem(this.inventory.getStack(i).getItem());
+        Atom[][] atoms = new Atom[5][5];
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                Item item = this.inventory.getStack(i).getItem();
+                atoms[i][j] = item instanceof AtomItem ? ((AtomItem) item).getAtom() : null;
+            }
         }
 
         Map<Atom, Integer> ingredients = new HashMap<>();
-        for (Atom atom : atoms)
-            if (atom != null)
-                ingredients.put(atom, ingredients.getOrDefault(atom, 0) + 1);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                ingredients.put(atoms[i][j], ingredients.getOrDefault(atoms[i][j], 0) + 1);
+            }
+        }
 
         Molecule molecule = RecipeManager.getMolecule(ingredients);
         if (molecule == null) {
@@ -224,19 +246,13 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
 
         if (hasCorrectInput(molecule)) {
-            // TODO: if (arrow is niet bezig) -> start arrow
-            System.out.println("starting");
-            if(propertyDelegate.get(1) == -1) {
-                this.craftingAnimation(inventory, new ItemStack(molecule.getItem()));
-            }
+            if (this.getPropertyDelegate(1) == -1)
+                this.craftingAnimation(new ItemStack(molecule.getItem()));
         } else {
             //arrow is running but input is no longer valid
-            if(propertyDelegate.get(1) >= 0 && propertyDelegate.get(1) < 23) {
-
+            if (this.getPropertyDelegate(1) >= 0 && this.getPropertyDelegate(1) < 23)
                 //stop crafting animation
-                propertyDelegate.set(1, -1);
-            }
-            // TODO: if (arrow is bezig) -> stop arrow
+                this.setPropertyDelegate(1, -1);
         }
     }
 
@@ -245,7 +261,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (int i = 0; i < ingredients.size(); i++) {
             ItemStack stack = inventory.getStack(i + 25);
             if (stack == null || stack.getItem().equals(net.minecraft.item.Items.AIR)
-                    || ingredients.get(i).getItem().equals(stack.getItem())
+                    || ingredients.get(i).getInternalItem().equals(stack.getItem())
                     || stack.getCount() != 10)
                 return false;
         }
@@ -266,13 +282,13 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     protected void openGridSlots() {
         for (int i = 0; i < 25; i++) {
-            ((LewisGridSlot) this.getSlot(i)).setValid(true);
+            ((LewisGridSlot) this.getSlot(i)).setLocked(false);
         }
     }
 
     protected void openInputSlots(int amount) {
         setPropertyDelegate(0, 1);
-        for (int i = 25; i < 25+amount; i++) {
+        for (int i = 25; i < 25 + amount; i++) {
             ((LewisInputSlot) this.getSlot(i)).setValid(true);
             this.sendContentUpdates();
         }
@@ -293,7 +309,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     protected void closeGridSlots() {
         for (int i = 0; i < 25; i++) {
-            ((LewisGridSlot) this.getSlot(i)).setValid(false);
+            ((LewisGridSlot) this.getSlot(i)).setLocked(true);
         }
     }
 
@@ -317,7 +333,4 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     protected boolean isInputOpen() {
         return this.getSlot(25).isEnabled();
     }
-
-
-
 }
