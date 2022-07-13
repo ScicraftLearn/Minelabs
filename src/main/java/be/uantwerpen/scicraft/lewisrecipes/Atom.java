@@ -1,7 +1,11 @@
 package be.uantwerpen.scicraft.lewisrecipes;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public enum Atom {
@@ -28,10 +32,10 @@ public enum Atom {
 
 
     //valence electrons of transition metals may not be correct
-    POTASSIUM(19,"K",0.8, AtomType.METAL,1,1, Items.POTASSIUM_ATOM, Items.POTASSIUM_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    CALCIUM(20,"Ca",1.0, AtomType.METAL,2,1, Items.CALCIUM_ATOM, Items.CALCIUM_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    IRON(26,"Fe", 1.8, AtomType.METAL,2,1, Items.IRON_ATOM, Items.IRON_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
-    COPPER(29,"Cu", 1.9, AtomType.METAL,1,1, Items.COPPER_ATOM, Items.COPPER_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
+    POTASSIUM(19, "K", 0.8, AtomType.METAL, 1, 1, Items.POTASSIUM_ATOM, Items.POTASSIUM_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
+    CALCIUM(20, "Ca", 1.0, AtomType.METAL, 2, 1, Items.CALCIUM_ATOM, Items.CALCIUM_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
+    IRON(26, "Fe", 1.8, AtomType.METAL, 2, 1, Items.IRON_ATOM, Items.IRON_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
+    COPPER(29, "Cu", 1.9, AtomType.METAL, 1, 1, Items.COPPER_ATOM, Items.COPPER_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
     ZINC(30, "Zn", 1.6, AtomType.METAL, 2, 1, Items.ZINC_ATOM, Items.ZINC_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
     BROMINE(35, "Br", 2.8, AtomType.NON_METAL, 7, 1, Items.BROMINE_ATOM, Items.BROMINE_ATOM_INTERNAL /* TODO: Add correct number of neutrons */),
 
@@ -53,10 +57,10 @@ public enum Atom {
     private final int initialValenceElectrons;
     private final int initialNeutrons;
 
-    private final Item item;
-    private final Item internalItem;
+    private Item item;
+    private Item internalItem;
 
-    Atom(int AN, String symbol, double EN, AtomType type, int initialVE, int initialN, Item item, Item internalItem) {
+    Atom(int AN, String symbol, double EN, AtomType type, int initialVE, int initialN, @NotNull Item item, @NotNull Item internalItem) {
         this.atomNumber = AN;
         this.symbol = symbol;
         this.electronegativity = EN;
@@ -92,11 +96,23 @@ public enum Atom {
     }
 
     public Item getItem() {
+        if (item == null)
+            setItem(Registry.ITEM.get(new Identifier(Scicraft.MOD_ID, name().toLowerCase() + "_atom")));
         return item;
     }
 
+    private void setItem(Item item) {
+        this.item = item;
+    }
+
     public Item getInternalItem() {
+        if (internalItem == null)
+            setInternalItem(Registry.ITEM.get(new Identifier(Scicraft.MOD_ID, "internal_atoms/" + name().toLowerCase() + "_atom_internal")));
         return internalItem;
+    }
+
+    private void setInternalItem(Item internalItem) {
+        this.internalItem = internalItem;
     }
 
     @Nullable
@@ -106,24 +122,9 @@ public enum Atom {
         return null;
     }
 
-    @Nullable
-    public static Atom getByItem(Item item) {
-        for (Atom atom : values())
-            if (atom.getItem().equals(item)) return atom;
-        return null;
-    }
-
-    @Nullable
-    public static Atom getByInternalItem(Item item) {
-        for (Atom atom : values())
-            if (atom.getInternalItem().equals(item)) return atom;
-        return null;
-    }
-
     public enum AtomType {
         METAL,
         NON_METAL,
         NOBLE_GAS
     }
-
 }
