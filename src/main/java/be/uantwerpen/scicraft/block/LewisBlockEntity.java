@@ -23,8 +23,8 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
 
     private int textureID = 0;
     private int craftingProgress = -1;
-    private int slotItems = 77;
-    private int slotReady = 6;
+    private int slotItems = 0;
+    private int slotReady = 0;
 
     //PropertyDelegate is an interface which is implemented inline here.
     //It can normally contain multiple integers as data identified by the index.
