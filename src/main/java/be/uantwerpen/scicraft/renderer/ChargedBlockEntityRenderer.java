@@ -14,8 +14,6 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Conte
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.world.World;
 
-import java.util.Random;
-
 @Environment(EnvType.CLIENT)
 public class ChargedBlockEntityRenderer<T extends AnimatedChargedBlockEntity> implements BlockEntityRenderer<T> {
 	
@@ -48,8 +46,7 @@ public class ChargedBlockEntityRenderer<T extends AnimatedChargedBlockEntity> im
 					blockEntity.getPos(),
 					matrices,
 					vertexConsumerProvider.getBuffer(RenderLayers.getMovingBlockLayer(blockEntity.render_state)),
-					false,
-					new Random(),
+					false, net.minecraft.util.math.random.Random.create(),
 					blockEntity.render_state.getRenderingSeed(blockEntity.getPos()),
 					OverlayTexture.DEFAULT_UV);
 		}
