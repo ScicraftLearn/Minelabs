@@ -1,8 +1,9 @@
 package be.uantwerpen.scicraft;
 
-import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.paintings.Paintings;
 import be.uantwerpen.scicraft.sound.SoundEvents;
@@ -29,5 +30,6 @@ public class Scicraft implements ModInitializer {
         ExtraDispenserBehavior.registerBehaviors();
         SoundEvents.registerSounds();
         Paintings.registerPaintings();
+        Screens.registerScreens();
     }
 }

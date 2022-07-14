@@ -4,6 +4,8 @@ import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.gui.MologramScreen;
+import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
@@ -13,6 +15,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.util.math.BlockPos;
@@ -57,5 +60,6 @@ public class ScicraftClient implements ClientModInitializer {
                 }
             });
         });
+        ScreenRegistry.register(Screens.MOLOGRAM_SCREEN_HANDLER, MologramScreen::new);
     }
 }
