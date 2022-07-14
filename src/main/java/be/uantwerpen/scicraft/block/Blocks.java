@@ -5,9 +5,11 @@ import be.uantwerpen.scicraft.block.entity.BlockEntities;
 //import be.uantwerpen.scicraft.block.entity.PionMinusBlockEntity;
 //import be.uantwerpen.scicraft.block.entity.PionPlusBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -53,8 +55,10 @@ public class Blocks {
     public static final Block UPQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "upquark_quantumfield");
     public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "downquark_quantumfield");
 
-    public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
-                    5.0f), "green_fire");
+    // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
+    public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE, MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "green_fire");
+    public static final Block HELIUM = register(new PionNulBlock(FabricBlockSettings.of(Material.AIR)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
     /**
      * Register a Block
