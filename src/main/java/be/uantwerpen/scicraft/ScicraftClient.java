@@ -1,7 +1,12 @@
 package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.network.NetworkingConstants;
+import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
+import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
 import be.uantwerpen.scicraft.gui.LewisScreen;
 import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.item.Items;
@@ -10,11 +15,14 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.item.Item;
 
 
@@ -30,14 +38,34 @@ public class ScicraftClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.NEUTRINO, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ANTINEUTRINO, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.POSITRON, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ELECTRON, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.NEUTRON, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PROTON, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.HELIUM, RenderLayer.getTranslucent());
 
         // Register rendering for electron entity
         EntityRendererRegistry.register(Entities.ELECTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+
+        BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.CHARGED_MOVE_STATE, (client, handler, buf, responseSender) -> {
+            BlockPos target = buf.readBlockPos();
+            String block_name = buf.readString();
+            boolean annihilation = buf.readBoolean();
+            client.execute(() -> {
+                if (client.world!=null){
+                    if (client.world.getBlockEntity(target) instanceof AnimatedChargedBlockEntity particle2) {
+                        particle2.render_state = particle2.string2BlockState(block_name);
+                        particle2.annihilation = annihilation;
+                    }
+                }
+            });
+        });
 
         // Register rendering lewis crafting table inventory
         ScreenRegistry.register(Screens.LEWIS_SCREEN_HANDLER, LewisScreen::new);

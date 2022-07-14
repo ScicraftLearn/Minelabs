@@ -1,7 +1,9 @@
 package be.uantwerpen.scicraft.item;
 
+import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.ProtonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
@@ -9,9 +11,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class ProtonItem extends Item {
+public class ProtonItem extends BlockItem {
     public ProtonItem(Item.Settings settings) {
-        super(settings);
+        super(Blocks.PROTON, settings);
     }
 
     /**

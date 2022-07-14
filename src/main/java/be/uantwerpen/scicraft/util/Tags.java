@@ -19,6 +19,7 @@ public class Tags {
     public static class Blocks {
 
         public static final Tag<Block> COPPER_BLOCKS = createTag("copper_blocks");
+        public static final Tag<Block> CHARGED_BLOCKS = createTag("charged_blocks");
 
         /**
          * Create a Block tag (tag is only used inside this mod)
