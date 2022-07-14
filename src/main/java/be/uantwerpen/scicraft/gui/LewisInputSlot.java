@@ -1,50 +1,36 @@
 package be.uantwerpen.scicraft.gui;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 
 public class LewisInputSlot extends Slot {
-    private int amount;
-    private boolean isValid;
+    private Item allowedItem;
 
     public LewisInputSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
-        this.isValid = false;
+        allowedItem = null;
     }
 
     public boolean canInsert(ItemStack stack) {
-        return isValid;
+        return allowedItem != null && allowedItem.equals(stack.getItem());
     }
 
-    public ItemStack takeStack(int amount) {
-        if (this.hasStack()) {
-            this.amount += Math.min(amount, this.getStack().getCount());
-        }
-        return super.takeStack(amount);
+    public int canInsertCount(ItemStack stack) {
+        if (stack == null || stack.getItem().equals(Items.AIR)) return 0;
+        if (!stack.isItemEqual(this.getStack())) return 0;
+        return this.getStack().getCount() >= this.getMaxItemCount(stack)
+                ? 0 : this.getMaxItemCount(stack) - this.getStack().getCount();
     }
 
-    protected void onCrafted(ItemStack stack, int amount) {
-        this.amount += amount;
-        this.onCrafted(stack);
+    public Item getAllowedItem() {
+        return allowedItem;
     }
 
-    protected void onTake(int amount) {
-        this.amount += amount;
-    }
-
-    @Override
-    public boolean canTakeItems(PlayerEntity playerEntity) {
-        return true;
-    }
-
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setValid(boolean valid) {
-        this.isValid = valid;
+    public void setAllowedItem(Item allowedItem) {
+        this.allowedItem = allowedItem;
     }
 
     @Override

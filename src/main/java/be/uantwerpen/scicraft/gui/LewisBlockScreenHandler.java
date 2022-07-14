@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.lewisrecipes.Molecule;
@@ -182,17 +183,47 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     public void onSlotClick(int slotIndex, int button, @NotNull SlotActionType actionType, PlayerEntity player) {
         if (actionType.equals(SlotActionType.QUICK_CRAFT)) {
             this.endQuickCraft();
+            inventory.markDirty();
         } else if (actionType.equals(SlotActionType.QUICK_MOVE)) {
+            Scicraft.LOGGER.info("");
             if (slotIndex < 0) return;
-
-            Slot slot = this.slots.get(slotIndex);
+            Slot slot = slots.get(slotIndex);
             if (!slot.canTakeItems(player)) return;
 
-            // Ik weet dat de for loop leeg is maar zo werkt het in vanilla ook, geen idee hoe maar het werkt.
-            //noinspection StatementWithEmptyBody
-            for (ItemStack itemStack = this.transferSlot(player, slotIndex);
-                 !itemStack.isEmpty() && ItemStack.areItemsEqualIgnoreDamage(slot.getStack(), itemStack);
-                 itemStack = this.transferSlot(player, slotIndex)) {
+            for (int i = 25; i < inventory.size(); i++) {
+                Slot inventorySlot = this.getSlot(i);
+                if (!slot.isEnabled()) continue;
+                if (inventorySlot instanceof LewisGridSlot) continue;
+                if (inventorySlot instanceof LewisInputSlot inputSlot && slot.getStack().getItem() instanceof AtomItem) {
+                    int insertCount = Math.min(inputSlot.canInsertCount(slot.getStack()), slot.getStack().getCount());
+                    if (insertCount <= 0) continue;
+                    inputSlot.getStack().setCount(inputSlot.getStack().getCount() + insertCount);
+                    if (slot.getStack().getCount() <= insertCount) {
+                        slot.setStack(Items.AIR.getDefaultStack());
+                        break;
+                    } else {
+                        slot.getStack().setCount(slot.getStack().getCount() - insertCount);
+                        continue;
+                    }
+                }
+                if (inventorySlot instanceof LewisErlenmeyerSlot erlenmeyerSlot && slot.getStack().getItem().equals(be.uantwerpen.scicraft.item.Items.ERLENMEYER)) {
+                    int insertCount = Math.min(slot.getStack().getCount(), erlenmeyerSlot.getStack().getCount() >= erlenmeyerSlot.getMaxItemCount(slot.getStack())
+                            ? 0 : erlenmeyerSlot.getMaxItemCount(slot.getStack()) - erlenmeyerSlot.getStack().getCount());
+                    if (insertCount <= 0) continue;
+                    if (erlenmeyerSlot.getStack().isEmpty()) {
+                        erlenmeyerSlot.setStack(slot.getStack().copy());
+                        erlenmeyerSlot.getStack().setCount(insertCount);
+                    } else {
+                        erlenmeyerSlot.getStack().setCount(erlenmeyerSlot.getStack().getCount() + insertCount);
+                    }
+                    if (slot.getStack().getCount() <= insertCount) {
+                        slot.setStack(Items.AIR.getDefaultStack());
+                        break;
+                    } else {
+                        slot.getStack().setCount(slot.getStack().getCount() - insertCount);
+                        //continue;
+                    }
+                }
             }
         } else if (slotIndex < 25 && actionType == SlotActionType.PICKUP) {
             if (slotIndex < 0) return;
@@ -225,7 +256,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         Atom[][] atoms = new Atom[5][5];
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                Item item = this.inventory.getStack(i).getItem();
+                Item item = this.inventory.getStack(i * 5 + j).getItem();
                 atoms[i][j] = item instanceof AtomItem ? ((AtomItem) item).getAtom() : null;
             }
         }
@@ -298,7 +329,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     protected void openInputSlots(int amount) {
         setPropertyDelegate(0, 1);
         for (int i = 25; i < 25 + amount; i++) {
-            ((LewisInputSlot) this.getSlot(i)).setValid(true);
+            // ((LewisInputSlot) this.getSlot(i)).setValid(true); TODO: Fix this
             this.sendContentUpdates();
         }
         openErlenmeyer();
@@ -325,7 +356,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     protected void closeInputSlots() {
         setPropertyDelegate(0, 0);
         for (int i = 25; i < 34; i++) {
-            ((LewisInputSlot) this.getSlot(i)).setValid(false);
+            ((LewisInputSlot) this.getSlot(i)).setAllowedItem(null);
             this.sendContentUpdates();
         }
         //closeErlenmeyer();
