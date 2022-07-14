@@ -18,9 +18,10 @@ public class LewisGridSlot extends Slot {
 
     @Override
     public boolean canInsert(ItemStack stack) {
+        if (locked) return false;
         if (stack == null || stack.getItem().equals(Items.AIR))
             this.setStack(stack);
-        else if (!locked && stack.getItem() instanceof AtomItem) {
+        else if (stack.getItem() instanceof AtomItem) {
             Atom atom = ((AtomItem) stack.getItem()).getAtom();
             if (atom != null) {
                 this.setStack(atom.getItem().getDefaultStack());
