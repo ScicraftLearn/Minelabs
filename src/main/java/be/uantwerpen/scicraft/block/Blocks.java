@@ -2,10 +2,7 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
-//import be.uantwerpen.scicraft.block.entity.PionMinusBlockEntity;
-//import be.uantwerpen.scicraft.block.entity.PionPlusBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
@@ -60,6 +57,8 @@ public class Blocks {
     public static final Block HELIUM = register(new PionNulBlock(FabricBlockSettings.of(Material.AIR)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
+    public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "mologram");
     /**
      * Register a Block
      * <p>
