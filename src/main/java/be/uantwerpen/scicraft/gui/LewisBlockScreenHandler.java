@@ -20,10 +20,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class LewisBlockScreenHandler extends ScreenHandler {
@@ -237,7 +234,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Override
     public void onContentChanged(Inventory inventory) {
-        super.onContentChanged(inventory);
         this.sendContentUpdates();
 
         // TODO: Show bonds where possible
@@ -264,11 +260,15 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         Map<Atom, Integer> ingredients = new HashMap<>();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                ingredients.put(atoms[i][j], ingredients.getOrDefault(atoms[i][j], 0) + 1);
+                if (atoms[i][j] != null)
+                    ingredients.put(atoms[i][j], ingredients.getOrDefault(atoms[i][j], 0) + 1);
             }
         }
 
+        Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
+        Scicraft.LOGGER.info("ingredients: " + ingredients);
         Molecule molecule = RecipeManager.getMolecule(ingredients);
+        Scicraft.LOGGER.info("molecule: " + molecule);
         if (molecule == null) {
             if (isInputOpen()) closeInputSlots();
             return;

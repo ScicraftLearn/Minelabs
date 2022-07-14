@@ -91,9 +91,9 @@ public class RecipeManager {
     }
 
     @Contract(pure = true)
-    private static boolean isAtom(@NotNull Atom[][] atoms, int i, int j, Atom atom) {
+    private static boolean isAtom(@NotNull Atom[][] atoms, int i, int j, @NotNull Atom atom) {
         try {
-            return atoms[i][j].equals(atom);
+            return atom.equals(atoms[i][j]);
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }
@@ -107,10 +107,10 @@ public class RecipeManager {
 
     @Contract("_, _, _ -> new")
     @NotNull
-    private static Pair<Integer, Integer> findAtom(Atom[][] atoms, Atom toFind, int atomsToSkip) {
+    private static Pair<Integer, Integer> findAtom(Atom[][] atoms, @NotNull Atom toFind, int atomsToSkip) {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if (atoms[i][j].equals(toFind)) {
+                if (toFind.equals(atoms[i][j])) {
                     if (atomsToSkip > 0) atomsToSkip--;
                     else return new Pair<>(i, j);
                 }
