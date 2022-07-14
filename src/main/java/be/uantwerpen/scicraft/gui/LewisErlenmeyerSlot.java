@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class LewisErlenmeyerSlot extends Slot {
     }
 
     public boolean canInsert(ItemStack stack) {
-        return isValid;
+        return isValid && stack.getItem().equals(Items.ERLENMEYER);
     }
 
     public ItemStack takeStack(int amount) {
@@ -38,11 +39,6 @@ public class LewisErlenmeyerSlot extends Slot {
     public boolean canTakeItems(PlayerEntity playerEntity) {
         return true;
     }
-
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
 
     public boolean isValid() {
         return isValid;

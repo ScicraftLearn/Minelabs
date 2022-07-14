@@ -12,6 +12,7 @@ import net.minecraft.world.WorldView;
 /**
  * TODO ART + Animation
  * TODO Half slab fire ??
+ *
  * @author pixar02
  */
 public class GreenFire extends AbstractFireBlock {
@@ -24,25 +25,21 @@ public class GreenFire extends AbstractFireBlock {
      * Check if the lit block is of copper
      *
      * @param state : stat of the base
-     *
      * @return boolean
      */
-    public static boolean isCopperBase(BlockState state){
+    public static boolean isCopperBase(BlockState state) {
         return state.isIn(Tags.Blocks.COPPER_BLOCKS);
     }
 
     /**
-     *
-     * @param state : current state of block
-     * @param direction: Direction of the block
+     * @param state         : current state of block
+     * @param direction:    Direction of the block
      * @param neighborState : BlockState of neighbor
-     * @param world : world of the block
-     * @param pos : pos of block
-     * @param neighborPos : position of neighbor
-     *
-     * @deprecated No way around it....
-     *
+     * @param world         : world of the block
+     * @param pos           : pos of block
+     * @param neighborPos   : position of neighbor
      * @return {@link BlockState} what state to place
+     * @deprecated No way around it....
      */
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
@@ -54,7 +51,7 @@ public class GreenFire extends AbstractFireBlock {
      *
      * @param state : current BlockState
      * @param world : world we are placing in
-     * @param pos : position we are placing at
+     * @param pos   : position we are placing at
      * @return boolean
      */
     @Override

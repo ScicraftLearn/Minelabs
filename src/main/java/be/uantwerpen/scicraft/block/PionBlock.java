@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class PionBlock extends Block {
     public static final IntProperty COLOUR = IntProperty.of("age", 0, 2);
+
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
         stateManager.add(COLOUR);
@@ -31,9 +32,9 @@ public class PionBlock extends Block {
         super.onPlaced(world, pos, state, placer, itemStack);
         double R = Math.random();
         int i = 0;
-        if ((R <= 0.333333333333333)){
+        if ((R <= 0.333333333333333)) {
             i = 1;
-        } else if ((R <= 0.66666666666666)){
+        } else if ((R <= 0.66666666666666)) {
             i = 2;
         }
         world.setBlockState(pos, state.with(COLOUR, i));

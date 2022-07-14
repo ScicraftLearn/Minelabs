@@ -30,7 +30,7 @@ public abstract class SubatomicParticle extends ThrownItemEntity {
     }
 
     // Prevent slowdown over time from SubatomicParticle
-    public float getSlowdownFactor(){
+    public float getSlowdownFactor() {
         return 1f;
     }
 

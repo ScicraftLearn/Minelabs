@@ -2,11 +2,9 @@ package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class Screens {
 
@@ -19,11 +17,11 @@ public class Screens {
      * <p>
      *
      * @param screenHandlerType : ScreenHandler Object to register
-     * @param identifier : String name of the Item
+     * @param identifier        : String name of the Item
      * @return {@link ScreenHandler}
      */
     private static <T extends ScreenHandler> ScreenHandlerType<T> register(ScreenHandlerRegistry.SimpleClientHandlerFactory<T> screenHandlerType, String identifier) {
-        return ScreenHandlerRegistry.registerSimple(new Identifier(Scicraft.MOD_ID,identifier), screenHandlerType);
+        return ScreenHandlerRegistry.registerSimple(new Identifier(Scicraft.MOD_ID, identifier), screenHandlerType);
     }
 
 

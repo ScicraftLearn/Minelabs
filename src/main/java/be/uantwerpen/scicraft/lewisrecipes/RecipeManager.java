@@ -73,7 +73,7 @@ public class RecipeManager {
                         && countBoundAtoms(atoms, Atom.NITROGEN, Atom.OXYGEN, 1) == 3)
                         ||
                         (countBoundAtoms(atoms, Atom.NITROGEN, Atom.HYDROGEN, 1) == 4
-                        && countBoundAtoms(atoms, Atom.NITROGEN, Atom.OXYGEN) == 3);
+                                && countBoundAtoms(atoms, Atom.NITROGEN, Atom.OXYGEN) == 3);
             }
             case NITROUS_OXIDE -> {
                 return countBoundAtoms(atoms, Atom.OXYGEN, Atom.NITROGEN) == 2;
@@ -104,6 +104,7 @@ public class RecipeManager {
     private static Pair<Integer, Integer> findAtom(Atom[][] atoms, Atom toFind) {
         return findAtom(atoms, toFind, 0);
     }
+
     @Contract("_, _, _ -> new")
     @NotNull
     private static Pair<Integer, Integer> findAtom(Atom[][] atoms, Atom toFind, int atomsToSkip) {
@@ -121,6 +122,7 @@ public class RecipeManager {
     private static int countBoundAtoms(Atom[][] atoms, Atom base, Atom bound) {
         return countBoundAtoms(atoms, base, bound, 0);
     }
+
     private static int countBoundAtoms(Atom[][] atoms, Atom base, Atom bound, int baseAtomsToSkip) {
         int baseX, baseY;
         Pair<Integer, Integer> baseFind = findAtom(atoms, base, baseAtomsToSkip);

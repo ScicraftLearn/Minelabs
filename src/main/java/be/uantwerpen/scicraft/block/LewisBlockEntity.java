@@ -23,24 +23,21 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
 
     private int textureID = 0;
     private int craftingProgress = -1;
-    private int slotItems = 77;
-    private int slotReady = 6;
+    private int slotItems = 0;
+    private int slotReady = 0;
 
     //PropertyDelegate is an interface which is implemented inline here.
     //It can normally contain multiple integers as data identified by the index.
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int index) {
-            if(index == 0) {
+            if (index == 0) {
                 return textureID;
-            }
-            else if(index == 1) {
+            } else if (index == 1) {
                 return craftingProgress;
-            }
-            else if(index == 2) {
+            } else if (index == 2) {
                 return slotItems;
-            }
-            else if(index == 3) {
+            } else if (index == 3) {
                 return slotReady;
             }
 
@@ -50,16 +47,13 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
 
         @Override
         public void set(int index, int value) {
-            if(index == 0) {
+            if (index == 0) {
                 textureID = value;
-            }
-            else if(index == 1) {
+            } else if (index == 1) {
                 craftingProgress = value;
-            }
-            else if(index == 2) {
+            } else if (index == 2) {
                 slotItems = value;
-            }
-            else if(index == 3) {
+            } else if (index == 3) {
                 slotReady = value;
             }
         }

@@ -2,9 +2,9 @@ package be.uantwerpen.scicraft.item;
 
 import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.item.ItemGroup;
 
 public class ItemGroups {
     public static final ItemGroup SCICRAFT = FabricItemGroupBuilder.create(

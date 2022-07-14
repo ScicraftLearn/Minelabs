@@ -5,20 +5,15 @@ import be.uantwerpen.scicraft.entity.NeutronEntity;
 import be.uantwerpen.scicraft.entity.ProtonEntity;
 import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.FluidModificationItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Util;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPointer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
@@ -40,9 +35,7 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(Items.ELECTRON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return Util.make(new ElectronEntity(world, position.getX(), position.getY(), position.getZ()), (electronEntity) -> {
-                    electronEntity.setItem(stack);
-                });
+                return Util.make(new ElectronEntity(world, position.getX(), position.getY(), position.getZ()), (electronEntity) -> electronEntity.setItem(stack));
             }
         });
 
@@ -56,9 +49,7 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(Items.PROTON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return Util.make(new ProtonEntity(world, position.getX(), position.getY(), position.getZ()), (protonEntity) -> {
-                    protonEntity.setItem(stack);
-                });
+                return Util.make(new ProtonEntity(world, position.getX(), position.getY(), position.getZ()), (protonEntity) -> protonEntity.setItem(stack));
             }
         });
 
@@ -72,9 +63,7 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(Items.NEUTRON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return Util.make(new NeutronEntity(world, position.getX(), position.getY(), position.getZ()), (neutronEntity) -> {
-                    neutronEntity.setItem(stack);
-                });
+                return Util.make(new NeutronEntity(world, position.getX(), position.getY(), position.getZ()), (neutronEntity) -> neutronEntity.setItem(stack));
             }
         });
 
@@ -86,7 +75,7 @@ public class ExtraDispenserBehavior {
             @Override
             protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
                 Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
-                EntityType entityType = ((SpawnEggItem) stack.getItem()).getEntityType(stack.getNbt());
+                EntityType<?> entityType = ((SpawnEggItem) stack.getItem()).getEntityType(stack.getNbt());
 
                 try {
                     entityType.spawnFromItemStack(pointer.getWorld(), stack, null, pointer.getPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);

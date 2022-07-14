@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ThrownEntity.class)
-public abstract class ThrownEntityMixin extends ProjectileEntity{
+public abstract class ThrownEntityMixin extends ProjectileEntity {
     protected ThrownEntityMixin(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Unique
-    public float getSlowdownFactor(){
-        if (this.isTouchingWater()){
+    public float getSlowdownFactor() {
+        if (this.isTouchingWater()) {
             return 0.8f;
         }
         return 0.99f;
