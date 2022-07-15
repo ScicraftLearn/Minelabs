@@ -1,0 +1,18 @@
+{
+  "type": "scicraft:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C"},
+      {"key":  "O1", "atom":  "O"},
+      {"key":  "O2", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "C1", "to": "O1", "bondOrder": 2},
+      {"from": "C1", "to": "O2", "bondOrder": 2}
+    ]
+  },
+  "result": {
+    "item": "scicraft:erlenmeyer_co2"
+  }
+}
