@@ -1,7 +1,8 @@
 {
+
   "itemGroup.scicraft.quantum_fields": "Kwantumvelden",
   "itemGroup.scicraft.elementary_particles": "Elementaire Deeltjes",
-
+  "itemGroup.scicraft.atoms": "Atomen",
 
   "block.scicraft.proton": "Proton",
   "block.scicraft.electron": "Elektron",
