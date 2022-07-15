@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft.lewisrecipes;
 import be.uantwerpen.scicraft.Scicraft;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
@@ -15,14 +16,24 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 public class MoleculeRecipe implements Recipe<CraftingInventory> {
+
+    private final MoleculeGraph structure;
     private final ItemStack outputStack;
     private final Identifier id;
+    private final JsonObject json;
 
-    public MoleculeRecipe(ItemStack outputStack, Identifier id) {
+    public MoleculeRecipe(MoleculeGraph structure, ItemStack outputStack, Identifier id, JsonObject json) {
+        this.structure = structure;
         this.outputStack = outputStack;
         this.id = id;
-        Scicraft.LOGGER.debug("Recipe made: " + id.toString());
+        this.json = json;
+        Scicraft.LOGGER.info("Recipe made: " + id.toString());
+        Scicraft.LOGGER.info(getJson().toString());
     }
 
     @Override
@@ -49,6 +60,10 @@ public class MoleculeRecipe implements Recipe<CraftingInventory> {
     @Override
     public Identifier getId() {
         return id;
+    }
+
+    public JsonObject getJson(){
+        return json;
     }
 
     @Override
@@ -78,27 +93,33 @@ public class MoleculeRecipe implements Recipe<CraftingInventory> {
         public MoleculeRecipe read(Identifier id, JsonObject json) {
             MoleculeRecipeJsonFormat recipeJson = new Gson().fromJson(json, MoleculeRecipeJsonFormat.class);
             // Validate all fields are there
-            if (recipeJson.result == null) {
-                throw new JsonSyntaxException("A required attribute is missing!");
-            }
+            if (recipeJson.result == null)
+                throw new JsonSyntaxException("Attribute 'result' is missing");
+            if (recipeJson.structure == null)
+                throw new JsonSyntaxException("Attribute 'structure' is missing");
 
             Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.result.item))
                     // Validate the entered item actually exists
                     .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.result.item));
             ItemStack output = new ItemStack(outputItem, 1);
 
-            return new MoleculeRecipe(output, id);
+            return new MoleculeRecipe(recipeJson.structure.get(), output, id, json);
         }
 
         @Override
         public MoleculeRecipe read(Identifier id, PacketByteBuf buf) {
-            ItemStack output = buf.readItemStack();
-            return new MoleculeRecipe(output, id);
+            // TODO: untested code
+            // Writing graph optimized to bytes is hard -> just send json over.
+            String jsonStr = buf.readString();
+            JsonObject json = JsonParser.parseString(jsonStr).getAsJsonObject();
+            return read(id, json);
         }
 
         @Override
         public void write(PacketByteBuf buf, MoleculeRecipe recipe) {
-            buf.writeItemStack(recipe.getOutput());
+            // Writing graph optimized to bytes is hard -> just send json over.
+            Scicraft.LOGGER.info(recipe.getJson().toString());
+            buf.writeString(recipe.getJson().toString());
         }
     }
 

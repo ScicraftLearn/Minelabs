@@ -4,7 +4,7 @@
   {
     "atoms": [
       {"key":  "O1", "atom":  "O"},
-      {"key":  "O1", "atom":  "O"}
+      {"key":  "O2", "atom":  "O"}
     ],
     "bonds": [
       {"from": "O1", "to": "O2", "bondOrder": 2}
