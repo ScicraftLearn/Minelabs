@@ -81,13 +81,11 @@ public class MoleculeRecipe implements Recipe<CraftingInventory> {
             if (recipeJson.result == null) {
                 throw new JsonSyntaxException("A required attribute is missing!");
             }
-            // We'll allow to not specify the output, and default it to 1.
-            if (recipeJson.result.count == 0) recipeJson.result.count = 1;
 
             Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.result.item))
                     // Validate the entered item actually exists
                     .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.result.item));
-            ItemStack output = new ItemStack(outputItem, recipeJson.result.count);
+            ItemStack output = new ItemStack(outputItem, 1);
 
             return new MoleculeRecipe(output, id);
         }

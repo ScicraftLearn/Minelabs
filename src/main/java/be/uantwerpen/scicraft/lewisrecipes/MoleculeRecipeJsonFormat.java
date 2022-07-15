@@ -1,13 +1,13 @@
 package be.uantwerpen.scicraft.lewisrecipes;
 
-import com.google.gson.JsonObject;
-
 public class MoleculeRecipeJsonFormat {
+
+    MoleculeGraphJsonFormat structure;
+
     Result result;
 
     static class Result {
         String item;
-        int count;
     }
 
 }
