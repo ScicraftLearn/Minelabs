@@ -14,11 +14,13 @@ public class ItemGroups {
 
     public static final ItemGroup QUANTUM_FIELDS = FabricItemGroupBuilder.create(
                     new Identifier(Scicraft.MOD_ID, "quantum_fields"))
-            .icon(() -> new ItemStack(Items.ELECTRON))
+            .icon(() -> new ItemStack(Items.GLUON_QUANTUMFIELD))
             .build();
 
     public static final ItemGroup ELEMENTARY_PARTICLES = FabricItemGroupBuilder.create(
                     new Identifier(Scicraft.MOD_ID, "elementary_particles"))
             .icon(() -> new ItemStack(Items.PION_NUL))
             .build();
+
+
 }
