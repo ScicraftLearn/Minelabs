@@ -43,7 +43,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 //        System.out.println(a);
 //        System.out.println("----------");
 
-        int craftingProgress = screenHandler.getPropertyDelegate(1);
+        int craftingProgress = screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS);
 
         //if the animation status is in the interval [0,22], we continue the animation
         if (craftingProgress >= 0 && craftingProgress < 23) {
@@ -52,7 +52,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
         //if there is no animation going on, use the default texture
         else {
-            int textureID = screenHandler.getPropertyDelegate(0);
+            int textureID = screenHandler.getPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID);
             if (textureID == 0) {
                 this.currentTexture = TEXTURE2;
             } else if (textureID == 1) {
@@ -71,54 +71,51 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, currentTexture);
 
-        int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2;
+//        int x = (width - backgroundWidth) / 2;
+//        int y = (height - backgroundHeight) / 2;
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         /*
          * Render input slot overlays
          */
-        int slotItems = this.screenHandler.getPropertyDelegate(2);
-        int slotReady = this.screenHandler.getPropertyDelegate(3);
-
+        int slotItems = this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_SLOT_ITEMS);
+        int slotReady = this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_SLOT_READY);
 
         // if it is allowed to put items in slots:
-        if (slotItems > 1) {
+        if (slotItems > 1 && this.getScreenHandler().isInputOpen()) {
 
             // hashed mappings for the slots
-            List<Integer> P_slots = this.getSlotList(slotItems);
-            List<Integer> P_ready = this.getSlotList(slotReady);
+            List<Integer> slotItemList = this.getSlotList(slotItems);
+            List<Integer> slotReadyList = this.getSlotList(slotReady);
 
             // textures to show whether a slot is ready or not
             ItemStack ready = new ItemStack(net.minecraft.item.Items.LIME_STAINED_GLASS_PANE);
             ItemStack notReady = new ItemStack(net.minecraft.item.Items.RED_STAINED_GLASS_PANE);
 
             //125 = 18-(11-29)+12+4*18+5)  <-- offset for input slots
-            int y_val = 125;
+            int y_val = 113 + y;
             int offset = 0;
 
             // loop over the slots and place the correct atom on the index
-            for (int P_slot : P_slots) {
+            for (int P_slot : slotItemList) {
                 ItemStack temp = new ItemStack(DelegateSettings.ATOM_MAPPINGS.inverse().get(P_slot));
                 this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + offset, y_val);
                 offset += 18;
             }
 
-            // reset the offset and create a new list where all the indexes of the ready slots are stored
-            offset = 0;
+            // create a new list where all the indexes of the ready slots are stored
             List<Integer> readyIndex = new ArrayList<>();
 
             // loop over the hashed indexes and retrieve the corresponding index from the map, then render it as 'ready'
-            for (int r : P_ready) {
+            for (int r : slotReadyList) {
                 offset = DelegateSettings.SLOT_MAPPINGS.inverse().get(r) * 18;
                 this.itemRenderer.renderInGuiWithOverrides(ready, x + 8 + offset, y_val);
                 readyIndex.add(DelegateSettings.SLOT_MAPPINGS.inverse().get(r));
             }
 
             // for each slot, check if it maybe isn't ready yet
-            for (int i = 0; i < P_slots.size(); ++i) {
-
+            for (int i = 0; i < slotItemList.size(); ++i) {
                 // if the slot isn't ready
                 if (!readyIndex.contains(i)) {
                     this.itemRenderer.renderInGuiWithOverrides(notReady, x + 8 + i * 18, y_val);
@@ -144,18 +141,18 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
         // move the title to the correct place
         playerInventoryTitleY += 61;
+
+        this.getScreenHandler().onContentChanged(handler.getInventory());
     }
 
     @Override
     protected void handledScreenTick() {
-        super.handledScreenTick();
-
         // increase the animation counter by 1
         if (tickCounter % 6 == 0) {
 
             // if the crafting is ongoing (aka it's not -1), keep going
-            if (this.screenHandler.getPropertyDelegate(1) != -1) {
-                this.screenHandler.setPropertyDelegate(1, this.screenHandler.getPropertyDelegate(1) + 1);
+            if (this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) != -1) {
+                this.screenHandler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) + 1);
             }
             tickCounter = 1;
         }
@@ -168,6 +165,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
     protected List<Integer> getSlotList(int N) {
         List<Integer> div = new ArrayList<>();
+        if (N <= 1) return div;
 
         // count number of 2s that divide N
         while (N % 2 == 0) {
@@ -178,7 +176,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         // N must be odd at this point.
         // So we can skip one element
         for (int i = 3; i * i <= N; i = i + 2) {
-
             while (N % i == 0) {
                 // divide the value of N
                 N = N / i;
@@ -191,9 +188,11 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         return div;
     }
 
+
+
     @Override
     public void onClose() {
         super.onClose();
-        this.screenHandler.setPropertyDelegate(1, -1);
+        this.screenHandler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
     }
 }

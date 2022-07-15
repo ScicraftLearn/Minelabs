@@ -3,7 +3,6 @@ package be.uantwerpen.scicraft.gui;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 
 public class LewisInputSlot extends Slot {
@@ -16,13 +15,6 @@ public class LewisInputSlot extends Slot {
 
     public boolean canInsert(ItemStack stack) {
         return allowedItem != null && allowedItem.equals(stack.getItem());
-    }
-
-    public int canInsertCount(ItemStack stack) {
-        if (stack == null || stack.getItem().equals(Items.AIR)) return 0;
-        if (!stack.isItemEqual(this.getStack())) return 0;
-        return this.getStack().getCount() >= this.getMaxItemCount(stack)
-                ? 0 : this.getMaxItemCount(stack) - this.getStack().getCount();
     }
 
     public Item getAllowedItem() {

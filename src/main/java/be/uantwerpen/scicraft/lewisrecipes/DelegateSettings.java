@@ -8,6 +8,11 @@ import net.minecraft.item.Item;
 import java.util.Map;
 
 public class DelegateSettings {
+    public static final int LCT_TEXTURE_ID = 0;
+    public static final int LCT_CRAFTING_PROGRESS = 1;
+    public static final int LCT_SLOT_ITEMS = 2;
+    public static final int LCT_SLOT_READY = 3;
+
     public static final BiMap<Item, Integer> ATOM_MAPPINGS = HashBiMap.create(Map.of(
             Items.HYDROGEN_ATOM, 2,
             Items.OXYGEN_ATOM, 3,

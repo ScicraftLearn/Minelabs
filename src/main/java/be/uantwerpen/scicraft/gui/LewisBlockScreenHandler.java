@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft.gui;
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
+import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import be.uantwerpen.scicraft.lewisrecipes.Molecule;
 import be.uantwerpen.scicraft.lewisrecipes.RecipeManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,7 +21,10 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class LewisBlockScreenHandler extends ScreenHandler {
@@ -34,6 +38,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
         //this(syncId, playerInventory, new SimpleInventory(35));
         this(syncId, playerInventory, new SimpleInventory(36), new ArrayPropertyDelegate(4));
+        this.onContentChanged(inventory);
     }
 
     //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
@@ -80,7 +85,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         });
 
         // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
-        this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18 - 27, 2 * 18 - o + 36) {
+        this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18, 2 * 18 - o + 36) {
             @Override
             public boolean isEnabled() {
                 return propertyDelegate.get(0) >= 0;
@@ -127,6 +132,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     @Override
+    protected void dropInventory(PlayerEntity player, Inventory inventory) {
+        super.dropInventory(player, inventory); // TODO: Use to stop LCT inventory from dropping
+    }
+
+    @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
     }
@@ -160,10 +170,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     public void craftingAnimation(ItemStack itemStack) {
         System.out.println("starting");
-        if (getPropertyDelegate(1) >= 0) {
-            return;
-        }
-        setPropertyDelegate(1, 0);
+        if (getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0) return;
+        setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, 0);
         this.output = itemStack;
     }
 
@@ -180,7 +188,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     public void onSlotClick(int slotIndex, int button, @NotNull SlotActionType actionType, PlayerEntity player) {
         if (actionType.equals(SlotActionType.QUICK_CRAFT)) {
             this.endQuickCraft();
-            inventory.markDirty();
+            this.sendContentUpdates();
         } else if (actionType.equals(SlotActionType.QUICK_MOVE)) {
             Scicraft.LOGGER.info("");
             if (slotIndex < 0) return;
@@ -191,34 +199,23 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 Slot inventorySlot = this.getSlot(i);
                 if (!slot.isEnabled()) continue;
                 if (inventorySlot instanceof LewisGridSlot) continue;
-                if (inventorySlot instanceof LewisInputSlot inputSlot && slot.getStack().getItem() instanceof AtomItem) {
-                    int insertCount = Math.min(inputSlot.canInsertCount(slot.getStack()), slot.getStack().getCount());
+                if ((inventorySlot instanceof LewisInputSlot && slot.getStack().getItem() instanceof AtomItem)
+                        || (inventorySlot instanceof LewisErlenmeyerSlot && slot.getStack().getItem().equals(be.uantwerpen.scicraft.item.Items.ERLENMEYER))) {
+                    if (!inventorySlot.canInsert(slot.getStack())) continue;
+                    int insertCount = Math.min(slot.getStack().getCount(), inventorySlot.getStack().getCount() >= inventorySlot.getMaxItemCount(slot.getStack())
+                            ? 0 : inventorySlot.getMaxItemCount(slot.getStack()) - inventorySlot.getStack().getCount());
                     if (insertCount <= 0) continue;
-                    inputSlot.getStack().setCount(inputSlot.getStack().getCount() + insertCount);
+                    if (inventorySlot.getStack().isEmpty()) {
+                        inventorySlot.setStack(slot.getStack().copy());
+                        inventorySlot.getStack().setCount(insertCount);
+                    } else {
+                        inventorySlot.getStack().setCount(inventorySlot.getStack().getCount() + insertCount);
+                    }
                     if (slot.getStack().getCount() <= insertCount) {
-                        slot.setStack(Items.AIR.getDefaultStack());
+                        slot.setStack(ItemStack.EMPTY);
                         break;
                     } else {
                         slot.getStack().setCount(slot.getStack().getCount() - insertCount);
-                        continue;
-                    }
-                }
-                if (inventorySlot instanceof LewisErlenmeyerSlot erlenmeyerSlot && slot.getStack().getItem().equals(be.uantwerpen.scicraft.item.Items.ERLENMEYER)) {
-                    int insertCount = Math.min(slot.getStack().getCount(), erlenmeyerSlot.getStack().getCount() >= erlenmeyerSlot.getMaxItemCount(slot.getStack())
-                            ? 0 : erlenmeyerSlot.getMaxItemCount(slot.getStack()) - erlenmeyerSlot.getStack().getCount());
-                    if (insertCount <= 0) continue;
-                    if (erlenmeyerSlot.getStack().isEmpty()) {
-                        erlenmeyerSlot.setStack(slot.getStack().copy());
-                        erlenmeyerSlot.getStack().setCount(insertCount);
-                    } else {
-                        erlenmeyerSlot.getStack().setCount(erlenmeyerSlot.getStack().getCount() + insertCount);
-                    }
-                    if (slot.getStack().getCount() <= insertCount) {
-                        slot.setStack(Items.AIR.getDefaultStack());
-                        break;
-                    } else {
-                        slot.getStack().setCount(slot.getStack().getCount() - insertCount);
-                        //continue;
                     }
                 }
             }
@@ -265,10 +262,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             }
         }
 
-        Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
-        Scicraft.LOGGER.info("ingredients: " + ingredients);
         Molecule molecule = RecipeManager.getMolecule(ingredients);
-        Scicraft.LOGGER.info("molecule: " + molecule);
         if (molecule == null) {
             if (isInputOpen()) closeInputSlots();
             return;
@@ -281,18 +275,16 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         if (!isInputOpen()) {
             System.out.println("Opening input");
-            openInputSlots(molecule.getIngredients().values().stream().reduce(0, Integer::sum));
-            // TODO: Fix Slot#getBackgroundSprite
+            openInputSlots(getIngredients(molecule));
         }
 
         if (hasCorrectInput(molecule)) {
-            if (this.getPropertyDelegate(1) == -1)
+            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) == -1)
                 this.craftingAnimation(new ItemStack(molecule.getItem()));
         } else {
-            //arrow is running but input is no longer valid
-            if (this.getPropertyDelegate(1) >= 0 && this.getPropertyDelegate(1) < 23)
-                //stop crafting animation
-                this.setPropertyDelegate(1, -1);
+            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0
+                    && this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) < 23)
+                this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
         }
     }
 
@@ -317,6 +309,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return ingr;
     }
 
+    public boolean isInputOpen() {
+        return this.getSlot(25).isEnabled();
+    }
+
     /**
      * code to open slots (by type)
      */
@@ -326,23 +322,22 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    protected void openInputSlots(int amount) {
-        setPropertyDelegate(0, 1);
-        for (int i = 25; i < 25 + amount; i++) {
-            // ((LewisInputSlot) this.getSlot(i)).setValid(true); TODO: Fix this
+    protected void openInputSlots(List<Atom> atoms) {
+        setPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID, 1);
+        int slotItems = 1;
+        for (int i = 0; i < atoms.size(); i++) {
+            Item atom = atoms.get(i).getItem();
+            ((LewisInputSlot) this.getSlot(i + 25)).setAllowedItem(atom);
             this.sendContentUpdates();
+
+            slotItems *= DelegateSettings.ATOM_MAPPINGS.get(atom);
         }
-        openErlenmeyer();
+        this.setPropertyDelegate(DelegateSettings.LCT_SLOT_ITEMS, slotItems);
     }
 
     protected void openOutputSlot() {
         ((LewisCraftingResultSlot) this.getSlot(34)).setReady(true);
     }
-
-    protected void openErlenmeyer() {
-        ((LewisErlenmeyerSlot) this.getSlot(35)).setValid(true);
-    }
-
 
     /**
      * code to close slots (by type)
@@ -354,7 +349,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     protected void closeInputSlots() {
-        setPropertyDelegate(0, 0);
+        setPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID, 0);
         for (int i = 25; i < 34; i++) {
             ((LewisInputSlot) this.getSlot(i)).setAllowedItem(null);
             this.sendContentUpdates();
@@ -364,13 +359,5 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     protected void closeOutputSlot() {
         ((LewisCraftingResultSlot) this.getSlot(34)).setReady(false);
-    }
-
-    protected void closeErlenmeyer() {
-        ((LewisErlenmeyerSlot) this.getSlot(35)).setValid(false);
-    }
-
-    protected boolean isInputOpen() {
-        return this.getSlot(25).isEnabled();
     }
 }
