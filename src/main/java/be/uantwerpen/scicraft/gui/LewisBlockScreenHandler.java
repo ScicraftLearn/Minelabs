@@ -132,11 +132,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     @Override
-    protected void dropInventory(PlayerEntity player, Inventory inventory) {
-        super.dropInventory(player, inventory); // TODO: Use to stop LCT inventory from dropping
-    }
-
-    @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
     }
@@ -169,7 +164,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     public void craftingAnimation(ItemStack itemStack) {
-        System.out.println("starting");
+        Scicraft.LOGGER.info("starting animation");
         if (getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0) return;
         setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, 0);
         this.output = itemStack;
@@ -190,7 +185,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.endQuickCraft();
             this.sendContentUpdates();
         } else if (actionType.equals(SlotActionType.QUICK_MOVE)) {
-            Scicraft.LOGGER.info("");
             if (slotIndex < 0) return;
             Slot slot = slots.get(slotIndex);
             if (!slot.canTakeItems(player)) return;

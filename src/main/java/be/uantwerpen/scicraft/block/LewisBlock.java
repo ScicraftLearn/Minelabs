@@ -5,11 +5,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -55,6 +57,11 @@ public class LewisBlock extends BlockWithEntity {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LewisBlockEntity) {
+                DefaultedList<ItemStack> items = ((LewisBlockEntity) blockEntity).getItems();
+                for (int i = 0; i < items.size(); i++) {
+                    if (!items.get(i).isEmpty() && items.get(i).getOrCreateNbt().getBoolean("ScicraftItemInLCT"))
+                        items.set(i, ItemStack.EMPTY);
+                }
                 ItemScatterer.spawn(world, pos, (LewisBlockEntity) blockEntity);
                 // update comparators
                 world.updateComparators(pos, this);
