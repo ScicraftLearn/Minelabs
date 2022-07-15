@@ -22,6 +22,7 @@ public class MoleculeRecipe implements Recipe<CraftingInventory> {
     public MoleculeRecipe(ItemStack outputStack, Identifier id) {
         this.outputStack = outputStack;
         this.id = id;
+        Scicraft.LOGGER.debug("Recipe made: " + id.toString());
     }
 
     @Override

@@ -1,7 +1,0 @@
-{
-  "type": "scicraft:molecule_crafting",
-  "result": {
-    "item": "scicraft:electron",
-    "count": 4
-  }
-}
