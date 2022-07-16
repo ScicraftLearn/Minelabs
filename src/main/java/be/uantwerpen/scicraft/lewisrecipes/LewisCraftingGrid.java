@@ -1,11 +1,13 @@
 package be.uantwerpen.scicraft.lewisrecipes;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.util.Graph;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class LewisCraftingGrid extends SimpleInventory {
 
@@ -38,28 +40,29 @@ public class LewisCraftingGrid extends SimpleInventory {
         return y * WIDTH + x;
     }
 
-    private Collection<Integer> getNeighbourPositions(int x, int y){
+    private Collection<Integer> getNeighbourPositions(int x, int y) {
         List<Integer> slots = new ArrayList<>();
-        if (x > 0)slots.add(toSlot(x - 1, y));
-        if (x < WIDTH - 1)slots.add(toSlot(x + 1, y));
-        if (y > 0)slots.add(toSlot(x, y - 1));
-        if (y < HEIGHT - 1)slots.add(toSlot(x, y + 1));
+        if (x > 0) slots.add(toSlot(x - 1, y));
+        if (x < WIDTH - 1) slots.add(toSlot(x + 1, y));
+        if (y > 0) slots.add(toSlot(x, y - 1));
+        if (y < HEIGHT - 1) slots.add(toSlot(x, y + 1));
         return slots;
     }
 
     /**
      * Creates a topological graph based on the crafting grid. Intended to simplify traversal.
      */
-    private Graph<ItemStack, String> getPositionGraph() {
-        Graph<ItemStack, String> graph = new Graph<>();
+    private MoleculeItemGraph getPositionGraph() {
+        MoleculeItemGraph graph = new MoleculeItemGraph();
 
-        // First build vertices and keep mapping
-        Map<ItemStack, Graph<ItemStack, String>.Vertex> stackMapping = new HashMap<>();
+        // First build vertices
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 ItemStack stack = getStack(toSlot(x, y));
+                // We assume only AtomItems make it into the LCT.
                 if (stack.isEmpty()) continue;
-                stackMapping.put(stack, graph.addVertex(stack));
+                Atom atom = ((AtomItem) stack.getItem()).getAtom();
+                graph.addVertex(atom, stack);
             }
         }
 
@@ -68,15 +71,14 @@ public class LewisCraftingGrid extends SimpleInventory {
             for (int y = 0; y < HEIGHT; y++) {
                 ItemStack stack = getStack(toSlot(x, y));
                 if (stack.isEmpty()) continue;
-                if (!stackMapping.containsKey(stack)) continue;
-                Graph<ItemStack, String>.Vertex from = stackMapping.get(stack);
-                for (int slot:getNeighbourPositions(x, y)){
+                MoleculeItemGraph.Vertex from = graph.getVertexOfItemStack(stack);
+                for (int slot : getNeighbourPositions(x, y)) {
                     ItemStack neighbourStack = getStack(slot);
                     if (neighbourStack.isEmpty()) continue;
-                    Graph<ItemStack, String>.Vertex to = stackMapping.get(neighbourStack);
-                    try{
-                        graph.addEdge(from, to, "");
-                    }catch(IllegalArgumentException e){
+                    MoleculeItemGraph.Vertex to = graph.getVertexOfItemStack(neighbourStack);
+                    try {
+                        graph.addEdge(from, to, Bond.COVALENT_ZERO);
+                    } catch (IllegalArgumentException e) {
                         // edges are added twice due to iteration -> just ignore.
                     }
                 }
@@ -87,20 +89,51 @@ public class LewisCraftingGrid extends SimpleInventory {
     }
 
     private PartialMolecule buildPartialMoleculeFromInventory() {
-        Graph<ItemStack, String> positionGraph = getPositionGraph();
+        MoleculeItemGraph positionGraph = getPositionGraph();
 
         // debug
         Scicraft.LOGGER.info("Position graph\n" + positionGraph.toString());
 
         // We use MoleculeItemGraph which can keep a mapping between vertices and ItemStacks.
         MoleculeItemGraph structure = positionGraphToMoleculeItemGraph(positionGraph);
+        Scicraft.LOGGER.info("Molecule formed: " + structure.toString());
         return new PartialMolecule(structure);
     }
 
-    private MoleculeItemGraph positionGraphToMoleculeItemGraph(Graph<ItemStack, String> positionGraph) {
-        MoleculeItemGraph structure = new MoleculeItemGraph();
-        // TODO: implement
+    /**
+     * Make the actual bonds between elements.
+     */
+    private MoleculeItemGraph positionGraphToMoleculeItemGraph(MoleculeItemGraph structure) {
+        List<Atom> sourceOrder = Stream.of("H", "F", "Cl", "Br", "I", "O", "N", "C", "B", "S", "P", "Si", "Al", "Sn", "Pb").map(Atom::getBySymbol).toList();
+        List<Atom> targetOrder = Stream.of("O", "N", "C", "B", "S", "P", "Si", "Al", "Sn", "Pb", "I", "Br", "Cl", "F", "H").map(Atom::getBySymbol).toList();
 
+        for (Atom sourceAtom : sourceOrder) {
+            boolean changed = true;
+            while (changed) {
+                changed = false;
+                for (MoleculeItemGraph.Vertex source : structure.getVertices()) {
+                    if (source.data != sourceAtom) continue;
+                    if (structure.getOpenConnections(source) < 1) continue;
+                    MoleculeItemGraph.Vertex target = source.getNeighbours().stream()
+                            .filter(t -> structure.getOpenConnections(t) > 0)
+                            .min(Comparator.comparingInt(t -> targetOrder.indexOf(((AtomItem) t.data.getItem()).getAtom())))
+                            .orElse(null);
+                    if (target == null) continue;
+                    structure.incrementBond(source, target);
+                    changed = true;
+                }
+            }
+        }
+
+
+//            structure.getVertices().stream()
+//                    .filter(v -> v.data == sourceAtom && structure.getOpenConnections(v) > 0)
+//                    .forEach(v -> structure.incrementBond(v,
+//                            v.getNeighbours().stream()
+//                                    .min(Comparator.comparingInt(t -> targetOrder.indexOf(((AtomItem) t.data.getItem()).getAtom()))).orElse(null)
+//                    ));
+
+        structure.removeZeroBonds();
         return structure;
     }
 

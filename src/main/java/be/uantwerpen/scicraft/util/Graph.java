@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft.util;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -80,9 +81,9 @@ public class Graph<V, E> {
         }
     }
 
-    private final Set<Vertex> vertices = new HashSet<>();
+    protected final Set<Vertex> vertices = new HashSet<>();
 
-    private final Map<Set<Vertex>, Edge> edges = new HashMap<>();
+    protected final Map<Set<Vertex>, Edge> edges = new HashMap<>();
 
     public Set<Vertex> getVertices() {
         return vertices;
@@ -90,6 +91,12 @@ public class Graph<V, E> {
 
     public Collection<Edge> getEdges() {
         return edges.values();
+    }
+
+    @Nullable
+    public Edge getEdge(Vertex v1, Vertex v2){
+        Set<Vertex> vertices = Set.of(v1, v2);
+        return edges.getOrDefault(vertices, null);
     }
 
     public Vertex addVertex(V data) {
@@ -111,6 +118,13 @@ public class Graph<V, E> {
         // store in graph
         edges.put(vertices, edge);
         return edge;
+    }
+
+    public void removeEdge(Edge e){
+        for (Vertex v:e.vertices){
+            v.edges.remove(e);
+        }
+        edges.remove(e.vertices);
     }
 
     public Collection<V> getVertexData() {
