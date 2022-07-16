@@ -95,7 +95,6 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
             Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.result.item))
                     // Validate the entered item actually exists
                     .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.result.item));
-            ItemStack output = new ItemStack(outputItem, 1);
 
             Molecule molecule = new Molecule(recipeJson.structure.get(), outputItem);
             return new MoleculeRecipe(molecule, id, json);

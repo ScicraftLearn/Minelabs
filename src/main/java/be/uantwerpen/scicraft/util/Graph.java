@@ -65,10 +65,7 @@ public class Graph<V, E> {
         private Vertex getOtherVertex(Vertex ignore) {
             if (!vertices.contains(ignore))
                 throw new RuntimeException("Tried to find other end of edge from a vertex that isn't connected.");
-            Optional<Vertex> vertex = vertices.stream().filter(v -> v != ignore).findFirst();
-            if (vertex.isEmpty())
-                throw new RuntimeException("Invalid edge: has less than 2 entries");
-            return vertex.get();
+            return vertices.stream().filter(v -> v != ignore).findFirst().orElseThrow(() -> new RuntimeException("Invalid edge: has less than 2 entries"));
         }
     }
 
@@ -104,7 +101,6 @@ public class Graph<V, E> {
     public Collection<V> getVertexData() {
         return vertices.stream().map(vertex -> vertex.data).collect(Collectors.toList());
     }
-
 
     public boolean isIsomorphicTo(Graph<V, E> other) {
         // TODO: implement
