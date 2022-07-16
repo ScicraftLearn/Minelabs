@@ -47,7 +47,7 @@ public class MoleculeGraphJsonFormat {
             if (v2 == null)
                 throw new JsonSyntaxException("Reference to unknown vertex in edge description '" + bond.to + "'");
             try{
-                graph.addEdge(v1, v2, new CovalentBond(bond.bondOrder));
+                graph.addEdge(v1, v2, Bond.get(bond.bondOrder));
             } catch (IllegalArgumentException e) {
                 throw new JsonSyntaxException("Edge between '" + v1 + "' and '" + v2 + "' already exists");
             }
