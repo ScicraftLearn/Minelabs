@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft.gui;
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
+import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
 import be.uantwerpen.scicraft.lewisrecipes.Molecule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -264,8 +265,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             }
         }
 
+        List<ItemStack> stacks = new ArrayList<>();
+        for (int i = 0; i < 25; i++) {
+            stacks.add(inventory.getStack(i));
+        }
+        Scicraft.LOGGER.info(stacks);
+
         Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
         Scicraft.LOGGER.info("ingredients: " + ingredients);
+
+        LewisCraftingGrid grid = new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
+        grid.markDirty();
+
 
         // TODO update to recipeManager
 //        Molecule molecule = RecipeManager.getMolecule(ingredients);

@@ -28,7 +28,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
         this.id = id;
         this.json = json;
         Scicraft.LOGGER.info("Recipe made: " + id.toString());
-        Scicraft.LOGGER.info(molecule.getStructure().toString());
+        Scicraft.LOGGER.info(molecule.getStructure().toCanonical());
     }
 
     @Override
