@@ -110,6 +110,11 @@ public enum Atom {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return symbol;
+    }
+
     public enum AtomType {
         ALKALI_METAL,
         ALKALINE_EARTH_METAL,

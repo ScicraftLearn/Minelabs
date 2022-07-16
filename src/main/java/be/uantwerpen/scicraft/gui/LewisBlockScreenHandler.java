@@ -4,7 +4,6 @@ import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.lewisrecipes.Molecule;
-import be.uantwerpen.scicraft.lewisrecipes.RecipeManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -267,33 +266,35 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
         Scicraft.LOGGER.info("ingredients: " + ingredients);
-        Molecule molecule = RecipeManager.getMolecule(ingredients);
-        Scicraft.LOGGER.info("molecule: " + molecule);
-        if (molecule == null) {
-            if (isInputOpen()) closeInputSlots();
-            return;
-        }
 
-        if (!RecipeManager.isCorrectMolecule(molecule, atoms)) {
-            if (isInputOpen()) closeInputSlots();
-            return;
-        }
-
-        if (!isInputOpen()) {
-            System.out.println("Opening input");
-            openInputSlots(molecule.getIngredients().values().stream().reduce(0, Integer::sum));
-            // TODO: Fix Slot#getBackgroundSprite
-        }
-
-        if (hasCorrectInput(molecule)) {
-            if (this.getPropertyDelegate(1) == -1)
-                this.craftingAnimation(new ItemStack(molecule.getItem()));
-        } else {
-            //arrow is running but input is no longer valid
-            if (this.getPropertyDelegate(1) >= 0 && this.getPropertyDelegate(1) < 23)
-                //stop crafting animation
-                this.setPropertyDelegate(1, -1);
-        }
+        // TODO update to recipeManager
+//        Molecule molecule = RecipeManager.getMolecule(ingredients);
+//        Scicraft.LOGGER.info("molecule: " + molecule);
+//        if (molecule == null) {
+//            if (isInputOpen()) closeInputSlots();
+//            return;
+//        }
+//
+//        if (!RecipeManager.isCorrectMolecule(molecule, atoms)) {
+//            if (isInputOpen()) closeInputSlots();
+//            return;
+//        }
+//
+//        if (!isInputOpen()) {
+//            System.out.println("Opening input");
+//            openInputSlots(molecule.getIngredients().values().stream().reduce(0, Integer::sum));
+//            // TODO: Fix Slot#getBackgroundSprite
+//        }
+//
+//        if (hasCorrectInput(molecule)) {
+//            if (this.getPropertyDelegate(1) == -1)
+//                this.craftingAnimation(new ItemStack(molecule.getItem()));
+//        } else {
+//            //arrow is running but input is no longer valid
+//            if (this.getPropertyDelegate(1) >= 0 && this.getPropertyDelegate(1) < 23)
+//                //stop crafting animation
+//                this.setPropertyDelegate(1, -1);
+//        }
     }
 
     protected boolean hasCorrectInput(Molecule molecule) {
@@ -301,7 +302,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (int i = 0; i < ingredients.size(); i++) {
             ItemStack stack = inventory.getStack(i + 25);
             if (stack == null || stack.getItem().equals(net.minecraft.item.Items.AIR)
-                    || ingredients.get(i).getItem().equals(stack.getItem())
+                    || !ingredients.get(i).getItem().equals(stack.getItem())
                     || stack.getCount() != 10)
                 return false;
         }
@@ -309,12 +310,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     public List<Atom> getIngredients(@NotNull Molecule molecule) {
-        List<Atom> ingr = new ArrayList<>();
-        molecule.getIngredients().keySet().forEach(atom -> {
-            for (int i = 0; i < molecule.getIngredients().get(atom); i++)
-                ingr.add(atom);
-        });
-        return ingr;
+        return new ArrayList<>(molecule.getIngredients());
     }
 
     /**

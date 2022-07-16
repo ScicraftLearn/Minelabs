@@ -16,34 +16,29 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
-public class MoleculeRecipe implements Recipe<CraftingInventory> {
+public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 
-    private final MoleculeGraph structure;
-    private final ItemStack outputStack;
+    private final Molecule molecule;
     private final Identifier id;
     private final JsonObject json;
 
-    public MoleculeRecipe(MoleculeGraph structure, ItemStack outputStack, Identifier id, JsonObject json) {
-        this.structure = structure;
-        this.outputStack = outputStack;
+    public MoleculeRecipe(Molecule molecule, Identifier id, JsonObject json) {
+        this.molecule = molecule;
         this.id = id;
         this.json = json;
         Scicraft.LOGGER.info("Recipe made: " + id.toString());
-        Scicraft.LOGGER.info(getJson().toString());
+        Scicraft.LOGGER.info(molecule.getStructure().toString());
     }
 
     @Override
-    public boolean matches(CraftingInventory inventory, World world) {
-        return false;
+    public boolean matches(LewisCraftingGrid inventory, World world) {
+        return inventory.getPartialMolecule() == molecule;
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inventory) {
-        return getOutput().copy();
+    public ItemStack craft(LewisCraftingGrid inventory) {
+        return getOutput();
     }
 
     @Override
@@ -53,8 +48,7 @@ public class MoleculeRecipe implements Recipe<CraftingInventory> {
 
     @Override
     public ItemStack getOutput() {
-        // Do not modify the output as this is a direct reference not a copy. Use craft instead if you want a copy.
-        return outputStack;
+        return new ItemStack(molecule.getItem());
     }
 
     @Override
@@ -103,7 +97,8 @@ public class MoleculeRecipe implements Recipe<CraftingInventory> {
                     .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.result.item));
             ItemStack output = new ItemStack(outputItem, 1);
 
-            return new MoleculeRecipe(recipeJson.structure.get(), output, id, json);
+            Molecule molecule = new Molecule(recipeJson.structure.get(), outputItem);
+            return new MoleculeRecipe(molecule, id, json);
         }
 
         @Override
