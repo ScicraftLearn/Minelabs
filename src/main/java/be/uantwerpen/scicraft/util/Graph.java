@@ -1,5 +1,8 @@
 package be.uantwerpen.scicraft.util;
 
+import org.apache.commons.lang3.NotImplementedException;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,14 +40,22 @@ public class Graph<V, E> {
             return edges.stream().map(edge -> edge.data).collect(Collectors.toList());
         }
 
+        /**
+         * Return canonical representation of vertex with edges.
+         * Only works if toString methods of edge and vertex data return canonical representations
+         */
+        public String toCanonical() {
+            StringBuilder builder = new StringBuilder();
+            builder.append(data.toString()).append("\n");
+            edges.stream().map(edge ->
+                            "\t-- (" + edge.data.toString() + ")\t" + edge.getOtherVertex(this).data.toString() + "\n")
+                    .sorted().forEachOrdered(builder::append);
+            return builder.toString();
+        }
+
         @Override
         public String toString() {
-            StringBuilder s = new StringBuilder();
-            s.append(data.toString()).append("\n");
-            for (Edge edge : getEdges()) {
-                s.append("\t-- (").append(edge.data.toString()).append(")\t").append(edge.getOtherVertex(this).data.toString()).append("\n");
-            }
-            return s.toString();
+            return toCanonical();
         }
     }
 
@@ -77,6 +88,10 @@ public class Graph<V, E> {
         return vertices;
     }
 
+    public Collection<Edge> getEdges() {
+        return edges.values();
+    }
+
     public Vertex addVertex(V data) {
         Vertex v = new Vertex(data);
         vertices.add(v);
@@ -103,17 +118,28 @@ public class Graph<V, E> {
     }
 
     public boolean isIsomorphicTo(Graph<V, E> other) {
-        // TODO: implement
-        return false;
+        if (vertices.size() != other.vertices.size())
+            return false;
+        if (edges.size() != other.edges.size())
+            return false;
+
+        // Missing structure check
+        // Missing edges check
+        throw new UnsupportedOperationException("Generic graph isomorphism isn't implemented");
+    }
+
+    /**
+     * Create canonical string representation of graph.
+     */
+    public String toCanonical() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Undirected graph\n");
+        vertices.stream().map(vertex -> vertex.toCanonical() + "\n").sorted().forEachOrdered(builder::append);
+        return builder.toString();
     }
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder();
-        s.append("Undirected graph\n");
-        for (Vertex vertex : vertices) {
-            s.append(vertex.toString()).append("\n");
-        }
-        return s.toString();
+        return toCanonical();
     }
 }
