@@ -192,8 +192,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     }
 
     @Override
-    public void onClose() {
-        super.onClose();
+    public void close() {
+        super.close();
         this.screenHandler.setPropertyDelegate(1, -1);
     }
 }

@@ -7,6 +7,7 @@ import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -85,7 +86,7 @@ public class ExtraDispenserBehavior {
                 }
 
                 stack.decrement(1);
-                pointer.getWorld().emitGameEvent(GameEvent.ENTITY_PLACE, pointer.getPos());
+                pointer.getWorld().emitGameEvent((Entity)null, GameEvent.ENTITY_PLACE, pointer.getPos());
                 return stack;
             }
         });
