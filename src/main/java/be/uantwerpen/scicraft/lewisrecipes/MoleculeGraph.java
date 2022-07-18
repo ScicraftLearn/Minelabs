@@ -20,12 +20,21 @@ public class MoleculeGraph extends Graph<Atom, Bond> {
         return usableElectrons - v.getEdgesData().stream().map(bond -> bond.bondOrder).reduce(0, Integer::sum);
     }
 
-    public void incrementBond(Vertex v1, Vertex v2){
-        if (v1 == null || v2 == null) return;
+    /**
+     * Increments the bondOrder between to neighbouring atoms. Returns whether any change was made.
+     */
+    public boolean incrementBond(Vertex v1, Vertex v2){
+        if (v1 == null || v2 == null) return false;
         Edge edge = getEdge(v1, v2);
         if (edge == null)
             throw new IllegalArgumentException("Can only increment bonds between neighbouring atoms");
-        edge.data = edge.data.higher();
+        try{
+            edge.data = edge.data.higher();
+        }catch (UnsupportedOperationException e){
+            // Couldn't increment bond -> nothing changed.
+            return false;
+        }
+        return true;
     }
 
     public void removeZeroBonds(){

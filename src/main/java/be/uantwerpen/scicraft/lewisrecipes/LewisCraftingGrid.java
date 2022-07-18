@@ -119,19 +119,10 @@ public class LewisCraftingGrid extends SimpleInventory {
                             .min(Comparator.comparingInt(t -> targetOrder.indexOf(((AtomItem) t.data.getItem()).getAtom())))
                             .orElse(null);
                     if (target == null) continue;
-                    structure.incrementBond(source, target);
-                    changed = true;
+                    changed = changed || structure.incrementBond(source, target);
                 }
             }
         }
-
-
-//            structure.getVertices().stream()
-//                    .filter(v -> v.data == sourceAtom && structure.getOpenConnections(v) > 0)
-//                    .forEach(v -> structure.incrementBond(v,
-//                            v.getNeighbours().stream()
-//                                    .min(Comparator.comparingInt(t -> targetOrder.indexOf(((AtomItem) t.data.getItem()).getAtom()))).orElse(null)
-//                    ));
 
         structure.removeZeroBonds();
         return structure;

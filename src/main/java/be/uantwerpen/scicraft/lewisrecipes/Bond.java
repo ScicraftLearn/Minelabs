@@ -56,7 +56,7 @@ public enum Bond {
         this.bondOrder = bondOrder;
     }
 
-    public abstract Bond higher();
+    public abstract Bond higher() throws UnsupportedOperationException;
 
     public static Bond get(int bondOrder){
         return switch (bondOrder) {
