@@ -18,6 +18,7 @@ public class BuddingSaltBlock extends BuddingAmethystBlock {
         super(settings);
     }
 
+    //TODO FIX AMETHYST SPAWNING INSTEAD OF SALT!!!!
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (random.nextInt(5) == 0) {
