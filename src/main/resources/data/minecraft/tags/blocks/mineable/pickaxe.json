@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "scicraft:salt_ore",
+    "scicraft:deepslate_salt_ore",
+    "scicraft:budding_salt_block"
+  ]
+}
