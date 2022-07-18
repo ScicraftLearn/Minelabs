@@ -1,17 +1,18 @@
 {
   "replace": false,
   "values": [
+    "minecraft:raw_copper_block",
     "minecraft:copper_block",
-    "minecraft:cut_copper",
-    "minecraft:cut_copper_slab",
     "minecraft:exposed_copper",
     "minecraft:weathered_copper",
-    "minecraft:waxed_copper_block",
-    "minecraft:waxed_exposed_copper",
-    "minecraft:waxed_weathered_copper",
-    "minecraft:waxed_cut_copper",
-    "minecraft:waxed_exposed_cut_copper",
-    "minecraft:waxed_weathered_cut_copper",
-    "minecraft:waxed_cut_copper_slab"
+    "minecraft:cut_copper",
+    "minecraft:exposed_cut_copper",
+    "minecraft:weathered_cut_copper",
+    "minecraft:cut_copper_slab",
+    "minecraft:exposed_cut_copper_slab",
+    "minecraft:weathered_cut_copper_slab",
+    "minecraft:cut_copper_stairs",
+    "minecraft:exposed_cut_copper_stairs",
+    "minecraft:weathered_cut_copper_stairs"
   ]
 }

@@ -1,8 +1,10 @@
 package be.uantwerpen.scicraft;
 
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.paintings.Paintings;
 import be.uantwerpen.scicraft.sound.SoundEvents;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
@@ -22,8 +24,10 @@ public class Scicraft implements ModInitializer {
 
         Items.registerItems();
         Blocks.registerBlocks();
+        BlockEntities.registerBlockEntities();
         Entities.registerEntities();
         ExtraDispenserBehavior.registerBehaviors();
         SoundEvents.registerSounds();
+        Paintings.registerPaintings();
     }
 }

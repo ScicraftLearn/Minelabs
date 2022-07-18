@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "scicraft:pion_plus",
+    "scicraft:pion_minus",
+    "scicraft:electron",
+    "scicraft:positron",
+    "scicraft:proton"
+  ]
+}

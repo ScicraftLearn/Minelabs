@@ -10,6 +10,11 @@
   "block.scicraft.large_salt_crystal": "Large Salt Crystal",
   "block.scicraft.medium_salt_crystal": "Medium Salt Crystal",
   "block.scicraft.small_salt_crystal": "Small Salt Crystal",
+  "itemGroup.scicraft.atoms": "Atoms",
+
+  "block.scicraft.proton": "Proton",
+  "block.scicraft.electron": "Electron",
+  "block.scicraft.neutron": "Neutron",
   "block.scicraft.pion_nul": "Pion Nul",
   "block.scicraft.pion_minus": "Pion Minus",
   "block.scicraft.pion_plus": "Pion Plus",
@@ -18,6 +23,8 @@
   "block.scicraft.weak_boson": "Weak Boson",
   "block.scicraft.neutrino": "Neutrino",
   "block.scicraft.antineutrino": "Antineutrino",
+  "block.scicraft.helium": "Helium Gas",
+
   "block.scicraft.gluon_quantumfield": "Gluon Quantumfield",
   "block.scicraft.photon_quantumfield": "Photon Quantumfield",
   "block.scicraft.weak_boson_quantumfield": "Weak Boson Quantumfield",
@@ -25,6 +32,8 @@
   "block.scicraft.neutrino_quantumfield": "Neutrino Quantumfield",
   "block.scicraft.upquark_quantumfield": "Upquark Quantumfield",
   "block.scicraft.downquark_quantumfield": "Downquark Quantumfield",
+
+  "blockEntity.scicraft.charged_block": "Charged Block",
 
   "entity.scicraft.entropy_creeper": "Entropy Creeper",
 

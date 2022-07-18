@@ -1,0 +1,28 @@
+{
+  "group":"scicraft",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "scicraft:upquark_green"
+    },
+    {
+      "item": "scicraft:downquark_blue"
+    },
+    {
+      "item": "scicraft:downquark_red"
+    },
+    {
+      "item": "scicraft:gluon"
+    },
+    {
+      "item": "scicraft:gluon"
+    },
+    {
+      "item": "scicraft:gluon"
+    }
+  ],
+  "result": {
+    "item": "scicraft:neutron",
+    "count": 1
+  }
+}

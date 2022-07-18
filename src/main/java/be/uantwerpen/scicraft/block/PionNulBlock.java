@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class PionBlock extends Block {
+public class PionNulBlock extends Block {
     public static final IntProperty COLOUR = IntProperty.of("age", 0, 2);
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
@@ -21,7 +21,7 @@ public class PionBlock extends Block {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    public PionBlock(Settings settings) {
+    public PionNulBlock(Settings settings) {
         super(settings);
         setDefaultState(getStateManager().getDefaultState().with(COLOUR, getRandomNumber(0, 2)));
     }
