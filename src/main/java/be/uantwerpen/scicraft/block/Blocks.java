@@ -5,10 +5,22 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
+import net.minecraft.block.OreBlock;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
 
 public class Blocks {
+
+    public static final Block SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
+            .mapColor(MapColor.WHITE_GRAY).strength(4.0f).requiresTool(), UniformIntProvider.create(3, 7)), "salt_ore");
+    public static final Block DEEPSLATE_SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
+            .mapColor(MapColor.WHITE_GRAY).strength(4.0f).requiresTool(), UniformIntProvider.create(3, 7)), "deepslate_salt_ore");
+    public static final Block SALT_BLOCK = register(new Block(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE_GRAY).strength(2.0f)), "salt_block");
+
+    public static final Block SALT_WIRE = register(new Block(FabricBlockSettings.of(Material.DECORATION)
+            .mapColor(MapColor.WHITE_GRAY).noCollision().breakInstantly()), "salt_wire");
 
     public static final Block PION_NUL = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");
@@ -36,8 +48,8 @@ public class Blocks {
     public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "downquark_quantumfield");
 
 
-    public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE).noCollision().breakInstantly().luminance(10),
-                    5.0f), "green_fire");
+    public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE)
+            .noCollision().breakInstantly().luminance(10), 5.0f), "green_fire");
 
     /**
      * Register a Block

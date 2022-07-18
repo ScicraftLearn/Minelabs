@@ -16,6 +16,18 @@ public class Items {
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
+    public static final Item SALT = register(new BlockItem(Blocks.SALT_WIRE,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt");
+
+    public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_ore");
+
+    public static final Item DEEPSLATE_SALT_ORE = register(new BlockItem(Blocks.DEEPSLATE_SALT_ORE,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "deepslate_salt_ore");
+
+    public static final Item SALT_BLOCK = register(new BlockItem(Blocks.SALT_BLOCK,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_block");
+
     // Items > Atoms
     public static final Item HYDROGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 1, "H"), "hydrogen_atom");
     public static final Item HELIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 2, "He"), "helium_atom");

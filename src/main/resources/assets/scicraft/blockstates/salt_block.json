@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "scicraft:block/salt_block"
+    }
+  }
+}
