@@ -8,6 +8,8 @@ import net.minecraft.item.Item;
 import java.util.Map;
 
 public class DelegateSettings {
+    public static final int DELEGATE_SIZE = 5;
+
     public static final int LCT_TEXTURE_ID = 0;
     public static final int LCT_CRAFTING_PROGRESS = 1;
     public static final int LCT_SLOT_ITEMS = 2;

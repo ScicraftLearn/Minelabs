@@ -1,7 +1,7 @@
 package be.uantwerpen.scicraft.gui;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.AtomItem;
+import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import be.uantwerpen.scicraft.lewisrecipes.Molecule;
@@ -12,13 +12,13 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -26,18 +26,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class LewisBlockScreenHandler extends ScreenHandler {
     private final Inventory inventory;
-    PropertyDelegate propertyDelegate;
-    private ItemStack output;
+    private final PropertyDelegate propertyDelegate;
 
     //This constructor gets called on the client when the server wants it to open the screenHandler,
     //The client will call the other constructor with an empty Inventory and the screenHandler will automatically
     //sync this empty inventory with the inventory on the server.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
         //this(syncId, playerInventory, new SimpleInventory(35));
-        this(syncId, playerInventory, new SimpleInventory(36), new ArrayPropertyDelegate(4));
+        this(syncId, playerInventory, new SimpleInventory(36), new ArrayPropertyDelegate(DelegateSettings.DELEGATE_SIZE));
         this.onContentChanged(inventory);
     }
 
@@ -71,26 +69,16 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18, 5 * 18 - o + 5) {
                 @Override
                 public boolean isEnabled() {
-                    return propertyDelegate.get(0) == 1;
+                    return propertyDelegate.get(DelegateSettings.LCT_TEXTURE_ID) == 1;
                 }
             });
         }
 
         // Lewis Crafting Table Inventory (1 output slot)
-        this.addSlot(new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18 - o) {
-            @Override
-            public boolean isEnabled() {
-                return propertyDelegate.get(0) >= 0;
-            }
-        });
+        this.addSlot(new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18 - o));
 
         // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
-        this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18, 2 * 18 - o + 36) {
-            @Override
-            public boolean isEnabled() {
-                return propertyDelegate.get(0) >= 0;
-            }
-        });
+        this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18, 2 * 18 - o + 36));
 
         //The player inventory (3x9 slots)
         for (m = 0; m < 3; ++m) {
@@ -117,6 +105,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 handler.updateToClient();
             }
         });
+        onContentChanged(inventory);
     }
 
     public int getPropertyDelegate(int index) {
@@ -163,38 +152,28 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return newStack;
     }
 
-    public void craftingAnimation(ItemStack itemStack) {
-        Scicraft.LOGGER.info("starting animation");
-        if (getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0) return;
-        setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, 0);
-        this.output = itemStack;
-    }
-
-    public void setOutput() {
-        // if the crafting animation is over
-        if (propertyDelegate.get(1) > 23) {
-            // reset the crafting animation so it can start over later
-            propertyDelegate.set(1, -1);
-            inventory.setStack(34, output);
-        }
+    public void craftingAnimation(Molecule molecule) {
+//        if (getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0) return;
+//        this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, 0);
+//        this.setPropertyDelegate(DelegateSettings.LCT_CURRENT_MOLECULE, molecule.ordinal());
     }
 
     @Override
     public void onSlotClick(int slotIndex, int button, @NotNull SlotActionType actionType, PlayerEntity player) {
+        if (slotIndex < 0) return;
         if (actionType.equals(SlotActionType.QUICK_CRAFT)) {
             this.endQuickCraft();
             this.sendContentUpdates();
+            this.updateToClient();
         } else if (actionType.equals(SlotActionType.QUICK_MOVE)) {
-            if (slotIndex < 0) return;
             Slot slot = slots.get(slotIndex);
             if (!slot.canTakeItems(player)) return;
-
             for (int i = 25; i < inventory.size(); i++) {
                 Slot inventorySlot = this.getSlot(i);
                 if (!slot.isEnabled()) continue;
                 if (inventorySlot instanceof LewisGridSlot) continue;
                 if ((inventorySlot instanceof LewisInputSlot && slot.getStack().getItem() instanceof AtomItem)
-                        || (inventorySlot instanceof LewisErlenmeyerSlot && slot.getStack().getItem().equals(be.uantwerpen.scicraft.item.Items.ERLENMEYER))) {
+                        || (inventorySlot instanceof LewisErlenmeyerSlot && slot.getStack().getItem().equals(Items.ERLENMEYER))) {
                     if (!inventorySlot.canInsert(slot.getStack())) continue;
                     int insertCount = Math.min(slot.getStack().getCount(), inventorySlot.getStack().getCount() >= inventorySlot.getMaxItemCount(slot.getStack())
                             ? 0 : inventorySlot.getMaxItemCount(slot.getStack()) - inventorySlot.getStack().getCount());
@@ -213,13 +192,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                     }
                 }
             }
-        } else if (slotIndex < 25 && actionType == SlotActionType.PICKUP) {
-            if (slotIndex < 0) return;
-            Slot slot = this.slots.get(slotIndex);
+        } else if (this.slots.get(slotIndex) instanceof LewisGridSlot slot && actionType == SlotActionType.PICKUP) {
+            if (slot.isLocked()) return;
             if (this.getCursorStack().isEmpty())
-                this.getSlot(slotIndex).setStack(Items.AIR.getDefaultStack());
-            else if (slot instanceof LewisGridSlot)
-                slot.canInsert(getCursorStack());
+                this.getSlot(slotIndex).setStack(ItemStack.EMPTY);
+            else slot.canInsert(getCursorStack());
         } else super.onSlotClick(slotIndex, button, actionType, player);
     }
 
@@ -258,42 +235,65 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         Molecule molecule = RecipeManager.getMolecule(ingredients);
         if (molecule == null) {
-            if (isInputOpen()) closeInputSlots();
+            if (isInputOpen()) {
+                closeInputSlots();
+                openGridSlots();
+            }
             return;
         }
 
         if (!RecipeManager.isCorrectMolecule(molecule, atoms)) {
-            if (isInputOpen()) closeInputSlots();
+            if (isInputOpen()) {
+                closeInputSlots();
+                openGridSlots();
+            }
             return;
         }
 
-        if (!isInputOpen()) {
-            System.out.println("Opening input");
+        if (isInputOpen()) {
+            if (isInputEmpty()) {
+                if (!isGridOpen()) openGridSlots();
+            } else {
+                if (isGridOpen()) closeGridSlots();
+            }
+        } else {
             openInputSlots(getIngredients(molecule));
         }
 
         if (hasCorrectInput(molecule)) {
-            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) == -1)
-                this.craftingAnimation(new ItemStack(molecule.getItem()));
+//            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) == -1)
+//                this.craftingAnimation(molecule);
+            // reset the crafting animation so it can start over later
+            this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
+            // get the molecule that's being crafted
+            // put it in the output slot
+            clearInput(true);
+            this.getSlot(34).setStack(molecule.getItem().getDefaultStack());
         } else {
-            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0
-                    && this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) < 23)
-                this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
+//            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0
+//                    && this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) < 23)
+//                this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
         }
     }
 
     protected boolean hasCorrectInput(Molecule molecule) {
         List<Atom> ingredients = this.getIngredients(molecule);
+        int readySlots = 1;
+        boolean isCorrect = true;
         for (int i = 0; i < ingredients.size(); i++) {
             ItemStack stack = inventory.getStack(i + 25);
-            if (stack == null || stack.getItem().equals(net.minecraft.item.Items.AIR)
-                    || ingredients.get(i).getItem().equals(stack.getItem())
-                    || stack.getCount() != 10)
-                return false;
+            if (stack == null
+                    || stack.isEmpty()
+                    || !ingredients.get(i).getItem().equals(stack.getItem())
+                    || stack.getCount() != 10) {
+                isCorrect = false;
+            } else readySlots *= DelegateSettings.SLOT_MAPPINGS.get(i);
         }
-        return true;
+        this.setPropertyDelegate(DelegateSettings.LCT_SLOT_READY, readySlots);
+        return isCorrect && this.getSlot(35).getStack().getItem().equals(Items.ERLENMEYER);
     }
 
+    @Contract(pure = true)
     public List<Atom> getIngredients(@NotNull Molecule molecule) {
         List<Atom> ingr = new ArrayList<>();
         molecule.getIngredients().keySet().forEach(atom -> {
@@ -303,11 +303,29 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return ingr;
     }
 
-    public boolean isInputOpen() {
+    protected boolean isGridOpen() {
+        return ((LewisGridSlot) this.getSlot(0)).isLocked();
+    }
+
+    protected boolean isInputOpen() {
         return this.getSlot(25).isEnabled();
     }
 
-    /**
+    protected boolean isInputEmpty() {
+        for (int i = 0; i < 9; i++) {
+            if (!this.getSlot(i + 25).getStack().isEmpty()) return false;
+        }
+        return true;
+    }
+
+    protected void clearInput(boolean erlenmeyer) {
+        if (erlenmeyer) this.getSlot(35).getStack().decrement(1);
+        for (int i = 0; i < 9; i++) {
+            this.getSlot(i + 25).setStack(ItemStack.EMPTY);
+        }
+    }
+
+    /*
      * code to open slots (by type)
      */
     protected void openGridSlots() {
@@ -316,7 +334,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    protected void openInputSlots(List<Atom> atoms) {
+    protected void openInputSlots(@NotNull List<Atom> atoms) {
         setPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID, 1);
         int slotItems = 1;
         for (int i = 0; i < atoms.size(); i++) {
@@ -333,7 +351,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         ((LewisCraftingResultSlot) this.getSlot(34)).setReady(true);
     }
 
-    /**
+    /*
      * code to close slots (by type)
      */
     protected void closeGridSlots() {
@@ -353,5 +371,30 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     protected void closeOutputSlot() {
         ((LewisCraftingResultSlot) this.getSlot(34)).setReady(false);
+    }
+
+    /**
+     * Gets called every tick.<br>
+     * Checks if the crafting animation is over, and handles its completion
+     */
+    public void tick() {
+        // if the crafting animation is over
+/*
+        if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 23) {
+            Scicraft.LOGGER.info("TICK DID SOMETHING");
+            // reset the crafting animation so it can start over later
+            this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
+            // get the molecule that's being crafted
+            Molecule molecule = Molecule.getFromOrdinal(this.getPropertyDelegate(DelegateSettings.LCT_CURRENT_MOLECULE));
+            Scicraft.LOGGER.info("molecule (tick): " + molecule);
+            // put it in the output slot
+            if (molecule != null) {
+                clearInput(true);
+                this.getSlot(34).setStack(molecule.getItem().getDefaultStack());
+            }
+        } else {
+            Scicraft.LOGGER.info("T - " + this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS));
+        }
+ */
     }
 }
