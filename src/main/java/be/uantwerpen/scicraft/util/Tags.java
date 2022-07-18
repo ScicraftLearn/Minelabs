@@ -1,12 +1,12 @@
 package be.uantwerpen.scicraft.util;
 
 import be.uantwerpen.scicraft.Scicraft;
-import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 /**
  * Use these tags for NEW tags.
@@ -18,18 +18,18 @@ import net.minecraft.util.Identifier;
 public class Tags {
     public static class Blocks {
 
-        public static final Tag<Block> COPPER_BLOCKS = createTag("copper_blocks");
-        public static final Tag<Block> CHARGED_BLOCKS = createTag("charged_blocks");
+        public static final TagKey<Block> COPPER_BLOCKS = createTag("copper_blocks");
+        public static final TagKey<Block> CHARGED_BLOCKS = createTag("charged_blocks");
 
         /**
          * Create a Block tag (tag is only used inside this mod)
          * Don't forget the json file (data/scicraft/tags/blocks)
          *
          * @param name : name of the tag
-         * @return {@link Tag}
+         * @return {@link TagKey}
          */
-        private static Tag<Block> createTag(String name) {
-            return TagFactory.BLOCK.create(new Identifier(Scicraft.MOD_ID, name));
+        private static TagKey<Block> createTag(String name) {
+            return TagKey.of(Registry.BLOCK_KEY, new Identifier(Scicraft.MOD_ID, name));
         }
 
         /**
@@ -37,10 +37,10 @@ public class Tags {
          * Don't forget the json file (data/c/tags/blocks)
          *
          * @param name : name of the tag
-         * @return {@link Tag}
+         * @return {@link TagKey}
          */
-        private static Tag<Block> createCommonTag(String name) {
-            return TagFactory.BLOCK.create(new Identifier("c", name));
+        private static TagKey<Block> createCommonTag(String name) {
+            return TagKey.of(Registry.BLOCK_KEY, new Identifier("c", name));
         }
     }
 
@@ -51,10 +51,10 @@ public class Tags {
          * Don't forget the json file (data/scicraft/tags/items)
          *
          * @param name : name of the tag
-         * @return {@link Tag}
+         * @return {@link TagKey}
          */
-        private static Tag<Item> createTag(String name) {
-            return TagFactory.ITEM.create(new Identifier(Scicraft.MOD_ID, name));
+        private static TagKey<Item> createTag(String name) {
+            return TagKey.of(Registry.ITEM_KEY, new Identifier("c", name));
         }
 
         /**
@@ -62,10 +62,10 @@ public class Tags {
          * Don't forget the json file (data/c/tags/items)
          *
          * @param name : name of the tag
-         * @return {@link Tag}
+         * @return {@link TagKey}
          */
-        private static Tag<Item> createCommonTag(String name) {
-            return TagFactory.ITEM.create(new Identifier("c", name));
+        private static TagKey<Item> createCommonTag(String name) {
+            return TagKey.of(Registry.ITEM_KEY, new Identifier("c", name));
         }
     }
 
@@ -76,10 +76,10 @@ public class Tags {
          * Don't forget the json file (data/scicraft/tags/fluids)
          *
          * @param name : name of the tag
-         * @return {@link Tag}
+         * @return {@link TagKey}
          */
-        private static Tag<Fluid> createTag(String name) {
-            return TagFactory.FLUID.create(new Identifier(Scicraft.MOD_ID, name));
+        private static TagKey<Fluid> createTag(String name) {
+            return TagKey.of(Registry.FLUID_KEY, new Identifier("c", name));
         }
 
         /**
@@ -87,10 +87,10 @@ public class Tags {
          * Don't forget the json file (data/c/tags/fluids)
          *
          * @param name : name of the tag
-         * @return {@link Tag}
+         * @return {@link TagKey}
          */
-        private static Tag<Fluid> createCommonTag(String name) {
-            return TagFactory.FLUID.create(new Identifier("c", name));
+        private static TagKey<Fluid> createCommonTag(String name) {
+            return TagKey.of(Registry.FLUID_KEY, new Identifier("c", name));
         }
     }
 }
