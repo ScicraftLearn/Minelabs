@@ -16,8 +16,8 @@ public class MoleculeGraph extends Graph<Atom, Bond> {
      * Computes the amount of remaining bonds an atom can make based on its already made bonds.
      */
     public int getOpenConnections(Vertex v){
-        int usableElectrons = Math.min(v.data.getInitialValenceElectrons(), 8 - v.data.getInitialValenceElectrons());
-        return usableElectrons - v.getEdgesData().stream().map(bond -> bond.bondOrder).reduce(0, Integer::sum);
+        int maxBonds = v.data.getMaxPossibleBonds();
+        return maxBonds - v.getEdgesData().stream().map(bond -> bond.bondOrder).mapToInt(Integer::intValue).sum();
     }
 
     /**

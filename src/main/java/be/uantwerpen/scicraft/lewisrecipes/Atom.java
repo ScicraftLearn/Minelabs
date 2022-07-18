@@ -103,6 +103,13 @@ public enum Atom {
         this.item = item;
     }
 
+    public int getMaxPossibleBonds(){
+        if(atomNumber <= 18)
+            return Math.min(initialValenceElectrons, 8 - initialValenceElectrons);
+        else
+            return initialValenceElectrons;
+    }
+
     @Nullable
     public static Atom getBySymbol(String symbol) {
         for (Atom atom : values())
