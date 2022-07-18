@@ -17,4 +17,11 @@ public class GasPotion extends LingeringPotionItem {
         Potion potion = new Potion("Test");
         stacks.add(PotionUtil.setPotion(new ItemStack(this), potion));
     }
+
+    @Override
+    public ItemStack getDefaultStack() {
+        ItemStack stack = new ItemStack(this);
+        stack.getOrCreateNbt().putString("Potion", "minecraft:empty");
+        return stack;
+    }
 }
