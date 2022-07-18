@@ -2,10 +2,8 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
-import net.minecraft.block.OreBlock;
+import net.minecraft.block.*;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
@@ -22,6 +20,15 @@ public class Blocks {
     public static final Block SALT_WIRE = register(new Block(FabricBlockSettings.of(Material.DECORATION)
             .mapColor(MapColor.WHITE_GRAY).noCollision().breakInstantly()), "salt_wire");
 
+    public static final Block SALT_CRYSTAL = register(new AmethystClusterBlock(7, 3,
+            FabricBlockSettings.of(Material.AMETHYST).nonOpaque().ticksRandomly()
+                    .sounds(BlockSoundGroup.AMETHYST_CLUSTER).strength(1.5F).luminance((state) -> 5)), "salt_crystal");
+    public static final Block LARGE_SALT_CRYSTAL = register(new AmethystClusterBlock(5, 3,
+            FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.MEDIUM_AMETHYST_BUD).luminance((state) -> 4)), "large_salt_crystal");
+    public static final Block MEDIUM_SALT_CRYSTAL = register(new AmethystClusterBlock(4, 3,
+            FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.LARGE_AMETHYST_BUD).luminance((state) -> 2)), "medium_salt_crystal");
+    public static final Block SMALL_SALT_CRYSTAL = register(new AmethystClusterBlock(3, 4,
+            FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.SMALL_AMETHYST_BUD).luminance((state) -> 1)), "small_salt_crystal");
     public static final Block PION_NUL = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");
     public static final Block PION_MINUS = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)

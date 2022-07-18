@@ -28,6 +28,18 @@ public class Items {
     public static final Item SALT_BLOCK = register(new BlockItem(Blocks.SALT_BLOCK,
             new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_block");
 
+    public static final Item SALT_CRYSTAL = register(new BlockItem(Blocks.SALT_CRYSTAL,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_crystal");
+
+    public static final Item SMALL_SALT_CRYSTAL = register(new BlockItem(Blocks.SMALL_SALT_CRYSTAL,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "small_salt_crystal");
+
+    public static final Item MEDIUM_SALT_CRYSTAL = register(new BlockItem(Blocks.MEDIUM_SALT_CRYSTAL,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "medium_salt_crystal");
+
+    public static final Item LARGE_SALT_CRYSTAL = register(new BlockItem(Blocks.LARGE_SALT_CRYSTAL,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "large_salt_crystal");
+
     // Items > Atoms
     public static final Item HYDROGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 1, "H"), "hydrogen_atom");
     public static final Item HELIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.SCICRAFT), 2, "He"), "helium_atom");
