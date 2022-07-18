@@ -46,26 +46,22 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         int craftingProgress = screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS);
 
         //if the animation status is in the interval [0,22], we continue the animation
-        if (craftingProgress >= 0 && craftingProgress < 23) {
-            this.setCorrectTexture(craftingProgress);
-        }
-
-        //if there is no animation going on, use the default texture
-        else {
-            int textureID = screenHandler.getPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID);
-            if (textureID == 0) {
-                this.currentTexture = TEXTURE2;
-            } else if (textureID == 1) {
-                this.currentTexture = TEXTURE;
-            }
-        }
-
-        // we are at the end of the crafting animation, so we reset the animation status back to -1
-        if (craftingProgress >= 23) {
-            screenHandler.setOutput();
-//            screenHandler.setStackInSlot(34, 1, new ItemStack(net.minecraft.item.Items.AIR));
-//            screenHandler.setStackInSlot(34, 1, new ItemStack(Items.ANTI_DOWNQUARK_RED));
-        }
+        this.setCorrectTexture(
+                switch (craftingProgress) {
+                    case 0, 1 -> 0;
+                    case 2, 3 -> 2;
+                    case 4, 5 -> 4;
+                    case 6, 7 -> 6;
+                    case 8, 9 -> 8;
+                    case 10, 11 -> 10;
+                    case 12, 13 -> 12;
+                    case 14, 15 -> 14;
+                    case 16, 17 -> 16;
+                    case 18, 19 -> 18;
+                    case 20, 21, 22 -> 20;
+                    default -> -1;
+                }
+        );
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -82,9 +78,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         int slotItems = this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_SLOT_ITEMS);
         int slotReady = this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_SLOT_READY);
 
-        // if it is allowed to put items in slots:
+        // if it is allowed to put items in the input slots:
         if (slotItems > 1 && this.getScreenHandler().isInputOpen()) {
-
             // hashed mappings for the slots
             List<Integer> slotItemList = this.getSlotList(slotItems);
             List<Integer> slotReadyList = this.getSlotList(slotReady);
@@ -149,7 +144,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     protected void handledScreenTick() {
         // increase the animation counter by 1
         if (tickCounter % 6 == 0) {
-
             // if the crafting is ongoing (aka it's not -1), keep going
             if (this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) != -1) {
                 this.screenHandler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) + 1);
@@ -160,7 +154,15 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     }
 
     protected void setCorrectTexture(int craftingProgress) {
-        this.currentTexture = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp" + craftingProgress + ".png");
+        if (craftingProgress == -1) {
+            int textureID = screenHandler.getPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID);
+            if (textureID == 0) {
+                this.currentTexture = TEXTURE2;
+            } else if (textureID == 1) {
+                this.currentTexture = TEXTURE;
+            }
+        } else
+            this.currentTexture = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp" + craftingProgress + ".png");
     }
 
     protected List<Integer> getSlotList(int N) {
@@ -187,8 +189,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         if (N != 1) div.add(N);
         return div;
     }
-
-
 
     @Override
     public void onClose() {
