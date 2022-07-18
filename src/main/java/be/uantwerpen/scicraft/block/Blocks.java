@@ -2,15 +2,8 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
-//import be.uantwerpen.scicraft.block.entity.PionMinusBlockEntity;
-//import be.uantwerpen.scicraft.block.entity.PionPlusBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -37,7 +30,11 @@ public class Blocks {
             FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.LARGE_AMETHYST_BUD).luminance((state) -> 2)), "medium_salt_crystal");
     public static final Block SMALL_SALT_CRYSTAL = register(new AmethystClusterBlock(3, 4,
             FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.SMALL_AMETHYST_BUD).luminance((state) -> 1)), "small_salt_crystal");
-    public static final Block PION_NUL = register(new PionBlock(FabricBlockSettings.of(Material.WOOL)
+
+    public static final Block BUDDING_SALT_BLOCK = register(new BuddingAmethystBlock(
+            FabricBlockSettings.of(Material.AMETHYST).ticksRandomly().strength(1.5F)
+                    .sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool()), "budding_salt_block");
+
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block PION_NUL = register(new PionNulBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");

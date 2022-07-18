@@ -40,6 +40,9 @@ public class Items {
     public static final Item LARGE_SALT_CRYSTAL = register(new BlockItem(Blocks.LARGE_SALT_CRYSTAL,
             new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "large_salt_crystal");
 
+    public static final Item BUDDING_SALT_BLOCK = register(new BlockItem(Blocks.BUDDING_SALT_BLOCK,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "budding_salt_block");
+
     // Items > Atoms
     public static final Item HYDROGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.ATOMS), 1, "H"), "hydrogen_atom");
     public static final Item HELIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.ATOMS), 2, "He"), "helium_atom");
