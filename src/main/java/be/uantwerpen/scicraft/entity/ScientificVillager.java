@@ -18,25 +18,32 @@ import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.poi.PointOfInterestType;
 
 public class ScientificVillager {
+
+    //selects the block that the villigat should be interested in and registers the profession
     public static final PointOfInterestType REDSTONE_POI = registerPOI("redstone_poi", Blocks.REDSTONE_BLOCK);
     public static final VillagerProfession SCIENCE_VILLAGER = registerProfession("sciencevillager",
             RegistryKey.of(Registry.POINT_OF_INTEREST_TYPE_KEY, new Identifier(Scicraft.MOD_ID, "redstone_poi")));
 
+    //Creates a new profession based on the POI
+    //This also sets the sound and can be used to set other stuff
     public static VillagerProfession registerProfession(String name, RegistryKey<PointOfInterestType> type){
         return Registry.register(Registry.VILLAGER_PROFESSION, new Identifier(Scicraft.MOD_ID,name),
                 VillagerProfessionBuilder.create().id(new Identifier(Scicraft.MOD_ID,name)).workstation(type)
                         .workSound(SoundEvents.ENTITY_VILLAGER_WORK_ARMORER).build());
     }
 
+    //registers the block that the villager needs to become a science villager
     public static PointOfInterestType registerPOI(String name, Block block){
         return PointOfInterestHelper.register(new Identifier(Scicraft.MOD_ID, name),
                 1,1, ImmutableSet.copyOf(block.getStateManager().getStates()));
     }
 
+    //logger so that all the static fields get initialised correctly
     public static void registerVillagers() {
         Scicraft.LOGGER.debug("Registering Villagers for " + Scicraft.MOD_ID);
     }
 
+    //list with all the items you can buy from this villager
     public static void registerTrades(){
         TradeOfferHelper.registerVillagerOffers(SCIENCE_VILLAGER, 1,
                 factories -> {
