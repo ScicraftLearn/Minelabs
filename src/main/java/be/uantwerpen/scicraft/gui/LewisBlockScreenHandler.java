@@ -6,6 +6,7 @@ import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
+import be.uantwerpen.scicraft.lewisrecipes.Molecule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
