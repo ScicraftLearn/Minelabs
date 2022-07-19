@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "scicraft:item/internal_bonds/bond_single_horizontal"
+  }
+}
