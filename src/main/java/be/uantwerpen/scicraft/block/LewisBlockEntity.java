@@ -1,8 +1,10 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
+import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +31,7 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(Entities.LEWIS_BLOCK_ENTITY, pos, state);
 
-        delegatedProperties = new int[] {
+        delegatedProperties = new int[]{
                 0, // textureID
                 -1, // craftingProgress
                 1, // slotItems
@@ -55,10 +57,6 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
                 return DelegateSettings.DELEGATE_SIZE;
             }
         };
-    }
-
-    public LewisBlockEntity(BlockPos pos, BlockState state) {
-        super(Entities.LEWIS_BLOCK_ENTITY, pos, state);
     }
 
     //From the ImplementedInventory Interface

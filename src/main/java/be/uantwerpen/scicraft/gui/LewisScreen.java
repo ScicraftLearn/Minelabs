@@ -1,5 +1,7 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.lewisrecipes.BondManager;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -17,21 +19,22 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
     private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
 
+    private final BondManager bondManager;
+
     private Identifier currentTexture;
 
     private int tickCounter = 0;
-    LewisBlockScreenHandler screenHandler;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        screenHandler = handler;
+        this.bondManager = new BondManager();
         this.currentTexture = TEXTURE2;
 
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
     }
 
-    /**
+    /*
      * draw function is called every tick
      */
     @Override
@@ -43,7 +46,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 //        System.out.println(a);
 //        System.out.println("----------");
 
-        int craftingProgress = screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS);
+        int craftingProgress = handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS);
 
         //if the animation status is in the interval [0,22], we continue the animation
         this.setCorrectTexture(
@@ -73,10 +76,18 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         /*
+         * Draw Bonds on screen
+         */
+        for (BondManager.Bond bond : bondManager.getBonds()) {
+            Scicraft.LOGGER.info(bond);
+            this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+        }
+
+        /*
          * Render input slot overlays
          */
-        int slotItems = this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_SLOT_ITEMS);
-        int slotReady = this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_SLOT_READY);
+        int slotItems = this.handler.getPropertyDelegate(DelegateSettings.LCT_SLOT_ITEMS);
+        int slotReady = this.handler.getPropertyDelegate(DelegateSettings.LCT_SLOT_READY);
 
         // if it is allowed to put items in the input slots:
         if (slotItems > 1 && this.getScreenHandler().isInputOpen()) {
@@ -145,8 +156,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         // increase the animation counter by 1
         if (tickCounter % 6 == 0) {
             // if the crafting is ongoing (aka it's not -1), keep going
-            if (this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) != -1) {
-                this.screenHandler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, this.screenHandler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) + 1);
+            if (this.handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) != -1) {
+                this.handler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, this.handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) + 1);
             }
             tickCounter = 1;
         }
@@ -155,7 +166,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
 
     protected void setCorrectTexture(int craftingProgress) {
         if (craftingProgress == -1) {
-            int textureID = screenHandler.getPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID);
+            int textureID = handler.getPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID);
             if (textureID == 0) {
                 this.currentTexture = TEXTURE2;
             } else if (textureID == 1) {
@@ -193,6 +204,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     @Override
     public void onClose() {
         super.onClose();
-        this.screenHandler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
+        this.handler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
     }
 }

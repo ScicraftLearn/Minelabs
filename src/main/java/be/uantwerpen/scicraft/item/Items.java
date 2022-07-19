@@ -57,13 +57,8 @@ public class Items {
     public static Item LEAD_ATOM;
     public static Item URANIUM_ATOM;
 
-    // Items > Bindings (internal)
-    public static Item BINDING_HORIZONTAL;
-    public static Item BINDING_VERTICAL;
-    public static Item BINDING_DOUBLE_HORIZONTAL;
-    public static Item BINDING_DOUBLE_VERTICAL;
-    public static Item BINDING_TRIPLE_HORIZONTAL;
-    public static Item BINDING_TRIPLE_VERTICAL;
+    // Items > Bond to display in LCT (internal)
+    public static Item BOND;
 
     // Items > Quantum fields
     public static final Item GLUON_QUANTUMFIELD = register(new BlockItem(Blocks.GLUON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "gluon_quantumfield");
@@ -167,12 +162,7 @@ public class Items {
         URANIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.URANIUM), "uranium_atom");
         
         // Items > Bindings (internal)
-        BINDING_HORIZONTAL = register(new Item(new Item.Settings()), "internal_bindings/binding_horizontal");
-        BINDING_VERTICAL = register(new Item(new Item.Settings()), "internal_bindings/binding_vertical");
-        BINDING_DOUBLE_HORIZONTAL = register(new Item(new Item.Settings()), "internal_bindings/binding_double_horizontal");
-        BINDING_DOUBLE_VERTICAL = register(new Item(new Item.Settings()), "internal_bindings/binding_double_vertical");
-        BINDING_TRIPLE_HORIZONTAL = register(new Item(new Item.Settings()), "internal_bindings/binding_triple_horizontal");
-        BINDING_TRIPLE_VERTICAL = register(new Item(new Item.Settings()), "internal_bindings/binding_triple_vertical");
+        BOND = registerBond(new Item(new Item.Settings()), "bond");
     }
 
     /**
@@ -185,7 +175,7 @@ public class Items {
     private static Item register(Item item, String identifier) {
         return Registry.register(Registry.ITEM, new Identifier(Scicraft.MOD_ID, identifier), item);
     }
-    
+
     /**
      * Register Atoms to Model Provider Registry ({@link FabricModelPredicateProviderRegistry})<br>
      * Returns the {@link Item} provided by {@code register(Item, String)}
@@ -197,6 +187,22 @@ public class Items {
     private static Item registerAtom(Item item, String identifier) {
         FabricModelPredicateProviderRegistry.register(item, new Identifier("lct"),
                 (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("ScicraftItemInLCT") ? 1.0F : 0.0F);
+        return register(item, identifier);
+    }
+
+    /**
+     * Register Atoms to Model Provider Registry ({@link FabricModelPredicateProviderRegistry})<br>
+     * Returns the {@link Item} provided by {@code register(Item, String)}
+     *
+     * @param item:       Item Object to register
+     * @param identifier: String name of the Item
+     * @return {@link Item}
+     */
+    private static Item registerBond(Item item, String identifier) {
+        FabricModelPredicateProviderRegistry.register(item, new Identifier("direction"),
+                (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("ScicraftBondDirection") ? 1.0F : 0.0F);
+        FabricModelPredicateProviderRegistry.register(item, new Identifier("bond_amount"),
+                (stack, world, entity, seed) -> stack.getOrCreateNbt().getInt("ScicraftBondAmount"));
         return register(item, identifier);
     }
 
