@@ -38,16 +38,4 @@ public class Molecule extends PartialMolecule {
         return item;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Molecule molecule)) return false;
-        if (!super.equals(o)) return false;
-        return item.equals(molecule.item);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), item);
-    }
 }

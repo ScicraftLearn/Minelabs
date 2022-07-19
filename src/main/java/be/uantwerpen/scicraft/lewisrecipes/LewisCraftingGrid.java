@@ -22,6 +22,7 @@ public class LewisCraftingGrid extends SimpleInventory {
 
     public LewisCraftingGrid(ItemStack... items) {
         super(items);
+        markDirty();
     }
 
     @Override

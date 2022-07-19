@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -31,9 +30,13 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
         Scicraft.LOGGER.info(molecule.getStructure().toCanonical());
     }
 
+    public Molecule getMolecule(){
+        return molecule;
+    }
+
     @Override
     public boolean matches(LewisCraftingGrid inventory, World world) {
-        return inventory.getPartialMolecule() == molecule;
+        return inventory.getPartialMolecule().getStructure().isIsomorphicTo(molecule.getStructure());
     }
 
     @Override

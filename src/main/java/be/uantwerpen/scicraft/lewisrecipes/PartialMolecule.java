@@ -20,15 +20,4 @@ public class PartialMolecule {
         return structure.getVertexData();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PartialMolecule that)) return false;
-        return structure.isIsomorphicTo(that.structure);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(structure);
-    }
 }

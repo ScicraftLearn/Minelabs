@@ -3,29 +3,27 @@ package be.uantwerpen.scicraft.gui;
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.item.Items;
-import be.uantwerpen.scicraft.lewisrecipes.Atom;
-import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
-import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
-import be.uantwerpen.scicraft.lewisrecipes.Molecule;
+import be.uantwerpen.scicraft.lewisrecipes.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ArrayPropertyDelegate;
-import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerListener;
+import net.minecraft.screen.*;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class LewisBlockScreenHandler extends ScreenHandler {
+
+    private final ScreenHandlerContext context;
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
 
@@ -34,15 +32,16 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     //sync this empty inventory with the inventory on the server.
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
         //this(syncId, playerInventory, new SimpleInventory(35));
-        this(syncId, playerInventory, new SimpleInventory(36), new ArrayPropertyDelegate(DelegateSettings.DELEGATE_SIZE));
+        this(syncId, playerInventory, ScreenHandlerContext.EMPTY, new SimpleInventory(36), new ArrayPropertyDelegate(DelegateSettings.DELEGATE_SIZE));
         this.onContentChanged(inventory);
     }
 
     //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
     //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
-    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
+    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, ScreenHandlerContext context, Inventory inventory, PropertyDelegate propertyDelegate) {
         super(Screens.LEWIS_SCREEN_HANDLER, syncId);
         checkSize(inventory, 36);
+        this.context = context;
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         this.addProperties(propertyDelegate);
@@ -232,47 +231,48 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             }
         }
 
+        Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
+        Scicraft.LOGGER.info("ingredients: " + ingredients);
+
+        context.run((world, pos) -> updateContent(world));
+    }
+
+    private void updateContent(World world){
         List<ItemStack> stacks = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
             stacks.add(inventory.getStack(i));
         }
         Scicraft.LOGGER.info(stacks);
 
-        Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
-        Scicraft.LOGGER.info("ingredients: " + ingredients);
 
         LewisCraftingGrid grid = new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
-        grid.markDirty();
+        Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MOLECULE_CRAFTING, grid, world);
 
+        Scicraft.LOGGER.info("recipe: " + recipe);
 
-        // TODO update to recipeManager
-//        Molecule molecule = RecipeManager.getMolecule(ingredients);
-//        Scicraft.LOGGER.info("molecule: " + molecule);
-//        if (molecule == null) {
-//            if (isInputOpen()) closeInputSlots();
-//            return;
-//        }
-//
-//        if (!RecipeManager.isCorrectMolecule(molecule, atoms)) {
-//            if (isInputOpen()) closeInputSlots();
-//            return;
-//        }
-//
-//        if (!isInputOpen()) {
-//            System.out.println("Opening input");
-//            openInputSlots(molecule.getIngredients().values().stream().reduce(0, Integer::sum));
-//            // TODO: Fix Slot#getBackgroundSprite
-//        }
-//
-//        if (hasCorrectInput(molecule)) {
-//            if (this.getPropertyDelegate(1) == -1)
-//                this.craftingAnimation(new ItemStack(molecule.getItem()));
-//        } else {
-//            //arrow is running but input is no longer valid
-//            if (this.getPropertyDelegate(1) >= 0 && this.getPropertyDelegate(1) < 23)
-//                //stop crafting animation
-//                this.setPropertyDelegate(1, -1);
-//        }
+        if (recipe.isEmpty()) {
+            if (isInputOpen()) closeInputSlots();
+            return;
+        }
+
+        MoleculeRecipe moleculeRecipe = recipe.get();
+        Scicraft.LOGGER.info("molecule: " + moleculeRecipe.getMolecule());
+
+        if (!isInputOpen()) {
+            System.out.println("Opening input");
+            openInputSlots(new ArrayList<>(moleculeRecipe.getMolecule().getIngredients()));
+            // TODO: Fix Slot#getBackgroundSprite
+        }
+
+        if (hasCorrectInput(moleculeRecipe.getMolecule())) {
+            if (this.getPropertyDelegate(1) == -1)
+                this.craftingAnimation(moleculeRecipe.getMolecule());
+        } else {
+            //arrow is running but input is no longer valid
+            if (this.getPropertyDelegate(1) >= 0 && this.getPropertyDelegate(1) < 23)
+                //stop crafting animation
+                this.setPropertyDelegate(1, -1);
+        }
     }
 
     protected boolean hasCorrectInput(Molecule molecule) {
