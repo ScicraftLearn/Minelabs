@@ -21,9 +21,9 @@ public class BondManager {
         @Contract(pure = true)
         public Bond(@NotNull Slot slot1, @NotNull Slot slot2, int bondCount) {
             if (slot1.x != slot2.x && slot1.y == slot2.y)
-                vertical = true;
-            else if (slot1.x == slot2.x && slot1.y != slot2.y)
                 vertical = false;
+            else if (slot1.x == slot2.x && slot1.y != slot2.y)
+                vertical = true;
             else throw new IllegalArgumentException("Invalid combination of slots provided!");
 
             this.slot1 = slot1;

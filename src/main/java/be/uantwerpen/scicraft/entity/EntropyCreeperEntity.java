@@ -273,6 +273,6 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @return whether the block should be movable.
      */
     private boolean isShuffleable(BlockState blockState) {
-        return !BlockTags.DRAGON_IMMUNE.contains(blockState.getBlock());
+        return !blockState.isIn(BlockTags.DRAGON_IMMUNE);
     }
 }

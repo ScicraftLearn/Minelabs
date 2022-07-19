@@ -8,6 +8,7 @@ import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -61,30 +62,15 @@ public class Items {
     public static Item BOND;
 
     // Items > Quantum fields
-    public static final Item GLUON_QUANTUMFIELD = register(new BlockItem(Blocks.GLUON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "gluon_quantumfield");
-    public static final Item PHOTON_QUANTUMFIELD = register(new BlockItem(Blocks.PHOTON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "photon_quantumfield");
-    public static final Item WEAK_BOSON_QUANTUMFIELD = register(new BlockItem(Blocks.WEAK_BOSON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "weak_boson_quantumfield");
-    public static final Item ELECTRON_QUANTUMFIELD = register(new BlockItem(Blocks.ELECTRON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "electron_quantumfield");
-    public static final Item NEUTRINO_QUANTUMFIELD = register(new BlockItem(Blocks.NEUTRINO_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "neutrino_quantumfield");
     public static final Item UPQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.UPQUARK_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "upquark_quantumfield");
     public static final Item DOWNQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.DOWNQUARK_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "downquark_quantumfield");
+    public static final Item GLUON_QUANTUMFIELD = register(new BlockItem(Blocks.GLUON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "gluon_quantumfield");
+    public static final Item ELECTRON_QUANTUMFIELD = register(new BlockItem(Blocks.ELECTRON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "electron_quantumfield");
+    public static final Item PHOTON_QUANTUMFIELD = register(new BlockItem(Blocks.PHOTON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "photon_quantumfield");
+    public static final Item NEUTRINO_QUANTUMFIELD = register(new BlockItem(Blocks.NEUTRINO_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "neutrino_quantumfield");
+    public static final Item WEAK_BOSON_QUANTUMFIELD = register(new BlockItem(Blocks.WEAK_BOSON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "weak_boson_quantumfield");
 
     // Items > Elementary particles
-    public static final Item PION_NUL = register(new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_nul");
-    public static final Item PION_MINUS = register(new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_minus");
-    public static final Item PION_PLUS = register(new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_plus");
-
-    public static final Item WEAK_BOSON = register(new BlockItem(Blocks.WEAK_BOSON, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "weak_boson");
-    public static final Item NEUTRINO = register(new BlockItem(Blocks.NEUTRINO, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "neutrino");
-    public static final Item ANTINEUTRINO = register(new BlockItem(Blocks.ANTINEUTRINO, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "antineutrino");
-    public static final Item POSITRON = register(new BlockItem(Blocks.POSITRON, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "positron");
-
-    public static final Item ELECTRON = register(new ElectronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "electron");
-    public static final Item PROTON = register(new ProtonItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "proton");
-    public static final Item NEUTRON = register(new NeutronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "neutron");
-
-    public static final Item GLUON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "gluon");
-    public static final Item PHOTON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "photon");
 
     public static final Item UPQUARK_RED = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "upquark_red");
     public static final Item UPQUARK_GREEN = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "upquark_green");
@@ -98,6 +84,27 @@ public class Items {
     public static final Item ANTI_DOWNQUARK_RED = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_red");
     public static final Item ANTI_DOWNQUARK_GREEN = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_green");
     public static final Item ANTI_DOWNQUARK_BLUE = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_downquark_blue");
+
+    public static final Item GLUON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "gluon");
+
+    public static final Item ELECTRON = register(new ElectronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "electron");
+    public static final Item POSITRON = register(new BlockItem(Blocks.POSITRON, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "positron");
+    public static final Item PHOTON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "photon");
+
+    public static final Item NEUTRINO = register(new BlockItem(Blocks.NEUTRINO, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "neutrino");
+    public static final Item ANTINEUTRINO = register(new BlockItem(Blocks.ANTINEUTRINO, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "antineutrino");
+    public static final Item WEAK_BOSON = register(new BlockItem(Blocks.WEAK_BOSON, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "weak_boson");
+
+    public static final Item PROTON = register(new ProtonItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "proton");
+    public static final Item NEUTRON = register(new NeutronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "neutron");
+    public static final Item PION_NUL = register(new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_nul");
+    public static final Item PION_MINUS = register(new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_minus");
+    public static final Item PION_PLUS = register(new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_plus");
+
+    //public static final Item CHARGED_BLOCK = register(new BlockItem(Blocks.CHARGED_BLOCK, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "charged_block");
+
+    // helium gas
+    public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.SCICRAFT)), "helium");
 
     public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "lewis_block");
 
@@ -123,46 +130,46 @@ public class Items {
 
     static {
         // Items > Atoms
-        HYDROGEN_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.HYDROGEN), "hydrogen_atom");
-        HELIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.HELIUM), "helium_atom");
+        HYDROGEN_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.HYDROGEN), "hydrogen_atom");
+        HELIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.HELIUM), "helium_atom");
 
-        LITHIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.LITHIUM), "lithium_atom");
-        BERYLLIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.BERYLLIUM), "beryllium_atom");
-        BORON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.BORON), "boron_atom");
-        CARBON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.CARBON), "carbon_atom");
-        NITROGEN_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.NITROGEN), "nitrogen_atom");
-        OXYGEN_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.OXYGEN), "oxygen_atom");
-        FLUORINE_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.FLUORINE), "fluorine_atom");
-        NEON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.NEON), "neon_atom");
+        LITHIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.LITHIUM), "lithium_atom");
+        BERYLLIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.BERYLLIUM), "beryllium_atom");
+        BORON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.BORON), "boron_atom");
+        CARBON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CARBON), "carbon_atom");
+        NITROGEN_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.NITROGEN), "nitrogen_atom");
+        OXYGEN_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.OXYGEN), "oxygen_atom");
+        FLUORINE_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.FLUORINE), "fluorine_atom");
+        NEON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.NEON), "neon_atom");
 
-        SODIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.SODIUM), "sodium_atom");
-        MAGNESIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.MAGNESIUM), "magnesium_atom");
-        ALUMINIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.ALUMINIUM), "aluminium_atom");
-        SILICON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.SILICON), "silicon_atom");
-        PHOSPHORUS_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.PHOSPHORUS), "phosphorus_atom");
-        SULFUR_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.SULFUR), "sulfur_atom");
-        CHLORINE_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.CHLORINE), "chlorine_atom");
-        ARGON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.ARGON), "argon_atom");
+        SODIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SODIUM), "sodium_atom");
+        MAGNESIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.MAGNESIUM), "magnesium_atom");
+        ALUMINIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.ALUMINIUM), "aluminium_atom");
+        SILICON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SILICON), "silicon_atom");
+        PHOSPHORUS_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.PHOSPHORUS), "phosphorus_atom");
+        SULFUR_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SULFUR), "sulfur_atom");
+        CHLORINE_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CHLORINE), "chlorine_atom");
+        ARGON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.ARGON), "argon_atom");
 
-        POTASSIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.POTASSIUM), "potassium_atom");
-        CALCIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.CALCIUM), "calcium_atom");
-        IRON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.IRON), "iron_atom");
-        COPPER_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.COPPER), "copper_atom");
-        ZINC_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.ZINC), "zinc_atom");
-        BROMINE_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.BROMINE), "bromine_atom");
+        POTASSIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.POTASSIUM), "potassium_atom");
+        CALCIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CALCIUM), "calcium_atom");
+        IRON_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.IRON), "iron_atom");
+        COPPER_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.COPPER), "copper_atom");
+        ZINC_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.ZINC), "zinc_atom");
+        BROMINE_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.BROMINE), "bromine_atom");
 
-        SILVER_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.SILVER), "silver_atom");
-        CADMIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.CADMIUM), "cadmium_atom");
-        TIN_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.TIN), "tin_atom");
-        IODINE_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.IODINE), "iodine_atom");
+        SILVER_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SILVER), "silver_atom");
+        CADMIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CADMIUM), "cadmium_atom");
+        TIN_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.TIN), "tin_atom");
+        IODINE_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.IODINE), "iodine_atom");
 
-        GOLD_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.GOLD), "gold_atom");
-        MERCURY_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.MERCURY), "mercury_atom");
-        LEAD_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.LEAD), "lead_atom");
-        URANIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.SCICRAFT), Atom.URANIUM), "uranium_atom");
-        
+        GOLD_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.GOLD), "gold_atom");
+        MERCURY_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.MERCURY), "mercury_atom");
+        LEAD_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.LEAD), "lead_atom");
+        URANIUM_ATOM = registerAtom(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.URANIUM), "uranium_atom");
+
         // Items > Bindings (internal)
-        BOND = registerBond(new Item(new Item.Settings()), "bond");
+        BOND = registerBond(new Item(new Item.Settings()));
     }
 
     /**
@@ -191,19 +198,18 @@ public class Items {
     }
 
     /**
-     * Register Atoms to Model Provider Registry ({@link FabricModelPredicateProviderRegistry})<br>
+     * Register Atoms to Model Provider Registry ({@link ModelPredicateProviderRegistry})<br>
      * Returns the {@link Item} provided by {@code register(Item, String)}
      *
-     * @param item:       Item Object to register
-     * @param identifier: String name of the Item
+     * @param item :       Item Object to register
      * @return {@link Item}
      */
-    private static Item registerBond(Item item, String identifier) {
-        FabricModelPredicateProviderRegistry.register(item, new Identifier("direction"),
+    private static Item registerBond(Item item) {
+        ModelPredicateProviderRegistry.register(item, new Identifier("bonds"),
+                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("ScicraftBondAmount")) / 10F);
+        ModelPredicateProviderRegistry.register(item, new Identifier("direction"),
                 (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("ScicraftBondDirection") ? 1.0F : 0.0F);
-        FabricModelPredicateProviderRegistry.register(item, new Identifier("bond_amount"),
-                (stack, world, entity, seed) -> stack.getOrCreateNbt().getInt("ScicraftBondAmount"));
-        return register(item, identifier);
+        return register(item, "bond");
     }
 
     /**

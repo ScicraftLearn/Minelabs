@@ -70,8 +70,9 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, currentTexture);
 
-//        int x = (width - backgroundWidth) / 2;
-//        int y = (height - backgroundHeight) / 2;
+        // executed in HandledScreen<? extends ScreenHandler> by minecraft itself
+//        (protected) int x = (width - backgroundWidth) / 2;
+//        (protected) int y = (height - backgroundHeight) / 2;
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
@@ -79,7 +80,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
          * Draw Bonds on screen
          */
         for (BondManager.Bond bond : bondManager.getBonds()) {
-            Scicraft.LOGGER.info(bond);
             this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 
@@ -199,11 +199,5 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         // add the remaining number to the vector
         if (N != 1) div.add(N);
         return div;
-    }
-
-    @Override
-    public void onClose() {
-        super.onClose();
-        this.handler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
     }
 }

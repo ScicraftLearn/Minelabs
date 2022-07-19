@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "scicraft:particle_cpy",
+    "scicraft:particle_rgb"
+  ]
+}
