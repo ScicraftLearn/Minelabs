@@ -1,8 +1,8 @@
 {
   "variants": {
-    "facing=north": { "model": "scicraft:block/erlenmeyer_stand", "y": 180},
-    "facing=east":  { "model": "scicraft:block/erlenmeyer_stand", "y": 270},
-    "facing=south": { "model": "scicraft:block/erlenmeyer_stand"},
-    "facing=west":  { "model": "scicraft:block/erlenmeyer_stand", "y": 90}
+    "facing=north": [{"model": "scicraft:block/erlenmeyer_stand", "y": 180}, {"model": "scicraft:block/erlenmeyer_stand_alt0", "y": 180}, {"model": "scicraft:block/erlenmeyer_stand_alt1" , "y": 180}],
+    "facing=east":  [{"model": "scicraft:block/erlenmeyer_stand", "y": 270}, {"model": "scicraft:block/erlenmeyer_stand_alt0", "y": 270}, {"model": "scicraft:block/erlenmeyer_stand_alt1" , "y": 270}],
+    "facing=south": [{"model": "scicraft:block/erlenmeyer_stand"}, {"model": "scicraft:block/erlenmeyer_stand_alt0"}, {"model": "scicraft:block/erlenmeyer_stand_alt1"}],
+    "facing=west":  [{"model": "scicraft:block/erlenmeyer_stand", "y": 90}, {"model": "scicraft:block/erlenmeyer_stand_alt0", "y": 90}, {"model": "scicraft:block/erlenmeyer_stand_alt1" , "y": 90}]
   }
 }
