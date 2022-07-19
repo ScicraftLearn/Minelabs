@@ -28,8 +28,8 @@ public class MologramBlock extends BlockWithEntity {
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new MologramBlockEntity(pos, state);
     }
-    @Override
 
+    @Override
     public ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult blockHitResult) {
         if (!world.isClient) {
             //This will call the createScreenHandlerFactory method from BlockWithEntity, which will return our blockEntity casted to
