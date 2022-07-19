@@ -19,6 +19,9 @@ public class Items {
     public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
             new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt");
 
+    public static final Item SALT_SHARD = register(new SaltShardItem(
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_shard");
+
     public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE,
             new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_ore");
 
