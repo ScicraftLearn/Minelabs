@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.gui;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.lewisrecipes.BondManager;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -189,6 +188,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         // N must be odd at this point.
         // So we can skip one element
         for (int i = 3; i * i <= N; i = i + 2) {
+
             while (N % i == 0) {
                 // divide the value of N
                 N = N / i;
@@ -199,5 +199,11 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         // add the remaining number to the vector
         if (N != 1) div.add(N);
         return div;
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        this.handler.setPropertyDelegate(1, -1);
     }
 }

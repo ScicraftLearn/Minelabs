@@ -1,0 +1,16 @@
+{
+  "type": "scicraft:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "N1", "atom":  "N"},
+      {"key":  "N2", "atom":  "N"}
+    ],
+    "bonds": [
+      {"from": "N1", "to": "N2", "bondOrder": 3}
+    ]
+  },
+  "result": {
+    "item": "scicraft:erlenmeyer_n2"
+  }
+}

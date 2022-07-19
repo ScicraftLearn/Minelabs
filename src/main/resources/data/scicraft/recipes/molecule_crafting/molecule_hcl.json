@@ -1,0 +1,16 @@
+{
+  "type": "scicraft:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "Cl1", "atom":  "Cl"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "Cl1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "scicraft:erlenmeyer_hcl"
+  }
+}

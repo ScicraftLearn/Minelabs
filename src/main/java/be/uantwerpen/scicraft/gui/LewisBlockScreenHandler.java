@@ -1,11 +1,11 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
-import be.uantwerpen.scicraft.lewisrecipes.Molecule;
-import be.uantwerpen.scicraft.lewisrecipes.RecipeManager;
+import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -21,10 +21,8 @@ import net.minecraft.screen.slot.SlotActionType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 public class LewisBlockScreenHandler extends ScreenHandler {
     private final Inventory inventory;
@@ -233,47 +231,47 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             }
         }
 
-        Molecule molecule = RecipeManager.getMolecule(ingredients);
-        if (molecule == null) {
-            if (isInputOpen()) {
-                closeInputSlots();
-                openGridSlots();
-            }
-            return;
+        List<ItemStack> stacks = new ArrayList<>();
+        for (int i = 0; i < 25; i++) {
+            stacks.add(inventory.getStack(i));
         }
+        Scicraft.LOGGER.info(stacks);
 
-        if (!RecipeManager.isCorrectMolecule(molecule, atoms)) {
-            if (isInputOpen()) {
-                closeInputSlots();
-                openGridSlots();
-            }
-            return;
-        }
+        Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
+        Scicraft.LOGGER.info("ingredients: " + ingredients);
 
-        if (isInputOpen()) {
-            if (isInputEmpty()) {
-                if (!isGridOpen()) openGridSlots();
-            } else {
-                if (isGridOpen()) closeGridSlots();
-            }
-        } else {
-            openInputSlots(getIngredients(molecule));
-        }
+        LewisCraftingGrid grid = new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
+        grid.markDirty();
 
-        if (hasCorrectInput(molecule)) {
-//            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) == -1)
-//                this.craftingAnimation(molecule);
-            // reset the crafting animation so it can start over later
-            this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
-            // get the molecule that's being crafted
-            // put it in the output slot
-            clearInput(true);
-            this.getSlot(34).setStack(molecule.getItem().getDefaultStack());
-        } else {
-//            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0
-//                    && this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) < 23)
-//                this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
-        }
+
+        // TODO update to recipeManager
+//        Molecule molecule = RecipeManager.getMolecule(ingredients);
+//        Scicraft.LOGGER.info("molecule: " + molecule);
+//        if (molecule == null) {
+//            if (isInputOpen()) closeInputSlots();
+//            return;
+//        }
+//
+//        if (!RecipeManager.isCorrectMolecule(molecule, atoms)) {
+//            if (isInputOpen()) closeInputSlots();
+//            return;
+//        }
+//
+//        if (!isInputOpen()) {
+//            System.out.println("Opening input");
+//            openInputSlots(molecule.getIngredients().values().stream().reduce(0, Integer::sum));
+//            // TODO: Fix Slot#getBackgroundSprite
+//        }
+//
+//        if (hasCorrectInput(molecule)) {
+//            if (this.getPropertyDelegate(1) == -1)
+//                this.craftingAnimation(new ItemStack(molecule.getItem()));
+//        } else {
+//            //arrow is running but input is no longer valid
+//            if (this.getPropertyDelegate(1) >= 0 && this.getPropertyDelegate(1) < 23)
+//                //stop crafting animation
+//                this.setPropertyDelegate(1, -1);
+//        }
     }
 
     protected boolean hasCorrectInput(Molecule molecule) {
@@ -295,12 +293,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Contract(pure = true)
     public List<Atom> getIngredients(@NotNull Molecule molecule) {
-        List<Atom> ingr = new ArrayList<>();
-        molecule.getIngredients().keySet().forEach(atom -> {
-            for (int i = 0; i < molecule.getIngredients().get(atom); i++)
-                ingr.add(atom);
-        });
-        return ingr;
+        return new ArrayList<>(molecule.getIngredients());
     }
 
     protected boolean isGridOpen() {
