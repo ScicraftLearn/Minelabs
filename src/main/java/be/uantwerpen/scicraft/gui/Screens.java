@@ -9,8 +9,6 @@ import net.minecraft.util.Identifier;
 
 public class Screens {
 
-    public static final ScreenHandlerType<MologramBlockScreenHandler> MOLOGRAM_SCREEN_HANDLER = register(MologramBlockScreenHandler::new, "mologram_block");
-
     /**
      * Register a Screen
      * <p>

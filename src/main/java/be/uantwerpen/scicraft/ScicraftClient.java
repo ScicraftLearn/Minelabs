@@ -4,7 +4,6 @@ import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
-import be.uantwerpen.scicraft.gui.MologramScreen;
 import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
@@ -63,6 +62,5 @@ public class ScicraftClient implements ClientModInitializer {
                 }
             });
         });
-        ScreenRegistry.register(Screens.MOLOGRAM_SCREEN_HANDLER, MologramScreen::new);
     }
 }

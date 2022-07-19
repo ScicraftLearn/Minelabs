@@ -20,9 +20,7 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
-    public static BlockEntityType<MologramBlockEntity> MOLOGRAM_BLOCK_ENTITY;
     static {
-        MOLOGRAM_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(MologramBlockEntity::new, Blocks.MOLOGRAM_BLOCK).build(null), "mologram_block_entity");
         PION_MINUS_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_MINUS_BLOCK_ENTITY, p, s, -1, Blocks.PION_PLUS, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PION_MINUS).build(null),
                 "pion_minus_block_entity");
@@ -50,6 +48,7 @@ public class BlockEntities {
         CHARGED_PLACEHOLDER_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
                 "charged_placeholder_block_entity");
+
     }
 
 
