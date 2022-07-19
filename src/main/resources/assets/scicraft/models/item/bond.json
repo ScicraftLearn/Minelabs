@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "scicraft:item/internal_bindings/bond_single_horizontal"
+    "layer0": "scicraft:item/internal_bonds/bond_single_horizontal"
   },
   "overrides": [
     {
@@ -9,42 +9,42 @@
         "direction": 0,
         "bond_amount": 1
       },
-      "model": "scicraft:item/internal_bindings/bond_single_horizontal"
+      "model": "scicraft:item/internal_bonds/bond_single_horizontal"
     },
     {
       "predicate": {
         "direction": 0,
         "bond_amount": 2
       },
-      "model": "scicraft:item/internal_bindings/bond_double_horizontal"
+      "model": "scicraft:item/internal_bonds/bond_double_horizontal"
     },
     {
       "predicate": {
         "direction": 0,
         "bond_amount": 3
       },
-      "model": "scicraft:item/internal_bindings/bond_triple_horizontal"
+      "model": "scicraft:item/internal_bonds/bond_triple_horizontal"
     },
     {
       "predicate": {
         "direction": 1,
         "bond_amount": 1
       },
-      "model": "scicraft:item/internal_bindings/bond_single_vertical"
+      "model": "scicraft:item/internal_bonds/bond_single_vertical"
     },
     {
       "predicate": {
         "direction": 1,
         "bond_amount": 2
       },
-      "model": "scicraft:item/internal_bindings/bond_double_vertical"
+      "model": "scicraft:item/internal_bonds/bond_double_vertical"
     },
     {
       "predicate": {
         "direction": 1,
         "bond_amount": 3
       },
-      "model": "scicraft:item/internal_bindings/bond_triple_vertical"
+      "model": "scicraft:item/internal_bonds/bond_triple_vertical"
     }
   ]
 }
