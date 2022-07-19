@@ -23,4 +23,8 @@ public class MoleculeItemGraph extends MoleculeGraph {
         return itemStackToVertex.get(stack);
     }
 
+    public ItemStack getItemStackOfVertex(MoleculeItemGraph.Vertex vertex){
+        return vertexToItemStack.get(vertex);
+    }
+
 }

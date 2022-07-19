@@ -19,7 +19,7 @@ public class Graph<V, E> {
     public class Vertex {
         public V data;
 
-        private final Set<Edge> edges = new HashSet<>();
+        private final LinkedHashSet<Edge> edges = new LinkedHashSet<>();
 
         private Vertex(V data) {
             this.data = data;
@@ -61,17 +61,25 @@ public class Graph<V, E> {
     }
 
     public class Edge {
-        private final Set<Vertex> vertices;
+        private final LinkedHashSet<Vertex> vertices;
         public E data;
 
         protected Edge(Set<Vertex> vertices, E data) {
             assert vertices.size() == 2;
-            this.vertices = vertices;
+            this.vertices = new LinkedHashSet<>(vertices);
             this.data = data;
         }
 
         public Collection<Vertex> getVertices() {
             return vertices;
+        }
+
+        public Vertex getFirst(){
+            return vertices.stream().toList().get(0);
+        }
+
+        public Vertex getSecond(){
+            return vertices.stream().toList().get(1);
         }
 
         private Vertex getOtherVertex(Vertex ignore) {
@@ -81,9 +89,9 @@ public class Graph<V, E> {
         }
     }
 
-    protected final Set<Vertex> vertices = new HashSet<>();
+    protected final LinkedHashSet<Vertex> vertices = new LinkedHashSet<>();
 
-    protected final Map<Set<Vertex>, Edge> edges = new HashMap<>();
+    protected final LinkedHashMap<Set<Vertex>, Edge> edges = new LinkedHashMap<>();
 
     public Set<Vertex> getVertices() {
         return vertices;

@@ -1,18 +1,24 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.lewisrecipes.BondManager;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
+import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
+import be.uantwerpen.scicraft.lewisrecipes.MoleculeItemGraph;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
@@ -78,7 +84,22 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
         /*
          * Draw Bonds on screen
          */
-        for (BondManager.Bond bond : bondManager.getBonds()) {
+//        for (BondManager.Bond bond : bondManager.getBonds()) {
+//            this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+//        }
+
+        // Keep mapping between stack (in graph) and slots (for rendering)
+        Map<ItemStack, Slot> stackToSlotMap = new HashMap<>();
+        for (int i = 0; i < 25; i++) {
+            stackToSlotMap.put(handler.getInventory().getStack(i), handler.getSlot(i));
+        }
+
+        LewisCraftingGrid grid = handler.getLewisCraftingGrid();
+        MoleculeItemGraph graph = (MoleculeItemGraph) grid.getPartialMolecule().getStructure();
+        for (MoleculeItemGraph.Edge edge: graph.getEdges()){
+            Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
+            Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
+            BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
             this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 

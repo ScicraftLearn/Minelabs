@@ -200,7 +200,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Override
     public void onContentChanged(Inventory inventory) {
-        this.sendContentUpdates();
+        super.onContentChanged(inventory);
 
         // TODO: Show bonds where possible
 
@@ -237,15 +237,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         context.run((world, pos) -> updateContent(world));
     }
 
-    private void updateContent(World world){
+    public LewisCraftingGrid getLewisCraftingGrid(){
         List<ItemStack> stacks = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
             stacks.add(inventory.getStack(i));
         }
         Scicraft.LOGGER.info(stacks);
 
+        return new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
+    }
 
-        LewisCraftingGrid grid = new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
+    private void updateContent(World world){
+        LewisCraftingGrid grid = getLewisCraftingGrid();
         Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MOLECULE_CRAFTING, grid, world);
 
         Scicraft.LOGGER.info("recipe: " + recipe);
