@@ -3,6 +3,7 @@
   "values": [
     "scicraft:salt_ore",
     "scicraft:deepslate_salt_ore",
+    "scicraft:salt_block",
     "scicraft:budding_salt_block"
   ]
 }

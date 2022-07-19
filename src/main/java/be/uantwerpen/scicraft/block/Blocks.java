@@ -12,9 +12,9 @@ import net.minecraft.util.registry.Registry;
 public class Blocks {
 
     public static final Block SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
-            .mapColor(MapColor.WHITE_GRAY).strength(4.0f).requiresTool(), UniformIntProvider.create(3, 7)), "salt_ore");
+            .mapColor(MapColor.WHITE_GRAY).strength(3.0f, 3.0f).requiresTool(), UniformIntProvider.create(1, 5)), "salt_ore");
     public static final Block DEEPSLATE_SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
-            .mapColor(MapColor.WHITE_GRAY).strength(4.0f).requiresTool(), UniformIntProvider.create(3, 7)), "deepslate_salt_ore");
+            .mapColor(MapColor.WHITE_GRAY).strength(4.5F, 3.0F).requiresTool(), UniformIntProvider.create(1, 5)), "deepslate_salt_ore");
     public static final Block SALT_BLOCK = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE_GRAY).strength(2.0f)), "salt_block");
 
