@@ -31,7 +31,7 @@ public class Blocks {
     public static final Block SMALL_SALT_CRYSTAL = register(new AmethystClusterBlock(3, 4,
             FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.SMALL_AMETHYST_BUD).luminance((state) -> 1)), "small_salt_crystal");
 
-    public static final Block BUDDING_SALT_BLOCK = register(new BuddingAmethystBlock(
+    public static final Block BUDDING_SALT_BLOCK = register(new BuddingSaltBlock(
             FabricBlockSettings.of(Material.AMETHYST).ticksRandomly().strength(1.5F)
                     .sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool()), "budding_salt_block");
 

@@ -18,7 +18,6 @@ public class BuddingSaltBlock extends BuddingAmethystBlock {
         super(settings);
     }
 
-    //TODO FIX AMETHYST SPAWNING INSTEAD OF SALT!!!!
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (random.nextInt(5) == 0) {
@@ -31,7 +30,7 @@ public class BuddingSaltBlock extends BuddingAmethystBlock {
             } else if (blockState.isOf(Blocks.SMALL_SALT_CRYSTAL) && blockState.get(AmethystClusterBlock.FACING) == direction) {
                 block = Blocks.MEDIUM_SALT_CRYSTAL;
             } else if (blockState.isOf(Blocks.MEDIUM_SALT_CRYSTAL) && blockState.get(AmethystClusterBlock.FACING) == direction) {
-                block = Blocks.SMALL_SALT_CRYSTAL;
+                block = Blocks.LARGE_SALT_CRYSTAL;
             } else if (blockState.isOf(Blocks.LARGE_SALT_CRYSTAL) && blockState.get(AmethystClusterBlock.FACING) == direction) {
                 block = Blocks.SALT_CRYSTAL;
             }
