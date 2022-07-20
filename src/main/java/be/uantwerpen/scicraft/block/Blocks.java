@@ -18,7 +18,7 @@ public class Blocks {
     public static final Block SALT_BLOCK = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE_GRAY).strength(2.0f)), "salt_block");
 
-    public static final Block SALT_WIRE = register(new Block(FabricBlockSettings.of(Material.DECORATION)
+    public static final Block SALT_WIRE = register(new SaltWireBlock(FabricBlockSettings.of(Material.DECORATION)
             .mapColor(MapColor.WHITE_GRAY).noCollision().breakInstantly()), "salt_wire");
 
     public static final Block SALT_CRYSTAL = register(new AmethystClusterBlock(7, 3,
