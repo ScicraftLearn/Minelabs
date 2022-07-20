@@ -27,8 +27,11 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
 
         matrices.push();
         // Move the item
-        matrices.translate(0.5, 0.10, 0.64);
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+        if(Block.getBlockFromItem(stack.getItem()) != Blocks.AIR) matrices.translate(0.5, 0, 0.5);
+        else {
+            matrices.translate(0.5, 0.10, 0.64);
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+        }
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
         // Mandatory call after GL calls

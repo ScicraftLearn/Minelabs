@@ -48,7 +48,7 @@ public class MologramBlock extends BlockWithEntity {
         Inventory blockInventory = ((MologramBlockEntity) blockEntity).getInventory();
         //Onderstaande toevoegen aan if statement zodat er geen blocks ingestoken kunnen worden
         //&&Block.getBlockFromItem(player.getStackInHand(hand).getItem()) == Blocks.AIR
-        if (!player.getStackInHand(hand).isEmpty()&&Block.getBlockFromItem(player.getStackInHand(hand).getItem()) == Blocks.AIR) {
+        if (!player.getStackInHand(hand).isEmpty()) {
             // Check what is the first open slot and put an item from the player's hand there
             if (blockInventory.getStack(0).isEmpty()) {
                 // Put the stack the player is holding into the inventory
