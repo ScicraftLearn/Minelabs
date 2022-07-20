@@ -18,8 +18,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-
 
 public class LewisBlockScreenHandler extends ScreenHandler {
 
@@ -27,17 +25,29 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
 
-    //This constructor gets called on the client when the server wants it to open the screenHandler,
-    //The client will call the other constructor with an empty Inventory and the screenHandler will automatically
-    //sync this empty inventory with the inventory on the server.
+    /**
+     * This constructor gets called on the client when the server wants it to open the screenHandler<br>
+     * The client will call the other constructor with an empty Inventory and the screenHandler will automatically
+     * sync this empty inventory with the inventory on the server.
+     * @param syncId ID used to sync client and server handlers
+     * @param playerInventory Player's inventory to sync with screen's inventory slots
+     */
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
         //this(syncId, playerInventory, new SimpleInventory(35));
         this(syncId, playerInventory, ScreenHandlerContext.EMPTY, new SimpleInventory(36), new ArrayPropertyDelegate(DelegateSettings.DELEGATE_SIZE));
         this.onContentChanged(inventory);
     }
 
-    //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
-    //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
+    /**
+     * This constructor gets called from the BlockEntity on the server without calling the other constructor first,
+     * the server knows the inventory of the container and can therefore directly provide it as an argument.
+     * This inventory will then be synced to the client.
+     * @param syncId ID used to sync client and server handlers
+     * @param playerInventory Player's inventory to sync with screen's inventory slots
+     * @param context The BlockEntity's context for running functions on its world and position
+     * @param inventory The BlockEntity's inventory
+     * @param propertyDelegate PropertyDelegate is used to sync data across server and client side handlers
+     */
     public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, ScreenHandlerContext context, Inventory inventory, PropertyDelegate propertyDelegate) {
         super(Screens.LEWIS_SCREEN_HANDLER, syncId);
         checkSize(inventory, 36);
@@ -106,24 +116,50 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         onContentChanged(inventory);
     }
 
+    /**
+     * Allows external access to {@link PropertyDelegate#get(int)}
+     * @param index Requested index from {@code PropertyDelegate}
+     * @return Returns the property at {@code index} in {@code PropertyDelegate}
+     */
     public int getPropertyDelegate(int index) {
         return propertyDelegate.get(index);
     }
 
-    public void setPropertyDelegate(int index, int a) {
-        propertyDelegate.set(index, a);
+    /**
+     * Allows external access to {@link PropertyDelegate#set(int, int)}
+     * @param index Index in {@code PropertyDelegate} to set the value of
+     * @param value Value to set at {@code index} in {@code PropertyDelegate}
+     */
+    public void setPropertyDelegate(int index, int value) {
+        propertyDelegate.set(index, value);
     }
 
+    /**
+     * Supplies {@link LewisScreen} with an instance of the BlockEntity's Inventory
+     * @return Returns the BlockEntity's Inventory
+     */
     public Inventory getInventory() {
         return inventory;
     }
 
+    /**
+     * Check if a player has access to the inventory and thus the BlockEntity
+     * @param player Player to check access for
+     * @return Returns true if the player has access
+     */
     @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
     }
 
     // Shift + Player Inv Slot
+
+    /**
+     * Gets called when a player shift clicks while the screen is open
+     * @param player Player that's shift clicking
+     * @param invSlot SlotId of the clicked slot (-999 if outside of inventory, else -1 if not on slot)
+     * @return The {@link ItemStack} to be left in the clicked slot
+     */
     @Override
     public ItemStack transferSlot(PlayerEntity player, int invSlot) {
         this.sendContentUpdates();
@@ -150,12 +186,23 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return newStack;
     }
 
+    /**
+     * Starts the crafting animation and stores the molecule that's being crafted
+     * @param molecule The {@link Molecule} that will be crafted once the animation is done
+     */
     public void craftingAnimation(Molecule molecule) {
 //        if (getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0) return;
 //        this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, 0);
 //        this.setPropertyDelegate(DelegateSettings.LCT_CURRENT_MOLECULE, molecule.ordinal());
     }
 
+    /**
+     * Performs a slot click. This can behave in many different ways depending mainly on the action type.
+     * @param slotIndex SlotId of the clicked slot (-999 if outside of inventory, else -1 if not on slot)
+     * @param button Mouse button used for the click (0 = Left click | 1 = Right click)
+     * @param actionType The kind of click performed
+     * @param player Player that's clicking
+     */
     @Override
     public void onSlotClick(int slotIndex, int button, @NotNull SlotActionType actionType, PlayerEntity player) {
         if (slotIndex < 0) return;
@@ -198,6 +245,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         } else super.onSlotClick(slotIndex, button, actionType, player);
     }
 
+    /**
+     * Gets called whenever the inventory gets changed
+     * @param inventory The changed inventory
+     */
     @Override
     public void onContentChanged(Inventory inventory) {
         super.onContentChanged(inventory);
@@ -237,7 +288,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         context.run((world, pos) -> updateContent(world));
     }
 
-    public LewisCraftingGrid getLewisCraftingGrid(){
+    /**
+     * Creates a {@link LewisCraftingGrid} from the 5x5 grid
+     * @return the created {@code LewisCraftingGrid}
+     */
+    public LewisCraftingGrid getLewisCraftingGrid() {
         List<ItemStack> stacks = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
             stacks.add(inventory.getStack(i));
@@ -247,7 +302,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
     }
 
-    private void updateContent(World world){
+    private void updateContent(World world) {
         LewisCraftingGrid grid = getLewisCraftingGrid();
         Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MOLECULE_CRAFTING, grid, world);
 
@@ -264,7 +319,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         if (!isInputOpen()) {
             System.out.println("Opening input");
             openInputSlots(new ArrayList<>(moleculeRecipe.getMolecule().getIngredients()));
-            // TODO: Fix Slot#getBackgroundSprite
         }
 
         if (hasCorrectInput(moleculeRecipe.getMolecule())) {
@@ -278,7 +332,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    protected boolean hasCorrectInput(Molecule molecule) {
+    private boolean hasCorrectInput(Molecule molecule) {
         List<Atom> ingredients = this.getIngredients(molecule);
         int readySlots = 1;
         boolean isCorrect = true;
@@ -295,19 +349,33 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return isCorrect && this.getSlot(35).getStack().getItem().equals(Items.ERLENMEYER);
     }
 
+    /**
+     * Returns a list of the {@link Atom}{@code s} required to make the given {@link Molecule}.
+     * @param molecule Molecule to get the ingredients for
+     * @return Returns a {@link List<Atom>} containing all {@code Atoms} in {@code Molecule}
+     */
     @Contract(pure = true)
     public List<Atom> getIngredients(@NotNull Molecule molecule) {
         return new ArrayList<>(molecule.getIngredients());
     }
 
+    /**
+     * @return Returns true if the grid is unlocked
+     */
     protected boolean isGridOpen() {
         return ((LewisGridSlot) this.getSlot(0)).isLocked();
     }
 
+    /**
+     * @return Returns true if the input slots are enabled
+     */
     protected boolean isInputOpen() {
         return this.getSlot(25).isEnabled();
     }
 
+    /**
+     * @return Returns true if the input slots are empty
+     */
     protected boolean isInputEmpty() {
         for (int i = 0; i < 9; i++) {
             if (!this.getSlot(i + 25).getStack().isEmpty()) return false;
@@ -315,6 +383,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return true;
     }
 
+    /**
+     * Clears the input slots
+     * @param erlenmeyer Whether to take one out of the erlenmeyer slot as well
+     *                  (if the recipe uses it)
+     */
     protected void clearInput(boolean erlenmeyer) {
         if (erlenmeyer) this.getSlot(35).getStack().decrement(1);
         for (int i = 0; i < 9; i++) {
@@ -322,8 +395,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    /*
-     * code to open slots (by type)
+    /**
+     * Opens all grid slots
      */
     protected void openGridSlots() {
         for (int i = 0; i < 25; i++) {
@@ -331,6 +404,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
+    /**
+     * Opens the required input slots for the given {@link Atom}{@code s}
+     * @param atoms {@link List} of {@code Atoms} to allow in the slots
+     */
     protected void openInputSlots(@NotNull List<Atom> atoms) {
         setPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID, 1);
         int slotItems = 1;
@@ -344,12 +421,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.setPropertyDelegate(DelegateSettings.LCT_SLOT_ITEMS, slotItems);
     }
 
-    protected void openOutputSlot() {
-        ((LewisCraftingResultSlot) this.getSlot(34)).setReady(true);
-    }
-
-    /*
-     * code to close slots (by type)
+    /**
+     * Closes the grid slots
      */
     protected void closeGridSlots() {
         for (int i = 0; i < 25; i++) {
@@ -357,6 +430,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
+    /**
+     * Closes the input slots
+     */
     protected void closeInputSlots() {
         setPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID, 0);
         for (int i = 25; i < 34; i++) {
@@ -364,10 +440,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.sendContentUpdates();
         }
         //closeErlenmeyer();
-    }
-
-    protected void closeOutputSlot() {
-        ((LewisCraftingResultSlot) this.getSlot(34)).setReady(false);
     }
 
     /**
