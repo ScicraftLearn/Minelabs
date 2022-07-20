@@ -20,7 +20,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.item.Item;
@@ -72,7 +72,7 @@ public class ScicraftClient implements ClientModInitializer {
         });
 
         // Register rendering lewis crafting table inventory
-        ScreenRegistry.register(Screens.LEWIS_SCREEN_HANDLER, LewisScreen::new);
+        HandledScreens.register(Screens.LEWIS_SCREEN_HANDLER, LewisScreen::new);
 
 //        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LEWIS_BLOCK, RenderLayer.getTranslucent());
 
