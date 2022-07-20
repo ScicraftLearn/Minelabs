@@ -52,15 +52,15 @@ public class MologramBlock extends BlockWithEntity {
             if (blockInventory.getStack(0).isEmpty()) {
                 // Put the stack the player is holding into the inventory
                 blockInventory.setStack(0, player.getStackInHand(hand).copy());
-                // Remove the stack from the player's hand
-                player.getStackInHand(hand).setCount(0);
+                blockInventory.getStack(0).setCount(1);
+                // Decrement the stack from the player's hand
+                player.getStackInHand(hand).decrement(1);
             } else {
                 // If the inventory is full we'll print it's contents
                 System.out.println("The first slot holds " + blockInventory.getStack(0));
             }
         } else { // open
             // If the player is not holding anything we'll get give him the items in the block entity one by one
-
             // Find the first slot that has an item and give it to the player
             if (!blockInventory.getStack(0).isEmpty()) {
                 player.getInventory().offerOrDrop(blockInventory.getStack(0));
