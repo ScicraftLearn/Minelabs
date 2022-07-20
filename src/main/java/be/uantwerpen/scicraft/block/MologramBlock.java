@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -39,9 +40,7 @@ public class MologramBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult blockHitResult) {
-        if (world.isClient) return ActionResult.SUCCESS;
         BlockEntity blockEntity = world.getBlockEntity(blockPos);
-
         if (!(blockEntity instanceof MologramBlockEntity)) {
             return ActionResult.PASS;
         }

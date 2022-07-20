@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import javax.annotation.Nullable;
 
 public class MologramBlockEntity extends BlockEntity {
-    private final ItemStack items = ItemStack.EMPTY;
     public SimpleInventory inventory = new SimpleInventory(1);
     private int rot_x = 0;
     private int rot_y = 0;
@@ -32,7 +31,6 @@ public class MologramBlockEntity extends BlockEntity {
         tag.putInt("rotate_y", rot_y);
         tag.putInt("rotate_z", rot_z);
 
-        inventory.addStack(items);
         inventory.toNbtList();
 
         super.writeNbt(tag);
@@ -61,10 +59,6 @@ public class MologramBlockEntity extends BlockEntity {
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
-    }
-
-    public ItemStack getItems() {
-        return items;
     }
 
     public SimpleInventory getInventory() {
