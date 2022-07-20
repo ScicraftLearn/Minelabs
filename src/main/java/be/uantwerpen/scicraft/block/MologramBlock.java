@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,8 +46,9 @@ public class MologramBlock extends BlockWithEntity {
             return ActionResult.PASS;
         }
         Inventory blockInventory = ((MologramBlockEntity) blockEntity).getInventory();
-
-        if (!player.getStackInHand(hand).isEmpty()) {
+        //Onderstaande toevoegen aan if statement zodat er geen blocks ingestoken kunnen worden
+        //&&Block.getBlockFromItem(player.getStackInHand(hand).getItem()) == Blocks.AIR
+        if (!player.getStackInHand(hand).isEmpty()&&Block.getBlockFromItem(player.getStackInHand(hand).getItem()) == Blocks.AIR) {
             // Check what is the first open slot and put an item from the player's hand there
             if (blockInventory.getStack(0).isEmpty()) {
                 // Put the stack the player is holding into the inventory

@@ -2,6 +2,8 @@ package be.uantwerpen.scicraft.block.renderer;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -22,10 +24,11 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
     public void render(MologramBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         stack = entity.getInventory().getStack(0);
         if(stack.isEmpty()) return;
+
         matrices.push();
         // Move the item
-        matrices.translate(0.5, 0.15, 0.5);
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((entity.getWorld().getTime() + tickDelta) * 4));
+        matrices.translate(0.5, 0.10, 0.64);
+        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
         // Mandatory call after GL calls
