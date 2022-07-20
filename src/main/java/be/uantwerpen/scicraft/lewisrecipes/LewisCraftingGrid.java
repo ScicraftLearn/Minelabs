@@ -93,11 +93,11 @@ public class LewisCraftingGrid extends SimpleInventory {
         MoleculeItemGraph positionGraph = getPositionGraph();
 
         // debug
-        Scicraft.LOGGER.info("Position graph\n" + positionGraph.toString());
+//        Scicraft.LOGGER.info("Position graph\n" + positionGraph.toString());
 
         // We use MoleculeItemGraph which can keep a mapping between vertices and ItemStacks.
         MoleculeItemGraph structure = positionGraphToMoleculeItemGraph(positionGraph);
-        Scicraft.LOGGER.info("Molecule formed: " + structure.toString());
+//        Scicraft.LOGGER.info("Molecule formed: " + structure.toString());
         return new PartialMolecule(structure);
     }
 

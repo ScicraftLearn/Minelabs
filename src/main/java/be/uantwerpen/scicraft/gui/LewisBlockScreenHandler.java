@@ -282,8 +282,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             }
         }
 
-        Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
-        Scicraft.LOGGER.info("ingredients: " + ingredients);
+//        Scicraft.LOGGER.info("atoms: " + Arrays.deepToString(atoms));
+//        Scicraft.LOGGER.info("ingredients: " + ingredients);
 
         context.run((world, pos) -> updateContent(world));
     }
@@ -297,7 +297,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (int i = 0; i < 25; i++) {
             stacks.add(inventory.getStack(i));
         }
-        Scicraft.LOGGER.info(stacks);
+//        Scicraft.LOGGER.info("stacks: " + stacks);
 
         return new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
     }
@@ -306,7 +306,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         LewisCraftingGrid grid = getLewisCraftingGrid();
         Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MOLECULE_CRAFTING, grid, world);
 
-        Scicraft.LOGGER.info("recipe: " + recipe);
+//        Scicraft.LOGGER.info("recipe: " + recipe);
 
         if (recipe.isEmpty()) {
             if (isInputOpen()) closeInputSlots();
@@ -314,11 +314,14 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
 
         MoleculeRecipe moleculeRecipe = recipe.get();
-        Scicraft.LOGGER.info("molecule: " + moleculeRecipe.getMolecule());
+//        Scicraft.LOGGER.info("molecule: " + moleculeRecipe.getMolecule());
 
         if (!isInputOpen()) {
             System.out.println("Opening input");
-            openInputSlots(new ArrayList<>(moleculeRecipe.getMolecule().getIngredients()));
+            ArrayList<Atom> atoms = new ArrayList<>(moleculeRecipe.getMolecule().getIngredients());
+            atoms.sort(Comparator.comparingInt(o -> DelegateSettings.ATOM_MAPPINGS.get(o.getItem())));
+            Scicraft.LOGGER.info("atoms: " + atoms);
+            openInputSlots(atoms);
         }
 
         if (hasCorrectInput(moleculeRecipe.getMolecule())) {
@@ -333,7 +336,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     private boolean hasCorrectInput(Molecule molecule) {
-        List<Atom> ingredients = this.getIngredients(molecule);
+        List<Atom> ingredients = new ArrayList<>(molecule.getIngredients());
+        ingredients.sort(Comparator.comparingInt(o -> DelegateSettings.ATOM_MAPPINGS.get(o.getItem())));
         int readySlots = 1;
         boolean isCorrect = true;
         for (int i = 0; i < ingredients.size(); i++) {
@@ -347,16 +351,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
         this.setPropertyDelegate(DelegateSettings.LCT_SLOT_READY, readySlots);
         return isCorrect && this.getSlot(35).getStack().getItem().equals(Items.ERLENMEYER);
-    }
-
-    /**
-     * Returns a list of the {@link Atom}{@code s} required to make the given {@link Molecule}.
-     * @param molecule Molecule to get the ingredients for
-     * @return Returns a {@link List<Atom>} containing all {@code Atoms} in {@code Molecule}
-     */
-    @Contract(pure = true)
-    public List<Atom> getIngredients(@NotNull Molecule molecule) {
-        return new ArrayList<>(molecule.getIngredients());
     }
 
     /**

@@ -30,8 +30,8 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
         ingredients.addAll(molecule.getIngredients().stream().map(atom -> Ingredient.ofItems(atom.getItem())).toList());
         this.id = id;
         this.json = json;
-        Scicraft.LOGGER.info("Recipe made: " + id.toString());
-        Scicraft.LOGGER.info(molecule.getStructure().toCanonical());
+//        Scicraft.LOGGER.info("Recipe made: " + id.toString());
+//        Scicraft.LOGGER.info(molecule.getStructure().toCanonical());
     }
 
     public Molecule getMolecule(){
@@ -127,7 +127,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
         @Override
         public void write(PacketByteBuf buf, MoleculeRecipe recipe) {
             // Writing graph optimized to bytes is hard -> just send json over.
-            Scicraft.LOGGER.info(recipe.getJson().toString());
+//            Scicraft.LOGGER.info(recipe.getJson().toString());
             buf.writeString(recipe.getJson().toString());
         }
     }

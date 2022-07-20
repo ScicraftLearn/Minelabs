@@ -15,10 +15,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
@@ -114,6 +111,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
             // hashed mappings for the slots
             List<Integer> slotItemList = this.getSlotList(slotItems);
             List<Integer> slotReadyList = this.getSlotList(slotReady);
+            slotItemList.sort(Comparator.comparingInt(o -> o));
+            Scicraft.LOGGER.info("slotList: " + slotItemList);
 
             // textures to show whether a slot is ready or not
             ItemStack ready = new ItemStack(net.minecraft.item.Items.LIME_STAINED_GLASS_PANE);
