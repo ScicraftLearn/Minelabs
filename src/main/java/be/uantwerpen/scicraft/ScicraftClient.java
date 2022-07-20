@@ -7,15 +7,19 @@ import be.uantwerpen.scicraft.block.renderer.MologramBlockRenderer;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
+import be.uantwerpen.scicraft.particle.HologramParticle;
+import be.uantwerpen.scicraft.particle.Particles;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
@@ -49,6 +53,8 @@ public class ScicraftClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+
+        ParticleFactoryRegistry.getInstance().register(Particles.HOLOGRAM_PARTICLE, HologramParticle.Factory::new);
 
         BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);

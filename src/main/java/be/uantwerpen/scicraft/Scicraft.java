@@ -6,6 +6,7 @@ import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.paintings.Paintings;
+import be.uantwerpen.scicraft.particle.Particles;
 import be.uantwerpen.scicraft.sound.SoundEvents;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
@@ -31,5 +32,6 @@ public class Scicraft implements ModInitializer {
         SoundEvents.registerSounds();
         Paintings.registerPaintings();
         Screens.registerScreens();
+        Particles.registerParticles();
     }
 }
