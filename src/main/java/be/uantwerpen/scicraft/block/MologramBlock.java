@@ -1,10 +1,14 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -15,13 +19,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 
-public class MologramBlock extends Block {
+public class MologramBlock extends BlockWithEntity {
 
-    public ItemStack itemStack;
 
     public MologramBlock(Settings settings) {
         super(settings);
-        itemStack = ItemStack.EMPTY;
+    }
+
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new MologramBlockEntity(pos, state);
     }
 
     @Override
@@ -32,20 +39,34 @@ public class MologramBlock extends Block {
 
     @Override
     public ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult blockHitResult) {
-        if(world.isClient){
-            return ActionResult.SUCCESS;
+        if (world.isClient) return ActionResult.SUCCESS;
+        BlockEntity blockEntity = world.getBlockEntity(blockPos);
+
+        if (!(blockEntity instanceof MologramBlockEntity)) {
+            return ActionResult.PASS;
         }
-        if (itemStack.isEmpty()) {
-            itemStack = player.getStackInHand(hand).copy();
-            itemStack.setCount(1);
-            player.getStackInHand(hand).decrement(1);
+        Inventory blockInventory = ((MologramBlockEntity) blockEntity).getInventory();
+
+        if (!player.getStackInHand(hand).isEmpty()) {
+            // Check what is the first open slot and put an item from the player's hand there
+            if (blockInventory.getStack(0).isEmpty()) {
+                // Put the stack the player is holding into the inventory
+                blockInventory.setStack(0, player.getStackInHand(hand).copy());
+                // Remove the stack from the player's hand
+                player.getStackInHand(hand).setCount(0);
+            } else {
+                // If the inventory is full we'll print it's contents
+                System.out.println("The first slot holds " + blockInventory.getStack(0));
+            }
+        } else { // open
+            // If the player is not holding anything we'll get give him the items in the block entity one by one
+
+            // Find the first slot that has an item and give it to the player
+            if (!blockInventory.getStack(0).isEmpty()) {
+                player.getInventory().offerOrDrop(blockInventory.getStack(0));
+                blockInventory.removeStack(0);
+            }
         }
-        else {
-            System.out.println("test");
-            world.spawnEntity(new ItemEntity(world,blockPos.getX(),blockPos.getY(),blockPos.getZ(),itemStack));
-            itemStack = ItemStack.EMPTY;
-        }
-        player.getInventory().markDirty();
 
         return ActionResult.SUCCESS;
     }
