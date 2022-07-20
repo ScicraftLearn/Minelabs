@@ -34,7 +34,8 @@ import java.util.Set;
 
 public class SaltWireBlock extends Block {
 
-    // TODO FILL like REDSTONE connections (without power)
+    //TODO FIX SERVER LAGG ISSUE with Neighbor updates
+
     public static final EnumProperty<WireConnection> WIRE_CONNECTION_NORTH = Properties.NORTH_WIRE_CONNECTION;
     public static final EnumProperty<WireConnection> WIRE_CONNECTION_EAST = Properties.EAST_WIRE_CONNECTION;
     public static final EnumProperty<WireConnection> WIRE_CONNECTION_SOUTH = Properties.SOUTH_WIRE_CONNECTION;
@@ -71,11 +72,17 @@ public class SaltWireBlock extends Block {
     }
 
     private static boolean isFullyConnected(BlockState state) {
-        return ((WireConnection) state.get(WIRE_CONNECTION_NORTH)).isConnected() && ((WireConnection) state.get(WIRE_CONNECTION_SOUTH)).isConnected() && ((WireConnection) state.get(WIRE_CONNECTION_EAST)).isConnected() && ((WireConnection) state.get(WIRE_CONNECTION_WEST)).isConnected();
+        return ((WireConnection) state.get(WIRE_CONNECTION_NORTH)).isConnected()
+                && ((WireConnection) state.get(WIRE_CONNECTION_SOUTH)).isConnected()
+                && ((WireConnection) state.get(WIRE_CONNECTION_EAST)).isConnected()
+                && ((WireConnection) state.get(WIRE_CONNECTION_WEST)).isConnected();
     }
 
     private static boolean isNotConnected(BlockState state) {
-        return !((WireConnection) state.get(WIRE_CONNECTION_NORTH)).isConnected() && !((WireConnection) state.get(WIRE_CONNECTION_SOUTH)).isConnected() && !((WireConnection) state.get(WIRE_CONNECTION_EAST)).isConnected() && !((WireConnection) state.get(WIRE_CONNECTION_WEST)).isConnected();
+        return !((WireConnection) state.get(WIRE_CONNECTION_NORTH)).isConnected()
+                && !((WireConnection) state.get(WIRE_CONNECTION_SOUTH)).isConnected()
+                && !((WireConnection) state.get(WIRE_CONNECTION_EAST)).isConnected()
+                && !((WireConnection) state.get(WIRE_CONNECTION_WEST)).isConnected();
     }
 
     protected static boolean connectsTo(BlockState state) {
