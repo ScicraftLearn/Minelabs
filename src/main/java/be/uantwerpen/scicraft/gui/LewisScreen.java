@@ -112,7 +112,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> {
             List<Integer> slotItemList = this.getSlotList(slotItems);
             List<Integer> slotReadyList = this.getSlotList(slotReady);
             slotItemList.sort(Comparator.comparingInt(o -> o));
-            Scicraft.LOGGER.info("slotList: " + slotItemList);
+//            Scicraft.LOGGER.info("slotList: " + slotItemList);
 
             // textures to show whether a slot is ready or not
             ItemStack ready = new ItemStack(net.minecraft.item.Items.LIME_STAINED_GLASS_PANE);

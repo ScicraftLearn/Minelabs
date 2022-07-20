@@ -6,6 +6,7 @@ import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.LewisScreen;
 import be.uantwerpen.scicraft.gui.Screens;
+import be.uantwerpen.scicraft.item.ItemModels;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
@@ -31,6 +32,9 @@ import net.minecraft.util.math.BlockPos;
 public class ScicraftClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
+        //Register ItemModels
+        ItemModels.registerModels();
+
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_PLUS, RenderLayer.getCutout());
