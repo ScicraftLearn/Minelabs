@@ -8,10 +8,12 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -19,11 +21,13 @@ import net.minecraft.world.World;
 public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 
     private final Molecule molecule;
+    private final DefaultedList<Ingredient> ingredients = DefaultedList.of();
     private final Identifier id;
     private final JsonObject json;
 
     public MoleculeRecipe(Molecule molecule, Identifier id, JsonObject json) {
         this.molecule = molecule;
+        ingredients.addAll(molecule.getIngredients().stream().map(atom -> Ingredient.ofItems(atom.getItem())).toList());
         this.id = id;
         this.json = json;
         Scicraft.LOGGER.info("Recipe made: " + id.toString());
@@ -37,6 +41,14 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     @Override
     public boolean matches(LewisCraftingGrid inventory, World world) {
         return inventory.getPartialMolecule().getStructure().isIsomorphicTo(molecule.getStructure());
+    }
+
+    /**
+     * Seems to be used for recipe book functionality (showing which recipes are craftable based on contents of inventory).
+     */
+    @Override
+    public DefaultedList<Ingredient> getIngredients() {
+        return ingredients;
     }
 
     @Override
