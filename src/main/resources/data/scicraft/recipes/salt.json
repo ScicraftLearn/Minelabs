@@ -2,8 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:stone",
-      "tag": "scicraft:salt_shard"
+      "item": "scicraft:salt_shard"
     }
   ],
   "result": {

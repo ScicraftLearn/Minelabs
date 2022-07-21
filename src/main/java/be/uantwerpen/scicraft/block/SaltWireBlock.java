@@ -2,7 +2,6 @@ package be.uantwerpen.scicraft.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -32,11 +31,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
+@SuppressWarnings("deprecation")
 public class SaltWireBlock extends Block {
-
-    //TODO FIX SERVER LAGG ISSUE with Neighbor updates
 
     public static final EnumProperty<WireConnection> WIRE_CONNECTION_NORTH = Properties.NORTH_WIRE_CONNECTION;
     public static final EnumProperty<WireConnection> WIRE_CONNECTION_EAST = Properties.EAST_WIRE_CONNECTION;
@@ -96,11 +93,8 @@ public class SaltWireBlock extends Block {
                 && !(state.get(WIRE_CONNECTION_WEST)).isConnected();
     }
 
-    protected static boolean connectsTo(BlockState state) {
-        return connectsTo(state, (Direction) null);
-    }
-
-    protected static boolean connectsTo(BlockState state, @Nullable Direction dir) {
+    protected static boolean connectsTo(@NotNull BlockState state, @Nullable Direction dir) {
+        //Expandable if we want to connect Salt Wire to different blocks
         return state.isOf(Blocks.SALT_WIRE);
     }
 
@@ -121,12 +115,13 @@ public class SaltWireBlock extends Block {
 
 
     @Override
+    @Deprecated
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return SHAPES.get(state);
     }
 
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
+    public BlockState getPlacementState(@NotNull ItemPlacementContext ctx) {
         return this.getPlacementState(ctx.getWorld(), this.dotState, ctx.getBlockPos());
     }
 
@@ -160,7 +155,7 @@ public class SaltWireBlock extends Block {
         return state;
     }
 
-    private BlockState getDefaultWireState(BlockView world, BlockState state, BlockPos pos) {
+    private BlockState getDefaultWireState(@NotNull BlockView world, BlockState state, @NotNull BlockPos pos) {
         boolean bl = !world.getBlockState(pos.up()).isSolidBlock(world, pos);
 
         for (Direction direction : Direction.Type.HORIZONTAL) {
@@ -174,6 +169,7 @@ public class SaltWireBlock extends Block {
     }
 
     @Override
+    @Deprecated
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (direction == Direction.DOWN) {
             return state;
@@ -186,6 +182,7 @@ public class SaltWireBlock extends Block {
     }
 
     @Override
+    @Deprecated
     public void prepare(BlockState state, WorldAccess world, BlockPos pos, int flags, int maxUpdateDepth) {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
@@ -219,7 +216,7 @@ public class SaltWireBlock extends Block {
         BlockState blockState = world.getBlockState(blockPos);
         if (bl) {
             boolean bl2 = this.canRunOnTop(world, blockPos, blockState);
-            if (bl2 && connectsTo(world.getBlockState(blockPos.up()))) {
+            if (bl2 && connectsTo(world.getBlockState(blockPos.up()), null)) {
                 if (blockState.isSideSolidFullSquare(world, blockPos, direction.getOpposite())) {
                     return WireConnection.UP;
                 }
@@ -230,44 +227,26 @@ public class SaltWireBlock extends Block {
 
         return !connectsTo(blockState, direction)
                 && (blockState.isSolidBlock(world, blockPos)
-                || !connectsTo(world.getBlockState(blockPos.down()))) ? WireConnection.NONE : WireConnection.SIDE;
+                || !connectsTo(world.getBlockState(blockPos.down()), null)) ? WireConnection.NONE : WireConnection.SIDE;
     }
 
     @Override
-    public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+    @Deprecated
+    public boolean canPlaceAt(BlockState state, @NotNull WorldView world, @NotNull BlockPos pos) {
         BlockPos blockPos = pos.down();
         BlockState blockState = world.getBlockState(blockPos);
         return this.canRunOnTop(world, blockPos, blockState);
     }
 
-    private boolean canRunOnTop(BlockView world, BlockPos pos, BlockState floor) {
+    private boolean canRunOnTop(BlockView world, BlockPos pos, @NotNull BlockState floor) {
         return floor.isSideSolidFullSquare(world, pos, Direction.UP) || floor.isOf(net.minecraft.block.Blocks.HOPPER);
     }
 
-    private void update(World world, BlockPos pos, BlockState state) {
-        if (world.getBlockState(pos) == state) {
-            world.setBlockState(pos, state, 2);
-        }
-
-        Set<BlockPos> set = Sets.newHashSet();
-        set.add(pos);
-        Direction[] var6 = Direction.values();
-
-        for (Direction direction : var6) {
-            set.add(pos.offset(direction));
-        }
-
-        for (BlockPos blockPos : set) {
-            world.updateNeighborsAlways(blockPos, this);
-        }
-    }
-
-    private void updateNeighbors(World world, BlockPos pos) {
+    private void updateNeighbors(@NotNull World world, BlockPos pos) {
         if (world.getBlockState(pos).isOf(this)) {
             world.updateNeighborsAlways(pos, this);
-            Direction[] var3 = Direction.values();
 
-            for (Direction direction : var3) {
+            for (Direction direction : Direction.values()) {
                 world.updateNeighborsAlways(pos.offset(direction), this);
             }
 
@@ -275,9 +254,9 @@ public class SaltWireBlock extends Block {
     }
 
     @Override
+    @Deprecated
     public void onBlockAdded(@NotNull BlockState state, World world, BlockPos pos, @NotNull BlockState oldState, boolean notify) {
         if (!oldState.isOf(state.getBlock()) && !world.isClient) {
-            this.update(world, pos, state);
 
             for (Direction direction : Direction.Type.VERTICAL) {
                 world.updateNeighborsAlways(pos.offset(direction), this);
@@ -288,6 +267,7 @@ public class SaltWireBlock extends Block {
     }
 
     @Override
+    @Deprecated
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (!moved && !state.isOf(newState.getBlock())) {
             super.onStateReplaced(state, world, pos, newState, moved);
@@ -299,7 +279,6 @@ public class SaltWireBlock extends Block {
                     world.updateNeighborsAlways(pos.offset(direction), this);
                 }
 
-                this.update(world, pos, state);
                 this.updateOffsetNeighbors(world, pos);
             }
         }
@@ -329,19 +308,18 @@ public class SaltWireBlock extends Block {
     }
 
     @Override
+    @Deprecated
     public void neighborUpdate(BlockState state, @NotNull World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (!world.isClient) {
-            if (state.canPlaceAt(world, pos)) {
-                this.update(world, pos, state);
-            } else {
+            if (!state.canPlaceAt(world, pos)) {
                 dropStacks(state, world, pos);
                 world.removeBlock(pos, false);
             }
-
         }
     }
 
     @Override
+    @Deprecated
     public BlockState rotate(BlockState state, @NotNull BlockRotation rotation) {
         switch (rotation) {
             case CLOCKWISE_180:
@@ -356,6 +334,7 @@ public class SaltWireBlock extends Block {
     }
 
     @Override
+    @Deprecated
     public BlockState mirror(BlockState state, @NotNull BlockMirror mirror) {
         switch (mirror) {
             case LEFT_RIGHT:
@@ -368,7 +347,7 @@ public class SaltWireBlock extends Block {
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void appendProperties(StateManager.@NotNull Builder<Block, BlockState> builder) {
         builder.add(WIRE_CONNECTION_NORTH);
         builder.add(WIRE_CONNECTION_EAST);
         builder.add(WIRE_CONNECTION_SOUTH);
@@ -376,7 +355,8 @@ public class SaltWireBlock extends Block {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    @Deprecated
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, @NotNull PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!player.getAbilities().allowModifyWorld) {
             return ActionResult.PASS;
         } else {
