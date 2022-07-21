@@ -33,6 +33,7 @@ public class MologramBlock extends BlockWithEntity {
 
     public MologramBlock(Settings settings) {
         super(settings);
+        setDefaultState(getStateManager().getDefaultState().with(LIT, false));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class MologramBlock extends BlockWithEntity {
             if (blockInventory.getStack(0).isEmpty()) {
                 // Put the stack the player is holding into the inventory
                 blockInventory.setStack(0, player.getStackInHand(hand).copy());
-                world.setBlockState(blockPos, blockState.cycle(LIT));
+                world.setBlockState(blockPos, blockState.with(LIT,true));
                 blockInventory.getStack(0).setCount(1);
                 // Decrement the stack from the player's hand
                 player.getStackInHand(hand).decrement(1);
@@ -77,7 +78,7 @@ public class MologramBlock extends BlockWithEntity {
             // Find the first slot that has an item and give it to the player
             if (!blockInventory.getStack(0).isEmpty()) {
                 player.getInventory().offerOrDrop(blockInventory.getStack(0));
-                world.setBlockState(blockPos, blockState.cycle(LIT));
+                world.setBlockState(blockPos, blockState.with(LIT,false));
                 blockInventory.removeStack(0);
             }
         }

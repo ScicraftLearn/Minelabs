@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.block.renderer;
+package be.uantwerpen.scicraft.renderer;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.MologramBlock;

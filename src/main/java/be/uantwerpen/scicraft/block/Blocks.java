@@ -58,7 +58,7 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
     public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT)?5:0)), "mologram");
+            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT)?10:0)), "mologram");
     /**
      * Register a Block
      * <p>
