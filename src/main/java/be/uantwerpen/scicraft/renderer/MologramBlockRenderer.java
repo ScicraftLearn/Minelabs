@@ -44,7 +44,7 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
 
         matrices.push();
         if(random.nextDouble()<0.2f){
-            world.addParticle(Particles.HOLOGRAM_PARTICLE, pos.getX()+ 0.5d, pos.getY() + 0.75d, pos.getZ() + 0.5d,
+            world.addParticle(Particles.HOLOGRAM_PARTICLE, pos.getX()+ 0.5d, pos.getY() + 1.75d, pos.getZ() + 0.5d,
                     0,0,0);
         }
         // Move the item
