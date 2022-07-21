@@ -1,12 +1,12 @@
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.Blocks;
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.fabric.api.object.builder.v1.villager.VillagerProfessionBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
@@ -20,9 +20,9 @@ import net.minecraft.world.poi.PointOfInterestType;
 public class ScientificVillager {
 
     //selects the block that the villigat should be interested in and registers the profession
-    public static final PointOfInterestType REDSTONE_POI = registerPOI("redstone_poi", Blocks.REDSTONE_BLOCK);
+    public static final PointOfInterestType LEWIS_POI = registerPOI("lewis_poi", Blocks.LEWIS_BLOCK);
     public static final VillagerProfession SCIENCE_VILLAGER = registerProfession("sciencevillager",
-            RegistryKey.of(Registry.POINT_OF_INTEREST_TYPE_KEY, new Identifier(Scicraft.MOD_ID, "redstone_poi")));
+            RegistryKey.of(Registry.POINT_OF_INTEREST_TYPE_KEY, new Identifier(Scicraft.MOD_ID, "lewis_poi")));
 
     //Creates a new profession based on the POI
     //This also sets the sound and can be used to set other stuff

@@ -12,7 +12,7 @@
       {"from": "H2", "to": "O1", "bondOrder": 1}
     ]
   },
-  "result": {
-    "item": "scicraft:erlenmeyer"
-  }
+  "items": [
+      "scicraft:erlenmeyer_h2o",""
+      ]
 }
