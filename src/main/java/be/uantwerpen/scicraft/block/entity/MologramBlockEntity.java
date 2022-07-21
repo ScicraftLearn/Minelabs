@@ -1,6 +1,8 @@
 package be.uantwerpen.scicraft.block.entity;
 
 
+import be.uantwerpen.scicraft.block.MologramBlock;
+import be.uantwerpen.scicraft.particle.Particles;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
@@ -12,6 +14,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -51,6 +54,12 @@ public class MologramBlockEntity extends BlockEntity {
         DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1,ItemStack.EMPTY);
         Inventories.readNbt(tag, stacks);
         inventory.setStack(0,stacks.get(0));
+    }
+
+    public static void clientTick(World world, BlockPos pos, BlockState state, MologramBlockEntity entity){
+        if (!state.get(MologramBlock.LIT)) return;
+        world.addParticle(Particles.HOLOGRAM_PARTICLE, pos.getX()+ 0.5d, pos.getY() + 0.75d, pos.getZ() + 0.5d,
+                0,0,0);
     }
 
     //sync data server client:

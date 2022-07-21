@@ -1,13 +1,15 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+import be.uantwerpen.scicraft.particle.Particles;
+import net.minecraft.block.*;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -22,7 +24,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Properties;
 
@@ -86,5 +90,19 @@ public class MologramBlock extends BlockWithEntity {
         return ActionResult.SUCCESS;
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return world.isClient ? HopperBlock.checkType(type, BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntity::clientTick) : null;
+    }
+
+//    @Override
+//    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+//        if (!state.get(LIT)) return;
+//        for(int i = 0;i < 3;i++){
+//            world.addParticle(Particles.HOLOGRAM_PARTICLE, pos.getX()+ 0.5d, pos.getY() + 0.75d, pos.getZ() + 0.5d,
+//                    0,0,0);
+//        }
+//    }
 
 }
