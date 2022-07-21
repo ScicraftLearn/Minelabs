@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class FireMixin {
 
     @Inject(method = "getState", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-    private static void isCopperBase(BlockView world, BlockPos pos, CallbackInfoReturnable<BlockState> cir){
+    private static void isCopperBase(BlockView world, BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
         BlockState blockState = world.getBlockState(pos.down());
-        if (GreenFire.isCopperBase(blockState)){
+        if (GreenFire.isCopperBase(blockState)) {
             cir.setReturnValue(Blocks.GREEN_FIRE.getDefaultState());
         }
     }

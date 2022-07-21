@@ -1,12 +1,12 @@
 package be.uantwerpen.scicraft;
 
-import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.entity.ScientificVillager;
 import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.lewisrecipes.MoleculeRecipe;
 import be.uantwerpen.scicraft.paintings.Paintings;
 import be.uantwerpen.scicraft.particle.Particles;
 import be.uantwerpen.scicraft.sound.SoundEvents;
@@ -32,10 +32,10 @@ public class Scicraft implements ModInitializer {
         Entities.registerEntities();
         ExtraDispenserBehavior.registerBehaviors();
         SoundEvents.registerSounds();
-        Paintings.registerPaintings();
         Screens.registerScreens();
+        Paintings.registerPaintings();
+        MoleculeRecipe.register();
         Particles.registerParticles();
-
         ScientificVillager.registerVillagers();
         ScientificVillager.registerTrades();
     }

@@ -60,8 +60,8 @@ public abstract class CreeperEntityMixin extends HostileEntity {
     /**
      * Redirect playSound call when the creeper is primed so we can override it.
      */
-    @Redirect(method="tick", at=@At(value="INVOKE", target="Lnet/minecraft/entity/mob/CreeperEntity;playSound(Lnet/minecraft/sound/SoundEvent;FF)V"))
-    public void injectPlayPrimedSound(CreeperEntity instance, SoundEvent soundEvent, float v, float p){
+    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/CreeperEntity;playSound(Lnet/minecraft/sound/SoundEvent;FF)V"))
+    public void injectPlayPrimedSound(CreeperEntity instance, SoundEvent soundEvent, float v, float p) {
         playPrimedSound();
     }
 
