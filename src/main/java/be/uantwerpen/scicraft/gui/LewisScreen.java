@@ -25,8 +25,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
     private Identifier currentTexture;
 
-    private int tickCounter = 0;
-
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.bondManager = new BondManager();
@@ -41,32 +39,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
      */
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-//        List<ItemStack> a = new ArrayList<>();
-//        for (int i = 0; i < 34; i++) {
-//            a.add(screenHandler.getInventory().getStack(i));
-//        }
-//        System.out.println(a);
-//        System.out.println("----------");
-
-        int craftingProgress = handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS);
-
-        //if the animation status is in the interval [0,22], we continue the animation
-        this.setCorrectTexture(
-                switch (craftingProgress) {
-                    case 0, 1 -> 0;
-                    case 2, 3 -> 2;
-                    case 4, 5 -> 4;
-                    case 6, 7 -> 6;
-                    case 8, 9 -> 8;
-                    case 10, 11 -> 10;
-                    case 12, 13 -> 12;
-                    case 14, 15 -> 14;
-                    case 16, 17 -> 16;
-                    case 18, 19 -> 18;
-                    case 20, 21, 22 -> 20;
-                    default -> -1;
-                }
-        );
+        this.setCorrectTexture();
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -78,12 +51,10 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
-        /*
-         * Draw Bonds on screen
-         */
-//        for (BondManager.Bond bond : bondManager.getBonds()) {
-//            this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
-//        }
+        // get crafting progress and handle its
+        int cp = handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS);
+        if (cp >= 0)
+            drawTexture(matrices, x + 100, y + 51, 176, 0, cp, 20);
 
         // Keep mapping between stack (in graph) and slots (for rendering)
         Map<ItemStack, Slot> stackToSlotMap = new HashMap<>();
@@ -91,6 +62,9 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             stackToSlotMap.put(handler.getInventory().getStack(i), handler.getSlot(i));
         }
 
+        /*
+         * Draw Bonds on screen
+         */
         LewisCraftingGrid grid = handler.getLewisCraftingGrid();
         MoleculeItemGraph graph = (MoleculeItemGraph) grid.getPartialMolecule().getStructure();
         for (MoleculeItemGraph.Edge edge: graph.getEdges()){
@@ -170,29 +144,13 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         this.getScreenHandler().onContentChanged(handler.getInventory());
     }
 
-    @Override
-    protected void handledScreenTick() {
-        // increase the animation counter by 1
-        if (tickCounter % 6 == 0) {
-            // if the crafting is ongoing (aka it's not -1), keep going
-            if (this.handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) != -1) {
-                this.handler.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, this.handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) + 1);
-            }
-            tickCounter = 1;
+    protected void setCorrectTexture() {
+        int textureID = handler.getPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID);
+        if (textureID == 0) {
+            this.currentTexture = TEXTURE2;
+        } else if (textureID == 1) {
+            this.currentTexture = TEXTURE;
         }
-        ++this.tickCounter;
-    }
-
-    protected void setCorrectTexture(int craftingProgress) {
-        if (craftingProgress == -1) {
-            int textureID = handler.getPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID);
-            if (textureID == 0) {
-                this.currentTexture = TEXTURE2;
-            } else if (textureID == 1) {
-                this.currentTexture = TEXTURE;
-            }
-        } else
-            this.currentTexture = new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp" + craftingProgress + ".png");
     }
 
     protected List<Integer> getSlotList(int N) {

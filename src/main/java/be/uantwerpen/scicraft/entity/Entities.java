@@ -2,7 +2,7 @@ package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
-import be.uantwerpen.scicraft.block.LewisBlockEntity;
+import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;

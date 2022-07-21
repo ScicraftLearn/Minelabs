@@ -1,6 +1,7 @@
-package be.uantwerpen.scicraft.block;
+package be.uantwerpen.scicraft.block.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
@@ -19,6 +20,7 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(36, ItemStack.EMPTY);
@@ -28,13 +30,15 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
     //It can normally contain multiple integers as data identified by the index.
     private final PropertyDelegate propertyDelegate;
 
+    private LewisBlockScreenHandler lewisBlockScreenHandler;
+
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(Entities.LEWIS_BLOCK_ENTITY, pos, state);
 
         delegatedProperties = new int[]{
-                0, // textureID
-                -1, // craftingProgress
-                1, // slotItems
+                0, // textureID (0)
+                -1, // craftingProgress (1)
+                1, // slotItems (2)
                 1, // slotReady
                 -1 // currentMolecule
         };
@@ -74,7 +78,7 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         //We provide *this* to the screenHandler as our class Implements Inventory
         //Only the Server has the Inventory at the start, this will be synced to the client in the ScreenHandler
-        return new LewisBlockScreenHandler(syncId, playerInventory, ScreenHandlerContext.create(world, pos), this, propertyDelegate);
+        return lewisBlockScreenHandler = new LewisBlockScreenHandler(syncId, playerInventory, ScreenHandlerContext.create(world, pos), this, propertyDelegate);
     }
 
     @Override
@@ -94,4 +98,12 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
         Inventories.writeNbt(nbt, this.inventory);
     }
 
+    public void tick(World world, BlockPos pos, BlockState state) {
+        if (delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] < 0) return;
+        delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] += 1;
+        if (delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] >= 23) {
+            if (lewisBlockScreenHandler.setOutput())
+                delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] = -1;
+        }
+    }
 }

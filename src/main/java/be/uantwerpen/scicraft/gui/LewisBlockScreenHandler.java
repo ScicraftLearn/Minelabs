@@ -25,6 +25,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
 
+    private Molecule currentMolecule;
+
     /**
      * This constructor gets called on the client when the server wants it to open the screenHandler<br>
      * The client will call the other constructor with an empty Inventory and the screenHandler will automatically
@@ -54,6 +56,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.context = context;
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
+        this.currentMolecule = null;
         this.addProperties(propertyDelegate);
         //some inventories do custom logic when a player opens it.
         inventory.onOpen(playerInventory.player);
@@ -191,9 +194,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @param molecule The {@link Molecule} that will be crafted once the animation is done
      */
     public void craftingAnimation(Molecule molecule) {
-//        if (getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0) return;
-//        this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, 0);
-//        this.setPropertyDelegate(DelegateSettings.LCT_CURRENT_MOLECULE, molecule.ordinal());
+        if (getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0) return;
+        this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, 0);
+        this.currentMolecule = molecule;
     }
 
     /**
@@ -329,9 +332,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 this.craftingAnimation(moleculeRecipe.getMolecule());
         } else {
             //arrow is running but input is no longer valid
-            if (this.getPropertyDelegate(1) >= 0 && this.getPropertyDelegate(1) < 23)
+            if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 0 && this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) < 23) {
                 //stop crafting animation
-                this.setPropertyDelegate(1, -1);
+                this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
+                this.currentMolecule = null;
+            }
         }
     }
 
@@ -351,6 +356,19 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
         this.setPropertyDelegate(DelegateSettings.LCT_SLOT_READY, readySlots);
         return isCorrect && this.getSlot(35).getStack().getItem().equals(Items.ERLENMEYER);
+    }
+
+    /**
+     * Sets the crafted item in the output slot,
+     * clears the input slots and clears the saved molecule
+     * @return Returns false if no molecule was saved (and the operation failed)
+     */
+    public boolean setOutput() {
+        if (currentMolecule == null) return false;
+        this.getSlot(34).setStack(currentMolecule.getItem().getDefaultStack());
+        clearInput(true);
+        currentMolecule = null;
+        return true;
     }
 
     /**
@@ -434,30 +452,5 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.sendContentUpdates();
         }
         //closeErlenmeyer();
-    }
-
-    /**
-     * Gets called every tick.<br>
-     * Checks if the crafting animation is over, and handles its completion
-     */
-    public void tick() {
-        // if the crafting animation is over
-/*
-        if (this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS) >= 23) {
-            Scicraft.LOGGER.info("TICK DID SOMETHING");
-            // reset the crafting animation so it can start over later
-            this.setPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS, -1);
-            // get the molecule that's being crafted
-            Molecule molecule = Molecule.getFromOrdinal(this.getPropertyDelegate(DelegateSettings.LCT_CURRENT_MOLECULE));
-            Scicraft.LOGGER.info("molecule (tick): " + molecule);
-            // put it in the output slot
-            if (molecule != null) {
-                clearInput(true);
-                this.getSlot(34).setStack(molecule.getItem().getDefaultStack());
-            }
-        } else {
-            Scicraft.LOGGER.info("T - " + this.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS));
-        }
- */
     }
 }
