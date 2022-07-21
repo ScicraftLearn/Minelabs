@@ -13,7 +13,7 @@ public class HologramParticle extends SpriteBillboardParticle {
         super(level, xCoord, yCoord, zCoord, xd, yd, zd);
 
         this.velocityMultiplier = 0.1F;
-        this.scale *= 2F;
+        this.scale *= 6F;
         this.maxAge = 60;
         this.setSpriteForAge(spriteSet);
 

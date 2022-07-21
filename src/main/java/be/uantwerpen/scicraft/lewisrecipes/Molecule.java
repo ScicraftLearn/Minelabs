@@ -11,6 +11,11 @@ public class Molecule extends PartialMolecule {
 //    SALT(Map.of(Atom.SODIUM, 1, Atom.CHLORINE, 1), Items.ERLENMEYER /* TODO: Add Salt */),
 //    METHANE(Map.of(Atom.CARBON, 1, Atom.HYDROGEN, 4), Items.ERLENMEYER_CH4),
 //
+
+
+
+
+
 //    DIHYDROGEN(Map.of(Atom.HYDROGEN, 2), Items.ERLENMEYER_H2),
 //    NITRIC_OXIDE(Map.of(Atom.NITROGEN, 1, Atom.OXYGEN, 1), Items.ERLENMEYER /* TODO: Item bestaat nog niet */),
 //    NITROGEN_DIOXIDE(Map.of(Atom.NITROGEN, 1, Atom.OXYGEN, 2), Items.ERLENMEYER /* TODO: Item bestaat nog niet */),

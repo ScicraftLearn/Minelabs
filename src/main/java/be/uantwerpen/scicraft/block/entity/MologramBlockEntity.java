@@ -58,7 +58,7 @@ public class MologramBlockEntity extends BlockEntity {
 
     public static void clientTick(World world, BlockPos pos, BlockState state, MologramBlockEntity entity){
         if (!state.get(MologramBlock.LIT)) return;
-        world.addParticle(Particles.HOLOGRAM_PARTICLE, pos.getX()+ 0.5d, pos.getY() + 0.75d, pos.getZ() + 0.5d,
+        world.addParticle(Particles.HOLOGRAM_PARTICLE, pos.getX()+ 0.5d, pos.getY() + 1.75d, pos.getZ() + 0.5d,
                 0,0,0);
     }
 
