@@ -2,6 +2,7 @@
   "itemGroup.scicraft.scicraft": "Scicraft",
   "itemGroup.scicraft.quantum_fields": "Quantum Fields",
   "itemGroup.scicraft.elementary_particles": "Elementary Particles",
+  "itemGroup.scicraft.atoms": "Atoms",
 
   "block.scicraft.proton": "Proton",
   "block.scicraft.electron": "Electron",
@@ -27,6 +28,7 @@
   "blockEntity.scicraft.charged_block": "Charged Block",
 
   "entity.scicraft.entropy_creeper": "Entropy Creeper",
+  "entity.minecraft.villager.sciencevillager": "Science Villager",
 
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
 

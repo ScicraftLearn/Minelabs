@@ -1,8 +1,10 @@
 package be.uantwerpen.scicraft;
 
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.entity.ScientificVillager;
 import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.paintings.Paintings;
@@ -33,5 +35,8 @@ public class Scicraft implements ModInitializer {
         Paintings.registerPaintings();
         Screens.registerScreens();
         Particles.registerParticles();
+
+        ScientificVillager.registerVillagers();
+        ScientificVillager.registerTrades();
     }
 }
