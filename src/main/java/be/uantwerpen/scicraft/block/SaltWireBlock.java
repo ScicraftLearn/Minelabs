@@ -54,35 +54,44 @@ public class SaltWireBlock extends Block {
             Direction.WEST, Block.createCuboidShape(0.0, 0.0, 3.0, 13.0, 1.0, 13.0)));
 
     private static final Map<Direction, VoxelShape> field_24415 = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, VoxelShapes.union((VoxelShape) field_24414.get(Direction.NORTH), Block.createCuboidShape(3.0, 0.0, 0.0, 13.0, 16.0, 1.0)),
-            Direction.SOUTH, VoxelShapes.union((VoxelShape) field_24414.get(Direction.SOUTH), Block.createCuboidShape(3.0, 0.0, 15.0, 13.0, 16.0, 16.0)),
-            Direction.EAST, VoxelShapes.union((VoxelShape) field_24414.get(Direction.EAST), Block.createCuboidShape(15.0, 0.0, 3.0, 16.0, 16.0, 13.0)),
-            Direction.WEST, VoxelShapes.union((VoxelShape) field_24414.get(Direction.WEST), Block.createCuboidShape(0.0, 0.0, 3.0, 1.0, 16.0, 13.0))));
+            Direction.NORTH, VoxelShapes.union(field_24414.get(Direction.NORTH), Block.createCuboidShape(3.0, 0.0, 0.0, 13.0, 16.0, 1.0)),
+            Direction.SOUTH, VoxelShapes.union(field_24414.get(Direction.SOUTH), Block.createCuboidShape(3.0, 0.0, 15.0, 13.0, 16.0, 16.0)),
+            Direction.EAST, VoxelShapes.union(field_24414.get(Direction.EAST), Block.createCuboidShape(15.0, 0.0, 3.0, 16.0, 16.0, 13.0)),
+            Direction.WEST, VoxelShapes.union(field_24414.get(Direction.WEST), Block.createCuboidShape(0.0, 0.0, 3.0, 1.0, 16.0, 13.0))));
     private static final Map<BlockState, VoxelShape> SHAPES = Maps.newHashMap();
-    //-----------
     private final BlockState dotState;
 
     public SaltWireBlock(Settings settings) {
         super(settings);
-        this.setDefaultState((BlockState) ((BlockState) ((BlockState) ((BlockState) ((BlockState) ((BlockState) this.stateManager.getDefaultState()).with(WIRE_CONNECTION_NORTH, WireConnection.NONE)).with(WIRE_CONNECTION_EAST, WireConnection.NONE)).with(WIRE_CONNECTION_SOUTH, WireConnection.NONE)).with(WIRE_CONNECTION_WEST, WireConnection.NONE)));
-        this.dotState = (BlockState) ((BlockState) ((BlockState) ((BlockState) this.getDefaultState().with(WIRE_CONNECTION_NORTH, WireConnection.SIDE)).with(WIRE_CONNECTION_EAST, WireConnection.SIDE)).with(WIRE_CONNECTION_SOUTH, WireConnection.SIDE)).with(WIRE_CONNECTION_WEST, WireConnection.SIDE);
+        this.setDefaultState(this.stateManager.getDefaultState()
+                .with(WIRE_CONNECTION_NORTH, WireConnection.NONE)
+                .with(WIRE_CONNECTION_EAST, WireConnection.NONE)
+                .with(WIRE_CONNECTION_SOUTH, WireConnection.NONE)
+                .with(WIRE_CONNECTION_WEST, WireConnection.NONE));
+
+        this.dotState = this.getDefaultState()
+                .with(WIRE_CONNECTION_NORTH, WireConnection.SIDE)
+                .with(WIRE_CONNECTION_EAST, WireConnection.SIDE)
+                .with(WIRE_CONNECTION_SOUTH, WireConnection.SIDE)
+                .with(WIRE_CONNECTION_WEST, WireConnection.SIDE);
+
         for (BlockState blockState : this.getStateManager().getStates()) {
             SHAPES.put(blockState, this.getShapeForState(blockState));
         }
     }
 
     private static boolean isFullyConnected(BlockState state) {
-        return ((WireConnection) state.get(WIRE_CONNECTION_NORTH)).isConnected()
-                && ((WireConnection) state.get(WIRE_CONNECTION_SOUTH)).isConnected()
-                && ((WireConnection) state.get(WIRE_CONNECTION_EAST)).isConnected()
-                && ((WireConnection) state.get(WIRE_CONNECTION_WEST)).isConnected();
+        return state.get(WIRE_CONNECTION_NORTH).isConnected()
+                && state.get(WIRE_CONNECTION_SOUTH).isConnected()
+                && state.get(WIRE_CONNECTION_EAST).isConnected()
+                && state.get(WIRE_CONNECTION_WEST).isConnected();
     }
 
     private static boolean isNotConnected(BlockState state) {
-        return !((WireConnection) state.get(WIRE_CONNECTION_NORTH)).isConnected()
-                && !((WireConnection) state.get(WIRE_CONNECTION_SOUTH)).isConnected()
-                && !((WireConnection) state.get(WIRE_CONNECTION_EAST)).isConnected()
-                && !((WireConnection) state.get(WIRE_CONNECTION_WEST)).isConnected();
+        return !(state.get(WIRE_CONNECTION_NORTH)).isConnected()
+                && !(state.get(WIRE_CONNECTION_SOUTH)).isConnected()
+                && !(state.get(WIRE_CONNECTION_EAST)).isConnected()
+                && !(state.get(WIRE_CONNECTION_WEST)).isConnected();
     }
 
     protected static boolean connectsTo(BlockState state) {
@@ -99,9 +108,9 @@ public class SaltWireBlock extends Block {
         for (Direction direction : Direction.Type.HORIZONTAL) {
             WireConnection wireConnection = (WireConnection) state.get((Property) DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction));
             if (wireConnection == WireConnection.SIDE) {
-                voxelShape = VoxelShapes.union(voxelShape, (VoxelShape) field_24414.get(direction));
+                voxelShape = VoxelShapes.union(voxelShape, field_24414.get(direction));
             } else if (wireConnection == WireConnection.UP) {
-                voxelShape = VoxelShapes.union(voxelShape, (VoxelShape) field_24415.get(direction));
+                voxelShape = VoxelShapes.union(voxelShape, field_24415.get(direction));
             }
         }
 
@@ -109,7 +118,7 @@ public class SaltWireBlock extends Block {
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return (VoxelShape) SHAPES.get(state);
+        return SHAPES.get(state);
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
@@ -118,30 +127,30 @@ public class SaltWireBlock extends Block {
 
     private BlockState getPlacementState(BlockView world, BlockState state, BlockPos pos) {
         boolean bl = isNotConnected(state);
-        state = this.getDefaultWireState(world, (BlockState) this.getDefaultState(), pos);
+        state = this.getDefaultWireState(world, this.getDefaultState(), pos);
         if (bl && isNotConnected(state)) {
             return state;
         } else {
-            boolean bl2 = ((WireConnection) state.get(WIRE_CONNECTION_NORTH)).isConnected();
-            boolean bl3 = ((WireConnection) state.get(WIRE_CONNECTION_SOUTH)).isConnected();
-            boolean bl4 = ((WireConnection) state.get(WIRE_CONNECTION_EAST)).isConnected();
-            boolean bl5 = ((WireConnection) state.get(WIRE_CONNECTION_WEST)).isConnected();
+            boolean bl2 = state.get(WIRE_CONNECTION_NORTH).isConnected();
+            boolean bl3 = state.get(WIRE_CONNECTION_SOUTH).isConnected();
+            boolean bl4 = state.get(WIRE_CONNECTION_EAST).isConnected();
+            boolean bl5 = state.get(WIRE_CONNECTION_WEST).isConnected();
             boolean bl6 = !bl2 && !bl3;
             boolean bl7 = !bl4 && !bl5;
             if (!bl5 && bl6) {
-                state = (BlockState) state.with(WIRE_CONNECTION_WEST, WireConnection.SIDE);
+                state = state.with(WIRE_CONNECTION_WEST, WireConnection.SIDE);
             }
 
             if (!bl4 && bl6) {
-                state = (BlockState) state.with(WIRE_CONNECTION_EAST, WireConnection.SIDE);
+                state = state.with(WIRE_CONNECTION_EAST, WireConnection.SIDE);
             }
 
             if (!bl2 && bl7) {
-                state = (BlockState) state.with(WIRE_CONNECTION_NORTH, WireConnection.SIDE);
+                state = state.with(WIRE_CONNECTION_NORTH, WireConnection.SIDE);
             }
 
             if (!bl3 && bl7) {
-                state = (BlockState) state.with(WIRE_CONNECTION_SOUTH, WireConnection.SIDE);
+                state = state.with(WIRE_CONNECTION_SOUTH, WireConnection.SIDE);
             }
 
             return state;
@@ -154,7 +163,7 @@ public class SaltWireBlock extends Block {
         for (Direction direction : Direction.Type.HORIZONTAL) {
             if (!((WireConnection) state.get((Property) DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction))).isConnected()) {
                 WireConnection wireConnection = this.getRenderConnectionType(world, pos, direction, bl);
-                state = (BlockState) state.with((Property) DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction), wireConnection);
+                state = state.with((Property) DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction), wireConnection);
             }
         }
 
@@ -214,7 +223,9 @@ public class SaltWireBlock extends Block {
             }
         }
 
-        return !connectsTo(blockState, direction) && (blockState.isSolidBlock(world, blockPos) || !connectsTo(world.getBlockState(blockPos.down()))) ? WireConnection.NONE : WireConnection.SIDE;
+        return !connectsTo(blockState, direction)
+                && (blockState.isSolidBlock(world, blockPos)
+                || !connectsTo(world.getBlockState(blockPos.down()))) ? WireConnection.NONE : WireConnection.SIDE;
     }
 
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
@@ -229,13 +240,12 @@ public class SaltWireBlock extends Block {
 
     private void update(World world, BlockPos pos, BlockState state) {
         if (world.getBlockState(pos) == state) {
-            world.setBlockState(pos, (BlockState) state, 2);
+            world.setBlockState(pos, state, 2);
         }
 
         Set<BlockPos> set = Sets.newHashSet();
         set.add(pos);
         Direction[] var6 = Direction.values();
-        int var7 = var6.length;
 
         for (Direction direction : var6) {
             set.add(pos.offset(direction));
@@ -288,18 +298,18 @@ public class SaltWireBlock extends Block {
     }
 
     private void updateOffsetNeighbors(World world, BlockPos pos) {
-        Iterator var3 = Direction.Type.HORIZONTAL.iterator();
+        Iterator<Direction> var3 = Direction.Type.HORIZONTAL.iterator();
 
         Direction direction;
         while (var3.hasNext()) {
-            direction = (Direction) var3.next();
+            direction = var3.next();
             this.updateNeighbors(world, pos.offset(direction));
         }
 
         var3 = Direction.Type.HORIZONTAL.iterator();
 
         while (var3.hasNext()) {
-            direction = (Direction) var3.next();
+            direction = var3.next();
             BlockPos blockPos = pos.offset(direction);
             if (world.getBlockState(blockPos).isSolidBlock(world, blockPos)) {
                 this.updateNeighbors(world, blockPos.up());
@@ -325,11 +335,11 @@ public class SaltWireBlock extends Block {
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         switch (rotation) {
             case CLOCKWISE_180:
-                return (BlockState) ((BlockState) ((BlockState) ((BlockState) state.with(WIRE_CONNECTION_NORTH, (WireConnection) state.get(WIRE_CONNECTION_SOUTH))).with(WIRE_CONNECTION_EAST, (WireConnection) state.get(WIRE_CONNECTION_WEST))).with(WIRE_CONNECTION_SOUTH, (WireConnection) state.get(WIRE_CONNECTION_NORTH))).with(WIRE_CONNECTION_WEST, (WireConnection) state.get(WIRE_CONNECTION_EAST));
+                return state.with(WIRE_CONNECTION_NORTH, state.get(WIRE_CONNECTION_SOUTH)).with(WIRE_CONNECTION_EAST, state.get(WIRE_CONNECTION_WEST)).with(WIRE_CONNECTION_SOUTH, state.get(WIRE_CONNECTION_NORTH)).with(WIRE_CONNECTION_WEST, state.get(WIRE_CONNECTION_EAST));
             case COUNTERCLOCKWISE_90:
-                return (BlockState) ((BlockState) ((BlockState) ((BlockState) state.with(WIRE_CONNECTION_NORTH, (WireConnection) state.get(WIRE_CONNECTION_EAST))).with(WIRE_CONNECTION_EAST, (WireConnection) state.get(WIRE_CONNECTION_SOUTH))).with(WIRE_CONNECTION_SOUTH, (WireConnection) state.get(WIRE_CONNECTION_WEST))).with(WIRE_CONNECTION_WEST, (WireConnection) state.get(WIRE_CONNECTION_NORTH));
+                return state.with(WIRE_CONNECTION_NORTH, state.get(WIRE_CONNECTION_EAST)).with(WIRE_CONNECTION_EAST, state.get(WIRE_CONNECTION_SOUTH)).with(WIRE_CONNECTION_SOUTH, state.get(WIRE_CONNECTION_WEST)).with(WIRE_CONNECTION_WEST, state.get(WIRE_CONNECTION_NORTH));
             case CLOCKWISE_90:
-                return (BlockState) ((BlockState) ((BlockState) ((BlockState) state.with(WIRE_CONNECTION_NORTH, (WireConnection) state.get(WIRE_CONNECTION_WEST))).with(WIRE_CONNECTION_EAST, (WireConnection) state.get(WIRE_CONNECTION_NORTH))).with(WIRE_CONNECTION_SOUTH, (WireConnection) state.get(WIRE_CONNECTION_EAST))).with(WIRE_CONNECTION_WEST, (WireConnection) state.get(WIRE_CONNECTION_SOUTH));
+                return state.with(WIRE_CONNECTION_NORTH, state.get(WIRE_CONNECTION_WEST)).with(WIRE_CONNECTION_EAST, state.get(WIRE_CONNECTION_NORTH)).with(WIRE_CONNECTION_SOUTH, state.get(WIRE_CONNECTION_EAST)).with(WIRE_CONNECTION_WEST, state.get(WIRE_CONNECTION_SOUTH));
             default:
                 return state;
         }
@@ -338,9 +348,9 @@ public class SaltWireBlock extends Block {
     public BlockState mirror(BlockState state, BlockMirror mirror) {
         switch (mirror) {
             case LEFT_RIGHT:
-                return (BlockState) ((BlockState) state.with(WIRE_CONNECTION_NORTH, (WireConnection) state.get(WIRE_CONNECTION_SOUTH))).with(WIRE_CONNECTION_SOUTH, (WireConnection) state.get(WIRE_CONNECTION_NORTH));
+                return state.with(WIRE_CONNECTION_NORTH, state.get(WIRE_CONNECTION_SOUTH)).with(WIRE_CONNECTION_SOUTH, state.get(WIRE_CONNECTION_NORTH));
             case FRONT_BACK:
-                return (BlockState) ((BlockState) state.with(WIRE_CONNECTION_EAST, (WireConnection) state.get(WIRE_CONNECTION_WEST))).with(WIRE_CONNECTION_WEST, (WireConnection) state.get(WIRE_CONNECTION_EAST));
+                return state.with(WIRE_CONNECTION_EAST, state.get(WIRE_CONNECTION_WEST)).with(WIRE_CONNECTION_WEST, state.get(WIRE_CONNECTION_EAST));
             default:
                 return super.mirror(state, mirror);
         }
@@ -366,7 +376,6 @@ public class SaltWireBlock extends Block {
                     return ActionResult.SUCCESS;
                 }
             }
-
             return ActionResult.PASS;
         }
     }
