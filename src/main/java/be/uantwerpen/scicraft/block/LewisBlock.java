@@ -10,7 +10,9 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ActionResult;
@@ -20,7 +22,10 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LewisBlock extends BlockWithEntity {
 
@@ -62,18 +67,23 @@ public class LewisBlock extends BlockWithEntity {
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof LewisBlockEntity) {
-                DefaultedList<ItemStack> items = ((LewisBlockEntity) blockEntity).getItems();
-                for (int i = 0; i < items.size(); i++) {
-                    if (!items.get(i).isEmpty() && items.get(i).getOrCreateNbt().getBoolean("ScicraftItemInLCT"))
-                        items.set(i, ItemStack.EMPTY);
-                }
-                ItemScatterer.spawn(world, pos, (LewisBlockEntity) blockEntity);
+            if (blockEntity instanceof LewisBlockEntity lewisBlockEntity) {
+                DefaultedList<ItemStack> items = lewisBlockEntity.getItems();
+                SimpleInventory inventory = new SimpleInventory(items.size() - 25);
+                for (int i = 25; i < items.size(); i++)
+                    inventory.addStack(items.get(i));
+                for (int i = 0; i < inventory.size(); i++)
+                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStack(i));
                 // update comparators
                 world.updateComparators(pos, this);
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
+    }
+
+    @Override
+    public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+        return super.getDroppedStacks(state, builder);
     }
 
     @Override

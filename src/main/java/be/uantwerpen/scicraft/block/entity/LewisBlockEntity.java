@@ -52,7 +52,6 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
             @Override
             public void set(int index, int value) {
                 delegatedProperties[index] = value;
-                Scicraft.LOGGER.info(delegatedProperties);
             }
 
             //this is supposed to return the amount of integers you have in your delegate

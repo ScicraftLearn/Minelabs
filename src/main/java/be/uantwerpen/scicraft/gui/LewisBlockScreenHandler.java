@@ -27,6 +27,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     private Molecule currentMolecule;
 
+    private LewisCraftingResultSlot outputSlot;
+    private LewisErlenmeyerSlot erlenmeyerSlot;
+
     /**
      * This constructor gets called on the client when the server wants it to open the screenHandler<br>
      * The client will call the other constructor with an empty Inventory and the screenHandler will automatically
@@ -56,7 +59,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.context = context;
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
+
         this.currentMolecule = null;
+
         this.addProperties(propertyDelegate);
         //some inventories do custom logic when a player opens it.
         inventory.onOpen(playerInventory.player);
@@ -86,10 +91,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
 
         // Lewis Crafting Table Inventory (1 output slot)
-        this.addSlot(new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18 - o));
+        this.outputSlot = (LewisCraftingResultSlot) this.addSlot(new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18 - o));
 
         // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
-        this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18, 2 * 18 - o + 36));
+        this.erlenmeyerSlot = (LewisErlenmeyerSlot) this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18, 2 * 18 - o + 36));
 
         //The player inventory (3x9 slots)
         for (m = 0; m < 3; ++m) {
@@ -320,26 +325,32 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         LewisCraftingGrid grid = getLewisCraftingGrid();
         Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MOLECULE_CRAFTING, grid, world);
 
-//        Scicraft.LOGGER.info("recipe: " + recipe);
-
         if (recipe.isEmpty()) {
             if (isInputOpen()) closeInputSlots();
             return;
         }
 
         MoleculeRecipe moleculeRecipe = recipe.get();
-//        Scicraft.LOGGER.info("molecule: " + moleculeRecipe.getMolecule());
 
         if (!isInputOpen()) {
             System.out.println("Opening input");
             ArrayList<Atom> atoms = new ArrayList<>(moleculeRecipe.getMolecule().getIngredients());
             atoms.sort(Comparator.comparingInt(o -> DelegateSettings.ATOM_MAPPINGS.get(o.getItem())));
-            Scicraft.LOGGER.info("atoms: " + atoms);
             openInputSlots(atoms);
         }
 
         if (hasCorrectInput(moleculeRecipe.getMolecule())) {
-            if (this.getPropertyDelegate(1) == -1)
+            if (this.getPropertyDelegate(1) == -1
+                    && (outputSlot.getStack().isEmpty()
+                    || ItemStack.areEqual(
+                            outputSlot.getStack(),
+                            new ItemStack(
+                                    moleculeRecipe.getMolecule().getItem(),
+                                    outputSlot.getStack().getCount()
+                            )
+                    )
+                    )
+            )
                 this.craftingAnimation(moleculeRecipe.getMolecule());
         } else {
             //arrow is running but input is no longer valid
@@ -366,7 +377,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             } else readySlots *= DelegateSettings.SLOT_MAPPINGS.get(i);
         }
         this.setPropertyDelegate(DelegateSettings.LCT_SLOT_READY, readySlots);
-        return isCorrect && this.getSlot(35).getStack().getItem().equals(Items.ERLENMEYER);
+        return isCorrect && erlenmeyerSlot.getStack().getItem().equals(Items.ERLENMEYER);
     }
 
     /**
@@ -376,7 +387,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     public boolean setOutput() {
         if (currentMolecule == null) return false;
-        this.getSlot(34).setStack(currentMolecule.getItem().getDefaultStack());
+        if (outputSlot.hasStack()) outputSlot.getStack().increment(1);
+        else outputSlot.setStack(currentMolecule.getItem().getDefaultStack());
         clearInput(true);
         currentMolecule = null;
         return true;
@@ -408,11 +420,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     /**
      * Clears the input slots
-     * @param erlenmeyer Whether to take one out of the erlenmeyer slot as well
+     * @param erlenmeyer Whether to take an erlenmeyer out as well
      *                  (if the recipe uses it)
      */
     protected void clearInput(boolean erlenmeyer) {
-        if (erlenmeyer) this.getSlot(35).getStack().decrement(1);
+        if (erlenmeyer) erlenmeyerSlot.getStack().decrement(1);
         for (int i = 0; i < 9; i++) {
             this.getSlot(i + 25).setStack(ItemStack.EMPTY);
         }
