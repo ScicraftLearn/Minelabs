@@ -209,7 +209,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     @Override
     public void onSlotClick(int slotIndex, int button, @NotNull SlotActionType actionType, PlayerEntity player) {
         if (slotIndex < 0) return;
-        if (actionType.equals(SlotActionType.QUICK_CRAFT)) {
+        if (actionType.equals(SlotActionType.CLONE)) {
+            if (player.getAbilities().creativeMode && this.getCursorStack().isEmpty()) {
+                Slot slot = this.getSlot(slotIndex);
+                if (slot.hasStack()) {
+                    ItemStack stack = slot.getStack().copy();
+                    if (stack.hasNbt())
+                        stack.getOrCreateNbt().remove("ScicraftItemInLCT");
+                    stack.setCount(stack.getMaxCount());
+                    this.setCursorStack(stack);
+                }
+            }
+        } else if (actionType.equals(SlotActionType.QUICK_CRAFT)) {
             this.endQuickCraft();
             this.sendContentUpdates();
             this.updateToClient();
