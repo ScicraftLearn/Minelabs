@@ -12,9 +12,9 @@ import net.minecraft.util.registry.Registry;
 public class Blocks {
 
     public static final Block SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
-            .mapColor(MapColor.WHITE_GRAY).strength(3.0f, 3.0f).requiresTool(), UniformIntProvider.create(1, 5)), "salt_ore");
+            .mapColor(MapColor.WHITE_GRAY).strength(3.0f, 3.0f).requiresTool(), UniformIntProvider.create(0, 3)), "salt_ore");
     public static final Block DEEPSLATE_SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
-            .mapColor(MapColor.WHITE_GRAY).strength(4.5F, 3.0F).requiresTool(), UniformIntProvider.create(1, 5)), "deepslate_salt_ore");
+            .mapColor(MapColor.WHITE_GRAY).strength(4.5f, 3.0f).requiresTool(), UniformIntProvider.create(1, 4)), "deepslate_salt_ore");
     public static final Block SALT_BLOCK = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE_GRAY).strength(2.0f)), "salt_block");
 
@@ -23,11 +23,11 @@ public class Blocks {
 
     public static final Block SALT_CRYSTAL = register(new AmethystClusterBlock(7, 3,
             FabricBlockSettings.of(Material.AMETHYST).nonOpaque().ticksRandomly()
-                    .sounds(BlockSoundGroup.AMETHYST_CLUSTER).strength(1.5F).luminance((state) -> 5)), "salt_crystal");
+                    .sounds(BlockSoundGroup.AMETHYST_CLUSTER).strength(1.5f).luminance((state) -> 5)), "salt_crystal");
     public static final Block LARGE_SALT_CRYSTAL = register(new AmethystClusterBlock(5, 3,
-            FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.MEDIUM_AMETHYST_BUD).luminance((state) -> 4)), "large_salt_crystal");
+            FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.LARGE_AMETHYST_BUD).luminance((state) -> 4)), "large_salt_crystal");
     public static final Block MEDIUM_SALT_CRYSTAL = register(new AmethystClusterBlock(4, 3,
-            FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.LARGE_AMETHYST_BUD).luminance((state) -> 2)), "medium_salt_crystal");
+            FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.MEDIUM_AMETHYST_BUD).luminance((state) -> 2)), "medium_salt_crystal");
     public static final Block SMALL_SALT_CRYSTAL = register(new AmethystClusterBlock(3, 4,
             FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.SMALL_AMETHYST_BUD).luminance((state) -> 1)), "small_salt_crystal");
 
