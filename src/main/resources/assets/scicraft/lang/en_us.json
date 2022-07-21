@@ -26,14 +26,14 @@
   "block.scicraft.upquark_quantumfield": "Upquark Quantumfield",
   "block.scicraft.downquark_quantumfield": "Downquark Quantumfield",
 
-  "block.scicraft.lewis_block": "Lewis Crafting Table",
-
   "blockEntity.scicraft.charged_block": "Charged Block",
 
-  "entity.scicraft.entropy_creeper": "Entropy Creeper",
   "entity.minecraft.villager.sciencevillager": "Science Villager",
 
+  "entity.scicraft.entropy_creeper": "Entropy Creeper",
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
+
+  "block.scicraft.lewis_block": "Lewis Crafting Table",
 
   "item.scicraft.proton": "Proton",
   "item.scicraft.electron": "Electron",
@@ -87,25 +87,6 @@
   "item.scicraft.sulfur_atom": "Sulfur",
   "item.scicraft.chlorine_atom": "Chlorine",
   "item.scicraft.argon_atom": "Argon",
-
-  "item.scicraft.internal_atoms.hydrogen_atom_internal": "Hydrogen",
-  "item.scicraft.internal_atoms.helium_atom_internal": "Helium",
-  "item.scicraft.internal_atoms.lithium_atom_internal": "Lithium",
-  "item.scicraft.internal_atoms.beryllium_atom_internal": "Beryllium",
-  "item.scicraft.internal_atoms.boron_atom_internal": "Boron",
-  "item.scicraft.internal_atoms.carbon_atom_internal": "Carbon",
-  "item.scicraft.internal_atoms.nitrogen_atom_internal": "Nitrogen",
-  "item.scicraft.internal_atoms.oxygen_atom_internal": "Oxygen",
-  "item.scicraft.internal_atoms.fluorine_atom_internal": "Fluorine",
-  "item.scicraft.internal_atoms.neon_atom_internal": "Neon",
-  "item.scicraft.internal_atoms.sodium_atom_internal": "Sodium",
-  "item.scicraft.internal_atoms.magnesium_atom_internal": "Magnesium",
-  "item.scicraft.internal_atoms.aluminium_atom_internal": "Aluminium",
-  "item.scicraft.internal_atoms.silicon_atom_internal": "Silicon",
-  "item.scicraft.internal_atoms.phosphorus_atom_internal": "Phosphorus",
-  "item.scicraft.internal_atoms.sulfur_atom_internal": "Sulfur",
-  "item.scicraft.internal_atoms.chlorine_atom_internal": "Chlorine",
-  "item.scicraft.internal_atoms.argon_atom_internal": "Argon",
 
   "item.scicraft.erlenmeyer": "Erlenmeyer",
   "item.scicraft.erlenmeyer_o2.effect.empty": "Oxygen gas (O2)",

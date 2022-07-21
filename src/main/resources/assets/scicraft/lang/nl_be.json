@@ -1,4 +1,5 @@
 {
+  "itemGroup.scicraft.scicraft": "Scicraft",
   "itemGroup.scicraft.quantum_fields": "Kwantumvelden",
   "itemGroup.scicraft.chemicals": "Chemische Stoffen",
   "itemGroup.scicraft.elementary_particles": "Elementaire Deeltjes",
@@ -27,8 +28,9 @@
 
   "blockEntity.scicraft.charged_block": "Geladen Blok",
 
-  "entity.scicraft.entropy_creeper": "EntropieCreeper",
+  "entity.minecraft.villager.sciencevillager": "Wetenschaps Dorpeling",
 
+  "entity.scicraft.entropy_creeper": "Entropie Creeper",
   "item.scicraft.entropy_creeper_spawn_egg": "EntropieCreeper Spawnei",
 
   "block.scicraft.lewis_block": "Lewis Werkbank",
