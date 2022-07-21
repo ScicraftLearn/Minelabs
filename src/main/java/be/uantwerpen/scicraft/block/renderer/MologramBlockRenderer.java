@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block.renderer;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.MologramBlock;
 import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
 import be.uantwerpen.scicraft.particle.Particles;
 import net.minecraft.block.Block;
@@ -33,6 +34,7 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
     public void render(MologramBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         Random random = new Random();
         World world = entity.getWorld();
+
         if (world == null) return;
 
         BlockPos pos = entity.getPos();
@@ -51,6 +53,7 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
             matrices.translate(0.5, 0.10, 0.64);
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
         }
+
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
         // Mandatory call after GL calls
         matrices.pop();

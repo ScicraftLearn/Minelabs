@@ -16,18 +16,28 @@ import net.minecraft.item.ItemStack;
 
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Properties;
+
 
 public class MologramBlock extends BlockWithEntity {
 
+    public static final BooleanProperty LIT = BooleanProperty.of("lit");
 
     public MologramBlock(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(LIT);
     }
 
     @Override
@@ -54,6 +64,7 @@ public class MologramBlock extends BlockWithEntity {
             if (blockInventory.getStack(0).isEmpty()) {
                 // Put the stack the player is holding into the inventory
                 blockInventory.setStack(0, player.getStackInHand(hand).copy());
+                world.setBlockState(blockPos, blockState.cycle(LIT));
                 blockInventory.getStack(0).setCount(1);
                 // Decrement the stack from the player's hand
                 player.getStackInHand(hand).decrement(1);
@@ -66,6 +77,7 @@ public class MologramBlock extends BlockWithEntity {
             // Find the first slot that has an item and give it to the player
             if (!blockInventory.getStack(0).isEmpty()) {
                 player.getInventory().offerOrDrop(blockInventory.getStack(0));
+                world.setBlockState(blockPos, blockState.cycle(LIT));
                 blockInventory.removeStack(0);
             }
         }
