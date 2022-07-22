@@ -98,11 +98,12 @@ public class LewisBlockEntity extends BlockEntity implements NamedScreenHandlerF
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        if (delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] < 0) return;
-        delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] += 1;
-        if (delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] >= 23) {
-            if (lewisBlockScreenHandler.setOutput())
-                delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] = -1;
+        if (delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] > -1) {
+            delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] += 1;
+            if (delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] >= 23) {
+                if (lewisBlockScreenHandler.setOutput())
+                    delegatedProperties[DelegateSettings.LCT_CRAFTING_PROGRESS] = -1;
+            }
         }
     }
 }

@@ -1,17 +1,22 @@
 package be.uantwerpen.scicraft.gui;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.lewisrecipes.BondManager;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
 import be.uantwerpen.scicraft.lewisrecipes.MoleculeItemGraph;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -21,17 +26,24 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
     private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
 
-    private final BondManager bondManager;
-
     private Identifier currentTexture;
+
+    private ButtonWidget buttonWidget;
+    private boolean widgetTooltip = false;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        this.bondManager = new BondManager();
         this.currentTexture = TEXTURE2;
 
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
+
+        // Add button to clear input/grid
+        registerButtonWidget();
+    }
+
+    public ButtonWidget getButtonWidget() {
+        return buttonWidget;
     }
 
     /*
@@ -50,6 +62,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 //        (protected) int y = (height - backgroundHeight) / 2;
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        buttonWidget.renderButton(matrices, mouseX, mouseY, delta);
 
         // get crafting progress and handle its
         int cp = handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS);
@@ -67,7 +80,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
          */
         LewisCraftingGrid grid = handler.getLewisCraftingGrid();
         MoleculeItemGraph graph = (MoleculeItemGraph) grid.getPartialMolecule().getStructure();
-        for (MoleculeItemGraph.Edge edge: graph.getEdges()){
+        for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
             Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
             Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
             BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
@@ -125,13 +138,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
-        drawMouseoverTooltip(matrices, mouseX, mouseY);
-    }
-
-    @Override
     protected void init() {
         super.init();
         // Center the title
@@ -141,7 +147,48 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         // move the title to the correct place
         playerInventoryTitleY += 61;
 
+        registerButtonWidget();
+
         this.getScreenHandler().onContentChanged(handler.getInventory());
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void registerButtonWidget() {
+        buttonWidget = new ButtonWidget(x + 133, y + 17, 18, 18, Text.of("C"),
+                button -> {
+                    if (!widgetTooltip) return;
+                    if (handler.isInputEmpty()) {
+                        for (int i = 0; i < 25; i++) {
+                            client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
+                        }
+                    } else {
+                        for (int i = 0; i < 9; i++) {
+                            client.interactionManager.clickSlot(handler.syncId, i + 25, 0, SlotActionType.QUICK_MOVE, client.player);
+                        }
+                    }
+                },
+                (button, matrixStack, mx, my) -> {
+                    // On Button Hover:
+                    renderTooltip(matrixStack, Text.of(handler.isInputEmpty() ? "Clear 5x5 Grid" : "Clear Bottom Input Slots"), mx, my);
+                }
+        );
+    }
+
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        renderBackground(matrices);
+        super.render(matrices, mouseX, mouseY, delta);
+
+        widgetTooltip = false;
+        if (this.handler.getCursorStack().isEmpty()) {
+            if (this.focusedSlot != null && this.focusedSlot.hasStack())
+                this.renderTooltip(matrices, this.focusedSlot.getStack(), mouseX, mouseY);
+            if ((mouseX >= x + 133 && mouseX < x + 133 + 18)
+                    && (mouseY >= y + 17 && mouseY < y + 17 + 18)) {
+                buttonWidget.renderTooltip(matrices, mouseX, mouseY);
+                widgetTooltip = true;
+            }
+        }
     }
 
     protected void setCorrectTexture() {
@@ -177,11 +224,5 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         // add the remaining number to the vector
         if (N != 1) div.add(N);
         return div;
-    }
-
-    @Override
-    public void close() {
-        super.close();
-        this.handler.setPropertyDelegate(1, -1);
     }
 }
