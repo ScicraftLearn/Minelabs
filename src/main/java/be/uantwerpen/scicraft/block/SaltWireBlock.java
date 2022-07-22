@@ -46,17 +46,17 @@ public class SaltWireBlock extends Block {
                     Direction.SOUTH, WIRE_CONNECTION_SOUTH,
                     Direction.WEST, WIRE_CONNECTION_WEST));
     private static final VoxelShape DOT_SHAPE = Block.createCuboidShape(3.0, 0.0, 3.0, 13.0, 1.0, 13.0);
-    private static final Map<Direction, VoxelShape> field_24414 = Maps.newEnumMap(ImmutableMap.of(
+    private static final Map<Direction, VoxelShape> horizonal_shapes = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH, Block.createCuboidShape(3.0, 0.0, 0.0, 13.0, 1.0, 13.0),
             Direction.SOUTH, Block.createCuboidShape(3.0, 0.0, 3.0, 13.0, 1.0, 16.0),
             Direction.EAST, Block.createCuboidShape(3.0, 0.0, 3.0, 16.0, 1.0, 13.0),
             Direction.WEST, Block.createCuboidShape(0.0, 0.0, 3.0, 13.0, 1.0, 13.0)));
 
-    private static final Map<Direction, VoxelShape> field_24415 = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, VoxelShapes.union(field_24414.get(Direction.NORTH), Block.createCuboidShape(3.0, 0.0, 0.0, 13.0, 16.0, 1.0)),
-            Direction.SOUTH, VoxelShapes.union(field_24414.get(Direction.SOUTH), Block.createCuboidShape(3.0, 0.0, 15.0, 13.0, 16.0, 16.0)),
-            Direction.EAST, VoxelShapes.union(field_24414.get(Direction.EAST), Block.createCuboidShape(15.0, 0.0, 3.0, 16.0, 16.0, 13.0)),
-            Direction.WEST, VoxelShapes.union(field_24414.get(Direction.WEST), Block.createCuboidShape(0.0, 0.0, 3.0, 1.0, 16.0, 13.0))));
+    private static final Map<Direction, VoxelShape> verical_shapes = Maps.newEnumMap(ImmutableMap.of(
+            Direction.NORTH, VoxelShapes.union(horizonal_shapes.get(Direction.NORTH), Block.createCuboidShape(3.0, 0.0, 0.0, 13.0, 16.0, 1.0)),
+            Direction.SOUTH, VoxelShapes.union(horizonal_shapes.get(Direction.SOUTH), Block.createCuboidShape(3.0, 0.0, 15.0, 13.0, 16.0, 16.0)),
+            Direction.EAST, VoxelShapes.union(horizonal_shapes.get(Direction.EAST), Block.createCuboidShape(15.0, 0.0, 3.0, 16.0, 16.0, 13.0)),
+            Direction.WEST, VoxelShapes.union(horizonal_shapes.get(Direction.WEST), Block.createCuboidShape(0.0, 0.0, 3.0, 1.0, 16.0, 13.0))));
     private static final Map<BlockState, VoxelShape> SHAPES = Maps.newHashMap();
     private final BlockState dotState;
 
@@ -104,9 +104,9 @@ public class SaltWireBlock extends Block {
         for (Direction direction : Direction.Type.HORIZONTAL) {
             WireConnection wireConnection = (WireConnection) state.get((Property) DIRECTION_TO_WIRE_CONNECTION_PROPERTY.get(direction));
             if (wireConnection == WireConnection.SIDE) {
-                voxelShape = VoxelShapes.union(voxelShape, field_24414.get(direction));
+                voxelShape = VoxelShapes.union(voxelShape, horizonal_shapes.get(direction));
             } else if (wireConnection == WireConnection.UP) {
-                voxelShape = VoxelShapes.union(voxelShape, field_24415.get(direction));
+                voxelShape = VoxelShapes.union(voxelShape, verical_shapes.get(direction));
             }
         }
 
@@ -273,7 +273,6 @@ public class SaltWireBlock extends Block {
             super.onStateReplaced(state, world, pos, newState, moved);
             if (!world.isClient) {
                 Direction[] var6 = Direction.values();
-                int var7 = var6.length;
 
                 for (Direction direction : var6) {
                     world.updateNeighborsAlways(pos.offset(direction), this);
@@ -357,9 +356,7 @@ public class SaltWireBlock extends Block {
     @Override
     @Deprecated
     public ActionResult onUse(BlockState state, World world, BlockPos pos, @NotNull PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!player.getAbilities().allowModifyWorld) {
-            return ActionResult.PASS;
-        } else {
+        if (player.getAbilities().allowModifyWorld) {
             if (isFullyConnected(state) || isNotConnected(state)) {
                 BlockState blockState = isFullyConnected(state) ? this.getDefaultState() : this.dotState;
                 blockState = this.getPlacementState(world, blockState, pos);
@@ -369,8 +366,8 @@ public class SaltWireBlock extends Block {
                     return ActionResult.SUCCESS;
                 }
             }
-            return ActionResult.PASS;
         }
+        return ActionResult.PASS;
     }
 
     private void updateForNewState(World world, BlockPos pos, BlockState oldState, BlockState newState) {
