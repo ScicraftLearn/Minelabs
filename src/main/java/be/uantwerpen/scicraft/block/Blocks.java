@@ -70,6 +70,9 @@ public class Blocks {
     });
 
 
+    public static final Block SPHERE = register(new Block(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).nonOpaque()), "sphere");
+
     /**
      * Register a Block
      * <p>

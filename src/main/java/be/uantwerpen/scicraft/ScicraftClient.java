@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
+import be.uantwerpen.scicraft.model.ModelProvider;
 import be.uantwerpen.scicraft.renderer.MologramBlockRenderer;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.LewisScreen;
@@ -19,6 +20,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
@@ -38,6 +40,9 @@ public class ScicraftClient implements ClientModInitializer {
     public void onInitializeClient() {
         //Register ItemModels
         ItemModels.registerModels();
+
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(rm -> new ModelProvider());
+
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());

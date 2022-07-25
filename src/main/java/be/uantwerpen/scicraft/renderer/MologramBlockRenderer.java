@@ -1,25 +1,23 @@
 package be.uantwerpen.scicraft.renderer;
 
 import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.block.MologramBlock;
 import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
 import be.uantwerpen.scicraft.particle.Particles;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Random;
 
@@ -43,10 +41,10 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
         if (stack.isEmpty()) return;
 
         matrices.push();
-        if(random.nextDouble()<0.2f){
-            world.addParticle(Particles.HOLOGRAM_PARTICLE, pos.getX()+ 0.5d, pos.getY() + 1.75d, pos.getZ() + 0.5d,
-                    0,0,0);
-        }
+//        if(random.nextDouble()<0.2f){
+//            world.addParticle(Particles.HOLOGRAM_PARTICLE, pos.getX()+ 0.5d, pos.getY() + 1.75d, pos.getZ() + 0.5d,
+//                    0,0,0);
+//        }
         // Move the item
         if (Block.getBlockFromItem(stack.getItem()) != Blocks.AIR) matrices.translate(0.5, 0, 0.5);
         else {
@@ -57,5 +55,14 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
         // Mandatory call after GL calls
         matrices.pop();
+
+        // Render molecule above
+        matrices.push();
+        matrices.translate(0, 1, 0);
+        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier(Scicraft.MOD_ID, "block/sphere"));
+        MinecraftClient.getInstance().getBlockRenderManager().renderBlock(
+                be.uantwerpen.scicraft.block.Blocks.SPHERE.getDefaultState(), pos, world, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create());
+        matrices.pop();
+
     }
 }

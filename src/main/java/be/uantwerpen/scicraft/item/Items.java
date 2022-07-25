@@ -60,6 +60,9 @@ public class Items {
     // Items > Bond to display in LCT (internal)
     public static Item BOND;
 
+    public static final Item SPHERE_ITEM = register(new BlockItem(Blocks.SPHERE, new FabricItemSettings().group(ItemGroups.ATOMS)), "sphere");
+
+
     // Items > Quantum fields
     public static final Item UPQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.UPQUARK_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "upquark_quantumfield");
     public static final Item DOWNQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.DOWNQUARK_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "downquark_quantumfield");
