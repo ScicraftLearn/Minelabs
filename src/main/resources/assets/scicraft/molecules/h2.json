@@ -9,5 +9,5 @@
       {"from": "H1", "to": "H2", "bondOrder": 1}
     ]
   },
-  "Items": ["scicraft:erlenmeyer_h2"]
+  "items": ["scicraft:erlenmeyer_h2"]
 }
