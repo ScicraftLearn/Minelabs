@@ -30,9 +30,9 @@ public class Blocks {
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "antineutrino");
 
-    public static final ChargedBlock POSITRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlockNEW POSITRON = register(new ChargedBlockNEW(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.POSTIRON_BLOCK_ENTITY), "positron");
-    public static final ChargedBlock ELECTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlockNEW ELECTRON = register(new ChargedBlockNEW(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(),() -> BlockEntities.ELECTRON_BLOCK_ENTITY) , "electron");
 
     public static final ChargedBlock PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)

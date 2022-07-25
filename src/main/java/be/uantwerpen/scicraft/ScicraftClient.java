@@ -51,7 +51,7 @@ public class ScicraftClient implements ClientModInitializer {
             client.execute(() -> {
                 if (client.world!=null){
                     if (client.world.getBlockEntity(target) instanceof AnimatedChargedBlockEntity particle2) {
-                        particle2.render_state = particle2.string2BlockState(block_name);
+                        particle2.render_state = particle2.getCachedState();
                         particle2.annihilation = annihilation;
                     }
                 }

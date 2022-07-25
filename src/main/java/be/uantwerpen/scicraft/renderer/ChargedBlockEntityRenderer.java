@@ -37,7 +37,7 @@ public class ChargedBlockEntityRenderer<T extends AnimatedChargedBlockEntity> im
 			}
 		}
 		if (!(blockEntity.annihilation && offset ==.5)) {
-			matrices.translate(blockEntity.movement_direction.getX() * offset, blockEntity.movement_direction.getY() * offset, blockEntity.movement_direction.getZ() * offset);
+			matrices.translate(blockEntity.movement_direction.getVector().getX() * offset, blockEntity.movement_direction.getVector().getY() * offset, blockEntity.movement_direction.getVector().getZ() * offset);
 			BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
 			blockRenderManager.getModelRenderer().render(
 					world,

@@ -13,8 +13,8 @@ import net.minecraft.util.registry.Registry;
 
 
 public class BlockEntities {
-    public static BlockEntityType<ChargedBlockEntity> ELECTRON_BLOCK_ENTITY;
-    public static BlockEntityType<ChargedBlockEntity> POSTIRON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntityNEW> ELECTRON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntityNEW> POSTIRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PROTON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PION_MINUS_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
@@ -31,11 +31,11 @@ public class BlockEntities {
                 "pion_plus_block_entity");
 
     	ELECTRON_BLOCK_ENTITY = register(
-    			FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(ELECTRON_BLOCK_ENTITY, p, s, -1, Blocks.POSITRON, 0, null), Blocks.ELECTRON).build(null),
+    			FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntityNEW(ELECTRON_BLOCK_ENTITY, p, s, -1, Blocks.POSITRON, 0, null), Blocks.ELECTRON).build(null),
     			"electron_block_entity");
     	
     	POSTIRON_BLOCK_ENTITY = register(
-    			FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(POSTIRON_BLOCK_ENTITY, p, s, 1, Blocks.ELECTRON, 0, null), Blocks.POSITRON).build(null),
+    			FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntityNEW(POSTIRON_BLOCK_ENTITY, p, s, 1, Blocks.ELECTRON, 0, null), Blocks.POSITRON).build(null),
     			"positron_block_entity");
 
         PROTON_BLOCK_ENTITY = register(

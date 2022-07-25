@@ -15,6 +15,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -23,6 +24,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +34,7 @@ import java.util.Objects;
 
 public class AnimatedChargedBlockEntity extends BlockEntity {
     public long time = 0;
-    public Vec3i movement_direction = Vec3i.ZERO;
+    public Direction movement_direction;
     public final static int time_move_ticks = 8;
     public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
     public boolean annihilation = false;
@@ -44,8 +46,8 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     @Override
     public void writeNbt(NbtCompound tag) {
         tag.putLong("time", time);
-        tag.putInt("md", ChargedBlockEntity.vec2int(movement_direction));
-        tag.putString("rs", render_state.toString());
+        tag.putInt("md", movement_direction.getId());
+        tag.put("rs",NbtHelper.fromBlockState(render_state));
         super.writeNbt(tag);
     }
 
@@ -53,45 +55,9 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound tag) {
         time = tag.getLong("time");
-        movement_direction = ChargedBlockEntity.int2vec(tag.getInt("md"));
-        render_state = string2BlockState(tag.getString("rs"));
+        movement_direction = Direction.byId(tag.getInt("md"));
+        render_state = NbtHelper.toBlockState(tag.getCompound("rs"));
         super.readNbt(tag);
-    }
-
-    public BlockState string2BlockState(String blockNameState) {
-        boolean withProperty = false;
-        String blockValue = "0";
-        String[] blockNames = blockNameState.toUpperCase().split("}",2);
-        String blockName = blockNames[0].split(":",2)[1];
-        String[] blockStates = blockNames[1].split("=",2);
-        if (blockStates.length == 2) {
-            String blockState = blockStates[0].split("\\[",2)[1];
-            blockValue = blockStates[1].split("\\]",2)[0];
-            if (Objects.equals(blockState, "AGE")) {
-                withProperty = true;
-            }
-        }
-        Object o = new Blocks();
-        Class<?> c = o.getClass();
-        Field f = null;
-        try {
-            f = c.getDeclaredField(blockName);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        assert f != null;
-        f.setAccessible(true);
-        BlockState outState = net.minecraft.block.Blocks.AIR.getDefaultState();
-        try {
-            if (withProperty) {
-                outState = ((ChargedBlock) f.get(o)).getDefaultState().with(ChargedPionBlock.COLOUR, Integer.parseInt(blockValue));
-            } else {
-                outState = ((ChargedBlock) f.get(o)).getDefaultState();
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return outState;
     }
 
     @Nullable
@@ -122,14 +88,19 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
             if (world.getTime() - time > time_move_ticks) {
                 world.removeBlockEntity(pos);
                 world.removeBlock(pos, false);
-                if (world.getBlockState(pos.mutableCopy().add(movement_direction)).getBlock().equals(be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER)) { //also change other particle for client
-                    world.setBlockState(pos.mutableCopy().add(movement_direction), render_state, Block.NOTIFY_ALL);
+                BlockPos blockPos = pos.mutableCopy().offset(movement_direction);
+                if (world.getBlockState(blockPos).getBlock().equals(be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER)) { //also change other particle for client
+                    world.setBlockState(blockPos, render_state, Block.NOTIFY_ALL);
+                    BlockEntity be = world.getBlockEntity(blockPos);
+                    if (be instanceof ChargedBlockEntityNEW charge) {
+                        charge.makeField(world, blockPos);
+                    }
                 }
                 if (annihilation) {
                     ItemStack itemStack = new ItemStack(Items.PHOTON, 1);
-                    double a = pos.getX() + movement_direction.getX() / 2d;
-                    double b = pos.getY() + movement_direction.getY() / 2d;
-                    double c = pos.getZ() + movement_direction.getZ() / 2d;
+                    double a = pos.getX() + movement_direction.getVector().getX() / 2d;
+                    double b = pos.getY() + movement_direction.getVector().getY() / 2d;
+                    double c = pos.getZ() + movement_direction.getVector().getZ() / 2d;
                     ItemEntity itemEntity = new ItemEntity(world, a, b, c, itemStack);
                     world.spawnEntity(itemEntity);
                 }
