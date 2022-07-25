@@ -48,8 +48,15 @@ public class PortalBlock extends Block {
                                                 serverPlayer.bodyYaw, serverPlayer.prevPitch);
                                     } else {
                                         playerpos = player.getPos();
-                                        serverPlayer.teleport(overWorld, playerpos.getX(), overWorld.getTopY(), playerpos.getZ(),
-                                                serverPlayer.bodyYaw, serverPlayer.prevPitch);
+                                        //Loop to see if the block is empty so the player can teleport
+                                        for(double y = 0;y<=overWorld.getHeight();y++)
+                                        {
+                                            if(overWorld.getBlockEntity(new BlockPos(playerpos.getX(),playerpos.getY(),playerpos.getZ()))==null && overWorld.getBlockEntity(new BlockPos(playerpos.getX(),playerpos.getY()+1,playerpos.getZ()))==null){
+                                                serverPlayer.teleport(overWorld, playerpos.getX(), y, playerpos.getZ(),
+                                                        serverPlayer.bodyYaw, serverPlayer.prevPitch);
+                                                break;
+                                            }
+                                        }
                                     }
                                     playerpos = null;
                                     //BlockPos destPos = getDest(player.getBlockPos(), overWorld, false);

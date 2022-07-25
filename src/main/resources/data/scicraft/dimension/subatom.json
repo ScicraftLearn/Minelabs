@@ -5,6 +5,9 @@
     "settings": {
       "disable_mob_generation": true,
       "lakes": false,
+      "structures": {
+
+      },
       "features": false,
       "layers": [
         {
