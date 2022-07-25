@@ -15,6 +15,9 @@ import net.minecraft.util.registry.Registry;
 
 public class Blocks {
 
+    //Atom portal to subatom dimension
+    public static final Block ATOM_PORTAL = register(new PortalBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(6f)),"atom_portal");
+
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block PION_NUL = register(new PionNulBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");
@@ -60,7 +63,6 @@ public class Blocks {
     public static final Block HELIUM = register(new PionNulBlock(FabricBlockSettings.of(Material.AIR)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
-
     /**
      * Register a Block
      * <p>
@@ -81,6 +83,4 @@ public class Blocks {
     public static void registerBlocks() {
         Scicraft.LOGGER.info("registering blocks");
     }
-
-
 }

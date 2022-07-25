@@ -12,6 +12,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class Items {
+    //Atomic portal
+    public static final Item ATOM_PORTAL=register(new BlockItem((Blocks.ATOM_PORTAL),new FabricItemSettings().group(ItemGroups.SCICRAFT)),"atom_portal");
+
     // Items
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
