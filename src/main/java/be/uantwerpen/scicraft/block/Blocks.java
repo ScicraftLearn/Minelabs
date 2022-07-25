@@ -60,6 +60,7 @@ public class Blocks {
     public static final Block HELIUM = register(new PionNulBlock(FabricBlockSettings.of(Material.AIR)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
+
     /**
      * Register a Block
      * <p>
