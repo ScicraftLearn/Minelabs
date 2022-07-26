@@ -115,7 +115,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         QuadEmitter emitter = builder.getEmitter();
 
         Vec3f center = new Vec3f(0, 0, 0);
-        float radius = 0.3f;
+        float radius = 0.15f;
 
         for (Vec3f[] quad: getSphereVertices(center, radius)){
             for(int i=0; i < 4; i++) {
@@ -146,30 +146,83 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     public List<Vec3f[]> getSphereVertices(Vec3f center, float r) {
-        //center.add(0.5f, 0.5f, 0.5f);
+        center.add(0.5f, 0.5f, 0.5f);
 
         List<Vec3f[]> quads = new ArrayList<>();
-        int RESOLUTION = 5;
+        int RESOLUTION = 2;
         float offset = 0.5f;
-        for (Direction direction : Direction.values()) {
-            Vec3f[] face = {new Vec3f(-offset, -offset, -offset), new Vec3f(offset, -offset, -offset), new Vec3f(offset, offset, -offset), new Vec3f(-offset, offset, -offset)};
-            quads.addAll(recursiveSubdivision(face, RESOLUTION, quads));
+
+        Vec3f[] face = {
+                new Vec3f(-offset, offset, -offset),
+                new Vec3f(offset, offset, -offset),
+                new Vec3f(offset, -offset, -offset),
+                new Vec3f(-offset, -offset, -offset),
+        };
+        recursiveSubdivision(face, RESOLUTION, quads);
+
+        face = new Vec3f[]{
+                new Vec3f(-offset, -offset, offset),
+                new Vec3f(offset, -offset, offset),
+                new Vec3f(offset, offset, offset),
+                new Vec3f(-offset, offset, offset),
+        };
+        recursiveSubdivision(face, RESOLUTION, quads);
+
+        face = new Vec3f[]{
+                new Vec3f(-offset, -offset, offset),
+                new Vec3f(-offset, offset, offset),
+                new Vec3f(-offset, offset, -offset),
+                new Vec3f(-offset, -offset, -offset),
+        };
+        recursiveSubdivision(face, RESOLUTION, quads);
+
+        face = new Vec3f[]{
+                new Vec3f(offset, -offset, -offset),
+                new Vec3f(offset, offset, -offset),
+                new Vec3f(offset, offset, offset),
+                new Vec3f(offset, -offset, offset),
+        };
+        recursiveSubdivision(face, RESOLUTION, quads);
+
+        face = new Vec3f[]{
+                new Vec3f(-offset, -offset, -offset),
+                new Vec3f(offset, -offset, -offset),
+                new Vec3f(offset, -offset, offset),
+                new Vec3f(-offset, -offset, offset),
+        };
+        recursiveSubdivision(face, RESOLUTION, quads);
+
+        face = new Vec3f[]{
+                new Vec3f(-offset, offset, offset),
+                new Vec3f(offset, offset, offset),
+                new Vec3f(offset, offset, -offset),
+                new Vec3f(-offset, offset, -offset),
+        };
+        recursiveSubdivision(face, RESOLUTION, quads);
+
+        for (Vec3f[] quad: quads){
+            for(Vec3f vertex:quad){
+                vertex.scale(r);
+                vertex.add(center);
+            }
         }
+
         return quads;
     }
 
     private List<Vec3f[]> recursiveSubdivision(Vec3f[] quad, int RESOLUTION, List<Vec3f[]> quads){
-        if (RESOLUTION==0){quads.add(quad);}
-        else {
-            Vec3f va = quad[1].copy();
+        if (RESOLUTION<=0){
+            quads.add(quad);
+        } else {
+            Vec3f va = quad[0].copy();
             va.add(quad[1]);
             va.normalize();
 
-            Vec3f vb = quad[1].copy();
+            Vec3f vb = quad[0].copy();
             vb.add(quad[3]);
             vb.normalize();
 
-            Vec3f vc = quad[1].copy();
+            Vec3f vc = quad[0].copy();
             vc.add(quad[2]);
             vc.normalize();
 
@@ -178,13 +231,13 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
             vd.normalize();
 
             Vec3f ve = quad[3].copy();
-            ve.add(quad[1]);
+            ve.add(quad[2]);
             ve.normalize();
 
-            recursiveSubdivision(new Vec3f[] {quad[0], va, vc, vb}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vec3f[] {va, quad[1], vd, vc}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vec3f[] {vc, vd, quad[2], ve}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vec3f[] {vb, vc, ve, quad[3]}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vec3f[] {quad[0].copy(), va.copy(), vc.copy(), vb.copy()}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vec3f[] {va.copy(), quad[1].copy(), vd.copy(), vc.copy()}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vec3f[] {vc.copy(), vd.copy(), quad[2].copy(), ve.copy()}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vec3f[] {vb.copy(), vc.copy(), ve.copy(), quad[3].copy()}, RESOLUTION-1, quads);
         }
         return quads;
 
