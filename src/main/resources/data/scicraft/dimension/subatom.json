@@ -11,7 +11,7 @@
       "features": false,
       "layers": [
         {
-          "block": "minecraft:barrier",
+          "block": "scicraft:atomic_floor",
           "height": 1
         }
       ]
