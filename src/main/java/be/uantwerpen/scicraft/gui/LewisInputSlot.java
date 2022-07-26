@@ -7,10 +7,17 @@ import net.minecraft.screen.slot.Slot;
 
 public class LewisInputSlot extends Slot {
     private Item allowedItem;
+    private int density = 1;
 
     public LewisInputSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
         allowedItem = null;
+    }
+
+    public LewisInputSlot(Inventory inventory, int index, int x, int y, int density) {
+        super(inventory, index, x, y);
+        allowedItem = null;
+        this.density = density;
     }
 
     public boolean canInsert(ItemStack stack) {
@@ -27,6 +34,10 @@ public class LewisInputSlot extends Slot {
 
     @Override
     public int getMaxItemCount() {
-        return 10;
+        return density;
+    }
+
+    public void setDensity(int density) {
+        this.density = density;
     }
 }

@@ -4,6 +4,8 @@ public class MoleculeRecipeJsonFormat {
 
     MoleculeGraphJsonFormat structure;
 
+    Integer density;
+
     Result result;
 
     static class Result {

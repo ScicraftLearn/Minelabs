@@ -17,6 +17,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
+
 
 public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 
@@ -24,15 +26,20 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     private final DefaultedList<Ingredient> ingredients = DefaultedList.of();
     private final Identifier id;
     private final JsonObject json;
+    private final Integer density;
 
-    public MoleculeRecipe(Molecule molecule, Identifier id, JsonObject json) {
+
+    public MoleculeRecipe(Molecule molecule, Identifier id, JsonObject json,Integer density) {
         this.molecule = molecule;
         ingredients.addAll(molecule.getIngredients().stream().map(atom -> Ingredient.ofItems(atom.getItem())).toList());
         this.id = id;
         this.json = json;
+        this.density = density;
 //        Scicraft.LOGGER.info("Recipe made: " + id.toString());
 //        Scicraft.LOGGER.info(molecule.getStructure().toCanonical());
     }
+
+    public Integer getDensity() {return density;}
 
     public Molecule getMolecule(){
         return molecule;
@@ -94,6 +101,9 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     }
 
     public static class MoleculeRecipeSerializer implements RecipeSerializer<MoleculeRecipe> {
+
+        public HashMap<Atom, Integer> densities;
+
         private MoleculeRecipeSerializer() {}
 
         public static final MoleculeRecipeSerializer INSTANCE = new MoleculeRecipeSerializer();
@@ -106,13 +116,16 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
                 throw new JsonSyntaxException("Attribute 'result' is missing");
             if (recipeJson.structure == null)
                 throw new JsonSyntaxException("Attribute 'structure' is missing");
+            if (recipeJson.density == null)
+                throw new JsonSyntaxException("Attribute 'structure' is missing");
 
             Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.result.item))
                     // Validate the entered item actually exists
                     .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.result.item));
 
             Molecule molecule = new Molecule(recipeJson.structure.get(), outputItem);
-            return new MoleculeRecipe(molecule, id, json);
+
+            return new MoleculeRecipe(molecule, id, json, recipeJson.density);
         }
 
         @Override

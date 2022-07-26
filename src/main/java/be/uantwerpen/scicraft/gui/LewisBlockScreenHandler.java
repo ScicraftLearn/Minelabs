@@ -344,12 +344,16 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         if (!isInputOpen() || !inventory.isEmpty()) {
             Scicraft.LOGGER.info("Opening input");
+            for (int m = 0; m < 9; ++m) {
+                ((LewisInputSlot)getSlot(m + 25)).setDensity(moleculeRecipe.getDensity());
+            }
+
             ArrayList<Atom> atoms = new ArrayList<>(moleculeRecipe.getMolecule().getIngredients());
-            atoms.sort(Comparator.comparingInt(o -> DelegateSettings.ATOM_MAPPINGS.get(o.getItem())));
+            atoms.sort(Comparator.comparingInt(a -> DelegateSettings.ATOM_MAPPINGS.get(a.getItem())));
             openInputSlots(atoms);
         }
 
-        if (hasCorrectInput(moleculeRecipe.getMolecule())) {
+        if (hasCorrectInput(moleculeRecipe.getMolecule(),moleculeRecipe)) {
             if (this.getPropertyDelegate(1) == -1
                     && (outputSlot.getStack().isEmpty()
                     || ItemStack.areEqual(
@@ -372,7 +376,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    private boolean hasCorrectInput(Molecule molecule) {
+    private boolean hasCorrectInput(Molecule molecule,MoleculeRecipe moleculeRecipe) {
         List<Atom> ingredients = new ArrayList<>(molecule.getIngredients());
         ingredients.sort(Comparator.comparingInt(o -> DelegateSettings.ATOM_MAPPINGS.get(o.getItem())));
         int readySlots = 1;
@@ -382,7 +386,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             if (stack == null
                     || stack.isEmpty()
                     || !ingredients.get(i).getItem().equals(stack.getItem())
-                    || stack.getCount() != 10) {
+                    || stack.getCount() != moleculeRecipe.getDensity()) {
                 isCorrect = false;
             } else readySlots *= DelegateSettings.SLOT_MAPPINGS.get(i);
         }
@@ -440,6 +444,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (int i = 0; i < 9; i++) {
             this.getSlot(i + 25).setStack(ItemStack.EMPTY);
         }
+
+
     }
 
     /**
