@@ -90,6 +90,9 @@ public class PortalBlock extends Block {
                                 }
                             }
                         }
+                        else if(player.getStackInHand(hand).getItem().getGroup() != ItemGroups.ATOMS){
+                            System.out.println("blockinv");
+                        }
                         return ActionResult.SUCCESS;
                     }
                 }
