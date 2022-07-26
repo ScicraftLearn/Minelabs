@@ -1,8 +1,7 @@
 package be.uantwerpen.scicraft.block;
 
-import java.util.function.Supplier;
-
 import be.uantwerpen.scicraft.block.entity.ChargedBlockEntity;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -11,6 +10,9 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 public class ChargedBlock extends BlockWithEntity{
 	private Supplier<BlockEntityType<? extends ChargedBlockEntity>> lazy;
@@ -31,9 +33,27 @@ public class ChargedBlock extends BlockWithEntity{
         return BlockRenderType.MODEL;
 	}
 
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, this.lazy.get(), ChargedBlockEntity::tick);
-    }
+	@Override
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof ChargedBlockEntity charged) {
+			charged.removeField(world, pos);
+		}
+		super.onStateReplaced(state, world, pos, newState, moved);
+	}
 
+	@Override
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof ChargedBlockEntity charged) {
+			charged.needsUpdate(true);
+		}
+		super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
+	}
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return checkType(type, this.lazy.get(), ChargedBlockEntity::tick);
+	}
 }

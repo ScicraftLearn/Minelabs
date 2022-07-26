@@ -35,7 +35,7 @@ import java.util.Objects;
 public class AnimatedChargedBlockEntity extends BlockEntity {
     public long time = 0;
     public Direction movement_direction;
-    public final static int time_move_ticks = 8;
+    public final static int time_move_ticks = 4;
     public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
     public boolean annihilation = false;
 
@@ -68,22 +68,13 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
 
     @Override
     public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
+        return this.createNbtWithIdentifyingData();
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
         if (!world.isClient) {
             if (time == 0) {
                 time = world.getTime();
-
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeBlockPos(pos);
-                buf.writeString(render_state.toString());
-                buf.writeBoolean(annihilation);
-                for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
-                    // update client on the block for the animation
-                    ServerPlayNetworking.send(player, NetworkingConstants.CHARGED_MOVE_STATE, buf);
-                }
             }
             if (world.getTime() - time > time_move_ticks) {
                 world.removeBlockEntity(pos);
@@ -91,10 +82,6 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
                 BlockPos blockPos = pos.mutableCopy().offset(movement_direction);
                 if (world.getBlockState(blockPos).getBlock().equals(be.uantwerpen.scicraft.block.Blocks.CHARGED_PLACEHOLDER)) { //also change other particle for client
                     world.setBlockState(blockPos, render_state, Block.NOTIFY_ALL);
-                    BlockEntity be = world.getBlockEntity(blockPos);
-                    if (be instanceof ChargedBlockEntityNEW charge) {
-                        charge.makeField(world, blockPos);
-                    }
                 }
                 if (annihilation) {
                     ItemStack itemStack = new ItemStack(Items.PHOTON, 1);
@@ -116,4 +103,5 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     public static void tick(World world, BlockPos pos, BlockState state, AnimatedChargedBlockEntity be) {
         be.tick(world, pos, state);
     }
+
 }
