@@ -1,23 +1,31 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
+import be.uantwerpen.scicraft.block.entity.PortalBlockEntity;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.*;
+import net.minecraft.world.event.listener.GameEventListener;
+import org.jetbrains.annotations.Nullable;
 
-public class PortalBlock extends Block{
+public class PortalBlock extends BlockWithEntity implements BlockEntityProvider {
     public PortalBlock(Settings settings) {
         super(settings);
     }
@@ -86,6 +94,10 @@ public class PortalBlock extends Block{
                         }
                         else if(player.getStackInHand(hand).getItem().getGroup() != ItemGroups.ATOMS){
                             System.out.println("blockinv");
+                            NamedScreenHandlerFactory screenHandlerFactory=state.createScreenHandlerFactory(world,pos);
+                            if(screenHandlerFactory!=null){
+                                player.openHandledScreen(screenHandlerFactory);
+                            }
                         }
                         return ActionResult.SUCCESS;
                     }
@@ -113,5 +125,44 @@ public class PortalBlock extends Block{
         }
 
         return destPos;
+    }
+
+
+    //Will create the needed entity
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new PortalBlockEntity(pos,state);
+    }
+    //Important so block is visible
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
+    //Drop items when portal is destroyed
+
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if(state.getBlock() != newState.getBlock()){
+            BlockEntity blockEntity=world.getBlockEntity(pos);
+            if(blockEntity instanceof PortalBlockEntity){
+                ItemScatterer.spawn(world,pos,(PortalBlockEntity)blockEntity);
+                world.updateComparators(pos,this);
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, BlockEntities.PORTAL_BLOCK,PortalBlockEntity::tick);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> GameEventListener getGameEventListener(ServerWorld world, T blockEntity) {
+        return super.getGameEventListener(world, blockEntity);
     }
 }
