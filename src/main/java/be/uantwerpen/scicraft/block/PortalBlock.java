@@ -92,7 +92,7 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
                                 }
                             }
                         }
-                        else if(player.getStackInHand(hand).getItem().getGroup() != ItemGroups.ATOMS){
+                        else{
                             System.out.println("blockinv");
                             NamedScreenHandlerFactory screenHandlerFactory=state.createScreenHandlerFactory(world,pos);
                             if(screenHandlerFactory!=null){

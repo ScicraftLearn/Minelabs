@@ -24,7 +24,7 @@ public class BlockEntities {
 
     static {
         PORTAL_BLOCK = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new PortalBlockEntity(p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
+                FabricBlockEntityTypeBuilder.create((p,s) -> new PortalBlockEntity(p, s), Blocks.ATOM_PORTAL).build(null),
                 "atom_portal");
 
         PION_MINUS_BLOCK_ENTITY = register(

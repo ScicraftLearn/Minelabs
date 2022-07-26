@@ -8,11 +8,14 @@ import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
+import be.uantwerpen.scicraft.screen.AtomPortalScreen;
+import be.uantwerpen.scicraft.screen.ModScreenHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.util.math.BlockPos;
@@ -22,6 +25,8 @@ import net.minecraft.util.math.BlockPos;
 public class ScicraftClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
+        ScreenRegistry.register(ModScreenHandler.ATOM_TYPE_HANDLER(), AtomPortalScreen::new);
+
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_PLUS, RenderLayer.getCutout());

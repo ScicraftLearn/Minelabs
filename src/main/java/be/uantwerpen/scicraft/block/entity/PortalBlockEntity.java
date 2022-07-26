@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block.entity;
 
 import be.uantwerpen.scicraft.item.inventory.ImplementedInventory;
+import be.uantwerpen.scicraft.screen.AtomPortalScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +26,7 @@ public class PortalBlockEntity extends BlockEntity implements NamedScreenHandler
     }
 
     public static void tick(World world,BlockPos pos,BlockState state,PortalBlockEntity entity){
-        System.out.println("big iron");
+        //System.out.println("big iron");
     }
 
     @Override
@@ -36,7 +37,7 @@ public class PortalBlockEntity extends BlockEntity implements NamedScreenHandler
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return null;
+        return new AtomPortalScreenHandler(syncId,inv,this);
     }
 
     @Override
