@@ -117,7 +117,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
             if (recipeJson.structure == null)
                 throw new JsonSyntaxException("Attribute 'structure' is missing");
             if (recipeJson.density == null)
-                throw new JsonSyntaxException("Attribute 'structure' is missing");
+                throw new JsonSyntaxException("Attribute 'density' is missing");
 
             Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.result.item))
                     // Validate the entered item actually exists
