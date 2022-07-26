@@ -334,6 +334,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         LewisCraftingGrid grid = getLewisCraftingGrid();
         Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MOLECULE_CRAFTING, grid, world);
 
+
         if (recipe.isEmpty()) {
             if (isInputOpen()) closeInputSlots();
             return;
@@ -341,7 +342,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         MoleculeRecipe moleculeRecipe = recipe.get();
 
-        if (!isInputOpen()) {
+        if (!isInputOpen() || !inventory.isEmpty()) {
             Scicraft.LOGGER.info("Opening input");
             ArrayList<Atom> atoms = new ArrayList<>(moleculeRecipe.getMolecule().getIngredients());
             atoms.sort(Comparator.comparingInt(o -> DelegateSettings.ATOM_MAPPINGS.get(o.getItem())));
