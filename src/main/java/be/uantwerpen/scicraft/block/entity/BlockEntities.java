@@ -20,6 +20,7 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
+    public  static BlockEntityType<ElectricFieldSensorBlockEntity> ELECTRIC_FIELD_SENSOR;
     
     static {
         PION_MINUS_BLOCK_ENTITY = register(
@@ -49,6 +50,8 @@ public class BlockEntities {
         CHARGED_PLACEHOLDER_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
                 "charged_placeholder_block_entity");
+
+        ELECTRIC_FIELD_SENSOR = register(FabricBlockEntityTypeBuilder.create((p,s) -> new ElectricFieldSensorBlockEntity(ELECTRIC_FIELD_SENSOR, p, s), Blocks.ELECTRIC_FIELD_SENSOR_BLOCK).build(null), "electric_field_sensor");
     }
 
     /**

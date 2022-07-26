@@ -99,6 +99,14 @@ public class ChargedBlockEntity extends BlockEntity{
                 needsUpdate(true);
                 particle2.needsUpdate(true);
             }
+            if (world.getBlockEntity(pos_block) instanceof ElectricFieldSensorBlockEntity sensor && !pos.equals(pos_block) ){
+                Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
+                vec_pos.scale(d_E);
+                sensor.getField().subtract(vec_pos);
+                sensor.markDirty();
+                sensor.sync();
+            }
         }
         markDirty();
     }
@@ -115,6 +123,14 @@ public class ChargedBlockEntity extends BlockEntity{
                 particle2.field.add(vec_pos);
                 particle2.markDirty();
                 particle2.needsUpdate(true);
+            }
+            if (world.getBlockEntity(pos_block) instanceof ElectricFieldSensorBlockEntity sensor && !pos.equals(pos_block) ){
+                Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
+                vec_pos.scale(d_E);
+                sensor.getField().add(vec_pos);
+                sensor.markDirty();
+                sensor.sync();
             }
         }
         needsUpdate(true);

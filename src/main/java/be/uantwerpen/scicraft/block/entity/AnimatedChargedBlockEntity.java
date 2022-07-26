@@ -1,13 +1,6 @@
 package be.uantwerpen.scicraft.block.entity;
 
-import be.uantwerpen.scicraft.block.Blocks;
-import be.uantwerpen.scicraft.block.ChargedBlock;
-import be.uantwerpen.scicraft.block.ChargedPionBlock;
 import be.uantwerpen.scicraft.item.Items;
-import be.uantwerpen.scicraft.network.NetworkingConstants;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,20 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.Packet;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.Field;
-import java.util.Objects;
 
 public class AnimatedChargedBlockEntity extends BlockEntity {
     public long time = 0;
@@ -72,10 +57,10 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
+        if (time == 0) {
+            time = world.getTime();
+        }
         if (!world.isClient) {
-            if (time == 0) {
-                time = world.getTime();
-            }
             if (world.getTime() - time > time_move_ticks) {
                 world.removeBlockEntity(pos);
                 world.removeBlock(pos, false);
@@ -92,10 +77,6 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
                     world.spawnEntity(itemEntity);
                 }
                 markDirty();
-            }
-        } else {
-            if (time == 0) {
-                time = world.getTime();
             }
         }
     }

@@ -1,21 +1,18 @@
 package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.Blocks;
-import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
-import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
+import be.uantwerpen.scicraft.renderer.ElectricFieldSensorRenderer;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.util.math.BlockPos;
 
 
 @SuppressWarnings("UNUSED")
@@ -44,18 +41,6 @@ public class ScicraftClient implements ClientModInitializer {
 
         BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
-        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.CHARGED_MOVE_STATE, (client, handler, buf, responseSender) -> {
-            BlockPos target = buf.readBlockPos();
-            String block_name = buf.readString();
-            boolean annihilation = buf.readBoolean();
-            client.execute(() -> {
-                if (client.world!=null){
-                    if (client.world.getBlockEntity(target) instanceof AnimatedChargedBlockEntity particle2) {
-                        particle2.render_state = particle2.getCachedState();
-                        particle2.annihilation = annihilation;
-                    }
-                }
-            });
-        });
+        BlockEntityRendererRegistry.register(BlockEntities.ELECTRIC_FIELD_SENSOR, ElectricFieldSensorRenderer::new);
     }
 }
