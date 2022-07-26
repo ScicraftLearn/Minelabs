@@ -145,38 +145,49 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         return this;
     }
 
-    public List<Vec3f[]> getSphereVertices(Vec3f center, float r){
-        center.add(0.5f, 0.5f, 0.5f);
+    public List<Vec3f[]> getSphereVertices(Vec3f center, float r) {
+        //center.add(0.5f, 0.5f, 0.5f);
+
         List<Vec3f[]> quads = new ArrayList<>();
-        int RESOLUTION = 10;
-
-        for(int i=0; i<RESOLUTION; i++){
-            float lat0 = (float) (MathHelper.PI * (-0.5 + (float)i/RESOLUTION));
-            float z0 = MathHelper.sin(lat0);
-            float zr0 = MathHelper.cos(lat0);
-            float lat1 = (float) (MathHelper.PI * (-0.5 + (float)(i+1)/RESOLUTION));
-            float z1 = MathHelper.sin(lat1);
-            float zr1 = MathHelper.cos(lat1);
-
-            for(int j=0; j<RESOLUTION; j++) {
-                float lng = 2 * MathHelper.PI * (float) j / RESOLUTION;
-                float x1 = MathHelper.cos(lng);
-                float y1 = MathHelper.sin(lng);
-                float lng2 = 2 * MathHelper.PI * (float) (j + 1) / RESOLUTION;
-                float x2 = MathHelper.cos(lng2);
-                float y2 = MathHelper.sin(lng2);
-
-                Vec3f[] quad = new Vec3f[4];
-
-                quad[0] = new Vec3f(center.getX() + x2 * zr0 * r, center.getY() + y2 * zr0 * r,center.getZ() + z0 * r);
-                quad[1] = new Vec3f(center.getX() + x2 * zr1 * r, center.getY() + y2 * zr1 * r,center.getZ() + z1 * r);
-                quad[2] = new Vec3f(center.getX() + x1 * zr1 * r, center.getY() + y1 * zr1 * r,center.getZ() + z1 * r);
-                quad[3] = new Vec3f(center.getX() + x1 * zr0 * r, center.getY() + y1 * zr0 * r,center.getZ() + z0 * r);
-
-                quads.add(quad);
-            }
+        int RESOLUTION = 5;
+        float offset = 0.5f;
+        for (Direction direction : Direction.values()) {
+            Vec3f[] face = {new Vec3f(-offset, -offset, -offset), new Vec3f(offset, -offset, -offset), new Vec3f(offset, offset, -offset), new Vec3f(-offset, offset, -offset)};
+            quads.addAll(recursiveSubdivision(face, RESOLUTION, quads));
         }
         return quads;
+    }
+
+    private List<Vec3f[]> recursiveSubdivision(Vec3f[] quad, int RESOLUTION, List<Vec3f[]> quads){
+        if (RESOLUTION==0){quads.add(quad);}
+        else {
+            Vec3f va = quad[1].copy();
+            va.add(quad[1]);
+            va.normalize();
+
+            Vec3f vb = quad[1].copy();
+            vb.add(quad[3]);
+            vb.normalize();
+
+            Vec3f vc = quad[1].copy();
+            vc.add(quad[2]);
+            vc.normalize();
+
+            Vec3f vd = quad[2].copy();
+            vd.add(quad[1]);
+            vd.normalize();
+
+            Vec3f ve = quad[3].copy();
+            ve.add(quad[1]);
+            ve.normalize();
+
+            recursiveSubdivision(new Vec3f[] {quad[0], va, vc, vb}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vec3f[] {va, quad[1], vd, vc}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vec3f[] {vc, vd, quad[2], ve}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vec3f[] {vb, vc, ve, quad[3]}, RESOLUTION-1, quads);
+        }
+        return quads;
+
     }
 
     @Override
