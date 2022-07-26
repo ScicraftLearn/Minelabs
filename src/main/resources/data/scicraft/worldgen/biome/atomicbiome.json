@@ -8,7 +8,13 @@
     "sky_color": 7610259,
     "fog_color": 6759003,
     "water_color": 4159204,
-    "water_fog_color": 329011
+    "water_fog_color": 329011,
+    "particle": {
+      "options": {
+        "type": "minecraft:basic_smoke_particle"
+      },
+      "probability": 0.5
+    }
   },
   "spawners": {},
   "spawn_costs": {},
