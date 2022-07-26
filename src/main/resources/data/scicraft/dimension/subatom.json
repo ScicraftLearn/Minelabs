@@ -3,10 +3,10 @@
   "generator": {
     "type": "minecraft:flat",
     "settings": {
+      "biome": "scicraft:atomicbiome",
       "disable_mob_generation": true,
       "lakes": false,
       "structures": {
-
       },
       "features": false,
       "layers": [
