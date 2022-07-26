@@ -102,9 +102,13 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
                         }
                         else{
                             System.out.println("blockinv");
-                            NamedScreenHandlerFactory screenHandlerFactory=state.createScreenHandlerFactory(world,pos);
-                            if(screenHandlerFactory!=null){
-                                player.openHandledScreen(screenHandlerFactory);
+                            //NamedScreenHandlerFactory screenHandlerFactory=state.createScreenHandlerFactory(world,pos);
+                            if(inv!=null){
+                                BlockEntity blockEntity=world.getBlockEntity(pos);
+                                if(blockEntity instanceof PortalBlockEntity){
+                                    ItemScatterer.spawn(world,pos,(PortalBlockEntity)blockEntity);
+                                    world.updateComparators(pos,this);
+                                }
                             }
                         }
                         return ActionResult.SUCCESS;
