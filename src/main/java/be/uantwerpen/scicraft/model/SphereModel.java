@@ -38,7 +38,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
     private Mesh mesh;
 
-    private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("scicraft:item/atom_green"));
+    private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("scicraft:item/atom_orange"));
 
     private Sprite SPRITE;
 
@@ -127,9 +127,9 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
 //                emitter.spriteUnitSquare(0);
 
             emitter.sprite(0, 0, 8, 8);
-            emitter.sprite(1, 0, 8, 9);
-            emitter.sprite(2, 0, 9, 9);
-            emitter.sprite(3, 0, 9, 8);
+            emitter.sprite(1, 0, 8, 8);
+            emitter.sprite(2, 0, 8, 8);
+            emitter.sprite(3, 0, 8, 8);
 
             emitter.spriteBake(0, SPRITE, MutableQuadView.BAKE_ROTATE_NONE);
 
