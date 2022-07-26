@@ -5,11 +5,8 @@ import be.uantwerpen.scicraft.item.ItemGroups;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.*;
 import net.minecraft.server.world.ServerWorld;
@@ -20,15 +17,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.*;
 
-import java.util.ArrayList;
-
-
-public class PortalBlock extends Block {
+public class PortalBlock extends Block{
     public PortalBlock(Settings settings) {
         super(settings);
     }
     private Position playerpos = null;
-    private PlayerInventory inv=null;
+    private Inventory inv=null;
 
 
     @Override
