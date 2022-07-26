@@ -6,9 +6,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import org.jetbrains.annotations.Nullable;
 
 public class AtomPortalScreenHandler extends ScreenHandler {
     private final Inventory inventory;
@@ -17,7 +15,7 @@ public class AtomPortalScreenHandler extends ScreenHandler {
         this(syncId,inv,new SimpleInventory(4));
     }
     public AtomPortalScreenHandler(int syncId, PlayerInventory inv, Inventory inventory) {
-        super(ModScreenHandler.ATOM_TYPE_HANDLER(),syncId);
+        super(ModScreenHandler.PORTAL_SCREEN_HANDLER,syncId);
         checkSize(inventory,4);
         this.inventory=inventory;
         inventory.onOpen(inv.player);
@@ -27,6 +25,7 @@ public class AtomPortalScreenHandler extends ScreenHandler {
         this.addSlot(new Slot(inventory,0,10,70));
         this.addSlot(new Slot(inventory,0,10,80));
 
+        //System.out.println("We zitten hier!");
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
     }

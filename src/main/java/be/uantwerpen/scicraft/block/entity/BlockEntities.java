@@ -26,7 +26,6 @@ public class BlockEntities {
         PORTAL_BLOCK = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new PortalBlockEntity(p, s), Blocks.ATOM_PORTAL).build(null),
                 "atom_portal");
-
         PION_MINUS_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_MINUS_BLOCK_ENTITY, p, s, -1, Blocks.PION_PLUS, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PION_MINUS).build(null),
                 "pion_minus_block_entity");

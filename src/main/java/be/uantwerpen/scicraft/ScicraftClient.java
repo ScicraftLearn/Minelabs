@@ -25,7 +25,6 @@ import net.minecraft.util.math.BlockPos;
 public class ScicraftClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
-        ScreenRegistry.register(ModScreenHandler.ATOM_TYPE_HANDLER(), AtomPortalScreen::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());

@@ -43,6 +43,14 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
                 if (server != null) {
                     if (player instanceof ServerPlayerEntity) {
                         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+
+                        /*
+                        System.out.println("blockinv");
+                        NamedScreenHandlerFactory screenHandlerFactory=state.createScreenHandlerFactory(world,pos);
+                        if(screenHandlerFactory!=null){
+                            player.openHandledScreen(screenHandlerFactory);
+                        }*/
+
                         //Only teleport if an atom is used to right click
                         if (player.getStackInHand(hand).getItem().getGroup() == ItemGroups.ATOMS) {
                             //If player is in subatomic dimension

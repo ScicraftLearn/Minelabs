@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 public class AtomPortalScreen extends HandledScreen<AtomPortalScreenHandler> {
     public AtomPortalScreen(AtomPortalScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
+        System.out.println("misschien hier");
     }
 
     @Override
