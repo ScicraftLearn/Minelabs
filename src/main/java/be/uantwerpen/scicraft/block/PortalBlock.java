@@ -11,7 +11,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.*;
 import net.minecraft.server.world.ServerWorld;
@@ -29,9 +28,9 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
     public PortalBlock(Settings settings) {
         super(settings);
     }
-    private Position playerpos = null;
-    private Inventory inv=null;
 
+    private Position playerpos = null;
+    private Inventory inv = null;
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos,
@@ -43,71 +42,18 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
                 if (server != null) {
                     if (player instanceof ServerPlayerEntity) {
                         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-
-                        /*
-                        System.out.println("blockinv");
-                        NamedScreenHandlerFactory screenHandlerFactory=state.createScreenHandlerFactory(world,pos);
-                        if(screenHandlerFactory!=null){
-                            player.openHandledScreen(screenHandlerFactory);
-                        }*/
-
                         //Only teleport if an atom is used to right click
                         if (player.getStackInHand(hand).getItem().getGroup() == ItemGroups.ATOMS) {
-                            //If player is in subatomic dimension
-                            if (world.getRegistryKey() == ModDimensions.SUBATOM_KEY) {
-                                ServerWorld overWorld = server.getWorld(World.OVERWORLD);
-                                if (overWorld != null) {
-                                    if (playerpos != null) {
-                                        serverPlayer.teleport(overWorld, playerpos.getX(), playerpos.getY(), playerpos.getZ(),
-                                                serverPlayer.bodyYaw, serverPlayer.prevPitch);
-                                    } else {
-                                        playerpos = player.getPos();
-                                        //Loop to see if the block is empty so the player can teleport
-                                        for (double y = 0; y <= overWorld.getHeight(); y++) {
-                                            if (overWorld.getBlockEntity(new BlockPos(playerpos.getX(), playerpos.getY(), playerpos.getZ())) == null && overWorld.getBlockEntity(new BlockPos(playerpos.getX(), playerpos.getY() + 1, playerpos.getZ())) == null) {
-                                                serverPlayer.teleport(overWorld, playerpos.getX(), y, playerpos.getZ(),
-                                                        serverPlayer.bodyYaw, serverPlayer.prevPitch);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    playerpos = null;
-                                    //BlockPos destPos = getDest(player.getBlockPos(), overWorld, false);
-                                }
-                            }
-                            //If player is in overworld
-                            else {
-                                //Save player position so it can be returned
-                                playerpos = player.getPos();
-                                ServerWorld atomdim = server.getWorld(ModDimensions.SUBATOM_KEY);
-                                if (atomdim != null) {
-                                    BlockPos destPos = getDest(serverPlayer.getBlockPos(), atomdim, true);
-                                    boolean doSetBlock = true;
-                                    for (BlockPos checkPos : BlockPos.iterate(destPos.down(10).west(10).south(10), destPos.up(10).east(10).north(10))) {
-                                        if (atomdim.getBlockState(checkPos).getBlock() == Blocks.ATOM_PORTAL) {
-                                            doSetBlock = false;
-                                            break;
-                                        }
-                                    }
-                                    if (doSetBlock) {
-                                        atomdim.setBlockState(destPos, Blocks.ATOM_PORTAL.getDefaultState());
-                                    }
-                                    serverPlayer.teleport(atomdim, 0, -63, 0,
-                                            serverPlayer.bodyYaw, serverPlayer.prevPitch);
-                                    //Inventory gets saved and then cleared
-                                    inv=serverPlayer.getInventory();
-                                    serverPlayer.getInventory().clear();
-                                }
-                            }
-                        }
-                        else{
+                            teleportPlayer(world, server, serverPlayer, player);
+                        } else {
                             System.out.println("blockinv");
                             //NamedScreenHandlerFactory screenHandlerFactory=state.createScreenHandlerFactory(world,pos);
-                            if(inv!=null){
-                                BlockEntity blockEntity=world.getBlockEntity(pos);
-                                if(blockEntity instanceof PortalBlockEntity){
-                                    ItemScatterer.spawn(world,pos,(PortalBlockEntity)blockEntity);
-                                    world.updateComparators(pos,this);
+                            //Currently not working
+                            if (inv != null) {
+                                BlockEntity blockEntity = world.getBlockEntity(pos);
+                                if (blockEntity instanceof PortalBlockEntity) {
+                                    ItemScatterer.spawn(world, pos, (PortalBlockEntity) blockEntity);
+                                    world.updateComparators(pos, this);
                                 }
                             }
                         }
@@ -139,13 +85,46 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
         return destPos;
     }
 
+    private void teleportPlayer(World world, MinecraftServer server, ServerPlayerEntity serverPlayer, PlayerEntity player) {
+        ServerWorld overWorld = server.getWorld(World.OVERWORLD);
+        //If player is in subatomic dimension
+        if (world.getRegistryKey() == ModDimensions.SUBATOM_KEY && overWorld != null) {
+            if (playerpos != null) {
+                serverPlayer.teleport(overWorld, playerpos.getX(), playerpos.getY(), playerpos.getZ(),
+                        serverPlayer.bodyYaw, serverPlayer.prevPitch);
+            } else {
+                playerpos = player.getPos();
+                //Loop to see if the block is empty so the player can teleport
+                for (double y = 0; y <= overWorld.getHeight(); y++) {
+                    if (overWorld.getBlockEntity(new BlockPos(playerpos.getX(), playerpos.getY(), playerpos.getZ())) == null && overWorld.getBlockEntity(new BlockPos(playerpos.getX(), playerpos.getY() + 1, playerpos.getZ())) == null) {
+                        serverPlayer.teleport(overWorld, playerpos.getX(), y, playerpos.getZ(),
+                                serverPlayer.bodyYaw, serverPlayer.prevPitch);
+                        break;
+                    }
+                }
+            }
+            playerpos = null;
+        }
+        //If player is in overworld
+        else {
+            //Save player position so it can be returned
+            playerpos = player.getPos();
+            ServerWorld atomdim = server.getWorld(ModDimensions.SUBATOM_KEY);
+            serverPlayer.teleport(atomdim, 0, -63, 0,
+                    serverPlayer.bodyYaw, serverPlayer.prevPitch);
+            //Inventory gets saved and then cleared
+            inv = serverPlayer.getInventory();
+            serverPlayer.getInventory().clear();
+        }
+    }
 
     //Will create the needed entity
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new PortalBlockEntity(pos,state);
+        return new PortalBlockEntity(pos, state);
     }
+
     //Important so block is visible
     @Override
     public BlockRenderType getRenderType(BlockState state) {
@@ -157,11 +136,11 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if(state.getBlock() != newState.getBlock()){
-            BlockEntity blockEntity=world.getBlockEntity(pos);
-            if(blockEntity instanceof PortalBlockEntity){
-                ItemScatterer.spawn(world,pos,(PortalBlockEntity)blockEntity);
-                world.updateComparators(pos,this);
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof PortalBlockEntity) {
+                ItemScatterer.spawn(world, pos, (PortalBlockEntity) blockEntity);
+                world.updateComparators(pos, this);
             }
         }
     }
@@ -169,7 +148,7 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.PORTAL_BLOCK,PortalBlockEntity::tick);
+        return checkType(type, BlockEntities.ATOM_PORTAL, PortalBlockEntity::tick);
     }
 
     @Nullable

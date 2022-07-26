@@ -22,7 +22,7 @@ public class PortalBlockEntity extends BlockEntity implements NamedScreenHandler
     DefaultedList.ofSize(4,ItemStack.EMPTY);
 
     public PortalBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.PORTAL_BLOCK,pos, state);
+        super(BlockEntities.ATOM_PORTAL,pos, state);
     }
 
     public static void tick(World world,BlockPos pos,BlockState state,PortalBlockEntity entity){

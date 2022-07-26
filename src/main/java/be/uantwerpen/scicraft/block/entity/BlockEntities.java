@@ -20,10 +20,10 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
-    public static BlockEntityType<PortalBlockEntity> PORTAL_BLOCK;
+    public static BlockEntityType<PortalBlockEntity> ATOM_PORTAL;
 
     static {
-        PORTAL_BLOCK = register(
+        ATOM_PORTAL = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new PortalBlockEntity(p, s), Blocks.ATOM_PORTAL).build(null),
                 "atom_portal");
         PION_MINUS_BLOCK_ENTITY = register(
