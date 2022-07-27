@@ -18,9 +18,9 @@ public class ModEvents {
                 }
             }else{
                 if(player.getStackInHand(hand).getItem().getGroup()!=ItemGroups.ATOMS){
-                    return ActionResult.FAIL;
-                }else{
                     return ActionResult.PASS;
+                }else{
+                    return ActionResult.FAIL;
                 }
             }
         });
