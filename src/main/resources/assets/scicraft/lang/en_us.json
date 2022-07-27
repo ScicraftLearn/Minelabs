@@ -34,6 +34,7 @@
   "block.scicraft.downquark_quantumfield": "Downquark Quantumfield",
   "blockEntity.scicraft.charged_block": "Charged Block",
   "entity.scicraft.entropy_creeper": "Entropy Creeper",
+  "entity.minecraft.villager.sciencevillager": "Science Villager",
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
   "item.scicraft.salt_shard": "Salt Shard",
   "item.scicraft.proton": "Proton",
