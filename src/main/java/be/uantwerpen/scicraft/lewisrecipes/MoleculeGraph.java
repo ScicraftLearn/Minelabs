@@ -10,8 +10,6 @@ import java.util.Set;
 
 
 public class MoleculeGraph extends Graph<Atom, Bond> {
-
-
     /**
      * Computes the amount of remaining bonds an atom can make based on its already made bonds.
      */

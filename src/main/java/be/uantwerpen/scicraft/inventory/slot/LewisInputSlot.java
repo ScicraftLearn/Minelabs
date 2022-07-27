@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.inventory.slot;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;

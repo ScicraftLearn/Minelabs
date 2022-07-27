@@ -1,11 +1,14 @@
 package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
 import be.uantwerpen.scicraft.lewisrecipes.BondManager;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
 import be.uantwerpen.scicraft.lewisrecipes.MoleculeItemGraph;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
@@ -14,6 +17,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
@@ -25,16 +29,18 @@ import java.util.*;
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler> {
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
     private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
-
+    private LewisBlockEntity lewis;
     private Identifier currentTexture;
-
     private ButtonWidget buttonWidget;
     private boolean widgetTooltip = false;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.currentTexture = TEXTURE2;
-
+        BlockEntity be = MinecraftClient.getInstance().world.getBlockEntity(handler.pos);
+        if (be instanceof LewisBlockEntity lewis) {
+            this.lewis = lewis;
+        }
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
 
@@ -65,7 +71,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         buttonWidget.renderButton(matrices, mouseX, mouseY, delta);
 
         // get crafting progress and handle its
-        int cp = handler.getPropertyDelegate(DelegateSettings.LCT_CRAFTING_PROGRESS);
+        int cp = lewis.progress;
         if (cp >= 0)
             drawTexture(matrices, x + 100, y + 51, 176, 0, cp, 20);
 
@@ -87,53 +93,60 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 
+        if (lewis.progress > -1) {
+            System.out.println(lewis.progress);
+            for (int i = 0; i < 9; i++) {
+                ItemStack temp = new ItemStack(Items.GREEN_STAINED_GLASS_PANE);
+                this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + 18*i, 133+y-20);
+            }
+        }
+
         /*
          * Render input slot overlays
          */
-        int slotItems = this.handler.getPropertyDelegate(DelegateSettings.LCT_SLOT_ITEMS);
-        int slotReady = this.handler.getPropertyDelegate(DelegateSettings.LCT_SLOT_READY);
+     //   int slotReady = this.handler.getPropertyDelegate(DelegateSettings.LCT_SLOT_READY);
 
         // if it is allowed to put items in the input slots:
-        if (slotItems > 1 && this.getScreenHandler().isInputOpen()) {
-            // hashed mappings for the slots
-            List<Integer> slotItemList = this.getSlotList(slotItems);
-            List<Integer> slotReadyList = this.getSlotList(slotReady);
-            slotItemList.sort(Comparator.comparingInt(o -> o));
-//            Scicraft.LOGGER.info("slotList: " + slotItemList);
-
-            // textures to show whether a slot is ready or not
-            ItemStack ready = new ItemStack(net.minecraft.item.Items.LIME_STAINED_GLASS_PANE);
-            ItemStack notReady = new ItemStack(net.minecraft.item.Items.RED_STAINED_GLASS_PANE);
-
-            //125 = 18-(11-29)+12+4*18+5)  <-- offset for input slots
-            int y_val = 113 + y;
-            int offset = 0;
-
-            // loop over the slots and place the correct atom on the index
-            for (int P_slot : slotItemList) {
-                ItemStack temp = new ItemStack(DelegateSettings.ATOM_MAPPINGS.inverse().get(P_slot));
-                this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + offset, y_val);
-                offset += 18;
-            }
-
-            // create a new list where all the indexes of the ready slots are stored
-            List<Integer> readyIndex = new ArrayList<>();
-
-            // loop over the hashed indexes and retrieve the corresponding index from the map, then render it as 'ready'
-            for (int r : slotReadyList) {
-                offset = DelegateSettings.SLOT_MAPPINGS.inverse().get(r) * 18;
-                this.itemRenderer.renderInGuiWithOverrides(ready, x + 8 + offset, y_val);
-                readyIndex.add(DelegateSettings.SLOT_MAPPINGS.inverse().get(r));
-            }
-
-            // for each slot, check if it maybe isn't ready yet
-            for (int i = 0; i < slotItemList.size(); ++i) {
-                // if the slot isn't ready
-                if (!readyIndex.contains(i)) {
-                    this.itemRenderer.renderInGuiWithOverrides(notReady, x + 8 + i * 18, y_val);
-                }
-            }
-        }
+//        if (slotItems > 1 && this.getScreenHandler().isInputOpen()) {
+//            // hashed mappings for the slots
+//            List<Integer> slotItemList = this.getSlotList(slotItems);
+//            List<Integer> slotReadyList = this.getSlotList(slotReady);
+//            slotItemList.sort(Comparator.comparingInt(o -> o));
+////            Scicraft.LOGGER.info("slotList: " + slotItemList);
+//
+//            // textures to show whether a slot is ready or not
+//            ItemStack ready = new ItemStack(net.minecraft.item.Items.LIME_STAINED_GLASS_PANE);
+//            ItemStack notReady = new ItemStack(net.minecraft.item.Items.RED_STAINED_GLASS_PANE);
+//
+//            //125 = 18-(11-29)+12+4*18+5)  <-- offset for input slots
+//            int y_val = 113 + y;
+//            int offset = 0;
+//
+//            // loop over the slots and place the correct atom on the index
+//            for (int P_slot : slotItemList) {
+//                ItemStack temp = new ItemStack(DelegateSettings.ATOM_MAPPINGS.inverse().get(P_slot));
+//                this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + offset, y_val);
+//                offset += 18;
+//            }
+//
+//            // create a new list where all the indexes of the ready slots are stored
+//            List<Integer> readyIndex = new ArrayList<>();
+//
+//            // loop over the hashed indexes and retrieve the corresponding index from the map, then render it as 'ready'
+//            for (int r : slotReadyList) {
+//                offset = DelegateSettings.SLOT_MAPPINGS.inverse().get(r) * 18;
+//                this.itemRenderer.renderInGuiWithOverrides(ready, x + 8 + offset, y_val);
+//                readyIndex.add(DelegateSettings.SLOT_MAPPINGS.inverse().get(r));
+//            }
+//
+//            // for each slot, check if it maybe isn't ready yet
+//            for (int i = 0; i < slotItemList.size(); ++i) {
+//                // if the slot isn't ready
+//                if (!readyIndex.contains(i)) {
+//                    this.itemRenderer.renderInGuiWithOverrides(notReady, x + 8 + i * 18, y_val);
+//                }
+//            }
+//        }
 
     }
 
@@ -192,7 +205,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     }
 
     protected void setCorrectTexture() {
-        int textureID = handler.getPropertyDelegate(DelegateSettings.LCT_TEXTURE_ID);
+        int textureID = 1;
         if (textureID == 0) {
             this.currentTexture = TEXTURE2;
         } else if (textureID == 1) {

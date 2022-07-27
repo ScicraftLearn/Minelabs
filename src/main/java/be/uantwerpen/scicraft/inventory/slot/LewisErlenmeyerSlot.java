@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.inventory.slot;
 
 import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.inventory.Inventory;
@@ -12,7 +12,9 @@ public class LewisErlenmeyerSlot extends Slot {
         super(inventory, index, x, y);
     }
 
+    @Override
     public boolean canInsert(@NotNull ItemStack stack) {
         return stack.getItem().equals(Items.ERLENMEYER);
     }
+
 }

@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.inventory.slot;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -10,6 +10,7 @@ public class LewisCraftingResultSlot extends Slot {
         super(inventory, index, x, y);
     }
 
+    @Override
     public boolean canInsert(ItemStack stack) {
         return false;
     }
