@@ -64,6 +64,7 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).nonOpaque()), "lewis_block");
+    public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
 
 //    public static final Block ACID = Registry.register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
 

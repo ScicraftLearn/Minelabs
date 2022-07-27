@@ -5,12 +5,17 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class Screens {
 
     //public static final ScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(Scicraft.MOD_ID, "lewis_block"), LewisBlockScreenHandler::new);
 
     public static final ScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register(LewisBlockScreenHandler::new, "lewis_block");
+    public static final ScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER =  Registry.register(
+            Registry.SCREEN_HANDLER,
+            new Identifier(Scicraft.MOD_ID, "ionic_block"),
+            new ScreenHandlerType<>(IonicBlockScreenHandler::new));
 
     /**
      * Register a Screen

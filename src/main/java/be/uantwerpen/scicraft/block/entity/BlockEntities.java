@@ -20,6 +20,7 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
+    public static BlockEntityType<IonicBlockEntity> IONIC_BLOCK_ENTITY;
     
     static {
         PION_MINUS_BLOCK_ENTITY = register(
@@ -49,6 +50,10 @@ public class BlockEntities {
         CHARGED_PLACEHOLDER_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
                 "charged_placeholder_block_entity");
+
+        IONIC_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, "ionic_block"),
+                        FabricBlockEntityTypeBuilder.create(IonicBlockEntity::new,
+                                Blocks.IONIC_BLOCK).build(null));
     }
 
     /**
