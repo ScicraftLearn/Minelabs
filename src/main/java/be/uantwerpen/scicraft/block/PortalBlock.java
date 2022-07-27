@@ -57,26 +57,6 @@ public class PortalBlock extends Block{
         return super.onUse(state, world, pos, player, hand, hit);
     }
 
-    public static BlockPos getDest(BlockPos pos, World destWorld, boolean isInDimension) {
-        double y = 61;
-
-        if (!isInDimension) {
-            y = pos.getY();
-        }
-
-        BlockPos destPos = new BlockPos(pos.getX(), y, pos.getZ());
-        int tries = 0;
-        while ((!destWorld.getBlockState(destPos).isAir() && !destWorld.getBlockState(destPos)
-                .canBucketPlace(Fluids.WATER)) &&
-                (!destWorld.getBlockState(destPos.up()).isAir() && !destWorld.getBlockState(destPos.up())
-                        .canBucketPlace(Fluids.WATER)) && tries < 25) {
-            destPos = destPos.up(2);
-            tries++;
-        }
-
-        return destPos;
-    }
-
     private void teleportPlayer(World world, MinecraftServer server, ServerPlayerEntity serverPlayer, PlayerEntity player) {
         ServerWorld overWorld = server.getWorld(World.OVERWORLD);
         //If player is in subatomic dimension

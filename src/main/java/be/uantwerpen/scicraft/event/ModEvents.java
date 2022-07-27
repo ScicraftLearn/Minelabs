@@ -3,6 +3,9 @@ package be.uantwerpen.scicraft.event;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.TypedActionResult;
 
@@ -18,6 +21,9 @@ public class ModEvents {
                             return TypedActionResult.success(player.getStackInHand(hand));
                         }
                         else{
+                            if(stack.getItem().getGroup()== ItemGroup.BUILDING_BLOCKS){
+                                
+                            }
                             System.out.println("neen");
                             return TypedActionResult.fail(stack);
                         }
