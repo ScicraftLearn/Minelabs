@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "scicraft:block/quantumfield/gluon/down"
+    "all": "scicraft:block/atomic_floor"
   }
 }
