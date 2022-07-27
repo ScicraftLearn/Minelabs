@@ -1,27 +1,19 @@
 package be.uantwerpen.scicraft.block;
 
-import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.*;
-import net.minecraft.world.event.listener.GameEventListener;
-import org.jetbrains.annotations.Nullable;
 
 public class PortalBlock extends Block{
     public PortalBlock(Settings settings) {
