@@ -23,7 +23,6 @@ public class Scicraft implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Hello Scicraft world!");
 
-
         Items.registerItems();
         Blocks.registerBlocks();
         BlockEntities.registerBlockEntities();
@@ -32,7 +31,8 @@ public class Scicraft implements ModInitializer {
         SoundEvents.registerSounds();
         Paintings.registerPaintings();
 
-
         OreGenerations.generateOres();
+        ScientificVillager.registerVillagers();
+        ScientificVillager.registerTrades();
     }
 }
