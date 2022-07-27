@@ -69,15 +69,20 @@ public class ScicraftClient implements ClientModInitializer {
     private void registerEvents() {
         UseItemCallback.EVENT.register((player, item, hand) ->
                 {
+                    //Checks to prevent null errors
                     ItemStack stack=player.getMainHandStack();
-                    if(stack.getItem().getGroup()!=ItemGroups.ATOMS){
-                        System.out.println("Geen blokken toegelaten");
-                        return TypedActionResult.fail(stack);
+                    if(stack!=ItemStack.EMPTY || stack!=null){
+                        if(stack.getItem().getGroup()!=ItemGroups.ATOMS){
+                            System.out.println("Geen blokken toegelaten");
+                            return TypedActionResult.fail(stack);
+                        }
+                        else{
+                            System.out.println("Atomen mogen!");
+                            return TypedActionResult.consume(stack);
+                        }
                     }
-                    else{
-                        System.out.println("Atomen mogen!");
-                        //return TypedActionResult.pass(stack);
-                        return TypedActionResult.consume(stack);
+                    else {
+                        return TypedActionResult.pass(ItemStack.EMPTY);
                     }
                 }
         );

@@ -43,6 +43,8 @@ public class PortalBlock extends Block{
                         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
                         //Only teleport if an atom is used to right click
                         if (player.getStackInHand(hand).getItem().getGroup() == ItemGroups.ATOMS) {
+                            //Consume 1 atom and teleport the player
+                            useAtom(player);
                             teleportPlayer(world, server, serverPlayer, player);
                         } else {
                             System.out.println("geen atoom");
@@ -93,6 +95,7 @@ public class PortalBlock extends Block{
                     }
                 }
             }
+            //Consume 1 atom for teleport
             playerpos = null;
         }
         //If player is in overworld
@@ -104,7 +107,14 @@ public class PortalBlock extends Block{
                     serverPlayer.bodyYaw, serverPlayer.prevPitch);
             //Inventory gets saved and then cleared
             inv = serverPlayer.getInventory();
-            serverPlayer.getInventory().clear();
+            //serverPlayer.getInventory().clear();
+        }
+    }
+    private void useAtom(PlayerEntity player){
+        if(player.getMainHandStack().getCount()>1){
+            player.getMainHandStack().setCount(player.getMainHandStack().getCount()-1);
+        }else {
+            player.getMainHandStack().setCount(0);
         }
     }
 }
