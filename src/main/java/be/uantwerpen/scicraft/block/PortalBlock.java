@@ -1,7 +1,6 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
-import be.uantwerpen.scicraft.block.entity.PortalBlockEntity;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import net.minecraft.block.*;
@@ -24,7 +23,7 @@ import net.minecraft.world.*;
 import net.minecraft.world.event.listener.GameEventListener;
 import org.jetbrains.annotations.Nullable;
 
-public class PortalBlock extends BlockWithEntity implements BlockEntityProvider {
+public class PortalBlock extends Block{
     public PortalBlock(Settings settings) {
         super(settings);
     }
@@ -46,16 +45,7 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
                         if (player.getStackInHand(hand).getItem().getGroup() == ItemGroups.ATOMS) {
                             teleportPlayer(world, server, serverPlayer, player);
                         } else {
-                            System.out.println("blockinv");
-                            //NamedScreenHandlerFactory screenHandlerFactory=state.createScreenHandlerFactory(world,pos);
-                            //Currently not working
-                            if (inv != null) {
-                                BlockEntity blockEntity = world.getBlockEntity(pos);
-                                if (blockEntity instanceof PortalBlockEntity) {
-                                    ItemScatterer.spawn(world, pos, (PortalBlockEntity) blockEntity);
-                                    world.updateComparators(pos, this);
-                                }
-                            }
+                            System.out.println("geen atoom");
                         }
                         return ActionResult.SUCCESS;
                     }
@@ -116,44 +106,5 @@ public class PortalBlock extends BlockWithEntity implements BlockEntityProvider 
             inv = serverPlayer.getInventory();
             serverPlayer.getInventory().clear();
         }
-    }
-
-    //Will create the needed entity
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new PortalBlockEntity(pos, state);
-    }
-
-    //Important so block is visible
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-    //Drop items when portal is destroyed
-
-
-    @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof PortalBlockEntity) {
-                ItemScatterer.spawn(world, pos, (PortalBlockEntity) blockEntity);
-                world.updateComparators(pos, this);
-            }
-        }
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.ATOM_PORTAL, PortalBlockEntity::tick);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> GameEventListener getGameEventListener(ServerWorld world, T blockEntity) {
-        return super.getGameEventListener(world, blockEntity);
     }
 }
