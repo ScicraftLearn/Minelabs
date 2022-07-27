@@ -33,7 +33,6 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
     public void render(ElectricFieldSensorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         Vec3f field = entity.getField();
-        System.out.println(field);
         ItemStack stack = new ItemStack(Items.ELECTRON);
         matrices.push();
         matrices.translate(0.5, 0.5, 0.5);

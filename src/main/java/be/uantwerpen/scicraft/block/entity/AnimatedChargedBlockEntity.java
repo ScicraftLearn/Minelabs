@@ -30,6 +30,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
 
     @Override
     public void writeNbt(NbtCompound tag) {
+        tag.putBoolean("an", annihilation);
         tag.putLong("time", time);
         tag.putInt("md", movement_direction.getId());
         tag.put("rs",NbtHelper.fromBlockState(render_state));
@@ -39,6 +40,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     // Deserialize the BlockEntity
     @Override
     public void readNbt(NbtCompound tag) {
+        annihilation = tag.getBoolean("an");
         time = tag.getLong("time");
         movement_direction = Direction.byId(tag.getInt("md"));
         render_state = NbtHelper.toBlockState(tag.getCompound("rs"));
@@ -59,6 +61,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     public void tick(World world, BlockPos pos, BlockState state) {
         if (time == 0) {
             time = world.getTime();
+            world.updateListeners(pos,state,state,3);
         }
         if (!world.isClient) {
             if (world.getTime() - time > time_move_ticks) {
