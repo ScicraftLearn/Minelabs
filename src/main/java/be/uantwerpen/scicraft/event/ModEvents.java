@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.event;
 
+import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
@@ -17,10 +18,16 @@ public class ModEvents {
                     return ActionResult.FAIL;
                 }
             }else{
-                if(player.getStackInHand(hand).getItem().getGroup()!=ItemGroups.ATOMS){
+                //Extra check needed so player can right click atom on portal!
+                if(player.getStackInHand(hand).getItem().getGroup()==ItemGroups.ATOMS && block.getType().equals(Blocks.ATOM_PORTAL)){
                     return ActionResult.PASS;
                 }else{
-                    return ActionResult.FAIL;
+                    if(player.getStackInHand(hand).getItem().getGroup()==ItemGroups.ATOMS && !block.getType().equals(Blocks.ATOM_PORTAL)){
+                        return ActionResult.PASS;
+                    }
+                    else {
+                        return ActionResult.FAIL;
+                    }
                 }
             }
         });
