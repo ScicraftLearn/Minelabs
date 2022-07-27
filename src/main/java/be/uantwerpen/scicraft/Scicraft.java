@@ -4,6 +4,8 @@ import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.entity.ScientificVillager;
+import be.uantwerpen.scicraft.event.ModEvents;
+import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.paintings.Paintings;
 import be.uantwerpen.scicraft.screen.AtomPortalScreen;
@@ -12,9 +14,12 @@ import be.uantwerpen.scicraft.screen.ModScreenHandler;
 import be.uantwerpen.scicraft.sound.SoundEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.client.util.ScreenshotRecorder;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.TypedActionResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,5 +47,6 @@ public class Scicraft implements ModInitializer {
 
         ScientificVillager.registerVillagers();
         ScientificVillager.registerTrades();
+        ModEvents.registerEvents();
     }
 }

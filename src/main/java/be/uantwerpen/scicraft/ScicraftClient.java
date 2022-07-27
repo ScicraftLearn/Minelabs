@@ -4,6 +4,7 @@ import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.event.ModEvents;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
@@ -27,7 +28,7 @@ public class ScicraftClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
 
-        registerEvents();
+        ModEvents.registerEvents();
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());
@@ -64,23 +65,5 @@ public class ScicraftClient implements ClientModInitializer {
                 }
             });
         });
-    }
-
-    private void registerEvents() {
-        UseItemCallback.EVENT.register((player, item, hand) ->
-                {
-                    //Checks to prevent null errors
-                    ItemStack stack = player.getMainHandStack();
-                    if (stack.getItem().getGroup() == ItemGroups.ATOMS) {
-                        System.out.println("Atom baby!");
-                        return TypedActionResult.consume(stack);
-                    } else {
-                        System.out.println("No blocks");
-                        return TypedActionResult.pass(ItemStack.EMPTY);
-                    }
-
-                }
-        );
-
     }
 }
