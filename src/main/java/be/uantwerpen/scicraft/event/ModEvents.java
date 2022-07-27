@@ -18,17 +18,7 @@ public class ModEvents {
                     return ActionResult.FAIL;
                 }
             }else{
-                //Extra check needed so player can right click atom on portal!
-                if(player.getStackInHand(hand).getItem().getGroup()==ItemGroups.ATOMS && block.getType().equals(Blocks.ATOM_PORTAL)){
-                    return ActionResult.PASS;
-                }else{
-                    if(player.getStackInHand(hand).getItem().getGroup()==ItemGroups.ATOMS && !block.getType().equals(Blocks.ATOM_PORTAL)){
-                        return ActionResult.PASS;
-                    }
-                    else {
-                        return ActionResult.FAIL;
-                    }
-                }
+                return ActionResult.PASS;
             }
         });
     }
