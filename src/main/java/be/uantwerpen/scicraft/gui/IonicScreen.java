@@ -15,6 +15,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> {
 
     public IonicScreen(IonicBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
+        backgroundHeight += (18 * 3 + 4) + 7;
     }
 
     @Override

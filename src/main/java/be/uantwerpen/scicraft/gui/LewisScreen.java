@@ -37,6 +37,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
+        backgroundWidth +=(18 * 3 + 4) + 5;
 
         // Add button to clear input/grid
         registerButtonWidget();
