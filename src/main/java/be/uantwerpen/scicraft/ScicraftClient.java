@@ -30,6 +30,7 @@ public class ScicraftClient implements ClientModInitializer {
 
         ModEvents.registerEvents();
 
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR,RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_PLUS, RenderLayer.getCutout());
