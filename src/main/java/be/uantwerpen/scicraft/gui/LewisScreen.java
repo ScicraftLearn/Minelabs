@@ -16,20 +16,23 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 
 import java.util.*;
 
-public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler> {
+public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler>{
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
     private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
-    private LewisBlockEntity lewis;
     private Identifier currentTexture;
     private ButtonWidget buttonWidget;
     private boolean widgetTooltip = false;
@@ -37,10 +40,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.currentTexture = TEXTURE2;
-        BlockEntity be = MinecraftClient.getInstance().world.getBlockEntity(handler.pos);
-        if (be instanceof LewisBlockEntity lewis) {
-            this.lewis = lewis;
-        }
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
 
@@ -71,7 +70,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         buttonWidget.renderButton(matrices, mouseX, mouseY, delta);
 
         // get crafting progress and handle its
-        int cp = lewis.progress;
+        int cp = handler.getProgress();
         if (cp >= 0)
             drawTexture(matrices, x + 100, y + 51, 176, 0, cp, 20);
 
@@ -93,13 +92,22 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 
-        if (lewis.progress > -1) {
-            System.out.println(lewis.progress);
-            for (int i = 0; i < 9; i++) {
-                ItemStack temp = new ItemStack(Items.GREEN_STAINED_GLASS_PANE);
-                this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + 18*i, 133+y-20);
+        List<ItemStack> ingredients = handler.getIngredients();
+        System.out.println(handler.getIngredients());
+        for (int i = 0; i < ingredients.size(); i++) {
+            ItemStack temp = ingredients.get(i);
+            if (temp.isEmpty() || this.handler.getDensity() == 0) {
+                //handler.clearIngredients();
+                break;
             }
+            if (this.handler.getInventory().getStack(25 + i).getCount() < handler.getDensity()) {
+                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
+            } else {
+                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
+            }
+            this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + 18*i, 133+y-20);
         }
+
 
         /*
          * Render input slot overlays
@@ -161,9 +169,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         playerInventoryTitleY += 61;
 
         registerButtonWidget();
-
-        this.getScreenHandler().onContentChanged(handler.getInventory());
     }
+
 
     @SuppressWarnings("ConstantConditions")
     private void registerButtonWidget() {
@@ -211,31 +218,5 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         } else if (textureID == 1) {
             this.currentTexture = TEXTURE;
         }
-    }
-
-    protected List<Integer> getSlotList(int N) {
-        List<Integer> div = new ArrayList<>();
-        if (N <= 1) return div;
-
-        // count number of 2s that divide N
-        while (N % 2 == 0) {
-            N /= 2;
-            div.add(2);
-        }
-
-        // N must be odd at this point.
-        // So we can skip one element
-        for (int i = 3; i * i <= N; i = i + 2) {
-
-            while (N % i == 0) {
-                // divide the value of N
-                N = N / i;
-                div.add(i);
-            }
-        }
-
-        // add the remaining number to the vector
-        if (N != 1) div.add(N);
-        return div;
     }
 }

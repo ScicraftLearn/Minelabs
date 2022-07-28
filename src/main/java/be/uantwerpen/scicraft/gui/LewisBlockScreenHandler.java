@@ -1,11 +1,9 @@
 package be.uantwerpen.scicraft.gui;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
 import be.uantwerpen.scicraft.inventory.slot.LewisCraftingResultSlot;
 import be.uantwerpen.scicraft.inventory.slot.LewisErlenmeyerSlot;
 import be.uantwerpen.scicraft.inventory.slot.LewisGridSlot;
-import be.uantwerpen.scicraft.inventory.slot.LewisInputSlot;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.lewisrecipes.*;
@@ -17,8 +15,10 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.*;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -30,31 +30,23 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     private final ScreenHandlerContext context;
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
+    private LewisBlockEntity lewis;
     private Molecule currentMolecule;
-
-    public BlockPos pos;
     private final LewisCraftingResultSlot outputSlot;
     private final LewisErlenmeyerSlot erlenmeyerSlot;
-    private boolean locked;
-    private int slotsready;
+
 
     /**
      * This constructor gets called on the client when the server wants it to open the screenHandler<br>
      * The client will call the other constructor with an empty Inventory and the screenHandler will automatically
      * sync this empty inventory with the inventory on the server.
      *
-     * @param syncId          ID used to sync client and server handlers
-     * @param playerInventory Player's inventory to sync with screen's inventory slots
+     * @param syncId
+     * @param playerInventory
+     * @param buf
      */
-    public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
-        //this(syncId, playerInventory, new SimpleInventory(35));
-        this(syncId, playerInventory, ScreenHandlerContext.EMPTY, new SimpleInventory(36), new ArrayPropertyDelegate(1));
-        this.onContentChanged(inventory);
-    }
-
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId, playerInventory);
-        pos = buf.readBlockPos();
+        this(syncId, playerInventory, ScreenHandlerContext.EMPTY, new SimpleInventory(36), new ArrayPropertyDelegate(1), buf.readBlockPos());
     }
 
     /**
@@ -68,15 +60,16 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @param inventory        The BlockEntity's inventory
      * @param propertyDelegate PropertyDelegate is used to sync data across server and client side handlers
      */
-    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, ScreenHandlerContext context, Inventory inventory, PropertyDelegate propertyDelegate) {
+    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, ScreenHandlerContext context, Inventory inventory, PropertyDelegate propertyDelegate, BlockPos pos) {
         super(Screens.LEWIS_SCREEN_HANDLER, syncId);
         checkSize(inventory, 36);
         this.context = context;
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
-        pos = context.get((w,p) -> p).get();
-
-        this.currentMolecule = null;
+        BlockEntity be = playerInventory.player.world.getBlockEntity(pos);
+        if (be instanceof LewisBlockEntity lewis) {
+            this.lewis = lewis;
+        }
 
         this.addProperties(propertyDelegate);
         //some inventories do custom logic when a player opens it.
@@ -96,14 +89,35 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 this.addSlot(new LewisGridSlot(inventory, l + m * 5, 8 + l * 18, m * 18 - o) {
                     @Override
                     public boolean isLocked() {
-                        return LewisBlockScreenHandler.this.locked;
+                        return !isInputEmpty();
                     }
                 });
             }
         }
         // Lewis Crafting Table Inventory (9 input slots)
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new LewisInputSlot(inventory, m + 25, 8 + m * 18, 5 * 18 - o + 5));
+            this.addSlot(new Slot(inventory, m + 25, 8 + m * 18, 5 * 18 - o + 5) {
+                @Override
+                public boolean isEnabled() {
+                    return lewis.getIngredients().size() > 0;
+                }
+
+                @Override
+                public int getMaxItemCount(ItemStack stack) {
+                    if (lewis.getIngredients().size() > this.getIndex()-25) {
+                        return lewis.getDensity();
+                    }
+                    return 0;
+                }
+
+                @Override
+                public boolean canInsert(ItemStack stack) {
+                    if (lewis.getIngredients().size() > this.getIndex()-25) {
+                        return ItemStack.areItemsEqual(lewis.getIngredients().get(this.getIndex()-25),(stack));
+                    }
+                    return false;
+                }
+            });
         }
 
         // Lewis Crafting Table Inventory (1 output slot)
@@ -126,9 +140,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                handler.sendContentUpdates();
+                if (slotId < 25) {
+                    lewis.resetRecipe();
+                }
                 handler.onContentChanged(inventory);
-                handler.sendContentUpdates();
             }
 
             @Override
@@ -194,53 +209,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
         this.sendContentUpdates();
         return newStack;
-    }
-
-    /**
-     * Starts the crafting animation and stores the molecule that's being crafted
-     *
-     * @param molecule The {@link Molecule} that will be crafted once the animation is done
-     */
-    public void craftingAnimation(Molecule molecule) {
-        this.currentMolecule = molecule;
-    }
-
-    /**
-     * Gets called whenever the inventory gets changed
-     *
-     * @param inventory The changed inventory
-     */
-    @Override
-    public void onContentChanged(Inventory inventory) {
-        super.onContentChanged(inventory);
-
-        boolean inputEmpty = true;
-        for (int i = 25; i < 34; i++) {
-            if (this.getSlot(i).getStack().getCount() != 0) {
-                inputEmpty = false;
-                break;
-            }
-        }
-
-        this.locked = !inputEmpty;
-
-        Atom[][] atoms = new Atom[5][5];
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                Item item = this.inventory.getStack(i * 5 + j).getItem();
-                atoms[i][j] = item instanceof AtomItem ? ((AtomItem) item).getAtom() : null;
-            }
-        }
-
-        Map<Atom, Integer> ingredients = new HashMap<>();
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (atoms[i][j] != null)
-                    ingredients.put(atoms[i][j], ingredients.getOrDefault(atoms[i][j], 0) + 1);
-            }
-        }
-
-        context.run((world, pos) -> updateContent(world));
     }
 
     /**
@@ -355,32 +323,19 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    /**
-     * Opens the required input slots for the given {@link Atom}{@code s}
-     *
-     * @param atoms {@link List} of {@code Atoms} to allow in the slots
-     */
-    protected void openInputSlots(@NotNull List<Atom> atoms) {
-        int slotItems = 1;
-        for (int i = 0; i < atoms.size(); i++) {
-            Item atom = atoms.get(i).getItem();
-            ((LewisInputSlot) this.getSlot(i + 25)).setAllowedItem(atom);
-            this.sendContentUpdates();
-        }
-    }
-
-    /**
-     * Closes the input slots
-     */
-    protected void closeInputSlots() {
-        for (int i = 25; i < 34; i++) {
-            ((LewisInputSlot) this.getSlot(i)).setAllowedItem(null);
-            this.sendContentUpdates();
-        }
-        //closeErlenmeyer();
-    }
-
     public int getProgress() {
-        return this.propertyDelegate.get(0);
+        return this.lewis.progress;
+    }
+
+    public List<ItemStack> getIngredients() {
+        return lewis.getIngredients();
+    }
+
+    public int getDensity() {
+        return lewis.getDensity();
+    }
+
+    public void clearIngredients() {
+        lewis.clearIngredients();
     }
 }
