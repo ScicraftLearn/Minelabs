@@ -1,9 +1,7 @@
 package be.uantwerpen.scicraft.block.entity;
 
-import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
-import be.uantwerpen.scicraft.gui.LewisBlockScreenHandler;
+import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import net.minecraft.block.BlockState;

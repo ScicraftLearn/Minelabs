@@ -1,12 +1,10 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.gui.lewis_gui;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.lewisrecipes.BondManager;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
 import be.uantwerpen.scicraft.lewisrecipes.MoleculeItemGraph;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -14,7 +12,6 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
@@ -37,7 +34,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
-        backgroundWidth +=(18 * 3 + 4) + 5;
+
 
         // Add button to clear input/grid
         registerButtonWidget();

@@ -1,6 +1,8 @@
 package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler;
+import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;

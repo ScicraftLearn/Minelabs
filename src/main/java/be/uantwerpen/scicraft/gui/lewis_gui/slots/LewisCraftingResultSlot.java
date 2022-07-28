@@ -1,16 +1,15 @@
-package be.uantwerpen.scicraft.gui.slots;
+package be.uantwerpen.scicraft.gui.lewis_gui.slots;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
-public class IonicCraftingResultSlot extends Slot {
+public class LewisCraftingResultSlot extends Slot {
 
-    public IonicCraftingResultSlot(Inventory inventory, int index, int x, int y) {
+    public LewisCraftingResultSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
     }
 
-    @Override
     public boolean canInsert(ItemStack stack) {
         return false;
     }

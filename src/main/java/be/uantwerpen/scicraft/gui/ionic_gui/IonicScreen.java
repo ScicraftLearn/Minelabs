@@ -1,6 +1,5 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.gui.ionic_gui;
 
-import be.uantwerpen.scicraft.Scicraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -13,15 +12,18 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier("scicraft","textures/block/ioniccrafting/ionic_gui.png");
 
+    //just the height and width of the texture
     public IonicScreen(IonicBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        backgroundHeight += (18 * 3 + 4) + 7;
+        backgroundHeight = 200;
+        backgroundWidth =206;
     }
 
     @Override
     protected void init() {
         super.init();
-        titleX = (backgroundWidth-textRenderer.getWidth(title))/2;
+        playerInventoryTitleX = 22;
+        playerInventoryTitleY= 105;
     }
 
     @Override

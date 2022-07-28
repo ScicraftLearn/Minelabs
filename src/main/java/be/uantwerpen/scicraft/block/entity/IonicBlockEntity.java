@@ -1,10 +1,9 @@
 package be.uantwerpen.scicraft.block.entity;
 
-import be.uantwerpen.scicraft.gui.IonicBlockScreenHandler;
+import be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -20,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class IonicBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
 
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(27, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(29, ItemStack.EMPTY);
 
     public IonicBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.IONIC_BLOCK_ENTITY, pos, state);
@@ -33,7 +32,7 @@ public class IonicBlockEntity extends BlockEntity implements NamedScreenHandlerF
 
     @Override
     public Text getDisplayName() {
-        return Text.literal("test");
+        return Text.literal("Crafting");
     }
 
     @Nullable

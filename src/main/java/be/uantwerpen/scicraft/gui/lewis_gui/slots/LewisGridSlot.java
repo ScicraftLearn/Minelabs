@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.gui.lewis_gui.slots;
 
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;

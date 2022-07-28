@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.gui.lewis_gui.slots;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;

@@ -1,6 +1,5 @@
-package be.uantwerpen.scicraft.gui.slots;
+package be.uantwerpen.scicraft.gui.ionic_gui.slots;
 
-import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -13,6 +12,8 @@ public class IonicGridSlot extends Slot {
         super(inventory, index, x, y);
     }
 
+
+    //TODO change with recipes
     @Override
     public boolean canInsert(ItemStack stack) {
         return AbstractFurnaceBlockEntity.canUseAsFuel(stack);

@@ -1,6 +1,11 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.gui.lewis_gui;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.gui.Screens;
+import be.uantwerpen.scicraft.gui.lewis_gui.slots.LewisCraftingResultSlot;
+import be.uantwerpen.scicraft.gui.lewis_gui.slots.LewisErlenmeyerSlot;
+import be.uantwerpen.scicraft.gui.lewis_gui.slots.LewisGridSlot;
+import be.uantwerpen.scicraft.gui.lewis_gui.slots.LewisInputSlot;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.lewisrecipes.*;

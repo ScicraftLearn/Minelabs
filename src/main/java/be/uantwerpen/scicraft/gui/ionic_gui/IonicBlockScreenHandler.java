@@ -1,5 +1,6 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.gui.ionic_gui;
 
+import be.uantwerpen.scicraft.gui.Screens;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -13,18 +14,38 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     private final Inventory inventory;
 
     public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId,playerInventory,new SimpleInventory(27));
+        this(syncId,playerInventory,new SimpleInventory(29));
     }
 
     public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(Screens.IONIC_SCREEN_HANDLER, syncId);
-        checkSize(inventory, 27);
+        checkSize(inventory, 29);
         this.inventory=inventory;
         inventory.onOpen(playerInventory.player);
 
-        //custom slots
-        this.addSlot(new Slot(inventory,0,18,50));
-
+        //first 3x3 gridslots(left)
+        //14 is the x position where the top-left corner of the square for the item needs to be drawn, 18 is height of 1 square
+        //22 is the y position where the top-left corner of the square needs to be
+        for(int i = 0; i<3;i++){
+            for(int y = 0;y<3;y++){
+                this.addSlot(new Slot(inventory,i*3+y,14+y*18,22+i*18));
+            }
+        }
+        //second 3x3 gridslots(right)
+        for(int i = 0; i<3;i++){
+            for(int y = 0;y<3;y++){
+                this.addSlot(new Slot(inventory,i*3+y+9,87+y*18,22+i*18));
+            }
+        }
+        //row of inputslots
+        for(int i = 0; i<9;i++){
+            this.addSlot(new Slot(inventory,i+18,12+i*18,86));
+        }
+        //erlemeyer slot
+        this.addSlot(new Slot(inventory,27,178,86));
+        //result slot
+        this.addSlot(new Slot(inventory,28,176,40));
+        //add inventory and hotbar slots
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
 
@@ -60,17 +81,19 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         return newStack;
     }
 
+    private void addPlayerHotbar(PlayerInventory playerInventory) {
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i+29, 23 + i * 18, 176));
+        }
+    }
+
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9+29, 23 + l * 18, 118 + i * 18));
             }
         }
     }
 
-    private void addPlayerHotbar(PlayerInventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
-        }
-    }
+
 }
