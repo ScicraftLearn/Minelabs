@@ -6,7 +6,9 @@ import be.uantwerpen.scicraft.particle.Particles;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -15,7 +17,10 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Matrix3f;
+import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
@@ -24,6 +29,7 @@ import java.util.Random;
 public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockEntity> {
 
     private static ItemStack stack = ItemStack.EMPTY;
+    public static final Identifier BEAM_TEXTURE2 = new Identifier("scicraft:textures/block/helium.png");
 
     public MologramBlockRenderer(BlockEntityRendererFactory.Context ctx) {
     }
@@ -64,5 +70,32 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
                 be.uantwerpen.scicraft.block.Blocks.SPHERE.getDefaultState(), pos, world, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create());
         matrices.pop();
 
+        renderBeam(0.4f, 0.7f, pos, matrices, vertexConsumers);
+
+
+    }
+    private void renderBeam(float width, float height, BlockPos pos, MatrixStack matrices, VertexConsumerProvider vertexConsumers){
+        matrices.push();
+        matrices.translate(0.5,0.6,0.5);
+        renderBeamLayer(matrices, vertexConsumers.getBuffer(RenderLayer.getBeaconBeam(BEAM_TEXTURE2, true)), 1f, 1f, 1f, 1F, height, width, 1.0F, 0.0F, 0F, 1f);
+        matrices.pop();
+    }
+    private static void renderBeamLayer(MatrixStack matrices, VertexConsumer vertices, float red, float green, float blue, float alpha, float height, float width, float u1, float u2, float v1, float v2) {
+        MatrixStack.Entry entry = matrices.peek();
+        Matrix4f matrix4f = entry.getPositionMatrix();
+        Matrix3f matrix3f = entry.getNormalMatrix();
+        renderBeamFace(matrix4f, matrix3f, vertices, red, green, blue, alpha, height, width, -width, u1, u2, v1, v2);
+        renderBeamFace(matrix4f, matrix3f, vertices, red, green, blue, alpha, height, -width, -width, u1, u2, v1, v2);
+        renderBeamFace(matrix4f, matrix3f, vertices, red, green, blue, alpha, height, width, width, u1, u2, v1, v2);
+        renderBeamFace(matrix4f, matrix3f, vertices, red, green, blue, alpha, height, -width, width, u1, u2, v1, v2);
+    }
+    private static void renderBeamFace(Matrix4f positionMatrix, Matrix3f normalMatrix, VertexConsumer vertices, float red, float green, float blue, float alpha, float height, float x, float z, float u1, float u2, float v1, float v2) {
+        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, 0, 0, 0, u2, v1);
+        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, 0, 0, 0, u2, v2);
+        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, height, x, 0, u1, v2);
+        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, height, 0, z, u1, v1);
+    }
+    private static void renderBeamVertex(Matrix4f positionMatrix, Matrix3f normalMatrix, VertexConsumer vertices, float red, float green, float blue, float alpha, float y, float x, float z, float u, float v) {
+        vertices.vertex(positionMatrix, x, y, z).color(red, green, blue, alpha).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(15728880).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
     }
 }
