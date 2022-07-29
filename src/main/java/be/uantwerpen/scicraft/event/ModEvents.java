@@ -1,10 +1,13 @@
 package be.uantwerpen.scicraft.event;
 
+import be.uantwerpen.scicraft.block.AtomicFloor;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.util.ActionResult;
+import net.minecraft.world.WorldEvents;
 
 public class ModEvents {
     public static void registerEvents() {
@@ -19,6 +22,12 @@ public class ModEvents {
                 }
             }else{
                 return ActionResult.PASS;
+            }
+        });
+        ServerWorldEvents.UNLOAD.register((server,world)-> {
+            if(world.getDimensionKey().equals(ModDimensions.SUBATOM_KEY)){
+                System.out.println("clearing fields");
+                AtomicFloor.resetFields();
             }
         });
     }

@@ -6,7 +6,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class AtomicFloor extends Block {
-    private static int fields=0;
+    private static int fields;
 
     public AtomicFloor(Settings settings) {
         super(Settings.of(Material.BARRIER).nonOpaque());
@@ -57,5 +57,9 @@ public class AtomicFloor extends Block {
 
     public static int getFields() {
         return fields;
+    }
+
+    public static void resetFields(){
+        fields=0;
     }
 }

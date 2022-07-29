@@ -35,7 +35,7 @@ public class QuantumfieldBlock extends Block {
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        int destruction=r.nextInt(20);
+        int destruction = r.nextInt(20);
         tickLife -= destruction;
         //System.out.println("leventje weg");
         if (tickLife <= 0) {
@@ -43,7 +43,7 @@ public class QuantumfieldBlock extends Block {
             //System.out.println("field dood");
             AtomicFloor.decreaseFields();
         }
-        if(AtomicFloor.getFields()>=64){
+        if(AtomicFloor.getFields()>=64 && tickLife<=400){
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
         }
     }
