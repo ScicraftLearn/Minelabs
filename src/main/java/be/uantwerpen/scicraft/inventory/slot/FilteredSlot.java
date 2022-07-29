@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.inventory.slot;
 
-import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
@@ -8,6 +7,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
+/**
+ * Filtered slot
+ * Takes an {@link ItemStack} {@link Predicate} to determine if the item is valid
+ */
 public class FilteredSlot extends Slot {
 
     private final Predicate<ItemStack> filter;

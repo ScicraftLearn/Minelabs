@@ -22,16 +22,16 @@ import net.minecraft.util.collection.DefaultedList;
 
 import java.util.*;
 
+import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
+
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler>{
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
     private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
-    private Identifier currentTexture;
     private ButtonWidget buttonWidget;
     private boolean widgetTooltip = false;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        this.currentTexture = TEXTURE2;
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
 
@@ -48,11 +48,10 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
      */
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        this.setCorrectTexture();
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, currentTexture);
+        RenderSystem.setShaderTexture(0, getCorrectTexture());
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
         buttonWidget.renderButton(matrices, mouseX, mouseY, delta);
@@ -64,7 +63,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
         // Keep mapping between stack (in graph) and slots (for rendering)
         Map<ItemStack, Slot> stackToSlotMap = new HashMap<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < GRIDSIZE; i++) {
             stackToSlotMap.put(handler.getInventory().getStack(i), handler.getSlot(i));
         }
 
@@ -86,10 +85,10 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         DefaultedList<Ingredient> ingredients = handler.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
             ItemStack atom = ingredients.get(i).getMatchingStacks()[0];
-            if(this.handler.getDensity() == 0 || atom.isEmpty()) {
+            if(!this.handler.hasRecipe() || atom.isEmpty()) {
                 break;
             }
-            if (handler.getInventory().getStack(25+i).getCount() < handler.getDensity()) {
+            if (handler.getInventory().getStack(GRIDSIZE+i).getCount() < handler.getDensity()) {
                 this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
             } else {
                 this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
@@ -115,12 +114,12 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 button -> {
                     if (!widgetTooltip) return;
                     if (handler.isInputEmpty()) {
-                        for (int i = 0; i < 25; i++) {
+                        for (int i = 0; i < GRIDSIZE; i++) {
                             client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
                         }
                     } else {
                         for (int i = 0; i < 9; i++) {
-                            client.interactionManager.clickSlot(handler.syncId, i + 25, 0, SlotActionType.QUICK_MOVE, client.player);
+                            client.interactionManager.clickSlot(handler.syncId, i + GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
                         }
                     }
                 },
@@ -148,11 +147,11 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         }
     }
 
-    protected void setCorrectTexture() {
-        if (this.handler.getDensity() <= 0 ) {
-            this.currentTexture = TEXTURE2;
+    protected Identifier getCorrectTexture() {
+        if (!this.handler.hasRecipe() ) {
+            return TEXTURE2;
         } else {
-            this.currentTexture = TEXTURE;
+            return TEXTURE;
         }
     }
 }

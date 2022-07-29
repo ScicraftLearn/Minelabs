@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
+
 public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
     //Inventory of items
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(36, ItemStack.EMPTY);
@@ -168,7 +170,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             boolean correct = false;
             for (int i = 0; i < lewis.ingredients.size(); i++) {
                 correct = true;
-                if (!lewis.ingredients.get(i).test(lewis.inventory.get(25+i)) || lewis.inventory.get(25+i).getCount() < lewis.currentRecipe.getDensity()) {
+                if (!lewis.ingredients.get(i).test(lewis.inventory.get(GRIDSIZE+i)) || lewis.inventory.get(GRIDSIZE+i).getCount() < lewis.currentRecipe.getDensity()) {
                     correct = false; // not enough items
                     break;
                 }
@@ -190,7 +192,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                     lewis.inventory.get(34).increment(1);
                 }
                 for (int i = 0; i < lewis.ingredients.size(); i++) {
-                    lewis.inventory.get(25+i).decrement(lewis.density);
+                    lewis.inventory.get(GRIDSIZE+i).decrement(lewis.density);
                 }
                 lewis.resetRecipe();
             }
@@ -200,7 +202,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     public LewisCraftingGrid getLewisCraftingGrid() {
         List<ItemStack> stacks = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < GRIDSIZE; i++) {
             stacks.add(inventory.get(i));
         }
 //        Scicraft.LOGGER.info("stacks: " + stacks);
@@ -220,6 +222,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         buf.writeBlockPos(pos);
     }
 
+    //Reset the recipe
     public void resetRecipe() {
         this.currentRecipe = null;
         this.progress = -1;

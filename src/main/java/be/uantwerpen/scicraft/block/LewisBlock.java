@@ -27,6 +27,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
+
 public class LewisBlock extends BlockWithEntity {
 
     public LewisBlock(Settings settings) {
@@ -69,8 +71,8 @@ public class LewisBlock extends BlockWithEntity {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LewisBlockEntity lewisBlockEntity) {
                 DefaultedList<ItemStack> items = lewisBlockEntity.getItems();
-                SimpleInventory inventory = new SimpleInventory(items.size() - 25);
-                for (int i = 25; i < items.size(); i++)
+                SimpleInventory inventory = new SimpleInventory(items.size() - GRIDSIZE);
+                for (int i = GRIDSIZE; i < items.size(); i++)
                     inventory.addStack(items.get(i));
                 for (int i = 0; i < inventory.size(); i++)
                     ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStack(i));

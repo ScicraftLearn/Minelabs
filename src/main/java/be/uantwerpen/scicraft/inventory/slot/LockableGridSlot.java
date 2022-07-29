@@ -7,6 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 
+/**
+ * Lockable slot
+ * Only allows changes if unlocked
+ */
 public class LockableGridSlot extends Slot {
 
     public LockableGridSlot(Inventory inventory, int index, int x, int y) {

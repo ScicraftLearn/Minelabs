@@ -13,6 +13,8 @@ public class LewisCraftingGrid extends SimpleInventory {
 
     private PartialMolecule currentMolecule = null;
 
+    public static final int GRIDSIZE = 25;
+
     private static final int WIDTH = 5;
     private static final int HEIGHT = 5;
 

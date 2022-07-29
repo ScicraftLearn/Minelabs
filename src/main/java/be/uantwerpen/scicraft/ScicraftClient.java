@@ -5,7 +5,7 @@ import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.LewisScreen;
-import be.uantwerpen.scicraft.gui.Screens;
+import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.item.ItemModels;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.LewisDataPacket;
@@ -23,7 +23,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
@@ -79,7 +78,7 @@ public class ScicraftClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
 
         // Register rendering lewis crafting table inventory
-        HandledScreens.register(Screens.LEWIS_SCREEN_HANDLER, LewisScreen::new);
+        HandledScreens.register(ScreenHandlers.LEWIS_SCREEN_HANDLER, LewisScreen::new);
         ScreenEvents.BEFORE_INIT.register((a, screen, b, c) -> {
             if (screen instanceof LewisScreen)
                 ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));

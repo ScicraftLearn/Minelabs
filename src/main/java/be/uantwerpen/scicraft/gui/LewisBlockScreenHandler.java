@@ -23,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
+
 public class LewisBlockScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
@@ -59,7 +61,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @param propertyDelegate PropertyDelegate is used to sync data across server and client side handlers
      */
     public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate, BlockPos pos) {
-        super(Screens.LEWIS_SCREEN_HANDLER, syncId);
+        super(ScreenHandlers.LEWIS_SCREEN_HANDLER, syncId);
         checkSize(inventory, 36);
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
@@ -75,7 +77,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                if (slotId < 25) {
+                if (slotId < GRIDSIZE) {
                     lewis.resetRecipe();
                 }
                 handler.onContentChanged(inventory);
@@ -115,12 +117,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(inventory, m + 25, 8 + m * 18, 5 * 18 - o + 5) {//Anonymous implementation to link it to the slots.
                 @Override
                 public boolean isEnabled() {
-                    return getDensity() > 0; //Enabled if a recipe is found (so the density is larger than 0)
+                    return hasRecipe();
                 }
 
                 @Override
                 public int getMaxItemCount(ItemStack stack) {
-                    if (lewis.getIngredients().size() > this.getIndex()-25) { //Slot differnce of 25 due to the grid
+                    if (lewis.getIngredients().size() > this.getIndex()-GRIDSIZE) { //Slot differnce of GRIDSIZE due to the grid
                         return getDensity();
                     }
                     return 0;
@@ -128,8 +130,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
                 @Override
                 public boolean canInsert(ItemStack stack) {
-                    if (getIngredients().size() > this.getIndex()-25) {
-                        return getIngredients().get(this.getIndex()-25).test(stack);
+                    if (getIngredients().size() > this.getIndex()-GRIDSIZE) {
+                        return getIngredients().get(this.getIndex()-GRIDSIZE).test(stack);
                     }
                     return false;
                 }
@@ -185,7 +187,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     public ItemStack transferSlot(PlayerEntity player, int invSlot) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
-        if (invSlot < 25) {
+        if (invSlot < GRIDSIZE) {
             slot.setStack(itemStack);
             return itemStack;
         }
@@ -196,7 +198,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 if (!this.insertItem(itemStack2, this.inventory.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(itemStack2, 25, this.inventory.size(), false)) { //start from slot 25, this is outside of the grid.
+            } else if (!this.insertItem(itemStack2, GRIDSIZE, this.inventory.size(), false)) { //start from slot GRIDSIZE, this is outside of the grid.
                 return ItemStack.EMPTY;
             }
 
@@ -222,7 +224,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     @Override
     protected boolean insertItem(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
-        if(startIndex < 25) {
+        if(startIndex < GRIDSIZE) {
             return false;
         }
         return super.insertItem(stack, startIndex, endIndex, fromLast);
@@ -236,7 +238,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     @Override
     public boolean canInsertIntoSlot(Slot slot) {
-        if(slot.getIndex() > 24) {
+        if(slot.getIndex() > GRIDSIZE-1) {
             return false;
         }
         return super.canInsertIntoSlot(slot);
@@ -247,7 +249,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     protected boolean isInputEmpty() {
         for (int i = 0; i < 9; i++) {
-            if (!this.getSlot(i + 25).getStack().isEmpty()) return false;
+            if (!this.getSlot(i + GRIDSIZE).getStack().isEmpty()) return false;
         }
         return true;
     }
@@ -264,9 +266,14 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return propertyDelegate.get(1);
     }
 
+    //A recipe is found (so the density is larger than 0)
+    public boolean hasRecipe() {
+        return this.getDensity() > 0;
+    }
+
     public LewisCraftingGrid getLewisCraftingGrid() {
         List<ItemStack> stacks = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < GRIDSIZE; i++) {
             stacks.add(inventory.getStack(i));
         }
 //        Scicraft.LOGGER.info("stacks: " + stacks);
