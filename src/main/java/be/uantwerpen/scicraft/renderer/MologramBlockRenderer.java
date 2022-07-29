@@ -76,8 +76,9 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
     }
     private void renderBeam(float width, float height, BlockPos pos, MatrixStack matrices, VertexConsumerProvider vertexConsumers){
         matrices.push();
-        matrices.translate(0.5,0.6,0.5);
-        renderBeamLayer(matrices, vertexConsumers.getBuffer(RenderLayer.getBeaconBeam(BEAM_TEXTURE2, true)), 1f, 1f, 1f, 1F, height, width, 1.0F, 0.0F, 0F, 1f);
+        // Important: may not collide with model, otherwise we get rendering glitches
+        matrices.translate(0.5,12f/16f,0.5);
+        renderBeamLayer(matrices, vertexConsumers.getBuffer(RenderLayer.getBeaconBeam(BEAM_TEXTURE2, true)), 1f, 1f, 1f, .6F, height, width, 1.0F, 0.0F, 0F, 1f);
         matrices.pop();
     }
     private static void renderBeamLayer(MatrixStack matrices, VertexConsumer vertices, float red, float green, float blue, float alpha, float height, float width, float u1, float u2, float v1, float v2) {
@@ -94,8 +95,18 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
         renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, 0, 0, 0, u2, v2);
         renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, height, x, 0, u1, v2);
         renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, height, 0, z, u1, v1);
+
+        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, height, 0, z, u1, v1);
+        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, height, x, 0, u1, v2);
+        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, 0, 0, 0, u2, v2);
+        renderBeamVertex(positionMatrix, normalMatrix, vertices, red, green, blue, alpha, 0, 0, 0, u2, v1);
     }
     private static void renderBeamVertex(Matrix4f positionMatrix, Matrix3f normalMatrix, VertexConsumer vertices, float red, float green, float blue, float alpha, float y, float x, float z, float u, float v) {
         vertices.vertex(positionMatrix, x, y, z).color(red, green, blue, alpha).texture(u, v).overlay(OverlayTexture.DEFAULT_UV).light(15728880).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+    }
+
+    @Override
+    public boolean rendersOutsideBoundingBox(MologramBlockEntity blockEntity) {
+        return true;
     }
 }
