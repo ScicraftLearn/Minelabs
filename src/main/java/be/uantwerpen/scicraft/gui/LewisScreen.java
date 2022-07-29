@@ -1,28 +1,19 @@
 package be.uantwerpen.scicraft.gui;
 
-import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
+
 import be.uantwerpen.scicraft.lewisrecipes.BondManager;
-import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
 import be.uantwerpen.scicraft.lewisrecipes.MoleculeItemGraph;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerListener;
+import net.minecraft.recipe.Ingredient;;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
@@ -63,10 +54,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, currentTexture);
 
-        // executed in HandledScreen<? extends ScreenHandler> by minecraft itself
-//        (protected) int x = (width - backgroundWidth) / 2;
-//        (protected) int y = (height - backgroundHeight) / 2;
-
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
         buttonWidget.renderButton(matrices, mouseX, mouseY, delta);
 
@@ -98,8 +85,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
          */
         DefaultedList<Ingredient> ingredients = handler.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
-            ItemStack temp = ingredients.get(i).getMatchingStacks()[0];
-            if(this.handler.getDensity() == 0 || temp.isEmpty()) {
+            ItemStack atom = ingredients.get(i).getMatchingStacks()[0];
+            if(this.handler.getDensity() == 0 || atom.isEmpty()) {
                 break;
             }
             if (handler.getInventory().getStack(25+i).getCount() < handler.getDensity()) {
@@ -107,16 +94,13 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             } else {
                 this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
             }
-            this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + 18*i, 133+y-20);
+            this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
         }
     }
 
     @Override
     protected void init() {
         super.init();
-        // Center the title
-//        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-//        playerInventoryTitleX = (backgroundWidth - textRenderer.getWidth(playerInventoryTitle)) / 2;
 
         // move the title to the correct place
         playerInventoryTitleY += 61;
@@ -165,10 +149,9 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     }
 
     protected void setCorrectTexture() {
-        int textureID = 1;
-        if (textureID == 0) {
+        if (this.handler.getDensity() <= 0 ) {
             this.currentTexture = TEXTURE2;
-        } else if (textureID == 1) {
+        } else {
             this.currentTexture = TEXTURE;
         }
     }

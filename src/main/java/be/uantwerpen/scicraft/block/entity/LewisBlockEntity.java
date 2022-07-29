@@ -44,17 +44,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
+    //Inventory of items
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(36, ItemStack.EMPTY);
-    private DefaultedList<Ingredient> ingredients = DefaultedList.of();
-    private final RecipeManager.MatchGetter<LewisCraftingGrid, MoleculeRecipe> matchGetter;
-    public int progress = -1;
-
     //PropertyDelegate is an interface which is implemented inline here.
     //It can normally contain multiple integers as data identified by the index.
     private final PropertyDelegate propertyDelegate;
-    private MoleculeRecipe currentRecipe;
+    //List of needed input ingredients; Synced by LewisDataPacket
+    private DefaultedList<Ingredient> ingredients = DefaultedList.of();
+    private final RecipeManager.MatchGetter<LewisCraftingGrid, MoleculeRecipe> matchGetter;
+    //Progress of the recipe; -1 means not started; Synced by propertyDelegate
+    public int progress = -1;
+    //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int density;
-    private PartialMolecule partialMolecule;
+    //Current recipe selected; NOT synced
+    private MoleculeRecipe currentRecipe;
+
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(Entities.LEWIS_BLOCK_ENTITY, pos, state);
@@ -66,9 +70,9 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             public int get(int index) {
                 switch (index) {
                     case 0:
-                        return LewisBlockEntity.this.progress;
+                        return LewisBlockEntity.this.progress; //progress of the recipe
                     case 1:
-                        return LewisBlockEntity.this.density;
+                        return LewisBlockEntity.this.density; //Density (amount) of items needed for the recipe
                     default:
                         return 0;
                 }
@@ -109,7 +113,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         //We provide *this* to the screenHandler as our class Implements Inventory
         //Only the Server has the Inventory at the start, this will be synced to the client in the ScreenHandler
-        return new LewisBlockScreenHandler(syncId, playerInventory, ScreenHandlerContext.create(world, pos), this, propertyDelegate, pos);
+        return new LewisBlockScreenHandler(syncId, playerInventory, this, propertyDelegate, pos);
     }
 
     @Override
@@ -146,55 +150,52 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return super.createNbt();
     }
 
-    public void tick(World world, BlockPos pos, BlockState state) {
-        if (world.isClient) {
-            return;
-        }
+    public static void tick(World world, BlockPos pos, BlockState state, LewisBlockEntity lewis) {
         //No recipe loaded, try to load one.
-        if (currentRecipe == null) {
-            Optional<MoleculeRecipe> recipe = matchGetter.getFirstMatch(getLewisCraftingGrid(), world);
+        if (lewis.currentRecipe == null) {
+            Optional<MoleculeRecipe> recipe = lewis.matchGetter.getFirstMatch(lewis.getLewisCraftingGrid(), world);
             recipe.ifPresent(r -> {
-                this.ingredients = DefaultedList.ofSize(0);
-                this.currentRecipe = r;
-                this.ingredients = r.getIngredients();
-                this.density = r.getDensity();
-                LewisDataPacket packet = new LewisDataPacket(pos, this.ingredients);
+                lewis.ingredients = DefaultedList.ofSize(0);
+                lewis.currentRecipe = r;
+                lewis.ingredients = r.getIngredients();
+                lewis.density = r.getDensity();
+                LewisDataPacket packet = new LewisDataPacket(pos, lewis.ingredients); //custom packet to sync ingredients
                 packet.sent(world, pos);
             });
         }
         //recipe loaded, check if enough items
-        else if (this.inventory.get(34).isEmpty() || this.inventory.get(34).isOf(currentRecipe.getOutput().getItem())){ //can output
+        else if (lewis.inventory.get(34).isEmpty() || lewis.inventory.get(34).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
             boolean correct = false;
-            for (int i = 0; i < ingredients.size(); i++) {
+            for (int i = 0; i < lewis.ingredients.size(); i++) {
                 correct = true;
-                if (!ingredients.get(i).test(this.inventory.get(25+i)) || this.inventory.get(25+i).getCount() < currentRecipe.getDensity()) {
+                if (!lewis.ingredients.get(i).test(lewis.inventory.get(25+i)) || lewis.inventory.get(25+i).getCount() < lewis.currentRecipe.getDensity()) {
                     correct = false; // not enough items
                     break;
                 }
             }
-            if (this.progress > 0) {
-                this.progress = correct? progress : -1; //enough items? continue or reset;
+            if (lewis.progress > 0) {
+                lewis.progress = correct? lewis.progress : -1; //enough items? continue or reset;
             } else {
-                this.progress = correct? 0 : -1; //enough items? start or reset;
+                lewis.progress = correct? 0 : -1; //enough items? start or reset;
             }
         }
         //Busy crafting
-        if (this.progress > -1) {
-            this.progress += 1;
-            if (this.progress >= 23) { //Done crafting
-                if (this.inventory.get(34).isEmpty()) { //Set output slot
-                    this.inventory.set(34,currentRecipe.getOutput());
+        if (lewis.progress > -1) {
+            lewis.progress += 1;
+            if (lewis.progress >= 23) { //Done crafting
+                if (lewis.inventory.get(34).isEmpty()) { //Set output slot
+                    lewis.inventory.set(34, lewis.currentRecipe.getOutput());
                 }
                 else {
-                    this.inventory.get(34).increment(1);
+                    lewis.inventory.get(34).increment(1);
                 }
-                for (int i = 0; i < ingredients.size(); i++) {
-                    this.inventory.get(25+i).decrement(this.density);
+                for (int i = 0; i < lewis.ingredients.size(); i++) {
+                    lewis.inventory.get(25+i).decrement(lewis.density);
                 }
-                resetRecipe();
+                lewis.resetRecipe();
             }
         }
-        markDirty();
+        lewis.markDirty();
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
@@ -207,6 +208,13 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
     }
 
+    /**
+     * Provides a buffer to {@link LewisBlockScreenHandler}, to get the position of the blockentity
+     * The blockentity is used to get all needed values.
+     *
+     * @param player the player that is opening the screen
+     * @param buf    the packet buffer
+     */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(pos);

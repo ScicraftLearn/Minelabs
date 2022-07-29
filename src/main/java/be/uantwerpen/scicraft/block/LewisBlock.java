@@ -99,6 +99,6 @@ public class LewisBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, Entities.LEWIS_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
+        return checkType(type, Entities.LEWIS_BLOCK_ENTITY, world.isClient? null : LewisBlockEntity::tick); //Only tick server, the result will be synced in this case
     }
 }

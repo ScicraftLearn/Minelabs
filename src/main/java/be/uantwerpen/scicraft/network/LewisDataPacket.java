@@ -35,7 +35,7 @@ public class LewisDataPacket {
     }
 
     /**
-     * Handles recieving the packet.
+     * Handles receiving the packet.
      * Remember, this class is used on both sides, so it can't contain any client side only methods,
      * such as MinecraftClient and ClientPlayNetworkHandler.
      *

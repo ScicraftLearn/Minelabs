@@ -1,41 +1,35 @@
 package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
-import be.uantwerpen.scicraft.inventory.slot.LewisCraftingResultSlot;
-import be.uantwerpen.scicraft.inventory.slot.LewisErlenmeyerSlot;
-import be.uantwerpen.scicraft.inventory.slot.LewisGridSlot;
-import be.uantwerpen.scicraft.item.AtomItem;
+import be.uantwerpen.scicraft.inventory.slot.CraftingResultSlot;
+import be.uantwerpen.scicraft.inventory.slot.FilteredSlot;
+import be.uantwerpen.scicraft.inventory.slot.LockableGridSlot;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.lewisrecipes.*;
-import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.*;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 public class LewisBlockScreenHandler extends ScreenHandler {
 
-    private final ScreenHandlerContext context;
     private final Inventory inventory;
+    //PropertyDelegate that holds the progress and density
     private final PropertyDelegate propertyDelegate;
+    //The LewisBlockEntity that belongs to the screen. Can be used to get extra data, as long as that data is synced
     private LewisBlockEntity lewis;
-    private Molecule currentMolecule;
-    private final LewisCraftingResultSlot outputSlot;
-    private final LewisErlenmeyerSlot erlenmeyerSlot;
 
 
     /**
@@ -43,12 +37,15 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * The client will call the other constructor with an empty Inventory and the screenHandler will automatically
      * sync this empty inventory with the inventory on the server.
      *
+     * This constructor uses the buffer from {@link LewisBlockEntity#writeScreenOpeningData(ServerPlayerEntity, PacketByteBuf)}
+     * This gives it the Blockpos of the BlockEntity
+     *
      * @param syncId
      * @param playerInventory
      * @param buf
      */
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId, playerInventory, ScreenHandlerContext.EMPTY, new SimpleInventory(36), new ArrayPropertyDelegate(2), buf.readBlockPos());
+        this(syncId, playerInventory, new SimpleInventory(36), new ArrayPropertyDelegate(2), buf.readBlockPos());
     }
 
     /**
@@ -58,14 +55,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      *
      * @param syncId           ID used to sync client and server handlers
      * @param playerInventory  Player's inventory to sync with screen's inventory slots
-     * @param context          The BlockEntity's context for running functions on its world and position
      * @param inventory        The BlockEntity's inventory
      * @param propertyDelegate PropertyDelegate is used to sync data across server and client side handlers
      */
-    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, ScreenHandlerContext context, Inventory inventory, PropertyDelegate propertyDelegate, BlockPos pos) {
+    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate, BlockPos pos) {
         super(Screens.LEWIS_SCREEN_HANDLER, syncId);
         checkSize(inventory, 36);
-        this.context = context;
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         BlockEntity be = playerInventory.player.world.getBlockEntity(pos);
@@ -76,7 +71,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         //Register properties for syncing
         this.addProperties(propertyDelegate);
 
-        //Register slot listener, to reset the recipe if the items change
+        //Register slot listener, to reset the recipe if the items change, and sync
         this.addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
@@ -107,25 +102,25 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (5x5 grid)
         for (m = 0; m < 5; ++m) {
             for (l = 0; l < 5; ++l) {
-                this.addSlot(new LewisGridSlot(inventory, l + m * 5, 8 + l * 18, m * 18 - o) {
+                this.addSlot(new LockableGridSlot(inventory, l + m * 5, 8 + l * 18, m * 18 - o) {//Anonymous implementation to link it to the slots.
                     @Override
                     public boolean isLocked() {
-                        return !isInputEmpty();
+                        return !isInputEmpty(); //Locked if the input had items
                     }
                 });
             }
         }
         // Lewis Crafting Table Inventory (9 input slots)
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(inventory, m + 25, 8 + m * 18, 5 * 18 - o + 5) {
+            this.addSlot(new Slot(inventory, m + 25, 8 + m * 18, 5 * 18 - o + 5) {//Anonymous implementation to link it to the slots.
                 @Override
                 public boolean isEnabled() {
-                    return getDensity() > 0;
+                    return getDensity() > 0; //Enabled if a recipe is found (so the density is larger than 0)
                 }
 
                 @Override
                 public int getMaxItemCount(ItemStack stack) {
-                    if (lewis.getIngredients().size() > this.getIndex()-25) {
+                    if (lewis.getIngredients().size() > this.getIndex()-25) { //Slot differnce of 25 due to the grid
                         return getDensity();
                     }
                     return 0;
@@ -142,10 +137,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
 
         // Lewis Crafting Table Inventory (1 output slot)
-        this.outputSlot = (LewisCraftingResultSlot) this.addSlot(new LewisCraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18 - o));
+        this.addSlot(new CraftingResultSlot(inventory, 34, 8 + 7 * 18, 2 * 18 - o));
 
         // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
-        this.erlenmeyerSlot = (LewisErlenmeyerSlot) this.addSlot(new LewisErlenmeyerSlot(inventory, 35, 8 + 7 * 18, 2 * 18 - o + 36));
+        this.addSlot(new FilteredSlot(inventory, 35, 8 + 7 * 18, 2 * 18 - o + 36, s -> s.isOf(Items.ERLENMEYER)));
 
         //The player inventory (3x9 slots)
         for (m = 0; m < 3; ++m) {
@@ -179,8 +174,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return this.inventory.canPlayerUse(player);
     }
 
-    // Shift + Player Inv Slot
-
     /**
      * Gets called when a player shift clicks while the screen is open
      *
@@ -190,30 +183,63 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     @Override
     public ItemStack transferSlot(PlayerEntity player, int invSlot) {
-        if (invSlot < 25) {
-            return ItemStack.EMPTY;
-        }
-        ItemStack newStack = ItemStack.EMPTY;
+        ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
+        if (invSlot < 25) {
+            slot.setStack(itemStack);
+            return itemStack;
+        }
         if (slot.hasStack()) {
-            ItemStack originalStack = slot.getStack();
-            newStack = originalStack.copy();
+            ItemStack itemStack2 = slot.getStack();
+            itemStack = itemStack2.copy();
             if (invSlot < this.inventory.size()) {
-                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+                if (!this.insertItem(itemStack2, this.inventory.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
+            } else if (!this.insertItem(itemStack2, 25, this.inventory.size(), false)) { //start from slot 25, this is outside of the grid.
                 return ItemStack.EMPTY;
             }
 
-            if (originalStack.isEmpty()) {
+            if (itemStack2.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
         }
-        this.sendContentUpdates();
-        return newStack;
+
+        return itemStack;
+    }
+
+    /**
+     * Inserts the item into a slot, trying indexes from {@param startIndex} to {@param endIndex}.
+     * If {@param fromLast}, it goes from {@param endIndex} to {@param startIndex}.
+     *
+     * @param stack
+     * @param startIndex
+     * @param endIndex
+     * @param fromLast
+     * @return
+     */
+    @Override
+    protected boolean insertItem(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
+        if(startIndex < 25) {
+            return false;
+        }
+        return super.insertItem(stack, startIndex, endIndex, fromLast);
+    }
+
+    /**
+     * Called when dragging items in the inventory
+     *
+     * @param slot
+     * @return
+     */
+    @Override
+    public boolean canInsertIntoSlot(Slot slot) {
+        if(slot.getIndex() > 24) {
+            return false;
+        }
+        return super.canInsertIntoSlot(slot);
     }
 
     /**

@@ -10,9 +10,7 @@ import net.minecraft.util.registry.Registry;
 
 public class Screens {
 
-    //public static final ScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(Scicraft.MOD_ID, "lewis_block"), LewisBlockScreenHandler::new);
-
-    public static final ExtendedScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register((syncId, inventory, buf) -> new LewisBlockScreenHandler(syncId, inventory, buf), "lewis_block");
+    public static final ExtendedScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register(LewisBlockScreenHandler::new, "lewis_block");
 
     /**
      * Register a Screen
@@ -27,7 +25,9 @@ public class Screens {
     }
 
     /**
-     * Register a ExtendedScreen
+     * Register an {@link ExtendedScreenHandlerType}.
+     * This handler has an addition attribute to pass in a buffer with data,
+     * it uses to initially open.
      *
      * @param factory
      * @param identifier
