@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.dimension.ModDimensions;
+import be.uantwerpen.scicraft.event.ModEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class QuantumfieldBlock extends Block {
     //Ticklife for subatomic dimension
+    //Randomizing will give it a unique property
     java.util.Random r = new java.util.Random();
     private int tickLife = r.nextInt(6000);
 
@@ -35,16 +37,21 @@ public class QuantumfieldBlock extends Block {
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        //Get random destruction so every field acts differently
         int destruction = r.nextInt(20);
         tickLife -= destruction;
-        //System.out.println("leventje weg");
         if (tickLife <= 0) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
-            //System.out.println("field dood");
             AtomicFloor.decreaseFields();
         }
+        //If there are too many quantumfields, near death ones will be removed so new ones can spawn
         if(AtomicFloor.getFields()>=64 && tickLife<=400){
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
+        }
+        if(ModEvents.isOut){
+            if(AtomicFloor.getFields()>=64 && tickLife<=400){
+                world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            }
         }
     }
 }

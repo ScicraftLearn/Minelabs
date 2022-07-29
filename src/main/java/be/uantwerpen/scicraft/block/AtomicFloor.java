@@ -14,6 +14,7 @@ public class AtomicFloor extends Block {
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        //Spawn portal on 0,0 coords for ease of use
         if(pos.getX()==0 && pos.getZ()==0 && !(world.getBlockState(pos.up(1)).getBlock() instanceof PortalBlock)){
             pos=pos.up(1);
             world.setBlockState(pos,Blocks.ATOM_PORTAL.getDefaultState());
