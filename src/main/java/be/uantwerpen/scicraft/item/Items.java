@@ -85,6 +85,8 @@ public class Items {
     // helium gas
     public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.SCICRAFT)), "helium");
 
+    public static final Item BOHR_BLOCK = register(new BlockItem(Blocks.BOHR_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "bohr_block");
+
     /**
      * Register an Item
      *

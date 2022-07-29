@@ -64,6 +64,8 @@ public class Blocks {
     public static final Block HELIUM = register(new PionNulBlock(FabricBlockSettings.of(Material.AIR)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
+    public static final Block BOHR_BLOCK = register(new BohrBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "bohr_block");
+
     /**
      * Register a Block
      * <p>
