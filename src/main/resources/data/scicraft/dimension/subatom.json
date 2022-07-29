@@ -11,6 +11,10 @@
       "features": false,
       "layers": [
         {
+          "block": "minecraft:air",
+          "height": 64
+        },
+        {
           "block": "scicraft:atomic_floor",
           "height": 1
         }
