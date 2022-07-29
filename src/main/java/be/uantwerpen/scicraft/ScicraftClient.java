@@ -8,6 +8,7 @@ import be.uantwerpen.scicraft.gui.LewisScreen;
 import be.uantwerpen.scicraft.gui.Screens;
 import be.uantwerpen.scicraft.item.ItemModels;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.network.LewisDataPacket;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
@@ -73,6 +74,9 @@ public class ScicraftClient implements ClientModInitializer {
                 }
             });
         });
+
+        //Lewis Data Sync
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
 
         // Register rendering lewis crafting table inventory
         HandledScreens.register(Screens.LEWIS_SCREEN_HANDLER, LewisScreen::new);

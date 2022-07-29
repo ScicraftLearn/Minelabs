@@ -8,6 +8,8 @@ import be.uantwerpen.scicraft.inventory.ImplementedInventory;
 import be.uantwerpen.scicraft.lewisrecipes.DelegateSettings;
 import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
 import be.uantwerpen.scicraft.lewisrecipes.MoleculeRecipe;
+import be.uantwerpen.scicraft.lewisrecipes.PartialMolecule;
+import be.uantwerpen.scicraft.network.LewisDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -42,7 +44,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(45, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(36, ItemStack.EMPTY);
     private DefaultedList<Ingredient> ingredients = DefaultedList.of();
     private final RecipeManager.MatchGetter<LewisCraftingGrid, MoleculeRecipe> matchGetter;
     public int progress = -1;
@@ -52,6 +54,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private final PropertyDelegate propertyDelegate;
     private MoleculeRecipe currentRecipe;
     private int density;
+    private PartialMolecule partialMolecule;
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(Entities.LEWIS_BLOCK_ENTITY, pos, state);
@@ -64,6 +67,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 switch (index) {
                     case 0:
                         return LewisBlockEntity.this.progress;
+                    case 1:
+                        return LewisBlockEntity.this.density;
                     default:
                         return 0;
                 }
@@ -75,13 +80,16 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                     case 0:
                         LewisBlockEntity.this.progress = value;
                         break;
+                    case 1:
+                        LewisBlockEntity.this.density = value;
+                        break;
                     default:
                 }
             }
 
             @Override
             public int size() {
-                return 0;
+                return 2;
             }
         };
     }
@@ -142,37 +150,39 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         if (world.isClient) {
             return;
         }
+        //No recipe loaded, try to load one.
         if (currentRecipe == null) {
-            clearIngredients();
-            this.ingredients = DefaultedList.ofSize(0);
             Optional<MoleculeRecipe> recipe = matchGetter.getFirstMatch(getLewisCraftingGrid(), world);
             recipe.ifPresent(r -> {
+                this.ingredients = DefaultedList.ofSize(0);
                 this.currentRecipe = r;
                 this.ingredients = r.getIngredients();
                 this.density = r.getDensity();
+                LewisDataPacket packet = new LewisDataPacket(pos, this.ingredients);
+                packet.sent(world, pos);
             });
         }
-        else if (this.inventory.get(34).isEmpty() || this.inventory.get(34).isOf(currentRecipe.getOutput().getItem())){
-            clearIngredients();
+        //recipe loaded, check if enough items
+        else if (this.inventory.get(34).isEmpty() || this.inventory.get(34).isOf(currentRecipe.getOutput().getItem())){ //can output
             boolean correct = false;
             for (int i = 0; i < ingredients.size(); i++) {
                 correct = true;
                 if (!ingredients.get(i).test(this.inventory.get(25+i)) || this.inventory.get(25+i).getCount() < currentRecipe.getDensity()) {
-                    correct = false;
-                    ItemStack itemStack = ingredients.get(i).getMatchingStacks()[0];
-                    this.inventory.set(36+i, itemStack);
+                    correct = false; // not enough items
+                    break;
                 }
             }
             if (this.progress > 0) {
-                this.progress = correct? progress : -1;
+                this.progress = correct? progress : -1; //enough items? continue or reset;
             } else {
-                this.progress = correct? 0 : -1;
+                this.progress = correct? 0 : -1; //enough items? start or reset;
             }
         }
+        //Busy crafting
         if (this.progress > -1) {
             this.progress += 1;
-            if (this.progress >= 23) {
-                if (this.inventory.get(34).isEmpty()) {
+            if (this.progress >= 23) { //Done crafting
+                if (this.inventory.get(34).isEmpty()) { //Set output slot
                     this.inventory.set(34,currentRecipe.getOutput());
                 }
                 else {
@@ -181,15 +191,10 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 for (int i = 0; i < ingredients.size(); i++) {
                     this.inventory.get(25+i).decrement(this.density);
                 }
-                clearIngredients();
-                this.progress = -1;
-                this.currentRecipe = null;
-                this.ingredients = DefaultedList.ofSize(0);
-                this.density = 0;
+                resetRecipe();
             }
         }
         markDirty();
-        world.updateListeners(pos, state, state, 3);
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
@@ -202,10 +207,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
     }
 
-    public int getDensity() {
-        return density;
-    }
-
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(pos);
@@ -216,19 +217,14 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.progress = -1;
         this.ingredients = DefaultedList.ofSize(0);
         this.density = 0;
-        clearIngredients();
-        System.out.println(getIngredients());
         markDirty();
-        world.updateListeners(pos, getCachedState(), getCachedState(), 3);
     }
 
-    public List<ItemStack> getIngredients() {
-        return this.inventory.subList(36,45);
+    public void setIngredients(DefaultedList<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
-    public void clearIngredients() {
-        for (int i = 36; i < 45; i++) {
-            this.inventory.set(i, ItemStack.EMPTY);
-        }
+    public DefaultedList<Ingredient> getIngredients() {
+        return this.ingredients;
     }
 }

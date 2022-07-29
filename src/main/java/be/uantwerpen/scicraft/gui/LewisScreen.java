@@ -16,6 +16,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -92,70 +93,22 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 
-        List<ItemStack> ingredients = handler.getIngredients();
-        System.out.println(handler.getIngredients());
+        /*
+         * Render input slot overlays
+         */
+        DefaultedList<Ingredient> ingredients = handler.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
-            ItemStack temp = ingredients.get(i);
-            if (temp.isEmpty() || this.handler.getDensity() == 0) {
-                //handler.clearIngredients();
+            ItemStack temp = ingredients.get(i).getMatchingStacks()[0];
+            if(this.handler.getDensity() == 0 || temp.isEmpty()) {
                 break;
             }
-            if (this.handler.getInventory().getStack(25 + i).getCount() < handler.getDensity()) {
+            if (handler.getInventory().getStack(25+i).getCount() < handler.getDensity()) {
                 this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
             } else {
                 this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
             }
             this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + 18*i, 133+y-20);
         }
-
-
-        /*
-         * Render input slot overlays
-         */
-     //   int slotReady = this.handler.getPropertyDelegate(DelegateSettings.LCT_SLOT_READY);
-
-        // if it is allowed to put items in the input slots:
-//        if (slotItems > 1 && this.getScreenHandler().isInputOpen()) {
-//            // hashed mappings for the slots
-//            List<Integer> slotItemList = this.getSlotList(slotItems);
-//            List<Integer> slotReadyList = this.getSlotList(slotReady);
-//            slotItemList.sort(Comparator.comparingInt(o -> o));
-////            Scicraft.LOGGER.info("slotList: " + slotItemList);
-//
-//            // textures to show whether a slot is ready or not
-//            ItemStack ready = new ItemStack(net.minecraft.item.Items.LIME_STAINED_GLASS_PANE);
-//            ItemStack notReady = new ItemStack(net.minecraft.item.Items.RED_STAINED_GLASS_PANE);
-//
-//            //125 = 18-(11-29)+12+4*18+5)  <-- offset for input slots
-//            int y_val = 113 + y;
-//            int offset = 0;
-//
-//            // loop over the slots and place the correct atom on the index
-//            for (int P_slot : slotItemList) {
-//                ItemStack temp = new ItemStack(DelegateSettings.ATOM_MAPPINGS.inverse().get(P_slot));
-//                this.itemRenderer.renderInGuiWithOverrides(temp, x + 8 + offset, y_val);
-//                offset += 18;
-//            }
-//
-//            // create a new list where all the indexes of the ready slots are stored
-//            List<Integer> readyIndex = new ArrayList<>();
-//
-//            // loop over the hashed indexes and retrieve the corresponding index from the map, then render it as 'ready'
-//            for (int r : slotReadyList) {
-//                offset = DelegateSettings.SLOT_MAPPINGS.inverse().get(r) * 18;
-//                this.itemRenderer.renderInGuiWithOverrides(ready, x + 8 + offset, y_val);
-//                readyIndex.add(DelegateSettings.SLOT_MAPPINGS.inverse().get(r));
-//            }
-//
-//            // for each slot, check if it maybe isn't ready yet
-//            for (int i = 0; i < slotItemList.size(); ++i) {
-//                // if the slot isn't ready
-//                if (!readyIndex.contains(i)) {
-//                    this.itemRenderer.renderInGuiWithOverrides(notReady, x + 8 + i * 18, y_val);
-//                }
-//            }
-//        }
-
     }
 
     @Override

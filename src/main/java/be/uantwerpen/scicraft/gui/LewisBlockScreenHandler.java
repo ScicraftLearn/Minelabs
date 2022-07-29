@@ -7,7 +7,9 @@ import be.uantwerpen.scicraft.inventory.slot.LewisGridSlot;
 import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.lewisrecipes.*;
+import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -46,7 +48,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @param buf
      */
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId, playerInventory, ScreenHandlerContext.EMPTY, new SimpleInventory(36), new ArrayPropertyDelegate(1), buf.readBlockPos());
+        this(syncId, playerInventory, ScreenHandlerContext.EMPTY, new SimpleInventory(36), new ArrayPropertyDelegate(2), buf.readBlockPos());
     }
 
     /**
@@ -71,7 +73,26 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.lewis = lewis;
         }
 
+        //Register properties for syncing
         this.addProperties(propertyDelegate);
+
+        //Register slot listener, to reset the recipe if the items change
+        this.addListener(new ScreenHandlerListener() {
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                if (slotId < 25) {
+                    lewis.resetRecipe();
+                }
+                handler.onContentChanged(inventory);
+            }
+
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+                //maybe use later
+                handler.updateToClient();
+            }
+        });
+
         //some inventories do custom logic when a player opens it.
         inventory.onOpen(playerInventory.player);
 
@@ -99,21 +120,21 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(inventory, m + 25, 8 + m * 18, 5 * 18 - o + 5) {
                 @Override
                 public boolean isEnabled() {
-                    return lewis.getIngredients().size() > 0;
+                    return getDensity() > 0;
                 }
 
                 @Override
                 public int getMaxItemCount(ItemStack stack) {
                     if (lewis.getIngredients().size() > this.getIndex()-25) {
-                        return lewis.getDensity();
+                        return getDensity();
                     }
                     return 0;
                 }
 
                 @Override
                 public boolean canInsert(ItemStack stack) {
-                    if (lewis.getIngredients().size() > this.getIndex()-25) {
-                        return ItemStack.areItemsEqual(lewis.getIngredients().get(this.getIndex()-25),(stack));
+                    if (getIngredients().size() > this.getIndex()-25) {
+                        return getIngredients().get(this.getIndex()-25).test(stack);
                     }
                     return false;
                 }
@@ -136,24 +157,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (m = 0; m < 9; ++m) {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - o + 5));
         }
-
-        this.addListener(new ScreenHandlerListener() {
-            @Override
-            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                if (slotId < 25) {
-                    lewis.resetRecipe();
-                }
-                handler.onContentChanged(inventory);
-            }
-
-            @Override
-            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
-                //maybe use later
-                handler.updateToClient();
-            }
-        });
-
-        onContentChanged(inventory);
     }
 
     /**
@@ -187,7 +190,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     @Override
     public ItemStack transferSlot(PlayerEntity player, int invSlot) {
-        this.sendContentUpdates();
+        if (invSlot < 25) {
+            return ItemStack.EMPTY;
+        }
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot.hasStack()) {
@@ -212,95 +217,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     /**
-     * Creates a {@link LewisCraftingGrid} from the 5x5 grid
-     *
-     * @return the created {@code LewisCraftingGrid}
-     */
-    public LewisCraftingGrid getLewisCraftingGrid() {
-        List<ItemStack> stacks = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
-            stacks.add(inventory.getStack(i));
-        }
-//        Scicraft.LOGGER.info("stacks: " + stacks);
-
-        return new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
-    }
-
-    private void updateContent(World world) {
-//        LewisCraftingGrid grid = getLewisCraftingGrid();
-//        Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MOLECULE_CRAFTING, grid, world);
-//
-//
-//        if (recipe.isEmpty()) {
-//            if (isInputOpen()) closeInputSlots();
-//            return;
-//        }
-//
-//        MoleculeRecipe moleculeRecipe = recipe.get();
-//
-//        if (!isInputOpen() || !inventory.isEmpty()) {
-//            //Scicraft.LOGGER.info("Opening input");
-//            for (int m = 0; m < 9; ++m) {
-//                ((LewisInputSlot)getSlot(m + 25)).setDensity(moleculeRecipe.getDensity());
-//            }
-//
-//            ArrayList<Atom> atoms = new ArrayList<>(moleculeRecipe.getMolecule().getIngredients());
-//            atoms.sort(Comparator.comparingInt(a -> DelegateSettings.ATOM_MAPPINGS.get(a.getItem())));
-//            openInputSlots(atoms);
-//        }
-//
-//        if (hasCorrectInput(moleculeRecipe.getMolecule(),moleculeRecipe)) {
-//            ItemStack itemStack = new ItemStack(moleculeRecipe.getMolecule().getItem(), outputSlot.getStack().getCount());
-//            if (this.propertyDelegate.get(1) == -1 && (outputSlot.getStack().isEmpty() || ItemStack.areEqual(outputSlot.getStack(), itemStack)))
-//                this.craftingAnimation(moleculeRecipe.getMolecule());
-//        } else {
-//            //arrow is running but input is no longer valid
-//            if (this.propertyDelegate.get(0) >= 0 && this.propertyDelegate.get(0) < 23) {
-//                //stop crafting animation
-//                propertyDelegate.set(0, -1);
-//                this.currentMolecule = null;
-//            }
-//        }
-    }
-
-    private boolean hasCorrectInput(Molecule molecule,MoleculeRecipe moleculeRecipe) {
-        List<Atom> ingredients = new ArrayList<>(molecule.getIngredients());
-        ingredients.sort(Comparator.comparingInt(o -> DelegateSettings.ATOM_MAPPINGS.get(o.getItem())));
-        boolean isCorrect = true;
-        for (int i = 0; i < ingredients.size(); i++) {
-            ItemStack stack = inventory.getStack(i + 25);
-            if (stack == null || stack.isEmpty() || !ingredients.get(i).getItem().equals(stack.getItem()) || stack.getCount() != moleculeRecipe.getDensity()) {
-                isCorrect = false;
-            } else {
-
-            }
-        }
-        return isCorrect && erlenmeyerSlot.getStack().getItem().equals(Items.ERLENMEYER);
-    }
-
-    /**
-     * Sets the crafted item in the output slot,
-     * clears the input slots and clears the saved molecule
-     *
-     * @return Returns false if no molecule was saved (and the operation failed)
-     */
-    public boolean setOutput() {
-        if (currentMolecule == null) return false;
-        if (outputSlot.hasStack()) outputSlot.getStack().increment(1);
-        else outputSlot.setStack(currentMolecule.getItem().getDefaultStack());
-        clearInput(true);
-        currentMolecule = null;
-        return true;
-    }
-
-    /**
-     * @return Returns true if the input slots are enabled
-     */
-    protected boolean isInputOpen() {
-        return this.getSlot(25).isEnabled();
-    }
-
-    /**
      * @return Returns true if the input slots are empty
      */
     protected boolean isInputEmpty() {
@@ -310,32 +226,25 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return true;
     }
 
-    /**
-     * Clears the input slots
-     *
-     * @param erlenmeyer Whether to take an erlenmeyer out as well
-     *                   (if the recipe uses it)
-     */
-    protected void clearInput(boolean erlenmeyer) {
-        if (erlenmeyer) erlenmeyerSlot.getStack().decrement(1);
-        for (int i = 0; i < 9; i++) {
-            this.getSlot(i + 25).setStack(ItemStack.EMPTY);
-        }
-    }
-
     public int getProgress() {
-        return this.lewis.progress;
+        return propertyDelegate.get(0);
     }
 
-    public List<ItemStack> getIngredients() {
+    public DefaultedList<Ingredient> getIngredients() {
         return lewis.getIngredients();
     }
 
     public int getDensity() {
-        return lewis.getDensity();
+        return propertyDelegate.get(1);
     }
 
-    public void clearIngredients() {
-        lewis.clearIngredients();
+    public LewisCraftingGrid getLewisCraftingGrid() {
+        List<ItemStack> stacks = new ArrayList<>();
+        for (int i = 0; i < 25; i++) {
+            stacks.add(inventory.getStack(i));
+        }
+//        Scicraft.LOGGER.info("stacks: " + stacks);
+
+        return new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
     }
 }
