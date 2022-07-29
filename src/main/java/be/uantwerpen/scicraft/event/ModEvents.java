@@ -1,11 +1,9 @@
 package be.uantwerpen.scicraft.event;
 
-import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.item.Item;
 import net.minecraft.util.ActionResult;
 
 public class ModEvents {
