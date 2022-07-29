@@ -63,7 +63,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
-        super(Entities.LEWIS_BLOCK_ENTITY, pos, state);
+        super(BlockEntities.LEWIS_BLOCK_ENTITY, pos, state);
         this.matchGetter = RecipeManager.createCachedMatchGetter(MoleculeRecipe.MOLECULE_CRAFTING);
 
         propertyDelegate = new PropertyDelegate() {

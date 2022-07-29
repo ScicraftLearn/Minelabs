@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
 import be.uantwerpen.scicraft.entity.Entities;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -101,6 +102,6 @@ public class LewisBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, Entities.LEWIS_BLOCK_ENTITY, world.isClient? null : LewisBlockEntity::tick); //Only tick server, the result will be synced in this case
+        return checkType(type, BlockEntities.LEWIS_BLOCK_ENTITY, world.isClient? null : LewisBlockEntity::tick); //Only tick server, the result will be synced in this case
     }
 }
