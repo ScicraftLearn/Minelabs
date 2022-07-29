@@ -43,5 +43,8 @@ public class QuantumfieldBlock extends Block {
             //System.out.println("field dood");
             AtomicFloor.decreaseFields();
         }
+        if(AtomicFloor.getFields()>=64){
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+        }
     }
 }

@@ -5,7 +5,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-
 public class AtomicFloor extends Block {
     private static int fields=0;
 
@@ -15,6 +14,10 @@ public class AtomicFloor extends Block {
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        if(pos.getX()==0 && pos.getZ()==0 && !(world.getBlockState(pos.up(1)).getBlock() instanceof PortalBlock)){
+            pos=pos.up(1);
+            world.setBlockState(pos,Blocks.ATOM_PORTAL.getDefaultState());
+        }
         //System.out.println("random ding");
         java.util.Random r = new java.util.Random();
         int rvalue = r.nextInt(100000);
@@ -50,5 +53,9 @@ public class AtomicFloor extends Block {
     }
     public static void decreaseFields(){
         fields-=1;
+    }
+
+    public static int getFields() {
+        return fields;
     }
 }
