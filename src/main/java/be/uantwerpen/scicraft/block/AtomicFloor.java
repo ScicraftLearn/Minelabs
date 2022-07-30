@@ -7,10 +7,9 @@ import net.minecraft.world.World;
 
 public class AtomicFloor extends Block {
     private static int fields;
-    private static int portals=0;
 
-    public AtomicFloor(Settings settings) {
-        super(Settings.of(Material.BARRIER).nonOpaque());
+    public AtomicFloor() {
+        super(Settings.of(Material.AMETHYST).hardness(200f).strength(200f).nonOpaque());
     }
 
     @Override
