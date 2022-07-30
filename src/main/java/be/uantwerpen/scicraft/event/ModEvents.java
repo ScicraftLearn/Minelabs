@@ -1,13 +1,12 @@
 package be.uantwerpen.scicraft.event;
 
-import be.uantwerpen.scicraft.block.AtomicFloor;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -34,14 +33,13 @@ public class ModEvents {
                 return ActionResult.PASS;
             }
         });
-        /*
+        /*OLD CODE NO LONGER NEEDED
         //Removing fields when player leaves world
         ServerWorldEvents.UNLOAD.register((server, world) -> {
             if (world.getDimensionKey() == ModDimensions.DIMENSION_TYPE_KEY) {
                 AtomicFloor.resetFields();
             }
-        });*/
-        /*
+        });
         //Removing fields from counter when the chunk is unloaded
         ServerChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> {
             if (world.getDimensionKey() == ModDimensions.DIMENSION_TYPE_KEY) {
@@ -54,6 +52,10 @@ public class ModEvents {
             {
                 System.out.println("geladen?");
                 world.setBlockState(new BlockPos(0, 1, 0), Blocks.ATOM_PORTAL.getDefaultState());
+                for (PlayerEntity p:world.getPlayers()
+                     ) {
+                    //IMPLEMENT PLAYER CHANGES
+                }
             }
         }));
     }

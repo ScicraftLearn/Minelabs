@@ -6,7 +6,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class AtomicFloor extends Block {
-    private static int fields;
+    //private static int fields;
 
     public AtomicFloor() {
         super(Settings.of(Material.AMETHYST).hardness(200f).strength(200f).nonOpaque());
@@ -23,7 +23,7 @@ public class AtomicFloor extends Block {
             pos=pos.up(rheight);
             //System.out.println("height quantum:"+rheight);
             //Only change air blocks so other fields don't get replaced
-            if (world.getBlockState(pos) == net.minecraft.block.Blocks.AIR.getDefaultState() && (rvalue >= 1500 && rvalue < 1520) && fields < 2500) {
+            if (world.getBlockState(pos) == net.minecraft.block.Blocks.AIR.getDefaultState() && (rvalue >= 1500 && rvalue < 1520)) {
                 if (rvalue >= 1500 && rvalue < 1502) {
                     //System.out.println("Naar ELECTRON");
                     spawnCloud(world,pos, Blocks.ELECTRON_QUANTUMFIELD.getDefaultState());
@@ -46,12 +46,12 @@ public class AtomicFloor extends Block {
                     //System.out.println("Naar NEUTRINO");
                     spawnCloud(world,pos, Blocks.NEUTRINO_QUANTUMFIELD.getDefaultState());
                 }
-                fields += 1;
+                //fields += 1;
                 //System.out.println("fields:" + fields);
             }
         }
     }
-
+/*
     public static void decreaseFields() {
         fields -= 1;
     }
@@ -62,7 +62,7 @@ public class AtomicFloor extends Block {
 
     public static void resetFields() {
         fields = 0;
-    }
+    }*/
 
     //Spawning clouds will happen with this algorithm
     private void spawnCloud(World world,BlockPos pos,BlockState state){
@@ -83,11 +83,13 @@ public class AtomicFloor extends Block {
     }
     //Checking if there are no other clouds near
     private Boolean checkFields(BlockPos pos,World world){
-        pos=pos.south(10).west(10);
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                if(world.getBlockState(new BlockPos(i,pos.getY(),j)).getBlock() instanceof QuantumfieldBlock){
-                    return true;
+        pos=pos.south(20).west(20).down(20);
+        for (int k=pos.getY();k<40;k++){
+            for (int i = 0; i < 40; i++) {
+                for (int j = 0; j < 40; j++) {
+                    if(world.getBlockState(new BlockPos(i,pos.getY(),j)).getBlock() instanceof QuantumfieldBlock){
+                        return true;
+                    }
                 }
             }
         }
