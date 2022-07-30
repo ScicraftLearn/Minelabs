@@ -7,6 +7,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -41,16 +42,25 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             DefaultedList<ItemStack> neutronInventory = ((BohrBlockEntity) blockEntity).getNeutronInventory();
             DefaultedList<ItemStack> protonInventory = ((BohrBlockEntity) blockEntity).getProtonInventory();
             DefaultedList<ItemStack> electronInventory = ((BohrBlockEntity) blockEntity).getElectronInventory();
+
             ItemStack stack = player.getStackInHand(hand);
 
             if (stack.getItem() == Items.NEUTRON) {
-                checkInventory(player,hand,neutronInventory);
+                checkInventory(player, hand, neutronInventory);
                 return ActionResult.SUCCESS;
             } else if (stack.getItem() == Items.PROTON) {
                 checkInventory(player, hand, protonInventory);
                 return ActionResult.SUCCESS;
             } else if (stack.getItem() == Items.ELECTRON) {
                 checkInventory(player, hand, electronInventory);
+                return ActionResult.SUCCESS;
+            } else if (player.getStackInHand(hand).isEmpty()) {
+                //System.out.println("we zijn hier");
+                DefaultedList<ItemStack> allstacks = DefaultedList.ofSize(9);
+                allstacks.addAll(neutronInventory);
+                allstacks.addAll(protonInventory);
+                allstacks.addAll(electronInventory);
+                ItemScatterer.spawn(world, pos.up(1), allstacks);
                 return ActionResult.SUCCESS;
             }
         }

@@ -39,7 +39,7 @@ public class PortalBlock extends Block{
                         //Only teleport if an atom is used to right click
                         if (player.getStackInHand(hand).getItem().getGroup() == ItemGroups.ATOMS) {
                             //Consume 1 atom and teleport the player
-                            useAtom(player);
+                            //useAtom(player);
                             teleportPlayer(world, server, serverPlayer, player);
                         } else {
                             System.out.println("geen atoom");

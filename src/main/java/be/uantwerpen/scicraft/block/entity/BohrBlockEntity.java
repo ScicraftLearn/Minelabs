@@ -47,7 +47,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 
     @Override
     public void writeNbt(NbtCompound nbt) {
-        //super.writeNbt(nbt);
+        super.writeNbt(nbt);
         Inventories.writeNbt(nbt, this.protonInventory);
         Inventories.writeNbt(nbt, this.neutronInventory);
         Inventories.writeNbt(nbt, this.electronInventory);

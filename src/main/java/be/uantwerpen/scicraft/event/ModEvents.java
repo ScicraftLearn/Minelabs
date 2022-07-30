@@ -23,7 +23,7 @@ public class ModEvents {
             //Allowed items should be added within this if statement, itemgroups or specific blocks
             if (world.getRegistryKey() == ModDimensions.SUBATOM_KEY) {
                 if (stack.getItem().getGroup() == ItemGroups.ATOMS || stack.isOf(Items.ATOM_PORTAL)
-                        || stack.isOf(Items.BOHR_BLOCK) || stack.isOf(Items.ATOM_FLOOR)
+                        || stack.isOf(Items.BOHR_BLOCK) || stack.isOf(Items.ATOM_FLOOR) || stack.isEmpty()
                         || stack.isOf(Items.NEUTRON) || stack.isOf(Items.PROTON) || stack.isOf(Items.ELECTRON)) {
                     return ActionResult.PASS;
                 } else {
