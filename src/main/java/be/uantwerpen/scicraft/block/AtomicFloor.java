@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 
 public class AtomicFloor extends Block {
     private static int fields;
+    private static int portals=0;
 
     public AtomicFloor(Settings settings) {
         super(Settings.of(Material.BARRIER).nonOpaque());
@@ -14,10 +15,12 @@ public class AtomicFloor extends Block {
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        //NOT WORKING
         //Spawn portal on 0,0 coords for ease of use
-        if (pos.getX() == 0 && pos.getZ() == 0 && !(world.getBlockState(pos.up(1)).getBlock() instanceof PortalBlock)) {
+        if (pos.getX() == 0 && pos.getZ() == 0 && portals==0) {
             pos = pos.up(1);
             world.setBlockState(pos, Blocks.ATOM_PORTAL.getDefaultState());
+            portals+=1;
         }
         //System.out.println("random ding");
         java.util.Random r = new java.util.Random();

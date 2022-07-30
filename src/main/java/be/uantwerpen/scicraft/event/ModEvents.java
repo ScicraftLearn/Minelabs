@@ -5,10 +5,8 @@ import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
 
 public class ModEvents {
@@ -26,7 +24,8 @@ public class ModEvents {
                     return ActionResult.FAIL;
                 }
             }
-            else if(world.getRegistryKey()!=ModDimensions.SUBATOM_KEY && player.getStackInHand(hand).isOf(Items.BOHR_BLOCK)){
+            else if(world.getRegistryKey()!=ModDimensions.SUBATOM_KEY && (player.getStackInHand(hand).isOf(Items.BOHR_BLOCK)
+                    || player.getStackInHand(hand).isOf(Items.ATOM_FLOOR))){
                 return ActionResult.FAIL;
             }
             else{

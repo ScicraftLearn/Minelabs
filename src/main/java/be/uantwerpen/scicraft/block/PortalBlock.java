@@ -2,14 +2,18 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
+import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Position;
@@ -21,7 +25,6 @@ public class PortalBlock extends Block{
     }
 
     private Position playerpos = null;
-    private Inventory inv = null;
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos,
@@ -49,6 +52,14 @@ public class PortalBlock extends Block{
         return super.onUse(state, world, pos, player, hand, hit);
     }
 
+    @Override
+    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        ItemStack stack=new ItemStack(Items.ATOM_PORTAL);
+        Inventory inv=new SimpleInventory(stack);
+        ItemScatterer.spawn(world,pos,inv);
+        super.onBreak(world, pos, state, player);
+    }
+
     private void teleportPlayer(World world, MinecraftServer server, ServerPlayerEntity serverPlayer, PlayerEntity player) {
         ServerWorld overWorld = server.getWorld(World.OVERWORLD);
         //If player is in subatomic dimension
@@ -67,7 +78,6 @@ public class PortalBlock extends Block{
                     }
                 }
             }
-            //Consume 1 atom for teleport
             playerpos = null;
         }
         //If player is in overworld
@@ -77,9 +87,6 @@ public class PortalBlock extends Block{
             ServerWorld atomdim = server.getWorld(ModDimensions.SUBATOM_KEY);
             serverPlayer.teleport(atomdim, 0, 1, 0,
                     serverPlayer.bodyYaw, serverPlayer.prevPitch);
-            //Inventory gets saved and then cleared
-            inv = serverPlayer.getInventory();
-            //serverPlayer.getInventory().clear();
         }
     }
     private void useAtom(PlayerEntity player){
