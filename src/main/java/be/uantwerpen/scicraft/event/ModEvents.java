@@ -25,7 +25,11 @@ public class ModEvents {
                 }else {
                     return ActionResult.FAIL;
                 }
-            }else{
+            }
+            else if(world.getRegistryKey()!=ModDimensions.SUBATOM_KEY && player.getStackInHand(hand).isOf(Items.BOHR_BLOCK)){
+                return ActionResult.FAIL;
+            }
+            else{
                 return ActionResult.PASS;
             }
         });
