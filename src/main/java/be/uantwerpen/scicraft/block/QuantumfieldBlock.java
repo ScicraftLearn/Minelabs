@@ -21,7 +21,7 @@ public class QuantumfieldBlock extends Block {
     //Ticklife for subatomic dimension
     //Randomizing will give it a unique property
     java.util.Random r = new java.util.Random();
-    private int tickLife = r.nextInt(400,6000);
+    private int tickLife = r.nextInt(1000,6000);
 
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
@@ -50,7 +50,7 @@ public class QuantumfieldBlock extends Block {
             AtomicFloor.decreaseFields();
         }
         //If there are too many quantumfields, near death ones will be removed so new ones can spawn
-        if(AtomicFloor.getFields()>=64 && tickLife<=400){
+        if(AtomicFloor.getFields()>=2500 && tickLife<=400){
             world.breakBlock(pos, true);
         }
     }

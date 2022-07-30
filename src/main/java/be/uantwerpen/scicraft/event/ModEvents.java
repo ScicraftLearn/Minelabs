@@ -34,19 +34,20 @@ public class ModEvents {
                 return ActionResult.PASS;
             }
         });
-
+        /*
         //Removing fields when player leaves world
         ServerWorldEvents.UNLOAD.register((server, world) -> {
             if (world.getDimensionKey() == ModDimensions.DIMENSION_TYPE_KEY) {
                 AtomicFloor.resetFields();
             }
-        });
+        });*/
+        /*
         //Removing fields from counter when the chunk is unloaded
         ServerChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> {
             if (world.getDimensionKey() == ModDimensions.DIMENSION_TYPE_KEY) {
                 AtomicFloor.resetFields();
             }
-        });
+        });*/
         //Spawn portal on dimension load instead? done
         ServerWorldEvents.LOAD.register(((server, world) -> {
             if (world.getDimensionKey() == ModDimensions.DIMENSION_TYPE_KEY) ;

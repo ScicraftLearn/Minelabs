@@ -19,7 +19,7 @@ public class AtomicFloor extends Block {
         int rvalue = r.nextInt(90000);
         int rheight = r.nextInt(44);
         rheight=rheight-12;
-        if(rheight!=0){
+        if(rheight!=pos.getY()){
             pos=pos.up(rheight);
             //System.out.println("height quantum:"+rheight);
             //Only change air blocks so other fields don't get replaced
@@ -74,7 +74,9 @@ public class AtomicFloor extends Block {
                 int cloudx=r.nextInt(7)+pos.getX();
                 int cloudy=r.nextInt(5)+pos.getY();
                 int cloudz=r.nextInt(7)+pos.getZ();
-                world.setBlockState(new BlockPos(cloudx,cloudy,cloudz),state);
+                if(!world.getBlockState(new BlockPos(cloudx,cloudy,cloudz)).getBlock().equals(Blocks.ATOM_FLOOR)){
+                    world.setBlockState(new BlockPos(cloudx,cloudy,cloudz),state);
+                }
             }
         }
         //world.setBlockState(pos,state);
