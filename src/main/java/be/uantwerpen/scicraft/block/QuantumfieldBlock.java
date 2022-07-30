@@ -21,12 +21,17 @@ public class QuantumfieldBlock extends Block {
     //Ticklife for subatomic dimension
     //Randomizing will give it a unique property
     java.util.Random r = new java.util.Random();
-    private int tickLife = r.nextInt(6000);
+    private int tickLife = r.nextInt(400,6000);
 
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
         // Change the first value in strength to get the wanted mining speed
         super(FabricBlockSettings.of(Material.METAL).noCollision().strength(0.5f, 2.0f));
+    }
+
+    @Override
+    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        super.onBreak(world, pos, state, player);
     }
 
     @Override
@@ -41,17 +46,12 @@ public class QuantumfieldBlock extends Block {
         int destruction = r.nextInt(20);
         tickLife -= destruction;
         if (tickLife <= 0) {
-            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            world.breakBlock(pos,true);
             AtomicFloor.decreaseFields();
         }
         //If there are too many quantumfields, near death ones will be removed so new ones can spawn
         if(AtomicFloor.getFields()>=64 && tickLife<=400){
-            world.setBlockState(pos, Blocks.AIR.getDefaultState());
-        }
-        if(ModEvents.isOut){
-            if(AtomicFloor.getFields()>=64 && tickLife<=400){
-                world.setBlockState(pos, Blocks.AIR.getDefaultState());
-            }
+            world.breakBlock(pos, true);
         }
     }
 }
