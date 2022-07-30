@@ -37,57 +37,38 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if(blockEntity instanceof BohrBlockEntity){
+        if (blockEntity instanceof BohrBlockEntity) {
             DefaultedList<ItemStack> neutronInventory = ((BohrBlockEntity) blockEntity).getNeutronInventory();
             DefaultedList<ItemStack> protonInventory = ((BohrBlockEntity) blockEntity).getProtonInventory();
             DefaultedList<ItemStack> electronInventory = ((BohrBlockEntity) blockEntity).getElectronInventory();
             ItemStack stack = player.getStackInHand(hand);
 
             if (stack.getItem() == Items.NEUTRON) {
-                for (int i = 0; i < 3; i++) {
-                    if (neutronInventory.get(i).isEmpty()) {
-                        neutronInventory.set(i, (player.getStackInHand(hand).copy()));
-                        neutronInventory.get(i).setCount(1);
-                        return ActionResult.SUCCESS;
-                    }
-                    if (neutronInventory.get(i).getCount() < 64) {
-                        neutronInventory.get(i).setCount(neutronInventory.get(i).getCount() + 1);
-                        player.getStackInHand(hand).decrement(1);
-                        System.out.println("Slot holds : " + neutronInventory.get(i));
-                        return ActionResult.SUCCESS;
-                    }
-                }
-            }
-            else if(stack.getItem() == Items.PROTON){
-                for (int i = 0; i < 3; i++) {
-                    if (protonInventory.get(i).isEmpty()) {
-                        protonInventory.set(i, (player.getStackInHand(hand).copy()));
-                        protonInventory.get(i).setCount(1);
-                        return ActionResult.SUCCESS;
-                    }
-                    if (protonInventory.get(i).getCount() < 64) {
-                        protonInventory.get(i).setCount(neutronInventory.get(i).getCount() + 1);
-                        player.getStackInHand(hand).decrement(1);
-                        System.out.println("Slot holds : " + protonInventory.get(i));
-                        return ActionResult.SUCCESS;
-                    }
-                }
-            }else if(stack.getItem() == Items.ELECTRON){
-                for (int i = 0; i < 3; i++) {
-                    if (electronInventory.get(i).isEmpty()) {
-                        electronInventory.set(i, (player.getStackInHand(hand).copy()));
-                        electronInventory.get(i).setCount(1);
-                        return ActionResult.SUCCESS;
-                    }
-                    if (electronInventory.get(i).getCount() < 64) {
-                        electronInventory.get(i).setCount(electronInventory.get(i).getCount() + 1);
-                        player.getStackInHand(hand).decrement(1);
-                        System.out.println("Slot holds : " + electronInventory.get(i));
-                        return ActionResult.SUCCESS;
-                    }
-                }
+                checkInventory(player,hand,neutronInventory);
+                return ActionResult.SUCCESS;
+            } else if (stack.getItem() == Items.PROTON) {
+                checkInventory(player, hand, protonInventory);
+                return ActionResult.SUCCESS;
+            } else if (stack.getItem() == Items.ELECTRON) {
+                checkInventory(player, hand, electronInventory);
+                return ActionResult.SUCCESS;
             }
         }
         return ActionResult.SUCCESS;
+    }
+
+    //Made a new method to optimize (sorry Brentje xoxo Eliasje)
+    private void checkInventory(PlayerEntity player, Hand hand, DefaultedList<ItemStack> inventory) {
+        for (int i = 0; i < 3; i++) {
+            if (inventory.get(i).isEmpty()) {
+                inventory.set(i, (player.getStackInHand(hand).copy()));
+                inventory.get(i).setCount(1);
+            }
+            if (inventory.get(i).getCount() < 64) {
+                inventory.get(i).setCount(inventory.get(i).getCount() + 1);
+                player.getStackInHand(hand).decrement(1);
+                System.out.println("Slot holds : " + inventory.get(i));
+            }
+        }
     }
 }
