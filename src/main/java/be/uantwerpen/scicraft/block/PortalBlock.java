@@ -78,7 +78,6 @@ public class PortalBlock extends Block{
                     }
                 }
             }
-            playerpos = null;
         }
         //If player is in overworld
         else {
