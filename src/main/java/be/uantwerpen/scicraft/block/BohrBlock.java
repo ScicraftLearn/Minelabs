@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.item.Items;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,8 +19,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
-    public BohrBlock(Settings settings) {
-        super(settings);
+    public BohrBlock() {
+        super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque());
     }
 
     @Override
@@ -30,7 +31,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new BohrBlockEntity(pos,state);
+        return new BohrBlockEntity(pos, state);
     }
 
     @Override
@@ -40,20 +41,20 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
         DefaultedList<ItemStack> neutronInventory = ((BohrBlockEntity) blockEntity).getNeutronInventory();
 
-        if(!player.getStackInHand(hand).isEmpty()){
-            if(player.getStackInHand(hand).getItem()== Items.NEUTRON){
-                for(int i = 0; i<3; i++){
-                    if (neutronInventory.get(i).isEmpty()){
-                        neutronInventory.set(i,(player.getStackInHand(hand).copy()));
-                        neutronInventory.get(i).setCount(1);
-                        return ActionResult.SUCCESS;
-                    }
-                    if(neutronInventory.get(i).getCount()<64){
-                        neutronInventory.get(i).setCount(neutronInventory.get(i).getCount()+1);
-                        player.getStackInHand(hand).decrement(1);
-                        System.out.println("Slot holds : "+ neutronInventory.get(i));
-                        return ActionResult.SUCCESS;
-                    }
+        ItemStack stack = player.getStackInHand(hand);
+
+        if (stack.getItem() == Items.NEUTRON) {
+            for (int i = 0; i < 3; i++) {
+                if (neutronInventory.get(i).isEmpty()) {
+                    neutronInventory.set(i, (player.getStackInHand(hand).copy()));
+                    neutronInventory.get(i).setCount(1);
+                    return ActionResult.SUCCESS;
+                }
+                if (neutronInventory.get(i).getCount() < 64) {
+                    neutronInventory.get(i).setCount(neutronInventory.get(i).getCount() + 1);
+                    player.getStackInHand(hand).decrement(1);
+                    System.out.println("Slot holds : " + neutronInventory.get(i));
+                    return ActionResult.SUCCESS;
                 }
             }
         }
