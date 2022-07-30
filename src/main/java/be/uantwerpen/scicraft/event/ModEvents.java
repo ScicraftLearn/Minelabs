@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.event;
 
 import be.uantwerpen.scicraft.block.AtomicFloor;
+import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
@@ -8,6 +9,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.math.BlockPos;
 
 public class ModEvents {
     public static boolean isOut=false;
@@ -34,16 +36,24 @@ public class ModEvents {
         });
         //Removing fields when player leaves world
         ServerWorldEvents.UNLOAD.register((server,world)-> {
-            if(world.getDimensionKey().equals(ModDimensions.SUBATOM_KEY)){
+            if(world.getDimensionKey()==ModDimensions.DIMENSION_TYPE_KEY){
                 AtomicFloor.resetFields();
             }
         });
         //Removing fields from counter when the chunk is unloaded
         ServerChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> {
-            if(world.getDimensionKey().equals(ModDimensions.SUBATOM_KEY)){
+            if(world.getDimensionKey()==ModDimensions.DIMENSION_TYPE_KEY){
                 AtomicFloor.resetFields();
                 isOut=true;
             }
         });
+        //Spawn portal on dimension load instead? done
+        ServerWorldEvents.LOAD.register(((server, world) -> {
+            if(world.getDimensionKey()==ModDimensions.DIMENSION_TYPE_KEY);
+            {
+                System.out.println("geladen?");
+                world.setBlockState(new BlockPos(0,1,0), Blocks.ATOM_PORTAL.getDefaultState());
+            }
+        }));
     }
 }

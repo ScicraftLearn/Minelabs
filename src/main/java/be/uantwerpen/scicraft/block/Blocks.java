@@ -15,7 +15,7 @@ public class Blocks {
     //Atom portal to subatom dimension
     public static final Block ATOM_PORTAL = register(new PortalBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1.5f)),"atom_portal");
     //Atomic floor for atomic dimension
-    public static final Block ATOM_FLOOR = register(new AtomicFloor(FabricBlockSettings.of(Material.METAL).nonOpaque().strength(200f)),"atomic_floor");
+    public static final Block ATOM_FLOOR = register(new AtomicFloor(FabricBlockSettings.of(Material.METAL).requiresTool().nonOpaque().strength(200f)),"atomic_floor");
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block PION_NUL = register(new PionNulBlock(FabricBlockSettings.of(Material.WOOL)
