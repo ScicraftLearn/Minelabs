@@ -6,10 +6,8 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -35,11 +33,25 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         return new BohrBlockEntity(pos, state);
     }
 
+    private void printInventory(World world, BlockPos pos){
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof BohrBlockEntity) {
+            DefaultedList<ItemStack> neutronInventory = ((BohrBlockEntity) blockEntity).getNeutronInventory();
+            DefaultedList<ItemStack> protonInventory = ((BohrBlockEntity) blockEntity).getProtonInventory();
+            DefaultedList<ItemStack> electronInventory = ((BohrBlockEntity) blockEntity).getElectronInventory();
+
+            System.out.println(neutronInventory);
+            System.out.println(electronInventory);
+            System.out.println(protonInventory);
+        }
+    }
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof BohrBlockEntity) {
-            DefaultedList<ItemStack> neutronInventory = ((BohrBlockEntity) blockEntity).getNeutronInventory();
+
+                DefaultedList<ItemStack> neutronInventory = ((BohrBlockEntity) blockEntity).getNeutronInventory();
             DefaultedList<ItemStack> protonInventory = ((BohrBlockEntity) blockEntity).getProtonInventory();
             DefaultedList<ItemStack> electronInventory = ((BohrBlockEntity) blockEntity).getElectronInventory();
 
@@ -50,12 +62,14 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 return ActionResult.SUCCESS;
             } else if (stack.getItem() == Items.PROTON) {
                 checkInventory(player, hand, protonInventory);
+                this.printInventory(world,pos);
                 return ActionResult.SUCCESS;
             } else if (stack.getItem() == Items.ELECTRON) {
                 checkInventory(player, hand, electronInventory);
                 return ActionResult.SUCCESS;
             } else if (player.getStackInHand(hand).isEmpty()) {
                 //System.out.println("we zijn hier");
+                this.printInventory(world,pos);
                 DefaultedList<ItemStack> allstacks = DefaultedList.ofSize(9);
                 allstacks.addAll(neutronInventory);
                 allstacks.addAll(protonInventory);
@@ -63,6 +77,8 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 ItemScatterer.spawn(world, pos.up(1), allstacks);
                 return ActionResult.SUCCESS;
             }
+
+
         }
         return ActionResult.SUCCESS;
     }
@@ -72,7 +88,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         for (int i = 0; i < 3; i++) {
             if (inventory.get(i).isEmpty()) {
                 inventory.set(i, (player.getStackInHand(hand).copy()));
-                inventory.get(i).setCount(1);
+                inventory.get(i).setCount(0);
             }
             if (inventory.get(i).getCount() < 64) {
                 inventory.get(i).setCount(inventory.get(i).getCount() + 1);
