@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.crafting.ionic.CraftingRecipes;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.entity.ScientificVillager;
@@ -35,6 +36,7 @@ public class Scicraft implements ModInitializer {
         Paintings.registerPaintings();
 
         MoleculeRecipe.register();
+        CraftingRecipes.register();
 
         ScientificVillager.registerVillagers();
         ScientificVillager.registerTrades();

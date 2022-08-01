@@ -15,15 +15,19 @@ public class LewisCraftingGrid extends SimpleInventory {
 
     public static final int GRIDSIZE = 25;
 
-    private static final int WIDTH = 5;
-    private static final int HEIGHT = 5;
+    private int width = 5;
+    private int height = 5;
 
-    public LewisCraftingGrid() {
-        super(WIDTH * HEIGHT);
+    public LewisCraftingGrid(int width, int height) {
+        super(width * height);
+        this.width = width;
+        this.height = height;
     }
 
-    public LewisCraftingGrid(ItemStack... items) {
+    public LewisCraftingGrid(int width, int height, ItemStack... items) {
         super(items);
+        this.width = width;
+        this.height = height;
         markDirty();
     }
 
@@ -38,17 +42,17 @@ public class LewisCraftingGrid extends SimpleInventory {
     }
 
     public int toSlot(int x, int y) {
-        assert x >= 0 && x < WIDTH;
-        assert y >= 0 && y < HEIGHT;
-        return y * WIDTH + x;
+        assert x >= 0 && x < width;
+        assert y >= 0 && y < height;
+        return y * width + x;
     }
 
     private Collection<Integer> getNeighbourPositions(int x, int y) {
         List<Integer> slots = new ArrayList<>();
         if (x > 0) slots.add(toSlot(x - 1, y));
-        if (x < WIDTH - 1) slots.add(toSlot(x + 1, y));
+        if (x < width - 1) slots.add(toSlot(x + 1, y));
         if (y > 0) slots.add(toSlot(x, y - 1));
-        if (y < HEIGHT - 1) slots.add(toSlot(x, y + 1));
+        if (y < height - 1) slots.add(toSlot(x, y + 1));
         return slots;
     }
 
@@ -59,8 +63,8 @@ public class LewisCraftingGrid extends SimpleInventory {
         MoleculeItemGraph graph = new MoleculeItemGraph();
 
         // First build vertices
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 ItemStack stack = getStack(toSlot(x, y));
                 // We assume only AtomItems make it into the LCT.
                 if (stack.isEmpty()) continue;
@@ -70,8 +74,8 @@ public class LewisCraftingGrid extends SimpleInventory {
         }
 
         // Then connect them
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 ItemStack stack = getStack(toSlot(x, y));
                 if (stack.isEmpty()) continue;
                 MoleculeItemGraph.Vertex from = graph.getVertexOfItemStack(stack);

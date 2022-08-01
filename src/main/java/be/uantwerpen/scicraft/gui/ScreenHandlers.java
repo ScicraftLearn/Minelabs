@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft.gui;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler;
+import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.screen.ScreenHandler;
@@ -11,12 +12,8 @@ import net.minecraft.util.registry.Registry;
 
 public class ScreenHandlers {
 
-    //public static final ScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(Scicraft.MOD_ID, "lewis_block"), LewisBlockScreenHandler::new);
-    public static final ScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER =  Registry.register(
-            Registry.SCREEN_HANDLER,
-            new Identifier(Scicraft.MOD_ID, "ionic_block"),
-            new ScreenHandlerType<>(IonicBlockScreenHandler::new));
-    public static final ExtendedScreenHandlerType<be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register(be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler::new, "lewis_block");
+    public static final ExtendedScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register(LewisBlockScreenHandler::new, "lewis_block");
+    public static final ExtendedScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER = register(IonicBlockScreenHandler::new, "inonic_block");
 
     /**
      * Register a Screen

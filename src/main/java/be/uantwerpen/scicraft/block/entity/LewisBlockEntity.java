@@ -196,7 +196,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         }
 //        Scicraft.LOGGER.info("stacks: " + stacks);
 
-        return new LewisCraftingGrid(stacks.toArray(new ItemStack[0]));
+        return new LewisCraftingGrid(5, 5,stacks.toArray(new ItemStack[0]));
     }
 
     /**

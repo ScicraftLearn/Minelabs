@@ -2,14 +2,14 @@ package be.uantwerpen.scicraft.lewisrecipes;
 
 public class MoleculeRecipeJsonFormat {
 
-    MoleculeGraphJsonFormat structure;
+    public MoleculeGraphJsonFormat structure;
 
-    Integer density;
+    public Integer density;
 
-    Result result;
+    public Result result;
 
-    static class Result {
-        String item;
+    public static class Result {
+        public String item;
     }
 
 }
