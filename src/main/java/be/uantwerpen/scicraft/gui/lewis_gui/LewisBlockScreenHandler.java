@@ -1,11 +1,12 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.gui.lewis_gui;
 
 import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
+import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.inventory.slot.CraftingResultSlot;
 import be.uantwerpen.scicraft.inventory.slot.FilteredSlot;
 import be.uantwerpen.scicraft.inventory.slot.LockableGridSlot;
 import be.uantwerpen.scicraft.item.Items;
-import be.uantwerpen.scicraft.lewisrecipes.*;
+import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,14 +15,18 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.screen.*;
+import net.minecraft.screen.ArrayPropertyDelegate;
+import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
 
@@ -247,7 +252,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     /**
      * @return Returns true if the input slots are empty
      */
-    protected boolean isInputEmpty() {
+    public boolean isInputEmpty() {
         for (int i = 0; i < 9; i++) {
             if (!this.getSlot(i + GRIDSIZE).getStack().isEmpty()) return false;
         }

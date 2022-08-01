@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.gui;
+package be.uantwerpen.scicraft.gui.lewis_gui;
 
 
 import be.uantwerpen.scicraft.lewisrecipes.BondManager;
@@ -13,16 +13,18 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
+
 
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler>{
     private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");

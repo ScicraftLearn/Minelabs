@@ -4,8 +4,9 @@ import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.entity.Entities;
-import be.uantwerpen.scicraft.gui.LewisScreen;
 import be.uantwerpen.scicraft.gui.ScreenHandlers;
+import be.uantwerpen.scicraft.gui.ionic_gui.IonicScreen;
+import be.uantwerpen.scicraft.gui.lewis_gui.LewisScreen;
 import be.uantwerpen.scicraft.item.ItemModels;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.LewisDataPacket;
@@ -83,6 +84,9 @@ public class ScicraftClient implements ClientModInitializer {
             if (screen instanceof LewisScreen)
                 ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
         });
+
+        //Register rendering ionic block inventory
+        HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
 
 //        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LEWIS_BLOCK, RenderLayer.getTranslucent());
 

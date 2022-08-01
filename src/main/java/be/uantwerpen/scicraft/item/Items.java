@@ -7,7 +7,6 @@ import be.uantwerpen.scicraft.fluid.Fluids;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -106,6 +105,7 @@ public class Items {
     public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.SCICRAFT)), "helium");
 
     public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "lewis_block");
+    public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "ionic_block");
 
     // Erlenmeyer
     public static final Item ERLENMEYER = register(new Item(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64)), "erlenmeyer");
