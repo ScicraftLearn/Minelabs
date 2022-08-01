@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
 import be.uantwerpen.scicraft.entity.Entities;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -26,6 +27,8 @@ import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
 
 public class LewisBlock extends BlockWithEntity {
 
@@ -69,8 +72,8 @@ public class LewisBlock extends BlockWithEntity {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LewisBlockEntity lewisBlockEntity) {
                 DefaultedList<ItemStack> items = lewisBlockEntity.getItems();
-                SimpleInventory inventory = new SimpleInventory(items.size() - 25);
-                for (int i = 25; i < items.size(); i++)
+                SimpleInventory inventory = new SimpleInventory(items.size() - GRIDSIZE);
+                for (int i = GRIDSIZE; i < items.size(); i++)
                     inventory.addStack(items.get(i));
                 for (int i = 0; i < inventory.size(); i++)
                     ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStack(i));
@@ -99,6 +102,6 @@ public class LewisBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, Entities.LEWIS_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
+        return checkType(type, BlockEntities.LEWIS_BLOCK_ENTITY, world.isClient? null : LewisBlockEntity::tick); //Only tick server, the result will be synced in this case
     }
 }

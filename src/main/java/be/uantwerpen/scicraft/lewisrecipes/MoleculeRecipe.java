@@ -102,8 +102,6 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 
     public static class MoleculeRecipeSerializer implements RecipeSerializer<MoleculeRecipe> {
 
-        public HashMap<Atom, Integer> densities;
-
         private MoleculeRecipeSerializer() {}
 
         public static final MoleculeRecipeSerializer INSTANCE = new MoleculeRecipeSerializer();
