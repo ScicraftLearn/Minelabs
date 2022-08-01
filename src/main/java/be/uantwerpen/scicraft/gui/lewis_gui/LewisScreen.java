@@ -59,9 +59,11 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         buttonWidget.renderButton(matrices, mouseX, mouseY, delta);
 
         // get crafting progress and handle its
-        int cp = handler.getProgress();
-        if (cp >= 0)
-            drawTexture(matrices, x + 100, y + 51, 176, 0, cp, 20);
+//        int cp = handler.getProgress();
+//        if (cp >= 0) {
+//            drawTexture(matrices, x + 100, y + 51, 176, 0, cp, 20);
+//        }
+
 
         // Keep mapping between stack (in graph) and slots (for rendering)
         Map<ItemStack, Slot> stackToSlotMap = new HashMap<>();
@@ -150,6 +152,32 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     }
 
     protected Identifier getCorrectTexture() {
+        int cp = this.handler.getProgress();
+        if (cp != -1) {
+            if (cp == 0 || cp == 1) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp0.png");
+            } else if (cp == 2 || cp == 3) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp2.png");
+            } else if (cp == 4 || cp == 5) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp4.png");
+            } else if (cp == 6 || cp == 7) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp6.png");
+            } else if (cp == 8 || cp == 9) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp8.png");
+            } else if (cp == 10 || cp == 11) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp10.png");
+            } else if (cp == 12 || cp == 13) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp12.png");
+            } else if (cp == 14 || cp == 15) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp14.png");
+            } else if (cp == 16 || cp == 17) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp16.png");
+            } else if (cp == 18 || cp == 19) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp18.png");
+            } else if (cp >= 20) {
+                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp20.png");
+            }
+        }
         if (!this.handler.hasRecipe() ) {
             return TEXTURE2;
         } else {
