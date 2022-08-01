@@ -1,18 +1,25 @@
 package be.uantwerpen.scicraft.item;
 
+import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.ElectronEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class ElectronItem extends Item {
+public class ElectronItem extends BlockItem {
     public ElectronItem(Settings settings) {
-        super(settings);
+        super(Blocks.ELECTRON, settings);
     }
+
+    //@Override
+    //public ActionResult useOnBlock(ItemUsageContext context) {
+    //    context.getWorld().setBlockState(new ItemPlacementContext(context).getBlockPos(), Blocks.ELECTRON.getDefaultState());
+    //    return ActionResult.SUCCESS;
+    //}
 
     /**
      * When ElectronItem is right-clicked, use up the item if necessary and spawn the entity
