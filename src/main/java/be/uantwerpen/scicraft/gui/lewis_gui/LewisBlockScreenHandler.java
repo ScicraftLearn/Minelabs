@@ -30,6 +30,9 @@ import java.util.List;
 
 public class LewisBlockScreenHandler extends ScreenHandler {
 
+    // size of inventory without grid
+    private final int INVENTORY_SIZE = 11;
+
     private final LewisCraftingGrid craftingGrid;
 
     private final Inventory ioInventory;
@@ -197,7 +200,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         if (slot.hasStack()) {
             ItemStack itemStack2 = slot.getStack();
             itemStack = itemStack2.copy();
-            if (!this.insertItem(itemStack2, GRIDSIZE, GRIDSIZE + this.ioInventory.size(), false)) { //start from slot GRIDSIZE, this is outside of the grid.
+            if (invSlot < GRIDSIZE + INVENTORY_SIZE) {
+                if (!this.insertItem(itemStack2, GRIDSIZE + INVENTORY_SIZE, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.insertItem(itemStack2, GRIDSIZE, GRIDSIZE + INVENTORY_SIZE, false)) { //start from slot GRIDSIZE, this is outside of the grid.
                 return ItemStack.EMPTY;
             }
 
@@ -210,6 +217,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         return itemStack;
     }
+
 
     /**
      * Inserts the item into a slot, trying indexes from {@param startIndex} to {@param endIndex}.
