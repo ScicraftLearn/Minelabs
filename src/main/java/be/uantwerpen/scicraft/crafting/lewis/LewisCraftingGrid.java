@@ -5,15 +5,18 @@ import be.uantwerpen.scicraft.crafting.molecules.Bond;
 import be.uantwerpen.scicraft.crafting.molecules.MoleculeItemGraph;
 import be.uantwerpen.scicraft.crafting.molecules.PartialMolecule;
 import be.uantwerpen.scicraft.item.AtomItem;
-import net.minecraft.inventory.SimpleInventory;
+import be.uantwerpen.scicraft.inventory.OrderedInventory;
 import net.minecraft.item.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
-public class LewisCraftingGrid extends SimpleInventory {
+public class LewisCraftingGrid extends OrderedInventory {
 
-    private PartialMolecule currentMolecule = null;
+    private PartialMolecule currentMolecule = new PartialMolecule();
 
     private int width = 5;
     private int height = 5;
