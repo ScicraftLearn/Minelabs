@@ -197,12 +197,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         if (slot.hasStack()) {
             ItemStack itemStack2 = slot.getStack();
             itemStack = itemStack2.copy();
-            if (invSlot - GRIDSIZE < this.ioInventory.size()) {
-                // TODO: the statement below doesn't seem to do anything (inventory size and slot size should be equal).
-                if (!this.insertItem(itemStack2, this.ioInventory.size(), this.slots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.insertItem(itemStack2, GRIDSIZE, this.ioInventory.size(), false)) { //start from slot GRIDSIZE, this is outside of the grid.
+            if (!this.insertItem(itemStack2, GRIDSIZE, GRIDSIZE + this.ioInventory.size(), false)) { //start from slot GRIDSIZE, this is outside of the grid.
                 return ItemStack.EMPTY;
             }
 
