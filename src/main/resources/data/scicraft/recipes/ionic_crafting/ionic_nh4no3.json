@@ -7,32 +7,36 @@
         {"key":  "H1", "atom":  "H"},
         {"key":  "H2", "atom":  "H"},
         {"key":  "H3", "atom":  "H"},
+        {"key":  "H4", "atom":  "H"},
         {"key":  "N1", "atom":  "N"}
       ],
       "bonds": [
         {"from": "H1", "to": "N1", "bondOrder": 1},
         {"from": "H2", "to": "N1", "bondOrder": 1},
-        {"from": "H3", "to": "N1", "bondOrder": 1}
+        {"from": "H3", "to": "N1", "bondOrder": 1},
+        {"from": "H4", "to": "N1", "bondOrder": 1}
       ]
     },
-    "density": 8
+    "density": 8,
+    "charge": 1
   },
   "right": {
     "structure":
     {
       "atoms": [
-        {"key":  "H1", "atom":  "H"},
-        {"key":  "H2", "atom":  "H"},
-        {"key":  "H3", "atom":  "H"},
+        {"key":  "O1", "atom":  "O"},
+        {"key":  "O2", "atom":  "O"},
+        {"key":  "O3", "atom":  "O"},
         {"key":  "N1", "atom":  "N"}
       ],
       "bonds": [
-        {"from": "H1", "to": "N1", "bondOrder": 1},
-        {"from": "H2", "to": "N1", "bondOrder": 1},
-        {"from": "H3", "to": "N1", "bondOrder": 1}
+        {"from": "O1", "to": "N1", "bondOrder": 2},
+        {"from": "O2", "to": "N1", "bondOrder": 1},
+        {"from": "O3", "to": "N1", "bondOrder": 1}
       ]
     },
-    "density": 8
+    "density": 8,
+    "charge": 1
   },
   "result": {
     "item": "scicraft:erlenmeyer_nh3"

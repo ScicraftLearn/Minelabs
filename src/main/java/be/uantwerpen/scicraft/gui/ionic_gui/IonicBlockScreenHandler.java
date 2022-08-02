@@ -1,7 +1,7 @@
 package be.uantwerpen.scicraft.gui.ionic_gui;
 
-import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.entity.IonicBlockEntity;
+import be.uantwerpen.scicraft.crafting.ionic.IonicInventory;
 import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.inventory.slot.CraftingResultSlot;
 import be.uantwerpen.scicraft.inventory.slot.FilteredSlot;
@@ -10,14 +10,13 @@ import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -25,18 +24,18 @@ import net.minecraft.util.math.BlockPos;
 public class IonicBlockScreenHandler extends ScreenHandler {
 
     public static final int GRIDSIZE = 9;
-    private final Inventory inventory;
+    private final IonicInventory inventory;
     private IonicBlockEntity ionic;
     private final PropertyDelegate propertyDelegate;
 
     public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buff) {
-        this(syncId,playerInventory,new SimpleInventory(29), new ArrayPropertyDelegate(3), buff.readBlockPos());
+        this(syncId,playerInventory,new IonicInventory(9, 9, 11), new ArrayPropertyDelegate(5), buff.readBlockPos());
     }
 
-    public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate, BlockPos pos) {
+    public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory, IonicInventory inventory, PropertyDelegate propertyDelegate, BlockPos pos) {
         super(ScreenHandlers.IONIC_SCREEN_HANDLER, syncId);
         checkSize(inventory, 29);
-        this.inventory=inventory;
+        this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         BlockEntity be = playerInventory.player.world.getBlockEntity(pos);
         if (be instanceof IonicBlockEntity ionic) {
@@ -44,6 +43,20 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         }
 
         this.addProperties(propertyDelegate);
+
+        this.addListener(new ScreenHandlerListener() {
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                if (slotId < GRIDSIZE*2) {
+                    ionic.resetRecipe();
+                }
+            }
+
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+
+            }
+        });
 
         inventory.onOpen(playerInventory.player);
 
@@ -82,12 +95,24 @@ public class IonicBlockScreenHandler extends ScreenHandler {
 
                 @Override
                 public boolean canInsert(ItemStack stack) {
-                    return super.canInsert(stack);
+                    if (getLeftIngredients().size() > this.getIndex()-2*GRIDSIZE && this.getIndex()-2*GRIDSIZE >= 0) {
+                        return getLeftIngredients().get(this.getIndex()-2*GRIDSIZE).test(stack);
+                    }
+                    if (getRightIngredients().size() > this.getIndex()-2*GRIDSIZE - getLeftIngredients().size() && this.getIndex()-2*GRIDSIZE - getLeftIngredients().size() >= 0) {
+                        return getRightIngredients().get(this.getIndex()-2*GRIDSIZE - getLeftIngredients().size()).test(stack);
+                    }
+                    return false;
                 }
 
                 @Override
                 public int getMaxItemCount(ItemStack stack) {
-                    return super.getMaxItemCount(stack);
+                    if (getLeftIngredients().size() > this.getIndex()-2*GRIDSIZE) { //Slot differnce of GRIDSIZE due to the grid
+                        return getLeftDensity();
+                    }
+                    if (getRightIngredients().size() > this.getIndex()-2*GRIDSIZE - getLeftIngredients().size()) { //Slot differnce of GRIDSIZE due to the grid
+                        return getRightDensity();
+                    }
+                    return 0;
                 }
             });
         }
@@ -195,17 +220,37 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         return propertyDelegate.get(0);
     }
 
-    public DefaultedList<Ingredient> getIngredients() {
-        return ionic.getIngredients();
+    public DefaultedList<Ingredient> getLeftIngredients() {
+        return ionic.getLeftIngredients();
     }
 
-    public int getDensity() {
+    public DefaultedList<Ingredient> getRightIngredients() {
+        return ionic.getRightIngredients();
+    }
+
+    public int getLeftDensity() {
         return propertyDelegate.get(1);
+    }
+
+    public int getRightDensity() {
+        return propertyDelegate.get(2);
+    }
+
+    public int getLeftCharge() {
+        return propertyDelegate.get(3);
+    }
+
+    public int getRightCharge() {
+        return propertyDelegate.get(4);
     }
 
     //A recipe is found (so the density is larger than 0)
     public boolean hasRecipe() {
-        return this.getDensity() > 0;
+        return this.getLeftDensity() > 0 && this.getRightDensity() > 0;
+    }
+
+    public IonicInventory getInventory() {
+        return this.inventory;
     }
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
@@ -221,6 +266,4 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             }
         }
     }
-
-
 }

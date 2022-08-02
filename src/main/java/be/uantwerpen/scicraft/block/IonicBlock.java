@@ -73,6 +73,6 @@ public class IonicBlock extends BlockWithEntity implements BlockEntityProvider {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.IONIC_BLOCK_ENTITY, IonicBlockEntity::tick);
+        return checkType(type, BlockEntities.IONIC_BLOCK_ENTITY, world.isClient? null : IonicBlockEntity::tick);
     }
 }

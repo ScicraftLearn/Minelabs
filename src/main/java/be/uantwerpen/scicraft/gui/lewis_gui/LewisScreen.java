@@ -23,7 +23,7 @@ import net.minecraft.util.collection.DefaultedList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
+import static be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler.GRIDSIZE;
 
 
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler>{

@@ -17,8 +17,10 @@ public class IonicRecipe implements Recipe<IonicInventory> {
 
     private final JsonObject leftjson;
     private final int leftdensity;
+    private final int leftCharge;
     private final JsonObject rightjson;
     private final int rightdensity;
+    private final int rightCharge;
     private final Identifier id;
     private final PartialMolecule leftMolecule;
     private final PartialMolecule rightMolecule;
@@ -28,17 +30,19 @@ public class IonicRecipe implements Recipe<IonicInventory> {
     private final ItemStack output;
 
 
-    IonicRecipe(JsonObject leftjson, int leftdensity, JsonObject rightjson,  int rightdensity, ItemStack output, Identifier id) {
+    IonicRecipe(JsonObject leftjson, int leftdensity, int leftCharge, JsonObject rightjson,  int rightdensity, int rightCharge, ItemStack output, Identifier id) {
         MoleculeGraphJsonFormat leftGraph = new Gson().fromJson(leftjson, MoleculeGraphJsonFormat.class);
         this.leftMolecule = new PartialMolecule(leftGraph.get());
 
-        MoleculeGraphJsonFormat rightGraph = new Gson().fromJson(leftjson, MoleculeGraphJsonFormat.class);
+        MoleculeGraphJsonFormat rightGraph = new Gson().fromJson(rightjson, MoleculeGraphJsonFormat.class);
         this.rightMolecule = new PartialMolecule(rightGraph.get());
 
         this.leftjson = leftjson;
         this.leftdensity = leftdensity;
+        this.leftCharge = leftCharge;
         this.rightjson = rightjson;
         this.rightdensity = rightdensity;
+        this.rightCharge = rightCharge;
         this.output = output;
         this.id = id;
 
@@ -52,7 +56,6 @@ public class IonicRecipe implements Recipe<IonicInventory> {
     public boolean matches(IonicInventory inventory, World world) {
         boolean left = inventory.getLeftGrid().getPartialMolecule().getStructure().isIsomorphicTo(leftMolecule.getStructure());
         boolean right = inventory.getRightGrid().getPartialMolecule().getStructure().isIsomorphicTo(rightMolecule.getStructure());
-        System.out.println("left: " + left + " , right: " + right);
         return left && right;
     }
 
@@ -107,6 +110,14 @@ public class IonicRecipe implements Recipe<IonicInventory> {
         return rightdensity;
     }
 
+    public int getLeftCharge() {
+        return leftCharge;
+    }
+
+    public int getRightCharge() {
+        return rightCharge;
+    }
+
     public static class IonicRecipeSerializer implements RecipeSerializer<IonicRecipe> {
 
         public static final IonicRecipeSerializer INSTANCE = new IonicRecipeSerializer();
@@ -116,30 +127,36 @@ public class IonicRecipe implements Recipe<IonicInventory> {
             JsonObject left = json.getAsJsonObject("left");
 
             int leftDensity = left.get("density").getAsInt();
+            int leftCharge = left.get("charge").getAsInt();
 
             JsonObject right = json.getAsJsonObject("right");
             int rightDensity = right.get("density").getAsInt();
+            int rightCharge = left.get("charge").getAsInt();
 
             ItemStack output = ShapedRecipe.outputFromJson(json.getAsJsonObject("result"));
-            return new IonicRecipe(left.getAsJsonObject("structure"), leftDensity, right.getAsJsonObject("structure"), rightDensity, output, id);
+            return new IonicRecipe(left.getAsJsonObject("structure"), leftDensity, leftCharge, right.getAsJsonObject("structure"), rightDensity, rightCharge, output, id);
         }
 
         @Override
         public IonicRecipe read(Identifier id, PacketByteBuf buf) {
             JsonObject leftJson = JsonParser.parseString(buf.readString()).getAsJsonObject();
             int leftDensity = buf.readInt();
+            int leftCharge = buf.readInt();
             JsonObject rightJson = JsonParser.parseString(buf.readString()).getAsJsonObject();
             int rightDensity = buf.readInt();
+            int rightCharge = buf.readInt();
             ItemStack output = buf.readItemStack();
-            return new IonicRecipe(leftJson, leftDensity, rightJson, rightDensity, output, id);
+            return new IonicRecipe(leftJson, leftDensity, leftCharge, rightJson, rightDensity, rightCharge, output, id);
         }
 
         @Override
         public void write(PacketByteBuf buf, IonicRecipe recipe) {
             buf.writeString(recipe.leftjson.toString());
             buf.writeInt(recipe.leftdensity);
+            buf.writeInt(recipe.leftCharge);
             buf.writeString(recipe.rightjson.toString());
             buf.writeInt(recipe.rightdensity);
+            buf.writeInt(recipe.rightCharge);
             buf.writeItemStack(recipe.output);
         }
     }

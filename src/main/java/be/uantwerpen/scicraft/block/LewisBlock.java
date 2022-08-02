@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
+import static be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler.GRIDSIZE;
 
 public class LewisBlock extends BlockWithEntity {
 

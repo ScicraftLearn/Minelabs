@@ -9,6 +9,7 @@ import be.uantwerpen.scicraft.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.scicraft.gui.lewis_gui.LewisScreen;
 import be.uantwerpen.scicraft.item.ItemModels;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.network.IonicDataPacket;
 import be.uantwerpen.scicraft.network.LewisDataPacket;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
@@ -77,6 +78,9 @@ public class ScicraftClient implements ClientModInitializer {
 
         //Lewis Data Sync
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
+
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.IONICDATASYNC, (c, h, b, s) -> IonicDataPacket.receive(c.world, b, s));
+
 
         // Register rendering lewis crafting table inventory
         HandledScreens.register(ScreenHandlers.LEWIS_SCREEN_HANDLER, LewisScreen::new);

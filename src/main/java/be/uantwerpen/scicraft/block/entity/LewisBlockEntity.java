@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
+import static be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler.GRIDSIZE;
 
 public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
     //Inventory of items

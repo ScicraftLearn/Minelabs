@@ -5,16 +5,19 @@ import be.uantwerpen.scicraft.crafting.ionic.IonicInventory;
 import be.uantwerpen.scicraft.crafting.ionic.IonicRecipe;
 import be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler;
 import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
+import be.uantwerpen.scicraft.network.IonicDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -36,13 +39,17 @@ import static be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler.GRIDS
 
 public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, Inventory {
 
-    private final IonicInventory inventory = new IonicInventory(9, 9, 11);
+    private IonicInventory inventory = new IonicInventory(9, 9, 11);
     private final PropertyDelegate propertyDelegate;
     private final RecipeManager.MatchGetter<IonicInventory, IonicRecipe> matchGetter;
     private DefaultedList<Ingredient> ingredients = DefaultedList.of();
+    private DefaultedList<Ingredient> leftIngredients = DefaultedList.of();
+    private DefaultedList<Ingredient> rightIngredients = DefaultedList.of();
     private int progress = -1;
     private int leftdensity;
     private int rightdensity;
+    private int leftCharge;
+    private int rightCharge;
     private IonicRecipe currentrecipe;
 
     public IonicBlockEntity(BlockPos pos, BlockState state) {
@@ -50,12 +57,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
         this.matchGetter = RecipeManager.createCachedMatchGetter(CraftingRecipes.IONIC_CRAFTING);
 
-        this.inventory.addListener(new InventoryChangedListener() {
-            @Override
-            public void onInventoryChanged(Inventory sender) {
-                IonicBlockEntity.this.markDirty();
-            }
-        });
+        this.inventory.addListener(sender -> IonicBlockEntity.this.markDirty());
 
         this.propertyDelegate = new PropertyDelegate() {
             @Override
@@ -67,6 +69,10 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                         return IonicBlockEntity.this.leftdensity;
                     case 2:
                         return IonicBlockEntity.this.rightdensity;
+                    case 3:
+                        return IonicBlockEntity.this.leftCharge;
+                    case 4:
+                        return IonicBlockEntity.this.rightCharge;
                     default:
                         return 0;
                 }
@@ -84,6 +90,12 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                     case 2:
                         IonicBlockEntity.this.rightdensity = value;
                         break;
+                    case 3:
+                        IonicBlockEntity.this.leftCharge = value;
+                        break;
+                    case 4:
+                        IonicBlockEntity.this.rightCharge = value;
+                        break;
                     default:
 
                 }
@@ -91,7 +103,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
             @Override
             public int size() {
-                return 3;
+                return 5;
             }
         };
     }
@@ -104,19 +116,38 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new IonicBlockScreenHandler(syncId,inv,this, propertyDelegate, pos);
+        return new IonicBlockScreenHandler(syncId,inv,inventory, propertyDelegate, pos);
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        inventory.readNbtList(nbt.getList("inv", NbtElement.COMPOUND_TYPE));
+        NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
+        this.inventory = new IonicInventory(9, 9, 11);
+        for(int i = 0; i < nbtList.size(); ++i) {
+            NbtCompound nbtCompound = nbtList.getCompound(i);
+            int j = nbtCompound.getByte("Slot") & 255;
+            if (j >= 0 && j < inventory.size()) {
+                inventory.setStack(j, ItemStack.fromNbt(nbtCompound));
+            }
+        }
     }
 
     @Override
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
-        nbt.put("inv",inventory.toNbtList());
+        NbtList nbtList = new NbtList();
+
+        for(int i = 0; i < inventory.size(); ++i) {
+            ItemStack itemStack = (ItemStack)inventory.getStack(i);
+            if (!itemStack.isEmpty()) {
+                NbtCompound nbtCompound = new NbtCompound();
+                nbtCompound.putByte("Slot", (byte)i);
+                itemStack.writeNbt(nbtCompound);
+                nbtList.add(nbtCompound);
+            }
+        }
+        nbt.put("Items", nbtList);
     }
 
     @Override
@@ -135,17 +166,27 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
             Optional<IonicRecipe> recipe = ionic.matchGetter.getFirstMatch(ionic.inventory, world);
             recipe.ifPresent( r -> {
                 ionic.currentrecipe = r;
-                ionic.ingredients = r.getIngredients();
+                ionic.leftIngredients = r.getLeftingredients();
+                ionic.rightIngredients = r.getRightingredients();
                 ionic.leftdensity = r.getLeftdensity();
                 ionic.rightdensity = r.getRightdensity();
-                ionic.ingredients = r.getIngredients();
+                ionic.leftCharge = r.getLeftCharge();
+                ionic.rightCharge = r.getRightCharge();
+                IonicDataPacket packet = new IonicDataPacket(pos, ionic.leftIngredients, ionic.rightIngredients);
+                packet.sent(world, pos);
             });
         }
         else if (ionic.inventory.getStack(28).isEmpty() || ionic.inventory.getStack(28).isOf(ionic.currentrecipe.getOutput().getItem())){
             boolean correct = false;
-            for (int i = 0; i < ionic.ingredients.size(); i++) {
+            for (int i = 0; i < ionic.leftIngredients.size(); i++) {
                 correct = true;
-                if (!ionic.ingredients.get(i).test(ionic.inventory.getStack(GRIDSIZE+i)) || ionic.inventory.getStack(GRIDSIZE*2+i).getCount() < ionic.currentrecipe.getLeftdensity()) {
+                if (!ionic.leftIngredients.get(i).test(ionic.inventory.getStack(2*GRIDSIZE+i)) || ionic.inventory.getStack(2*GRIDSIZE+i).getCount() < ionic.leftdensity) {
+                    correct = false; // not enough items
+                    break;
+                }
+            }
+            for (int i = 0; i < ionic.rightIngredients.size(); i++) {
+                if (!ionic.rightIngredients.get(i).test(ionic.inventory.getStack(2*GRIDSIZE+i + ionic.leftIngredients.size())) || ionic.inventory.getStack(2*GRIDSIZE+i+ionic.leftIngredients.size()).getCount() < ionic.currentrecipe.getRightdensity()) {
                     correct = false; // not enough items
                     break;
                 }
@@ -159,14 +200,17 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         if (ionic.progress > -1) {
             ionic.progress += 1;
             if (ionic.progress >= 23) { //Done crafting
-                if (ionic.inventory.getStack(34).isEmpty()) { //Set output slot
-                    ionic.inventory.setStack(34, ionic.currentrecipe.getOutput());
+                if (ionic.inventory.getStack(28).isEmpty()) { //Set output slot
+                    ionic.inventory.setStack(28, ionic.currentrecipe.getOutput());
                 }
                 else {
-                    ionic.inventory.getStack(34).increment(1);
+                    ionic.inventory.getStack(28).increment(1);
                 }
-                for (int i = 0; i < ionic.ingredients.size(); i++) {
-                    ionic.inventory.getStack(LewisCraftingGrid.GRIDSIZE+i).decrement(ionic.leftdensity);
+                for (int i = 0; i < ionic.leftIngredients.size(); i++) {
+                    ionic.inventory.getStack(2*GRIDSIZE+i).decrement(ionic.leftdensity);
+                }
+                for (int i = 0; i < ionic.rightIngredients.size(); i++) {
+                    ionic.inventory.getStack(2*GRIDSIZE+i+ionic.leftIngredients.size()).decrement(ionic.rightdensity);
                 }
                 ionic.resetRecipe();
             }
@@ -174,11 +218,15 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         ionic.markDirty();
     }
 
-    private void resetRecipe() {
+    public void resetRecipe() {
         this.currentrecipe = null;
         this.progress = -1;
         this.leftdensity = 0;
         this.rightdensity = 0;
+        this.leftCharge = 0;
+        this.rightCharge = 0;
+        this.leftIngredients = DefaultedList.of();
+        this.rightIngredients = DefaultedList.of();
         this.ingredients = DefaultedList.of();
         this.markDirty();
     }
@@ -188,8 +236,17 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         buf.writeBlockPos(this.pos);
     }
 
-    public DefaultedList<Ingredient> getIngredients() {
-        return this.ingredients;
+    public void setIngredients(DefaultedList<Ingredient> leftIngredients, DefaultedList<Ingredient> rightIngredients) {
+        this.leftIngredients = leftIngredients;
+        this.rightIngredients = rightIngredients;
+    }
+
+    public DefaultedList<Ingredient> getLeftIngredients() {
+        return this.leftIngredients;
+    }
+
+    public DefaultedList<Ingredient> getRightIngredients() {
+        return rightIngredients;
     }
 
     //Iventory overrides

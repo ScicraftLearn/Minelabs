@@ -28,10 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid.GRIDSIZE;
-
 public class LewisBlockScreenHandler extends ScreenHandler {
 
+    public static final int GRIDSIZE = 25;
     private final Inventory inventory;
     //PropertyDelegate that holds the progress and density
     private final PropertyDelegate propertyDelegate;
