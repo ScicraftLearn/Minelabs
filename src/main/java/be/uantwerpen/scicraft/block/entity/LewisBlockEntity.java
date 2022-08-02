@@ -141,7 +141,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 lewis.ingredients = r.getIngredients();
                 lewis.density = r.getDensity();
                 LewisDataPacket packet = new LewisDataPacket(pos, lewis.ingredients); //custom packet to sync ingredients
-                packet.sent(world, pos);
+                packet.send(world, pos);
             });
         }
         //recipe loaded, check if enough items

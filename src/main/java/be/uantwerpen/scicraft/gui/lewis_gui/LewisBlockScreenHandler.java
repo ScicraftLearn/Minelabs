@@ -36,6 +36,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     //PropertyDelegate that holds the progress and density
     private final PropertyDelegate propertyDelegate;
+
     //The LewisBlockEntity that belongs to the screen. Can be used to get extra data, as long as that data is synced
     private LewisBlockEntity lewis;
 
