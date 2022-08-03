@@ -43,17 +43,14 @@ public class ScicraftClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(
                 (matrixStack, delta) -> {
                     MinecraftClient client = MinecraftClient.getInstance();
-                    TextRenderer textRenderer = client.textRenderer;
                     BlockHitResult hitResult = (BlockHitResult) client.crosshairTarget;
 
-                    assert hitResult != null;
                     assert client.world != null;
-
+                    if (hitResult==null)return;
                     BlockEntity blockEntity = client.world.getBlockEntity(hitResult.getBlockPos());
-                    if (blockEntity instanceof BohrBlockEntity){
-
+                    if (blockEntity instanceof BohrBlockEntity) {
+                        ((BohrBlockEntity) blockEntity).renderText();
                     }
-                    textRenderer.draw(new MatrixStack(), "hello world", 10, 10, 111455);
 
 //                    return ActionResult.PASS;
                 }

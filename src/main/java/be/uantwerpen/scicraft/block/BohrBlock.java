@@ -38,10 +38,11 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     /**
      * prints the inventory of the bohrblock
+     *
      * @param world, the world
-     * @param pos, the supposed location of the bohr block
+     * @param pos,   the supposed location of the bohr block
      */
-    private void printInventory(World world, BlockPos pos){
+    private void printInventory(World world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
 //        if there is a bohr block on the location in the world
         if (blockEntity instanceof BohrBlockEntity) {
@@ -54,6 +55,8 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             System.out.println(protonInventory);
         }
     }
+
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -117,22 +120,27 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     //Made a new method to optimize (sorry Brentje xoxo Eliasje)
     private void checkInventory(PlayerEntity player, Hand hand, DefaultedList<ItemStack> inventory) {
-        for (int i = 0; i < 3; i++) {
+        int i = 0;
+        while (inventory.get(i).getCount() == 64 && inventory.get(i).getItem() == player.getStackInHand(hand).getItem() ) {
+            i += 1;
+        }
+        if (i == 4) return;
+        assert inventory.get(i).getCount() < 64;
 //            if the inventory is empty initialize the inventory with 0 items
-            if (inventory.get(i).isEmpty()) {
+        if (inventory.get(i).isEmpty()) {
 //                the item that the player was holding
-                inventory.set(i, (player.getStackInHand(hand).copy()));
+            inventory.set(i, (player.getStackInHand(hand).copy()));
 //                set the counter for the item on 0
-                inventory.get(i).setCount(0);
-            }
+            inventory.get(i).setCount(0);
+        }
 //            if the stack isn't full
-            if (inventory.get(i).getCount() < 64) {
+        if (inventory.get(i).getCount() < 64) {
 //                add 1 to the inventory
-                inventory.get(i).setCount(inventory.get(i).getCount() + 1);
+            inventory.get(i).setCount(inventory.get(i).getCount() + 1);
 //                decrement 1 from the player's hand
-                player.getStackInHand(hand).decrement(1);
-                System.out.println("Slot holds : " + inventory.get(i));
-            }
+            player.getStackInHand(hand).decrement(1);
+            System.out.println("Slot holds : " + inventory.get(i));
         }
     }
 }
+
