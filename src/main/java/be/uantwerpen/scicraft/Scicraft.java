@@ -4,10 +4,9 @@ import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.crafting.CraftingRecipes;
 import be.uantwerpen.scicraft.entity.Entities;
-import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.entity.ScientificVillager;
+import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.item.Items;
-import be.uantwerpen.scicraft.crafting.lewis.MoleculeRecipe;
 import be.uantwerpen.scicraft.paintings.Paintings;
 import be.uantwerpen.scicraft.sound.SoundEvents;
 import be.uantwerpen.scicraft.world.gen.OreGenerations;
@@ -35,6 +34,7 @@ public class Scicraft implements ModInitializer {
         SoundEvents.registerSounds();
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();
+        OreGenerations.generateOres();
         OreGenerations.generateOres();
 
         CraftingRecipes.register();
