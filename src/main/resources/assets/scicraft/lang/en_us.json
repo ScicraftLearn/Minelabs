@@ -3,7 +3,15 @@
   "itemGroup.scicraft.quantum_fields": "Quantum Fields",
   "itemGroup.scicraft.elementary_particles": "Elementary Particles",
   "itemGroup.scicraft.atoms": "Atoms",
-
+  "block.scicraft.salt_ore": "Salt Ore",
+  "block.scicraft.deepslate_salt_ore": "Deepslate Salt Ore",
+  "block.scicraft.salt_block": "Block of Salt",
+  "block.scicraft.salt_wire": "Salt",
+  "block.scicraft.salt_crystal": "Salt Crystal",
+  "block.scicraft.budding_salt_block": "Budding Salt",
+  "block.scicraft.large_salt_crystal": "Large Salt Crystal",
+  "block.scicraft.medium_salt_crystal": "Medium Salt Crystal",
+  "block.scicraft.small_salt_crystal": "Small Salt Crystal",
   "block.scicraft.proton": "Proton",
   "block.scicraft.electron": "Electron",
   "block.scicraft.neutron": "Neutron",
@@ -24,14 +32,14 @@
   "block.scicraft.neutrino_quantumfield": "Neutrino Quantumfield",
   "block.scicraft.upquark_quantumfield": "Upquark Quantumfield",
   "block.scicraft.downquark_quantumfield": "Downquark Quantumfield",
-
+  
   "blockEntity.scicraft.charged_block": "Charged Block",
-
+  
   "entity.scicraft.entropy_creeper": "Entropy Creeper",
   "entity.minecraft.villager.sciencevillager": "Science Villager",
 
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
-
+  "item.scicraft.salt_shard": "Salt Shard",
   "item.scicraft.proton": "Proton",
   "item.scicraft.electron": "Electron",
   "item.scicraft.neutron": "Neutron",

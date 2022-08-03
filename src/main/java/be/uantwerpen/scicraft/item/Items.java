@@ -16,6 +16,36 @@ public class Items {
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
+    public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt");
+
+    public static final Item SALT_SHARD = register(new SaltShardItem(
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_shard");
+
+    public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_ore");
+
+    public static final Item DEEPSLATE_SALT_ORE = register(new BlockItem(Blocks.DEEPSLATE_SALT_ORE,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "deepslate_salt_ore");
+
+    public static final Item SALT_BLOCK = register(new SaltBlockItem(Blocks.SALT_BLOCK,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_block");
+
+    public static final Item SALT_CRYSTAL = register(new BlockItem(Blocks.SALT_CRYSTAL,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_crystal");
+
+    public static final Item SMALL_SALT_CRYSTAL = register(new BlockItem(Blocks.SMALL_SALT_CRYSTAL,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "small_salt_crystal");
+
+    public static final Item MEDIUM_SALT_CRYSTAL = register(new BlockItem(Blocks.MEDIUM_SALT_CRYSTAL,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "medium_salt_crystal");
+
+    public static final Item LARGE_SALT_CRYSTAL = register(new BlockItem(Blocks.LARGE_SALT_CRYSTAL,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "large_salt_crystal");
+
+    public static final Item BUDDING_SALT_BLOCK = register(new BlockItem(Blocks.BUDDING_SALT_BLOCK,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "budding_salt_block");
+
     // Items > Atoms
     public static final Item HYDROGEN_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.ATOMS), 1, "H"), "hydrogen_atom");
     public static final Item HELIUM_ATOM = register(new AtomItem(new Item.Settings().group(ItemGroups.ATOMS), 2, "He"), "helium_atom");
