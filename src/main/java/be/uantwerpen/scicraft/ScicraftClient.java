@@ -1,18 +1,14 @@
 package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.Blocks;
-import be.uantwerpen.scicraft.block.BohrBlock;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.event.ModEvents;
-import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
-import be.uantwerpen.scicraft.renderer.ConcreteHudRenderCallback;
-import be.uantwerpen.scicraft.event.BohrBlockCallBack;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -20,41 +16,18 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import be.uantwerpen.scicraft.renderer.ConcreteHudRenderCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.MinecraftClient;
 
 
 public class ScicraftClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
-        HudRenderCallback.EVENT.register(
-                (matrixStack, delta) -> {
-                    MinecraftClient client = MinecraftClient.getInstance();
-                    BlockHitResult hitResult = (BlockHitResult) client.crosshairTarget;
 
-                    assert client.world != null;
-                    if (hitResult==null)return;
-                    BlockEntity blockEntity = client.world.getBlockEntity(hitResult.getBlockPos());
-                    if (blockEntity instanceof BohrBlockEntity) {
-                        ((BohrBlockEntity) blockEntity).renderText();
-                    }
-
-//                    return ActionResult.PASS;
-                }
-        );
 
         ModEvents.registerEvents();
 

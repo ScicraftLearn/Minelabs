@@ -1,14 +1,19 @@
 package be.uantwerpen.scicraft.event;
 
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 
 
@@ -60,6 +65,20 @@ public class ModEvents {
                 }
             }
         }));
+
+//        render bohr block text on hud rendering when a bohr block is being looked at
+        HudRenderCallback.EVENT.register(
+                (matrixStack, delta) -> {
+                    MinecraftClient client = MinecraftClient.getInstance();
+                    BlockHitResult hitResult = (BlockHitResult) client.crosshairTarget;
+                    assert client.world != null;
+                    if (hitResult==null)return;
+                    BlockEntity blockEntity = client.world.getBlockEntity(hitResult.getBlockPos());
+                    if (blockEntity instanceof BohrBlockEntity) {
+                        ((BohrBlockEntity) blockEntity).renderText();
+                    }
+                }
+        );
 
     }
 }
