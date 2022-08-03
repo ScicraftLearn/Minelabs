@@ -36,7 +36,7 @@ public class ChargedBlock extends BlockWithEntity{
 	@Override
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof ChargedBlockEntity charged) {
+		if (be instanceof ChargedBlockEntity charged && !newState.isOf(Blocks.ANIMATED_CHARGED)) {
 			charged.removeField(world, pos);
 		}
 		super.onStateReplaced(state, world, pos, newState, moved);
