@@ -34,7 +34,7 @@ import java.util.Optional;
 
 public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory {
     // slots 0-24
-    private final LewisCraftingGrid craftingGrid = new LewisCraftingGrid();
+    private final LewisCraftingGrid craftingGrid = new LewisCraftingGrid(5,5);
 
     // slots 0-8: atoms, slot 9: erlenmeyer, slot 10: output
     // combined with craftingGrid this gives slots 25-33: atoms, slot 34: erlenmeyer, slot 35: output
@@ -146,7 +146,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         }
         //recipe loaded, check if enough items
         else if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
-                if (!lewis.ioInventory.getStack(11).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(11).getCount() < 1) return; //has erlenmeyer
+            System.out.println(lewis.currentRecipe.getIngredients());
+            if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) return; //has erlenmeyer
             boolean correct = false;
             for (int i = 0; i < lewis.ingredients.size(); i++) {
                 correct = true;
@@ -171,7 +172,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 else {
                     lewis.ioInventory.getStack(10).increment(1);
                 }
-                lewis.inventory.get(35).decrement(1);
+                lewis.ioInventory.getStack(9).decrement(1);
                 for (int i = 0; i < lewis.ingredients.size(); i++) {
                     lewis.ioInventory.getStack(i).decrement(lewis.density);
                 }

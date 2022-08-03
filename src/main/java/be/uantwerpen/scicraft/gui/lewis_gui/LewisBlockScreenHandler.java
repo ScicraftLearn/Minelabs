@@ -32,6 +32,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     // size of inventory without grid
     private final int INVENTORY_SIZE = 11;
+    public static final int GRIDSIZE = 25;
 
     private final LewisCraftingGrid craftingGrid;
 
@@ -57,7 +58,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @param buf
      */
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId, playerInventory, new LewisCraftingGrid(), new OrderedInventory(11), new ArrayPropertyDelegate(2), buf.readBlockPos());
+        this(syncId, playerInventory, new LewisCraftingGrid(5,5), new OrderedInventory(11), new ArrayPropertyDelegate(2), buf.readBlockPos());
     }
 
     /**
@@ -87,7 +88,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                if (slotId < LewisCraftingGrid.GRIDSIZE) {
+                if (slotId < GRIDSIZE) {
                     lewis.resetRecipe();
                     handler.onContentChanged(craftingGrid);
                 }else{
