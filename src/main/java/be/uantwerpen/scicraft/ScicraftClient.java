@@ -9,24 +9,40 @@ import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
+import be.uantwerpen.scicraft.renderer.ConcreteHudRenderCallback;
+import be.uantwerpen.scicraft.event.BohrBlockCallBack;
 import be.uantwerpen.scicraft.renderer.EntropyCreeperEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
+import be.uantwerpen.scicraft.renderer.ConcreteHudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.MinecraftClient;
 
 
-@SuppressWarnings("UNUSED")
 public class ScicraftClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
+        BohrBlockCallBack.EVENT.register(
+                (playerEntity,bohrBlock) -> {
+                    TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+                    textRenderer.draw(new MatrixStack(), "hello world", 10, 10, 111455);
+
+                    return ActionResult.PASS;
+                }
+        );
 
         ModEvents.registerEvents();
 
