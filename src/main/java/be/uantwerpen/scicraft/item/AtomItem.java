@@ -1,6 +1,6 @@
 package be.uantwerpen.scicraft.item;
 
-import be.uantwerpen.scicraft.lewisrecipes.Atom;
+import be.uantwerpen.scicraft.crafting.molecules.Atom;
 import net.minecraft.item.Item;
 
 public class AtomItem extends Item {

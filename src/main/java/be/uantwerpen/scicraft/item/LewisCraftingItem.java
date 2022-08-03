@@ -1,6 +1,6 @@
 package be.uantwerpen.scicraft.item;
 
-import be.uantwerpen.scicraft.lewisrecipes.Atom;
+import be.uantwerpen.scicraft.crafting.molecules.Atom;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;

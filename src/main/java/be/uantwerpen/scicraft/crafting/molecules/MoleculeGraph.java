@@ -1,12 +1,9 @@
-package be.uantwerpen.scicraft.lewisrecipes;
+package be.uantwerpen.scicraft.crafting.molecules;
 
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.util.Graph;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class MoleculeGraph extends Graph<Atom, Bond> {

@@ -1,7 +1,6 @@
-package be.uantwerpen.scicraft.lewisrecipes;
+package be.uantwerpen.scicraft.crafting.molecules;
 
 import java.util.Collection;
-import java.util.Objects;
 
 public class PartialMolecule {
 

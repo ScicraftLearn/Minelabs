@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.lewisrecipes;
+package be.uantwerpen.scicraft.crafting.molecules;
 
 import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.item.ItemStack;

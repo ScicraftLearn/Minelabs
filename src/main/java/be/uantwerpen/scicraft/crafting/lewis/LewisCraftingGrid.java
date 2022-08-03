@@ -1,8 +1,10 @@
-package be.uantwerpen.scicraft.lewisrecipes;
+package be.uantwerpen.scicraft.crafting.lewis;
 
-import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.crafting.molecules.Atom;
+import be.uantwerpen.scicraft.crafting.molecules.Bond;
+import be.uantwerpen.scicraft.crafting.molecules.MoleculeItemGraph;
+import be.uantwerpen.scicraft.crafting.molecules.PartialMolecule;
 import be.uantwerpen.scicraft.item.AtomItem;
-import be.uantwerpen.scicraft.util.Graph;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 

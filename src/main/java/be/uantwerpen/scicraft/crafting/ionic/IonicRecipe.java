@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.crafting.ionic;
 
-import be.uantwerpen.scicraft.lewisrecipes.*;
+import be.uantwerpen.scicraft.crafting.molecules.MoleculeGraphJsonFormat;
+import be.uantwerpen.scicraft.crafting.molecules.PartialMolecule;
 import com.google.gson.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -9,11 +10,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import static be.uantwerpen.scicraft.crafting.ionic.CraftingRecipes.IONIC_CRAFTING;
+import static be.uantwerpen.scicraft.crafting.CraftingRecipes.IONIC_CRAFTING;
 
 
 public class IonicRecipe implements Recipe<IonicInventory> {
-
 
     private final JsonObject leftjson;
     private final int leftdensity;
@@ -124,12 +124,12 @@ public class IonicRecipe implements Recipe<IonicInventory> {
 
         @Override
         public IonicRecipe read(Identifier id, JsonObject json) {
-            JsonObject left = json.getAsJsonObject("left");
+            JsonObject left = json.getAsJsonObject("cation");
 
             int leftDensity = left.get("density").getAsInt();
             int leftCharge = left.get("charge").getAsInt();
 
-            JsonObject right = json.getAsJsonObject("right");
+            JsonObject right = json.getAsJsonObject("anion");
             int rightDensity = right.get("density").getAsInt();
             int rightCharge = left.get("charge").getAsInt();
 

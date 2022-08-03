@@ -6,7 +6,7 @@ import be.uantwerpen.scicraft.inventory.slot.CraftingResultSlot;
 import be.uantwerpen.scicraft.inventory.slot.FilteredSlot;
 import be.uantwerpen.scicraft.inventory.slot.LockableGridSlot;
 import be.uantwerpen.scicraft.item.Items;
-import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
+import be.uantwerpen.scicraft.crafting.lewis.LewisCraftingGrid;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

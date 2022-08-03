@@ -1,9 +1,10 @@
 package be.uantwerpen.scicraft.block.entity;
 
+import be.uantwerpen.scicraft.crafting.CraftingRecipes;
 import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
-import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
-import be.uantwerpen.scicraft.lewisrecipes.MoleculeRecipe;
+import be.uantwerpen.scicraft.crafting.lewis.LewisCraftingGrid;
+import be.uantwerpen.scicraft.crafting.lewis.MoleculeRecipe;
 import be.uantwerpen.scicraft.network.LewisDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -53,7 +54,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.LEWIS_BLOCK_ENTITY, pos, state);
-        this.matchGetter = RecipeManager.createCachedMatchGetter(MoleculeRecipe.MOLECULE_CRAFTING);
+        this.matchGetter = RecipeManager.createCachedMatchGetter(CraftingRecipes.MOLECULE_CRAFTING);
 
         propertyDelegate = new PropertyDelegate() {
 

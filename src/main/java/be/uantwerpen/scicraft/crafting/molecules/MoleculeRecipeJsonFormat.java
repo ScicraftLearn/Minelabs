@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.lewisrecipes;
+package be.uantwerpen.scicraft.crafting.molecules;
 
 public class MoleculeRecipeJsonFormat {
 

@@ -1,9 +1,9 @@
 package be.uantwerpen.scicraft.gui.lewis_gui;
 
 
-import be.uantwerpen.scicraft.lewisrecipes.BondManager;
-import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
-import be.uantwerpen.scicraft.lewisrecipes.MoleculeItemGraph;
+import be.uantwerpen.scicraft.crafting.molecules.BondManager;
+import be.uantwerpen.scicraft.crafting.lewis.LewisCraftingGrid;
+import be.uantwerpen.scicraft.crafting.molecules.MoleculeItemGraph;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;

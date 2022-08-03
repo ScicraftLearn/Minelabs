@@ -1,6 +1,7 @@
-package be.uantwerpen.scicraft.lewisrecipes;
+package be.uantwerpen.scicraft.crafting.lewis;
 
-import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.crafting.molecules.Molecule;
+import be.uantwerpen.scicraft.crafting.molecules.MoleculeRecipeJsonFormat;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -17,7 +18,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
+import static be.uantwerpen.scicraft.crafting.CraftingRecipes.MOLECULE_CRAFTING;
 
 
 public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
@@ -85,14 +86,6 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return MoleculeRecipeSerializer.INSTANCE;
-    }
-
-    // Should get loaded if at least one crafting station supports the recipe type and imports it.
-    public static RecipeType<MoleculeRecipe> MOLECULE_CRAFTING;
-
-    public static void register(){
-        MOLECULE_CRAFTING = Registry.register(Registry.RECIPE_TYPE, new Identifier(Scicraft.MOD_ID, "molecule_crafting"), new RecipeType<MoleculeRecipe>(){});
-        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(Scicraft.MOD_ID, "molecule_crafting"), MoleculeRecipeSerializer.INSTANCE);
     }
 
     @Override

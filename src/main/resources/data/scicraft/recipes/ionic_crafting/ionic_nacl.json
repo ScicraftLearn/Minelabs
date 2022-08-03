@@ -1,6 +1,6 @@
 {
   "type": "scicraft:ionic_crafting",
-  "left": {
+  "cation": {
     "structure":
     {
       "atoms": [
@@ -12,7 +12,7 @@
     "density": 8,
     "charge": 1
   },
-  "right": {
+  "anion": {
     "structure":
     {
       "atoms": [

@@ -4,7 +4,7 @@ import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.fluid.Fluids;
-import be.uantwerpen.scicraft.lewisrecipes.Atom;
+import be.uantwerpen.scicraft.crafting.molecules.Atom;
 import be.uantwerpen.scicraft.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;

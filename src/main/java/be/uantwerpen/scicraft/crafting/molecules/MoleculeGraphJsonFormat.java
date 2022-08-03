@@ -1,6 +1,5 @@
-package be.uantwerpen.scicraft.lewisrecipes;
+package be.uantwerpen.scicraft.crafting.molecules;
 
-import be.uantwerpen.scicraft.util.Graph;
 import com.google.gson.JsonSyntaxException;
 
 import java.util.*;

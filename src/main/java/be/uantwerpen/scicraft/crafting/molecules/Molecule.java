@@ -1,8 +1,6 @@
-package be.uantwerpen.scicraft.lewisrecipes;
+package be.uantwerpen.scicraft.crafting.molecules;
 
 import net.minecraft.item.Item;
-
-import java.util.Objects;
 
 public class Molecule extends PartialMolecule {
 //    WATER(Map.of(Atom.HYDROGEN, 2, Atom.OXYGEN, 1), net.minecraft.item.Items.POTION),

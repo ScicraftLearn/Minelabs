@@ -1,4 +1,4 @@
-//package be.uantwerpen.scicraft.lewisrecipes;
+//package be.uantwerpen.scicraft.crafting.lewisrecipes;
 //
 //import com.mojang.datafixers.util.Pair;
 //import org.jetbrains.annotations.Contract;

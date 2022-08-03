@@ -1,9 +1,8 @@
 package be.uantwerpen.scicraft.gui.ionic_gui;
 
-import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
-import be.uantwerpen.scicraft.lewisrecipes.BondManager;
-import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
-import be.uantwerpen.scicraft.lewisrecipes.MoleculeItemGraph;
+import be.uantwerpen.scicraft.crafting.molecules.BondManager;
+import be.uantwerpen.scicraft.crafting.lewis.LewisCraftingGrid;
+import be.uantwerpen.scicraft.crafting.molecules.MoleculeItemGraph;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
@@ -97,6 +96,9 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             this.itemRenderer.renderInGuiWithOverrides(atom, x + 12 + 18*i, 86+y);
         }
 
+        /*
+         * Render input slot overlays
+         */
         DefaultedList<Ingredient> rightIngredients = handler.getRightIngredients();
         for (int i = 0; i < rightIngredients.size(); i++) {
             ItemStack atom = rightIngredients.get(i).getMatchingStacks()[0];

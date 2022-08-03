@@ -2,12 +2,12 @@ package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.Blocks;
-import be.uantwerpen.scicraft.crafting.ionic.CraftingRecipes;
+import be.uantwerpen.scicraft.crafting.CraftingRecipes;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.entity.ScientificVillager;
 import be.uantwerpen.scicraft.item.Items;
-import be.uantwerpen.scicraft.lewisrecipes.MoleculeRecipe;
+import be.uantwerpen.scicraft.crafting.lewis.MoleculeRecipe;
 import be.uantwerpen.scicraft.paintings.Paintings;
 import be.uantwerpen.scicraft.sound.SoundEvents;
 import net.fabricmc.api.ModInitializer;

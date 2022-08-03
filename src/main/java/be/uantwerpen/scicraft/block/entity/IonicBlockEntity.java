@@ -1,19 +1,17 @@
 package be.uantwerpen.scicraft.block.entity;
 
-import be.uantwerpen.scicraft.crafting.ionic.CraftingRecipes;
+import be.uantwerpen.scicraft.crafting.CraftingRecipes;
 import be.uantwerpen.scicraft.crafting.ionic.IonicInventory;
 import be.uantwerpen.scicraft.crafting.ionic.IonicRecipe;
 import be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler;
-import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
+import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.network.IonicDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.InventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -37,19 +35,31 @@ import java.util.Optional;
 
 import static be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler.GRIDSIZE;
 
+/**
+ * IonicBlockEntity. We still implement {@link Inventory} for compat.
+ */
 public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, Inventory {
 
+    //The actual inventory
     private IonicInventory inventory = new IonicInventory(9, 9, 11);
+    //PropertyDelegate that holds the progress, density and charge of both sides. synced to the client
     private final PropertyDelegate propertyDelegate;
     private final RecipeManager.MatchGetter<IonicInventory, IonicRecipe> matchGetter;
-    private DefaultedList<Ingredient> ingredients = DefaultedList.of();
+    //List of needed input left ingredients; Synced by IonicDataPacket
     private DefaultedList<Ingredient> leftIngredients = DefaultedList.of();
+    //List of needed input right ingredients; Synced by IonicDataPacket
     private DefaultedList<Ingredient> rightIngredients = DefaultedList.of();
+    //Progress of the recipe; -1 means not started; Synced by propertyDelegate
     private int progress = -1;
+    //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int leftdensity;
+    //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int rightdensity;
+    //Charge of items needed for the recipe;Synced by propertyDelegate
     private int leftCharge;
+    //Charge of items needed for the recipe;Synced by propertyDelegat
     private int rightCharge;
+    //Current recipe selected; NOT synced
     private IonicRecipe currentrecipe;
 
     public IonicBlockEntity(BlockPos pos, BlockState state) {
@@ -162,6 +172,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, IonicBlockEntity ionic){
+        //No recipe loaded, try to load one.
         if (ionic.currentrecipe == null) {
             Optional<IonicRecipe> recipe = ionic.matchGetter.getFirstMatch(ionic.inventory, world);
             recipe.ifPresent( r -> {
@@ -176,6 +187,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 packet.sent(world, pos);
             });
         }
+        //recipe loaded, check if enough items
         else if (ionic.inventory.getStack(28).isEmpty() || ionic.inventory.getStack(28).isOf(ionic.currentrecipe.getOutput().getItem())){
             boolean correct = false;
             for (int i = 0; i < ionic.leftIngredients.size(); i++) {
@@ -197,6 +209,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 ionic.progress = correct? 0 : -1; //enough items? start or reset;
             }
         }
+        //Busy crafting
         if (ionic.progress > -1) {
             ionic.progress += 1;
             if (ionic.progress >= 23) { //Done crafting
@@ -227,10 +240,16 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.rightCharge = 0;
         this.leftIngredients = DefaultedList.of();
         this.rightIngredients = DefaultedList.of();
-        this.ingredients = DefaultedList.of();
         this.markDirty();
     }
 
+    /**
+     * Provides a buffer to {@link IonicBlockScreenHandler}, to get the position of the blockentity
+     * The blockentity is used to get all needed values.
+     *
+     * @param player the player that is opening the screen
+     * @param buf    the packet buffer
+     */
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(this.pos);
@@ -249,7 +268,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return rightIngredients;
     }
 
-    //Iventory overrides
+    //Iventory overrides, for compatibility
 
     @Override
     public int size() {

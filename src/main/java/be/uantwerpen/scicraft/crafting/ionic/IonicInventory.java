@@ -1,11 +1,14 @@
 package be.uantwerpen.scicraft.crafting.ionic;
 
-import be.uantwerpen.scicraft.lewisrecipes.LewisCraftingGrid;
+import be.uantwerpen.scicraft.crafting.lewis.LewisCraftingGrid;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 
 import static be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler.GRIDSIZE;
 
+/**
+ * Inventory which can give 2 Lewisgrids.
+ */
 public class IonicInventory extends SimpleInventory {
 
     public IonicInventory(int gridLeft, int gridRight, int other) {

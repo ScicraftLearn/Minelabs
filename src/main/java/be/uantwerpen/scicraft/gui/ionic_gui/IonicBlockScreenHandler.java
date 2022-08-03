@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.gui.ionic_gui;
 
 import be.uantwerpen.scicraft.block.entity.IonicBlockEntity;
+import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
 import be.uantwerpen.scicraft.crafting.ionic.IonicInventory;
 import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.inventory.slot.CraftingResultSlot;
@@ -18,6 +19,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
@@ -25,13 +27,34 @@ public class IonicBlockScreenHandler extends ScreenHandler {
 
     public static final int GRIDSIZE = 9;
     private final IonicInventory inventory;
+    //The IonicBlockEntity
     private IonicBlockEntity ionic;
+    //PropertyDelegate that holds the progress, density and charge of both sides.
     private final PropertyDelegate propertyDelegate;
 
+    /**
+     * This constructor gets called on the client when the server wants it to open the screenHandler<br>
+     * The client will call the other constructor with an empty Inventory and the screenHandler will automatically
+     * sync this empty inventory with the inventory on the server.
+     *
+     * This constructor uses the buffer from {@link IonicBlockEntity#writeScreenOpeningData(ServerPlayerEntity, PacketByteBuf)}
+     * This gives it the Blockpos of the BlockEntity
+     */
     public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buff) {
         this(syncId,playerInventory,new IonicInventory(9, 9, 11), new ArrayPropertyDelegate(5), buff.readBlockPos());
     }
 
+    /**
+     * This constructor gets called from the BlockEntity on the server without calling the other constructor first,
+     * the server knows the inventory of the container and can therefore directly provide it as an argument.
+     * This inventory will then be synced to the client.
+     *
+     * @param syncId
+     * @param playerInventory
+     * @param inventory
+     * @param propertyDelegate
+     * @param pos
+     */
     public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory, IonicInventory inventory, PropertyDelegate propertyDelegate, BlockPos pos) {
         super(ScreenHandlers.IONIC_SCREEN_HANDLER, syncId);
         checkSize(inventory, 29);
@@ -42,8 +65,10 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             this.ionic = ionic;
         }
 
+        //Register properties for syncing
         this.addProperties(propertyDelegate);
 
+        //Register slot listener, to reset the recipe if the items change, and sync
         this.addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
