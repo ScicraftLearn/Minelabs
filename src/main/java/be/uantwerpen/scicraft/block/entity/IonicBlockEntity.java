@@ -5,6 +5,7 @@ import be.uantwerpen.scicraft.crafting.ionic.IonicInventory;
 import be.uantwerpen.scicraft.crafting.ionic.IonicRecipe;
 import be.uantwerpen.scicraft.gui.ionic_gui.IonicBlockScreenHandler;
 import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
+import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.IonicDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -189,6 +190,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         }
         //recipe loaded, check if enough items
         else if (ionic.inventory.getStack(28).isEmpty() || ionic.inventory.getStack(28).isOf(ionic.currentrecipe.getOutput().getItem())){
+            if (!ionic.inventory.getStack(27).isOf(Items.ERLENMEYER) || ionic.inventory.getStack(27).getCount() < 1) return; //has erlenmeyer
             boolean correct = false;
             for (int i = 0; i < ionic.leftIngredients.size(); i++) {
                 correct = true;
@@ -219,6 +221,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 else {
                     ionic.inventory.getStack(28).increment(1);
                 }
+                ionic.inventory.getStack(27).decrement(1);
                 for (int i = 0; i < ionic.leftIngredients.size(); i++) {
                     ionic.inventory.getStack(2*GRIDSIZE+i).decrement(ionic.leftdensity);
                 }

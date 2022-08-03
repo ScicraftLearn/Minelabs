@@ -5,6 +5,7 @@ import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
 import be.uantwerpen.scicraft.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.scicraft.crafting.lewis.MoleculeRecipe;
+import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.LewisDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -157,6 +158,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         }
         //recipe loaded, check if enough items
         else if (lewis.inventory.get(34).isEmpty() || lewis.inventory.get(34).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
+            if (!lewis.inventory.get(35).isOf(Items.ERLENMEYER) || lewis.inventory.get(35).getCount() < 1) return; //has erlenmeyer
             boolean correct = false;
             for (int i = 0; i < lewis.ingredients.size(); i++) {
                 correct = true;
@@ -181,6 +183,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 else {
                     lewis.inventory.get(34).increment(1);
                 }
+                lewis.inventory.get(35).decrement(1);
                 for (int i = 0; i < lewis.ingredients.size(); i++) {
                     lewis.inventory.get(GRIDSIZE+i).decrement(lewis.density);
                 }

@@ -35,7 +35,6 @@ public class Scicraft implements ModInitializer {
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();
 
-        MoleculeRecipe.register();
         CraftingRecipes.register();
 
         ScientificVillager.registerVillagers();
