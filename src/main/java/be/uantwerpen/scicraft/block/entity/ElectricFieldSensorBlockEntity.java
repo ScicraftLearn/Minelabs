@@ -68,8 +68,8 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
         field = new Vec3f(0f, 0f, 0f);
         for (BlockPos pos_block : blocks_in_radius) {
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.getField() != null) {
-                Vec3f vec_pos = new Vec3f(Math.abs(pos.getX()-pos_block.getX()), Math.abs(pos.getY()-pos_block.getY()), Math.abs(pos.getZ()-pos_block.getZ()));
-                //Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                //Vec3f vec_pos = new Vec3f(Math.abs(pos.getX()-pos_block.getX()), Math.abs(pos.getY()-pos_block.getY()), Math.abs(pos.getZ()-pos_block.getZ()));
+                Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
                 float d_E = (float) ((1 * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
                 vec_pos.scale(d_E);
                 field.add(vec_pos);

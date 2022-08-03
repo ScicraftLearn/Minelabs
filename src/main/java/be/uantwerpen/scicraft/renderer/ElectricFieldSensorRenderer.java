@@ -10,6 +10,7 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
 
@@ -31,19 +32,39 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         // first make sure the settings are correct for the electron field
         matrices.push();
         matrices.translate(0.5, 0.5, 0.5);
-        //Quaternion quaternion = new Quaternion(field.getX(), field.getY(), field.getZ(), 0);
-        //matrices.multiply(Quaternion.fromEulerXyz(quaternion.toEulerXyz()));
-        Vec3f x = new Vec3f(1,0,0);
-        Vec3f y = new Vec3f(0,1,0);
-        Vec3f z = new Vec3f(0,0,1);
-        double x_angle = Math.acos((x.dot(field)) / (Math.sqrt(Math.pow(x.getX(), 2) + Math.pow(x.getY(), 2) + Math.pow(x.getZ(), 2)) * Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2))));
-        double y_angle = Math.acos((y.dot(field)) / (Math.sqrt(Math.pow(y.getX(), 2) + Math.pow(y.getY(), 2) + Math.pow(y.getZ(), 2)) * Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2))));
-        double z_angle = Math.acos((z.dot(field)) / (Math.sqrt(Math.pow(z.getX(), 2) + Math.pow(z.getY(), 2) + Math.pow(z.getZ(), 2)) * Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2))));
-        Vec3f euler = new Vec3f((float) x_angle * 57.2957795f, (float) y_angle * 57.2957795f, (float) z_angle * 57.2957795f);
-        matrices.multiply(Quaternion.fromEulerXyzDegrees(euler));
 
         // now render the electron with the field
-        itemRenderer.renderItem(stack, ModelTransformation.Mode.GUI,light,overlay,matrices,vertexConsumers,0);
+        Vec3f x_rotation = new Vec3f(0, 0, -1);
+        matrices.multiply(new Quaternion(x_rotation, 45.f, true));
+
+        if(!field.equals(Vec3f.ZERO)) {
+            Vec3f v = new Vec3f(1,0,0);
+            double theta = Math.acos(v.dot(field) / Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2)));
+
+            if(theta == 0 || theta == Math.PI) {
+                //System.out.println(theta);
+                v = Direction.UP.getUnitVector();
+            } else {
+                v.cross(field);
+                v.normalize();
+            }
+
+            Quaternion q = v.getRadialQuaternion((float)theta);
+            matrices.multiply(q);
+        }
+        //Quaternion quaternion = new Quaternion(field.getX(), field.getY(), field.getZ(), 0);
+        //matrices.multiply(Quaternion.fromEulerXyz(quaternion.toEulerXyz()));
+
+//        Vec3f x = new Vec3f(1,0,0);
+//        Vec3f y = new Vec3f(0,1,0);
+//        Vec3f z = new Vec3f(0,0,1);
+//        double x_angle = Math.acos((x.dot(field)) / (Math.sqrt(Math.pow(x.getX(), 2) + Math.pow(x.getY(), 2) + Math.pow(x.getZ(), 2)) * Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2))));
+//        double y_angle = Math.acos((y.dot(field)) / (Math.sqrt(Math.pow(y.getX(), 2) + Math.pow(y.getY(), 2) + Math.pow(y.getZ(), 2)) * Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2))));
+//        double z_angle = Math.acos((z.dot(field)) / (Math.sqrt(Math.pow(z.getX(), 2) + Math.pow(z.getY(), 2) + Math.pow(z.getZ(), 2)) * Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2))));
+//        Vec3f euler = new Vec3f((float) x_angle * 57.2957795f, (float) y_angle * 57.2957795f, (float) z_angle * 57.2957795f);
+//        matrices.multiply(Quaternion.fromEulerXyzDegrees(euler));
+
+        itemRenderer.renderItem(arrow, ModelTransformation.Mode.GUI,light,overlay,matrices,vertexConsumers,0);
 
         // the field related things are calculated and rendered so now we start with the arrow
         // for this, we use the same matrices as above and we can modify them since we don't need the old values
@@ -56,15 +77,15 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
 //            System.out.println(field.getZ());
 //            System.out.println("-----");
 //        }
-        Vec3f y_rotation = new Vec3f(0, -1, 0);
-        matrices.multiply(new Quaternion(y_rotation, 90.f, true));
+//        Vec3f y_rotation = new Vec3f(0, -1, 0);
+//        matrices.multiply(new Quaternion(y_rotation, 90.f, true));
 
-        Vec3f x_rotation = new Vec3f(0, 0, -1);
-        matrices.multiply(new Quaternion(x_rotation, 45.f, true));
+//        Vec3f x_rotation = new Vec3f(0, 0, -1);
+//        matrices.multiply(new Quaternion(x_rotation, 45.f, true));
         //matrices.translate(0.5,1,0);
 
         // now also draw the arrow
-        itemRenderer.renderItem(arrow, ModelTransformation.Mode.GUI,light,overlay,matrices,vertexConsumers,0);
+       // itemRenderer.renderItem(arrow, ModelTransformation.Mode.GUI,light,overlay,matrices,vertexConsumers,0);
 
 
 //        RenderSystem.setShaderTexture(0, new Identifier("textures/block/andesite.png"));
