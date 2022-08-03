@@ -21,4 +21,9 @@ public class ItemGroups {
                     new Identifier(Scicraft.MOD_ID, "elementary_particles"))
             .icon(() -> new ItemStack(Items.PION_NUL))
             .build();
+
+    public static final ItemGroup CHEMICALS = FabricItemGroupBuilder.create(
+                    new Identifier(Scicraft.MOD_ID, "chemicals"))
+            .icon(() -> new ItemStack(Items.ERLENMEYER))
+            .build();
 }

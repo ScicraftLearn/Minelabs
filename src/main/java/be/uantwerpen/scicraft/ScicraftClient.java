@@ -8,13 +8,9 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.FluidBlock;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 
 @SuppressWarnings("UNUSED")
@@ -44,17 +40,17 @@ public class ScicraftClient implements ClientModInitializer {
         // TODO - enchanement visuals voor zeldzame stoffen
 
         // Tier 1
-        registerErlenmeyer(Items.ERLENMEYER_02,0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N2,0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CH4,0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_02,0xFFFFFF, 2);
+        registerErlenmeyer(Items.ERLENMEYER_N2,0xFFFFFF, 2);
+        registerErlenmeyer(Items.ERLENMEYER_CH4,0xFFFFFF, 2);
 
         // Tier 2
-        registerErlenmeyer(Items.ERLENMEYER_H2,0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N0,0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_H2,0xFFFFFF, 2);
+        registerErlenmeyer(Items.ERLENMEYER_NO,0xFFFFFF, 2);
         registerErlenmeyer(Items.ERLENMEYER_N02,0x991c00, 2);
         registerErlenmeyer(Items.ERLENMEYER_Cl2,0xE8F48C, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CO2,0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CO,0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_CO2,0xFFFFFF, 2);
+        registerErlenmeyer(Items.ERLENMEYER_CO,0xFFFFFF, 2);
 
         // Tier 3
         registerErlenmeyer(Items.ERLENMEYER_NH3,0x7F7F7F, 2);
@@ -70,7 +66,7 @@ public class ScicraftClient implements ClientModInitializer {
     public void registerErlenmeyer(Item item, int color, int index) {
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
             if (tintIndex == index) return color;
-            return 0x7F7F7F;
+            return 0xFFFFFF;//0x7F7F7F;
         }, item);
     }
 }
