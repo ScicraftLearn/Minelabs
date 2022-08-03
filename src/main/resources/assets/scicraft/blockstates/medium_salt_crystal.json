@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "scicraft:block/medium_salt_crystal",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "scicraft:block/medium_salt_crystal",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "scicraft:block/medium_salt_crystal",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "scicraft:block/medium_salt_crystal",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "scicraft:block/medium_salt_crystal"
+    },
+    "facing=west": {
+      "model": "scicraft:block/medium_salt_crystal",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

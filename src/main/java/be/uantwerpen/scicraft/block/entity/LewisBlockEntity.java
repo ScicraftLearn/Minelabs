@@ -163,7 +163,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
         }
         //Busy crafting
-        if (lewis.progress > -1) {
+        if (lewis.progress > -1 && lewis.currentRecipe != null) {
             lewis.progress += 1;
             if (lewis.progress >= 23) { //Done crafting
                 if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
