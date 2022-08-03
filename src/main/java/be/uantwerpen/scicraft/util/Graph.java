@@ -19,25 +19,25 @@ public class Graph<V, E> {
     public class Vertex {
         public V data;
 
-        private final LinkedHashSet<Edge> edges = new LinkedHashSet<>();
+        private final List<Edge> edges = new ArrayList<>();
 
         private Vertex(V data) {
             this.data = data;
         }
 
-        public Collection<Vertex> getNeighbours() {
-            return edges.stream().flatMap(edge -> edge.getVertices().stream().filter(vertex -> vertex != this)).collect(Collectors.toSet());
+        public List<Vertex> getNeighbours() {
+            return edges.stream().flatMap(edge -> edge.getVertices().stream().filter(vertex -> vertex != this)).collect(Collectors.toList());
         }
 
-        public Collection<V> getNeighboursData() {
+        public List<V> getNeighboursData() {
             return getNeighbours().stream().map(vertex -> vertex.data).collect(Collectors.toList());
         }
 
-        public Collection<Edge> getEdges() {
+        public List<Edge> getEdges() {
             return edges;
         }
 
-        public Collection<E> getEdgesData() {
+        public List<E> getEdgesData() {
             return edges.stream().map(edge -> edge.data).collect(Collectors.toList());
         }
 
@@ -89,11 +89,11 @@ public class Graph<V, E> {
         }
     }
 
-    protected final LinkedHashSet<Vertex> vertices = new LinkedHashSet<>();
+    protected final List<Vertex> vertices = new ArrayList<>();
 
     protected final LinkedHashMap<Set<Vertex>, Edge> edges = new LinkedHashMap<>();
 
-    public Set<Vertex> getVertices() {
+    public List<Vertex> getVertices() {
         return vertices;
     }
 

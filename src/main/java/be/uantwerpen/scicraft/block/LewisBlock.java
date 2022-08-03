@@ -71,12 +71,7 @@ public class LewisBlock extends BlockWithEntity {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof LewisBlockEntity lewisBlockEntity) {
-                DefaultedList<ItemStack> items = lewisBlockEntity.getItems();
-                SimpleInventory inventory = new SimpleInventory(items.size() - GRIDSIZE);
-                for (int i = GRIDSIZE; i < items.size(); i++)
-                    inventory.addStack(items.get(i));
-                for (int i = 0; i < inventory.size(); i++)
-                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), inventory.getStack(i));
+                ItemScatterer.spawn(world, pos, lewisBlockEntity.getIoInventory());
                 // update comparators
                 world.updateComparators(pos, this);
             }

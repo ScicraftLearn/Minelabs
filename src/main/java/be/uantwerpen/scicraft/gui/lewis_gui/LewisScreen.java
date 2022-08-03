@@ -50,7 +50,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
      */
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, getCorrectTexture());
@@ -68,19 +67,20 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         // Keep mapping between stack (in graph) and slots (for rendering)
         Map<ItemStack, Slot> stackToSlotMap = new HashMap<>();
         for (int i = 0; i < GRIDSIZE; i++) {
-            stackToSlotMap.put(handler.getInventory().getStack(i), handler.getSlot(i));
+            stackToSlotMap.put(handler.getLewisCraftingGrid().getStack(i), handler.getSlot(i));
         }
 
         /*
          * Draw Bonds on screen
          */
         LewisCraftingGrid grid = handler.getLewisCraftingGrid();
-        MoleculeItemGraph graph = (MoleculeItemGraph) grid.getPartialMolecule().getStructure();
-        for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
-            Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
-            Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
-            BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
-            this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+        if (grid.getPartialMolecule().getStructure() instanceof MoleculeItemGraph graph){
+            for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
+                Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
+                Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
+                BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
+                this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+            }
         }
 
         /*
@@ -92,7 +92,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             if(!this.handler.hasRecipe() || atom.isEmpty()) {
                 break;
             }
-            if (handler.getInventory().getStack(GRIDSIZE+i).getCount() < handler.getDensity()) {
+            if (handler.getIoInventory().getStack(i).getCount() < handler.getDensity()) {
                 this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
             } else {
                 this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);

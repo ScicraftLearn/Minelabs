@@ -6,6 +6,10 @@ public class PartialMolecule {
 
     private final MoleculeGraph structure;
 
+    public PartialMolecule(){
+        this(new MoleculeGraph());
+    }
+
     public PartialMolecule(MoleculeGraph structure){
         this.structure = structure;
     }

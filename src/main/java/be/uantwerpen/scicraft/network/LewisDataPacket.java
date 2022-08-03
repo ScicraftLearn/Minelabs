@@ -58,7 +58,7 @@ public class LewisDataPacket {
         }
     }
 
-    public void sent(World world, BlockPos pos) {
+    public void send(World world, BlockPos pos) {
         if (world.isClient) {
             return;
         }

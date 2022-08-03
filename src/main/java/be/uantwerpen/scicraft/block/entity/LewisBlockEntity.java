@@ -2,19 +2,19 @@ package be.uantwerpen.scicraft.block.entity;
 
 import be.uantwerpen.scicraft.crafting.CraftingRecipes;
 import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
-import be.uantwerpen.scicraft.inventory.ImplementedInventory;
 import be.uantwerpen.scicraft.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.scicraft.crafting.lewis.MoleculeRecipe;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.inventory.OrderedInventory;
 import be.uantwerpen.scicraft.network.LewisDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -30,15 +30,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import static be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler.GRIDSIZE;
+public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory {
+    // slots 0-24
+    private final LewisCraftingGrid craftingGrid = new LewisCraftingGrid(5,5);
 
-public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
-    //Inventory of items
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(36, ItemStack.EMPTY);
+    // slots 0-8: atoms, slot 9: erlenmeyer, slot 10: output
+    // combined with craftingGrid this gives slots 25-33: atoms, slot 34: erlenmeyer, slot 35: output
+    private final OrderedInventory ioInventory = new OrderedInventory(11);
+
     //PropertyDelegate is an interface which is implemented inline here.
     //It can normally contain multiple integers as data identified by the index.
     private final PropertyDelegate propertyDelegate;
@@ -61,26 +62,18 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
             @Override
             public int get(int index) {
-                switch (index) {
-                    case 0:
-                        return LewisBlockEntity.this.progress; //progress of the recipe
-                    case 1:
-                        return LewisBlockEntity.this.density; //Density (amount) of items needed for the recipe
-                    default:
-                        return 0;
-                }
+                return switch (index) {
+                    case 0 -> LewisBlockEntity.this.progress; //progress of the recipe
+                    case 1 -> LewisBlockEntity.this.density; //Density (amount) of items needed for the recipe
+                    default -> 0;
+                };
             }
 
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0:
-                        LewisBlockEntity.this.progress = value;
-                        break;
-                    case 1:
-                        LewisBlockEntity.this.density = value;
-                        break;
-                    default:
+                    case 0 -> LewisBlockEntity.this.progress = value;
+                    case 1 -> LewisBlockEntity.this.density = value;
                 }
             }
 
@@ -91,22 +84,15 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         };
     }
 
-    //From the ImplementedInventory Interface
-
-    @Override
-    public DefaultedList<ItemStack> getItems() {
-        return inventory;
-    }
 
     //These Methods are from the NamedScreenHandlerFactory Interface
     //createMenu creates the ScreenHandler itself
     //getDisplayName will Provide its name which is normally shown at the top
-
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         //We provide *this* to the screenHandler as our class Implements Inventory
         //Only the Server has the Inventory at the start, this will be synced to the client in the ScreenHandler
-        return new LewisBlockScreenHandler(syncId, playerInventory, this, propertyDelegate, pos);
+        return new LewisBlockScreenHandler(syncId, playerInventory, craftingGrid, ioInventory, propertyDelegate, pos);
     }
 
     @Override
@@ -118,7 +104,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         this.progress = nbt.getInt("pr");
-        Inventories.readNbt(nbt, this.inventory);
+        this.craftingGrid.readNbtList(nbt.getList("grid", NbtElement.COMPOUND_TYPE));
+        this.ioInventory.readNbtList(nbt.getList("io_inv", NbtElement.COMPOUND_TYPE));
         this.density = nbt.getInt("dens");
 
     }
@@ -127,7 +114,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putInt("pr", this.progress);
-        Inventories.writeNbt(nbt, this.inventory);
+        nbt.put("grid", craftingGrid.toNbtList());
+        nbt.put("io_inv", ioInventory.toNbtList());
         nbt.putInt("dens", this.density);
 
     }
@@ -146,23 +134,24 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public static void tick(World world, BlockPos pos, BlockState state, LewisBlockEntity lewis) {
         //No recipe loaded, try to load one.
         if (lewis.currentRecipe == null) {
-            Optional<MoleculeRecipe> recipe = lewis.matchGetter.getFirstMatch(lewis.getLewisCraftingGrid(), world);
+            Optional<MoleculeRecipe> recipe = lewis.matchGetter.getFirstMatch(lewis.craftingGrid, world);
             recipe.ifPresent(r -> {
                 lewis.ingredients = DefaultedList.ofSize(0);
                 lewis.currentRecipe = r;
                 lewis.ingredients = r.getIngredients();
                 lewis.density = r.getDensity();
                 LewisDataPacket packet = new LewisDataPacket(pos, lewis.ingredients); //custom packet to sync ingredients
-                packet.sent(world, pos);
+                packet.send(world, pos);
             });
         }
         //recipe loaded, check if enough items
-        else if (lewis.inventory.get(34).isEmpty() || lewis.inventory.get(34).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
-            if (!lewis.inventory.get(35).isOf(Items.ERLENMEYER) || lewis.inventory.get(35).getCount() < 1) return; //has erlenmeyer
+        else if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
+            System.out.println(lewis.currentRecipe.getIngredients());
+            if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) return; //has erlenmeyer
             boolean correct = false;
             for (int i = 0; i < lewis.ingredients.size(); i++) {
                 correct = true;
-                if (!lewis.ingredients.get(i).test(lewis.inventory.get(GRIDSIZE+i)) || lewis.inventory.get(GRIDSIZE+i).getCount() < lewis.currentRecipe.getDensity()) {
+                if (!lewis.ingredients.get(i).test(lewis.ioInventory.getStack(i)) || lewis.ioInventory.getStack(i).getCount() < lewis.currentRecipe.getDensity()) {
                     correct = false; // not enough items
                     break;
                 }
@@ -177,15 +166,15 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         if (lewis.progress > -1) {
             lewis.progress += 1;
             if (lewis.progress >= 23) { //Done crafting
-                if (lewis.inventory.get(34).isEmpty()) { //Set output slot
-                    lewis.inventory.set(34, lewis.currentRecipe.getOutput());
+                if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
+                    lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput());
                 }
                 else {
-                    lewis.inventory.get(34).increment(1);
+                    lewis.ioInventory.getStack(10).increment(1);
                 }
-                lewis.inventory.get(35).decrement(1);
+                lewis.ioInventory.getStack(9).decrement(1);
                 for (int i = 0; i < lewis.ingredients.size(); i++) {
-                    lewis.inventory.get(GRIDSIZE+i).decrement(lewis.density);
+                    lewis.ioInventory.getStack(i).decrement(lewis.density);
                 }
                 lewis.resetRecipe();
             }
@@ -194,13 +183,12 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
-        List<ItemStack> stacks = new ArrayList<>();
-        for (int i = 0; i < GRIDSIZE; i++) {
-            stacks.add(inventory.get(i));
-        }
-//        Scicraft.LOGGER.info("stacks: " + stacks);
+        return craftingGrid;
+    }
 
-        return new LewisCraftingGrid(5, 5,stacks.toArray(new ItemStack[0]));
+    public Inventory getIoInventory(){
+        return ioInventory;
+
     }
 
     /**
