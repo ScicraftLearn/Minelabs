@@ -1,8 +1,10 @@
 package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.block.BohrBlock;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
+import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.event.ModEvents;
 import be.uantwerpen.scicraft.item.ItemGroups;
@@ -19,12 +21,15 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import be.uantwerpen.scicraft.renderer.ConcreteHudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -35,12 +40,22 @@ import net.minecraft.client.MinecraftClient;
 public class ScicraftClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
-        BohrBlockCallBack.EVENT.register(
-                (playerEntity,bohrBlock) -> {
-                    TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+        HudRenderCallback.EVENT.register(
+                (matrixStack, delta) -> {
+                    MinecraftClient client = MinecraftClient.getInstance();
+                    TextRenderer textRenderer = client.textRenderer;
+                    BlockHitResult hitResult = (BlockHitResult) client.crosshairTarget;
+
+                    assert hitResult != null;
+                    assert client.world != null;
+
+                    BlockEntity blockEntity = client.world.getBlockEntity(hitResult.getBlockPos());
+                    if (blockEntity instanceof BohrBlockEntity){
+
+                    }
                     textRenderer.draw(new MatrixStack(), "hello world", 10, 10, 111455);
 
-                    return ActionResult.PASS;
+//                    return ActionResult.PASS;
                 }
         );
 
