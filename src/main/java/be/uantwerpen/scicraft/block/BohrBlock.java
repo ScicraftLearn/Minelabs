@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.event.BohrBlockCallBack;
 import be.uantwerpen.scicraft.item.Items;
@@ -66,7 +67,9 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+
         BlockEntity blockEntity = world.getBlockEntity(pos);
+        Scicraft.LOGGER.info(player.getStackInHand(hand));
         if (blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
             DefaultedList<ItemStack> neutronInventory = bohrBlockEntity.getNeutronInventory();
             DefaultedList<ItemStack> protonInventory = bohrBlockEntity.getProtonInventory();
@@ -89,6 +92,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 checkInventory(player, hand, electronInventory);
                 return ActionResult.SUCCESS;
             }
+
             else if (stack.getItem() == Items.PION_PLUS) { // TODO: juiste item
                 int neutrons = bohrBlockEntity.getNeutronCount();
                 if (neutrons > 0) {
@@ -97,7 +101,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
                 return ActionResult.SUCCESS;
             }
-            else if (stack.getItem() == Items.PION_MINUS) { // TODO: juiste item
+            else if (stack.getItem() == Items.ANTI_PROTON) { // TODO: juiste item
                 int protons = bohrBlockEntity.getProtonCount();
                 if (protons > 0) {
                     bohrBlockEntity.removeParticle("proton");
@@ -105,7 +109,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
                 return ActionResult.SUCCESS;
             }
-            else if (stack.getItem() == Items.POSITRON) {
+            else if (stack.getItem() == Items.HELIUM_ATOM) {
                 int electrons = bohrBlockEntity.getElectronCount();
                 if (electrons > 0) {
                     bohrBlockEntity.removeParticle("electron");

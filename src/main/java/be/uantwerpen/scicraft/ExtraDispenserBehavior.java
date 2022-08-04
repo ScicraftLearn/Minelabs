@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft;
 import be.uantwerpen.scicraft.entity.ElectronEntity;
 import be.uantwerpen.scicraft.entity.NeutronEntity;
 import be.uantwerpen.scicraft.entity.ProtonEntity;
+import be.uantwerpen.scicraft.entity.AntiProtonEntity;
 import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
@@ -59,6 +60,15 @@ public class ExtraDispenserBehavior {
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                 return Util.make(new ProtonEntity(world, position.getX(), position.getY(), position.getZ()), (protonEntity) -> {
                     protonEntity.setItem(stack);
+                });
+            }
+        });
+
+        DispenserBlock.registerBehavior(Items.ANTI_PROTON, new ProjectileDispenserBehavior() {
+            @Override
+            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                return Util.make(new AntiProtonEntity(world, position.getX(), position.getY(), position.getZ()), (AntiprotonEntity) -> {
+                    AntiprotonEntity.setItem(stack);
                 });
             }
         });

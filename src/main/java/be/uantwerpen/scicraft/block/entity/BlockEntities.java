@@ -16,6 +16,7 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> ELECTRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> POSTIRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PROTON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> ANTI_PROTON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PION_MINUS_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
@@ -40,8 +41,12 @@ public class BlockEntities {
     			"positron_block_entity");
 
         PROTON_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PROTON_BLOCK_ENTITY, p, s, 1, null, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PROTON).build(null),
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PROTON_BLOCK_ENTITY, p, s, 1, Blocks.ANTI_PROTON, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PROTON).build(null),
                 "proton_block_entity");
+
+        ANTI_PROTON_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(ANTI_PROTON_BLOCK_ENTITY, p, s, 1, Blocks.PROTON, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.ANTI_PROTON).build(null),
+                "anti_proton_block_entity");
 
         ANIMATED_CHARGED_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new AnimatedChargedBlockEntity(ANIMATED_CHARGED_BLOCK_ENTITY, p, s), Blocks.ANIMATED_CHARGED).build(null),

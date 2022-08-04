@@ -23,6 +23,8 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "electron_entity");
     public static final EntityType<ProtonEntity> PROTON_ENTITY = register(FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "proton_entity");
+    public static final EntityType<AntiProtonEntity> ANTI_PROTON_ENTITY = register(FabricEntityTypeBuilder.<AntiProtonEntity>create(SpawnGroup.MISC, AntiProtonEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "anti_proton_entity");
     public static final EntityType<NeutronEntity> NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "neutron_entity");
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
