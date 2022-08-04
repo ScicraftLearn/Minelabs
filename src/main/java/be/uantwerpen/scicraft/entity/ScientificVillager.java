@@ -19,7 +19,7 @@ import net.minecraft.world.poi.PointOfInterestType;
 
 public class ScientificVillager {
 
-    //selects the block that the villigat should be interested in and registers the profession
+    //selects the block that the villager should be interested in and registers the profession
     public static final PointOfInterestType REDSTONE_POI = registerPOI("redstone_poi", Blocks.REDSTONE_BLOCK);
     public static final VillagerProfession SCIENCE_VILLAGER = registerProfession("sciencevillager",
             RegistryKey.of(Registry.POINT_OF_INTEREST_TYPE_KEY, new Identifier(Scicraft.MOD_ID, "redstone_poi")));
@@ -43,7 +43,9 @@ public class ScientificVillager {
         Scicraft.LOGGER.debug("Registering Villagers for " + Scicraft.MOD_ID);
     }
 
-    //list with all the items you can buy from this villager
+    /*list with all the items you can buy from this villager
+    * The list are for a specific level and the moment the villager passes this level they stop being available
+    * */
     public static void registerTrades(){
         TradeOfferHelper.registerVillagerOffers(SCIENCE_VILLAGER, 1,
                 factories -> {
