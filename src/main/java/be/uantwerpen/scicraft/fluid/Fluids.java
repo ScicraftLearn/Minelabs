@@ -4,10 +4,7 @@ import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
-import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -15,8 +12,10 @@ public class Fluids {
 
     // Fluids
     // TODO - https://fabricmc.net/wiki/tutorial:fluids
-    public static final AbstractFluid STILL_ACID = register(new AcidFluid.Still(), "acid");
-    public static final AbstractFluid FLOWING_ACID = register(new AcidFluid.Flowing(), "flowing_acid");
+    public static final AbstractFluid STILL_HNO3 = register(new FluidHNO3.Still(), "still_hno3");
+    public static final AbstractFluid STILL_H2O = register(new FluidH2O.Still(), "still_h2o");
+    public static final AbstractFluid FLOWING_HNO3 = register(new FluidHNO3.Flowing(), "flowing_hno3");
+    public static final AbstractFluid FLOWING_H2O = register(new FluidH2O.Flowing(), "flowing_h2o");
 
     /**
      * Register a Fluid
@@ -36,12 +35,12 @@ public class Fluids {
      */
     public static void registerFluids() {
         Scicraft.LOGGER.info("registering fluids");
-        FluidRenderHandlerRegistry.INSTANCE.register(STILL_ACID, FLOWING_ACID, new SimpleFluidRenderHandler(
+
+        FluidRenderHandlerRegistry.INSTANCE.register(STILL_HNO3, FLOWING_HNO3, new SimpleFluidRenderHandler(
                 new Identifier("minecraft:block/water_still"),
                 new Identifier("minecraft:block/water_flow"),
                 0x4CC248
         ));
-
-        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), STILL_ACID, FLOWING_ACID);
+        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), STILL_HNO3, FLOWING_HNO3);
     }
 }

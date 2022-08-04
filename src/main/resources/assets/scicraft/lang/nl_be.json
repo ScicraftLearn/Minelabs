@@ -33,5 +33,6 @@
   "item.scicraft.erlenmeyer_nh3.nh3": "Ammoniak (NH3)",
   "item.scicraft.erlenmeyer_n2o.n2o": "Lachgas (N2O)",
   "item.scicraft.erlenmeyer_hcl.hcl": "Waterstofchloride (HCl)",
-  "item.scicraft.erlenmeyer_hno3": "Salpeterzuur (HNO3)"
+  "item.scicraft.erlenmeyer_hno3": "Salpeterzuur (HNO3)",
+  "item.scicraft.erlenmeyer_h2o": "Zuurstofgas (H2O)"
 }

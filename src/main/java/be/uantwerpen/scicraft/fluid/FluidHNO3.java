@@ -15,15 +15,15 @@ import net.minecraft.world.WorldView;
 
 import java.util.Map;
 
-public abstract class AcidFluid extends AbstractFluid {
+public abstract class FluidHNO3 extends AbstractFluid {
     @Override
     public Fluid getStill() {
-        return Fluids.STILL_ACID;
+        return Fluids.STILL_HNO3;
     }
 
     @Override
     public Fluid getFlowing() {
-        return Fluids.FLOWING_ACID;
+        return Fluids.FLOWING_HNO3;
     }
 
     @Override
@@ -37,7 +37,7 @@ public abstract class AcidFluid extends AbstractFluid {
         return Blocks.ACID.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
     }
 
-    public static class Flowing extends AcidFluid {
+    public static class Flowing extends FluidHNO3 {
         @Override
         protected void appendProperties(net.minecraft.state.StateManager.Builder<Fluid, FluidState> builder) {
             super.appendProperties(builder);
@@ -65,7 +65,7 @@ public abstract class AcidFluid extends AbstractFluid {
         }
     }
 
-    public static class Still extends AcidFluid {
+    public static class Still extends FluidHNO3 {
         @Override
         public int getLevel(FluidState fluidState) {
             return 8;
