@@ -1,8 +1,6 @@
 package be.uantwerpen.scicraft.renderer;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.ElectricFieldSensorBlockEntity;
-import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -12,7 +10,6 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
 
 public class ElectricFieldSensorRenderer implements BlockEntityRenderer<ElectricFieldSensorBlockEntity> {
@@ -27,7 +24,6 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
     public void render(ElectricFieldSensorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         Vec3f field = entity.getField().copy();
-        ItemStack stack = new ItemStack(Items.ELECTRON);
         ItemStack arrow = new ItemStack(net.minecraft.item.Items.ARROW);
 
         matrices.push();
@@ -69,37 +65,16 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         Vec3f x_rotation = new Vec3f(0, 0, 1);
         matrices.multiply(x_rotation.getDegreesQuaternion(-45));
 
+        // make sure arrows are larger when near charged blocks and smaller when further away
+        float reference = Math.abs(field.getX()) + Math.abs(field.getY()) + Math.abs(field.getZ());
+        if (reference > 1) {
+            matrices.scale(reference, reference, reference);
+        } else {
+            matrices.scale(Math.min(reference+0.4f, 0.99f),Math.min(reference+0.4f, 0.99f),Math.min(reference+0.4f, 0.99f));
+        }
+
         itemRenderer.renderItem(arrow, ModelTransformation.Mode.GUI,light,overlay,matrices,vertexConsumers,0);
 
-        // the field related things are calculated and rendered so now we start with the arrow
-        // for this, we use the same matrices as above and we can modify them since we don't need the old values
-
-        //matrices.multiply(quaternion);
-//        if (field.getX() != 0 || field.getY() != 0 || field.getZ() != 0) {
-//            System.out.println("-----");
-//            System.out.println(field.getX());
-//            System.out.println(field.getY());
-//            System.out.println(field.getZ());
-//            System.out.println("-----");
-//        }
-//        Vec3f y_rotation = new Vec3f(0, -1, 0);
-//        matrices.multiply(new Quaternion(y_rotation, 90.f, true));
-
-//        Vec3f x_rotation = new Vec3f(0, 0, -1);
-//        matrices.multiply(new Quaternion(x_rotation, 45.f, true));
-        //matrices.translate(0.5,1,0);
-
-        // now also draw the arrow
-       // itemRenderer.renderItem(arrow, ModelTransformation.Mode.GUI,light,overlay,matrices,vertexConsumers,0);
-
-
-//        RenderSystem.setShaderTexture(0, new Identifier("textures/block/andesite.png"));
-//        VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getCutout());
-//        buffer.vertex(-0.5 + field.getX(),1 + field.getY(),0 + field.getZ()).color(1,1,1,1).texture(0,16).light(light).normal(-1,0,0).next();
-//        buffer.vertex(0.5 + field.getX(),1 + field.getY(),0 + field.getZ()).color(1,1,1,1).texture(0,16).light(light).normal(-1,0,0).next();
-//        buffer.vertex(-0.5,0,0).color(0,0,0,0).texture(0,16).light(light).normal(-1,0,0).next();
-//        buffer.vertex(0.5,0,0).color(0,0,0,0).texture(0,16).light(light).normal(-1,0,0).next();
-//        buffer.next();
         matrices.pop();
     }
 }
