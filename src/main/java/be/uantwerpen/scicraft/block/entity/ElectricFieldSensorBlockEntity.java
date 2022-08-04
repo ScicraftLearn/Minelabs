@@ -61,12 +61,19 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
         world.updateListeners(pos,getCachedState(),getCachedState(),3);
     }
 
-    public void calculateField(World world, BlockPos pos) {
+    public void calculateField(World world, BlockPos pos, BlockPos removedBlockPos) {
         int e_radius = 8;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
         field = new Vec3f(0f, 0f, 0f);
         for (BlockPos pos_block : blocks_in_radius) {
+
+            //if a charge is removed, we calculate the entire field of the sensor again
+            //otherwise if you only calculate the relative field, rounding errors will occur almost always
+            //since this function is called when the block still exists, we need to skip the block
+            if(removedBlockPos != null && pos_block.equals(removedBlockPos)) {
+                continue;
+            }
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.getField() != null) {
                 Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
                 float d_E = (float) ((1 * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));

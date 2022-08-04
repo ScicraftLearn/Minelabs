@@ -11,7 +11,9 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -124,11 +126,15 @@ public class ChargedBlockEntity extends BlockEntity{
                 particle2.markDirty();
                 particle2.needsUpdate(true);
             }
+
+            //for sensors, we calculate the entire field again
             if (world.getBlockEntity(pos_block) instanceof ElectricFieldSensorBlockEntity sensor && !pos.equals(pos_block) ){
-                Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
-                float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                vec_pos.scale(d_E);
-                sensor.getField().add(vec_pos);
+                sensor.calculateField(world, pos_block, pos);
+
+                //Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                //float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
+                //vec_pos.scale(d_E);
+                //sensor.getField().add(vec_pos);
                 sensor.markDirty();
                 sensor.sync();
             }

@@ -25,6 +25,8 @@
   "block.scicraft.upquark_quantumfield": "Upquark Quantumfield",
   "block.scicraft.downquark_quantumfield": "Downquark Quantumfield",
 
+  "block.scicraft.time_freeze_block": "Time Freeze Block",
+
   "blockEntity.scicraft.charged_block": "Charged Block",
 
   "entity.scicraft.entropy_creeper": "Entropy Creeper",

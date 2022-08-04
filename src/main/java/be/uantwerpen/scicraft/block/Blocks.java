@@ -2,8 +2,6 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
-//import be.uantwerpen.scicraft.block.entity.PionMinusBlockEntity;
-//import be.uantwerpen.scicraft.block.entity.PionPlusBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -53,6 +51,7 @@ public class Blocks {
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "neutrino_quantumfield");
     public static final Block UPQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "upquark_quantumfield");
     public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "downquark_quantumfield");
+    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(), "time_freeze_block");
 
     public static final ElectricFieldSensorBlock ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
 
@@ -67,7 +66,6 @@ public class Blocks {
      *
      * @param block      : Block Object to register
      * @param identifier : String name of the Item
-     * @return 
      * @return {@link Block}
      */
     private static <T extends Block> T register(T block, String identifier) {
