@@ -64,7 +64,7 @@ public abstract class AbstractFluid extends FlowableFluid {
      */
     @Override
     protected int getLevelDecreasePerBlock(WorldView worldView) {
-        return 1;
+        return 3;
     }
 
     /**

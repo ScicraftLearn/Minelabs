@@ -1,7 +1,11 @@
 package be.uantwerpen.scicraft.fluid;
 
 import be.uantwerpen.scicraft.Scicraft;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.minecraft.block.Block;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -32,5 +36,12 @@ public class Fluids {
      */
     public static void registerFluids() {
         Scicraft.LOGGER.info("registering fluids");
+        FluidRenderHandlerRegistry.INSTANCE.register(STILL_ACID, FLOWING_ACID, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                0x4CC248
+        ));
+
+        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), STILL_ACID, FLOWING_ACID);
     }
 }

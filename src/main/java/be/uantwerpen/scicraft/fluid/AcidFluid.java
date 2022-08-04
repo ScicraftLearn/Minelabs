@@ -68,7 +68,7 @@ public abstract class AcidFluid extends AbstractFluid {
     public static class Still extends AcidFluid {
         @Override
         public int getLevel(FluidState fluidState) {
-            return 2;
+            return 8;
         }
 
         @Override
