@@ -3,7 +3,7 @@ package be.uantwerpen.scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.item.Items;
-import be.uantwerpen.scicraft.potion.Potions;
+import be.uantwerpen.scicraft.gas.Gasses;
 import be.uantwerpen.scicraft.sound.SoundEvents;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +26,6 @@ public class Scicraft implements ModInitializer {
         Entities.registerEntities();
         ExtraDispenserBehavior.registerBehaviors();
         SoundEvents.registerSounds();
-        Potions.registerPotions();
+        Gasses.registerPotions();
     }
 }

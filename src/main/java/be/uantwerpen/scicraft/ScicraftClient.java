@@ -47,15 +47,15 @@ public class ScicraftClient implements ClientModInitializer {
         // Tier 2
         registerErlenmeyer(Items.ERLENMEYER_H2,0xFFFFFF, 2);
         registerErlenmeyer(Items.ERLENMEYER_NO,0xFFFFFF, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N02,0x991c00, 2);
+        registerErlenmeyer(Items.ERLENMEYER_NO2,0x991c00, 2);
         registerErlenmeyer(Items.ERLENMEYER_Cl2,0xE8F48C, 2);
         registerErlenmeyer(Items.ERLENMEYER_CO2,0xFFFFFF, 2);
         registerErlenmeyer(Items.ERLENMEYER_CO,0xFFFFFF, 2);
 
         // Tier 3
-        registerErlenmeyer(Items.ERLENMEYER_NH3,0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N2O,0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_HCl,0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_NH3,0xFFFFFF, 2);
+        registerErlenmeyer(Items.ERLENMEYER_N2O,0xFFFFFF, 2);
+        registerErlenmeyer(Items.ERLENMEYER_HCl,0xFFFFFF, 2);
 
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3,0xFFCC33, 2);
