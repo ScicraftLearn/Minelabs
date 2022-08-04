@@ -84,7 +84,7 @@ public class PortalBlock extends Block{
             //Save player position so it can be returned
             playerpos = player.getPos();
             ServerWorld atomdim = server.getWorld(ModDimensions.SUBATOM_KEY);
-            serverPlayer.teleport(atomdim, 0, 1, 0,
+            serverPlayer.teleport(atomdim, 0, 6, 0,
                     serverPlayer.bodyYaw, serverPlayer.prevPitch);
         }
     }
