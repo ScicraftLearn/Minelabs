@@ -1,19 +1,19 @@
 package be.uantwerpen.scicraft.block.entity;
 
 import be.uantwerpen.scicraft.crafting.CraftingRecipes;
-import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.scicraft.crafting.lewis.MoleculeRecipe;
-import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.gui.lewis_gui.LewisBlockScreenHandler;
 import be.uantwerpen.scicraft.inventory.OrderedInventory;
+import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.LewisDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
@@ -146,7 +146,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         }
         //recipe loaded, check if enough items
         else if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
-            System.out.println(lewis.currentRecipe.getIngredients());
+            //System.out.println(lewis.currentRecipe.getIngredients());
             if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) return; //has erlenmeyer
             boolean correct = false;
             for (int i = 0; i < lewis.ingredients.size(); i++) {
