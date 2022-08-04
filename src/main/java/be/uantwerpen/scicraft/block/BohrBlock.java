@@ -89,6 +89,31 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 checkInventory(player, hand, electronInventory);
                 return ActionResult.SUCCESS;
             }
+            else if (stack.getItem() == Items.PION_PLUS) { // TODO: juiste item
+                int neutrons = bohrBlockEntity.getNeutronCount();
+                if (neutrons > 0) {
+                    bohrBlockEntity.removeParticle("neutron");
+                    player.getStackInHand(hand).decrement(1);
+                }
+                return ActionResult.SUCCESS;
+            }
+            else if (stack.getItem() == Items.PION_MINUS) { // TODO: juiste item
+                int protons = bohrBlockEntity.getProtonCount();
+                if (protons > 0) {
+                    bohrBlockEntity.removeParticle("proton");
+                    player.getStackInHand(hand).decrement(1);
+                }
+                return ActionResult.SUCCESS;
+            }
+            else if (stack.getItem() == Items.POSITRON) {
+                int electrons = bohrBlockEntity.getElectronCount();
+                if (electrons > 0) {
+                    bohrBlockEntity.removeParticle("electron");
+                    player.getStackInHand(hand).decrement(1);
+                }
+                return ActionResult.SUCCESS;
+            }
+
 //            else if empty hand
             else if (stack.isEmpty()) {
 //                creating the atom

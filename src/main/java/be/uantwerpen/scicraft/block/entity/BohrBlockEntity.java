@@ -107,6 +107,41 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             electronInventory.get(index).setCount(0);
         }
     }
+
+    /**
+     * Removes a particle (proton, neutron or electron depending on passed param) from the bohrblock.
+     *
+     * @param particleName : String name of the particle to be removed.
+     */
+    public void removeParticle(String particleName) {
+        switch (particleName) {
+            case "proton":
+                for (int index = 0; index < 3; index++) {
+                    if (protonInventory.get(index).getCount() > 0) {
+                        protonInventory.get(index).setCount(protonInventory.get(index).getCount() - 1);
+                        break;
+                    }
+                }
+                break;
+            case "neutron":
+                for (int index = 0; index < 3; index++) {
+                    if (neutronInventory.get(index).getCount() > 0) {
+                        neutronInventory.get(index).setCount(neutronInventory.get(index).getCount() - 1);
+                        break;
+                    }
+                }
+                break;
+            case "electron":
+                for (int index = 0; index < 3; index++) {
+                    if (electronInventory.get(index).getCount() > 0) {
+                        electronInventory.get(index).setCount(electronInventory.get(index).getCount() - 1);
+                        break;
+                    }
+                }
+                break;
+        }
+    }
+
     @Override
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
