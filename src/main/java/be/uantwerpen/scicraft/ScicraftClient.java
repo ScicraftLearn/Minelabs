@@ -20,6 +20,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.ExtraModelProvider;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
@@ -30,6 +31,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 
@@ -41,7 +43,8 @@ public class ScicraftClient implements ClientModInitializer {
         //Register ItemModels
         ItemModels.registerModels();
 
-        ModelLoadingRegistry.INSTANCE.registerResourceProvider(rm -> new ModelProvider());
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(resourceManager -> new ModelProvider(resourceManager));
+        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new Identifier(Scicraft.MOD_ID, "molecules/ch4")));
 
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());

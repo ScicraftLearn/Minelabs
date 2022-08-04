@@ -1,5 +1,12 @@
 package be.uantwerpen.scicraft.model;
 
+import be.uantwerpen.scicraft.lewisrecipes.Atom;
+import be.uantwerpen.scicraft.lewisrecipes.Bond;
+import be.uantwerpen.scicraft.lewisrecipes.MoleculeGraphJsonFormat;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,6 +29,7 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -29,6 +37,7 @@ import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 
+import java.io.Reader;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -38,13 +47,21 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
     private Mesh mesh;
 
-    private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("scicraft:item/atom_orange"));
+    private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("scicraft:item/atom_white"));
 
     private Sprite SPRITE;
 
     private static final Identifier DEFAULT_BLOCK_MODEL = new Identifier("minecraft:block/block");
 
     private ModelTransformation transformation;
+
+    Map<String, Pair<Atom, Vec3f>> position;
+    Map<Pair<String, String>, Bond> bonds;
+
+    public SphereModel(Map<String, Pair<Atom, Vec3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
+        this.position = positions;
+        this.bonds = bondMap;
+    }
 
     public Collection<Identifier> getModelDependencies() {
         return List.of(DEFAULT_BLOCK_MODEL);
@@ -114,9 +131,19 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         MeshBuilder builder = renderer.meshBuilder();
         QuadEmitter emitter = builder.getEmitter();
 
-        Vec3f center = new Vec3f(0, 0, 0);
-        float radius = 0.15f;
+        //Vec3f center = new Vec3f(0, 0, 0);
+        //float radius = 0.15f;
 
+        //makeSphere(emitter, center, radius);
+        position.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.15f, 0xFF0000)); //RGB color in hex
+        position.forEach((s, atomVec3fPair) -> System.out.println(atomVec3fPair.getSecond()));
+
+        mesh = builder.build();
+
+        return this;
+    }
+
+    private void makeSphere(QuadEmitter emitter, Vec3f center, float radius, int color) {
         for (Vec3f[] quad: getSphereVertices(center, radius)){
             for(int i=0; i < 4; i++) {
                 emitter.pos(i, quad[i].getX(), quad[i].getY(), quad[i].getZ());
@@ -134,15 +161,11 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
             emitter.spriteBake(0, SPRITE, MutableQuadView.BAKE_ROTATE_NONE);
 
             // Enable texture usage
-            emitter.spriteColor(0, -1, -1, -1, -1);
+            emitter.spriteColor(0, color, color, color, color);
 
             // Add the quad to the mesh
             emitter.emit();
         }
-
-        mesh = builder.build();
-
-        return this;
     }
 
     public List<Vec3f[]> getSphereVertices(Vec3f center, float r) {
@@ -252,6 +275,47 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
     @Override
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
         context.meshConsumer().accept(mesh);
+    }
+
+    public static SphereModel deserialize(Reader reader) {
+
+        Map<String, Pair<Atom, Vec3f>> positions = new HashMap<>();
+        Map<Pair<String, String>, Bond> bondMap = new HashMap<>();
+
+        JsonObject structure = JsonHelper.deserialize(reader).getAsJsonObject("structure");
+        JsonArray atoms = structure.getAsJsonArray("atoms");
+        for (JsonElement atom: atoms) {
+            JsonObject atomJson = atom.getAsJsonObject();
+            String key = atomJson.get("key").getAsString();
+            Atom readAtom = Atom.getBySymbol(atomJson.get("atom").getAsString());
+            JsonArray pos = atomJson.getAsJsonArray("position");
+            Vec3f vec3f = Vec3f.ZERO;
+            int i = 0;
+            for (JsonElement position: pos) {
+                switch (i) {
+                    case 0:
+                        vec3f.add(position.getAsFloat(),0,0);
+                        i++;
+                        break;
+                    case 1:
+                        vec3f.add(0,position.getAsFloat(),0);
+                        i++;
+                        break;
+                    case 2:
+                        vec3f.add(0,0,position.getAsFloat());
+                        i++;
+                        break;
+                }
+            }
+            positions.put(key, new Pair<>(readAtom, vec3f.copy()));
+            vec3f.set(0,0,0);
+        }
+        JsonArray bonds = structure.getAsJsonArray("bonds");
+        for (JsonElement bond: bonds) {
+            MoleculeGraphJsonFormat.BondJson bondJson = new Gson().fromJson(bond.getAsJsonObject(), MoleculeGraphJsonFormat.BondJson.class);
+            bondMap.put(new Pair<>(bondJson.from, bondJson.to), Bond.get(bondJson.bondOrder));
+        }
+        return new SphereModel(positions, bondMap);
     }
 
 }

@@ -23,10 +23,10 @@ public class MoleculeGraphJsonFormat {
 
     List<BondJson> bonds;
 
-    static class BondJson {
-        String from;
-        String to;
-        int bondOrder = 1;
+    public static class BondJson {
+        public String from;
+        public String to;
+        public int bondOrder = 1;
     }
 
     public MoleculeGraph get() throws JsonSyntaxException{

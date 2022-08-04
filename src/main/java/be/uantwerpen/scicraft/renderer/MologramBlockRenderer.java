@@ -65,7 +65,7 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
         // Render molecule above
         matrices.push();
         matrices.translate(0, 1, 0);
-        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier(Scicraft.MOD_ID, "block/sphere"));
+        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier(Scicraft.MOD_ID, "molecules/ch4"));
         MinecraftClient.getInstance().getBlockRenderManager().renderBlock(
                 be.uantwerpen.scicraft.block.Blocks.SPHERE.getDefaultState(), pos, world, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create());
         matrices.pop();
