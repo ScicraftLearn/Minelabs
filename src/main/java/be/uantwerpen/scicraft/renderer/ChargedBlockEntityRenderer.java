@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 @Environment(EnvType.CLIENT)
 public class ChargedBlockEntityRenderer<T extends AnimatedChargedBlockEntity> implements BlockEntityRenderer<T> {
 	
-    private Context context;
+    private final Context context;
 
 	public ChargedBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
     	this.context = ctx;

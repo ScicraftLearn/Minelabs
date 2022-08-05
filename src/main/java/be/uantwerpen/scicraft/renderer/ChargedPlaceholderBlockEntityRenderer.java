@@ -15,7 +15,7 @@ import net.minecraft.client.util.math.MatrixStack;
 @Environment(EnvType.CLIENT)
 public class ChargedPlaceholderBlockEntityRenderer<T extends ChargedPlaceholderBlockEntity> implements BlockEntityRenderer<T> {
 
-    private Context context;
+    private final Context context;
 
 	public ChargedPlaceholderBlockEntityRenderer(Context ctx) {
     	this.context = ctx;

@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import java.util.function.Supplier;
 
 public class ChargedPlaceholderBlock extends BlockWithEntity{
-	private Supplier<BlockEntityType<? extends ChargedPlaceholderBlockEntity>> lazy;
+	private final Supplier<BlockEntityType<? extends ChargedPlaceholderBlockEntity>> lazy;
 
 	public ChargedPlaceholderBlock(Settings settings, Supplier<BlockEntityType<? extends ChargedPlaceholderBlockEntity>> lazy) {
 		super(settings);

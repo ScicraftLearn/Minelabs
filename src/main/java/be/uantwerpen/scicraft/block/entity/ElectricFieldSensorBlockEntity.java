@@ -71,7 +71,7 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
             //if a charge is removed, we calculate the entire field of the sensor again
             //otherwise if you only calculate the relative field, rounding errors will occur almost always
             //since this function is called when the block still exists, we need to skip the block
-            if(removedBlockPos != null && pos_block.equals(removedBlockPos)) {
+            if(pos_block.equals(removedBlockPos)) {
                 continue;
             }
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.getField() != null) {

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class ChargedBlock extends BlockWithEntity{
-	private Supplier<BlockEntityType<? extends ChargedBlockEntity>> lazy;
+	private final Supplier<BlockEntityType<? extends ChargedBlockEntity>> lazy;
 
 	public ChargedBlock(Settings settings, Supplier<BlockEntityType<? extends ChargedBlockEntity>> lazy) {
 		super(settings);
