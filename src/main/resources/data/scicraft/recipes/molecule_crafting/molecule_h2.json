@@ -1,0 +1,17 @@
+{
+  "type": "scicraft:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "H2", "atom":  "H"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "H2", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "scicraft:erlenmeyer_h2"
+  },
+  "density": 8
+}

@@ -49,7 +49,7 @@ public class ProtonEntity extends SubatomicParticle {
     @Environment(EnvType.CLIENT)
     protected ParticleEffect getParticleParameters() { // Needed for particles on collision with the world
         ItemStack itemStack = this.getItem();
-        return (ParticleEffect) (itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack));
+        return itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack);
     }
 
     /**
