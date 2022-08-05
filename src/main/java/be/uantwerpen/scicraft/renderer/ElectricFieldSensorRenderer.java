@@ -68,9 +68,10 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         // make sure arrows are larger when near charged blocks and smaller when further away
         float reference = Math.abs(field.getX()) + Math.abs(field.getY()) + Math.abs(field.getZ());
         if (reference > 1) {
-            matrices.scale(reference, reference, reference);
+            matrices.scale(1,1,1);
+            //matrices.scale(reference, reference, reference);
         } else {
-            matrices.scale(Math.min(reference+0.4f, 0.99f),Math.min(reference+0.4f, 0.99f),Math.min(reference+0.4f, 0.99f));
+            matrices.scale(Math.min(reference+0.2f, 0.99f),Math.min(reference+0.2f, 0.99f),Math.min(reference+0.2f, 0.99f));
         }
 
         itemRenderer.renderItem(arrow, ModelTransformation.Mode.GUI,light,overlay,matrices,vertexConsumers,0);
