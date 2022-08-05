@@ -44,6 +44,8 @@ public class Blocks {
 
     public static final Block NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutron");
+    public static final Block ANTI_NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "anti_neutron");
 
     public static final Block CHARGED_PLACEHOLDER = register(new ChargedPlaceholderBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque(), () -> BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY), "charged_placeholder");

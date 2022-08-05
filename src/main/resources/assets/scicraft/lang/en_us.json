@@ -8,6 +8,7 @@
   "block.scicraft.anti_proton": "AntiProton",
   "block.scicraft.electron": "Electron",
   "block.scicraft.neutron": "Neutron",
+  "block.scicraft.anti_neutron": "AntiNeutron",
   "block.scicraft.pion_nul": "Pion Nul",
   "block.scicraft.pion_minus": "Pion Minus",
   "block.scicraft.pion_plus": "Pion Plus",
@@ -34,8 +35,10 @@
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
 
   "item.scicraft.proton": "Proton",
+  "item.scicraft.anti_proton": "AntiProton",
   "item.scicraft.electron": "Electron",
   "item.scicraft.neutron": "Neutron",
+  "item.scicraft.anti_neutron": "AntiNeutron",
   "item.scicraft.pion_nul": "Pion Nul",
   "item.scicraft.pion_minus": "Pion Minus",
   "item.scicraft.pion_plus": "Pion Plus",

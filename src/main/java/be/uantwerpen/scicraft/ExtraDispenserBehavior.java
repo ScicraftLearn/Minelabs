@@ -4,6 +4,7 @@ import be.uantwerpen.scicraft.entity.ElectronEntity;
 import be.uantwerpen.scicraft.entity.NeutronEntity;
 import be.uantwerpen.scicraft.entity.ProtonEntity;
 import be.uantwerpen.scicraft.entity.AntiProtonEntity;
+import be.uantwerpen.scicraft.entity.AntiNeutronEntity;
 import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
@@ -85,6 +86,15 @@ public class ExtraDispenserBehavior {
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                 return Util.make(new NeutronEntity(world, position.getX(), position.getY(), position.getZ()), (neutronEntity) -> {
                     neutronEntity.setItem(stack);
+                });
+            }
+        });
+
+        DispenserBlock.registerBehavior(Items.ANTI_NEUTRON, new ProjectileDispenserBehavior() {
+            @Override
+            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                return Util.make(new AntiNeutronEntity(world, position.getX(), position.getY(), position.getZ()), (antiNeutronEntity) -> {
+                    antiNeutronEntity.setItem(stack);
                 });
             }
         });

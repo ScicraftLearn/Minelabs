@@ -29,7 +29,8 @@ public class ModEvents {
             if (world.getRegistryKey() == ModDimensions.SUBATOM_KEY) {
                 if (stack.getItem().getGroup() == ItemGroups.ATOMS || stack.isOf(Items.ATOM_PORTAL)
                         || stack.isOf(Items.BOHR_BLOCK) || stack.isOf(Items.ATOM_FLOOR) || stack.isEmpty()
-                        || stack.isOf(Items.NEUTRON) || stack.isOf(Items.PROTON) || stack.isOf(Items.ELECTRON) || stack.isOf(Items.ANTI_PROTON)) {
+                        || stack.isOf(Items.NEUTRON) || stack.isOf(Items.PROTON) || stack.isOf(Items.ELECTRON)
+                        || stack.isOf(Items.ANTI_PROTON) || stack.isOf(Items.ANTI_NEUTRON) || stack.isOf(Items.POSITRON)) {
                     return ActionResult.PASS;
                 } else {
                     return ActionResult.FAIL;

@@ -86,7 +86,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 return ActionResult.SUCCESS;
             }
 
-            else if (stack.getItem() == Items.PION_PLUS) { // TODO: juiste item
+            else if (stack.getItem() == Items.ANTI_NEUTRON) {
                 int neutrons = bohrBlockEntity.getNeutronCount();
                 if (neutrons > 0) {
                     bohrBlockEntity.removeParticle("neutron");
@@ -94,7 +94,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
                 return ActionResult.SUCCESS;
             }
-            else if (stack.getItem() == Items.ANTI_PROTON) { // TODO: juiste item
+            else if (stack.getItem() == Items.ANTI_PROTON) {
                 int protons = bohrBlockEntity.getProtonCount();
                 if (protons > 0) {
                     bohrBlockEntity.removeParticle("proton");
@@ -102,7 +102,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
                 return ActionResult.SUCCESS;
             }
-            else if (stack.getItem() == Items.HELIUM_ATOM) {
+            else if (stack.getItem() == Items.POSITRON) {
                 int electrons = bohrBlockEntity.getElectronCount();
                 if (electrons > 0) {
                     bohrBlockEntity.removeParticle("electron");
