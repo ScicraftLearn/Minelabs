@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft.renderer;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
+import be.uantwerpen.scicraft.item.MoleculeItem;
 import be.uantwerpen.scicraft.particle.Particles;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -24,6 +25,7 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
+import java.util.Locale;
 import java.util.Random;
 
 public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockEntity> {
@@ -59,15 +61,27 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
         }
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
+
         // Mandatory call after GL calls
         matrices.pop();
 
         // Render molecule above
+        BakedModel model;
+        if (stack.getItem() instanceof MoleculeItem molecule) {
+            model = MinecraftClient.getInstance().getBakedModelManager().models.get(new Identifier(Scicraft.MOD_ID, "molecules/" + molecule.getMolecule().toLowerCase()));
+        } else {
+            return;
+        }
+
+        if (model == null) {
+            return;
+        }
+
         matrices.push();
         matrices.translate(0, 1, 0);
-        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier(Scicraft.MOD_ID, "molecules/ch4"));
-        MinecraftClient.getInstance().getBlockRenderManager().renderBlock(
-                be.uantwerpen.scicraft.block.Blocks.SPHERE.getDefaultState(), pos, world, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create());
+        MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create(), 0, overlay);
+//        MinecraftClient.getInstance().getBlockRenderManager().renderBlock(
+//                be.uantwerpen.scicraft.block.Blocks.SPHERE.getDefaultState(), pos, world, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create());
         matrices.pop();
 
         renderBeam(0.4f, 0.7f, pos, matrices, vertexConsumers);

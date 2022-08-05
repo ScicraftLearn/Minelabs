@@ -9,11 +9,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class ErlenmeyerItem extends Item
-        implements FluidModificationItem {
+public class ErlenmeyerItem extends Item implements FluidModificationItem, MoleculeItem {
 
-    public ErlenmeyerItem(Settings settings) {
+    private final String molecule;
+
+    public ErlenmeyerItem(Settings settings, String molecule) {
         super(settings);
+        this.molecule = molecule;
     }
 
     @Override
@@ -24,5 +26,10 @@ public class ErlenmeyerItem extends Item
     @Override
     public boolean placeFluid(@Nullable PlayerEntity player, World world, BlockPos pos, @Nullable BlockHitResult hitResult) {
         return false;
+    }
+
+    @Override
+    public String getMolecule() {
+        return molecule;
     }
 }

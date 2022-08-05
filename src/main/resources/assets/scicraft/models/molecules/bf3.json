@@ -1,0 +1,17 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key": "B1", "atom": "B", "position": [ 0.00, 0.00, 0.00]},
+      {"key": "F1", "atom": "F", "position": [ 0.00, 1.33, 0.00]},
+      {"key": "F2", "atom": "F", "position": [ 1.15, -0.67, 0.00]},
+      {"key": "F3", "atom": "F", "position": [-1.15, -0.67, 0.00]}
+    ],
+    "bonds": [
+      {"from": "F1", "to": "B1", "bondOrder": 1},
+      {"from": "F2", "to": "B1", "bondOrder": 1},
+      {"from": "F3", "to": "B1", "bondOrder": 1}
+    ]
+  },
+  "items": ["scicraft:erlenmeyer_bf3"]
+}

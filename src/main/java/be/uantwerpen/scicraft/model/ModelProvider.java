@@ -26,9 +26,9 @@ public class ModelProvider implements ModelResourceProvider {
 
     @Override
     public UnbakedModel loadModelResource(Identifier identifier, ModelProviderContext modelProviderContext) throws ModelProviderException {
-        if(identifier.equals(SPHERE_BLOCK_MODEL) || identifier.equals(SPHERE_ITEM_MODEL)) {
+        if(identifier.getPath().startsWith("molecules")) {
             try {
-                Reader reader = this.resourceManager.openAsReader(new Identifier(identifier.getNamespace(), "models/" + "molecules/ch4" + ".json"));
+                Reader reader = this.resourceManager.openAsReader(new Identifier(identifier.getNamespace(), "models/" + identifier.getPath() + ".json"));
                 return SphereModel.deserialize(reader);
             } catch (IOException e) {
                 throw new RuntimeException(e);

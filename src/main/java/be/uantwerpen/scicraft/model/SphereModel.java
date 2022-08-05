@@ -136,7 +136,6 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
         //makeSphere(emitter, center, radius);
         position.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.15f, 0xFF0000)); //RGB color in hex
-        position.forEach((s, atomVec3fPair) -> System.out.println(atomVec3fPair.getSecond()));
 
         mesh = builder.build();
 
@@ -289,7 +288,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
             String key = atomJson.get("key").getAsString();
             Atom readAtom = Atom.getBySymbol(atomJson.get("atom").getAsString());
             JsonArray pos = atomJson.getAsJsonArray("position");
-            Vec3f vec3f = Vec3f.ZERO;
+            Vec3f vec3f = Vec3f.ZERO.copy();
             int i = 0;
             for (JsonElement position: pos) {
                 switch (i) {

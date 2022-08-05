@@ -27,12 +27,18 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.Item;
+import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.List;
+import java.util.Map;
 
 
 @SuppressWarnings("UNUSED")
@@ -43,8 +49,16 @@ public class ScicraftClient implements ClientModInitializer {
         //Register ItemModels
         ItemModels.registerModels();
 
-        ModelLoadingRegistry.INSTANCE.registerResourceProvider(resourceManager -> new ModelProvider(resourceManager));
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new Identifier(Scicraft.MOD_ID, "molecules/ch4")));
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(ModelProvider::new);
+//        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new Identifier(Scicraft.MOD_ID, "molecules/ch4")));
+//        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new Identifier(Scicraft.MOD_ID, "molecules/h2")));
+
+        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+            Map<Identifier, Resource> molecules = manager.findResources("models/molecules", (i) -> true);
+            for (Identifier resource: molecules.keySet()) {
+                out.accept(new Identifier(resource.getNamespace(), resource.getPath().split("models/")[1].split(".json")[0]));
+            }
+        });
 
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());

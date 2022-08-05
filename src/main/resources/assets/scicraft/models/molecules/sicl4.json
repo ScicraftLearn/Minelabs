@@ -1,0 +1,19 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Si1", "atom":  "Si", "position": [ 0.00,  0.00, 0.00]},
+      {"key":  "Cl1", "atom":  "Cl", "position": [ 1.1829,  1.1829,  1.1829]},
+      {"key":  "Cl2", "atom":  "Cl", "position": [ -1.1829,  -1.1829,  1.1829]},
+      {"key":  "Cl3", "atom":  "Cl", "position": [ -1.1829,  1.1829,  -1.1829]},
+      {"key":  "Cl4", "atom":  "Cl", "position": [ 1.1829,  -1.1829,  -1.1829]}
+    ],
+    "bonds": [
+      {"from": "Si1", "to": "Cl1", "bondOrder": 1},
+      {"from": "Si1", "to": "Cl2", "bondOrder": 1},
+      {"from": "Si1", "to": "Cl3", "bondOrder": 1},
+      {"from": "Si1", "to": "Cl4", "bondOrder": 1}
+    ]
+  },
+  "items": ["scicraft:erlenmeyer_SiCl4"]
+}

@@ -1,0 +1,17 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Al1", "atom":  "Al", "position": [ 0.00,  0.00, 0.00]},
+      {"key":  "Cl1", "atom":  "Cl", "position": [ 0.00,  2.0921,  0.00]},
+      {"key":  "Cl2", "atom":  "Cl", "position": [ 1.8118,  -1.0460,  0.00]},
+      {"key":  "Cl3", "atom":  "Cl", "position": [ -1.8118,  -1.0460,  0.00]}
+    ],
+    "bonds": [
+      {"from": "Al1", "to": "Cl1", "bondOrder": 1},
+      {"from": "Al1", "to": "Cl2", "bondOrder": 1},
+      {"from": "Al1", "to": "Cl3", "bondOrder": 1}
+    ]
+  },
+  "items": ["scicraft:erlenmeyer_AlCl3"]
+}

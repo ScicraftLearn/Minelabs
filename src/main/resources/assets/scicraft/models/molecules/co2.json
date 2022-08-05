@@ -1,0 +1,15 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C", "position": [ 0.00,  0.00,  0.00]},
+      {"key":  "O1", "atom":  "O", "position": [ 0.00,  0.00,  1.20]},
+      {"key":  "O2", "atom":  "O", "position": [ 0.00,  0.00, -1.20]}
+    ],
+    "bonds": [
+      {"from": "C1", "to": "O1", "bondOrder": 2},
+      {"from": "C1", "to": "O2", "bondOrder": 2}
+    ]
+  },
+  "items": ["scicraft:erlenmeyer_co2"]
+}

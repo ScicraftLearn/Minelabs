@@ -1,0 +1,13 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key": "Cl1", "atom": "Cl", "position": [ 0.00, 0.00, -1.16]},
+      {"key": "F1", "atom": "F", "position": [ 0.00, 0.00, 0.61]}
+    ],
+    "bonds": [
+      {"from": "F1", "to": "Cl1", "bondOrder": 1}
+    ]
+  },
+  "items": ["scicraft:erlenmeyer_clf"]
+}

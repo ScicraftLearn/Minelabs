@@ -1,0 +1,15 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key": "C1", "atom": "C", "position": [ 0.00, 0.00, 0.00]},
+      {"key": "S1", "atom": "S", "position": [ 0.00, 0.00, 1.56]},
+      {"key": "S2", "atom": "S", "position": [ 0.00, 0.00, -1.56]}
+    ],
+    "bonds": [
+      {"from": "S1", "to": "C1", "bondOrder": 2},
+      {"from": "S2", "to": "C1", "bondOrder": 2}
+    ]
+  },
+  "items": ["scicraft:erlenmeyer_cs2"]
+}
