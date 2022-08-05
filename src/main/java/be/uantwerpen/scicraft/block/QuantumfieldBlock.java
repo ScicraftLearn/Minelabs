@@ -21,7 +21,7 @@ public class QuantumfieldBlock extends Block {
     //Ticklife for subatomic dimension
     //Randomizing will give it a unique property
     java.util.Random r = new java.util.Random();
-    private int tickLife = r.nextInt(2000,12000);
+    private int tickLife = r.nextInt(500_000, 25_000_000);
 
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
@@ -43,7 +43,7 @@ public class QuantumfieldBlock extends Block {
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         //Get random destruction so every field acts differently
-        int destruction = r.nextInt(20);
+        int destruction = r.nextInt(50);
         tickLife -= destruction;
         if (tickLife <= 0) {
             world.breakBlock(pos,true);

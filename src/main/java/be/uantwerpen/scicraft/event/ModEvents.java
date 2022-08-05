@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 
 
@@ -70,13 +71,17 @@ public class ModEvents {
         HudRenderCallback.EVENT.register(
                 (matrixStack, delta) -> {
                     MinecraftClient client = MinecraftClient.getInstance();
-                    BlockHitResult hitResult = (BlockHitResult) client.crosshairTarget;
+                    HitResult hitResult = client.crosshairTarget;
+
                     assert client.world != null;
-                    if (hitResult==null)return;
-                    BlockEntity blockEntity = client.world.getBlockEntity(hitResult.getBlockPos());
-                    if (blockEntity instanceof BohrBlockEntity) {
-                        ((BohrBlockEntity) blockEntity).renderText();
+                    if (hitResult instanceof BlockHitResult blockHitResult){
+                        BlockEntity blockEntity = client.world.getBlockEntity(blockHitResult.getBlockPos());
+                        if (blockEntity instanceof BohrBlockEntity) {
+                            ((BohrBlockEntity) blockEntity).renderText();
+                        }
                     }
+
+
                 }
         );
 

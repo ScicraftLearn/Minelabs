@@ -2,7 +2,6 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
-import be.uantwerpen.scicraft.event.BohrBlockCallBack;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.util.NucleusState;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -11,7 +10,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -19,13 +17,8 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Arrays;
-
-import static be.uantwerpen.scicraft.item.Items.HYDROGEN_ATOM;
 
 
 public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {

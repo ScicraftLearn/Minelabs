@@ -18,6 +18,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PortalBlock extends Block{
     public PortalBlock(Settings settings) {
@@ -36,7 +37,7 @@ public class PortalBlock extends Block{
                 if (server != null) {
                     if (player instanceof ServerPlayerEntity) {
                         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                        //Only teleport if an atom is used to right click
+                        //Only teleport if an atom is used to right-click
                         if (player.getStackInHand(hand).getItem().getGroup() == ItemGroups.ATOMS) {
                             //Consume 1 atom and teleport the player
                             //useAtom(player);
@@ -84,8 +85,20 @@ public class PortalBlock extends Block{
             //Save player position so it can be returned
             playerpos = player.getPos();
             ServerWorld atomdim = server.getWorld(ModDimensions.SUBATOM_KEY);
+            int x, y;
+
+            for (int i = 0; i<5; i++ ){
+                x = ThreadLocalRandom.current().nextInt(-50, 50);
+                y = ThreadLocalRandom.current().nextInt(-50, 50);
+
+                AtomicFloor.spawnCloud(atomdim,new BlockPos(x,5,y));
+            }
+
+            atomdim.setBlockState(new BlockPos(0,5,0), this.getDefaultState());
+
             serverPlayer.teleport(atomdim, 0, 6, 0,
                     serverPlayer.bodyYaw, serverPlayer.prevPitch);
+
         }
     }
     private void useAtom(PlayerEntity player){
