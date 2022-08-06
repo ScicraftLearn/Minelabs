@@ -86,7 +86,7 @@ public class ExtraDispenserBehavior {
                 }
 
                 stack.decrement(1);
-                pointer.getWorld().emitGameEvent((Entity)null, GameEvent.ENTITY_PLACE, pointer.getPos());
+                pointer.getWorld().emitGameEvent(null, GameEvent.ENTITY_PLACE, pointer.getPos());
                 return stack;
             }
         });

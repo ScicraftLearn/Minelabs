@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import java.util.function.Supplier;
 
 public class AnimatedChargedBlock extends BlockWithEntity {
-    private Supplier<BlockEntityType<? extends  AnimatedChargedBlockEntity>> lazy;
+    private final Supplier<BlockEntityType<? extends  AnimatedChargedBlockEntity>> lazy;
 
     public AnimatedChargedBlock(Settings settings, Supplier<BlockEntityType<? extends  AnimatedChargedBlockEntity>> lazy) {
         super(settings);

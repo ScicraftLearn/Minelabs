@@ -150,7 +150,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         NbtList nbtList = new NbtList();
 
         for(int i = 0; i < inventory.size(); ++i) {
-            ItemStack itemStack = (ItemStack)inventory.getStack(i);
+            ItemStack itemStack = inventory.getStack(i);
             if (!itemStack.isEmpty()) {
                 NbtCompound nbtCompound = new NbtCompound();
                 nbtCompound.putByte("Slot", (byte)i);

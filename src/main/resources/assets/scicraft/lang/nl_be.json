@@ -26,6 +26,8 @@
   "block.scicraft.upquark_quantumfield": "Upquark Kwantumveld",
   "block.scicraft.downquark_quantumfield": "Downquark Kwantumveld",
 
+  "block.scicraft.time_freeze_block": "Tijdstop Blok",
+
   "blockEntity.scicraft.charged_block": "Geladen Blok",
 
   "entity.minecraft.villager.sciencevillager": "Wetenschaps Dorpeling",

@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 
 public class IonicDataPacket {
 
-    private BlockPos pos;
-    private DefaultedList<Ingredient> leftIngredients;
-    private DefaultedList<Ingredient> rightIngredients;
+    private final BlockPos pos;
+    private final DefaultedList<Ingredient> leftIngredients;
+    private final DefaultedList<Ingredient> rightIngredients;
 
     public IonicDataPacket(BlockPos pos, DefaultedList<Ingredient> leftIngredients, DefaultedList<Ingredient> rightIngredients) {
         this.pos = pos;

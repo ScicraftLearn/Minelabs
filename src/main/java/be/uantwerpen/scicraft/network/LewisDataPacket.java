@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 
 public class LewisDataPacket {
 
-    private BlockPos pos;
-    private DefaultedList<Ingredient> ingredients;
+    private final BlockPos pos;
+    private final DefaultedList<Ingredient> ingredients;
 
     public LewisDataPacket(BlockPos pos, DefaultedList<Ingredient> ingredients) {
         this.pos = pos;
