@@ -17,7 +17,10 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.item.ItemStack;
 
@@ -67,9 +70,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		World world = blockEntity.getWorld();
 		matrices.push();
 
-		PlayerEntity player = MinecraftClient.getInstance().player;
-		int roll = player.getRoll();
-
 		int lightAbove = WorldRenderer.getLightmapCoordinates(blockEntity.getWorld(), blockEntity.getPos().up());
 
 		double offset = Math.sin((blockEntity.getWorld().getTime() + tickDelta) / 8.0) / 4.0;
@@ -79,22 +79,62 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		// scale
 		matrices.translate(0.5f, 1.75f, 0.5f);
 		matrices.scale(1.5f,1.5f,1.5f);
+
+		PlayerEntity player = MinecraftClient.getInstance().player;
+		assert player != null;
+		Vec3f field = new Vec3f(
+				(float)player.getX()-blockEntity.getPos().getX(),
+				(float)player.getY()-blockEntity.getPos().getY(),
+				(float)player.getZ()-blockEntity.getPos().getZ()
+		);
+
+		if(field.equals(Vec3f.ZERO)) {
+			// default field should be north iso east.
+			// positive x is east, so we want to rotate -90 degrees along the y-axis.
+			matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
+		}else{
+			/*
+			 * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (field).
+			 * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the field.
+			 */
+			// By default the arrow points in positive x (EAST)
+			Vec3f v = new Vec3f(1,0,0);
+
+			// Compute theta with cosine formula.
+			double theta = Math.acos(v.dot(field) / Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2)));
+
+			if(theta == 0 || theta == Math.PI) {
+				// When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
+				// Instead we set in to one of the infinite valid normal vectors: positive Y.
+				v = Direction.UP.getUnitVector();
+			} else {
+				v.cross(field);
+				v.normalize();
+			}
+
+			matrices.multiply(v.getRadialQuaternion((float)theta));
+		}
+
+		Vec3f y_rotation = new Vec3f(0, 1, 0);
+		matrices.multiply(y_rotation.getDegreesQuaternion(-90));
+
 		// Rotate the item
 //		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((blockEntity.getWorld().getTime() + tickDelta) * 4));
-		MinecraftClient.getInstance().getItemRenderer().renderItem(nucleus_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+		//MinecraftClient.getInstance().getItemRenderer().renderItem(nucleus_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 
 //		matrices.scale(5f,5f,5f);
 //		matrices.translate(-0.5f, -1.25f, -0.5f);
 
 		for (int i = 0; i < 12; i++) {
-			float offset_x = icosahedron.get(i).getX()/1.5f;
-			float offset_y = icosahedron.get(i).getY()/1.5f;
-			float offset_z = icosahedron.get(i).getZ()/1.5f;
+			float offset_x = icosahedron.get(i).getX()/3f;
+			float offset_y = icosahedron.get(i).getY()/3f;
+			float offset_z = icosahedron.get(i).getZ()/3f;
 
 			matrices.translate(offset_x, offset_y, offset_z);
+			matrices.scale(0.2f, 0.2f, 0.2f);
 			MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+			matrices.scale(5, 5, 5);
 			matrices.translate(-offset_x, -offset_y, -offset_z);
-
 		}
 
 
