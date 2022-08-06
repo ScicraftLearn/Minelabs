@@ -10,6 +10,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -133,6 +134,10 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         }
         return ActionResult.SUCCESS;
     }
+
+//    public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
+//        this.getBlock().onProjectileHit(world, state, hit, projectile);
+//    }
 
     void createAtom(BohrBlockEntity bohrBlockEntity, World world, BlockPos pos){
         int protons = bohrBlockEntity.getProtonCount();

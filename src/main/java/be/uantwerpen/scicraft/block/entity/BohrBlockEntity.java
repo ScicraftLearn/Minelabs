@@ -14,12 +14,18 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import be.uantwerpen.scicraft.util.NuclidesTable;
 import be.uantwerpen.scicraft.util.NucleusState;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.ArrayList;
 
 //import java.util.ArrayList;
 
 public class BohrBlockEntity extends BlockEntity implements ImplementedInventory {
+
+    public long time = 0;
+//    public Vec3i movement_direction = Vec3i.ZERO;
+    public final static int time_move_ticks = 8;
+    public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
 
     private final DefaultedList<ItemStack> protonInventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
     private final DefaultedList<ItemStack> neutronInventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
