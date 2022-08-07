@@ -15,6 +15,8 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.Direction;
@@ -73,10 +75,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		int lightAbove = WorldRenderer.getLightmapCoordinates(blockEntity.getWorld(), blockEntity.getPos().up());
 
 		double offset = Math.sin((blockEntity.getWorld().getTime() + tickDelta) / 8.0) / 4.0;
-
-		// Move the item
 //		matrices.translate(0.5, 1.25 + offset, 0.5);
-		// scale
+
+		// origin
 		matrices.translate(0.5f, 1.75f, 0.5f);
 		matrices.scale(1.5f,1.5f,1.5f);
 
@@ -87,7 +88,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				(float)player.getY()-blockEntity.getPos().getY(),
 				(float)player.getZ()-blockEntity.getPos().getZ()
 		);
-
 		if(field.equals(Vec3f.ZERO)) {
 			// default field should be north iso east.
 			// positive x is east, so we want to rotate -90 degrees along the y-axis.
@@ -97,7 +97,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			 * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (field).
 			 * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the field.
 			 */
-			// By default the arrow points in positive x (EAST)
+			// By default, the arrow points in positive x (EAST)
 			Vec3f v = new Vec3f(1,0,0);
 
 			// Compute theta with cosine formula.
@@ -105,48 +105,117 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 			if(theta == 0 || theta == Math.PI) {
 				// When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
-				// Instead we set in to one of the infinite valid normal vectors: positive Y.
+				// Instead, we set in to one of the infinite valid normal vectors: positive Y.
 				v = Direction.UP.getUnitVector();
 			} else {
 				v.cross(field);
 				v.normalize();
 			}
-
 			matrices.multiply(v.getRadialQuaternion((float)theta));
 		}
-
 		Vec3f y_rotation = new Vec3f(0, 1, 0);
 		matrices.multiply(y_rotation.getDegreesQuaternion(-90));
 
 		// Rotate the item
 //		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((blockEntity.getWorld().getTime() + tickDelta) * 4));
+
 		//MinecraftClient.getInstance().getItemRenderer().renderItem(nucleus_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 
-//		matrices.scale(5f,5f,5f);
-//		matrices.translate(-0.5f, -1.25f, -0.5f);
+		int protonCount = blockEntity.getProtonCount();
+		int neutronCount = blockEntity.getNeutronCount();
+		int electronCount = blockEntity.getElectronCount();
 
-		for (int i = 0; i < 12; i++) {
-			float offset_x = icosahedron.get(i).getX()/3f;
-			float offset_y = icosahedron.get(i).getY()/3f;
-			float offset_z = icosahedron.get(i).getZ()/3f;
+		// variables for placing the particles (they get decreased)
+		int nrOfprotonsLeft = protonCount;
+		int nrOfneutronsLeft = neutronCount;
+		int nrOfelectronsLeft = electronCount;
 
-			matrices.translate(offset_x, offset_y, offset_z);
-			matrices.scale(0.2f, 0.2f, 0.2f);
-			MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-			matrices.scale(5, 5, 5);
-			matrices.translate(-offset_x, -offset_y, -offset_z);
+		/**
+		 * rendering of the nucleus
+		 */
+		if (0 < protonCount+neutronCount && protonCount+neutronCount < 12) {
+//			while (nrOfprotonsLeft > 0) {
+//
+//			}
+			boolean isProtonNext = true;
+			boolean isProtonAndNeutronLeft = true;
+			for (int i = 0; i < protonCount+neutronCount; i++) {
+				float offset_x = icosahedron.get(i).getX()/15f;
+				float offset_y = icosahedron.get(i).getY()/15f;
+				float offset_z = icosahedron.get(i).getZ()/15f;
+
+				matrices.translate(offset_x, offset_y, offset_z);
+				matrices.scale(0.2f, 0.2f, 0.2f);
+
+				if (nrOfprotonsLeft == 0) {
+					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					nrOfneutronsLeft -= 1;
+					isProtonAndNeutronLeft = false;
+				}
+				else if (nrOfneutronsLeft == 0) {
+					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					nrOfprotonsLeft -= 1;
+					isProtonAndNeutronLeft = false;
+				}
+				if (isProtonAndNeutronLeft) {
+					if (isProtonNext) {
+						MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+						isProtonNext = false;
+						nrOfprotonsLeft -= 1;
+					}
+					else {
+						MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+						isProtonNext = true;
+						nrOfneutronsLeft -= 1;
+					}
+				}
+
+				matrices.scale(5, 5, 5);
+				matrices.translate(-offset_x, -offset_y, -offset_z);
+			}
+
+		}
+		else if (protonCount+neutronCount == 12) {
+			boolean isProtonNext = true;
+			for (int i = 0; i < 12; i++) {
+				float offset_x = icosahedron.get(i).getX()/11f;
+				float offset_y = icosahedron.get(i).getY()/11f;
+				float offset_z = icosahedron.get(i).getZ()/11f;
+
+				matrices.translate(offset_x, offset_y, offset_z);
+				matrices.scale(0.2f, 0.2f, 0.2f);
+
+				if (nrOfprotonsLeft == 0) {
+					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					nrOfneutronsLeft -= 1;
+				}
+				else if (nrOfneutronsLeft == 0) {
+					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					nrOfprotonsLeft -= 1;
+				}
+
+				if (isProtonNext) {
+					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					isProtonNext = false;
+					nrOfprotonsLeft -= 1;
+				}
+				else {
+					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					isProtonNext = true;
+					nrOfneutronsLeft -= 1;
+				}
+
+				matrices.scale(5, 5, 5);
+				matrices.translate(-offset_x, -offset_y, -offset_z);
+			}
+		}
+		else if (protonCount+neutronCount > 12) {
+
 		}
 
-
-
-
-
-
-//		matrices.translate(0.5f, 2f, 0.5f);
-//		matrices.scale(0.2f,0.2f,0.2f);
-//		MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-
-
+		/**
+		 * rendering of the electrons
+		 */
 
 
 
