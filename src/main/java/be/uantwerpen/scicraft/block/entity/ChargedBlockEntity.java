@@ -82,32 +82,56 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public void needsUpdate(boolean b) {
+//        if(b) {
+//            System.out.println("PROCESSING UPDATE!");
+//        } else {
+//        System.out.println("NOT PROCESSING ANY UPDATES!");
+//        }
+
         this.update_next_tick = b;
     }
 
     //First time field
-    public void makeField(World world, BlockPos pos) {
+    public void makeField(World world, BlockPos pos, boolean afterTimeFreeze) {
         int e_radius = 8;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
         field = new Vec3f(0f, 0f, 0f);
+
+        // first look whether there is a time freeze block in range
+        boolean freeze = false;
         for (BlockPos pos_block : blocks_in_radius) {
+            if (world.getBlockEntity(pos_block) instanceof TimeFreezeBlockEntity tf_block && !pos.equals(pos_block)) {
+                //System.out.println("freeze now!");
+                freeze = true;
+                break;
+            }
+        }
+
+        for (BlockPos pos_block : blocks_in_radius) {
+            // if there is a time freeze block in range, no effect should happen to the particles themselves
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.field != null) {
+                //System.out.println("calculating.....");
                 Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
                 float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
                 vec_pos.scale(d_E);
                 field.add(vec_pos);
                 particle2.field.subtract(vec_pos);
-                needsUpdate(true);
-                particle2.needsUpdate(true);
+                needsUpdate(!freeze);
+                particle2.needsUpdate(!freeze);
             }
-            if (world.getBlockEntity(pos_block) instanceof ElectricFieldSensorBlockEntity sensor && !pos.equals(pos_block) ){
-                Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
-                float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                vec_pos.scale(d_E);
-                sensor.getField().subtract(vec_pos);
-                sensor.markDirty();
-                sensor.sync();
+
+            // electric field sensors can still change when the time is frozen
+            // therefore they must not be recalculated after the time freeze stops
+            if(!afterTimeFreeze) {
+                if (world.getBlockEntity(pos_block) instanceof ElectricFieldSensorBlockEntity sensor && !pos.equals(pos_block) ){
+                    Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                    float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
+                    vec_pos.scale(d_E);
+                    sensor.getField().subtract(vec_pos);
+                    sensor.markDirty();
+                    sensor.sync();
+                }
             }
         }
         markDirty();
@@ -117,6 +141,16 @@ public class ChargedBlockEntity extends BlockEntity{
         int e_radius = 8;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
+
+        // first look whether there is a time freeze block in range
+        boolean freeze = false;
+        for (BlockPos pos_block : blocks_in_radius) {
+            if (world.getBlockEntity(pos_block) instanceof TimeFreezeBlockEntity tf_block && !pos.equals(pos_block)) {
+                //System.out.println("freeze now!");
+                freeze = true;
+                break;
+            }
+        }
         for (BlockPos pos_block : blocks_in_radius) {
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.field != null) {
                 Vec3f vec_pos = new Vec3f(pos.getX() - pos_block.getX(), pos.getY() - pos_block.getY(), pos.getZ() - pos_block.getZ());
@@ -124,7 +158,7 @@ public class ChargedBlockEntity extends BlockEntity{
                 vec_pos.scale(d_E);
                 particle2.field.add(vec_pos);
                 particle2.markDirty();
-                particle2.needsUpdate(true);
+                particle2.needsUpdate(!freeze);
             }
 
             //for sensors, we calculate the entire field again
@@ -208,7 +242,7 @@ public class ChargedBlockEntity extends BlockEntity{
     public void tick(World world, BlockPos pos, BlockState state) {
         if (!world.isClient) {
             if (field == null) {
-                makeField(world, pos);
+                makeField(world, pos, false);
             }
             if (world.getTime() % 10 == 0) {
                 if (decay()) {
@@ -219,7 +253,7 @@ public class ChargedBlockEntity extends BlockEntity{
                     markDirty();
                 } else {
                     Direction movement_annihilation = this.checkAnnihilation();
-                    if (movement_annihilation != null) {
+                    if (movement_annihilation != null && update_next_tick) {
                         BlockPos nPos = pos.mutableCopy().offset(movement_annihilation);
                         if (world.getBlockEntity(nPos) instanceof ChargedBlockEntity particle2) {
                             BlockState render_state2 = particle2.getCachedState();
@@ -239,6 +273,7 @@ public class ChargedBlockEntity extends BlockEntity{
                         markDirty();
                     }
                     if (update_next_tick) {
+                        //System.out.println("OVERRIDING ANYWAY");
                         Direction movement = movementDirection(world, pos, field.copy());
                         if (movement != null) {
                             BlockPos nPos = pos.mutableCopy().offset(movement);

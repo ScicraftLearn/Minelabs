@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.block.entity.ChargedBlockEntity;
+import be.uantwerpen.scicraft.block.entity.TimeFreezeBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -44,10 +45,27 @@ public class ChargedBlock extends BlockWithEntity{
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ChargedBlockEntity charged) {
-			charged.needsUpdate(true);
+			int e_radius = 8;
+			BlockPos c_pos = charged.getPos();
+			Iterable<BlockPos> blocks_in_radius_of_charged = BlockPos.iterate(c_pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), c_pos.mutableCopy().add(e_radius, e_radius, e_radius));
+			boolean update = true;
+			for (BlockPos new_pos : blocks_in_radius_of_charged) {
+				// make sure the TimeFreezeBlockEntity isn't the one you just broke (it is still in the world at this point in time)
+				if (world.getBlockEntity(new_pos) instanceof TimeFreezeBlockEntity && !pos.equals(new_pos)) {
+					update = false;
+					break;
+				}
+			}
+			// if there are no other time freeze blocks around them, you can play their animation (if there is one)
+			if(update) {
+				charged.needsUpdate(true);
+				//System.out.println("UPDATE NOW");
+			}
 		}
+
 		super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
 	}
 
