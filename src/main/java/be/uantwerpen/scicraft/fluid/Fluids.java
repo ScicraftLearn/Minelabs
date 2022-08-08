@@ -39,8 +39,15 @@ public class Fluids {
         FluidRenderHandlerRegistry.INSTANCE.register(STILL_HNO3, FLOWING_HNO3, new SimpleFluidRenderHandler(
                 new Identifier("minecraft:block/water_still"),
                 new Identifier("minecraft:block/water_flow"),
-                0x4CC248
+                0xFFCC33
         ));
         BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), STILL_HNO3, FLOWING_HNO3);
+
+        FluidRenderHandlerRegistry.INSTANCE.register(STILL_H2O, FLOWING_H2O, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                0x001AFF
+        ));
+        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), STILL_H2O, FLOWING_H2O);
     }
 }

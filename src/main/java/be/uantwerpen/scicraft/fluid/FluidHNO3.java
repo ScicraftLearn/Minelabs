@@ -34,7 +34,7 @@ public abstract class FluidHNO3 extends AbstractFluid {
     @Override
     protected BlockState toBlockState(FluidState fluidState) {
         // getBlockStateLevel converts the LEVEL_1_8 of the fluid state to the LEVEL_15 the fluid block uses
-        return Blocks.ACID.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
+        return Blocks.HNO3.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
     }
 
     public static class Flowing extends FluidHNO3 {

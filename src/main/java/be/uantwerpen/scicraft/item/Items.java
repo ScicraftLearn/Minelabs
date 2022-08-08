@@ -95,8 +95,8 @@ public class Items {
     public static final Item ERLENMEYER_N2O = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), Gasses.N2O), "erlenmeyer_n2o");
     public static final Item ERLENMEYER_HCl = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), Gasses.HCl), "erlenmeyer_hcl");
 
-    public static final Item ERLENMEYER_HNO3 = register(new BucketItem(Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1)), "erlenmeyer_hno3");
-    public static final Item ERLENMEYER_H2O = register(new BucketItem(Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1)), "erlenmeyer_h2o");
+    public static final Item ERLENMEYER_HNO3 = register(new BucketItem(Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(Items.ERLENMEYER).maxCount(1)), "erlenmeyer_hno3");
+    public static final Item ERLENMEYER_H2O = register(new BucketItem(Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(Items.ERLENMEYER).maxCount(1)), "erlenmeyer_h2o");
 
     /**
      * Register an Item

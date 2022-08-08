@@ -58,8 +58,8 @@ public class ScicraftClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_HCl,0xFFFFFF, 2);
 
         //Fluids
-        registerErlenmeyer(Items.ERLENMEYER_HNO3,0xFFCC33, 2);
-        registerErlenmeyer(Items.ERLENMEYER_H2O,0x001AFF, 2);
+        registerErlenmeyer(Items.ERLENMEYER_HNO3,0xFFCC33, 1);
+        registerErlenmeyer(Items.ERLENMEYER_H2O,0x001AFF, 1);
 
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.scicraft.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
     }

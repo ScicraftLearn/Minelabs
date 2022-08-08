@@ -43,7 +43,8 @@ public class Blocks {
 
             //    public static final Block ACID = Registry.register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
 
-    public static final Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(Fluids.STILL_HNO3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)){});
+    public static final Block HNO3 = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "hno3"), new FluidBlock(Fluids.STILL_HNO3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)){});
+    public static final Block H2O = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "h2o"), new FluidBlock(Fluids.STILL_H2O, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)){});
 
 
     /**
