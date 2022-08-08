@@ -134,65 +134,29 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		 * rendering of the nucleus
 		 */
 
-		float startingOffsetScale = 15f;
-//		if (0 < protonCount+neutronCount && protonCount+neutronCount < 12) {
-//			float offsetScale = 15f;
-////			boolean isProtonNext = true;
-////			boolean isProtonAndNeutronLeft = true;
-////			for (int i = 0; i < protonCount+neutronCount; i++) {
-////				float offset_x = icosahedron.get(i).getX()/15f;
-////				float offset_y = icosahedron.get(i).getY()/15f;
-////				float offset_z = icosahedron.get(i).getZ()/15f;
-////
-////				matrices.translate(offset_x, offset_y, offset_z);
-////				matrices.scale(0.2f, 0.2f, 0.2f);
-////
-////				if (nrOfprotonsLeft == 0) {
-////					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-////					nrOfneutronsLeft -= 1;
-////					isProtonAndNeutronLeft = false;
-////				}
-////				else if (nrOfneutronsLeft == 0) {
-////					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-////					nrOfprotonsLeft -= 1;
-////					isProtonAndNeutronLeft = false;
-////				}
-////				if (isProtonAndNeutronLeft) {
-////					if (isProtonNext) {
-////						MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-////						isProtonNext = false;
-////						nrOfprotonsLeft -= 1;
-////					}
-////					else {
-////						MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-////						isProtonNext = true;
-////						nrOfneutronsLeft -= 1;
-////					}
-////				}
-////
-////				matrices.scale(5, 5, 5);
-////				matrices.translate(-offset_x, -offset_y, -offset_z);
-////			}
-//		}
+		float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
 		if (protonCount+neutronCount >= 12) {
 			startingOffsetScale = 11f;
 		}
+		boolean isProtonNext = true; // true if a proton entity needs to be placed in the core next, false = neutron next.
+		boolean isProtonAndNeutronLeft = true; // true if both protons and neutrons still need to be placed
+		int particlesCounter = 0; // used to count to 12 to restart (increase) the icosahedron scaleOffset.
 
-		boolean isProtonNext = true;
-		boolean isProtonAndNeutronLeft = true;
-		int particlesCounter = 0;
+		// each time we pass a multiple of 12, this value gets increased and used
+		// in the function to calculate the total scale factor for our current icosahedron figure.
 		float scaleOffset = 0f;
-		int dec_index = 0;
+		int dec_index = 0; // variable to stay inside the list indexes of the icosahedron points.
 
 		for (int i = 0; i < protonCount+neutronCount; i++) {
 
 			if (particlesCounter == 12) {
-				particlesCounter = 0;
+				particlesCounter = 0; // gets increased with one at end of for loop.
 				scaleOffset += 0.75f;
 				dec_index += 12;
 				matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(30));
 			}
 
+			// calculating the x,y,z offsets to place the protons/neutrons on the icosahedron outer points.
 			float totalScale = startingOffsetScale-scaleOffset+scaleOffset/2.3f;
 			float offset_x = icosahedron.get(i-dec_index).getX()/totalScale;
 			float offset_y = icosahedron.get(i-dec_index).getY()/totalScale;
