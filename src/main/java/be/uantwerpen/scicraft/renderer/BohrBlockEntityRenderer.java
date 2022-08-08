@@ -173,45 +173,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			}
 
 		}
-		else if (protonCount+neutronCount == 12) {
-			boolean isProtonNext = true;
-			boolean isProtonAndNeutronLeft = true;
-			for (int i = 0; i < protonCount+neutronCount; i++) {
-				float offset_x = icosahedron.get(i).getX()/11f;
-				float offset_y = icosahedron.get(i).getY()/11f;
-				float offset_z = icosahedron.get(i).getZ()/11f;
-
-				matrices.translate(offset_x, offset_y, offset_z);
-				matrices.scale(0.2f, 0.2f, 0.2f);
-
-				if (nrOfprotonsLeft == 0) {
-					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-					nrOfneutronsLeft -= 1;
-					isProtonAndNeutronLeft = false;
-				}
-				else if (nrOfneutronsLeft == 0) {
-					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-					nrOfprotonsLeft -= 1;
-					isProtonAndNeutronLeft = false;
-				}
-				if (isProtonAndNeutronLeft) {
-					if (isProtonNext) {
-						MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-						isProtonNext = false;
-						nrOfprotonsLeft -= 1;
-					}
-					else {
-						MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-						isProtonNext = true;
-						nrOfneutronsLeft -= 1;
-					}
-				}
-
-				matrices.scale(5, 5, 5);
-				matrices.translate(-offset_x, -offset_y, -offset_z);
-			}
-		}
-		if (protonCount+neutronCount > 12) {
+		else if (protonCount+neutronCount >= 12) {
 			boolean isProtonNext = true;
 			boolean isProtonAndNeutronLeft = true;
 			int particlesCounter = 0;
@@ -265,16 +227,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				particlesCounter++;
 			}
 		}
-
-//		if (protonCount+neutronCount > 24) {
-//
-//		}
-//		if (protonCount+neutronCount > 36) {
-//
-//		}
-//		if (protonCount+neutronCount > 48) {
-//
-//		}
 
 		/**
 		 * rendering of the electrons
