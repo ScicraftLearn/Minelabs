@@ -133,100 +133,103 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		/**
 		 * rendering of the nucleus
 		 */
-		if (0 < protonCount+neutronCount && protonCount+neutronCount < 12) {
 
-			boolean isProtonNext = true;
-			boolean isProtonAndNeutronLeft = true;
-			for (int i = 0; i < protonCount+neutronCount; i++) {
-				float offset_x = icosahedron.get(i).getX()/15f;
-				float offset_y = icosahedron.get(i).getY()/15f;
-				float offset_z = icosahedron.get(i).getZ()/15f;
+		float startingOffsetScale = 15f;
+//		if (0 < protonCount+neutronCount && protonCount+neutronCount < 12) {
+//			float offsetScale = 15f;
+////			boolean isProtonNext = true;
+////			boolean isProtonAndNeutronLeft = true;
+////			for (int i = 0; i < protonCount+neutronCount; i++) {
+////				float offset_x = icosahedron.get(i).getX()/15f;
+////				float offset_y = icosahedron.get(i).getY()/15f;
+////				float offset_z = icosahedron.get(i).getZ()/15f;
+////
+////				matrices.translate(offset_x, offset_y, offset_z);
+////				matrices.scale(0.2f, 0.2f, 0.2f);
+////
+////				if (nrOfprotonsLeft == 0) {
+////					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+////					nrOfneutronsLeft -= 1;
+////					isProtonAndNeutronLeft = false;
+////				}
+////				else if (nrOfneutronsLeft == 0) {
+////					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+////					nrOfprotonsLeft -= 1;
+////					isProtonAndNeutronLeft = false;
+////				}
+////				if (isProtonAndNeutronLeft) {
+////					if (isProtonNext) {
+////						MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+////						isProtonNext = false;
+////						nrOfprotonsLeft -= 1;
+////					}
+////					else {
+////						MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+////						isProtonNext = true;
+////						nrOfneutronsLeft -= 1;
+////					}
+////				}
+////
+////				matrices.scale(5, 5, 5);
+////				matrices.translate(-offset_x, -offset_y, -offset_z);
+////			}
+//		}
+		if (protonCount+neutronCount >= 12) {
+			startingOffsetScale = 11f;
+		}
 
-				matrices.translate(offset_x, offset_y, offset_z);
-				matrices.scale(0.2f, 0.2f, 0.2f);
+		boolean isProtonNext = true;
+		boolean isProtonAndNeutronLeft = true;
+		int particlesCounter = 0;
+		float scaleOffset = 0f;
+		int dec_index = 0;
 
-				if (nrOfprotonsLeft == 0) {
-					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-					nrOfneutronsLeft -= 1;
-					isProtonAndNeutronLeft = false;
-				}
-				else if (nrOfneutronsLeft == 0) {
-					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-					nrOfprotonsLeft -= 1;
-					isProtonAndNeutronLeft = false;
-				}
-				if (isProtonAndNeutronLeft) {
-					if (isProtonNext) {
-						MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-						isProtonNext = false;
-						nrOfprotonsLeft -= 1;
-					}
-					else {
-						MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-						isProtonNext = true;
-						nrOfneutronsLeft -= 1;
-					}
-				}
+		for (int i = 0; i < protonCount+neutronCount; i++) {
 
-				matrices.scale(5, 5, 5);
-				matrices.translate(-offset_x, -offset_y, -offset_z);
+			if (particlesCounter == 12) {
+				particlesCounter = 0;
+				scaleOffset += 0.75f;
+				dec_index += 12;
+				matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(30));
 			}
 
-		}
-		else if (protonCount+neutronCount >= 12) {
-			boolean isProtonNext = true;
-			boolean isProtonAndNeutronLeft = true;
-			int particlesCounter = 0;
-			float scaleOffset = 0f;
-			int dec_index = 0;
-			for (int i = 0; i < protonCount+neutronCount; i++) {
+			float totalScale = startingOffsetScale-scaleOffset+scaleOffset/2.3f;
+			float offset_x = icosahedron.get(i-dec_index).getX()/totalScale;
+			float offset_y = icosahedron.get(i-dec_index).getY()/totalScale;
+			float offset_z = icosahedron.get(i-dec_index).getZ()/totalScale;
 
-				if (particlesCounter == 12) {
-					particlesCounter = 0;
-					scaleOffset += 0.75f;
-					dec_index += 12;
-					matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(30));
-//					matrices.multiply(Direction.EAST.getUnitVector().getDegreesQuaternion(60));
-//					matrices.multiply(Direction.NORTH.getUnitVector().getDegreesQuaternion(60));
+			matrices.translate(offset_x, offset_y, offset_z);
+			matrices.scale(0.2f, 0.2f, 0.2f);
 
-				}
-
-				float offset_x = icosahedron.get(i-dec_index).getX()/(11f-scaleOffset+scaleOffset/2.3f);
-				float offset_y = icosahedron.get(i-dec_index).getY()/(11f-scaleOffset+scaleOffset/2.3f);
-				float offset_z = icosahedron.get(i-dec_index).getZ()/(11f-scaleOffset+scaleOffset/2.3f);
-
-				matrices.translate(offset_x, offset_y, offset_z);
-				matrices.scale(0.2f, 0.2f, 0.2f);
-
-				if (nrOfprotonsLeft == 0) {
-					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-					nrOfneutronsLeft -= 1;
-					isProtonAndNeutronLeft = false;
-				}
-				else if (nrOfneutronsLeft == 0) {
-					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-					nrOfprotonsLeft -= 1;
-					isProtonAndNeutronLeft = false;
-				}
-				if (isProtonAndNeutronLeft) {
-					if (isProtonNext) {
-						MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-						isProtonNext = false;
-						nrOfprotonsLeft -= 1;
-					}
-					else {
-						MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-						isProtonNext = true;
-						nrOfneutronsLeft -= 1;
-					}
-				}
-
-				matrices.scale(5, 5, 5);
-				matrices.translate(-offset_x, -offset_y, -offset_z);
-
-				particlesCounter++;
+			if (nrOfprotonsLeft == 0) {
+				MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+				nrOfneutronsLeft -= 1;
+				isProtonAndNeutronLeft = false;
 			}
+			else if (nrOfneutronsLeft == 0) {
+				MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+				nrOfprotonsLeft -= 1;
+				isProtonAndNeutronLeft = false;
+			}
+			if (isProtonAndNeutronLeft) {
+				if (isProtonNext) {
+					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					isProtonNext = false;
+					nrOfprotonsLeft -= 1;
+				}
+				else {
+					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					isProtonNext = true;
+					nrOfneutronsLeft -= 1;
+				}
+			}
+
+			matrices.scale(5, 5, 5);
+			matrices.translate(-offset_x, -offset_y, -offset_z);
+
+			particlesCounter++;
 		}
+
 
 		/**
 		 * rendering of the electrons
