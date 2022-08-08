@@ -26,20 +26,20 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static be.uantwerpen.scicraft.util.NuclidesTable.calculateNrOfElectrons;
 
 
 @Environment(EnvType.CLIENT)
 public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements BlockEntityRenderer<T> {
 
-	private static ItemStack nucleus_stack = new ItemStack(Items.FIREWORK_STAR, 1); // minecraft Items firework star
-	private static ItemStack proton_stack = new ItemStack(Blocks.PROTON, 1);
-	private static ItemStack neutron_stack = new ItemStack(Blocks.NEUTRON, 1);
-//	private static ItemStack electron_shell_stack = new ItemStack(Blocks.PROTON, 1);
-	private static ItemStack electron_stack = new ItemStack(Blocks.ELECTRON, 1);
+	private static final ItemStack proton_stack = new ItemStack(Blocks.PROTON, 1);
+	private static final ItemStack neutron_stack = new ItemStack(Blocks.NEUTRON, 1);
+//	private static ItemStack electron_shell_stack = new ItemStack(Blocks.PROTON, 1); // drawing of the electron shells
+	private static final ItemStack electron_stack = new ItemStack(Blocks.ELECTRON, 1);
 
-	private static final List<Vec3f> icosahedron = new ArrayList<>();
+	private static final List<Vec3f> icosahedron = new ArrayList<>(); // (icosahedron) figure for the nucleus
 	static {
 		for (int i = 1; i < 13; i++) {
 			Vec3f punt1 = new Vec3f();
@@ -73,9 +73,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		matrices.push();
 
 		int lightAbove = WorldRenderer.getLightmapCoordinates(blockEntity.getWorld(), blockEntity.getPos().up());
-
-		double offset = Math.sin((blockEntity.getWorld().getTime() + tickDelta) / 8.0) / 4.0;
-//		matrices.translate(0.5, 1.25 + offset, 0.5);
 
 		// origin
 		matrices.translate(0.5f, 1.75f, 0.5f);
@@ -125,14 +122,36 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		int neutronCount = blockEntity.getNeutronCount();
 		int electronCount = blockEntity.getElectronCount();
 
+		/**
+		 * rendering of the nucleus:
+		 */
+		makeNucleus(protonCount, neutronCount, matrices, lightAbove, vertexConsumerProvider);
+
+		/**
+		 * rendering of the electrons:
+		 */
+		makeElectrons(electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity, tickDelta);
+
+
+
+		matrices.pop();
+
+	}
+
+	/**
+	 * Handles the scaling and stuff for the nucleus (and protons and neutrons).
+	 *
+	 * @param protonCount : amount of protons
+	 * @param neutronCount : amount of neutrons
+	 * @param matrices : matrices
+	 * @param lightAbove : used in renderItem function to avoid all blackness in the rendering above the block.
+	 * @param vertexConsumerProvider : vertexConsumerProvider
+	 */
+	public void makeNucleus(int protonCount, int neutronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider) {
+
 		// variables for placing the particles (they get decreased)
 		int nrOfprotonsLeft = protonCount;
 		int nrOfneutronsLeft = neutronCount;
-		int nrOfelectronsLeft = electronCount;
-
-		/**
-		 * rendering of the nucleus
-		 */
 
 		float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
 		if (protonCount+neutronCount >= 12) {
@@ -194,46 +213,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			particlesCounter++;
 		}
 
-
-		/**
-		 * rendering of the electrons
-		 */
-
-
-
-
-		matrices.pop();
-//		double offset = 0;
-//		if (blockEntity.time != 0) {
-//			double time_fraction = Math.max(0, Math.min(1, (blockEntity.getWorld().getTime() + tickDelta - blockEntity.time) / AnimatedChargedBlockEntity.time_move_ticks));
-//			if (blockEntity.annihilation) {
-//				offset = .5 * time_fraction * time_fraction;
-//			} else {
-//				offset = time_fraction < 0.5 ? 2 * time_fraction * time_fraction : 2 * time_fraction * (-time_fraction + 2) - 1;
-//			}
-//		}
-//		if (!(blockEntity.annihilation && offset ==.5)) {
-//			matrices.translate(blockEntity.movement_direction.getX() * offset, blockEntity.movement_direction.getY() * offset, blockEntity.movement_direction.getZ() * offset);
-//			BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
-//			blockRenderManager.getModelRenderer().render(
-//					world,
-//					blockRenderManager.getModel(blockEntity.render_state),
-//					blockEntity.render_state,
-//					blockEntity.getPos(),
-//					matrices,
-//					vertexConsumerProvider.getBuffer(RenderLayers.getMovingBlockLayer(blockEntity.render_state)),
-//					false, net.minecraft.util.math.random.Random.create(),
-//					blockEntity.render_state.getRenderingSeed(blockEntity.getPos()),
-//					OverlayTexture.DEFAULT_UV);
-//		}
-
-	}
-
-	/**
-	 * Handles the scaling and stuff for the nucleus (and protons and neutrons).
-	 */
-	public void makeNucleus() {
-
 	}
 
 	/**
@@ -245,9 +224,113 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	/**
 	 * Handles the scaling and stuff for the electrons.
+	 *
+	 * @param electronCount
+	 * @param matrices
+	 * @param lightAbove
+	 * @param vertexConsumerProvider
+	 * @param blockEntity
+	 * @param tickDelta
 	 */
-	public void makeElectrons() {
+	public void makeElectrons(int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity, float tickDelta) {
 
+//		float angle = 0;
+//		float speed = (float)(2*Math.PI)/40;
+//		float radius = 0.5f;
+//
+//		angle += speed*(blockEntity.getWorld().getTime() + tickDelta);
+//		float x = (float)Math.cos(angle)*radius;
+//		float y = (float)Math.sin(angle)*radius;
+//
+//
+//		matrices.translate(0+x, 0+y, 0);
+//		matrices.scale(0.1f, 0.1f, 0.1f);
+//
+//		MinecraftClient.getInstance().getItemRenderer().renderItem(electron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+//
+//		matrices.scale(10, 10, 10);
+//		matrices.translate(0-x, 0-y, 0);
+//
+//		angle = 0;
+//		speed = (float)(2*Math.PI)/45;
+//		radius = 0.5f;
+//
+//		angle += speed*(blockEntity.getWorld().getTime() + tickDelta)+Math.PI;
+//		x = (float)Math.cos(angle)*radius;
+//		y = (float)Math.sin(angle)*radius;
+//
+//		matrices.translate(x, 0, y);
+//		matrices.scale(0.1f, 0.1f, 0.1f);
+//
+//		MinecraftClient.getInstance().getItemRenderer().renderItem(electron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+//
+//		matrices.scale(10, 10, 10);
+//		matrices.translate(0-x, 0-y, 0);
+//
+//		Map<Integer, Integer> shells = new HashMap<>();
+//
+//		shells.put(1, 2);
+//		shells.put(2, 8);
+//		shells.put(3, 18);
+//		shells.put(4, 32);
+
+		int currentShell = 1;
+		int electronCounter = 0;
+		for (int el = 0; el < electronCount; el++) {
+
+			int currentNrOfElectrons = calculateNrOfElectrons(currentShell);
+			if (electronCounter == currentNrOfElectrons) {
+				currentShell++;
+				electronCounter = 0;
+			}
+
+			float speedMultiplier = 40+20*(currentShell-1);
+			float radiusMultiplier = 0.1f*(currentShell-1);
+
+			float speed = (float)(2*Math.PI)/speedMultiplier;
+			float radius = 0.4f+radiusMultiplier;
+			float angle = speed*(blockEntity.getWorld().getTime()+tickDelta) + (float)((2*Math.PI/currentNrOfElectrons)*(electronCounter));
+
+			float x = (float)Math.cos(angle)*radius;
+			float y = (float)Math.sin(angle)*radius;
+			float z = (float)Math.sin(angle)*radius*Math.min(currentShell-1, 1);
+
+			if (currentShell != 1) {
+				float rotateAngle = (float)Math.PI/(2f*(currentShell-1));
+//				if (currentShell == 2) {
+//					rotateAngle = (float)Math.PI/(2f);
+//				}
+//				else if (currentShell == 3) {
+//					rotateAngle = (float)Math.PI/(6f);
+//				}
+				ArrayList<Float> y_z = rotateAroundXAxis(y, z, rotateAngle);
+				y = y_z.get(0);
+				z = y_z.get(1);
+			}
+
+			matrices.translate(x, y, z);
+			matrices.scale(0.1f, 0.1f, 0.1f);
+
+			MinecraftClient.getInstance().getItemRenderer().renderItem(electron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+
+			matrices.scale(10, 10, 10);
+			matrices.translate(-x, -y, -z);
+
+			electronCounter++;
+		}
+
+	}
+
+	public ArrayList<Float> rotateAroundXAxis(float y, float z, float angle) {
+		y = y*(float)Math.cos(angle)-z*(float)Math.sin(angle);
+		z = z*(float)Math.cos(angle)+y*(float)Math.sin(angle);
+		return new ArrayList<>(Arrays.asList(y, z));
+	}
+
+	public ArrayList<Float> rotateAroundYAxis(float x, float z, float angle) {
+		x = x*(float)Math.cos(angle)-z*(float)Math.sin(angle);
+		z = z*(float)Math.cos(angle)+x*(float)Math.sin(angle);
+		return new ArrayList<>(Arrays.asList(x, z));
 	}
 
 }

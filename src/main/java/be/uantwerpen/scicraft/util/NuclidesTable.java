@@ -380,6 +380,11 @@ public class NuclidesTable {
         shells.put(2, 8);
         shells.put(3, 18);
         shells.put(4, 32);
+        shells.put(5, 50);
+        shells.put(6, 72);
+        shells.put(7, 98);
+        shells.put(8, 128);
+        shells.put(9, 162);
 
     }
 
@@ -424,15 +429,15 @@ public class NuclidesTable {
     }
 
     /**
-     * Calculates the number of shells given the amount of electrons.
+     * Calculates the number of electrons given the shell number.
      *
-     * @param nrOfElectrons : amount of electrons
-     * @return : amount of shells (key of dictionary) according to the amount of electrons
+     * @param shell : shell number
+     * @return : integer amount of electrons
      */
-    public int calculateNrOfShells(int nrOfElectrons) {
+    public static int calculateNrOfElectrons(int shell) {
         for (Map.Entry<Integer, Integer> entry : shells.entrySet()) {
-            if (nrOfElectrons <= entry.getValue()) {
-                return entry.getKey();
+            if (shell == entry.getKey()) {
+                return entry.getValue();
             }
         }
         return 0;
