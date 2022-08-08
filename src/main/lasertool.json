@@ -1,0 +1,389 @@
+[{
+    "blocks": ["stone", "cobblestone", "stone_bricks", "mossy_stone_brick", "cracked_stone_bricks", "chiseled_stone_bricks", "stone_slab", "cobblestone_slab", "stone_brick_slab", "smooth_stone", "mossy_cobblestone","cobblestone_stairs", "stone_brick_stairs", "cobblestone_wall", "mossy_cobblestone_wall", "smooth_stone_slab", "mossy_stone_brick_wall", "stone_brick_wall", "mossy_stone_brick_slab", "mossy_stone_brick_stairs"],
+    "molecules": ["CaCO_3", "SiO_2","MgCO_3"],
+    "distribution": ["85","10","5"]
+}, {
+    "blocks": ["granite", "polished_granite", "granite_wall"],
+    "molecules": ["SiO_2", "Al_2O_3", "K_2O", "Na_2O", "CaO"],
+    "distribution": ["75","15","4","4","2"]
+}, {
+    "blocks": ["diorite", "polished_diorite", "diorite_wall"],
+    "molecules": ["SiO_2", "Al_2O_3", "CaO", "FeO", "K_2O"],
+    "distribution": ["64","17","8","6","5"]
+}, {
+    "blocks": ["andesite", "polished_andesite", "andesite_wall"],
+    "molecules": ["SiO_2", "Al_2O_3", "CaO", "FeO", "Na_2O"],
+    "distribution": ["61","18","9","7","5"]
+}, {
+    "blocks": ["grass_block", "dirt", "coarse_dirt", "podzol", "mycelium", "rooted_dirt"],
+    "molecules": ["SiO_2", "Al_2O_3","H2O","O2"],
+    "distribution": ["38","22","25","25"]
+}, {
+    "blocks": ["acacia_log", "acacia_planks", "acacia_slab", "acacia_stairs", "acacia_wood", "birch_log", "birch_planks", "birch_slab", "birch_stairs", "birch_wood", "dark_oak_log", "dark_oak_planks", "dark_oak_slab", "dark_oak_stairs", "dark_oak_wood", "jungle_log", "jungle_planks", "jungle_slab", "jungle_stairs", "jungle_wood", "oak_log", "oak_planks", "oak_slab", "oak_stairs", "oak_wood", "spruce_log", "spruce_planks", "spruce_slab", "spruce_stairs", "spruce_wood", "stripped_acacia_log", "stripped_acacia_wood", "stripped_birch_log", "stripped_birch_wood", "stripped_dark_oak_log", "stripped_dark_oak_wood", "stripped_jungle_log", "stripped_jungle_wood", "stripped_oak_log", "stripped_oak_wood", "stripped_spruce_log", "stripped_spruce_wood"],
+    "molecules": ["C", "O","H"],
+    "distribution": ["33","22","45"]
+}, {
+    "blocks": ["bedrock"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["sand", "glass", "glass_pane", "black_stained_glass", "black_stained_glass_pane", "blue_stained_glass", "blue_stained_glass_pane", "brown_stained_glass", "brown_stained_glass_pane", "cyan_stained_glass", "cyan_stained_glass_pane", "gray_stained_glass", "gray_stained_glass_pane", "green_stained_glass", "green_stained_glass_pane", "light_blue_stained_glass", "light_blue_stained_glass_pane", "light_gray_stained_glass", "light_gray_stained_glass_pane", "lime_stained_glass", "lime_stained_glass_pane", "magenta_stained_glass", "magenta_stained_glass_pane", "orange_stained_glass", "orange_stained_glass_pane", "pink_stained_glass", "pink_stained_glass_pane", "purple_stained_glass", "purple_stained_glass_pane", "red_stained_glass", "red_stained_glass_pane", "white_stained_glass", "white_stained_glass_pane", "yellow_stained_glass", "yellow_stained_glass_pane", "sandstone", "chiseled_sandstone", "cut_sandstone", "sandstone_slab", "smooth_sandstone", "sandstone_stairs", "cut_sandstone_slab", "sandstone_wall"],
+    "molecules": ["SiO_2", "Al_2O_3","Fe2O3"],
+    "distribution": ["90","6","4"]
+},{
+    "blocks": ["red_sand", "red_sandstone_slab", "smooth_red_sandstone", "red_sandstone", "chiseled_red_sandstone", "cut_red_sandstone", "red_sandstone_stairs", "cut_red_sandstone_slab", "red_sandstone_wall"],
+    "molecules": ["SiO_2", "Fe2O3","Al_2O_3"],
+    "distribution": ["60","34","6"]
+},{
+    "blocks": ["gravel"],
+    "molecules": ["SiO_2", "Al_2O_3","Fe2O3"],
+    "distribution": ["90","6","4"]
+},{
+    "blocks": ["gold_ore"],
+    "molecules": ["Au", "stone"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["iron_ore"],
+    "molecules": ["Fe_2O_3", "stone"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["coal_ore"],
+    "molecules": ["C", "stone"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["leaves"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["sponge"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["wet_sponge"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["lapis_ore"],
+    "molecules": ["(Na,Ca)_8(AlSiO_4)_6(S,SO_4,Cl)_1–2", "stone"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["lapis_block"],
+    "molecules": ["(Na,Ca)_8(AlSiO_4)_6(S,SO_4,Cl)_1–2"],
+    "distribution": ["100"]
+},{
+    "blocks": ["wool"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["gold_block"],
+    "molecules": ["Au"],
+    "distribution": ["100"]
+},{
+    "blocks": ["iron_block", "iron_bars", "chain"],
+    "molecules": ["Fe"],
+    "distribution": ["100"]
+},{
+    "blocks": ["brick_slab", "bricks", "brick_stairs", "brick_wall"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["nether_brick_slab", "nether_bricks", "nether_brick_stairs", "nether_brick_wall", "cracked_nether_bricks", "chiseled_nether_bricks"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["quart_slab","smooth_quartz", "chiseled_quartz_block", "quartz_block", "quartz_pillar", "quartz_stairs", "quartz_bricks"],
+    "molecules": ["SiO_2"],
+    "distribution": ["100"]
+},{
+    "blocks": ["prismarine_slab","prismarine_brick_slab","dark_prismarine_slab", "prismarine","prismarine_bricks","dark_prismarine", "prismarine_stairs","prismarine_brick_stairs","dark_prismarine_stairs", "prismarine_wall"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["tnt"],
+    "molecules": ["C_7H_5N_3O_6"],
+    "distribution": ["100"]
+},{
+    "blocks": ["obsidian"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["purpur_block", "purpur_pillar", "purpur_stairs"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["diamond_ore"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["diamond_block"],
+    "molecules": ["C"],
+    "distribution": ["100"]
+},{
+    "blocks": ["redstone_ore"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["redstone_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["ice", "packed_ice", "blue_ice", "frosted_ice"],
+    "molecules": ["H_2O"],
+    "distribution": ["100"]
+},{
+    "blocks": ["snow_block"],
+    "molecules": ["H_2O"],
+    "distribution": ["100"]
+},{
+    "blocks": ["clay"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["netherrack", "crimson_nylium", "warped_nylium"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["soul_sand", "soul_soil"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["glowstone"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["infested_stone","infested_cobblestone", "infested_stone_bricks", "infested_mossy_stone_bricks", "infested_cracked_stone_bricks", "infested_chiseled_stone_bricks"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["brown_mushroom_block", "red_mushroom_block", "mushroom_stem"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["end_stone", "end_stone_bricks", "end_stone_brick_wall", "end_stone_brick_stairs"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["emerald_ore"],
+    "molecules": ["Be_3Al_2(SiO_3)6", "stone"],
+    "distribution": ["20", "80"]
+},{
+    "blocks": ["emerald_block"],
+    "molecules": ["Be_3Al_2(SiO_3)6"],
+    "distribution": ["100"]
+},{
+    "blocks": ["nether_quartz_ore"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["terracotta", "glazed_teracotta"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["coal_block"],
+    "molecules": ["C"],
+    "distribution": ["100"]
+},{
+    "blocks": ["slime_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["magma_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["nether_wart_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["red_nether_bricks", "red_nether_brick_wall", "red_nether_brick_stairs"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["bone_block"],
+    "molecules": ["Ca_10(PO_4)6(OH)2"],
+    "distribution": ["100"]
+},{
+    "blocks": ["concrete"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["concrete_powder"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["dead_coral_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["coral_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["water"],
+    "molecules": ["H_2O"],
+    "distribution": ["100"]
+},{
+    "blocks": ["lava"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["honey_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["honeycomb_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["crimson_planks", "warped_planks", "crimson_stem", "warped_stem", "stripped_crimson_stem", "stripped_warped_stem", "stripped_crimson_hyphae", "stripped_warped_hyphae", "crimson_hyphae", "warped_hyphae"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["nether_gold_ore"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["basalt", "polished_basalt", "smooth_basalt"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["blackstone", "polished_blackstone", "polished_blackstone_brick"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["warped_wart_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["shroomlight"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["netherite_block"],
+    "molecules": ["Au", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["ancient_debris"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["crying_obsidian"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["gilded_blackstone"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["amethyst_block", "budding_amethist"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["calcite"],
+    "molecules": ["CaCO_3"],
+    "distribution": ["100"]
+},{
+    "blocks": ["deepslate"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["copper_block", "cut_copper"],
+    "molecules": ["Cu"],
+    "distribution": ["100"]
+},{
+    "blocks": ["copper_ore"],
+    "molecules": ["Cu_2O", "stone"],
+    "distribution": ["20", "80"]
+},{
+    "blocks": ["deepslate_coal_ore"],
+    "molecules": ["C", "deepslate"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["deepslate_copper_ore"],
+    "molecules": ["Cu_2O", "deepslate"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["deepslate_diamond_ore"],
+    "molecules": ["diamond", "deepslate"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["deepslate_emerald_ore"],
+    "molecules": ["Be_3Al_2(SiO_3)6", "deepslate"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["deepslate_gold_ore"],
+    "molecules": ["Au", "deepslate"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["deepslate_iron_ore"],
+    "molecules": ["Fe_2O_3”", "deepslate"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["deepslate_lapis_ore"],
+    "molecules": ["(Na,Ca)_8(AlSiO_4)_6(S,SO_4,Cl)_1–2", "deepslate"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["deepslate_redstone_ore"],
+    "molecules": ["Cu", "deepslate"],
+    "distribution": ["20","80"]
+},{
+    "blocks": ["dripstone_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["exposed_copper"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["weathered_copper"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["infested_deepslate"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["moss_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["oxidized_copper"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["raw_copper_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["raw_gold_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["raw_iron_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["tinted_glass"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["tuff"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["waxed_copper_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["waxed_exposed_copper_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["waxed_weathered_copper_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+},{
+    "blocks": ["waxed_oxidized_copper_block"],
+    "molecules": ["SiO_2", "Al_2O_3"],
+    "distribution": ["75","25"]
+}]

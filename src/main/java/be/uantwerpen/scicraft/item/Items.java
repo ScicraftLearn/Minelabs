@@ -16,6 +16,10 @@ public class Items {
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
+    public static final Item LASERTOOL_IRON = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.IRON, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_iron");
+    public static final Item LASERTOOL_GOLD = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.GOLD, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_gold");
+    public static final Item LASERTOOL_DIAMOND = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.DIAMOND, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_diamond");
+
     public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
             new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt");
 

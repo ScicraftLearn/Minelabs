@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.paintings.Paintings;
-import be.uantwerpen.scicraft.data.MoleculeManager;
 import be.uantwerpen.scicraft.crafting.CraftingRecipes;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.entity.ScientificVillager;
@@ -15,13 +14,9 @@ import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.sound.SoundEvents;
 import be.uantwerpen.scicraft.world.gen.OreGenerations;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.resource.ResourceType;
 
 
 public class Scicraft implements ModInitializer {
-
-    public static final MoleculeManager MOLECULEMANAGER = new MoleculeManager();
 
 	public static final String MOD_ID = "scicraft";
 
@@ -39,7 +34,6 @@ public class Scicraft implements ModInitializer {
         ExtraDispenserBehavior.registerBehaviors();
         SoundEvents.registerSounds();
 
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(MOLECULEMANAGER);
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();
         OreGenerations.generateOres();
