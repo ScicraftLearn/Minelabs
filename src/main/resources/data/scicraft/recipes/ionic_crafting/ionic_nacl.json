@@ -1,0 +1,30 @@
+{
+  "type": "scicraft:ionic_crafting",
+  "cation": {
+    "structure":
+    {
+      "atoms": [
+        {"key":  "NA1", "atom":  "Na"}
+      ],
+      "bonds": [
+      ]
+    },
+    "density": 8,
+    "charge": 1
+  },
+  "anion": {
+    "structure":
+    {
+      "atoms": [
+        {"key":  "CL1", "atom":  "Cl"}
+      ],
+      "bonds": [
+      ]
+    },
+    "density": 8,
+    "charge": 1
+  },
+  "result": {
+    "item": "scicraft:erlenmeyer_nh3"
+  }
+}

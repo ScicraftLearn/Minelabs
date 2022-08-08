@@ -46,7 +46,7 @@ public class MoleculeManager extends JsonDataLoader implements IdentifiableResou
 					MolecularMaterial moleculematerial = new MolecularMaterial(molecules, distribution); 
 					builder.put(item, moleculematerial);
 				}
-				/**
+				/*
 				 * Some quick remarks: 
 				 * - Maybe 1 file for each block, or one file for each block "type". Having one big file is not "bad", but it is difficult to search in.
 				 * - Store the results in a map block/item -> MolecularMaterial, so it can be found easily by searching for the block/item.
@@ -54,7 +54,7 @@ public class MoleculeManager extends JsonDataLoader implements IdentifiableResou
 				 */
 			}
 			catch (Exception e) {
-				LOGGER.error("Couldn't parse molecule {}", id, (Object)e);
+				LOGGER.error("Couldn't parse molecule {}", id, e);
 			}
 		});
 		this.molecules = builder.build();

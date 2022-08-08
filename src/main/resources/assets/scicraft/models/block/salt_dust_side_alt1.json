@@ -1,0 +1,6 @@
+{
+  "parent": "scicraft:block/salt_dust_side_alt",
+  "textures": {
+    "line": "scicraft:block/salt_dust_line1"
+  }
+}

@@ -11,7 +11,7 @@ import net.minecraft.util.registry.Registry;
 /**
  * Use these tags for NEW tags.
  * Using old tags just add a json in our mod:
- *    "data/minecraft/blocks/", "data/minecraft/items/", "data/minecraft/fluids/"
+ * "data/minecraft/blocks/", "data/minecraft/items/", "data/minecraft/fluids/"
  *
  * @author pixar02
  */

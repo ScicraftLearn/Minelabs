@@ -20,7 +20,12 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_PLUS_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
-    
+    public static BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY;
+    public static BlockEntityType<IonicBlockEntity> IONIC_BLOCK_ENTITY;
+    public static BlockEntityType<ElectricFieldSensorBlockEntity> ELECTRIC_FIELD_SENSOR;
+
+    public static BlockEntityType<TimeFreezeBlockEntity> TIME_FREEZE_BLOCK_ENTITY;
+
     static {
         PION_MINUS_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_MINUS_BLOCK_ENTITY, p, s, -1, Blocks.PION_PLUS, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PION_MINUS).build(null),
@@ -49,6 +54,19 @@ public class BlockEntities {
         CHARGED_PLACEHOLDER_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
                 "charged_placeholder_block_entity");
+
+        IONIC_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, "ionic_block"),
+                        FabricBlockEntityTypeBuilder.create(IonicBlockEntity::new,
+                                Blocks.IONIC_BLOCK).build(null));
+
+        LEWIS_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, Blocks.LEWIS_BLOCK).build(null), "lewis_block");
+
+
+        ELECTRIC_FIELD_SENSOR = register(FabricBlockEntityTypeBuilder.create((p,s) -> new ElectricFieldSensorBlockEntity(ELECTRIC_FIELD_SENSOR, p, s), Blocks.ELECTRIC_FIELD_SENSOR_BLOCK).build(null), "electric_field_sensor");
+
+        TIME_FREEZE_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new TimeFreezeBlockEntity(TIME_FREEZE_BLOCK_ENTITY, p, s), Blocks.TIME_FREEZE_BLOCK).build(null), "time_freeze_block_entity");
     }
 
     /**

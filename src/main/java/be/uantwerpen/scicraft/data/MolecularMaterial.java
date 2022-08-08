@@ -25,6 +25,6 @@ public class MolecularMaterial {
 				return molecules.get(i);
 			}
 		}
-		return molecules.get(molecules.size()); //should not happen, But if it does, return the last molecule.
+		return molecules.get(molecules.size() - 1); //should not happen, But if it does, return the last molecule.
 	}
 }

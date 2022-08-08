@@ -17,6 +17,14 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	//maven { url "https://maven.bai.lol" }
+	maven {
+		name = "WTHIT"
+		url = "https://maven.bai.lol"
+	}
+	maven {
+		name = "CottonMC"
+		url = "https://server.bbkr.space/artifactory/libs-release"
+	}
 }
 
 dependencies {
@@ -29,6 +37,12 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// WTHIT mod (TODO: if it's only for development, do we need this here?)
+	modCompileOnly "mcp.mobius.waila:wthit-api:fabric-${project.wthit_version}"
+
+	// GUI Lib
+	modImplementation include("io.github.cottonmc:LibGui:${project.cotton_gui_version}")
 }
 
 processResources {

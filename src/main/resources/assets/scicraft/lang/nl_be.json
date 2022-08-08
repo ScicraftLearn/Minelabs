@@ -1,6 +1,7 @@
 {
-
+  "itemGroup.scicraft.scicraft": "Scicraft",
   "itemGroup.scicraft.quantum_fields": "Kwantumvelden",
+  "itemGroup.scicraft.chemicals": "Chemische Stoffen",
   "itemGroup.scicraft.elementary_particles": "Elementaire Deeltjes",
   "itemGroup.scicraft.atoms": "Atomen",
 
@@ -25,11 +26,16 @@
   "block.scicraft.upquark_quantumfield": "Upquark Kwantumveld",
   "block.scicraft.downquark_quantumfield": "Downquark Kwantumveld",
 
+  "block.scicraft.time_freeze_block": "Tijdstop Blok",
+
   "blockEntity.scicraft.charged_block": "Geladen Blok",
 
-  "entity.scicraft.entropy_creeper": "EntropieCreeper",
+  "entity.minecraft.villager.sciencevillager": "Wetenschaps Dorpeling",
 
+  "entity.scicraft.entropy_creeper": "Entropie Creeper",
   "item.scicraft.entropy_creeper_spawn_egg": "EntropieCreeper Spawnei",
+
+  "block.scicraft.lewis_block": "Lewis Werkbank",
 
   "item.scicraft.proton": "Proton",
   "item.scicraft.electron": "Elektron",
@@ -82,5 +88,20 @@
   "item.scicraft.phosphorus_atom": "Fosfor",
   "item.scicraft.sulfur_atom": "Zwavel",
   "item.scicraft.chlorine_atom": "Chloor",
-  "item.scicraft.argon_atom": "Argon"
+  "item.scicraft.argon_atom": "Argon",
+
+  "item.scicraft.erlenmeyer": "Erlenmeyer",
+  "item.scicraft.erlenmeyer_o2.effect.empty": "Zuurstofgas (O2)",
+  "item.scicraft.erlenmeyer_n2.effect.empty": "Stikstofgas (N2)",
+  "item.scicraft.erlenmeyer_ch4.effect.empty": "Methaan (CH4)",
+  "item.scicraft.erlenmeyer_h2.effect.empty": "Waterstofgas (H2)",
+  "item.scicraft.erlenmeyer_no.effect.empty": "Stikstofoxide (NO)",
+  "item.scicraft.erlenmeyer_no2.effect.empty": "Stikstofdioxide (NO2)",
+  "item.scicraft.erlenmeyer_cl2.effect.empty": "Chloorgas (Cl2)",
+  "item.scicraft.erlenmeyer_co2.effect.empty": "Koolstofdioxide (CO2)",
+  "item.scicraft.erlenmeyer_co.effect.empty": "Koolstofoxide (CO)",
+  "item.scicraft.erlenmeyer_nh3.effect.empty": "Ammoniak (NH3)",
+  "item.scicraft.erlenmeyer_n2o.effect.empty": "Lachgas (N2O)",
+  "item.scicraft.erlenmeyer_hcl.effect.empty": "Waterstofchloride (HCl)",
+  "item.scicraft.erlenmeyer_hno3": "Salpeterzuur (HNO3)"
 }

@@ -45,8 +45,8 @@ public class EntropyCreeperEntity extends CreeperEntity {
 
     private final int explosionRadius = 3;
 
-    private List<BlockPos> blocksToShuffle = Lists.newArrayList();
-    private List<LivingEntity> entitiesToShuffle = Lists.newArrayList();
+    private final List<BlockPos> blocksToShuffle = Lists.newArrayList();
+    private final List<LivingEntity> entitiesToShuffle = Lists.newArrayList();
 
     // After it exploded, how many ticks to shuffle for.
     private int ticksToGo = -1;
