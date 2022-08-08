@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.event.ModEvents;
+import be.uantwerpen.scicraft.util.QuantumFieldSpawner;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,41 +13,70 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Position;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.state.StateManager;
 
 public class QuantumfieldBlock extends Block {
-    //Ticklife for subatomic dimension
-    //Randomizing will give it a unique property
-    java.util.Random r = new java.util.Random();
-    private int tickLife = r.nextInt(500_000, 25_000_000);
+    private static final java.util.Random r = new java.util.Random();
+    public static final IntProperty AGE = IntProperty.of("age",0,100);
+
+    public QuantumfieldBlock(int age) {
+        super(FabricBlockSettings.of(Material.METAL).noCollision().strength(0.5f, 2.0f).nonOpaque().ticksRandomly());
+        this.setDefaultState(((BlockState) this.stateManager.getDefaultState()).with(AGE, age));
+    }
 
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
         // Change the first value in strength to get the wanted mining speed
         super(FabricBlockSettings.of(Material.METAL).noCollision().strength(0.5f, 2.0f));
+        BlockState a = (this.stateManager.getDefaultState()).with(AGE, 0);
+        this.setDefaultState(a);
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        int i = state.get(AGE);
+        int decayrate = 1;
+        int max_age = 100;
+        state = state.with(AGE, Math.min(max_age, i + decayrate));
+        if (state.get(AGE) >= max_age) {
+            QuantumFieldSpawner.breakCluster(world, pos);
+        } else {
+            world.setBlockState(pos, state);
+        }
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(AGE);
+    }
+
+    @Override
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+
     }
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        super.onBreak(world, pos, state, player);
+        world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(player, state));
     }
 
     @Override
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
-        world.setBlockState(pos, state);
-    }
-
-    @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        //Get random destruction so every field acts differently
-        int destruction = r.nextInt(50);
-        tickLife -= destruction;
-        if (tickLife <= 0) {
-            world.breakBlock(pos,true);
+        if (!world.isClient()){
+            world.setBlockState(pos, state);
         }
     }
+
+
 }

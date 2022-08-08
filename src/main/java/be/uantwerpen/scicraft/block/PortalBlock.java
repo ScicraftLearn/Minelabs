@@ -3,6 +3,7 @@ package be.uantwerpen.scicraft.block;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.util.QuantumFieldSpawner;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -85,20 +86,15 @@ public class PortalBlock extends Block{
             //Save player position so it can be returned
             playerpos = player.getPos();
             ServerWorld atomdim = server.getWorld(ModDimensions.SUBATOM_KEY);
+            assert atomdim != null;
             int x, y;
-
-            for (int i = 0; i<5; i++ ){
-                x = ThreadLocalRandom.current().nextInt(-50, 50);
-                y = ThreadLocalRandom.current().nextInt(-50, 50);
-
-                AtomicFloor.spawnCloud(atomdim,new BlockPos(x,5,y));
-            }
-
-            atomdim.setBlockState(new BlockPos(0,5,0), this.getDefaultState());
-
             serverPlayer.teleport(atomdim, 0, 6, 0,
                     serverPlayer.bodyYaw, serverPlayer.prevPitch);
-
+            for (int i = 0; i<20; i++ ){
+                x = ThreadLocalRandom.current().nextInt(-50, 50);
+                y = ThreadLocalRandom.current().nextInt(-50, 50);
+                QuantumFieldSpawner.tryToSpawnCloud(atomdim,new BlockPos(x,5,y));
+            }
         }
     }
     private void useAtom(PlayerEntity player){
