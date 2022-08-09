@@ -21,8 +21,7 @@ public abstract class AbstractBlockMixin {
     private void getLootTableId(CallbackInfoReturnable<Identifier> ci) {
         Identifier oldIdentifier = this.lootTableId;
         if (Objects.equals(oldIdentifier.getNamespace(), "minecraft")) {
-            // Add minecraft to the path, so we can put all the loot tables extending the minecraft ones in a separate folder
-            Identifier identifier = new Identifier(Scicraft.MOD_ID, "lasertool/" + oldIdentifier.getPath());
+            Identifier identifier = new Identifier(Scicraft.MOD_ID, oldIdentifier.getPath());
             ci.setReturnValue(identifier);
         }
     }
