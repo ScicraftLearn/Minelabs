@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.data;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.util.ChemicalFormulaParser;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -16,9 +17,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.function.Consumer;
 
-//Made after the recipe system
 public class LaserToolDataProvider implements DataProvider {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -38,6 +39,8 @@ public class LaserToolDataProvider implements DataProvider {
 			}
 			LaserToolDataProvider.saveMoleculeData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/blocks/" + provider.getId().getPath() + ".json"));
 		}, path);
+
+		// TODO write the set to lasertool_mineable.json
 	}
 
 	private static void saveMoleculeData(DataWriter cache, JsonObject json, Path path) {
@@ -51,6 +54,7 @@ public class LaserToolDataProvider implements DataProvider {
 	
 	public static void generate(Consumer<MoleculeData> data, Path path) {
 		try {
+			// Input JSON can't be in generated directory bc this one get reset everytime datagen runs
 			path = path.getParent();
 
 			JsonReader reader = new JsonReader(new FileReader(path.resolve("lasertool.json").toFile()));
@@ -72,7 +76,6 @@ public class LaserToolDataProvider implements DataProvider {
 		} catch (IllegalArgumentException | IOException | JsonParseException exception) {
 			LOGGER.error("Couldn't parse data file {}", "lasertool.json", exception);
 		}
-		// TODO write the set to lasertool_mineable.json
 	}
 
 	@Override
@@ -89,6 +92,14 @@ public class LaserToolDataProvider implements DataProvider {
 				json.add("distribution", distribution);
 				if (molecules.size() != distribution.size()) {
 					throw new IllegalStateException("Couldn't make molecule in " + new Identifier(Scicraft.MOD_ID, name) + " molecule count and distribution does not match");
+				}
+				for (int i = 0; i < molecules.size(); i++) {
+					Map<String, Integer> map = ChemicalFormulaParser.parseFormula(molecules.get(i).getAsString());
+					if (map.isEmpty()) {
+						LOGGER.error("Couldn't parse molecule in " + new Identifier(Scicraft.MOD_ID, name) + " molecule " + molecules.get(i).getAsString());
+					} else {
+						LOGGER.info(map);
+					}
 				}
 			}
 			
