@@ -34,6 +34,8 @@ import static be.uantwerpen.scicraft.util.NuclidesTable.calculateNrOfElectrons;
 @Environment(EnvType.CLIENT)
 public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements BlockEntityRenderer<T> {
 
+	private boolean shakeSwitch = true;
+	private int switchCounter = 0;
 	private static final ItemStack proton_stack = new ItemStack(Blocks.PROTON, 1);
 	private static final ItemStack neutron_stack = new ItemStack(Blocks.NEUTRON, 1);
 //	private static ItemStack electron_shell_stack = new ItemStack(Blocks.PROTON, 1); // drawing of the electron shells
@@ -149,6 +151,18 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		int nrOfprotonsLeft = protonCount;
 		int nrOfneutronsLeft = neutronCount;
 
+		// controls the shaking
+		boolean isStable = false;
+		float totalTimer = 30f;
+//		float shake = 1-(timeLeft/totalTimer);
+		float shake = 0f;
+		int switchCounterModulo = 10; // 5
+		if (!isStable) {
+			if (switchCounter%switchCounterModulo != 0) {
+				shake = 0.02f;
+			}
+		}
+
 		float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
 		if (protonCount+neutronCount >= 12) {
 			startingOffsetScale = 11f;
@@ -161,6 +175,15 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		// in the function to calculate the total scale factor for our current icosahedron figure.
 		float scaleOffset = 0f;
 		int dec_index = 0; // variable to stay inside the list indexes of the icosahedron points.
+
+
+		if (shakeSwitch) {
+			shakeSwitch = false;
+			shake = -shake;
+		}
+		else {
+			shakeSwitch = true;
+		}
 
 		for (int i = 0; i < protonCount+neutronCount; i++) {
 
@@ -182,7 +205,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			float offset_y = icosahedron.get(i-dec_index).getY()/totalScale;
 			float offset_z = icosahedron.get(i-dec_index).getZ()/totalScale;
 
-			if (dec_index>12) {
+			if (dec_index > 12) {
 				float rotateXAngle = (float)Math.PI*(0.125f*(((float)dec_index/12)%4));
 //				float rotateYAngle = (float)Math.PI/(1.25f*scaleOffset);
 
@@ -194,7 +217,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 //				offset_z = new_x_z.get(1);
 			}
 
-			matrices.translate(offset_x, offset_y, offset_z);
+
+
+			matrices.translate(offset_x, offset_y+shake, offset_z);
 			matrices.scale(0.2f, 0.2f, 0.2f);
 
 			if (nrOfprotonsLeft == 0) {
@@ -221,10 +246,11 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			}
 
 			matrices.scale(5, 5, 5);
-			matrices.translate(-offset_x, -offset_y, -offset_z);
+			matrices.translate(-offset_x, -offset_y-shake, -offset_z);
 
 			particlesCounter++;
 		}
+		switchCounter++;
 
 	}
 
