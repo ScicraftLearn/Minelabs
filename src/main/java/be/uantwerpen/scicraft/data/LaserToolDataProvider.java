@@ -1,7 +1,5 @@
 package be.uantwerpen.scicraft.data;
 
-import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.util.ChemicalFormulaParser;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -17,7 +15,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class LaserToolDataProvider implements DataProvider {
@@ -56,7 +53,6 @@ public class LaserToolDataProvider implements DataProvider {
 		try {
 			// Input JSON can't be in generated directory bc this one get reset everytime datagen runs
 			path = path.getParent();
-
 			JsonReader reader = new JsonReader(new FileReader(path.resolve("lasertool.json").toFile()));
 			JsonArray json = GSON.fromJson(reader, JsonArray.class);
 
@@ -68,8 +64,7 @@ public class LaserToolDataProvider implements DataProvider {
 					throw new IllegalStateException("Couldn't parse molecule in " + blocks.toString() + " molecule count and distribution does not match");
 				}
 				for (JsonElement element: blocks) {
-					defaultMoleculeData(element.getAsString(), molecules, distribution, data);
-//					defaultMoleculeData(element.getAsString(), JsonHelper.asArray(element, "item"););
+					generateMoleculeData(element.getAsString(), molecules, distribution, data);
 				}
 			}
 
@@ -83,31 +78,8 @@ public class LaserToolDataProvider implements DataProvider {
 		return "Molecules";
 	}
 	
-	public static void defaultMoleculeData(String name, JsonArray molecules, JsonArray distribution, Consumer<MoleculeData> exporter) { //Quick and dirty method. Can and should be made better
-		MoleculeData data = new MoleculeData() {
-
-			@Override
-			public void serialize(JsonObject json) {
-				json.add("molecules", molecules);
-				json.add("distribution", distribution);
-				if (molecules.size() != distribution.size()) {
-					throw new IllegalStateException("Couldn't make molecule in " + new Identifier(Scicraft.MOD_ID, name) + " molecule count and distribution does not match");
-				}
-				for (int i = 0; i < molecules.size(); i++) {
-					Map<String, Integer> map = ChemicalFormulaParser.parseFormula(molecules.get(i).getAsString());
-					if (map.isEmpty()) {
-						LOGGER.error("Couldn't parse molecule in " + new Identifier(Scicraft.MOD_ID, name) + " molecule " + molecules.get(i).getAsString());
-					} else {
-						LOGGER.info(map);
-					}
-				}
-			}
-			
-			@Override
-			public Identifier getId() {
-				return new Identifier(Scicraft.MOD_ID, name);
-			}
-		};
+	public static void generateMoleculeData(String name, JsonArray molecules, JsonArray distribution, Consumer<MoleculeData> exporter) { //Quick and dirty method. Can and should be made better
+		MoleculeData data = new MoleculeData(name, molecules, distribution);
 		exporter.accept(data);
 	}
 }

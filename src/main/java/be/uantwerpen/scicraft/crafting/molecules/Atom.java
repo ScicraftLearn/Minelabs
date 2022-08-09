@@ -93,6 +93,10 @@ public enum Atom {
         return initialNeutrons;
     }
 
+    public Identifier getItemId() {
+        return new Identifier(Scicraft.MOD_ID, name().toLowerCase() + "_atom");
+    }
+
     public Item getItem() {
         if (item == null)
             setItem(Registry.ITEM.get(new Identifier(Scicraft.MOD_ID, name().toLowerCase() + "_atom")));
