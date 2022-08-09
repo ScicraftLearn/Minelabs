@@ -69,7 +69,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	@Override
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
-		World world = blockEntity.getWorld();
+
 		matrices.push();
 
 		int lightAbove = WorldRenderer.getLightmapCoordinates(blockEntity.getWorld(), blockEntity.getPos().up());
@@ -78,6 +78,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		matrices.translate(0.5f, 1.75f, 0.5f);
 		matrices.scale(1.5f,1.5f,1.5f);
 
+		// for facing the player
 		PlayerEntity player = MinecraftClient.getInstance().player;
 		assert player != null;
 		Vec3f field = new Vec3f(
@@ -113,10 +114,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		Vec3f y_rotation = new Vec3f(0, 1, 0);
 		matrices.multiply(y_rotation.getDegreesQuaternion(-90));
 
-		// Rotate the item
-//		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((blockEntity.getWorld().getTime() + tickDelta) * 4));
-
-		//MinecraftClient.getInstance().getItemRenderer().renderItem(nucleus_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 
 		int protonCount = blockEntity.getProtonCount();
 		int neutronCount = blockEntity.getNeutronCount();
@@ -131,7 +128,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		 * rendering of the electrons:
 		 */
 		makeElectrons(electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity, tickDelta);
-
 
 
 		matrices.pop();
@@ -172,14 +168,31 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				particlesCounter = 0; // gets increased with one at end of for loop.
 				scaleOffset += 0.75f;
 				dec_index += 12;
-				matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(30));
+//				matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(30));
+			}
+
+			float scaleFactor = 2.3f; // lower value => closer to core origin
+			if (protonCount+neutronCount > 50) {
+				scaleFactor = 1.75f;
 			}
 
 			// calculating the x,y,z offsets to place the protons/neutrons on the icosahedron outer points.
-			float totalScale = startingOffsetScale-scaleOffset+scaleOffset/2.3f;
+			float totalScale = startingOffsetScale-scaleOffset+scaleOffset/scaleFactor;
 			float offset_x = icosahedron.get(i-dec_index).getX()/totalScale;
 			float offset_y = icosahedron.get(i-dec_index).getY()/totalScale;
 			float offset_z = icosahedron.get(i-dec_index).getZ()/totalScale;
+
+			if (dec_index>12) {
+				float rotateXAngle = (float)Math.PI*(0.125f*(((float)dec_index/12)%4));
+//				float rotateYAngle = (float)Math.PI/(1.25f*scaleOffset);
+
+				ArrayList<Float> new_y_z = rotateAroundXAxis(offset_y, offset_z, rotateXAngle);
+				offset_y = new_y_z.get(0);
+				offset_z = new_y_z.get(1);
+//				ArrayList<Float> new_x_z = rotateAroundYAxis(offset_x, offset_z, rotateYAngle);
+//				offset_x = new_x_z.get(0);
+//				offset_z = new_x_z.get(1);
+			}
 
 			matrices.translate(offset_x, offset_y, offset_z);
 			matrices.scale(0.2f, 0.2f, 0.2f);
@@ -216,63 +229,25 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	}
 
 	/**
-	 * Handles the scaling and stuff for the electron shells.
+	 * Handles the "rendering" of the electrons shells themselves.
 	 */
 	public void makeElectronshells() {
-
+		// may be implemented and used, but it looks fine with how it is now.
 	}
 
 	/**
-	 * Handles the scaling and stuff for the electrons.
+	 * Handles the scaling and spinning of the electrons.
 	 *
-	 * @param electronCount
-	 * @param matrices
-	 * @param lightAbove
-	 * @param vertexConsumerProvider
-	 * @param blockEntity
-	 * @param tickDelta
+	 * @param electronCount : amount of electrons in the borhblock
+	 * @param matrices : matrices
+	 * @param lightAbove : used in renderItem function to avoid all blackness in the rendering above the block.
+	 * @param vertexConsumerProvider : vertexConsumerProvider
+	 * @param blockEntity : blockEntity
+	 * @param tickDelta : tickDelta
 	 */
 	public void makeElectrons(int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity, float tickDelta) {
 
-//		float angle = 0;
-//		float speed = (float)(2*Math.PI)/40;
-//		float radius = 0.5f;
-//
-//		angle += speed*(blockEntity.getWorld().getTime() + tickDelta);
-//		float x = (float)Math.cos(angle)*radius;
-//		float y = (float)Math.sin(angle)*radius;
-//
-//
-//		matrices.translate(0+x, 0+y, 0);
-//		matrices.scale(0.1f, 0.1f, 0.1f);
-//
-//		MinecraftClient.getInstance().getItemRenderer().renderItem(electron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-//
-//		matrices.scale(10, 10, 10);
-//		matrices.translate(0-x, 0-y, 0);
-//
-//		angle = 0;
-//		speed = (float)(2*Math.PI)/45;
-//		radius = 0.5f;
-//
-//		angle += speed*(blockEntity.getWorld().getTime() + tickDelta)+Math.PI;
-//		x = (float)Math.cos(angle)*radius;
-//		y = (float)Math.sin(angle)*radius;
-//
-//		matrices.translate(x, 0, y);
-//		matrices.scale(0.1f, 0.1f, 0.1f);
-//
-//		MinecraftClient.getInstance().getItemRenderer().renderItem(electron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-//
-//		matrices.scale(10, 10, 10);
-//		matrices.translate(0-x, 0-y, 0);
-//
-//		Map<Integer, Integer> shells = new HashMap<>();
-//
-//		shells.put(1, 2);
-//		shells.put(2, 8);
-//		shells.put(3, 18);
-//		shells.put(4, 32);
+		// for the electron-shell distribution, check the NuclidesTable class.
 
 		int currentShell = 1;
 		int electronCounter = 0;
@@ -284,28 +259,24 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				electronCounter = 0;
 			}
 
+			// multiplier for how fast the electrons will spin around, the greater this value, the slower it will be.
 			float speedMultiplier = 40+20*(currentShell-1);
-			float radiusMultiplier = 0.1f*(currentShell-1);
+			float radiusMultiplier = 0.1f*(currentShell-1); // multiplier for how much further each new shell is from the nucleus
 
-			float speed = (float)(2*Math.PI)/speedMultiplier;
+			float speed = (float)(2*Math.PI)/speedMultiplier; // how fast the electrons rotate
 			float radius = 0.4f+radiusMultiplier;
 			float angle = speed*(blockEntity.getWorld().getTime()+tickDelta) + (float)((2*Math.PI/currentNrOfElectrons)*(electronCounter));
 
 			float x = (float)Math.cos(angle)*radius;
 			float y = (float)Math.sin(angle)*radius;
-			float z = (float)Math.sin(angle)*radius*Math.min(currentShell-1, 1);
+			float z = (float)Math.sin(angle)*radius*Math.min(currentShell-1, 1); // 0 on first shell, z on every other shell.
 
 			if (currentShell != 1) {
 				float rotateAngle = (float)Math.PI/(2f*(currentShell-1));
-//				if (currentShell == 2) {
-//					rotateAngle = (float)Math.PI/(2f);
-//				}
-//				else if (currentShell == 3) {
-//					rotateAngle = (float)Math.PI/(6f);
-//				}
-				ArrayList<Float> y_z = rotateAroundXAxis(y, z, rotateAngle);
-				y = y_z.get(0);
-				z = y_z.get(1);
+
+				ArrayList<Float> new_y_z = rotateAroundXAxis(y, z, rotateAngle);
+				y = new_y_z.get(0);
+				z = new_y_z.get(1);
 			}
 
 			matrices.translate(x, y, z);
@@ -321,12 +292,28 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	}
 
+	/**
+	 * rotates y and z around x-axis
+	 *
+	 * @param y : y-coordinate
+	 * @param z : z-coordinate
+	 * @param angle : rotate angle
+	 * @return : array of two elements: new y and z
+	 */
 	public ArrayList<Float> rotateAroundXAxis(float y, float z, float angle) {
 		y = y*(float)Math.cos(angle)-z*(float)Math.sin(angle);
 		z = z*(float)Math.cos(angle)+y*(float)Math.sin(angle);
 		return new ArrayList<>(Arrays.asList(y, z));
 	}
 
+	/**
+	 * rotates x and z around x-axis
+	 *
+	 * @param x : x-coordinate
+	 * @param z : z-coordinate
+	 * @param angle : rotate angle
+	 * @return : array of two elements: new x and z
+	 */
 	public ArrayList<Float> rotateAroundYAxis(float x, float z, float angle) {
 		x = x*(float)Math.cos(angle)-z*(float)Math.sin(angle);
 		z = z*(float)Math.cos(angle)+x*(float)Math.sin(angle);
