@@ -5,6 +5,7 @@ import be.uantwerpen.scicraft.crafting.molecules.Atom;
 import be.uantwerpen.scicraft.util.ChemicalFormulaParser;
 import com.google.gson.*;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
@@ -83,7 +84,10 @@ public class MinecraftBlocksData {
         alternatives.add("type", new JsonPrimitive("minecraft:alternatives"));
         JsonArray children = new JsonArray();
         children.add(group);
-        children.add(lootTable);
+        // No vanilla loot table for these blocks in vanilla minecraft
+        if (!this.name.matches("lava|water|bedrock")) {
+            children.add(lootTable);
+        }
         alternatives.add("children", children);
         JsonObject rolls = new JsonObject();
         rolls.add("rolls", new JsonPrimitive(1));

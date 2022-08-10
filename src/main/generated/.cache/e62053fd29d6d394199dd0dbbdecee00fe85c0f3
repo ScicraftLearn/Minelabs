@@ -1,4 +1,4 @@
-// 1.19	2022-08-10T20:02:23.801504292	Molecules
+// 1.19	2022-08-10T20:37:33.631937027	Molecules
 9292df961681241af413f25126bc7102c4b17fb5 data/scicraft/loot_tables/blocks/oak_slab.json
 1d89ca215b13eed18b6d5fb47ae8e47c68553dc6 data/scicraft/loot_tables/blocks/brown_concrete_powder.json
 809bb328569f677679291d9a39d3f5ffacfdd03c data/scicraft/loot_tables/molecules/fe2_o3.json
@@ -130,7 +130,7 @@ babf5f573ad77e06d371afe4edac69c17eea59db data/scicraft/loot_tables/blocks/quartz
 62d96c486caa676ccfb3c3bbae163d6d0c67ab6f data/scicraft/loot_tables/blocks/dark_oak_slab.json
 b8f84ee34a79ea61c63ec6dae17d49f42b6a91c9 data/scicraft/loot_tables/blocks/chiseled_deepslate.json
 df19b7e9f9422a9edfe5a97a63f7d6d7b2be2ffa data/scicraft/loot_tables/blocks/andesite_slab.json
-74cbdf63d5d7e3a43f94479745b4dc9d11477930 data/scicraft/loot_tables/blocks/bedrock.json
+eb51c8fe5f28de5e317fdc9beaac02cd4e8b5144 data/scicraft/loot_tables/blocks/bedrock.json
 ad8690995f4280efb497a9df274f10399d0f829e data/scicraft/loot_tables/blocks/bubble_coral.json
 50929dc2fd818edab685028818d2bd0dc2d551fb data/scicraft/loot_tables/blocks/lime_stained_glass_pane.json
 12577a0cb264a0b94df895b4a2f0aa2a6f38c59c data/scicraft/loot_tables/blocks/dark_prismarine_stairs.json
@@ -264,7 +264,7 @@ bdf9b9512419cbcb045fa16b40cd78c6dec63cf2 data/scicraft/loot_tables/blocks/coal_b
 94813175e1be4f92ba6c2ed7c4ceb9c4b032536e data/scicraft/loot_tables/molecules/k_2_o.json
 65376dc1b724ee788f77d570d61c1dc75975d63d data/scicraft/loot_tables/blocks/acacia_leaves.json
 9750ddb2e913a547ced27e7f475c373c94882018 data/scicraft/loot_tables/blocks/gray_wool.json
-aef5e41d333518006f5d8eeaf6f10169e24877fa data/scicraft/loot_tables/blocks/water.json
+dd00e11d8cca54d265830e9775d796fdefd4dc09 data/scicraft/loot_tables/blocks/water.json
 3f0834195f137a527269daff6b56ed8640e6aa16 data/scicraft/loot_tables/blocks/granite_wall.json
 45d8419f6e4a48fa7eda356ed45728ef9b767d0d data/scicraft/loot_tables/blocks/light_gray_stained_glass.json
 457cab4c80451b8fc323579d7d28aafa5885f297 data/scicraft/loot_tables/blocks/purple_terracotta.json
@@ -309,7 +309,7 @@ c4b689c54fdc5f4c80e038da29ca6910f4d5dc71 data/scicraft/loot_tables/blocks/stripp
 63ad7395b41fc4848cc384ffbbc57f0a37213eed data/scicraft/loot_tables/blocks/dead_bubble_coral.json
 2d93d6e8e49e2ac7e3b13e9a25c753bb908bba88 data/scicraft/loot_tables/blocks/oak_stairs.json
 a8db79e85101e648cd0434f273a6090f577762b7 data/scicraft/loot_tables/blocks/stripped_oak_wood.json
-f9f19f817b69247e00d749931bc4c6d5cc163c59 data/scicraft/loot_tables/blocks/lava.json
+eb51c8fe5f28de5e317fdc9beaac02cd4e8b5144 data/scicraft/loot_tables/blocks/lava.json
 43cc3419bfe34b80f133c782cbe44ae37bb9bcb4 data/scicraft/loot_tables/blocks/deepslate_lapis_ore.json
 6b76c054afb067dab5e55bfb5b6966533073ccac data/scicraft/loot_tables/blocks/cut_red_sandstone.json
 dd3de17b8470deb18d07dde1d6b10015e771f554 data/scicraft/loot_tables/molecules/endstone.json

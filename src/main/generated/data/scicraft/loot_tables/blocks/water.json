@@ -45,10 +45,6 @@
                   ]
                 }
               ]
-            },
-            {
-              "type": "minecraft:loot_table",
-              "name": "minecraft:blocks/water"
             }
           ]
         }
