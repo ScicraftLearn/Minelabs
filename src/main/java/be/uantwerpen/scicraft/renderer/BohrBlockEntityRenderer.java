@@ -350,6 +350,10 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		return new ArrayList<>(Arrays.asList(x, z));
 	}
 
+	public void scatter(int protonCount, int neutronCount, int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity) {
+
+	}
+
 }
 
 
