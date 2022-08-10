@@ -73,22 +73,5 @@ public class ScicraftClient implements ClientModInitializer {
                 }
             });
         });
-
-        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.BOHR_UPDATED, (client, handler, buf, responseSender) -> {
-            BlockPos pos = buf.readBlockPos();
-            NbtCompound nbtCompound = buf.readNbt();
-
-            client.execute(() -> {
-                if (client.world != null) {
-                    if (client.world.getBlockEntity(pos) instanceof BohrBlockEntity bohrBlockEntity) {
-                        bohrBlockEntity.readNbt(nbtCompound);
-                    }
-                }
-            });
-
-                }
-        );
-
-
-    }
+        }
 }

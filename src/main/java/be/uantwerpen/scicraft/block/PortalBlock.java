@@ -87,17 +87,9 @@ public class PortalBlock extends Block{
             playerpos = player.getPos();
             ServerWorld atomdim = server.getWorld(ModDimensions.SUBATOM_KEY);
             assert atomdim != null;
-            int x, y;
             serverPlayer.teleport(atomdim, 0, 67, 0,
                     serverPlayer.bodyYaw, serverPlayer.prevPitch);
 
-        }
-    }
-    private void useAtom(PlayerEntity player){
-        if(player.getMainHandStack().getCount()>1){
-            player.getMainHandStack().setCount(player.getMainHandStack().getCount()-1);
-        }else {
-            player.getMainHandStack().setCount(0);
         }
     }
 }

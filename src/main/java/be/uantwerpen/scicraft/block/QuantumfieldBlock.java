@@ -54,18 +54,9 @@ public class QuantumfieldBlock extends Block {
         }
     }
 
-//    private pass
-
-
-
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(AGE);
-    }
-
-    @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-
     }
 
     @Override
