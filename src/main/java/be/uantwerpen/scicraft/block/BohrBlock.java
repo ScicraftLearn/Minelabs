@@ -70,19 +70,13 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         super.onProjectileHit(world,state,hit,projectile);
         BlockEntity blockEntity = world.getBlockEntity(hit.getBlockPos());
         Item item;
-        Entity owner = projectile.getOwner();
         if (!world.isClient()) {
-//            BlockEntity playerBlockEntity = playerEntity.getWorld().getBlockEntity(hit.getBlockPos());
-
             if (projectile instanceof SubatomicParticle subatomicParticle && blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
                 item = subatomicParticle.getStack().getItem();
                 if (item == Items.ELECTRON || item == Items.NEUTRON || item == Items.PROTON) {
                     bohrBlockEntity.insertParticle(item);
-//                    playerBohrBlockEntity.insertParticle(item);
-
                 } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
                     bohrBlockEntity.removeParticle(item);
-//                    playerBohrBlockEntity.insertParticle(item);
                 }
             }
         }
@@ -121,34 +115,11 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 bohrBlockEntity.writeNbt(nbtCompound);
                 bohrBlockEntity.scatterParticles();
                 remaining = 30;
-
-//                Packet<ClientPlayPacketListener> updatePacket = bohrBlockEntity.toUpdatePacket();
-//                if (updatePacket != null) {
-//                    for (ServerPlayerEntity playerEntity: world.getPlayers()){
-//                        playerEntity.networkHandler.sendPacket(updatePacket);
-//                    }
-//                    world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
-//                }
-
-//                bohrBlockEntity.markDirty();
-//                world.updateListeners(pos,state,state,Block.NOTIFY_LISTENERS);
             }
             state = state.with(TIMER,remaining);
             world.setBlockState(pos, state);
             world.createAndScheduleBlockTick(pos, this, 20, TickPriority.VERY_HIGH);
         }
-
-
-
-
-//        this.getBlock().scheduledTick(this.asBlockState(), world, pos, random);
-//    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-//
-//        int tickrate = Fluids.WATER.getTickRate(world)
-//
-//
-
-
     }
 
     /**
@@ -213,21 +184,17 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         }
     }
 
-    @Override
-    @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        if (world.isClient()) {
-            return BohrBlock::Tick;
-        }
-        return null;
-    }
-
-    private static <T extends BlockEntity> void Tick(World world, BlockPos blockPos, BlockState blockState, T t) {
-//        MinecraftClient.getInstance().execute(() -> {
-//            System.out.println("Helloo");
-//            MatrixStack m = new MatrixStack();
-//            MinecraftClient.getInstance().textRenderer.drawWithShadow(m, "help", 10, 10, 0xffffff);
-//        });
-    }
+//    @Override
+//    @Nullable
+//    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+//        if (world.isClient()) {
+//            return BohrBlock::Tick;
+//        }
+//        return null;
+//    }
+//
+//    private static <T extends BlockEntity> void Tick(World world, BlockPos blockPos, BlockState blockState, T t) {
+//
+//    }
 }
 

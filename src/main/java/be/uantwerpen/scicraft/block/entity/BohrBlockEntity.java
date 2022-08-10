@@ -56,17 +56,12 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 
 
     public long time = 0;
-//    public Vec3i movement_direction = Vec3i.ZERO;
-    public final static int time_move_ticks = 8;
-    public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
     public static final int maxTimerAmount = 30;
     public static final IntProperty TIMER = IntProperty.of("timer",0, maxTimerAmount);
 
 
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9, ItemStack.EMPTY);
-//    private final DefaultedList<ItemStack> neutronInventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
-//    private final DefaultedList<ItemStack> electronInventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
     public BohrBlockEntity( BlockPos pos, BlockState state) {
         super(BlockEntities.BOHR_BLOCK_ENTITY, pos, state);
@@ -123,7 +118,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             if (nuclideStateInfo.isStable()){
                 color = GREEN_COLOR;
             }
-//            Text text = new Text();
         }
         String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + this.getCachedState().get(TIMER);
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, atomInfo, 10, 10, color);
@@ -132,26 +126,12 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, neutronString, 10, 30, 111455);
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, electronString, 10, 40, 111455);
     }
-//    public DefaultedList<ItemStack> getProtonInventory() {
-//        return protonInventory;
-//    }
 
     @Override
     public void markDirty() {
         super.markDirty();
 
     }
-
-//    public void inventoryDirty(ServerWorld world){
-//        if ( world.isClient()) return;
-//        PacketByteBuf buf = PacketByteBufs.create();
-//        NbtCompound nbtCompound = this.createNbt();
-////        this.writeNbt(nbtCompound);
-//        buf.writeBlockPos(pos).writeNbt(nbtCompound);
-//        for (ServerPlayerEntity serverPlayerEntity: world.getPlayers()){
-//            ServerPlayNetworking.send(serverPlayerEntity, toUpdatePacket, buf);
-//        }
-//    }
 
     @Override
     public NbtCompound toInitialChunkDataNbt() {
@@ -160,21 +140,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
-//        Packet<ClientPlayPacketListener> packet = BlockEntityUpdateS2CPacket.create(this);
         return BlockEntityUpdateS2CPacket.create(this);
     }
-//    public void markDirty() {
-//        if (this.world != null) {
-//            BlockEntity.markDirty(this.world, this.pos, this.getCachedState());
-//        }
-//    }
-//    public DefaultedList<ItemStack> getNeutronInventory() {
-//        return neutronInventory;
-//    }
-
-//    public DefaultedList<ItemStack> getElectronInventory() {
-//        return electronInventory;
-//    }
 
 
 
@@ -182,18 +149,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         Inventories.readNbt(nbt, this.items);
-//        Inventories.readNbt(nbt, this.neutronInventory);
-//        Inventories.readNbt(nbt, this.electronInventory);
     }
-
-
-//    public void empty(){
-//        for ( int index = 0; index < 9; index++ ){
-//            protonInventory.get(index).setCount(0);
-//            neutronInventory.get(index).setCount(0);
-//            electronInventory.get(index).setCount(0);
-//        }
-//    }
 
 
     public ActionResult insertParticle(Item item) {
@@ -273,8 +229,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 
     @Override
     public void writeNbt(NbtCompound nbt) {
-//        Inventories.writeNbt(nbt, this.protonInventory,true);
-//        Inventories.writeNbt(nbt, this.neutronInventory,true);
         writeNbt(nbt, items);
         super.writeNbt(nbt);
     }
