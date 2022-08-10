@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:overworld",
+  "type": "minecraft:the_end",
   "generator": {
     "type": "minecraft:flat",
     "settings": {
@@ -18,7 +18,11 @@
         },
         {
           "block": "scicraft:atomic_floor",
-          "height": 5
+          "height": 1
+        },
+        {
+          "block": "minecraft:air",
+          "height": 64
         }
       ]
     }

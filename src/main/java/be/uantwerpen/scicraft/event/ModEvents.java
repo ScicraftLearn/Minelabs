@@ -5,6 +5,7 @@ import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.dimension.ModDimensions;
 import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.util.QuantumFieldSpawner;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -16,6 +17,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.dimension.DimensionType;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class ModEvents {
@@ -42,13 +47,19 @@ public class ModEvents {
                 return ActionResult.PASS;
             }
         });
-
         //Spawn portal on dimension load instead? done
         ServerWorldEvents.LOAD.register(((server, world) -> {
-            if (world.getDimensionKey() == ModDimensions.DIMENSION_TYPE_KEY) ;
+            if (world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
             {
+                int x, y;
                 System.out.println("geladen?");
-                world.setBlockState(new BlockPos(0, 6, 0), Blocks.ATOM_PORTAL.getDefaultState());
+                world.setBlockState(new BlockPos(0, 65, 0), Blocks.ATOM_PORTAL.getDefaultState());
+
+                for (int i = 0; i<50; i++ ){
+                    x = ThreadLocalRandom.current().nextInt(-20, 20);
+                    y = ThreadLocalRandom.current().nextInt(-20, 20);
+                    QuantumFieldSpawner.tryToSpawnCloud(world,new BlockPos(x,65,y));
+                }
                 for (PlayerEntity p : world.getPlayers()
                 ) {
                     //IMPLEMENT PLAYER CHANGES

@@ -1,4 +1,5 @@
 {
+  "type": "scricraft:atom_type",
   "ultrawarm": false,
   "natural": false,
   "piglin_safe": true,

@@ -20,6 +20,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.client.MinecraftClient;
@@ -32,7 +33,7 @@ public class ScicraftClient implements ClientModInitializer {
 
         ModEvents.registerEvents();
 
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR,RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_PLUS, RenderLayer.getCutout());
@@ -72,5 +73,22 @@ public class ScicraftClient implements ClientModInitializer {
                 }
             });
         });
+
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.BOHR_UPDATED, (client, handler, buf, responseSender) -> {
+            BlockPos pos = buf.readBlockPos();
+            NbtCompound nbtCompound = buf.readNbt();
+
+            client.execute(() -> {
+                if (client.world != null) {
+                    if (client.world.getBlockEntity(pos) instanceof BohrBlockEntity bohrBlockEntity) {
+                        bohrBlockEntity.readNbt(nbtCompound);
+                    }
+                }
+            });
+
+                }
+        );
+
+
     }
 }

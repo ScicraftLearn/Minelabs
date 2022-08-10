@@ -88,13 +88,9 @@ public class PortalBlock extends Block{
             ServerWorld atomdim = server.getWorld(ModDimensions.SUBATOM_KEY);
             assert atomdim != null;
             int x, y;
-            serverPlayer.teleport(atomdim, 0, 6, 0,
+            serverPlayer.teleport(atomdim, 0, 67, 0,
                     serverPlayer.bodyYaw, serverPlayer.prevPitch);
-            for (int i = 0; i<20; i++ ){
-                x = ThreadLocalRandom.current().nextInt(-50, 50);
-                y = ThreadLocalRandom.current().nextInt(-50, 50);
-                QuantumFieldSpawner.tryToSpawnCloud(atomdim,new BlockPos(x,5,y));
-            }
+
         }
     }
     private void useAtom(PlayerEntity player){

@@ -4,10 +4,13 @@ import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.QuantumfieldBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class QuantumFieldSpawner {
+    public static final IntProperty ACTIVE_FIELDS = IntProperty.of("active_fields",0,100);
 
     static java.util.Random r = new java.util.Random();
     static private int nr_fields = 0;
@@ -17,16 +20,9 @@ public class QuantumFieldSpawner {
     public static void tryToSpawnCloud(World world, BlockPos pos) {
         BlockState field_to_spawn;
         int max_fields = 15;
-//        passes++;
-//        if (passes >= 100){
-//            nr_fields = 0;
-//        }
-        float chance = ((float) (max_fields - nr_fields ))/max_fields;
-//        if (!world.isClient()){
-//            passes +=1;
-//        }
+        float chance = (float)1/1_000;
+
         if (shouldSpawnCloud(chance)) {
-            passes = 0;
             field_to_spawn = pickField(world, pos);
             if (field_to_spawn != null){
                 spawnCloud(world, pos,field_to_spawn);
@@ -40,7 +36,7 @@ public class QuantumFieldSpawner {
 //    }
     public static Boolean shouldSpawnCloud(float chance) {
         java.util.Random r = new java.util.Random();
-        return r.nextFloat() < chance;
+        return r.nextFloat() <= chance;
     }
 
     public static BlockState pickField(World world, BlockPos pos) {
@@ -104,12 +100,12 @@ public class QuantumFieldSpawner {
         int y_size = r.nextInt(2,10);
         int z_size = r.nextInt(2,20);
         int cloudSize = x_size * y_size * z_size;
-        int cloudHeight = r.nextInt(0,8);
+        int cloudHeight = r.nextInt(0,70)-35;
         int blocksToSpawn = r.nextInt(Math.round(0.1f * cloudSize),Math.round((0.9F * cloudSize)+0.5f));
 
         int cloudx, cloudy, cloudz;
 
-        pos = pos.up(5-pos.getY()+cloudHeight);
+        pos = pos.up(65-pos.getY()+cloudHeight);
 
 
 //      only replace air and not too close to other fields

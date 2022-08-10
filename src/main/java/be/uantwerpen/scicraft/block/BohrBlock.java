@@ -3,31 +3,49 @@ package be.uantwerpen.scicraft.block;
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.entity.SubatomicParticle;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.util.NucleusState;
+import be.uantwerpen.scicraft.util.NuclidesTable;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.TickPriority;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.TIMER;
+
 
 public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
+
+
     public BohrBlock() {
         super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque());
+        this.setDefaultState(this.stateManager.getDefaultState().with(TIMER, 30));
     }
 
     @Override
@@ -35,6 +53,16 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         return BlockRenderType.MODEL;
     }
 
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        world.createAndScheduleBlockTick(pos, this, 1);
+
+    }
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(TIMER);
+    }
     @Override
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
         super.onProjectileHit(world,state,hit,projectile);
@@ -64,6 +92,50 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new BohrBlockEntity(pos, state);
+    }
+
+
+
+    @Override
+    public void scheduledTick(BlockState state,ServerWorld world, BlockPos pos, Random random) {
+
+        super.scheduledTick(state, world, pos, random);
+
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof BohrBlockEntity bohrBlockEntity && !world.isClient()) {
+            int nrOfProtons = bohrBlockEntity.getProtonCount();
+            int nrOfNeutrons = bohrBlockEntity.getNeutronCount();
+            int nrOfElectrons = bohrBlockEntity.getElectronCount();
+            int remaining = state.get(TIMER);
+
+            if (NuclidesTable.isStable(nrOfProtons,nrOfNeutrons,nrOfElectrons)){
+                remaining = 30;
+            }
+            else{
+                remaining = Math.max(0,remaining-1);
+            }
+            if (remaining == 0){
+                bohrBlockEntity.scatterParticles();
+                remaining = 30;
+//                bohrBlockEntity.markDirty();
+//                world.updateListeners(pos,state,state,Block.NOTIFY_LISTENERS);
+            }
+            state = state.with(TIMER,remaining);
+            world.setBlockState(pos, state);
+            world.createAndScheduleBlockTick(pos, this, 20, TickPriority.VERY_HIGH);
+        }
+
+
+
+
+//        this.getBlock().scheduledTick(this.asBlockState(), world, pos, random);
+//    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+//
+//        int tickrate = Fluids.WATER.getTickRate(world)
+//
+//
+
+
     }
 
     /**
@@ -123,7 +195,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         int protons = bohrBlockEntity.getProtonCount();
         int neutrons = bohrBlockEntity.getNeutronCount();
         int electrons = bohrBlockEntity.getElectronCount();
-        NucleusState nucleusState = bohrBlockEntity.getNuclidesTable().getNuclide(protons, neutrons);
+        NucleusState nucleusState = NuclidesTable.getNuclide(protons, neutrons);
         if (protons == electrons && nucleusState != null && nucleusState.getAtomItem() != null && nucleusState.isStable()) {
             ItemStack itemStack = new ItemStack(nucleusState.getAtomItem());
             itemStack.setCount(1);

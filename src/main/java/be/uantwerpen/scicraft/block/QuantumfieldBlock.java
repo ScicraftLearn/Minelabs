@@ -27,33 +27,36 @@ import net.minecraft.state.StateManager;
 
 public class QuantumfieldBlock extends Block {
     private static final java.util.Random r = new java.util.Random();
-    public static final IntProperty AGE = IntProperty.of("age",0,100);
+    public static final IntProperty AGE = IntProperty.of("age",0,25);
 
-    public QuantumfieldBlock(int age) {
-        super(FabricBlockSettings.of(Material.METAL).noCollision().strength(0.5f, 2.0f).nonOpaque().ticksRandomly());
-        this.setDefaultState(((BlockState) this.stateManager.getDefaultState()).with(AGE, age));
-    }
 
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
         // Change the first value in strength to get the wanted mining speed
-        super(FabricBlockSettings.of(Material.METAL).noCollision().strength(0.5f, 2.0f));
-        BlockState a = (this.stateManager.getDefaultState()).with(AGE, 0);
-        this.setDefaultState(a);
+        super(FabricBlockSettings.of(Material.METAL).noCollision().strength(0.5f, 2.0f).ticksRandomly());
+        this.setDefaultState(this.stateManager.getDefaultState().with(AGE, 0));
     }
+
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        int i = state.get(AGE);
+        int age = state.get(AGE);
         int decayrate = 1;
-        int max_age = 100;
-        state = state.with(AGE, Math.min(max_age, i + decayrate));
-        if (state.get(AGE) >= max_age) {
+        int max_age = 25;
+
+
+        if (age+decayrate >= max_age) {
             QuantumFieldSpawner.breakCluster(world, pos);
         } else {
+            state = state.with(AGE, Math.min(max_age, age + decayrate));
             world.setBlockState(pos, state);
+
         }
     }
+
+//    private pass
+
+
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {

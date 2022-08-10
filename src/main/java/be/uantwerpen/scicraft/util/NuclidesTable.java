@@ -389,11 +389,6 @@ public class NuclidesTable {
     }
 
     /**
-     * Default Constructor of the NuclidesTable
-     */
-    public NuclidesTable() {}
-
-    /**
      * Add a nuclide to the nuclidesTable (map).
      *
      * @param z : atom number
@@ -416,7 +411,7 @@ public class NuclidesTable {
      * @param nrOfNeutrons : amount of neutrons
      * @return : array of three values [atomName, symbol, mainDecayMode] (to see what these are, check the addNuclidesTableEntry function parameters)
      */
-    public NucleusState getNuclide(int nrOfProtons, int nrOfNeutrons) {
+    public static NucleusState getNuclide(int nrOfProtons, int nrOfNeutrons) {
         String compositeAtomKey = nrOfProtons + ":" + nrOfNeutrons;
         NucleusState value = nuclidesTable.get(compositeAtomKey);
         if (value != null) {
@@ -450,7 +445,7 @@ public class NuclidesTable {
      * @param nrOfElectrons : amount of electrons
      * @return : String representation of the charge. The initial form is +/- x (where x is any number).
      */
-    public String calculateIonicCharge(int nrOfProtons, int nrOfElectrons)
+    public static String calculateIonicCharge(int nrOfProtons, int nrOfElectrons)
     {
         int ionicCharge = nrOfProtons - nrOfElectrons;
         String ionChargeString = "";
@@ -459,6 +454,11 @@ public class NuclidesTable {
         }
         ionChargeString = ionChargeString + ionicCharge;
         return ionChargeString;
+    }
+
+    public static boolean isStable(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons){
+        NucleusState nucleusState = getNuclide(nrOfProtons,nrOfNeutrons);
+        return nucleusState != null && Math.abs(nrOfProtons - nrOfElectrons) <= 5 && nucleusState.isStable();
     }
 
 }
