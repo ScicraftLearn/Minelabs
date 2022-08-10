@@ -6,6 +6,7 @@ import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.util.NucleusState;
 import be.uantwerpen.scicraft.util.NuclidesTable;
+import com.google.common.collect.ImmutableMap;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -35,10 +36,14 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.TickPriority;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Function;
+
+import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.STATUS;
 import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.TIMER;
 
 
@@ -47,7 +52,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     public BohrBlock() {
         super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque());
-        this.setDefaultState(this.stateManager.getDefaultState().with(TIMER, 30));
+        this.setDefaultState(this.stateManager.getDefaultState().with(TIMER, 30).with(STATUS, 0));
     }
 
     @Override
@@ -63,7 +68,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     }
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(TIMER);
+        builder.add(TIMER).add(STATUS);
     }
     @Override
     public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
