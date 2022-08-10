@@ -1,15 +1,20 @@
 package be.uantwerpen.scicraft.mixins;
 
 import be.uantwerpen.scicraft.dimension.ModDimensions;
+import com.google.common.collect.Maps;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+
+import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -68,8 +73,24 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
 
+
+
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    public boolean hasStatusEffect(StatusEffect effect) {
+        if (this.world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY)&&effect.equals(StatusEffects.SLOW_FALLING)){
+            return true;
+        }
+        return this.activeStatusEffects.containsKey(effect);
+    }
+
+    @Final
     @Shadow
-    public abstract boolean hasStatusEffect(StatusEffect jumpBoost);
+    private final Map<StatusEffect, StatusEffectInstance> activeStatusEffects = Maps.newHashMap();
+
 
     @Shadow
     public abstract StatusEffectInstance getStatusEffect(StatusEffect jumpBoost);
