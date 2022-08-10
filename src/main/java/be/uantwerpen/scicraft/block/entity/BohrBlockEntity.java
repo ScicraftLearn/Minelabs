@@ -49,7 +49,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 //    public Vec3i movement_direction = Vec3i.ZERO;
     public final static int time_move_ticks = 8;
     public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
-    public static final IntProperty TIMER = IntProperty.of("timer",0,30);
+    public static final int maxTimerAmount = 30;
+    public static final IntProperty TIMER = IntProperty.of("timer",0, maxTimerAmount);
 
     private final DefaultedList<ItemStack> protonInventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
     private final DefaultedList<ItemStack> neutronInventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
@@ -221,7 +222,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     /**
      * Removes a particle (proton, neutron or electron depending on passed param) from the bohrblock.
      *
-     * @param particleName : String name of the particle to be removed.
+     * @param item : item particle to be removed.
      */
     public ActionResult removeParticle(Item item) {
             if (item == Items.ANTI_PROTON) {
