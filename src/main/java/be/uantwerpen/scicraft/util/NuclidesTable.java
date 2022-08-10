@@ -18,9 +18,9 @@ public class NuclidesTable {
 
         addNuclidesTableEntry(0, 0, "Void", "", "Stable", null,0);
 
-        addNuclidesTableEntry(0, 1, "Neutron", "n", "Unstable", Items.NEUTRON, 0);
-        addNuclidesTableEntry(0, 4, "Neutron", "n", "Unstable", Items.NEUTRON, 0);
-        addNuclidesTableEntry(0, 6, "Neutron", "n", "Unstable", Items.NEUTRON, 0);
+        addNuclidesTableEntry(0, 1, "Neutron", "n", "Unstable", null, 1);
+        addNuclidesTableEntry(0, 4, "Neutron", "n", "Unstable", null, 1);
+        addNuclidesTableEntry(0, 6, "Neutron", "n", "Unstable", null, 1);
 
         addNuclidesTableEntry(1, 0, "Hydrogen", "H", "Stable", Items.HYDROGEN_ATOM, 0);
         addNuclidesTableEntry(1, 1, "Hydrogen", "H", "Stable", Items.HYDROGEN_ATOM, 0);
@@ -461,6 +461,22 @@ public class NuclidesTable {
     public static boolean isStable(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons){
         NucleusState nucleusState = getNuclide(nrOfProtons,nrOfNeutrons);
         return nucleusState != null && Math.abs(nrOfProtons - nrOfElectrons) <= 5 && nucleusState.isStable();
+    }
+
+    /**
+     * Returns integer representing how far from the black line (nuclides table) the atom is.
+     *
+     * @param nrOfProtons : amount of protons
+     * @param nrOfNeutrons : amount of neutrons
+     * @param nrOfElectrons : amount of electrons
+     * @return : positive integer (0 included (=stable)) representing how far from the black line (nuclides table) the atom is.
+     */
+    public static int getStabilityDeviation(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons){
+        NucleusState nucleusState = getNuclide(nrOfProtons,nrOfNeutrons);
+        if (nucleusState != null) {
+            return nucleusState.getUnstability();
+        }
+        return 0;
     }
 
 }

@@ -38,8 +38,13 @@ import static be.uantwerpen.scicraft.util.NuclidesTable.calculateNrOfElectrons;
 @Environment(EnvType.CLIENT)
 public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements BlockEntityRenderer<T> {
 
-	private boolean shakeSwitch = true;
-	private int switchCounter = 0;
+	float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
+
+	private boolean shakeSwitch = true; // (shaking of atom)
+	private int switchCounter = 0; // (shaking of atom) used to know when to 'shake'
+	int switchCounterModulo = 10; // (shaking of atom) determines how fast the particles move back and forth (minimum 5)
+
+
 	private static final ItemStack proton_stack = new ItemStack(Blocks.PROTON, 1);
 	private static final ItemStack neutron_stack = new ItemStack(Blocks.NEUTRON, 1);
 //	private static ItemStack electron_shell_stack = new ItemStack(Blocks.PROTON, 1); // drawing of the electron shells
@@ -160,17 +165,15 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		int remaining = blockEntity.getCachedState().get(TIMER);
 
 		// controls the shaking
-		float shakeMultiplier = 1-((float)remaining/maxTimerAmount);
+		int shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount)/3;
 		float shake = 0f;
-		int switchCounterModulo = 10; // 5
 		boolean isStable = NuclidesTable.isStable(protonCount, neutronCount, electronCount);
 		if (!isStable) {
 			if (switchCounter%switchCounterModulo != 0) {
-				shake = 0.01f+(float)Math.min(shakeMultiplier/20, 0.05); // [0.01 ; 0.05]
+				shake = 0.01f+(float)Math.min(shakeMultiplier*0.002857f, 0.05); // [0.01 ; 0.05]
 			}
 		}
 
-		float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
 		if (protonCount+neutronCount >= 12) {
 			startingOffsetScale = 11f;
 		}
@@ -178,7 +181,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		boolean isProtonAndNeutronLeft = true; // true if both protons and neutrons still need to be placed
 		int particlesCounter = 0; // used to count to 12 to restart (increase) the icosahedron scaleOffset.
 
-		// each time we pass a multiple of 12, this value gets increased and used
+		// each time we reach a multiple of 12, this value gets increased and used
 		// in the function to calculate the total scale factor for our current icosahedron figure.
 		float scaleOffset = 0f;
 		int dec_index = 0; // variable to stay inside the list indexes of the icosahedron points.
