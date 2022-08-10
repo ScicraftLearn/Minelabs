@@ -32,7 +32,7 @@
     "leaves"
 ],
 "expand_coral": [
-    "dead_coral_block", "coral_block"
+    "dead_coral", "coral"
 ],
 "data": [{
     "blocks": ["stone", "cobblestone", "mossy_cobblestone", "stone_bricks", "mossy_stone_bricks", "smooth_stone" , "cracked_stone_bricks", "chiseled_stone_bricks"],
@@ -247,12 +247,12 @@
     "molecules": ["CaO", "sand", "gravel"],
     "distribution": ["10", "30", "40"]
 },{
-    "blocks": ["dead_coral_block"],
+    "blocks": ["dead_coral"],
     "molecules": ["CaCO_3"],
     "distribution": ["100"]
 },{
-    "blocks": ["coral_block"],
-    "molecules": ["dead_coral_block", "sponge"],
+    "blocks": ["coral"],
+    "molecules": ["dead_coral", "sponge"],
     "distribution": ["80","20"]
 },{
     "blocks": ["water"],

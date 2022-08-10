@@ -1,0 +1,79 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:group",
+              "children": [
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:molecules/si_o_2",
+                  "weight": 75
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:molecules/al_2_o_3",
+                  "weight": 15
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:molecules/k_2_o",
+                  "weight": 4
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:molecules/na_2_o",
+                  "weight": 4
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:molecules/ca_o",
+                  "weight": 2
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:alternative",
+                  "terms": [
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_iron"
+                        ]
+                      }
+                    },
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_gold"
+                        ]
+                      }
+                    },
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_diamond"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "minecraft:loot_table",
+              "name": "minecraft:blocks/granite_stairs"
+            }
+          ]
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

@@ -39,12 +39,17 @@ public class MinecraftBlocksData {
             String convertedMoleculeName = MinecraftBlocksData.convertMoleculeName(molecules.get(i));
 
             JsonObject jsonObject = new JsonObject();
+            // Expand the block name if possible
+            // For example convert concrete to list of all colors of concrete and take the first item of that
+            if (LaserToolDataProvider.isExpandable(convertedMoleculeName)) {
+                convertedMoleculeName = LaserToolDataProvider.expandBlock(convertedMoleculeName).get(0);
+            }
             if(!Registry.BLOCK.get(new Identifier("minecraft", convertedMoleculeName)).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
                 jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "loot_table").toString()));
-                jsonObject.add("name", new JsonPrimitive(new Identifier(Scicraft.MOD_ID, "blocks/" + molecules.get(i)).toString()));
+                jsonObject.add("name", new JsonPrimitive(new Identifier(Scicraft.MOD_ID, "blocks/" + convertedMoleculeName).toString()));
             } else if(!Registry.ITEM.get(new Identifier("minecraft", convertedMoleculeName)).equals(Registry.ITEM.get(Registry.ITEM.getDefaultId()))) {
                 jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "item").toString()));
-                jsonObject.add("name", new JsonPrimitive(new Identifier("minecraft", molecules.get(i)).toString()));
+                jsonObject.add("name", new JsonPrimitive(new Identifier("minecraft", convertedMoleculeName).toString()));
             } else if(map.size() == 1) {
                 map.keySet().forEach(key -> {
                     jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "item").toString()));

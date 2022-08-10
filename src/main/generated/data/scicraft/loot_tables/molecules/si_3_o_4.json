@@ -1,0 +1,19 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:oxygen_atom",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:silicon_atom",
+          "weight": 3
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

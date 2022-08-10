@@ -1,0 +1,29 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:aluminium_atom",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:beryllium_atom",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:oxygen_atom",
+          "weight": 18
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:silicon_atom",
+          "weight": 6
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:iron_atom",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:manganese_atom",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:oxygen_atom",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scicraft:tungsten_atom",
+          "weight": 2
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

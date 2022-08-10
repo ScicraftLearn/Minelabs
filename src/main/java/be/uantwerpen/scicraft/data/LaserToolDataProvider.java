@@ -116,7 +116,7 @@ public class LaserToolDataProvider implements DataProvider {
 		}
 	}
 
-	private static List<String> expandBlock(String name) {
+	public static List<String> expandBlock(String name) {
 		List<String> result = new ArrayList<>();
 		// Add the standard block to the list if it exists ingame
 		boolean notABlock = false;
@@ -170,6 +170,10 @@ public class LaserToolDataProvider implements DataProvider {
 			}
 		}
 		return result;
+	}
+
+	public static boolean isExpandable(String block) {
+		return expand.contains(block) || expandColor.contains(block) || expandWood.contains(block) || expandLeaves.contains(block) || expandCoral.contains(block);
 	}
 
 	private static void readExpandArrays(JsonObject json) {
