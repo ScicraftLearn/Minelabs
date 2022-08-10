@@ -70,17 +70,21 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         super.onProjectileHit(world,state,hit,projectile);
         BlockEntity blockEntity = world.getBlockEntity(hit.getBlockPos());
         Item item;
+        boolean changedState = false;
         if (!world.isClient()) {
             if (projectile instanceof SubatomicParticle subatomicParticle && blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
                 item = subatomicParticle.getStack().getItem();
                 if (item == Items.ELECTRON || item == Items.NEUTRON || item == Items.PROTON) {
-                    bohrBlockEntity.insertParticle(item);
+                    changedState = bohrBlockEntity.insertParticle(item)==ActionResult.SUCCESS;
+
                 } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
-                    bohrBlockEntity.removeParticle(item);
+                    changedState = bohrBlockEntity.removeParticle(item)==ActionResult.SUCCESS;
+                }
+                if (changedState) {
+                    world.updateListeners(hit.getBlockPos(),state,state,Block.NOTIFY_LISTENERS);
                 }
             }
         }
-        return;
     }
 
 
@@ -118,6 +122,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             }
             state = state.with(TIMER,remaining);
             world.setBlockState(pos, state);
+            world.updateListeners(pos,state,state,Block.NOTIFY_LISTENERS);
             world.createAndScheduleBlockTick(pos, this, 20, TickPriority.VERY_HIGH);
         }
     }
