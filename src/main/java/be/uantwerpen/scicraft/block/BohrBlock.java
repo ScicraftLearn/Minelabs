@@ -21,7 +21,9 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -115,8 +117,19 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 remaining = Math.max(0,remaining-1);
             }
             if (remaining == 0){
+                NbtCompound nbtCompound = bohrBlockEntity.createNbt();
+                bohrBlockEntity.writeNbt(nbtCompound);
                 bohrBlockEntity.scatterParticles();
                 remaining = 30;
+
+//                Packet<ClientPlayPacketListener> updatePacket = bohrBlockEntity.toUpdatePacket();
+//                if (updatePacket != null) {
+//                    for (ServerPlayerEntity playerEntity: world.getPlayers()){
+//                        playerEntity.networkHandler.sendPacket(updatePacket);
+//                    }
+//                    world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+//                }
+
 //                bohrBlockEntity.markDirty();
 //                world.updateListeners(pos,state,state,Block.NOTIFY_LISTENERS);
             }
@@ -147,14 +160,8 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     private void printInventory(World world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
 //        if there is a bohr block on the location in the world
-        if (blockEntity instanceof BohrBlockEntity) {
-            DefaultedList<ItemStack> neutronInventory = ((BohrBlockEntity) blockEntity).getNeutronInventory();
-            DefaultedList<ItemStack> protonInventory = ((BohrBlockEntity) blockEntity).getProtonInventory();
-            DefaultedList<ItemStack> electronInventory = ((BohrBlockEntity) blockEntity).getElectronInventory();
-
-            System.out.println(neutronInventory);
-            System.out.println(electronInventory);
-            System.out.println(protonInventory);
+        if (blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
+            System.out.println(bohrBlockEntity.getItems());
         }
     }
 
@@ -202,7 +209,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(1);
             defaultedList.add(itemStack);
             ItemScatterer.spawn(world, pos.up(1), defaultedList);
-            bohrBlockEntity.empty();
+            bohrBlockEntity.clear();
         }
     }
 

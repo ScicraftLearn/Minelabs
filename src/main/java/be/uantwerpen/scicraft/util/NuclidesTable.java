@@ -16,9 +16,11 @@ public class NuclidesTable {
 
     static { // see https://www-nds.iaea.org/relnsd/vcharthtml/VChartHTML.html for the nuclides table
 
-        addNuclidesTableEntry(0, 1, "Neutron", "n", "Unstable", null);
-        addNuclidesTableEntry(0, 4, "Neutron", "n", "Unstable", null);
-        addNuclidesTableEntry(0, 6, "Neutron", "n", "Unstable", null);
+        addNuclidesTableEntry(0, 0, "Void", "", "Stable", null);
+
+        addNuclidesTableEntry(0, 1, "Neutron", "n", "Unstable", Items.NEUTRON);
+        addNuclidesTableEntry(0, 4, "Neutron", "n", "Unstable", Items.NEUTRON);
+        addNuclidesTableEntry(0, 6, "Neutron", "n", "Unstable", Items.NEUTRON);
 
         addNuclidesTableEntry(1, 0, "Hydrogen", "H", "Stable", Items.HYDROGEN_ATOM );
         addNuclidesTableEntry(1, 1, "Hydrogen", "H", "Stable",Items.HYDROGEN_ATOM);
