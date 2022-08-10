@@ -3,6 +3,8 @@ package be.uantwerpen.scicraft.renderer;
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
+
+import be.uantwerpen.scicraft.util.NuclidesTable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -28,6 +30,8 @@ import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
+import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.TIMER;
+import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.maxTimerAmount;
 import static be.uantwerpen.scicraft.util.NuclidesTable.calculateNrOfElectrons;
 
 
@@ -124,7 +128,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		/**
 		 * rendering of the nucleus:
 		 */
-		makeNucleus(protonCount, neutronCount, matrices, lightAbove, vertexConsumerProvider);
+		makeNucleus(protonCount, neutronCount, electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity);
 
 		/**
 		 * rendering of the electrons:
@@ -141,25 +145,28 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	 *
 	 * @param protonCount : amount of protons
 	 * @param neutronCount : amount of neutrons
+	 * @param electronCount : amount of electrons
 	 * @param matrices : matrices
 	 * @param lightAbove : used in renderItem function to avoid all blackness in the rendering above the block.
 	 * @param vertexConsumerProvider : vertexConsumerProvider
+	 * @param blockEntity : blockEntity
 	 */
-	public void makeNucleus(int protonCount, int neutronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider) {
+	public void makeNucleus(int protonCount, int neutronCount, int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity) {
 
 		// variables for placing the particles (they get decreased)
 		int nrOfprotonsLeft = protonCount;
 		int nrOfneutronsLeft = neutronCount;
 
+		int remaining = blockEntity.getCachedState().get(TIMER);
+
 		// controls the shaking
-		boolean isStable = false;
-		float totalTimer = 30f;
-//		float shake = 1-(timeLeft/totalTimer);
+		float shakeMultiplier = 1-((float)remaining/maxTimerAmount);
 		float shake = 0f;
 		int switchCounterModulo = 10; // 5
+		boolean isStable = NuclidesTable.isStable(protonCount, neutronCount, electronCount);
 		if (!isStable) {
 			if (switchCounter%switchCounterModulo != 0) {
-				shake = 0.02f;
+				shake = 0.01f+(float)Math.min(shakeMultiplier/20, 0.05); // [0.01 ; 0.05]
 			}
 		}
 
@@ -175,7 +182,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		// in the function to calculate the total scale factor for our current icosahedron figure.
 		float scaleOffset = 0f;
 		int dec_index = 0; // variable to stay inside the list indexes of the icosahedron points.
-
 
 		if (shakeSwitch) {
 			shakeSwitch = false;
@@ -216,8 +222,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 //				offset_x = new_x_z.get(0);
 //				offset_z = new_x_z.get(1);
 			}
-
-
 
 			matrices.translate(offset_x, offset_y+shake, offset_z);
 			matrices.scale(0.2f, 0.2f, 0.2f);
@@ -344,6 +348,10 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		x = x*(float)Math.cos(angle)-z*(float)Math.sin(angle);
 		z = z*(float)Math.cos(angle)+x*(float)Math.sin(angle);
 		return new ArrayList<>(Arrays.asList(x, z));
+	}
+
+	public void scatter(int protonCount, int neutronCount, int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity) {
+
 	}
 
 }
