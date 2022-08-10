@@ -311,7 +311,7 @@
     "molecules": ["blackstone", "gold_block"],
     "distribution": ["85","15"]
 },{
-    "blocks": ["amethyst_block", "budding_amethist"],
+    "blocks": ["amethyst_block", "budding_amethyst"],
     "molecules": ["SiO_2", "Fe"],
     "distribution": ["99","1"]
 },{

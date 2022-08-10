@@ -119,8 +119,11 @@ public class LaserToolDataProvider implements DataProvider {
 	private static List<String> expandBlock(String name) {
 		List<String> result = new ArrayList<>();
 		// Add the standard block to the list if it exists ingame
+		boolean notABlock = false;
 		if (!Registry.BLOCK.get(new Identifier("minecraft", name)).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
 			result.add(name);
+		} else {
+			notABlock = true;
 		}
 		// For bricks and tiles expansion we need to cutoff the s at the end before we expand them
 		if (name.endsWith("_bricks") || name.endsWith("_tiles")) {
@@ -158,8 +161,8 @@ public class LaserToolDataProvider implements DataProvider {
 					blocks.add(fix + name);
 				}
 			}
-		} else {
-			return Collections.singletonList(name);
+		} else if (notABlock) {
+			LOGGER.error("Block {} in lasertool.json is not an ingame block", name);
 		}
 		for (String block: blocks) {
 			if (!Registry.BLOCK.get(new Identifier("minecraft", block)).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
