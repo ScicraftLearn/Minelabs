@@ -197,7 +197,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 
 
     public ActionResult insertParticle(Item item) {
-        int slot = -1;
+        int slot, times_looped = 0;
 
         if (item == Items.PROTON) {
             slot = 0;
@@ -214,8 +214,9 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 
         while (items.get(slot).getCount() == 64 && items.get(slot).getItem() == item) {
             slot += 1;
+            times_looped +=1;
+            if (times_looped == 4) return ActionResult.FAIL;
         }
-        if (slot == 4) return ActionResult.FAIL;
         assert items.get(slot).getCount() < 64;
 //            if the inventory is empty initialize the inventory with 0 items
         if (items.get(slot).isEmpty()) {
