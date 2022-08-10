@@ -34,7 +34,7 @@ public enum Atom {
     //valence electrons of transition metals may not be correct
     POTASSIUM(19, "K", 0.8, AtomType.ALKALI_METAL, 1, 20, Items.POTASSIUM_ATOM),
     CALCIUM(20, "Ca", 1.0, AtomType.ALKALINE_EARTH_METAL, 2, 20, Items.CALCIUM_ATOM),
-    TITANIUM(22, "Ti", 1.54, AtomType.TRANSITION_METAL, 4, 26, Items.TITANIUM_ATOM),
+    TITANIUM(22, "Ti", 1.54, AtomType.TRANSITION_METAL, 2, 26, Items.TITANIUM_ATOM),
     MANGANESE(25, "Mn", 1.55, AtomType.TRANSITION_METAL, 2, 30, Items.MANGANESE_ATOM),
     IRON(26, "Fe", 1.8, AtomType.TRANSITION_METAL, 2, 30, Items.IRON_ATOM), /*Valence electrons may not be correct */
     COPPER(29, "Cu", 1.9, AtomType.TRANSITION_METAL, 1, 34, Items.COPPER_ATOM), /*Valence electrons may not be correct */
@@ -46,7 +46,7 @@ public enum Atom {
     TIN(50, "Sn", 1.8, AtomType.POST_TRANSITION_METAL, 4, 70, Items.TIN_ATOM),
     IODINE(53, "I", 2.5, AtomType.NON_METAL, 7, 74, Items.IODINE_ATOM),
 
-    TUNGSTEN(74, "W", 2.36, AtomType.TRANSITION_METAL, 6, 110, Items.TUNGSTEN_ATOM),
+    TUNGSTEN(74, "W", 2.36, AtomType.TRANSITION_METAL, 2, 110, Items.TUNGSTEN_ATOM),
     GOLD(79, "Au", 2.4, AtomType.TRANSITION_METAL, 1, 118, Items.GOLD_ATOM), /*Valence electrons may not be correct */
     MERCURY(80, "Hg", 2, AtomType.TRANSITION_METAL, 2, 122, Items.MERCURY_ATOM), /*Valence electrons may not be correct */
     LEAD(82, "Pb", 1.8, AtomType.POST_TRANSITION_METAL, 4, 126, Items.LEAD_ATOM),
