@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.data;
 
+import be.uantwerpen.scicraft.Scicraft;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -31,13 +32,14 @@ public class LaserToolDataProvider implements DataProvider {
 		Path path = this.root.getOutput();
 		HashSet<Identifier> set = Sets.newHashSet();
 		LaserToolDataProvider.generate(provider -> {
+			// TODO check if block exist ingame and otherwhise try to expand the list
 			if (!set.add(provider.getId())) {
 				throw new IllegalStateException("Duplicate block " + provider.getId());
 			}
 			LaserToolDataProvider.saveMoleculeData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/blocks/" + provider.getId().getPath() + ".json"));
 		}, path);
 
-		// TODO write the set to lasertool_mineable.json
+		saveLasertoolMineable(writer, set);
 	}
 
 	private static void saveMoleculeData(DataWriter cache, JsonObject json, Path path) {
@@ -47,6 +49,19 @@ public class LaserToolDataProvider implements DataProvider {
 		catch (IOException string) {
 			LOGGER.error("Couldn't save molecule data {}", path, string);
 		}
+	}
+
+	private void saveLasertoolMineable(DataWriter cache, HashSet<Identifier> set) throws IOException {
+		Path path = this.root.getOutput();
+
+		JsonObject root = new JsonObject();
+		root.add("replace", new JsonPrimitive(false));
+		JsonArray values = new JsonArray();
+		for (Identifier id : set) {
+			values.add(new JsonPrimitive(new Identifier("minecraft", id.getPath()).toString()));
+		}
+		root.add("values", values);
+		DataProvider.writeToPath(cache, root, path.resolve("data/" + Scicraft.MOD_ID + "/tags/blocks/lasertool_mineable.json"));
 	}
 	
 	public static void generate(Consumer<MoleculeData> data, Path path) {
