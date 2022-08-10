@@ -15,13 +15,17 @@ import org.apache.logging.log4j.Logger;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class LaserToolDataProvider implements DataProvider {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	private final DataGenerator root;
+
+	public static HashMap<String, Map<String, Integer>> moleculeNames = new HashMap<>();
 	
 	public LaserToolDataProvider(DataGenerator root) {
 		this.root = root;
@@ -31,15 +35,26 @@ public class LaserToolDataProvider implements DataProvider {
 	public void run(DataWriter writer) throws IOException {
 		Path path = this.root.getOutput();
 		HashSet<Identifier> set = Sets.newHashSet();
-		LaserToolDataProvider.generate(provider -> {
+		LaserToolDataProvider.generateMinecraftBlocksData(provider -> {
 			// TODO check if block exist ingame and otherwhise try to expand the list
 			if (!set.add(provider.getId())) {
 				throw new IllegalStateException("Duplicate block " + provider.getId());
 			}
-			LaserToolDataProvider.saveMoleculeData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/blocks/" + provider.getId().getPath() + ".json"));
+			LaserToolDataProvider.saveMinecraftBlocksData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/blocks/" + provider.getId().getPath() + ".json"));
 		}, path);
 
+		LaserToolDataProvider.generateMoleculeData(provider -> LaserToolDataProvider.saveMoleculeData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/molecules/" + provider.getId().getPath() + ".json")));
+
 		saveLasertoolMineable(writer, set);
+	}
+
+	private static void saveMinecraftBlocksData(DataWriter cache, JsonObject json, Path path) {
+		try {
+			DataProvider.writeToPath(cache, json, path);
+		}
+		catch (IOException string) {
+			LOGGER.error("Couldn't save minecraft block data {}", path, string);
+		}
 	}
 
 	private static void saveMoleculeData(DataWriter cache, JsonObject json, Path path) {
@@ -64,11 +79,11 @@ public class LaserToolDataProvider implements DataProvider {
 		DataProvider.writeToPath(cache, root, path.resolve("data/" + Scicraft.MOD_ID + "/tags/blocks/lasertool_mineable.json"));
 	}
 	
-	public static void generate(Consumer<MoleculeData> data, Path path) {
+	public static void generateMinecraftBlocksData(Consumer<MinecraftBlocksData> data, Path input) {
 		try {
 			// Input JSON can't be in generated directory bc this one get reset everytime datagen runs
-			path = path.getParent();
-			JsonReader reader = new JsonReader(new FileReader(path.resolve("lasertool.json").toFile()));
+			input = input.getParent();
+			JsonReader reader = new JsonReader(new FileReader(input.resolve("lasertool.json").toFile()));
 			JsonArray json = GSON.fromJson(reader, JsonArray.class);
 
 			for (JsonElement jsonElement: json) {
@@ -79,7 +94,7 @@ public class LaserToolDataProvider implements DataProvider {
 					throw new IllegalStateException("Couldn't parse molecule in " + blocks.toString() + " molecule count and distribution does not match");
 				}
 				for (JsonElement element: blocks) {
-					generateMoleculeData(element.getAsString(), molecules, distribution, data);
+					data.accept(new MinecraftBlocksData(element.getAsString(), molecules, distribution));
 				}
 			}
 
@@ -88,13 +103,14 @@ public class LaserToolDataProvider implements DataProvider {
 		}
 	}
 
+	public static void generateMoleculeData(Consumer<MoleculeData> data) {
+		for (Map.Entry<String, Map<String, Integer>> entry : moleculeNames.entrySet()) {
+			data.accept(new MoleculeData(entry.getKey(), entry.getValue()));
+		}
+	}
+
 	@Override
 	public String getName() {
 		return "Molecules";
-	}
-	
-	public static void generateMoleculeData(String name, JsonArray molecules, JsonArray distribution, Consumer<MoleculeData> exporter) { //Quick and dirty method. Can and should be made better
-		MoleculeData data = new MoleculeData(name, molecules, distribution);
-		exporter.accept(data);
 	}
 }
