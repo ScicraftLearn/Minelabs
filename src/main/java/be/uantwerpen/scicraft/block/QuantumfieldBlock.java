@@ -16,7 +16,6 @@ import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Position;
 import net.minecraft.util.math.random.Random;
@@ -25,15 +24,17 @@ import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.state.StateManager;
 
+import java.util.Properties;
+
 public class QuantumfieldBlock extends Block {
     private static final java.util.Random r = new java.util.Random();
-    public static final IntProperty AGE = IntProperty.of("age",0,25);
+    public static final IntProperty AGE = IntProperty.of("age", 0, 25);
 
 
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
         // Change the first value in strength to get the wanted mining speed
-        super(FabricBlockSettings.of(Material.METAL).noCollision().strength(0.5f, 2.0f).ticksRandomly());
+        super(FabricBlockSettings.of(Material.METAL).strength(0.5f, 2.0f).ticksRandomly());
         this.setDefaultState(this.stateManager.getDefaultState().with(AGE, 0));
     }
 
@@ -45,7 +46,7 @@ public class QuantumfieldBlock extends Block {
         int max_age = 25;
 
 
-        if (age+decayrate >= max_age) {
+        if (age + decayrate >= max_age) {
             QuantumFieldSpawner.breakCluster(world, pos);
         } else {
             state = state.with(AGE, Math.min(max_age, age + decayrate));
@@ -67,10 +68,8 @@ public class QuantumfieldBlock extends Block {
     @Override
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
-        if (!world.isClient()){
+        if (!world.isClient()) {
             world.setBlockState(pos, state);
         }
     }
-
-
 }
