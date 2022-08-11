@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:large_salt_crystal"
+          "name": "scicraft:large_salt_crystal"
         }
       ],
       "conditions": [
