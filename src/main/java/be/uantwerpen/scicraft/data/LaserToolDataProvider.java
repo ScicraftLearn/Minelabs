@@ -21,8 +21,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 
-//TODO mining unmineable blocks like bedrock might be problematic, same for the liquids in the list
-
 public class LaserToolDataProvider implements DataProvider {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
