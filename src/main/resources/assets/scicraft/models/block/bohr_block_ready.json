@@ -2,8 +2,8 @@
   "ambientocclusion": false,
   "texture_size": [34, 34],
   "textures": {
-    "BP": "scicraft:block/bohrcrafting/bohr_block",
-    "particle": "scicraft:block/bohrcrafting/bohr_block"
+    "BP": "scicraft:block/bohrcrafting/bohr_block_ready",
+    "particle": "scicraft:block/bohrcrafting/bohr_block_ready"
   },
   "elements": [
     {

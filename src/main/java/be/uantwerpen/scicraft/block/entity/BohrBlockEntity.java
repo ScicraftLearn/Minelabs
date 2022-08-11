@@ -58,7 +58,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public long time = 0;
     public static final int maxTimerAmount = 30;
     public static final IntProperty TIMER = IntProperty.of("timer",0, maxTimerAmount);
-
+    public static final IntProperty STATUS = IntProperty.of("status",0, 2);
 
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9, ItemStack.EMPTY);
