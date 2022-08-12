@@ -2,6 +2,7 @@ package be.uantwerpen.scicraft.item;
 
 import be.uantwerpen.scicraft.util.Tags;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SnowyBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
@@ -28,7 +29,11 @@ public class LaserTool extends MiningToolItem {
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         // If block is not mineable by lasertool don't put it back into the world
         if (state.isIn(Tags.Blocks.LASERTOOL_MINEABLE) && random.nextFloat() < 0.95) {
-            world.setBlockState(pos, state);
+            if (state.contains(SnowyBlock.SNOWY)) {
+                world.setBlockState(pos, state.with(SnowyBlock.SNOWY, false));
+            } else {
+                world.setBlockState(pos, state);
+            }
         }
         return super.postMine(stack, world, state, pos, miner);
     }
