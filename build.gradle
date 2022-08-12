@@ -21,10 +21,6 @@ repositories {
 		name = "WTHIT"
 		url = "https://maven.bai.lol"
 	}
-	maven {
-		name = "CottonMC"
-		url = "https://server.bbkr.space/artifactory/libs-release"
-	}
 }
 
 dependencies {
@@ -40,9 +36,6 @@ dependencies {
 
 	// WTHIT mod (TODO: if it's only for development, do we need this here?)
 	modCompileOnly "mcp.mobius.waila:wthit-api:fabric-${project.wthit_version}"
-
-	// GUI Lib
-	modImplementation include("io.github.cottonmc:LibGui:${project.cotton_gui_version}")
 }
 
 processResources {
