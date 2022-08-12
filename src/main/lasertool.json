@@ -25,7 +25,7 @@
     "concrete", "concrete_powder"
 ],
 "expand_wood": [
-    "acacia", "birch", "dark_oak", "jungle", "oak", "spruce",
+    "acacia", "birch", "dark_oak", "jungle", "oak", "spruce", "mangrove",
     "crimson", "warped"
 ],
 "expand_leaves": [
@@ -55,7 +55,15 @@
     "molecules": ["SiO_2", "Al_2O_3","H_2O","O_2","leaves"],
     "distribution": ["38","22","25","25","20"]
 }, {
-    "blocks": ["acacia", "birch", "dark_oak", "jungle", "oak", "spruce"],
+    "blocks": ["mud"],
+    "molecules": ["dirt", "water"],
+    "distribution": ["75", "25"]
+}, {
+    "blocks": ["packed_mud", "mud_bricks", "mud_brick_slab", "mud_brick_stairs", "mud_brick_wall"],
+    "molecules": ["mud", "hay_block"],
+    "distribution": ["90", "10"]
+}, {
+    "blocks": ["acacia", "birch", "dark_oak", "jungle", "oak", "spruce", "mangrove"],
     "molecules": ["C","O","H"],
     "distribution": ["33","22","45"]
 }, {
@@ -90,6 +98,10 @@
     "blocks": ["leaves"],
     "molecules": ["C_6H_10O_5","H_2O"],
     "distribution": ["80","20"]
+},{
+    "blocks": ["hay_block"],
+    "molecules": ["C_6H_10O_5"],
+    "distribution": ["100"]
 },{
     "blocks": ["sponge"],
     "molecules": ["NHCH_2CO"],
@@ -322,6 +334,10 @@
     "blocks": ["cobbled_deepslate", "polished_deepslate", "deepslate_bricks", "deepslate_tiles", "deepslate", "chiseled_deepslate", "cracked_deepslate_tiles", "cracked_deepslate_bricks"],
     "molecules": ["quartz_block", "endstone"],
     "distribution": ["50","50"]
+},{
+    "blocks": ["reinforced_deepslate"],
+    "molecules": ["deepslate", "obsidian"],
+    "distribution": ["75", "25"]
 },{
     "blocks": ["copper_block", "cut_copper"],
     "molecules": ["Cu"],
