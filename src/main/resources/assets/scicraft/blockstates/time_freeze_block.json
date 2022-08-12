@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "scicraft:block/time_freeze_block" }
+  }
+}

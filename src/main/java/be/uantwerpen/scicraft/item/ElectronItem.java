@@ -23,9 +23,10 @@ public class ElectronItem extends BlockItem {
 
     /**
      * When ElectronItem is right-clicked, use up the item if necessary and spawn the entity
+     *
      * @param world minecraft world
-     * @param user player invoking the right click action
-     * @param hand the hand of the user
+     * @param user  player invoking the right click action
+     * @param hand  the hand of the user
      * @return TypedActionResult, indicates if the use of the item succeeded or not
      */
     @Override

@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 @Environment(EnvType.CLIENT)
 public class ChargedBlockEntityRenderer<T extends AnimatedChargedBlockEntity> implements BlockEntityRenderer<T> {
 	
-    private Context context;
+    private final Context context;
 
 	public ChargedBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
     	this.context = ctx;
@@ -36,8 +36,10 @@ public class ChargedBlockEntityRenderer<T extends AnimatedChargedBlockEntity> im
 				offset = time_fraction < 0.5 ? 2 * time_fraction * time_fraction : 2 * time_fraction * (-time_fraction + 2) - 1;
 			}
 		}
+		System.out.println(blockEntity.annihilation);
+		System.out.println(offset);
 		if (!(blockEntity.annihilation && offset ==.5)) {
-			matrices.translate(blockEntity.movement_direction.getX() * offset, blockEntity.movement_direction.getY() * offset, blockEntity.movement_direction.getZ() * offset);
+			matrices.translate(blockEntity.movement_direction.getVector().getX() * offset, blockEntity.movement_direction.getVector().getY() * offset, blockEntity.movement_direction.getVector().getZ() * offset);
 			BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
 			blockRenderManager.getModelRenderer().render(
 					world,

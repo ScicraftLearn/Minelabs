@@ -22,7 +22,7 @@ public class GreenFire extends FireBlock {
      *
      * @return boolean
      */
-    public static boolean isCopperBase(BlockState state){
+    public static boolean isCopperBase(BlockState state) {
         return state.isIn(Tags.Blocks.COPPER_BLOCKS);
     }
 
@@ -31,7 +31,7 @@ public class GreenFire extends FireBlock {
      *
      * @param state : current BlockState
      * @param world : world we are placing in
-     * @param pos : position we are placing at
+     * @param pos   : position we are placing at
      * @return boolean
      */
     @Override

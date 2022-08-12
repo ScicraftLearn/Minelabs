@@ -1,12 +1,17 @@
 package be.uantwerpen.scicraft.entity;
 
 import be.uantwerpen.scicraft.Scicraft;
+import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.block.entity.LewisBlockEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -16,6 +21,9 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
 
 import java.util.function.Predicate;
+
+//import static be.uantwerpen.scicraft.block.Blocks.LEWIS_BLOCK;
+
 
 public class Entities {
     // EntityTypes
@@ -32,7 +40,6 @@ public class Entities {
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
 
-
     /**
      * Register a single entity
      * <p>
@@ -46,19 +53,30 @@ public class Entities {
     }
 
     /**
+     * Register a single block entity
+     * <p>
+     *
+     * @param blockEntityType : BlockEntityType to register
+     * @param identifier      : String name of the entity
+     * @return registered BlockEntityType
+     */
+    private static <T extends BlockEntity> BlockEntityType<T> register(BlockEntityType<T> blockEntityType, String identifier) {
+        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Scicraft.MOD_ID, identifier), blockEntityType);
+    }
+
+    /**
      * Modify the Entity spawns
      * <p>
-     * @param entityType : EntityType to add Spawns for
-     * @param selector: Predicate BiomeSelection, what biome(s) the entity can spawn in
-     * @param spawnEntry: no documentation found
      *
-     * While testing set Selector to BiomeSelectors.all(), this will spawn you Entity in "The End"/"Nether" when entering
+     * @param entityType  : EntityType to add Spawns for
+     * @param selector:   Predicate BiomeSelection, what biome(s) the entity can spawn in
+     * @param spawnEntry: no documentation found
+     *                    <p>
+     *                    While testing set Selector to BiomeSelectors.all(), this will spawn you Entity in "The End"/"Nether" when entering
      */
     private static void registerEntitySpawns(EntityType<?> entityType, Predicate<BiomeSelectionContext> selector, SpawnSettings.SpawnEntry spawnEntry) {
         BiomeModifications.create(Registry.ENTITY_TYPE.getId(entityType))
-                .add(ModificationPhase.ADDITIONS, selector, context -> {
-                context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry);
-        });
+                .add(ModificationPhase.ADDITIONS, selector, context -> context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry));
     }
 
     /**

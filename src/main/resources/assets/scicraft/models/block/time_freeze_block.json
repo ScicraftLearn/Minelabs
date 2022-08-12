@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "scicraft:block/quantumfield/photon/vertical",
+    "up": "scicraft:block/quantumfield/photon/vertical",
+    "north": "scicraft:block/quantumfield/photon/horizontal",
+    "east": "scicraft:block/quantumfield/photon/horizontal",
+    "south": "scicraft:block/quantumfield/photon/horizontal",
+    "west": "scicraft:block/quantumfield/photon/horizontal",
+    "particle": "scicraft:block/quantumfield/photon/vertical"
+  }
+}

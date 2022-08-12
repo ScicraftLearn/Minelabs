@@ -1,0 +1,23 @@
+{
+  "type": "scicraft:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C"},
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "H2", "atom":  "H"},
+      {"key":  "H3", "atom":  "H"},
+      {"key":  "H4", "atom":  "H"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "C1", "bondOrder": 1},
+      {"from": "H2", "to": "C1", "bondOrder": 1},
+      {"from": "H3", "to": "C1", "bondOrder": 1},
+      {"from": "H4", "to": "C1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "scicraft:erlenmeyer_ch4"
+  },
+  "density": 8
+}
