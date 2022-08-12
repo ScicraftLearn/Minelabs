@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "scicraft:lasertool_iron",
+        "scicraft:lasertool_gold",
+        "scicraft:lasertool_diamond"
+    ]
+}

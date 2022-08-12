@@ -47,6 +47,8 @@ public class Tags {
 
     public static class Items {
 
+        public static final TagKey<Item> LASERTOOLS = createTag("lasertools");
+
         /**
          * Create an Item tag (tag is only used inside this mod)
          * Don't forget the json file (data/scicraft/tags/items)
@@ -55,7 +57,7 @@ public class Tags {
          * @return {@link TagKey}
          */
         private static TagKey<Item> createTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier("c", name));
+            return TagKey.of(Registry.ITEM_KEY, new Identifier(Scicraft.MOD_ID, name));
         }
 
         /**
@@ -80,7 +82,7 @@ public class Tags {
          * @return {@link TagKey}
          */
         private static TagKey<Fluid> createTag(String name) {
-            return TagKey.of(Registry.FLUID_KEY, new Identifier("c", name));
+            return TagKey.of(Registry.FLUID_KEY, new Identifier(Scicraft.MOD_ID, name));
         }
 
         /**
