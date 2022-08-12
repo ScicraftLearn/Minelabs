@@ -1,0 +1,64 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:group",
+              "children": [
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:molecules/fe_2_o_3",
+                  "weight": 99
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:lasertool/blocks/stone",
+                  "weight": 1
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:alternative",
+                  "terms": [
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_iron"
+                        ]
+                      }
+                    },
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_gold"
+                        ]
+                      }
+                    },
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_diamond"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "minecraft:loot_table",
+              "name": "minecraft:blocks/raw_iron_block"
+            }
+          ]
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:group",
+              "children": [
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:lasertool/blocks/quartz_block",
+                  "weight": 50
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "scicraft:lasertool/blocks/end_stone",
+                  "weight": 50
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:alternative",
+                  "terms": [
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_iron"
+                        ]
+                      }
+                    },
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_gold"
+                        ]
+                      }
+                    },
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "scicraft:lasertool_diamond"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "minecraft:loot_table",
+              "name": "minecraft:blocks/polished_deepslate"
+            }
+          ]
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

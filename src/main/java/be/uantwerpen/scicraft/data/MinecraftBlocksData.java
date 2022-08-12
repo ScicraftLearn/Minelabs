@@ -47,7 +47,7 @@ public class MinecraftBlocksData {
             }
             if(!Registry.BLOCK.get(new Identifier("minecraft", convertedMoleculeName)).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
                 jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "loot_table").toString()));
-                jsonObject.add("name", new JsonPrimitive(new Identifier(Scicraft.MOD_ID, "blocks/" + convertedMoleculeName).toString()));
+                jsonObject.add("name", new JsonPrimitive(new Identifier(Scicraft.MOD_ID, "lasertool/blocks/" + convertedMoleculeName).toString()));
             } else if(!Registry.ITEM.get(new Identifier("minecraft", convertedMoleculeName)).equals(Registry.ITEM.get(Registry.ITEM.getDefaultId()))) {
                 jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "item").toString()));
                 jsonObject.add("name", new JsonPrimitive(new Identifier("minecraft", convertedMoleculeName).toString()));

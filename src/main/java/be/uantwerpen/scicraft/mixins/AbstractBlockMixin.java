@@ -5,12 +5,11 @@ import be.uantwerpen.scicraft.util.Tags;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tag.TagKey;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,8 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.util.Objects;
 
 @Mixin(AbstractBlock.class)
 public abstract class AbstractBlockMixin {
@@ -31,9 +28,12 @@ public abstract class AbstractBlockMixin {
     @Inject(method = "getLootTableId()Lnet/minecraft/util/Identifier;", at = @At("TAIL"), cancellable = true)
     private void getLootTableId(CallbackInfoReturnable<Identifier> ci) {
         Identifier oldIdentifier = this.lootTableId;
-        if (Objects.equals(oldIdentifier.getNamespace(), "minecraft")) {
-            Identifier identifier = new Identifier(Scicraft.MOD_ID, oldIdentifier.getPath());
-            ci.setReturnValue(identifier);
+
+        String block = oldIdentifier.getPath().substring(oldIdentifier.getPath().lastIndexOf("/") + 1);
+        Identifier blockIdentifier = new Identifier(oldIdentifier.getNamespace(), block);
+
+        if (Registry.BLOCK.get(blockIdentifier).getDefaultState().isIn(Tags.Blocks.LASERTOOL_MINEABLE)) {
+            ci.setReturnValue(new Identifier(Scicraft.MOD_ID, "lasertool/" + oldIdentifier.getPath()));
         }
     }
 

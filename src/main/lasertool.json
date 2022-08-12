@@ -332,7 +332,7 @@
     "distribution": ["100"]
 },{
     "blocks": ["cobbled_deepslate", "polished_deepslate", "deepslate_bricks", "deepslate_tiles", "deepslate", "chiseled_deepslate", "cracked_deepslate_tiles", "cracked_deepslate_bricks"],
-    "molecules": ["quartz_block", "endstone"],
+    "molecules": ["quartz_block", "end_stone"],
     "distribution": ["50","50"]
 },{
     "blocks": ["reinforced_deepslate"],
@@ -428,14 +428,14 @@
     "distribution": ["95","5"]
 },{
     "blocks": ["waxed_exposed_cut_copper", "waxed_exposed_copper"],
-    "molecules": ["exposed_copper_block", "honeycomb_block"],
+    "molecules": ["exposed_copper", "honeycomb_block"],
     "distribution": ["95","5"]
 },{
     "blocks": ["waxed_weathered_cut_copper", "waxed_weathered_copper"],
-    "molecules": ["weathered_copper_block", "honeycomb_block"],
+    "molecules": ["weathered_copper", "honeycomb_block"],
     "distribution": ["95","5"]
 },{
     "blocks": ["waxed_oxidized_cut_copper", "waxed_oxidized_copper"],
-    "molecules": ["oxidized_copper_block", "honeycomb_block"],
+    "molecules": ["oxidized_copper", "honeycomb_block"],
     "distribution": ["95","5"]
 }]}

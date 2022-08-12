@@ -46,7 +46,7 @@ public class LaserToolDataProvider implements DataProvider {
 			if (!set.add(provider.getId())) {
 				throw new IllegalStateException("Duplicate block " + provider.getId());
 			}
-			LaserToolDataProvider.saveMinecraftBlocksData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/blocks/" + provider.getId().getPath() + ".json"));
+			LaserToolDataProvider.saveMinecraftBlocksData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/lasertool/blocks/" + provider.getId().getPath() + ".json"));
 		}, path);
 
 		LaserToolDataProvider.generateMoleculeData(provider -> LaserToolDataProvider.saveMoleculeData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/molecules/" + provider.getId().getPath() + ".json")));
