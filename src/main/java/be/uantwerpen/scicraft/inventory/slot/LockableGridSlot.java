@@ -23,8 +23,15 @@ public class LockableGridSlot extends Slot {
         if (stack == null || stack.getItem().equals(Items.AIR))
             this.setStack(stack);
         else if (stack.getItem() instanceof AtomItem atom) {
-            this.setStack(atom.getDefaultStack());
-            this.getStack().getOrCreateNbt().putBoolean("ScicraftItemInLCT", true);
+            switch (atom.getAtom().getType()) {
+                case POST_TRANSITION_METAL:
+                case NON_METAL:
+                case NOBLE_GAS:
+                    this.setStack(atom.getDefaultStack());
+                    this.getStack().getOrCreateNbt().putBoolean("ScicraftItemInLCT", true);
+                default:
+                    return false;
+            }
         }
         return false;
     }
