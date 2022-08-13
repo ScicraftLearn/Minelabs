@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SaltItem extends BlockItem {
+public class SaltItem extends BlockItem implements IFireReaction {
 
     private final int FIRE_COLOR;
 
@@ -25,7 +25,7 @@ public class SaltItem extends BlockItem {
         super.appendTooltip(stack, world, tooltip, context);
     }
 
-    public int getFirecolor() {
+    public int getFireColor() {
         return FIRE_COLOR;
     }
 }

@@ -2,7 +2,7 @@ package be.uantwerpen.scicraft.item;
 
 import net.minecraft.item.Item;
 
-public class FireReactionItem extends Item {
+public class FireReactionItem extends Item implements IFireReaction {
 
     private final int FIRE_COLOR;
 
@@ -25,7 +25,7 @@ public class FireReactionItem extends Item {
         FIRE_COLOR = fire_color;
     }
 
-    public int getFirecolor() {
+    public int getFireColor() {
         return FIRE_COLOR;
     }
 }

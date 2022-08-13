@@ -2,15 +2,16 @@
   "replace": false,
   "values": [
     "scicraft:salt",
-    "lithium_chloride_dust",
-    "strontium_chloride_dust",
-    "strontium_nitrate_dust",
-    "calcium_chloride_dust",
-    "sodium_carbonate_dust",
-    "borax_dust",
-    "copper_sulfate_dust",
-    "boric_acid_dust",
-    "copper_chloride_dust",
-    "potassium_chloride_dust"
+    "scicraft:lithium_chloride_dust",
+    "scicraft:strontium_chloride_dust",
+    "scicraft:strontium_nitrate_dust",
+    "scicraft:calcium_chloride_dust",
+    "scicraft:sodium_carbonate_dust",
+    "scicraft:borax_dust",
+    "scicraft:copper_sulfate_dust",
+    "scicraft:boric_acid_dust",
+    "scicraft:copper_chloride_dust",
+    "scicraft:potassium_chloride_dust",
+    "scicraft:magnesium_sulfate_dust"
   ]
 }

@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(CampfireBlock.class)
 public abstract class CampfireBlockMixin implements ICampfireBlock {
 
-
     private static IntProperty FIRE_COLOR = IntProperty.of("fire_color", 0, 10);
 
     @Override
