@@ -26,8 +26,6 @@ import java.util.function.Predicate;
 
 public class TimeFreezeBlock extends BlockWithEntity {
 
-    private final int freezeRadius = 4;
-
     public TimeFreezeBlock() {
         super(FabricBlockSettings.of(Material.GLASS).noCollision().strength(0.5f, 2.0f));
     }
@@ -67,7 +65,7 @@ public class TimeFreezeBlock extends BlockWithEntity {
 //        List<Entity> entitiesInRange_8_BLOCKS = getEntitiesInRange(pos, world, 8);
 //
 //        for(Entity entity : entitiesInRange_8_BLOCKS) {
-//            entity.setFrozenTicks(0);
+//            ALLOW MOVEMENT FOR ENTITIES AGAIN HERE
 //        }
 
         super.onBreak(world, pos, state, player);
@@ -102,7 +100,7 @@ public class TimeFreezeBlock extends BlockWithEntity {
 //            if(!(entity instanceof PlayerEntity) && (entity instanceof LivingEntity living)) {
 //                living.slowMovement(state, Vec3d.ZERO);
 //                living.setInvulnerable(true);
-//                //isPushable()
+//                //isPushable()  //perhaps make accessor mixin to make function setPushable(boolean)
 //                living.setBodyYaw(0);
 //                living.setHeadYaw(0);
 //                if((living instanceof MobEntity mob)) {
@@ -113,6 +111,14 @@ public class TimeFreezeBlock extends BlockWithEntity {
 //        }
     }
 
+    /**
+     * This function gets all entities in range  and can be used to stop movement for all the
+     * entities in the range of the Time Freeze Block
+     * @param pos: BlockPos of the Time Freeze Block
+     * @param world: current world
+     * @param r: radius in which u want the entities (a cube, not a sphere)
+     * @return list of entities
+     */
     public static List<Entity> getEntitiesInRange(BlockPos pos, World world, int r) {
         return world.getOtherEntities(
                 null, new Box(pos.getX()-r, pos.getY()-r, pos.getZ()-r, pos.getX()+r, pos.getY()+r, pos.getZ()+r), new Predicate<Entity>() {
