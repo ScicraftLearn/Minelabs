@@ -2,9 +2,9 @@ package be.uantwerpen.scicraft.item;
 
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.crafting.molecules.Atom;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.fluid.Fluids;
-import be.uantwerpen.scicraft.crafting.molecules.Atom;
 import be.uantwerpen.scicraft.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
@@ -17,7 +17,7 @@ public class Items {
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
     public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT), 4), "salt");
 
     public static final Item SALT_SHARD = register(new SaltShardItem(
             new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_shard");
@@ -45,6 +45,42 @@ public class Items {
 
     public static final Item BUDDING_SALT_BLOCK = register(new BlockItem(Blocks.BUDDING_SALT_BLOCK,
             new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "budding_salt_block");
+
+    public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 1), "lithium_chloride_dust");
+
+    public static final Item STRONTIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 2), "strontium_chloride_dust");
+
+    public static final Item STRONTIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 2), "strontium_nitrate_dust");
+
+    public static final Item CALCIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 3), "calcium_chloride_dust");
+
+    public static final Item SODIUM_CARBONATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 4), "sodium_carbonate_dust");
+
+    public static final Item BORAX_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 5), "borax_dust");
+
+    public static final Item COPPER_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 6), "copper_sulfate_dust");
+
+    public static final Item BORIC_ACID_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 6), "boric_acid_dust");
+
+    public static final Item COPPER_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 7), "copper_chloride_dust");
+
+    public static final Item POTASSIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 9), "potassium_chloride_dust");
+
+    public static final Item MAGNESIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT), 10), "magnesium_sulfate_dust");
+
+    public static final Item ASH_DUST = register(new Item(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.SCICRAFT)), "ash_dust");
 
     // Items > Atoms
     public static Item HYDROGEN_ATOM;

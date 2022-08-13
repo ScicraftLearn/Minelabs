@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "scicraft:strontium_chloride_dust"
+  },
+  "result": "scicraft:ash_dust",
+  "experience": 0.5,
+  "cookingtime": 600
+}

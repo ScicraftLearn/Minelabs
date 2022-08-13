@@ -46,6 +46,8 @@ public class Tags {
 
     public static class Items {
 
+        public static final TagKey<Item> FIRE_CHANGER = createTag("fire_changer");
+
         /**
          * Create an Item tag (tag is only used inside this mod)
          * Don't forget the json file (data/scicraft/tags/items)
