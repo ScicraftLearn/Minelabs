@@ -1,22 +1,32 @@
 package be.uantwerpen.scicraft.mixins;
 
+import be.uantwerpen.scicraft.block.entity.ICampfireBlockEntity;
 import be.uantwerpen.scicraft.item.IFireReaction;
 import be.uantwerpen.scicraft.util.Tags;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.text.Text;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CampfireBlockEntity.class)
-public abstract class CampfireBlockEntityMixin {
+public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity {
+
+    @Shadow
+    @Final
+    private DefaultedList<ItemStack> itemsBeingCooked;
 
     @Inject(method = "clientTick", at = @At("TAIL"))
     private static void injectClientTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
@@ -33,14 +43,24 @@ public abstract class CampfireBlockEntityMixin {
     public void injectAddItem(Entity user, ItemStack stack, int cookTime, CallbackInfoReturnable<Boolean> cir) {
         if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
             IFireReaction item = (IFireReaction) stack.getItem();
-            //user.sendMessage(Text.literal("fire color: " + item.getFireColor()));
+            user.sendMessage(Text.literal("fire color: " + item.getFireColor()));
             //Scicraft.LOGGER.info("fire color: " + item.getFireColor());
             //System.out.println("fire color: " + item.getFireColor());
             //TODO finish ??
-            //Blocks.CAMPFIRE.getDefaultState().getProperties();
-            //user.world.setBlockState(user.getBlockPos(), Blocks.CAMPFIRE.getDefaultState().with(Properties.AGE_1, item.getFireColor()), 3);
+            //Blocks.CAMPFIRE.getDefaultState().getProperties();t
+            user.world.setBlockState(user.getBlockPos(), Blocks.CAMPFIRE.getDefaultState()
+                    .with(IntProperty.of("fire_color", 0, 10), item.getFireColor()), 3);
             //user.world.emitGameEvent(GameEvent.BLOCK_CHANGE, user.getPos(), GameEvent.Emitter.of(user));
         }
+    }
+
+    public boolean hasFireChanger() {
+        for (ItemStack stack : this.itemsBeingCooked) {
+            if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
