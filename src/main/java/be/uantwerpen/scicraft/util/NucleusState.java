@@ -50,6 +50,6 @@ public class NucleusState {
     public int getUnstability() {return unstability;}
 
     public boolean isStable() {
-        return this.getMainDecayMode().equals("Stable");
+        return this.getMainDecayMode().equals("stable");
     }
 }

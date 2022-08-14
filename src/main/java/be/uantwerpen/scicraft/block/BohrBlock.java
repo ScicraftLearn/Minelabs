@@ -1,7 +1,10 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
+import be.uantwerpen.scicraft.crafting.molecules.Atom;
 import be.uantwerpen.scicraft.entity.SubatomicParticle;
+import be.uantwerpen.scicraft.item.AtomItem;
+import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.util.NucleusState;
@@ -41,6 +44,7 @@ import net.minecraft.world.TickPriority;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.function.Function;
 
 import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.STATUS;
@@ -48,7 +52,6 @@ import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.TIMER;
 
 
 public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
-
 
     public BohrBlock() {
         super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque());
@@ -164,6 +167,36 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 if (bohrBlockEntity.removeParticle(item) == ActionResult.SUCCESS) {
                     player.getStackInHand(hand).decrement(1);
                 }
+            } else if (item.getGroup() == ItemGroups.ATOMS) {
+
+                AtomItem atom = (AtomItem) item;
+                int protonAmount = ((AtomItem) item).getAtom().getAtomNumber();
+                int neutronAmount = 0;
+                for (Map.Entry<String, NucleusState> entry : NuclidesTable.getNuclidesTable().entrySet()) {
+                    String key = entry.getKey();
+                    int protons = Integer.parseInt(key.substring(0, key.indexOf(":")));
+                    if (protons == protonAmount) {
+
+                        if (entry.getValue().isStable()) {
+                            neutronAmount = Integer.parseInt(key.substring(key.indexOf(":")+1));
+                            break;
+                        }
+                    }
+                }
+                if (neutronAmount == 0) { // no stable (black) square
+
+                }
+
+                for (int p = 0; p < protonAmount; p++) {
+                    bohrBlockEntity.insertParticle(Items.PROTON);
+                    bohrBlockEntity.insertParticle(Items.ELECTRON);
+                }
+                for (int n = 0; n < neutronAmount; n++) {
+                    bohrBlockEntity.insertParticle(Items.NEUTRON);
+                }
+
+                player.getStackInHand(hand).decrement(1);
+
             } else if (stack.isEmpty()) {
 //                creating the atom
                 if (player.isSneaking()) {

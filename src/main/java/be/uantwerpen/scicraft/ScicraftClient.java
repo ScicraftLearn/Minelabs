@@ -20,6 +20,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -85,22 +86,29 @@ public class ScicraftClient implements ClientModInitializer {
 
         // Register rendering lewis crafting table inventory
         HandledScreens.register(ScreenHandlers.LEWIS_SCREEN_HANDLER, LewisScreen::new);
+
         ScreenEvents.BEFORE_INIT.register((a, screen, b, c) -> {
             if (screen instanceof LewisScreen)
                 ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
-        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.CHARGED_MOVE_STATE, (client, handler, buf, responseSender) -> {
-            BlockPos target = buf.readBlockPos();
-            String block_name = buf.readString();
-            boolean annihilation = buf.readBoolean();
-            client.execute(() -> {
-                if (client.world != null) {
-                    if (client.world.getBlockEntity(target) instanceof AnimatedChargedBlockEntity particle2) {
-                        particle2.render_state = particle2.string2BlockState(block_name);
-                        particle2.annihilation = annihilation;
-                    }
-                }
-            });
         });
+
+//        ScreenEvents.BEFORE_INIT.register((a, screen, b, c) -> {
+//            if (screen instanceof LewisScreen)
+//                ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
+//        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.CHARGED_MOVE_STATE, (client, handler, buf, responseSender) -> {
+//            BlockPos target = buf.readBlockPos();
+//            String block_name = buf.readString();
+//            boolean annihilation = buf.readBoolean();
+//            client.execute(() -> {
+//                if (client.world != null) {
+//                    if (client.world.getBlockEntity(target) instanceof AnimatedChargedBlockEntity particle2) {
+//                        particle2.render_state = particle2.string2BlockState(block_name);
+//                        particle2.annihilation = annihilation;
+//                    }
+//                }
+//            });
+//        }
+//        );
 
         //Register rendering ionic block inventory
         HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
@@ -141,5 +149,6 @@ public class ScicraftClient implements ClientModInitializer {
             return 0x7F7F7F;
         }, item);
     }
-        }
+
 }
+

@@ -86,7 +86,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		int lightAbove = WorldRenderer.getLightmapCoordinates(blockEntity.getWorld(), blockEntity.getPos().up());
 
 		// origin
-		matrices.translate(0.5f, 1.75f, 0.5f);
+		matrices.translate(1f, 1.75f, 1f);
 		matrices.scale(1.5f,1.5f,1.5f);
 
 		// for facing the player
@@ -292,13 +292,20 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				electronCounter = 0;
 			}
 
+			// evenly distribution of electrons around core
+			int	cur_e = electronCount;
+			for (int i = 1; i < currentShell; i++) {
+				cur_e -= calculateNrOfElectrons(i);
+			}
+			cur_e = Math.min(cur_e, currentNrOfElectrons);
+
 			// multiplier for how fast the electrons will spin around, the greater this value, the slower it will be.
 			float speedMultiplier = 40+20*(currentShell-1);
 			float radiusMultiplier = 0.1f*(currentShell-1); // multiplier for how much further each new shell is from the nucleus
 
 			float speed = (float)(2*Math.PI)/speedMultiplier; // how fast the electrons rotate
-			float radius = 0.4f+radiusMultiplier;
-			float angle = speed*(blockEntity.getWorld().getTime()+tickDelta) + (float)((2*Math.PI/currentNrOfElectrons)*(electronCounter));
+			float radius = 0.4f+radiusMultiplier; // distance from core, used to calculate the points
+			float angle = speed*(blockEntity.getWorld().getTime()+tickDelta) + (float)((2*Math.PI/(cur_e)))*(electronCounter);
 
 			float x = (float)Math.cos(angle)*radius;
 			float y = (float)Math.sin(angle)*radius;
@@ -306,6 +313,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 			if (currentShell != 1) {
 				float rotateAngle = (float)Math.PI/(2f*(currentShell-1));
+				if (currentShell > 5) {
+					rotateAngle = (float)Math.PI/(8f*(currentShell-1));
+				}
 
 				ArrayList<Float> new_y_z = rotateAroundXAxis(y, z, rotateAngle);
 				y = new_y_z.get(0);
@@ -321,6 +331,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			matrices.translate(-x, -y, -z);
 
 			electronCounter++;
+
 		}
 
 	}

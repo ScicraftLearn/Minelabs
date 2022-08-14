@@ -171,7 +171,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         while (items.get(slot).getCount() == 64 && items.get(slot).getItem() == item) {
             slot += 1;
             times_looped +=1;
-            if (times_looped == 4) return ActionResult.FAIL;
+            if (times_looped == 3) return ActionResult.FAIL;
         }
         assert items.get(slot).getCount() < 64;
 //            if the inventory is empty initialize the inventory with 0 items
