@@ -1,7 +1,6 @@
 package be.uantwerpen.scicraft.renderer;
 
 import be.uantwerpen.scicraft.block.Blocks;
-import be.uantwerpen.scicraft.block.entity.AnimatedChargedBlockEntity;
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 
 import be.uantwerpen.scicraft.util.NuclidesTable;
@@ -9,29 +8,20 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
-import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.TIMER;
-import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.maxTimerAmount;
+import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.*;
 import static be.uantwerpen.scicraft.util.NuclidesTable.calculateNrOfElectrons;
 
 
@@ -80,68 +70,70 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	@Override
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
+		if (blockEntity.isMaster() ) {
 
-		matrices.push();
+			matrices.push();
 
-		int lightAbove = WorldRenderer.getLightmapCoordinates(blockEntity.getWorld(), blockEntity.getPos().up());
+			int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
 
-		// origin
-		matrices.translate(1f, 1.75f, 1f);
-		matrices.scale(1.5f,1.5f,1.5f);
+			// origin
+			matrices.translate(1f, 1.75f, 1f);
+			matrices.scale(1.5f,1.5f,1.5f);
 
-		// for facing the player
-		PlayerEntity player = MinecraftClient.getInstance().player;
-		assert player != null;
-		Vec3f field = new Vec3f(
-				(float)player.getX()-blockEntity.getPos().getX(),
-				(float)player.getY()-blockEntity.getPos().getY(),
-				(float)player.getZ()-blockEntity.getPos().getZ()
-		);
-		if(field.equals(Vec3f.ZERO)) {
-			// default field should be north iso east.
-			// positive x is east, so we want to rotate -90 degrees along the y-axis.
-			matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
-		}else{
-			/*
-			 * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (field).
-			 * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the field.
-			 */
-			// By default, the arrow points in positive x (EAST)
-			Vec3f v = new Vec3f(1,0,0);
-
-			// Compute theta with cosine formula.
-			double theta = Math.acos(v.dot(field) / Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2)));
-
-			if(theta == 0 || theta == Math.PI) {
-				// When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
-				// Instead, we set in to one of the infinite valid normal vectors: positive Y.
-				v = Direction.UP.getUnitVector();
+			// for facing the player
+			PlayerEntity player = MinecraftClient.getInstance().player;
+			assert player != null;
+			Vec3f field = new Vec3f(
+					(float) player.getX() - blockEntity.getPos().getX(),
+					(float) player.getY() - blockEntity.getPos().getY(),
+					(float) player.getZ() - blockEntity.getPos().getZ()
+			);
+			if (field.equals(Vec3f.ZERO)) {
+				// default field should be north iso east.
+				// positive x is east, so we want to rotate -90 degrees along the y-axis.
+				matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
 			} else {
-				v.cross(field);
-				v.normalize();
+				/*
+				 * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (field).
+				 * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the field.
+				 */
+				// By default, the arrow points in positive x (EAST)
+				Vec3f v = new Vec3f(1, 0, 0);
+
+				// Compute theta with cosine formula.
+				double theta = Math.acos(v.dot(field) / Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2)));
+
+				if (theta == 0 || theta == Math.PI) {
+					// When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
+					// Instead, we set in to one of the infinite valid normal vectors: positive Y.
+					v = Direction.UP.getUnitVector();
+				} else {
+					v.cross(field);
+					v.normalize();
+				}
+				matrices.multiply(v.getRadialQuaternion((float) theta));
 			}
-			matrices.multiply(v.getRadialQuaternion((float)theta));
+			Vec3f y_rotation = new Vec3f(0, 1, 0);
+			matrices.multiply(y_rotation.getDegreesQuaternion(-90));
+
+
+			int protonCount = blockEntity.getProtonCount();
+			int neutronCount = blockEntity.getNeutronCount();
+			int electronCount = blockEntity.getElectronCount();
+
+			/**
+			 * rendering of the nucleus:
+			 */
+			makeNucleus(protonCount, neutronCount, electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity);
+
+			/**
+			 * rendering of the electrons:
+			 */
+			makeElectrons(electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity, tickDelta);
+
+
+			matrices.pop();
 		}
-		Vec3f y_rotation = new Vec3f(0, 1, 0);
-		matrices.multiply(y_rotation.getDegreesQuaternion(-90));
-
-
-		int protonCount = blockEntity.getProtonCount();
-		int neutronCount = blockEntity.getNeutronCount();
-		int electronCount = blockEntity.getElectronCount();
-
-		/**
-		 * rendering of the nucleus:
-		 */
-		makeNucleus(protonCount, neutronCount, electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity);
-
-		/**
-		 * rendering of the electrons:
-		 */
-		makeElectrons(electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity, tickDelta);
-
-
-		matrices.pop();
 
 	}
 

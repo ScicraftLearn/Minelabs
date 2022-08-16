@@ -31,8 +31,12 @@ public class AtomicFloor extends Block {
         QuantumFieldSpawner.tryToSpawnCloud(world, pos);
     }
 
-//    @Override
 //    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 //        return VoxelShapes.empty();
+//    }
+
+//    @Override
+//    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+//        return VoxelShapes.fullCube();
 //    }
 }

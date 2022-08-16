@@ -42,7 +42,7 @@ dependencies {
 	modCompileOnly "mcp.mobius.waila:wthit-api:fabric-${project.wthit_version}"
 
 	// GUI Lib
-	modImplementation include("io.github.cottonmc:LibGui:${project.cotton_gui_version}")
+//	modImplementation include("io.github.cottonmc:LibGui:${project.cotton_gui_version}")
 }
 
 processResources {
