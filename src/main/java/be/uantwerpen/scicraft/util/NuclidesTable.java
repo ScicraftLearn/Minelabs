@@ -421,7 +421,6 @@ public class NuclidesTable {
                 String atomName = "";
                 Item atomItem = null;
                 if (atom != null) {
-//                    atomName = atom.getItem().getName().toString();
                     atomName = atom.name();
                     atomItem = atom.getItem();
                 }

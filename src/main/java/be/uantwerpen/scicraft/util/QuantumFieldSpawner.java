@@ -31,9 +31,6 @@ public class QuantumFieldSpawner {
 
     }
 
-//    public static void spawnCloud(World world, BlockPos pos) {
-//        tryToSpawnCloud(world, pos, 1);
-//    }
     public static Boolean shouldSpawnCloud(float chance) {
         java.util.Random r = new java.util.Random();
         return r.nextFloat() <= chance;

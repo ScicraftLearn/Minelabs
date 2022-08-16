@@ -227,30 +227,17 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
         if (!world.isClient) {
-//            BlockState a = world.getBlockState(pos.south());
-//            BlockState b = world.getBlockState(pos.east());
-//            BlockState c = world.getBlockState(pos.south().east());
-//            boolean ba = a.isAir();
-//            boolean bb=b.isAir();
-//            boolean bc=c.isAir();
-
-//            if (world.getBlockState(pos.south()).isAir()&&world.getBlockState(pos.east()).isAir() && world.getBlockState(pos.south().east()).isAir()){
-
             world.setBlockState(pos.south(), state.with(PART, BohrPart.SOUTH), Block.NOTIFY_ALL);
             world.setBlockState(pos.east(), state.with(PART, BohrPart.EAST), Block.NOTIFY_ALL);
             world.setBlockState(pos.south().east(), state.with(PART, BohrPart.SOUTH_EAST), Block.NOTIFY_ALL);
             world.updateNeighbors(pos, Blocks.AIR);
-//                state.updateNeighbors(world, pos, Block.NOTIFY_ALL);
             world.createAndScheduleBlockTick(pos, this, 1);
-
-
         }
     }
 
     @Override
     @Nullable
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-//        Direction direction = ctx.getPlayerFacing();
         BlockPos blockPos = ctx.getBlockPos();
         BlockPos blockPos2 = blockPos.offset(Direction.SOUTH);
         BlockPos blockPos3 = blockPos.offset(Direction.EAST);
@@ -263,19 +250,5 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         }
         return getDefaultState();
     }
-
-
-    //    @Override
-//    @Nullable
-//    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-//        if (world.isClient()) {
-//            return BohrBlock::Tick;
-//        }
-//        return null;
-//    }
-//
-//    private static <T extends BlockEntity> void Tick(World world, BlockPos blockPos, BlockState blockState, T t) {
-//
-//    }
 }
 

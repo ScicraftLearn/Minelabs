@@ -95,23 +95,6 @@ public class ScicraftClient implements ClientModInitializer {
                 ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
         });
 
-//        ScreenEvents.BEFORE_INIT.register((a, screen, b, c) -> {
-//            if (screen instanceof LewisScreen)
-//                ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
-//        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.CHARGED_MOVE_STATE, (client, handler, buf, responseSender) -> {
-//            BlockPos target = buf.readBlockPos();
-//            String block_name = buf.readString();
-//            boolean annihilation = buf.readBoolean();
-//            client.execute(() -> {
-//                if (client.world != null) {
-//                    if (client.world.getBlockEntity(target) instanceof AnimatedChargedBlockEntity particle2) {
-//                        particle2.render_state = particle2.string2BlockState(block_name);
-//                        particle2.annihilation = annihilation;
-//                    }
-//                }
-//            });
-//        }
-//        );
 
         //Register rendering ionic block inventory
         HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
