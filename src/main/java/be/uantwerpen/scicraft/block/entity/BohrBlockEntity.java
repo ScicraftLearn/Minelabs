@@ -384,12 +384,16 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         if (List.of(Items.ANTI_PROTON, Items.ANTI_NEUTRON, Items.POSITRON).contains(item)) {
             if (item == Items.ANTI_PROTON) {
                 index = 0;
-            } else if (item == Items.ANTI_NEUTRON) {
+            }
+            else if (item == Items.ANTI_NEUTRON) {
                 index = 3;
             }
-            if (item == Items.POSITRON) {
+            else if (item == Items.POSITRON) {
                 index = 6;
-            } else return ActionResult.FAIL;
+            }
+            else {
+                return ActionResult.FAIL;
+            }
             for (int offset = 0; offset < 3; offset++) {
 
                 if (items.get(index).getCount() > 0 && item == items.get(index + offset).getItem()) {
