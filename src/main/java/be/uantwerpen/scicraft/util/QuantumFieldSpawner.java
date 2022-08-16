@@ -107,19 +107,16 @@ public class QuantumFieldSpawner {
 
 //      only replace air and not too close to other fields
         if (world.getBlockState(pos) == net.minecraft.block.Blocks.AIR.getDefaultState() && !checkFields(pos, world)) {
-//            world.setBlockState(pos, state);
             for (int i = 0; i < blocksToSpawn; i++) {
                 cloudx = r.nextInt(0,x_size) - x_size/2 + pos.getX();
                 cloudy = r.nextInt(0,y_size) + pos.getY();
                 cloudz = r.nextInt(0,z_size) - z_size/2 + pos.getZ();
                 if (!world.getBlockState(new BlockPos(cloudx, cloudy, cloudz)).getBlock().equals(Blocks.ATOM_FLOOR)&& cloudy > 5) {
-//                    world.setBlockBreakingInfo();
                     world.setBlockState(new BlockPos(cloudx, cloudy, cloudz), state.getBlock().getDefaultState());
 
                 }
             }
         }
-        //world.setBlockState(pos,state);
     }
 
     //Checking if there are no other clouds near
