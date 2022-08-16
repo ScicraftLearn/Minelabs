@@ -12,6 +12,9 @@ import be.uantwerpen.scicraft.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.scicraft.gui.lewis_gui.LewisScreen;
 import be.uantwerpen.scicraft.item.ItemModels;
 import be.uantwerpen.scicraft.item.Items;
+import be.uantwerpen.scicraft.network.IonicDataPacket;
+import be.uantwerpen.scicraft.network.LewisDataPacket;
+import be.uantwerpen.scicraft.network.NetworkingConstants;
 import be.uantwerpen.scicraft.renderer.ChargedBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ChargedPlaceholderBlockEntityRenderer;
 import be.uantwerpen.scicraft.renderer.ElectricFieldSensorRenderer;
@@ -141,6 +144,11 @@ public class ScicraftClient implements ClientModInitializer {
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 2);
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.scicraft.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
+
+        //Lewis Data Sync
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
+
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.IONICDATASYNC, (c, h, b, s) -> IonicDataPacket.receive(c.world, b, s));
     }
 
     public void registerErlenmeyer(Item item, int color, int index) {
