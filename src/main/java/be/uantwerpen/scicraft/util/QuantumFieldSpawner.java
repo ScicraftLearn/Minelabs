@@ -74,7 +74,7 @@ public class QuantumFieldSpawner {
         Block block = null;
 
         block = world.getBlockState(pos).getBlock();
-        world.setBlockState(pos, block.getDefaultState().with(QuantumfieldBlock.AGE,25), Block.NO_REDRAW);
+        world.setBlockState(pos, block.getDefaultState().with(QuantumfieldBlock.AGE,QuantumfieldBlock.max_age), Block.NO_REDRAW);
         world.removeBlock(pos, false);
 
         for (int x = -2; x < 3; x++) {
