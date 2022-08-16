@@ -4,6 +4,7 @@ import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.crafting.molecules.Atom;
 import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.item.Item;
+import net.minecraft.text.Text;
 
 import java.io.*;
 import java.net.URL;
@@ -400,14 +401,16 @@ public class NuclidesTable {
 
         String line = "";
         String splitBy = ",";
+        Set<String> decays = new HashSet<>();
         try {
             //parsing a CSV file into BufferedReader class constructor
 //            URL url = NuclidesTable.class.getResource("nndc_nudat_nuclidetable.csv");
 //            File myFile = new File("nndc_nudat_nuclidestable.csv");
 //            InputStream inputStream = NuclidesTable.class.getClassLoader().getResourceAsStream("../src/main/java/be/uantwerpen/scicraft/util/nndc_nudat_nuclidestable.csv");
 //            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            BufferedReader br = new BufferedReader(new FileReader("../src/main/resources/data/nuclidesTable/nndc_nudat_nuclidestable.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("../src/main/resources/data/nuclidesTable/nndc_nudat_data_export.csv"));
             int it = 0;
+
             while ((line = br.readLine()) != null) {
                 if (it == 0) {
                     it++; continue;
@@ -416,34 +419,39 @@ public class NuclidesTable {
                 String symbol = nuclideInfo[2].replaceAll("[0-9]", "");
                 Atom atom = Atom.getBySymbol(symbol);
                 String atomName = "";
+                Item atomItem = null;
                 if (atom != null) {
-                    atomName = atom.getItem().getName().toString();
+//                    atomName = atom.getItem().getName().toString();
+                    atomName = atom.name();
+                    atomItem = atom.getItem();
                 }
                 int z = Integer.parseInt(nuclideInfo[0]);
                 int n = Integer.parseInt(nuclideInfo[1]);
-                String stability = "stable";
+                String mainDecayMode = "stable";
                 if (nuclideInfo.length < 5) {
-                    stability = "stable";
+                    mainDecayMode = "stable";
                 }
                 else if (nuclideInfo.length < 6) {
-                    stability = nuclideInfo[4].toLowerCase();
+                    mainDecayMode = nuclideInfo[4].toLowerCase();
                 }
-
+                decays.add(mainDecayMode);
+                // a, b+, b-, sf, n, p (ec = b+)
+                // bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
                 try {
                     addNuclidesTableEntry(
                             z,
                             n,
                             atomName,
                             symbol,
-                            stability,
-                            atom.getItem(),
+                            mainDecayMode,
+                            atomItem,
                             1,
                             _nuclidesTable
                     );
                 }
                 catch (NumberFormatException e) {
 //                    e.printStackTrace();
-                    Scicraft.LOGGER.info("NumverFormatException");
+                    Scicraft.LOGGER.info("NumberFormatException");
                 }
                 catch (NullPointerException e) {
                     Scicraft.LOGGER.info("NullPointerException");

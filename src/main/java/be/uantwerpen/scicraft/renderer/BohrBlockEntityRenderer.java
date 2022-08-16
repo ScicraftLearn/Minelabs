@@ -154,7 +154,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		int nrOfprotonsLeft = protonCount;
 		int nrOfneutronsLeft = neutronCount;
 
-		int remaining = blockEntity.getCachedState().get(TIMER);
+//		int remaining = blockEntity.getCachedState().get(TIMER);
 
 		// controls the shaking
 		int shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount)/3;
@@ -192,7 +192,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				particlesCounter = 0; // gets increased with one at end of for loop.
 				scaleOffset += 0.75f;
 				dec_index += 12;
-//				matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(30));
 			}
 
 			float scaleFactor = 2.3f; // lower value => closer to core origin
@@ -208,14 +207,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 			if (dec_index > 12) {
 				float rotateXAngle = (float)Math.PI*(0.125f*(((float)dec_index/12)%4));
-//				float rotateYAngle = (float)Math.PI/(1.25f*scaleOffset);
-
 				ArrayList<Float> new_y_z = rotateAroundXAxis(offset_y, offset_z, rotateXAngle);
 				offset_y = new_y_z.get(0);
 				offset_z = new_y_z.get(1);
-//				ArrayList<Float> new_x_z = rotateAroundYAxis(offset_x, offset_z, rotateYAngle);
-//				offset_x = new_x_z.get(0);
-//				offset_z = new_x_z.get(1);
 			}
 
 			matrices.translate(offset_x, offset_y+shake, offset_z);
@@ -285,34 +279,12 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			}
 
 			// evenly distribution of electrons around core
-			int	cur_e = electronCount;
-			for (int i = 1; i < currentShell; i++) {
-				cur_e -= calculateNrOfElectrons(i);
-			}
-			cur_e = Math.min(cur_e, currentNrOfElectrons);
+			int electronsOnCurShell = calcPlaceableElectronsOnShell(electronCount, currentShell, currentNrOfElectrons);
 
-			// multiplier for how fast the electrons will spin around, the greater this value, the slower it will be.
-			float speedMultiplier = 40+20*(currentShell-1);
-			float radiusMultiplier = 0.1f*(currentShell-1); // multiplier for how much further each new shell is from the nucleus
-
-			float speed = (float)(2*Math.PI)/speedMultiplier; // how fast the electrons rotate
-			float radius = 0.4f+radiusMultiplier; // distance from core, used to calculate the points
-			float angle = speed*(blockEntity.getWorld().getTime()+tickDelta) + (float)((2*Math.PI/(cur_e)))*(electronCounter);
-
-			float x = (float)Math.cos(angle)*radius;
-			float y = (float)Math.sin(angle)*radius;
-			float z = (float)Math.sin(angle)*radius*Math.min(currentShell-1, 1); // 0 on first shell, z on every other shell.
-
-			if (currentShell != 1) {
-				float rotateAngle = (float)Math.PI/(2f*(currentShell-1));
-				if (currentShell > 5) {
-					rotateAngle = (float)Math.PI/(8f*(currentShell-1));
-				}
-
-				ArrayList<Float> new_y_z = rotateAroundXAxis(y, z, rotateAngle);
-				y = new_y_z.get(0);
-				z = new_y_z.get(1);
-			}
+			ArrayList<Float> point = calculatePoint(currentShell, blockEntity, tickDelta, electronsOnCurShell, electronCounter);
+			float x = point.get(0);
+			float y = point.get(1);
+			float z = point.get(2);
 
 			matrices.translate(x, y, z);
 			matrices.scale(0.1f, 0.1f, 0.1f);
@@ -323,8 +295,49 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			matrices.translate(-x, -y, -z);
 
 			electronCounter++;
-
 		}
+
+//		currentShell = 1;
+//		electronCounter = 0;
+//		for (int el = 0; el < electronCount; el++) {
+//
+//			int currentNrOfElectrons = calculateNrOfElectrons(currentShell);
+//			if (electronCounter == currentNrOfElectrons) {
+//				currentShell++;
+//				electronCounter = 0;
+//			}
+//
+//			for (int i = 0; i < 120; i++) {
+//				float speedMultiplier = 40+20*(currentShell-1);
+//				float radiusMultiplier = 0.1f*(currentShell-1); // multiplier for how much further each new shell is from the nucleus
+//
+//				float speed = (float)(2*Math.PI)/speedMultiplier; // how fast the electrons rotate
+//				float radius = 0.4f+radiusMultiplier; // distance from core, used to calculate the points
+//				float angle = (float)((2*Math.PI/(120)))*(i);
+//
+//				float x = (float)Math.cos(angle)*radius;
+//				float y = (float)Math.sin(angle)*radius;
+//				float z = (float)Math.sin(angle)*radius*Math.min(currentShell-1, 1); // 0 on first shell, z on every other shell.
+//
+//				if (currentShell != 1) {
+//					float rotateAngle = (float)Math.PI/(2f*(currentShell-1));
+//					if (currentShell > 5) {
+//						rotateAngle = (float)Math.PI/(8f*(currentShell-1));
+//					}
+//					ArrayList<Float> new_y_z = rotateAroundXAxis(y, z, rotateAngle);
+//					y = new_y_z.get(0);
+//					z = new_y_z.get(1);
+//				}
+//				matrices.translate(x, y, z);
+//				matrices.scale(0.02f, 0.02f, 0.02f);
+//				MinecraftClient.getInstance().getItemRenderer().renderItem(electron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+//				matrices.scale(50, 50, 50);
+//				matrices.translate(-x, -y, -z);
+//			}
+//
+//
+//			electronCounter++;
+//		}
 
 	}
 
@@ -356,7 +369,64 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		return new ArrayList<>(Arrays.asList(x, z));
 	}
 
+	/**
+	 * Calculates current total amount of electrons to be placed (outermost shell)
+	 *
+	 * @param electronCount : electron counter
+	 * @param currentShell : integer value for which shell we are on (starts with 1)
+	 * @param currentNrOfElectrons : amount of electrons on the current shell
+	 * @return :
+	 */
+	public int calcPlaceableElectronsOnShell(int electronCount, int currentShell, int currentNrOfElectrons) {
+		int	cur_e = electronCount;
+		for (int i = 1; i < currentShell; i++) {
+			cur_e -= calculateNrOfElectrons(i);
+		}
+		return Math.min(cur_e, currentNrOfElectrons);
+	}
+
+	/**
+	 * Calculates the x,y and z coordinate for the electron
+	 *
+	 * @param currentShell : integer value for which shell we are on (starts with 1)
+	 * @param blockEntity : blockEntity
+	 * @param tickDelta : tickDelta
+	 * @param electronsOnCurShell : amount of electrons on the current shell
+	 * @param electronCounter : electron counter
+	 * @return : array of three elements [x, y, z] for our point
+	 */
+	public ArrayList<Float> calculatePoint(int currentShell, T blockEntity, float tickDelta, int electronsOnCurShell, int electronCounter) {
+
+		// multiplier for how fast the electrons will spin around, the greater this value, the slower it will be.
+		float speedMultiplier = 40+20*(currentShell-1);
+		float radiusMultiplier = 0.1f*(currentShell-1); // multiplier for how much further each new shell is from the nucleus
+
+		float speed = (float)(2*Math.PI)/speedMultiplier; // how fast the electrons rotate
+		float radius = 0.4f+radiusMultiplier; // distance from core, used to calculate the points
+		float angle = speed*(blockEntity.getWorld().getTime()+tickDelta) + (float)((2*Math.PI/(electronsOnCurShell)))*(electronCounter);
+
+		float x = (float)Math.cos(angle)*radius;
+		float y = (float)Math.sin(angle)*radius;
+		float z = (float)Math.sin(angle)*radius*Math.min(currentShell-1, 1); // 0 on first shell, z on every other shell.
+
+		if (currentShell != 1) {
+			float rotateAngle = (float)Math.PI/(2f*(currentShell-1));
+			if (currentShell > 5) {
+				rotateAngle = (float)Math.PI/(8f*(currentShell-1));
+			}
+			ArrayList<Float> new_y_z = rotateAroundXAxis(y, z, rotateAngle);
+			y = new_y_z.get(0);
+			z = new_y_z.get(1);
+		}
+
+		return new ArrayList<>(Arrays.asList(x, y, z));
+	}
+
 	public void scatter(int protonCount, int neutronCount, int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity) {
+
+	}
+
+	public void implode() {
 
 	}
 
