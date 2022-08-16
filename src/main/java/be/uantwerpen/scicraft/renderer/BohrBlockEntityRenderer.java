@@ -37,7 +37,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	private static final ItemStack proton_stack = new ItemStack(Blocks.PROTON, 1);
 	private static final ItemStack neutron_stack = new ItemStack(Blocks.NEUTRON, 1);
-//	private static ItemStack electron_shell_stack = new ItemStack(Blocks.PROTON, 1); // drawing of the electron shells
 	private static final ItemStack electron_stack = new ItemStack(Blocks.ELECTRON, 1);
 
 	private static final List<Vec3f> icosahedron = new ArrayList<>(); // (icosahedron) figure for the nucleus
@@ -153,8 +152,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		// variables for placing the particles (they get decreased)
 		int nrOfprotonsLeft = protonCount;
 		int nrOfneutronsLeft = neutronCount;
-
-//		int remaining = blockEntity.getCachedState().get(TIMER);
 
 		// controls the shaking
 		int shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount)/3;
@@ -420,14 +417,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		}
 
 		return new ArrayList<>(Arrays.asList(x, y, z));
-	}
-
-	public void scatter(int protonCount, int neutronCount, int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity) {
-
-	}
-
-	public void implode() {
-
 	}
 
 }
