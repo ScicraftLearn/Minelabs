@@ -90,9 +90,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId < GRIDSIZE) {
                     lewis.resetRecipe();
-                    handler.onContentChanged(craftingGrid);
+                    handler.updateToClient();
                 }else{
-                    handler.onContentChanged(ioInventory);
+                    handler.updateToClient();
                 }
             }
 
