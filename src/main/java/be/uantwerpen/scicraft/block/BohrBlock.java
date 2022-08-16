@@ -59,8 +59,14 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         return state.get(PART) == BohrPart.BASE;
     }
 
+
+
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (world.getBlockEntity(getMasterPos(state, pos)) instanceof BohrBlockEntity bohrBlockEntity){
+            bohrBlockEntity.scatterParticles();
+        }
+        super.onBreak(world, pos, state, player);
 //        destroy the three other parts
         for (BlockPos blockPos : BohrBlockEntity.getBohrParts(state, pos, world)) {
             if (world.getBlockState(blockPos).getBlock() == this) {
@@ -68,7 +74,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 world.emitGameEvent(GameEvent.BLOCK_DESTROY, blockPos, GameEvent.Emitter.of(player, world.getBlockState(blockPos)));
             }
         }
-        super.onBreak(world, pos, state, player);
+        world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(player, world.getBlockState(pos)));
 
     }
 
