@@ -24,6 +24,6 @@ public class Paintings {
     }
 
     public static void registerPaintings() {
-        Scicraft.LOGGER.info("Registering Paintings");
+        Scicraft.LOGGER.info("registering paintings");
     }
 }

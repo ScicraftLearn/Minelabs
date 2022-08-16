@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:medium_salt_crystal"
+          "name": "scicraft:medium_salt_crystal"
         }
       ],
       "conditions": [
