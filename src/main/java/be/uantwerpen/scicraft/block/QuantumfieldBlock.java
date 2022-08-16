@@ -28,7 +28,8 @@ import java.util.Properties;
 
 public class QuantumfieldBlock extends Block {
     private static final java.util.Random r = new java.util.Random();
-    public static final IntProperty AGE = IntProperty.of("age", 0, 25);
+    public static final int max_age = 7;
+    public static final IntProperty AGE = IntProperty.of("age", 0, max_age);
 
 
     public QuantumfieldBlock() {
@@ -43,8 +44,6 @@ public class QuantumfieldBlock extends Block {
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         int age = state.get(AGE);
         int decayrate = 1;
-        int max_age = 25;
-
 
         if (age + decayrate >= max_age) {
             QuantumFieldSpawner.breakCluster(world, pos);
