@@ -145,10 +145,11 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         if (nuclideStateInfo != null) {
             atomName = nuclideStateInfo.getAtomName();
             symbol = nuclideStateInfo.getSymbol();
-            mainDecayMode = nuclideStateInfo.getMainDecayMode();
+//            mainDecayMode = nuclideStateInfo.getMainDecayMode();
 
             if (nuclideStateInfo.isStable()) {
                 color = GREEN_COLOR;
+                mainDecayMode = "Stable";
             }
         }
         String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + world.getBlockState(getPos()).get(TIMER);
