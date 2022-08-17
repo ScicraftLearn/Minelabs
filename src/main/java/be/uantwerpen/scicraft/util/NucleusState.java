@@ -19,6 +19,7 @@ public class NucleusState {
     private final int nrOfNeutrons;
 
     private final int unstability; // integer value for how far from the 'black line' (see nuclides table) the atom state is.
+    private final float halflife;
 
     /**
      * Constructor of the NucleusState. The amount of electrons (as a data member) is not needed.
@@ -31,7 +32,7 @@ public class NucleusState {
      * @param nrOfNeutrons : number of neutrons
      * @param unstability : integer value for how far from the 'black line' (see nuclides table) the atom state is
      */
-    public NucleusState(String mainDecayMode, String symbol, String atomName, Item atomItem, int nrOfProtons, int nrOfNeutrons, int unstability) {
+    public NucleusState(String mainDecayMode, String symbol, String atomName, Item atomItem, int nrOfProtons, int nrOfNeutrons, int unstability, float halflife) {
         this.mainDecayMode = mainDecayMode;
         this.symbol = symbol;
         this.atomName = atomName;
@@ -39,6 +40,7 @@ public class NucleusState {
         this.nrOfProtons = nrOfProtons;
         this.nrOfNeutrons = nrOfNeutrons;
         this.unstability = unstability;
+        this.halflife = halflife;
     }
 
     public String getMainDecayMode() {return mainDecayMode;}
@@ -48,6 +50,7 @@ public class NucleusState {
     public int getNrOfProtons() {return nrOfProtons;}
     public int getNrOfNeutrons() {return nrOfNeutrons;}
     public int getUnstability() {return unstability;}
+    public float getHalflife() {return halflife;}
 
     public boolean isStable() {
         return this.getMainDecayMode().equals("stable");

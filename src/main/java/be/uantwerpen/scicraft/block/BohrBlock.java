@@ -183,30 +183,46 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 AtomItem atom = (AtomItem) item;
                 int protonAmount = ((AtomItem) item).getAtom().getAtomNumber();
                 int neutronAmount = 0;
+                int tempNeutronAmount = 0;
+                float maxHalflife = 0;
                 for (Map.Entry<String, NucleusState> entry : NuclidesTable.getNuclidesTable().entrySet()) {
-                    String key = entry.getKey();
-                    int protons = Integer.parseInt(key.substring(0, key.indexOf(":")));
+                    NucleusState nucleusValue = entry.getValue();
+                    int protons = nucleusValue.getNrOfProtons();
                     if (protons == protonAmount) {
 
-                        if (entry.getValue().isStable()) {
-                            neutronAmount = Integer.parseInt(key.substring(key.indexOf(":") + 1));
+                        if (nucleusValue.isStable()) {
+                            neutronAmount = nucleusValue.getNrOfNeutrons();
                             break;
+                        }
+                        if (nucleusValue.getHalflife() > maxHalflife) {
+                            maxHalflife = nucleusValue.getHalflife();
+                            tempNeutronAmount = nucleusValue.getNrOfNeutrons();
                         }
                     }
                 }
                 if (neutronAmount == 0) { // no stable (black) square
-
+                    neutronAmount = tempNeutronAmount;
                 }
 
+                boolean isInserted = false;
                 for (int p = 0; p < protonAmount; p++) {
-                    bohrBlockEntity.insertParticle(Items.PROTON);
-                    bohrBlockEntity.insertParticle(Items.ELECTRON);
+                    if (bohrBlockEntity.insertParticle(Items.PROTON) == ActionResult.SUCCESS) {
+                        isInserted = true;
+                    }
+                    if (bohrBlockEntity.insertParticle(Items.ELECTRON) == ActionResult.SUCCESS) {
+                        isInserted = true;
+                    }
+
                 }
                 for (int n = 0; n < neutronAmount; n++) {
-                    bohrBlockEntity.insertParticle(Items.NEUTRON);
+                    if (bohrBlockEntity.insertParticle(Items.NEUTRON) == ActionResult.SUCCESS) {
+                        isInserted = true;
+                    }
                 }
 
-                player.getStackInHand(hand).decrement(1);
+                if (isInserted) {
+                    player.getStackInHand(hand).decrement(1);
+                }
 
             } else if (stack.isEmpty()) {
 //                creating the atom

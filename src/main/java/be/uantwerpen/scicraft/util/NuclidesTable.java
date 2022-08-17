@@ -61,11 +61,18 @@ public class NuclidesTable {
                 int z = Integer.parseInt(nuclideInfo[0]);
                 int n = Integer.parseInt(nuclideInfo[1]);
                 String mainDecayMode = "stable";
-                if (nuclideInfo.length < 5) {
+                String halflife = "";
+
+                if (nuclideInfo.length > 5) {
+                    halflife = nuclideInfo[4];
+                    mainDecayMode = nuclideInfo[5].toLowerCase();
+                }
+                else if (nuclideInfo.length > 4 && nuclideInfo[4].equals("STABLE")) {
                     mainDecayMode = "stable";
                 }
-                else if (nuclideInfo.length < 6) {
-                    mainDecayMode = nuclideInfo[4].toLowerCase();
+                float _halflife = 0f;
+                if (!halflife.isEmpty()) {
+                    _halflife = parseHalflife(halflife);
                 }
                 // a, b+, b-, sf, n, p (ec = b+)
                 // bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
@@ -78,7 +85,8 @@ public class NuclidesTable {
                             mainDecayMode,
                             atomItem,
                             1,
-                            _nuclidesTable
+                            _nuclidesTable,
+                            _halflife
                     );
                 }
                 catch (NumberFormatException e) {
@@ -108,9 +116,9 @@ public class NuclidesTable {
      * @param atomItem : minecraft atom item
      * @param unstability : integer value for how far from the black line we are on the nuclides table
      */
-    private static void addNuclidesTableEntry(int z, int n, String atomName, String symbol, String mainDecayMode, Item atomItem, int unstability, Map<String, NucleusState> nuclidestable) {
+    private static void addNuclidesTableEntry(int z, int n, String atomName, String symbol, String mainDecayMode, Item atomItem, int unstability, Map<String, NucleusState> nuclidestable, float halflife) {
         String compositeAtomKey = z + ":" + n;
-        NucleusState nucleus = new NucleusState(mainDecayMode, symbol, atomName, atomItem, z, n, unstability);
+        NucleusState nucleus = new NucleusState(mainDecayMode, symbol, atomName, atomItem, z, n, unstability, halflife);
         nuclidestable.put(compositeAtomKey, nucleus);
     }
 
@@ -189,6 +197,83 @@ public class NuclidesTable {
 
     public static Map<String, NucleusState> getNuclidesTable() {
         return nuclidesTable;
+    }
+
+    /**
+     * parses halflife number (we skip the number after the unit, not really sure what its meaning is)
+     *
+     * @param halflife
+     * @return
+     */
+    public static float parseHalflife(String halflife) {
+        String floatNumber = "";
+        String unit = "";
+        boolean isFirstNumber = false; // number before the unit
+        for (int c = 0; c < halflife.length(); c++) {
+            char _char = halflife.charAt(c);
+            if (Character.isDigit(_char) || (_char == '.')) {
+                floatNumber += _char;
+                isFirstNumber = true;
+            }
+            else if ((_char == 'E') && isFirstNumber) {
+                floatNumber += _char;
+            }
+            else if (Character.isLetter(_char) && isFirstNumber) {
+                unit += _char;
+            }
+            else if (Character.isWhitespace(_char)) {
+                if (!unit.isEmpty() && !(floatNumber.isEmpty())) {
+                    break;
+                }
+            }
+        }
+        return convertToSeconds(floatNumber, unit);
+    }
+
+    public static float convertToSeconds(String floatNumber, String unit) {
+
+        float multiplier = 1f;
+        switch (unit) {
+            case "ns":
+                multiplier = (float)Math.pow(10, -9);
+                break;
+            case "us":
+                multiplier = (float)Math.pow(10, -6);
+                break;
+            case "ms":
+                multiplier = (float)Math.pow(10, -3);
+                break;
+            case "s":
+                break;
+            case "h":
+                multiplier = 3600;
+                break;
+            case "d":
+                multiplier = 86400;
+                break;
+            case "m":
+                multiplier = 2629743.83f;
+                break;
+            case "y":
+                multiplier = 31556926;
+                break;
+            default:
+
+        }
+        float seconds = 0;
+        float power = 0;
+
+        int indexOfE = floatNumber.indexOf('E'); // you could also use NumberFormat (with the E)
+        if (indexOfE != -1) {
+            power = Float.parseFloat((floatNumber.substring(indexOfE + 1)));
+            seconds = Float.parseFloat((floatNumber.substring(0, indexOfE)));
+        }
+        else {
+            if (!floatNumber.isEmpty()) {
+                seconds = Float.parseFloat(floatNumber);
+            }
+        }
+        return seconds*(float)(Math.pow(10, power))*multiplier;
     }
 
 }
