@@ -5,7 +5,6 @@ import be.uantwerpen.scicraft.block.entity.BlockEntities;
 import be.uantwerpen.scicraft.fluid.Fluids;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
-import net.minecraft.block.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.MapColor;
@@ -16,6 +15,11 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
 
 public class Blocks {
+
+    //Atom portal to subatom dimension
+    public static final Block ATOM_PORTAL = register(new PortalBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1.5f)),"atom_portal");
+    //Atomic floor for atomic dimension
+    public static final Block ATOM_FLOOR = register(new AtomicFloor(),"atomic_floor");
 
     public static final Block SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
             .mapColor(MapColor.WHITE_GRAY).strength(3.0f, 3.0f).requiresTool(), UniformIntProvider.create(0, 3)), "salt_ore");
@@ -63,9 +67,13 @@ public class Blocks {
 
     public static final ChargedBlock PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PROTON_BLOCK_ENTITY), "proton");
+    public static final ChargedBlock ANTI_PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANTI_PROTON_BLOCK_ENTITY), "anti_proton");
 
     public static final Block NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutron");
+    public static final Block ANTI_NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "anti_neutron");
 
     public static final Block CHARGED_PLACEHOLDER = register(new ChargedPlaceholderBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque(), () -> BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY), "charged_placeholder");
@@ -98,6 +106,8 @@ public class Blocks {
     });
 
 
+    public static final Block BOHR_BLOCK = register(new BohrBlock(), "bohr_block");
+
     /**
      * Register a Block
      * <p>
@@ -118,6 +128,4 @@ public class Blocks {
     public static void registerBlocks() {
         Scicraft.LOGGER.info("registering blocks");
     }
-
-
 }

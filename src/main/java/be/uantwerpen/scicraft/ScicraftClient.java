@@ -2,7 +2,11 @@ package be.uantwerpen.scicraft;
 
 import be.uantwerpen.scicraft.block.Blocks;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
+import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.entity.Entities;
+import be.uantwerpen.scicraft.event.ModEvents;
+import be.uantwerpen.scicraft.network.NetworkingConstants;
+import be.uantwerpen.scicraft.renderer.BohrBlockEntityRenderer;
 import be.uantwerpen.scicraft.gui.ScreenHandlers;
 import be.uantwerpen.scicraft.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.scicraft.gui.lewis_gui.LewisScreen;
@@ -26,8 +30,14 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 
 
@@ -36,6 +46,11 @@ import net.minecraft.item.Item;
 public class ScicraftClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
+
+
+        ModEvents.registerEvents();
+
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR, RenderLayer.getTranslucent());
         //Register ItemModels
         ItemModels.registerModels();
 
@@ -61,8 +76,12 @@ public class ScicraftClient implements ClientModInitializer {
         // Register rendering for electron entity
         EntityRendererRegistry.register(Entities.ELECTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.ANTI_PROTON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.ANTI_NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+
+        BlockEntityRendererRegistry.register(BlockEntities.BOHR_BLOCK_ENTITY, BohrBlockEntityRenderer::new);
 
         BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
@@ -70,10 +89,12 @@ public class ScicraftClient implements ClientModInitializer {
 
         // Register rendering lewis crafting table inventory
         HandledScreens.register(ScreenHandlers.LEWIS_SCREEN_HANDLER, LewisScreen::new);
+
         ScreenEvents.BEFORE_INIT.register((a, screen, b, c) -> {
             if (screen instanceof LewisScreen)
                 ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
         });
+
 
         //Register rendering ionic block inventory
         HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
@@ -119,4 +140,6 @@ public class ScicraftClient implements ClientModInitializer {
             return 0x7F7F7F;
         }, item);
     }
+
 }
+

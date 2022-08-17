@@ -7,9 +7,10 @@
   },
   "mixins": [
     "CreeperEntityMixin",
+    "LivingEntityMixin",
     "ExplosionAccessor",
     "FireMixin",
-    "ThrownEntityMixin"
+    "ThrownEntityMixin",
   ],
   "client": []
 }

@@ -6,6 +6,7 @@ import be.uantwerpen.scicraft.crafting.CraftingRecipes;
 import be.uantwerpen.scicraft.entity.Entities;
 import be.uantwerpen.scicraft.entity.ScientificVillager;
 import be.uantwerpen.scicraft.gui.ScreenHandlers;
+import be.uantwerpen.scicraft.event.ModEvents;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.paintings.Paintings;
 import be.uantwerpen.scicraft.sound.SoundEvents;
@@ -13,6 +14,8 @@ import be.uantwerpen.scicraft.world.gen.OreGenerations;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.rmi.registry.Registry;
 
 
 public class Scicraft implements ModInitializer {
@@ -40,5 +43,6 @@ public class Scicraft implements ModInitializer {
 
         ScientificVillager.registerVillagers();
         ScientificVillager.registerTrades();
+        ModEvents.registerEvents();
     }
 }

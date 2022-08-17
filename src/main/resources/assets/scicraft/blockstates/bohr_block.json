@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "status=0": { "model": "scicraft:block/bohr_block" },
+    "status=1": { "model": "scicraft:block/bohr_block_ready" },
+    "status=2": { "model": "scicraft:block/bohr_block_unstable" }
+  }
+}

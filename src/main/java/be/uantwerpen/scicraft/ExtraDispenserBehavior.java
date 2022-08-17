@@ -3,6 +3,8 @@ package be.uantwerpen.scicraft;
 import be.uantwerpen.scicraft.entity.ElectronEntity;
 import be.uantwerpen.scicraft.entity.NeutronEntity;
 import be.uantwerpen.scicraft.entity.ProtonEntity;
+import be.uantwerpen.scicraft.entity.AntiProtonEntity;
+import be.uantwerpen.scicraft.entity.AntiNeutronEntity;
 import be.uantwerpen.scicraft.item.Items;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -54,6 +56,15 @@ public class ExtraDispenserBehavior {
             }
         });
 
+        DispenserBlock.registerBehavior(Items.ANTI_PROTON, new ProjectileDispenserBehavior() {
+            @Override
+            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                return Util.make(new AntiProtonEntity(world, position.getX(), position.getY(), position.getZ()), (AntiprotonEntity) -> {
+                    AntiprotonEntity.setItem(stack);
+                });
+            }
+        });
+
         /**
          * Register dispenser behavior for shooting out neutrons
          * Implements abstract class {@link ProjectileDispenserBehavior} to create the correct entity
@@ -65,6 +76,15 @@ public class ExtraDispenserBehavior {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                 return Util.make(new NeutronEntity(world, position.getX(), position.getY(), position.getZ()), (neutronEntity) -> neutronEntity.setItem(stack));
+            }
+        });
+
+        DispenserBlock.registerBehavior(Items.ANTI_NEUTRON, new ProjectileDispenserBehavior() {
+            @Override
+            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                return Util.make(new AntiNeutronEntity(world, position.getX(), position.getY(), position.getZ()), (antiNeutronEntity) -> {
+                    antiNeutronEntity.setItem(stack);
+                });
             }
         });
 
