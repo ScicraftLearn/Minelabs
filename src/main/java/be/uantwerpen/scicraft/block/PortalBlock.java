@@ -5,6 +5,7 @@ import be.uantwerpen.scicraft.item.ItemGroups;
 import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.util.QuantumFieldSpawner;
 import net.minecraft.block.*;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -18,7 +19,11 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Position;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.*;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.explosion.Explosion;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PortalBlock extends Block{
@@ -32,21 +37,36 @@ public class PortalBlock extends Block{
     public ActionResult onUse(BlockState state, World world, BlockPos pos,
                               PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient) {
+
             if (!player.isSneaking()) {
                 //Get world instance
                 MinecraftServer server = world.getServer();
+
+
                 if (server != null) {
-                    if (player instanceof ServerPlayerEntity) {
-                        ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                    if (player instanceof ServerPlayerEntity serverPlayer) {
                         //Only teleport if an atom is used to right-click
                         if (player.getStackInHand(hand).getItem().getGroup() == ItemGroups.ATOMS) {
+                            RegistryKey<World> playerRegistryKey = player.getWorld().getRegistryKey();
+                            RegistryKey<World> registryKey;
+                            if(!(ModDimensions.SUBATOM_KEY.equals(playerRegistryKey) || World.OVERWORLD.equals(playerRegistryKey))){
+                                world.removeBlock(pos, false);
+                                world.createExplosion(null, DamageSource.badRespawnPoint(), null, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, 5.0f, true, Explosion.DestructionType.DESTROY);
+
+                                return ActionResult.PASS;
+                            }
+
+
+
                             //Consume 1 atom and teleport the player
                             //useAtom(player);
+//                            serverPlayer.moveToWorld(serv);
                             teleportPlayer(world, server, serverPlayer, player);
+                            return ActionResult.SUCCESS;
                         } else {
                             System.out.println("geen atoom");
+                            return ActionResult.SUCCESS;
                         }
-                        return ActionResult.SUCCESS;
                     }
                 }
             }
@@ -92,4 +112,9 @@ public class PortalBlock extends Block{
 
         }
     }
+
+    public static boolean isPortalWorking(World world) {
+        return world.getDimension().bedWorks();
+    }
+
 }
