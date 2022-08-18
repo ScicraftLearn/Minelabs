@@ -1,4 +1,5 @@
 z,n,name,levelEnergy(MeV),halflife,decayModes
+0,0,Void,0.0,STABLE,
 0,1,Neutron,0.0,613.9 s 6,B- = 100.00,
 1,0,1H,0.0,STABLE,
 1,1,2H,0.0,STABLE,

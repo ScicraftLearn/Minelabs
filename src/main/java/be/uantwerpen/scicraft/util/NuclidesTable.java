@@ -13,10 +13,13 @@ import java.util.*;
 /**
  * The NucleusTable class handles everything related to the use of the real nucleus table.
  * It most importantly keeps the nuclidesTable map which contains all (stable/unstable) atoms.
+ *
+ * You can change the working of this by writing something new, however, if you wish to change certain things, here's a little guide:
+ *
  */
 public class NuclidesTable {
 
-    private static final LinkedHashMap<Float, Float> halflifeRanges = makeHalflifeRanges();
+    private static final LinkedHashMap<Float, Float> halflifeRanges = makeHalflifeRanges(); // map with key=halflife and value=multiplier
     private static final Map<String, NucleusState> nuclidesTable = readCSV(); // map with key=nrOfProtons:nrOfNeutrons and value=nucleus_state_object
     private static final Map<Integer, Integer> shells = new HashMap<>(); // map with key=amount_of_shells and value=amount_of_electrons (corresponding)
 
@@ -35,6 +38,11 @@ public class NuclidesTable {
 
     }
 
+    /**
+     * reads CSV file containing nuclides table data
+     *
+     * @return : own nuclides table map
+     */
     private static Map<String, NucleusState> readCSV() {
 
         Map<String, NucleusState> _nuclidesTable = new HashMap<>();
@@ -45,72 +53,20 @@ public class NuclidesTable {
             //parsing a CSV file into BufferedReader class constructor
             BufferedReader br = new BufferedReader(new FileReader("../src/main/resources/data/nuclidesTable/nndc_nudat_data_export.csv"));
             int it = 0;
-
             while ((line = br.readLine()) != null) {
-                if (it == 0) {
-                    it++; continue;
-                }
+                if (it == 0) {it++; continue;}
                 String[] nuclideInfo = line.split(splitBy); // use comma as separator (see .csv file)
-                String symbol = nuclideInfo[2].replaceAll("[0-9]", "");
-                Atom atom = Atom.getBySymbol(symbol);
-                String atomName = "";
-                Item atomItem = null;
-                if (atom != null) {
-                    atomName = atom.name();
-                    atomItem = atom.getItem();
-                }
-                int z = Integer.parseInt(nuclideInfo[0]);
-                int n = Integer.parseInt(nuclideInfo[1]);
-
-                String mainDecayMode = "stable";
-                String halflife = "";
-                if (nuclideInfo.length > 5) {
-                    halflife = nuclideInfo[4];
-                    mainDecayMode = nuclideInfo[5].toLowerCase();
-                }
-                else if (nuclideInfo.length > 4 && nuclideInfo[4].equals("STABLE")) {
-                    mainDecayMode = "stable";
-                }
-                float _halflife = 0f;
-                float unstability = 0;
-                if (!halflife.isEmpty()) {
-                    _halflife = parseHalflife(halflife);
-                    unstability = getHalflifeValue(_halflife);
-                }
-
-                // a, b+, b-, sf, n, p (ec = b+)
-                // bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
-                try {
-                    addNuclidesTableEntry(
-                            z,
-                            n,
-                            atomName,
-                            symbol,
-                            mainDecayMode,
-                            atomItem,
-                            unstability,
-                            _nuclidesTable,
-                            _halflife
-                    );
-                }
-                catch (NumberFormatException e) {
-//                    e.printStackTrace();
-                    Scicraft.LOGGER.info("NumberFormatException");
-                }
-                catch (NullPointerException e) {
-                    Scicraft.LOGGER.info("NullPointerException");
-                }
+                parseNuclideInfo(nuclideInfo, _nuclidesTable);
             }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
         return _nuclidesTable;
     }
 
     /**
-     * Add a nuclide to the nuclidesTable (map).
+     * Adds a nuclide (see NucleusState class) to the nuclidesTable (map).
      *
      * @param z : atom number
      * @param n : amount of neutrons
@@ -206,8 +162,8 @@ public class NuclidesTable {
     /**
      * parses halflife number (we skip the number after the unit, not really sure what its meaning is)
      *
-     * @param halflife
-     * @return
+     * @param halflife : string representation of the halflife (number)
+     * @return : halflife expressed in amount of seconds (float)
      */
     public static float parseHalflife(String halflife) {
         String floatNumber = "";
@@ -234,6 +190,13 @@ public class NuclidesTable {
         return convertToSeconds(floatNumber, unit);
     }
 
+    /**
+     * Used to convert a (string) float number with unit to (float) seconds
+     *
+     * @param floatNumber : string representation of float number
+     * @param unit : string representation of the unit corresponding to the float number
+     * @return : float number with unit converted to the corresponding amount of seconds.
+     */
     public static float convertToSeconds(String floatNumber, String unit) {
 
         float multiplier = 1f;
@@ -280,10 +243,16 @@ public class NuclidesTable {
         return seconds*(float)(Math.pow(10, power))*multiplier;
     }
 
+    /**
+     * returns the value associated with the given halflife ("seconds" parameter)
+     *
+     * @param seconds : float representation of the halflife
+     * @return : halflifeRanges entry value corresponding to the "seconds" key, this value can be used as a multiplier (see shaking)
+     */
     public static float getHalflifeValue(float seconds) {
         float halflifeValue = 0;
         for (Map.Entry<Float, Float> entry : halflifeRanges.entrySet()) {
-            if (seconds < entry.getKey()) {
+            if (seconds < entry.getKey()) { // halflifeRanges is a sorted map, so we can iterate starting from the lowest leftmost rangeborder
                 halflifeValue = entry.getValue();
             }
         }
@@ -293,7 +262,16 @@ public class NuclidesTable {
         return halflifeValue;
     }
 
+    /**
+     * Makes the map with the ranges for the halflife values. Each next entry in the map is the rightmost range.
+     *
+     * @return : map with ranges
+     */
     public static LinkedHashMap<Float, Float> makeHalflifeRanges() {
+
+        // ranges:
+        // [0sec - 1sec], ]1sec - 1uur], ]1uur - 1dag], ]1dag-1maand],
+        // ]1maand-1jaar],]1jaar - 10jaar], ]10jaar - 10000jaar], ]10000jaar-oneindig[
 
         LinkedHashMap<Float, Float> _halflifeRanges = new LinkedHashMap<>();
         _halflifeRanges.put(1f, 0.04f); // 1 second
@@ -304,6 +282,66 @@ public class NuclidesTable {
         _halflifeRanges.put(315569260f, 0.015f); // 10 years
         _halflifeRanges.put(315569260000f, 0.01f); // 10000 years
         return  _halflifeRanges;
+    }
+
+    /**
+     * parses the CSV line to make the nuclide.
+     *
+     * @param nuclideInfo : string array representation of the read line (already split) from the CSV file
+     * @param _nuclidesTable : map of the nuclides table, to which the nuclide is added.
+     */
+    public static void parseNuclideInfo(String[] nuclideInfo, Map<String, NucleusState> _nuclidesTable) {
+
+        String symbol = nuclideInfo[2].replaceAll("[0-9]", "");
+        Atom atom = Atom.getBySymbol(symbol);
+        String atomName = "";
+        Item atomItem = null;
+        if (atom != null) {
+            atomName = atom.name();
+            atomItem = atom.getItem();
+        }
+        int z = Integer.parseInt(nuclideInfo[0]);
+        int n = Integer.parseInt(nuclideInfo[1]);
+
+        String mainDecayMode = "stable";
+        String halflife = "";
+        if (nuclideInfo.length > 5) {
+            halflife = nuclideInfo[4];
+            mainDecayMode = nuclideInfo[5].toLowerCase();
+        }
+        else if (nuclideInfo.length > 4 && nuclideInfo[4].equals("STABLE")) {
+            mainDecayMode = "stable";
+        }
+        float _halflife = 0f;
+        float unstability = 0;
+        if (!halflife.isEmpty()) {
+            _halflife = parseHalflife(halflife);
+            unstability = getHalflifeValue(_halflife);
+        }
+
+        // a, b+, b-, sf, n, p (ec = b+)
+        // bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
+        try {
+            addNuclidesTableEntry(
+                    z,
+                    n,
+                    atomName,
+                    symbol,
+                    mainDecayMode,
+                    atomItem,
+                    unstability,
+                    _nuclidesTable,
+                    _halflife
+            );
+        }
+        catch (NumberFormatException e) {
+//                    e.printStackTrace();
+            Scicraft.LOGGER.info("NumberFormatException");
+        }
+        catch (NullPointerException e) {
+            Scicraft.LOGGER.info("NullPointerException");
+        }
+
     }
 
 }
