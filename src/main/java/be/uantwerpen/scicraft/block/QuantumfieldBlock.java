@@ -1,10 +1,9 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.block.entity.QuantumFieldBlockEntity;
 import be.uantwerpen.scicraft.util.QuantumFieldSpawner;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -12,13 +11,18 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
+import static be.uantwerpen.scicraft.block.entity.QuantumFieldBlockEntity.*;
 
-public class QuantumfieldBlock extends Block implements BlockEntityProvider {
+
+public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntityProvider {
     public static final BooleanProperty MASTER = BooleanProperty.of("is_master");
 
     public QuantumfieldBlock() {
