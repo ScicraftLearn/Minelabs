@@ -141,7 +141,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             int nrOfElectrons = bohrBlockEntity.getElectronCount();
             int remaining = state.get(TIMER);
             if (NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
-                remaining = 30;
+                remaining = 600; // max timer value
             } else {
                 remaining = Math.max(0, remaining - 1);
             }
@@ -168,19 +168,21 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         Item item = stack.getItem();
 
         if (blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
+            boolean isActionResultSuccessful = false;
             bohrBlockEntity = bohrBlockEntity.getMaster(world);
             if (bohrBlockEntity == null) return ActionResult.FAIL;
             if (item == Items.NEUTRON || item == Items.PROTON || item == Items.ELECTRON) {
                 if (bohrBlockEntity.insertParticle(item) == ActionResult.SUCCESS) {
                     player.getStackInHand(hand).decrement(1);
+                    isActionResultSuccessful = true;
                 }
             } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
                 if (bohrBlockEntity.removeParticle(item) == ActionResult.SUCCESS) {
                     player.getStackInHand(hand).decrement(1);
+                    isActionResultSuccessful = true;
                 }
             } else if (item.getGroup() == ItemGroups.ATOMS) {
 
-                AtomItem atom = (AtomItem) item;
                 int protonAmount = ((AtomItem) item).getAtom().getAtomNumber();
                 int neutronAmount = 0;
                 int tempNeutronAmount = 0;
@@ -222,6 +224,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
                 if (isInserted) {
                     player.getStackInHand(hand).decrement(1);
+                    isActionResultSuccessful = true;
                 }
 
             } else if (stack.isEmpty()) {
@@ -234,6 +237,27 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                     bohrBlockEntity.scatterParticles();
                 }
             }
+
+            if (isActionResultSuccessful) { // if we changed the amount of protons/neutrons/electrons
+
+                int nrOfProtons = bohrBlockEntity.getProtonCount();
+                int nrOfNeutrons = bohrBlockEntity.getNeutronCount();
+                NucleusState nucleus = NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons);
+                float halflife = 0f;
+                int remainingNew = 0;
+                if (nucleus != null) {
+                    halflife = nucleus.getHalflife();
+                    if (!nucleus.isStable()) {
+                        remainingNew = NuclidesTable.getHalflifeValues(halflife).get(1).intValue();
+                    }
+                    else {
+                        remainingNew = 600;
+                    }
+                }
+                state = state.with(TIMER, remainingNew);
+                world.setBlockState(pos, state);
+            }
+
 
         }
         return ActionResult.SUCCESS;

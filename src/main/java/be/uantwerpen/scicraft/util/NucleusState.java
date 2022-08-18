@@ -19,7 +19,7 @@ public class NucleusState {
     private final int nrOfNeutrons;
 
     private final float unstability; // integer value for how far from the 'black line' (see nuclides table) the atom state is.
-    private final float halflife;
+    private final float halflife; //halfwaardetijd
 
     /**
      * Constructor of the NucleusState. The amount of electrons (as a data member) is not needed.

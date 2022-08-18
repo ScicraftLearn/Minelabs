@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class NuclidesTable {
 
-    private static final LinkedHashMap<Float, Float> halflifeRanges = makeHalflifeRanges(); // map with key=halflife and value=multiplier
+    private static final LinkedHashMap<Float, ArrayList<Float>> halflifeRanges = makeHalflifeRanges(); // map with key=halflife and value=multiplier
     private static final Map<String, NucleusState> nuclidesTable = readCSV(); // map with key=nrOfProtons:nrOfNeutrons and value=nucleus_state_object
     private static final Map<Integer, Integer> shells = new HashMap<>(); // map with key=amount_of_shells and value=amount_of_electrons (corresponding)
 
@@ -159,6 +159,10 @@ public class NuclidesTable {
         return nuclidesTable;
     }
 
+    public static LinkedHashMap<Float, ArrayList<Float>> getHalflifeRanges() {
+        return halflifeRanges;
+    }
+
     /**
      * parses halflife number (we skip the number after the unit, not really sure what its meaning is)
      *
@@ -244,20 +248,23 @@ public class NuclidesTable {
     }
 
     /**
-     * returns the value associated with the given halflife ("seconds" parameter)
+     * returns the array value associated with the given halflife ("seconds" parameter)
      *
      * @param seconds : float representation of the halflife
-     * @return : halflifeRanges entry value corresponding to the "seconds" key, this value can be used as a multiplier (see shaking)
+     * @return : array (with shaking multiplier and timer value) value corresponding to the "seconds" key, this value can be used as a multiplier (see shaking)
      */
-    public static float getHalflifeValue(float seconds) {
-        float halflifeValue = 0;
-        for (Map.Entry<Float, Float> entry : halflifeRanges.entrySet()) {
+    public static ArrayList<Float> getHalflifeValues(float seconds) {
+        ArrayList<Float> halflifeValue = new ArrayList<>();
+        for (Map.Entry<Float, ArrayList<Float>> entry : halflifeRanges.entrySet()) {
             if (seconds < entry.getKey()) { // halflifeRanges is a sorted map, so we can iterate starting from the lowest leftmost rangeborder
-                halflifeValue = entry.getValue();
+                halflifeValue.add(entry.getValue().get(0));
+                halflifeValue.add(entry.getValue().get(1));
+                break;
             }
         }
-        if (halflifeValue == 0) {
-            halflifeValue = 0.005f;
+        if (halflifeValue.isEmpty()) {
+            halflifeValue.add(0.005f);
+            halflifeValue.add(600f);
         }
         return halflifeValue;
     }
@@ -267,20 +274,20 @@ public class NuclidesTable {
      *
      * @return : map with ranges
      */
-    public static LinkedHashMap<Float, Float> makeHalflifeRanges() {
+    public static LinkedHashMap<Float, ArrayList<Float>> makeHalflifeRanges() {
 
         // ranges:
         // [0sec - 1sec], ]1sec - 1uur], ]1uur - 1dag], ]1dag-1maand],
         // ]1maand-1jaar],]1jaar - 10jaar], ]10jaar - 10000jaar], ]10000jaar-oneindig[
 
-        LinkedHashMap<Float, Float> _halflifeRanges = new LinkedHashMap<>();
-        _halflifeRanges.put(1f, 0.04f); // 1 second
-        _halflifeRanges.put(3600f, 0.035f); // 1 hour
-        _halflifeRanges.put(86400f, 0.03f); // 1 day
-        _halflifeRanges.put(2629743.83f, 0.025f); // 1 month
-        _halflifeRanges.put(31556926f, 0.02f); // 1 year
-        _halflifeRanges.put(315569260f, 0.015f); // 10 years
-        _halflifeRanges.put(315569260000f, 0.01f); // 10000 years
+        LinkedHashMap<Float, ArrayList<Float>> _halflifeRanges = new LinkedHashMap<>();
+        _halflifeRanges.put(1f, new ArrayList<>(Arrays.asList(0.04f, 5f))); // 1 second
+        _halflifeRanges.put(3600f, new ArrayList<>(Arrays.asList(0.035f, 10f))); // 1 hour
+        _halflifeRanges.put(86400f, new ArrayList<>(Arrays.asList(0.03f, 20f))); // 1 day
+        _halflifeRanges.put(2629743.83f, new ArrayList<>(Arrays.asList(0.025f, 40f))); // 1 month
+        _halflifeRanges.put(31556926f, new ArrayList<>(Arrays.asList(0.02f, 60f))); // 1 year
+        _halflifeRanges.put(315569260f, new ArrayList<>(Arrays.asList(0.015f, 120f))); // 10 years
+        _halflifeRanges.put(315569260000f, new ArrayList<>(Arrays.asList(0.01f, 300f))); // 10000 years
         return  _halflifeRanges;
     }
 
@@ -316,7 +323,7 @@ public class NuclidesTable {
         float unstability = 0;
         if (!halflife.isEmpty()) {
             _halflife = parseHalflife(halflife);
-            unstability = getHalflifeValue(_halflife);
+            unstability = getHalflifeValues(_halflife).get(0);
         }
 
         // a, b+, b-, sf, n, p (ec = b+)
