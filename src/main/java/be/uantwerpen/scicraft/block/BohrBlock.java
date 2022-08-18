@@ -249,13 +249,14 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                     halflife = nucleus.getHalflife();
                     if (!nucleus.isStable()) {
                         remainingNew = NuclidesTable.getHalflifeValues(halflife).get(1).intValue();
+                        state = state.with(TIMER, remainingNew);
+                        world.setBlockState(pos, state);
                     }
                     else {
                         remainingNew = 600;
                     }
                 }
-                state = state.with(TIMER, remainingNew);
-                world.setBlockState(pos, state);
+
             }
 
 
