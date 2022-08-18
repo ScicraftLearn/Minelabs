@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.block.entity;
 
+import be.uantwerpen.scicraft.block.BohrBlock;
 import be.uantwerpen.scicraft.block.BohrPart;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
 import be.uantwerpen.scicraft.item.Items;
@@ -192,7 +193,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      */
     @Nullable
     public BohrBlockEntity getMaster(World world) {
-        if (this.getCachedState().get(PART) != BohrPart.BASE) {
+        if (this.getCachedState().getBlock() instanceof BohrBlock && this.getCachedState().get(PART) != BohrPart.BASE) {
             BlockPos blockPos = getMasterPos(this.getCachedState(), pos);
             BlockEntity blockEntity = world.getBlockEntity(blockPos);
             BohrPart bohrPart = world.getBlockState(blockPos).get(PART);
