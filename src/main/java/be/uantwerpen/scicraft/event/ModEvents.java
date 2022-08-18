@@ -49,7 +49,7 @@ public class ModEvents {
         });
         //Spawn portal on dimension load instead? done
         ServerWorldEvents.LOAD.register(((server, world) -> {
-            if (world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
+            if (!world.isClient() && world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
             {
                 int x, y;
                 System.out.println("geladen?");

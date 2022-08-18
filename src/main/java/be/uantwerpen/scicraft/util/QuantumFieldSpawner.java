@@ -4,8 +4,12 @@ import be.uantwerpen.scicraft.block.AtomicFloor;
 import be.uantwerpen.scicraft.block.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import static be.uantwerpen.scicraft.block.QuantumfieldBlock.MASTER;
@@ -111,7 +115,7 @@ public class QuantumFieldSpawner {
          * Elipse:   x^2/a^2 + y^2/b^2 + z^2/c^2 = 1
          * (a,0,0); (0,b,0),(0,0,c)
          */
-        if (world.getBlockState(pos).isAir() && !checkFields(pos, world, x_size, y_size, z_size)) {
+        if (!checkFields(pos, world, x_size, y_size, z_size)) {
             world.setBlockState(pos, state.getBlock().getDefaultState().with(MASTER, true));
             for (int x = -x_size / 2; x <= x_size / 2; x++) {
 //                x_sub = x^2/a^2
@@ -139,13 +143,24 @@ public class QuantumFieldSpawner {
     //Checking if there are no other clouds near
     private static Boolean checkFields(BlockPos pos, World world, int x_size, int y_size, int z_size) {
         int blocks_between = 5;
-        pos = pos.south(x_size / 2 + blocks_between).west(z_size / 2 + blocks_between).down(y_size / 2 + blocks_between);
+        BlockPos pos1 = pos.subtract(new Vec3i(x_size / 2 + blocks_between,z_size / 2 + blocks_between,y_size / 2 + blocks_between));
+        BlockPos pos2 = pos.add(new Vec3i(x_size / 2 + blocks_between,z_size / 2 + blocks_between,y_size / 2 + blocks_between));
         BlockState tempState;
+        Box cloudbox = new Box(pos,pos2);
+        if (world instanceof ServerWorld serverWorld){
+            for (ServerPlayerEntity serverPlayerEntity : serverWorld.getPlayers()){
+                if (cloudbox.contains(serverPlayerEntity.getPos())){
+                    return true;
+                }
+            }
 
-        for (int k = 0; k < x_size + blocks_between; k++) {
-            for (int i = 0; i < x_size + blocks_between; i++) {
-                for (int j = 0; j < x_size + blocks_between; j++) {
-                    tempState = world.getBlockState(new BlockPos(i, pos.getY(), j));
+        }
+
+        for (int x = pos1.getX(); x <= pos2.getX(); x++) {
+
+            for (int y = pos1.getY(); y <= pos2.getY(); y++) {
+                for (int z = pos1.getZ(); z <= pos2.getZ() ; z++) {
+                    tempState = world.getBlockState(new BlockPos(x, y, z));
                     if (!(tempState.isAir() || tempState.getBlock().equals(Blocks.ATOM_FLOOR))) {
                         return true;
                     }
