@@ -18,7 +18,7 @@ public class NucleusState {
     private final int nrOfProtons;
     private final int nrOfNeutrons;
 
-    private final int unstability; // integer value for how far from the 'black line' (see nuclides table) the atom state is.
+    private final float unstability; // integer value for how far from the 'black line' (see nuclides table) the atom state is.
     private final float halflife;
 
     /**
@@ -32,7 +32,7 @@ public class NucleusState {
      * @param nrOfNeutrons : number of neutrons
      * @param unstability : integer value for how far from the 'black line' (see nuclides table) the atom state is
      */
-    public NucleusState(String mainDecayMode, String symbol, String atomName, Item atomItem, int nrOfProtons, int nrOfNeutrons, int unstability, float halflife) {
+    public NucleusState(String mainDecayMode, String symbol, String atomName, Item atomItem, int nrOfProtons, int nrOfNeutrons, float unstability, float halflife) {
         this.mainDecayMode = mainDecayMode;
         this.symbol = symbol;
         this.atomName = atomName;
@@ -49,7 +49,7 @@ public class NucleusState {
     public Item getAtomItem() {return atomItem;}
     public int getNrOfProtons() {return nrOfProtons;}
     public int getNrOfNeutrons() {return nrOfNeutrons;}
-    public int getUnstability() {return unstability;}
+    public float getUnstability() {return unstability;}
     public float getHalflife() {return halflife;}
 
     public boolean isStable() {

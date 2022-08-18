@@ -16,10 +16,11 @@ import java.util.*;
  */
 public class NuclidesTable {
 
+    private static final LinkedHashMap<Float, Float> halflifeRanges = makeHalflifeRanges();
     private static final Map<String, NucleusState> nuclidesTable = readCSV(); // map with key=nrOfProtons:nrOfNeutrons and value=nucleus_state_object
     private static final Map<Integer, Integer> shells = new HashMap<>(); // map with key=amount_of_shells and value=amount_of_electrons (corresponding)
 
-    static { // see https://www-nds.iaea.org/relnsd/vcharthtml/VChartHTML.html for the nuclides table
+    static { // see https://www.nndc.bnl.gov/nudat3/ for the nuclides table
 
         // define electron shells map
         shells.put(1, 2);
@@ -60,9 +61,9 @@ public class NuclidesTable {
                 }
                 int z = Integer.parseInt(nuclideInfo[0]);
                 int n = Integer.parseInt(nuclideInfo[1]);
+
                 String mainDecayMode = "stable";
                 String halflife = "";
-
                 if (nuclideInfo.length > 5) {
                     halflife = nuclideInfo[4];
                     mainDecayMode = nuclideInfo[5].toLowerCase();
@@ -71,9 +72,12 @@ public class NuclidesTable {
                     mainDecayMode = "stable";
                 }
                 float _halflife = 0f;
+                float unstability = 0;
                 if (!halflife.isEmpty()) {
                     _halflife = parseHalflife(halflife);
+                    unstability = getHalflifeValue(_halflife);
                 }
+
                 // a, b+, b-, sf, n, p (ec = b+)
                 // bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
                 try {
@@ -84,7 +88,7 @@ public class NuclidesTable {
                             symbol,
                             mainDecayMode,
                             atomItem,
-                            1,
+                            unstability,
                             _nuclidesTable,
                             _halflife
                     );
@@ -116,7 +120,7 @@ public class NuclidesTable {
      * @param atomItem : minecraft atom item
      * @param unstability : integer value for how far from the black line we are on the nuclides table
      */
-    private static void addNuclidesTableEntry(int z, int n, String atomName, String symbol, String mainDecayMode, Item atomItem, int unstability, Map<String, NucleusState> nuclidestable, float halflife) {
+    private static void addNuclidesTableEntry(int z, int n, String atomName, String symbol, String mainDecayMode, Item atomItem, float unstability, Map<String, NucleusState> nuclidestable, float halflife) {
         String compositeAtomKey = z + ":" + n;
         NucleusState nucleus = new NucleusState(mainDecayMode, symbol, atomName, atomItem, z, n, unstability, halflife);
         nuclidestable.put(compositeAtomKey, nucleus);
@@ -187,7 +191,7 @@ public class NuclidesTable {
      * @param nrOfElectrons : amount of electrons
      * @return : positive integer (0 included (=stable)) representing how far from the black line (nuclides table) the atom is.
      */
-    public static int getStabilityDeviation(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons){
+    public static float getStabilityDeviation(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons){
         NucleusState nucleusState = getNuclide(nrOfProtons,nrOfNeutrons);
         if (nucleusState != null) {
             return nucleusState.getUnstability();
@@ -274,6 +278,32 @@ public class NuclidesTable {
             }
         }
         return seconds*(float)(Math.pow(10, power))*multiplier;
+    }
+
+    public static float getHalflifeValue(float seconds) {
+        float halflifeValue = 0;
+        for (Map.Entry<Float, Float> entry : halflifeRanges.entrySet()) {
+            if (seconds < entry.getKey()) {
+                halflifeValue = entry.getValue();
+            }
+        }
+        if (halflifeValue == 0) {
+            halflifeValue = 0.005f;
+        }
+        return halflifeValue;
+    }
+
+    public static LinkedHashMap<Float, Float> makeHalflifeRanges() {
+
+        LinkedHashMap<Float, Float> _halflifeRanges = new LinkedHashMap<>();
+        _halflifeRanges.put(1f, 0.04f); // 1 second
+        _halflifeRanges.put(3600f, 0.035f); // 1 hour
+        _halflifeRanges.put(86400f, 0.03f); // 1 day
+        _halflifeRanges.put(2629743.83f, 0.025f); // 1 month
+        _halflifeRanges.put(31556926f, 0.02f); // 1 year
+        _halflifeRanges.put(315569260f, 0.015f); // 10 years
+        _halflifeRanges.put(315569260000f, 0.01f); // 10000 years
+        return  _halflifeRanges;
     }
 
 }
