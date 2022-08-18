@@ -10,11 +10,16 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public class AtomicFloor extends Block {
-//    private static QuantumFieldSpawner generator;
+    public final static int AtomicFloorLayer = 64;
 
     public AtomicFloor() {
         super(Settings.of(Material.AMETHYST).hardness(200f).strength(200f).nonOpaque().ticksRandomly());
 
+    }
+
+    @Override
+    public VoxelShape getCameraCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return VoxelShapes.empty();
     }
 
     @Override
@@ -31,10 +36,13 @@ public class AtomicFloor extends Block {
         QuantumFieldSpawner.tryToSpawnCloud(world, pos);
     }
 
+
+//todo possible needed to remove outlines
 //    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 //        return VoxelShapes.empty();
 //    }
 
+//todo possible needed to remove outlines
 //    @Override
 //    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 //        return VoxelShapes.fullCube();

@@ -29,6 +29,12 @@ public class BlockEntities {
 
     public static BlockEntityType<BohrBlockEntity> BOHR_BLOCK_ENTITY;
 
+    public static final BlockEntityType<QuantumFieldBlockEntity> QUANTUM_FIELD_BLOCK_ENTITY = Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            new Identifier(Scicraft.MOD_ID, "quantum_field_entity"),
+            FabricBlockEntityTypeBuilder.create(QuantumFieldBlockEntity::new, Blocks.ELECTRON_QUANTUMFIELD,Blocks.GLUON_QUANTUMFIELD,Blocks.NEUTRINO_QUANTUMFIELD, Blocks.DOWNQUARK_QUANTUMFIELD, Blocks.PHOTON_QUANTUMFIELD,Blocks.WEAK_BOSON_QUANTUMFIELD,Blocks.UPQUARK_QUANTUMFIELD).build()
+    );
+
     static {
         PION_MINUS_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_MINUS_BLOCK_ENTITY, p, s, -1, Blocks.PION_PLUS, 50, new ItemStack(Items.WEAK_BOSON)), Blocks.PION_MINUS).build(null),
