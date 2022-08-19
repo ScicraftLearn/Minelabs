@@ -185,7 +185,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             } else if (item.getGroup() == ItemGroups.ATOMS) {
 
                 int protonAmount = ((AtomItem) item).getAtom().getAtomNumber();
-                int neutronAmount = NuclidesTable.findNextStableAtom(protonAmount);
+                int neutronAmount = NuclidesTable.findNextStableAtom(protonAmount, true);
 
                 boolean isInserted = false;
                 for (int p = 0; p < protonAmount; p++) {

@@ -158,7 +158,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             }
             else {
                 if (!nuclideStateInfo.isStable()) {
-                    neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons); // here: amount of total neutrons we need
+                    neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons, false); // here: amount of total neutrons we need
                     neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
                     if (neutronDiff < 0) {
                         neutronDiff = Math.abs(neutronDiff);
@@ -187,7 +187,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             }
         }
         else {
-            neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons); // here: amount of total neutrons we need
+            neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons, false); // here: amount of total neutrons we need
             neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
             if (neutronDiff < 0) {
                 neutronDiff = Math.abs(neutronDiff);

@@ -76,7 +76,7 @@ public class NuclidesTable {
      * @param atomItem : minecraft atom item
      * @param unstability : integer value for how far from the black line we are on the nuclides table
      */
-    private static void addNuclidesTableEntry(int z, int n, String atomName, String symbol, String mainDecayMode, Item atomItem, float unstability, Map<String, NucleusState> nuclidestable, float halflife) {
+    private static void addNuclidesTableEntry(int z, int n, String atomName, String symbol, ArrayList<String> mainDecayMode, Item atomItem, float unstability, Map<String, NucleusState> nuclidestable, float halflife) {
         String compositeAtomKey = z + ":" + n;
         NucleusState nucleus = new NucleusState(mainDecayMode, symbol, atomName, atomItem, z, n, unstability, halflife);
         nuclidestable.put(compositeAtomKey, nucleus);
@@ -328,18 +328,27 @@ public class NuclidesTable {
 
         // a, b+, b-, sf, n, p (ec = b+)
         // bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
+        NucleusState nucleus = null;
+        if (getNuclidesTable() != null) {
+            nucleus = getNuclide(z, n);
+        }
         try {
-            addNuclidesTableEntry(
-                    z,
-                    n,
-                    atomName,
-                    symbol,
-                    mainDecayMode,
-                    atomItem,
-                    unstability,
-                    _nuclidesTable,
-                    _halflife
-            );
+            if (nucleus != null) { // nucleus already in table (need this since CSV contains duplicate [proton,neutron] entries)
+                nucleus.addMainDecayMode(mainDecayMode);
+            }
+            else {
+                addNuclidesTableEntry(
+                        z,
+                        n,
+                        atomName,
+                        symbol,
+                        new ArrayList<>(List.of(mainDecayMode)),
+                        atomItem,
+                        unstability,
+                        _nuclidesTable,
+                        _halflife
+                );
+            }
         }
         catch (NumberFormatException e) {
 //                    e.printStackTrace();
@@ -355,9 +364,10 @@ public class NuclidesTable {
      * finds the next stable atom, given the amount of protons.
      *
      * @param protonAmount : amount of protons
-     * @return : (int) amount of neutrons
+     * @param isUnstableAllowed :
+     * @return : (int) amount of neutrons or -1 if there is no stable atom with the amount of protons and isUnstableAllowed parameter is set to false
      */
-    public static int findNextStableAtom(int protonAmount) {
+    public static int findNextStableAtom(int protonAmount, boolean isUnstableAllowed) {
         int _neutronAmount = 0;
         int tempNeutronAmount = 0;
         float maxHalflife = 0;
@@ -378,6 +388,9 @@ public class NuclidesTable {
         }
         if (_neutronAmount == 0) { // no stable (black) square
             _neutronAmount = tempNeutronAmount;
+            if (!isUnstableAllowed) {
+                _neutronAmount = -1;
+            }
         }
         return _neutronAmount;
     }
