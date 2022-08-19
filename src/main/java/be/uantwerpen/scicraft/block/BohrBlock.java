@@ -185,27 +185,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             } else if (item.getGroup() == ItemGroups.ATOMS) {
 
                 int protonAmount = ((AtomItem) item).getAtom().getAtomNumber();
-                int neutronAmount = 0;
-                int tempNeutronAmount = 0;
-                float maxHalflife = 0;
-                for (Map.Entry<String, NucleusState> entry : NuclidesTable.getNuclidesTable().entrySet()) {
-                    NucleusState nucleusValue = entry.getValue();
-                    int protons = nucleusValue.getNrOfProtons();
-                    if (protons == protonAmount) {
-
-                        if (nucleusValue.isStable()) {
-                            neutronAmount = nucleusValue.getNrOfNeutrons();
-                            break;
-                        }
-                        if (nucleusValue.getHalflife() > maxHalflife) {
-                            maxHalflife = nucleusValue.getHalflife();
-                            tempNeutronAmount = nucleusValue.getNrOfNeutrons();
-                        }
-                    }
-                }
-                if (neutronAmount == 0) { // no stable (black) square
-                    neutronAmount = tempNeutronAmount;
-                }
+                int neutronAmount = NuclidesTable.findNextStableAtom(protonAmount);
 
                 boolean isInserted = false;
                 for (int p = 0; p < protonAmount; p++) {
@@ -215,7 +195,6 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                     if (bohrBlockEntity.insertParticle(Items.ELECTRON) == ActionResult.SUCCESS) {
                         isInserted = true;
                     }
-
                 }
                 for (int n = 0; n < neutronAmount; n++) {
                     if (bohrBlockEntity.insertParticle(Items.NEUTRON) == ActionResult.SUCCESS) {

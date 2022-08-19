@@ -131,6 +131,11 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         int nrOfNeutrons = getNeutronCount();
         int nrOfElectrons = getElectronCount();
 
+        int neutronDiff = 0;
+        int electronDiff = 0;
+        String neutronHelp = "";
+        String electronHelp = "";
+
         MatrixStack matrixStack = new MatrixStack();
         NucleusState nuclideStateInfo = NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons);
         String protonString = "#Protons: " + nrOfProtons;
@@ -151,12 +156,72 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
                 color = GREEN_COLOR;
                 mainDecayMode = "Stable";
             }
+            else {
+                if (!nuclideStateInfo.isStable()) {
+                    neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons); // here: amount of total neutrons we need
+                    neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
+                    if (neutronDiff < 0) {
+                        neutronDiff = Math.abs(neutronDiff);
+                        neutronHelp = "Add ";
+                    }
+                    else {
+                        neutronHelp = "Remove ";
+                    }
+                    neutronHelp += neutronDiff + " neutrons";
+                }
+
+                if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
+                    if (!neutronHelp.isEmpty()) {
+                        electronHelp += " and ";
+                    }
+                    if (nrOfProtons - nrOfElectrons > 0) {
+                        electronDiff = nrOfProtons - nrOfElectrons - 5;
+                        electronHelp += "add ";
+                    }
+                    else {
+                        electronDiff = nrOfElectrons - (nrOfProtons + 5);
+                        electronHelp += "remove ";
+                    }
+                    electronHelp += electronDiff + " electrons";
+                }
+            }
+        }
+        else {
+            neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons); // here: amount of total neutrons we need
+            neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
+            if (neutronDiff < 0) {
+                neutronDiff = Math.abs(neutronDiff);
+                neutronHelp = "Add ";
+            }
+            else {
+                neutronHelp = "Remove ";
+            }
+            neutronHelp += neutronDiff + " neutrons";
+
+            if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
+                if (!neutronHelp.isEmpty()) {
+                    electronHelp += " and ";
+                }
+                if (nrOfProtons - nrOfElectrons > 0) {
+                    electronDiff = nrOfProtons - nrOfElectrons - 5;
+                    electronHelp += "add ";
+                }
+                else {
+                    electronDiff = nrOfElectrons - (nrOfProtons + 5);
+                    electronHelp += "remove ";
+                }
+                electronHelp += electronDiff + " electrons";
+            }
         }
         String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + world.getBlockState(getPos()).get(TIMER);
+        String helpInfo = neutronHelp + electronHelp + " to stabilise.";
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, atomInfo, 10, 10, color);
-        MinecraftClient.getInstance().textRenderer.draw(matrixStack, protonString, 10, 20, WHITE_COLOR);
-        MinecraftClient.getInstance().textRenderer.draw(matrixStack, neutronString, 10, 30, WHITE_COLOR);
-        MinecraftClient.getInstance().textRenderer.draw(matrixStack, electronString, 10, 40, WHITE_COLOR);
+        if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
+            MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
+        }
+        MinecraftClient.getInstance().textRenderer.draw(matrixStack, protonString, 10, 30, WHITE_COLOR);
+        MinecraftClient.getInstance().textRenderer.draw(matrixStack, neutronString, 10, 40, WHITE_COLOR);
+        MinecraftClient.getInstance().textRenderer.draw(matrixStack, electronString, 10, 50, WHITE_COLOR);
     }
 
     /**

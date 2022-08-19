@@ -351,6 +351,37 @@ public class NuclidesTable {
 
     }
 
+    /**
+     * finds the next stable atom, given the amount of protons.
+     *
+     * @param protonAmount : amount of protons
+     * @return : (int) amount of neutrons
+     */
+    public static int findNextStableAtom(int protonAmount) {
+        int _neutronAmount = 0;
+        int tempNeutronAmount = 0;
+        float maxHalflife = 0;
+        for (Map.Entry<String, NucleusState> entry : NuclidesTable.getNuclidesTable().entrySet()) {
+            NucleusState nucleusValue = entry.getValue();
+            int protons = nucleusValue.getNrOfProtons();
+            if (protons == protonAmount) {
+
+                if (nucleusValue.isStable()) {
+                    _neutronAmount = nucleusValue.getNrOfNeutrons();
+                    break;
+                }
+                else if (nucleusValue.getHalflife() > maxHalflife) {
+                    maxHalflife = nucleusValue.getHalflife();
+                    tempNeutronAmount = nucleusValue.getNrOfNeutrons();
+                }
+            }
+        }
+        if (_neutronAmount == 0) { // no stable (black) square
+            _neutronAmount = tempNeutronAmount;
+        }
+        return _neutronAmount;
+    }
+
 }
 
 
