@@ -1,15 +1,15 @@
 {
-  "group":"scicraft",
+  "group":"neutron",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "scicraft:upquark_red"
+      "item": "scicraft:upquark_blue"
     },
     {
-      "item": "scicraft:upquark_green"
+      "item": "scicraft:downquark_red"
     },
     {
-      "item": "scicraft:downquark_blue"
+      "item": "scicraft:downquark_green"
     },
     {
       "item": "scicraft:gluon"
@@ -22,7 +22,7 @@
     }
   ],
   "result": {
-    "item": "scicraft:proton",
+    "item": "scicraft:neutron",
     "count": 1
   }
 }
