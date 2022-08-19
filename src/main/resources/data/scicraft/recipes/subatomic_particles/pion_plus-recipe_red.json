@@ -1,15 +1,12 @@
 {
-  "group":"scicraft",
+  "group":"pion_plus",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "scicraft:upquark_blue"
+      "item": "scicraft:upquark_red"
     },
     {
-      "item": "scicraft:downquark_red"
-    },
-    {
-      "item": "scicraft:downquark_green"
+      "item": "scicraft:anti_downquark_red"
     },
     {
       "item": "scicraft:gluon"
@@ -22,7 +19,7 @@
     }
   ],
   "result": {
-    "item": "scicraft:neutron",
+    "item": "scicraft:pion_plus",
     "count": 1
   }
 }
