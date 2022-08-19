@@ -30,20 +30,12 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
         // Change the first value in strength to get the wanted mining speed
-        super(FabricBlockSettings.of(Material.METAL).strength(0.5f, 2.0f).ticksRandomly().luminance(state -> (max_age - state.get(AGE)) / max_age * max_light));
+        super(FabricBlockSettings.of(Material.METAL).strength(0.5f, 2.0f).ticksRandomly().luminance(state -> Math.round(min_light + ((float)(max_age - state.get(AGE) - 1 ) / max_age) * (max_light-min_light))));
         this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false));
     }
 
     public boolean isMaster(BlockState state) {
         return state.get(MASTER);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-//        world.getEntitiesByType(this,)
-
-        return BlockEntityProvider.super.getTicker(world, state, type);
     }
 
     @Override
@@ -61,7 +53,7 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
             world.createAndScheduleBlockTick(pos,this,5);
         }
         state = state.with(AGE, age);
-        world.setBlockState(pos, state);
+        world.setBlockState(pos, state, Block.NOTIFY_ALL);
     }
 
     @Override
@@ -104,7 +96,8 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(player, state));
+//        world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(player, state));
+        super.onBreak(world,pos,state,player);
     }
 
 
@@ -122,7 +115,10 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
         if (!world.isClient()) {
-            world.setBlockState(pos, state);
+            world.setBlockState(pos, state,Block.NOTIFY_ALL);
         }
+
     }
+
+
 }

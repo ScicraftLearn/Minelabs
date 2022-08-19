@@ -156,6 +156,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
             world.createAndScheduleBlockTick(pos, this, 20, TickPriority.VERY_HIGH);
         }
+        super.scheduledTick(state,world,pos,random);
     }
 
 

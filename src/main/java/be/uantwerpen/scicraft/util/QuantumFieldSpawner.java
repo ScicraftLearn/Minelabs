@@ -75,7 +75,7 @@ public class QuantumFieldSpawner {
          * (a,0,0); (0,b,0),(0,0,c)
          */
         if (!checkFields(pos, world, x_size, y_size, z_size)) {
-            world.setBlockState(pos, state.getBlock().getDefaultState().with(MASTER, true));
+            world.setBlockState(pos, state.with(MASTER, true));
             for (int x = -x_size / 2; x <= x_size / 2; x++) {
 //                x_sub = x^2/a^2
                 x_sub = x * x / (a * a);
@@ -89,7 +89,7 @@ public class QuantumFieldSpawner {
                             blockPos = new BlockPos(x + pos.getX(), y + pos.getY(), z + pos.getZ());
                             tempState = world.getBlockState(blockPos);
                             if (tempState.isAir() || tempState.getBlock().equals(Blocks.ATOM_FLOOR)) {
-                                world.setBlockState(blockPos, state.getBlock().getDefaultState());
+                                world.setBlockState(blockPos, state);
                             }
                         }
                     }
