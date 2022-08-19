@@ -19,7 +19,7 @@ import java.util.Map;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
 
-    final private float atom_movement_multiplier = 5.0f;
+    final private float atom_movement_multiplier = 2.5f;
 
     @Shadow
     private float movementSpeed;

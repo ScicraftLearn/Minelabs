@@ -51,19 +51,8 @@ public class ModEvents {
         ServerWorldEvents.LOAD.register(((server, world) -> {
             if (!world.isClient() && world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
             {
-                int x, y;
                 System.out.println("geladen?");
                 world.setBlockState(new BlockPos(0, 65, 0), Blocks.ATOM_PORTAL.getDefaultState());
-
-                for (int i = 0; i<50; i++ ){
-                    x = ThreadLocalRandom.current().nextInt(-20, 20);
-                    y = ThreadLocalRandom.current().nextInt(-20, 20);
-                    QuantumFieldSpawner.tryToSpawnCloud(world,new BlockPos(x,65,y));
-                }
-                for (PlayerEntity p : world.getPlayers()
-                ) {
-                    //IMPLEMENT PLAYER CHANGES
-                }
             }
         }));
 

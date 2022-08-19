@@ -25,6 +25,7 @@ public class QuantumFieldBlockEntity extends BlockEntity {
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putInt("age", Objects.requireNonNull(getWorld()).getBlockState(getPos()).get(AGE));
+
     }
 
     @Override
