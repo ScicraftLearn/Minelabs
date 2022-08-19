@@ -17,16 +17,9 @@ import static be.uantwerpen.scicraft.block.entity.QuantumFieldBlockEntity.AGE;
 import static be.uantwerpen.scicraft.block.entity.QuantumFieldBlockEntity.max_age;
 
 public class QuantumFieldSpawner {
-    public static final IntProperty ACTIVE_FIELDS = IntProperty.of("active_fields", 0, 100);
-
     static java.util.Random r = new java.util.Random();
-    static private int nr_fields = 0;
-    static private final int passes = 0;
-
-
     public static void tryToSpawnCloud(World world, BlockPos pos) {
         BlockState field_to_spawn;
-        int max_fields = 15;
         float chance = (float) 1 / 1_000;
 
         if (shouldSpawnCloud(chance)) {
@@ -35,7 +28,6 @@ public class QuantumFieldSpawner {
                 spawnCloud(world, pos, field_to_spawn);
             }
         }
-
     }
 
     public static Boolean shouldSpawnCloud(float chance) {
@@ -56,46 +48,13 @@ public class QuantumFieldSpawner {
             case 5 -> quantumfield = Blocks.WEAK_BOSON_QUANTUMFIELD.getDefaultState();
             case 6 -> quantumfield = Blocks.NEUTRINO_QUANTUMFIELD.getDefaultState();
         }
-
-
         return quantumfield;
     }
 
-    public static void breakCluster(World world, BlockPos pos) {
-        nr_fields = Math.max(nr_fields - 1, 0);
-        breakCluster(world, pos, false);
 
-    }
-
-
-    public static void breakCluster(World world, BlockPos pos, boolean first) {
-        BlockPos nextPos = null;
-        Block nextBlock = null;
-        Block block = null;
-
-        block = world.getBlockState(pos).getBlock();
-        world.setBlockState(pos, block.getDefaultState().with(AGE, max_age), Block.NO_REDRAW);
-        world.removeBlock(pos, false);
-        if (pos.getY() == AtomicFloor.AtomicFloorLayer) {
-            world.setBlockState(pos, Blocks.ATOM_FLOOR.getDefaultState());
-        }
-
-        for (int x = -1; x < 2; x++) {
-            for (int y = -1; y < 2; y++) {
-                for (int z = -1; z < 2; z++) {
-                    nextPos = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
-                    nextBlock = world.getBlockState(nextPos).getBlock();
-                    if (block.equals(nextBlock)) {
-                        breakCluster(world, nextPos);
-                    }
-                }
-            }
-        }
-
-    }
 
     private static void spawnCloud(World world, BlockPos pos, BlockState state) {
-        nr_fields += 1;
+
         int x_size = r.nextInt(5, 25);
         int y_size = r.nextInt(4, 15);
         int z_size = r.nextInt(5, 25);
@@ -153,9 +112,7 @@ public class QuantumFieldSpawner {
                     return true;
                 }
             }
-
         }
-
         for (int x = pos1.getX(); x <= pos2.getX(); x++) {
 
             for (int y = pos1.getY(); y <= pos2.getY(); y++) {

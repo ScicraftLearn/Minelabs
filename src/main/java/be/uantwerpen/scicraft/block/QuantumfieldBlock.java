@@ -56,28 +56,50 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
         if (!isMaster(state)) return;
 
         int age = state.get(AGE);
-
-        if (age + decayrate >= max_age) {
-            QuantumFieldSpawner.breakCluster(world, pos);
-        } else {
-            age += decayrate;
-            state = state.with(AGE, age);
-            world.setBlockState(pos, state);
+        age = Math.min(age+decayrate, max_age);
+        if (age == max_age){
+            world.createAndScheduleBlockTick(pos,this,5);
         }
+        state = state.with(AGE, age);
+        world.setBlockState(pos, state);
     }
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        if (state.getBlock() == neighborState.getBlock() && state.get(AGE) < (neighborState.get(AGE))) {
-            return state.with(AGE, neighborState.get(AGE));
+        int age = state.get(AGE);
+        if (state.getBlock() == neighborState.getBlock() && age < neighborState.get(AGE)) {
+            age = neighborState.get(AGE);
+            if (age == max_age){
+                world.createAndScheduleBlockTick(pos,this,5);
+            }
+            return state.with(AGE, age);
         }
         return super.getStateForNeighborUpdate(state,direction,neighborState,world,pos,neighborPos);
     }
 
+    @Override
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
+    }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(AGE).add(MASTER);
+    }
+
+    public void removeQuantumBlockIfNeeded(BlockState state, ServerWorld world, BlockPos pos){
+        if (max_age == state.get(AGE)){
+            world.removeBlock(pos,false);
+            if (pos.getY() == AtomicFloor.AtomicFloorLayer) {
+                world.setBlockState(pos, Blocks.ATOM_FLOOR.getDefaultState(),Block.NO_REDRAW);
+            }
+        }
+    }
+
+    @Override
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        removeQuantumBlockIfNeeded(state,world,pos);
+        super.scheduledTick(state, world, pos, random);
     }
 
     @Override
