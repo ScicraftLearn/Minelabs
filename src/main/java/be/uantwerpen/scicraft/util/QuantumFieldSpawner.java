@@ -2,8 +2,10 @@ package be.uantwerpen.scicraft.util;
 
 import be.uantwerpen.scicraft.block.AtomicFloor;
 import be.uantwerpen.scicraft.block.Blocks;
+import be.uantwerpen.scicraft.block.entity.QuantumFieldBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.IntProperty;
@@ -11,6 +13,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.WorldChunk;
+
+import java.util.Map;
 
 import static be.uantwerpen.scicraft.block.QuantumfieldBlock.MASTER;
 import static be.uantwerpen.scicraft.block.entity.QuantumFieldBlockEntity.AGE;
@@ -18,9 +23,31 @@ import static be.uantwerpen.scicraft.block.entity.QuantumFieldBlockEntity.max_ag
 
 public class QuantumFieldSpawner {
     static java.util.Random r = new java.util.Random();
+
+
     public static void tryToSpawnCloud(World world, BlockPos pos) {
         BlockState field_to_spawn;
-        float chance = (float) 1 / 1_000;
+        int max_fields = 10;
+//        in chunks to each side to check
+        int delta_half_r = 3;
+        float chance;
+        int cloud_count = 0;
+        WorldChunk worldChunk;
+        Map<BlockPos, BlockEntity> blockEntityMap;
+        for (int x = -delta_half_r; x <= delta_half_r; x++) {
+            for (int z = -delta_half_r; z <= delta_half_r; z++) {
+                worldChunk = world.getWorldChunk(pos.add(x * 16, 0, z * 16));
+                blockEntityMap = worldChunk.getBlockEntities();
+                for (BlockEntity entry : blockEntityMap.values()) {
+                    if (entry instanceof QuantumFieldBlockEntity){
+                        cloud_count ++;
+                    }
+                }
+            }
+        }
+
+        chance = (float) (max_fields-cloud_count) / max_fields;
+        chance = chance*chance*chance*chance*chance;
 
         if (shouldSpawnCloud(chance)) {
             field_to_spawn = pickField(world, pos);
@@ -102,13 +129,13 @@ public class QuantumFieldSpawner {
     //Checking if there are no other clouds near
     private static Boolean checkFields(BlockPos pos, World world, int x_size, int y_size, int z_size) {
         int blocks_between = 5;
-        BlockPos pos1 = pos.subtract(new Vec3i(x_size / 2 + blocks_between,z_size / 2 + blocks_between,y_size / 2 + blocks_between));
-        BlockPos pos2 = pos.add(new Vec3i(x_size / 2 + blocks_between,z_size / 2 + blocks_between,y_size / 2 + blocks_between));
+        BlockPos pos1 = pos.subtract(new Vec3i(x_size / 2 + blocks_between, z_size / 2 + blocks_between, y_size / 2 + blocks_between));
+        BlockPos pos2 = pos.add(new Vec3i(x_size / 2 + blocks_between, z_size / 2 + blocks_between, y_size / 2 + blocks_between));
         BlockState tempState;
-        Box cloudbox = new Box(pos,pos2);
-        if (world instanceof ServerWorld serverWorld){
-            for (ServerPlayerEntity serverPlayerEntity : serverWorld.getPlayers()){
-                if (cloudbox.contains(serverPlayerEntity.getPos())){
+        Box cloudbox = new Box(pos, pos2);
+        if (world instanceof ServerWorld serverWorld) {
+            for (ServerPlayerEntity serverPlayerEntity : serverWorld.getPlayers()) {
+                if (cloudbox.contains(serverPlayerEntity.getPos())) {
                     return true;
                 }
             }
@@ -116,7 +143,7 @@ public class QuantumFieldSpawner {
         for (int x = pos1.getX(); x <= pos2.getX(); x++) {
 
             for (int y = pos1.getY(); y <= pos2.getY(); y++) {
-                for (int z = pos1.getZ(); z <= pos2.getZ() ; z++) {
+                for (int z = pos1.getZ(); z <= pos2.getZ(); z++) {
                     tempState = world.getBlockState(new BlockPos(x, y, z));
                     if (!(tempState.isAir() || tempState.getBlock().equals(Blocks.ATOM_FLOOR))) {
                         return true;

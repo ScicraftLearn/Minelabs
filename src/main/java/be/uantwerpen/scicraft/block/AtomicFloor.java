@@ -36,6 +36,8 @@ public class AtomicFloor extends AbstractGlassBlock {
         QuantumFieldSpawner.tryToSpawnCloud(world, pos);
     }
 
+
+
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return VoxelShapes.empty();

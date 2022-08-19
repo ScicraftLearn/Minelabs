@@ -115,7 +115,11 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     @Override
     public DefaultedList<ItemStack> getItems() {
 //        return items if master otherwise return the items of the master
-        return isMaster() ? items : getMaster(world).items;
+        BohrBlockEntity master = getMaster(world);
+        if (master == null){
+            return DefaultedList.of();
+        }
+        return isMaster() ? items : master.items;
     }
 
     /**
@@ -124,7 +128,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public void renderText() {
 //        if not the master, execute in the master
         if (!isMaster()) {
-            getMaster(world).renderText();
+            Objects.requireNonNull(getMaster(world)).renderText();
             return;
         }
         assert world != null;
@@ -200,8 +204,10 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             if (blockEntity instanceof BohrBlockEntity bohrBlockEntity && bohrPart == BohrPart.BASE) {
                 return bohrBlockEntity;
             } else {
-                System.out.println("No base bohr block found");
-                world.breakBlock(getPos(), false);
+                world.removeBlock(pos, false);
+
+//                System.out.println("No base bohr block found");
+//                world.breakBlock(getPos(), false);
                 return null;
             }
         }
