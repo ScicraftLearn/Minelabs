@@ -3,12 +3,15 @@ package be.uantwerpen.scicraft.util;
 import be.uantwerpen.scicraft.item.AtomItem;
 import net.minecraft.item.Item;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * The NucleusState class is used to keep information about the atom for every atom.
  */
 public class NucleusState {
 
-    private final String mainDecayMode; // possible options irl are: (alpha, EC+ beta+, beta-, p, n, EC, SF) , Stable, Unstable
+    private final ArrayList<String> mainDecayModes;
 
     private final String symbol;
     private final String atomName; // full atom name
@@ -18,8 +21,8 @@ public class NucleusState {
     private final int nrOfProtons;
     private final int nrOfNeutrons;
 
-    private final int unstability; // integer value for how far from the 'black line' (see nuclides table) the atom state is.
-    private final float halflife;
+    private final float unstability; // integer value for how far from the 'black line' (see nuclides table) the atom state is.
+    private final float halflife; //halfwaardetijd
 
     /**
      * Constructor of the NucleusState. The amount of electrons (as a data member) is not needed.
@@ -32,8 +35,8 @@ public class NucleusState {
      * @param nrOfNeutrons : number of neutrons
      * @param unstability : integer value for how far from the 'black line' (see nuclides table) the atom state is
      */
-    public NucleusState(String mainDecayMode, String symbol, String atomName, Item atomItem, int nrOfProtons, int nrOfNeutrons, int unstability, float halflife) {
-        this.mainDecayMode = mainDecayMode;
+    public NucleusState(ArrayList<String> mainDecayMode, String symbol, String atomName, Item atomItem, int nrOfProtons, int nrOfNeutrons, float unstability, float halflife) {
+        this.mainDecayModes = mainDecayMode;
         this.symbol = symbol;
         this.atomName = atomName;
         this.atomItem = atomItem;
@@ -43,16 +46,20 @@ public class NucleusState {
         this.halflife = halflife;
     }
 
-    public String getMainDecayMode() {return mainDecayMode;}
+    public void addMainDecayMode(String DecayMode) {
+        this.mainDecayModes.add(DecayMode);
+        Collections.sort(this.mainDecayModes);
+    }
+    public ArrayList<String> getMainDecayModes() {return mainDecayModes;}
     public String getSymbol() {return symbol;}
     public String getAtomName() {return atomName;}
     public Item getAtomItem() {return atomItem;}
     public int getNrOfProtons() {return nrOfProtons;}
     public int getNrOfNeutrons() {return nrOfNeutrons;}
-    public int getUnstability() {return unstability;}
+    public float getUnstability() {return unstability;}
     public float getHalflife() {return halflife;}
 
     public boolean isStable() {
-        return this.getMainDecayMode().equals("stable");
+        return this.getMainDecayModes().get(0).equals("stable");
     }
 }

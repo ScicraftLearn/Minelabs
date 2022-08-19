@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.entity.SubatomicParticle;
 import be.uantwerpen.scicraft.item.AtomItem;
@@ -141,7 +142,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             int nrOfElectrons = bohrBlockEntity.getElectronCount();
             int remaining = state.get(TIMER);
             if (NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
-                remaining = 30;
+                remaining = 120; // max timer value
             } else {
                 remaining = Math.max(0, remaining - 1);
             }
@@ -149,7 +150,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 NbtCompound nbtCompound = bohrBlockEntity.createNbt();
                 bohrBlockEntity.writeNbt(nbtCompound);
                 bohrBlockEntity.scatterParticles(3);
-                remaining = 30;
+                remaining = 120;
             }
             state = state.with(TIMER, remaining);
             world.setBlockState(pos, state);
@@ -168,41 +169,27 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         Item item = stack.getItem();
 
         if (blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
+            boolean isActionResultSuccessful = false;
             bohrBlockEntity = bohrBlockEntity.getMaster(world);
             if (bohrBlockEntity == null) return ActionResult.FAIL;
             if (item == Items.NEUTRON || item == Items.PROTON || item == Items.ELECTRON) {
                 if (bohrBlockEntity.insertParticle(item) == ActionResult.SUCCESS) {
-                    player.getStackInHand(hand).decrement(1);
+                    if (!player.getAbilities().creativeMode) {
+                        player.getStackInHand(hand).decrement(1);
+                    }
+                    isActionResultSuccessful = true;
                 }
             } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
                 if (bohrBlockEntity.removeParticle(item) == ActionResult.SUCCESS) {
-                    player.getStackInHand(hand).decrement(1);
+                    if (!player.getAbilities().creativeMode) {
+                        player.getStackInHand(hand).decrement(1);
+                    }
+                    isActionResultSuccessful = true;
                 }
             } else if (item.getGroup() == ItemGroups.ATOMS) {
 
-                AtomItem atom = (AtomItem) item;
                 int protonAmount = ((AtomItem) item).getAtom().getAtomNumber();
-                int neutronAmount = 0;
-                int tempNeutronAmount = 0;
-                float maxHalflife = 0;
-                for (Map.Entry<String, NucleusState> entry : NuclidesTable.getNuclidesTable().entrySet()) {
-                    NucleusState nucleusValue = entry.getValue();
-                    int protons = nucleusValue.getNrOfProtons();
-                    if (protons == protonAmount) {
-
-                        if (nucleusValue.isStable()) {
-                            neutronAmount = nucleusValue.getNrOfNeutrons();
-                            break;
-                        }
-                        if (nucleusValue.getHalflife() > maxHalflife) {
-                            maxHalflife = nucleusValue.getHalflife();
-                            tempNeutronAmount = nucleusValue.getNrOfNeutrons();
-                        }
-                    }
-                }
-                if (neutronAmount == 0) { // no stable (black) square
-                    neutronAmount = tempNeutronAmount;
-                }
+                int neutronAmount = NuclidesTable.findNextStableAtom(protonAmount, true);
 
                 boolean isInserted = false;
                 for (int p = 0; p < protonAmount; p++) {
@@ -212,7 +199,6 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                     if (bohrBlockEntity.insertParticle(Items.ELECTRON) == ActionResult.SUCCESS) {
                         isInserted = true;
                     }
-
                 }
                 for (int n = 0; n < neutronAmount; n++) {
                     if (bohrBlockEntity.insertParticle(Items.NEUTRON) == ActionResult.SUCCESS) {
@@ -221,7 +207,10 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
 
                 if (isInserted) {
-                    player.getStackInHand(hand).decrement(1);
+                    if (!player.getAbilities().creativeMode) {
+                        player.getStackInHand(hand).decrement(1);
+                    }
+                    isActionResultSuccessful = true;
                 }
 
             } else if (stack.isEmpty()) {
@@ -234,6 +223,30 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                     bohrBlockEntity.scatterParticles();
                 }
             }
+
+//            if (isActionResultSuccessful) { // if we changed the amount of protons/neutrons/electrons
+//
+//                int nrOfProtons = bohrBlockEntity.getProtonCount();
+//                int nrOfNeutrons = bohrBlockEntity.getNeutronCount();
+//                NucleusState nucleus = NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons);
+//                float halflife = 0f;
+//                int remainingNew = 0;
+//                if (nucleus != null) {
+//                    halflife = nucleus.getHalflife();
+//                    if (!nucleus.isStable()) {
+//                        remainingNew = NuclidesTable.getHalflifeValues(halflife).get(1).intValue();
+//                        state = state.with(TIMER, remainingNew);
+//                        world.setBlockState(pos, state);
+//                    }
+//                    else {
+//                        remainingNew = 600;
+//                        state = state.with(TIMER, remainingNew);
+//                        world.setBlockState(pos, state);
+//                    }
+//                }
+//
+//            }
+
 
         }
         return ActionResult.SUCCESS;

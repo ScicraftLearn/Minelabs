@@ -33,7 +33,8 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	private boolean shakeSwitch = true; // (shaking of atom)
 	private int switchCounter = 0; // (shaking of atom) used to know when to 'shake'
 	int switchCounterModulo = 10; // (shaking of atom) determines how fast the particles move back and forth (minimum 5)
-
+	int implodeCounter = 0; // till 20
+	boolean isImploding = false;
 
 	private static final ItemStack proton_stack = new ItemStack(Blocks.PROTON, 1);
 	private static final ItemStack neutron_stack = new ItemStack(Blocks.NEUTRON, 1);
@@ -154,18 +155,12 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		int nrOfneutronsLeft = neutronCount;
 
 		// controls the shaking
-		int shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount)/3;
-		float shake = 0f;
-		boolean isStable = NuclidesTable.isStable(protonCount, neutronCount, electronCount);
-		if (!isStable) {
-			if (switchCounter%switchCounterModulo != 0) {
-				shake = 0.01f+(float)Math.min(shakeMultiplier*0.002857f, 0.05); // [0.01 ; 0.05]
-			}
-		}
+		int remaining = blockEntity.getCachedState().get(TIMER);
 
-		if (protonCount+neutronCount >= 12) {
-			startingOffsetScale = 11f;
-		}
+		// controls the shaking
+		float shake = getShakingFactor(protonCount, neutronCount, electronCount);
+
+		if (protonCount+neutronCount >= 12) {startingOffsetScale = 11f;}
 		boolean isProtonNext = true; // true if a proton entity needs to be placed in the core next, false = neutron next.
 		boolean isProtonAndNeutronLeft = true; // true if both protons and neutrons still need to be placed
 		int particlesCounter = 0; // used to count to 12 to restart (increase) the icosahedron scaleOffset.
@@ -183,12 +178,25 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			shakeSwitch = true;
 		}
 
+		if (!isImploding) {
+			isImploding = protonCount > 100 || (remaining < 1+0.1 && remaining > 1-0.1);
+		}
+		else {
+			if (remaining < 0+0.05) {
+				isImploding = false;
+				implodeCounter = 0;
+			}
+		}
+
 		for (int i = 0; i < protonCount+neutronCount; i++) {
 
 			if (particlesCounter == 12) {
 				particlesCounter = 0; // gets increased with one at end of for loop.
 				scaleOffset += 0.75f;
 				dec_index += 12;
+				if (isImploding) {
+					scaleOffset -= 0.5f*implodeCounter;
+				}
 			}
 
 			float scaleFactor = 2.3f; // lower value => closer to core origin
@@ -241,7 +249,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			particlesCounter++;
 		}
 		switchCounter++;
-
+		if (isImploding) {
+			implodeCounter++;
+		}
 	}
 
 	/**
@@ -336,6 +346,26 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 //			electronCounter++;
 //		}
 
+	}
+
+	/**
+	 * Calculates how much the nucleus should shake based on the stability deviation (from the black line) (this depends on halflife)
+	 *
+	 * @param protonCount : amount of protons in the core
+	 * @param neutronCount : amount of neutrons in the core
+	 * @param electronCount : amount of electrons around the core
+	 * @return : shake factor
+	 */
+	public float getShakingFactor(int protonCount, int neutronCount, int electronCount) {
+		float shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount);
+		float shake = 0f;
+		boolean isStable = NuclidesTable.isStable(protonCount, neutronCount, electronCount);
+		if (!isStable) {
+			if (switchCounter%switchCounterModulo != 0) {
+				shake = 0.01f+(float)Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
+			}
+		}
+		return shake;
 	}
 
 	/**
