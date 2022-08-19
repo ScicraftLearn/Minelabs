@@ -1,7 +1,12 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.item.ItemGroups;
+import be.uantwerpen.scicraft.item.Items;
 import be.uantwerpen.scicraft.util.QuantumFieldSpawner;
 import net.minecraft.block.*;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -40,6 +45,15 @@ public class AtomicFloor extends AbstractGlassBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        if (world instanceof ClientWorld clientWorld){
+            PlayerEntity player = clientWorld.getClosestPlayer(pos.getX(),pos.getY(),pos.getZ(),10,false);
+            if (player != null && player.getMainHandStack() != null){
+                var item = player.getMainHandStack().getItem();
+                if (item == Items.BOHR_BLOCK){
+                    return VoxelShapes.fullCube();
+                }
+            }
+        }
         return VoxelShapes.empty();
     }
 
