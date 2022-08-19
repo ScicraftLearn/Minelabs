@@ -1,15 +1,15 @@
 {
-  "group":"scicraft",
+  "group":"proton",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
+    {
+      "item": "scicraft:upquark_red"
+    },
     {
       "item": "scicraft:upquark_green"
     },
     {
-      "item": "scicraft:upquark_blue"
-    },
-    {
-      "item": "scicraft:downquark_red"
+      "item": "scicraft:downquark_blue"
     },
     {
       "item": "scicraft:gluon"
