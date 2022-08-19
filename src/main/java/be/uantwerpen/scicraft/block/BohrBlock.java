@@ -174,12 +174,16 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             if (bohrBlockEntity == null) return ActionResult.FAIL;
             if (item == Items.NEUTRON || item == Items.PROTON || item == Items.ELECTRON) {
                 if (bohrBlockEntity.insertParticle(item) == ActionResult.SUCCESS) {
-                    player.getStackInHand(hand).decrement(1);
+                    if (!player.getAbilities().creativeMode) {
+                        player.getStackInHand(hand).decrement(1);
+                    }
                     isActionResultSuccessful = true;
                 }
             } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
                 if (bohrBlockEntity.removeParticle(item) == ActionResult.SUCCESS) {
-                    player.getStackInHand(hand).decrement(1);
+                    if (!player.getAbilities().creativeMode) {
+                        player.getStackInHand(hand).decrement(1);
+                    }
                     isActionResultSuccessful = true;
                 }
             } else if (item.getGroup() == ItemGroups.ATOMS) {
@@ -203,7 +207,9 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
 
                 if (isInserted) {
-                    player.getStackInHand(hand).decrement(1);
+                    if (!player.getAbilities().creativeMode) {
+                        player.getStackInHand(hand).decrement(1);
+                    }
                     isActionResultSuccessful = true;
                 }
 
