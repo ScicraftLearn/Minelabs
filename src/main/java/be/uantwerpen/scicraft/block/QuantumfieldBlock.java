@@ -5,6 +5,8 @@ import be.uantwerpen.scicraft.util.QuantumFieldSpawner;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -34,6 +36,14 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
 
     public boolean isMaster(BlockState state) {
         return state.get(MASTER);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+//        world.getEntitiesByType(this,)
+
+        return BlockEntityProvider.super.getTicker(world, state, type);
     }
 
     @Override
