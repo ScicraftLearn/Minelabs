@@ -179,7 +179,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		}
 
 		if (!isImploding) {
-			isImploding = protonCount > 100 || (remaining < 1+0.1 && remaining > 1-0.1);
+			isImploding = (remaining < 1+0.1 && remaining > 1-0.1);
 		}
 		else {
 			if (remaining < 0+0.05) {
