@@ -178,15 +178,15 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			shakeSwitch = true;
 		}
 
-		if (!isImploding) {
-			isImploding = (remaining < 1+0.1 && remaining > 1-0.1);
-		}
-		else {
-			if (remaining < 0+0.05) {
-				isImploding = false;
-				implodeCounter = 0;
-			}
-		}
+//		if (!isImploding) {
+//			isImploding = (remaining < 1+0.1 && remaining > 1-0.1);
+//		}
+//		else {
+//			if (remaining < 0+0.05) {
+//				isImploding = false;
+//				implodeCounter = 0;
+//			}
+//		}
 
 		for (int i = 0; i < protonCount+neutronCount; i++) {
 
@@ -194,9 +194,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				particlesCounter = 0; // gets increased with one at end of for loop.
 				scaleOffset += 0.75f;
 				dec_index += 12;
-				if (isImploding) {
-					scaleOffset -= 0.5f*implodeCounter;
-				}
+//				if (isImploding) {
+//					scaleOffset -= 0.5f*implodeCounter;
+//				}
 			}
 
 			float scaleFactor = 2.3f; // lower value => closer to core origin
