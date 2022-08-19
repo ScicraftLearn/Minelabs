@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.block.entity;
 
+import be.uantwerpen.scicraft.block.BohrBlock;
 import be.uantwerpen.scicraft.block.BohrPart;
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
 import be.uantwerpen.scicraft.item.Items;
@@ -114,7 +115,11 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     @Override
     public DefaultedList<ItemStack> getItems() {
 //        return items if master otherwise return the items of the master
-        return isMaster() ? items : getMaster(world).items;
+        BohrBlockEntity master = getMaster(world);
+        if (master == null){
+            return DefaultedList.of();
+        }
+        return isMaster() ? items : master.items;
     }
 
     /**
@@ -123,7 +128,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public void renderText() {
 //        if not the master, execute in the master
         if (!isMaster()) {
-            getMaster(world).renderText();
+            Objects.requireNonNull(getMaster(world)).renderText();
             return;
         }
         assert world != null;
@@ -192,15 +197,17 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      */
     @Nullable
     public BohrBlockEntity getMaster(World world) {
-        if (this.getCachedState().get(PART) != BohrPart.BASE) {
+        if (this.getCachedState().getBlock() instanceof BohrBlock && this.getCachedState().get(PART) != BohrPart.BASE) {
             BlockPos blockPos = getMasterPos(this.getCachedState(), pos);
             BlockEntity blockEntity = world.getBlockEntity(blockPos);
             BohrPart bohrPart = world.getBlockState(blockPos).get(PART);
             if (blockEntity instanceof BohrBlockEntity bohrBlockEntity && bohrPart == BohrPart.BASE) {
                 return bohrBlockEntity;
             } else {
-                System.out.println("No base bohr block found");
-                world.breakBlock(getPos(), false);
+                world.removeBlock(pos, false);
+
+//                System.out.println("No base bohr block found");
+//                world.breakBlock(getPos(), false);
                 return null;
             }
         }
