@@ -192,7 +192,12 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 			if (particlesCounter == 12) {
 				particlesCounter = 0; // gets increased with one at end of for loop.
-				scaleOffset += 0.75f;
+				if (protonCount+neutronCount < 36) {
+					scaleOffset += 1.5f;
+				}
+				else {
+					scaleOffset += 0.75f;
+				}
 				dec_index += 12;
 //				if (isImploding) {
 //					scaleOffset -= 0.5f*implodeCounter;
@@ -211,10 +216,14 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			float offset_z = icosahedron.get(i-dec_index).getZ()/totalScale;
 
 			if (dec_index > 12) {
-				float rotateXAngle = (float)Math.PI*(0.125f*(((float)dec_index/12)%4));
+				float rotateXAngle = (float)Math.PI*(0.125f*((dec_index/12) %4));
 				ArrayList<Float> new_y_z = rotateAroundXAxis(offset_y, offset_z, rotateXAngle);
 				offset_y = new_y_z.get(0);
 				offset_z = new_y_z.get(1);
+				float rotateYAngle = (float)Math.PI*(0.125f*((dec_index/12) %4));
+				ArrayList<Float> new_x_z = rotateAroundYAxis(offset_x, offset_z, rotateYAngle);
+				offset_x = new_x_z.get(0);
+				offset_z = new_x_z.get(1);
 			}
 
 			matrices.translate(offset_x, offset_y+shake, offset_z);
@@ -249,9 +258,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			particlesCounter++;
 		}
 		switchCounter++;
-		if (isImploding) {
-			implodeCounter++;
-		}
+//		if (isImploding) {
+//			implodeCounter++;
+//		}
 	}
 
 	/**
