@@ -310,7 +310,7 @@ public class NuclidesTable {
         int z = Integer.parseInt(nuclideInfo[0]);
         int n = Integer.parseInt(nuclideInfo[1]);
 
-        String mainDecayMode = "stable";
+        String mainDecayMode = "unstable";
         String halflife = "";
         if (nuclideInfo.length > 5) {
             halflife = nuclideInfo[4];

@@ -42,7 +42,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public static final EnumProperty<BohrPart> PART = SciCraftProperties.BOHR_PART;
 
 
-    public static final int maxTimerAmount = 600;
+    public static final int maxTimerAmount = 120;
     public static final IntProperty TIMER = IntProperty.of("timer", 0, maxTimerAmount);
     //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
     public static final IntProperty STATUS = IntProperty.of("status", 0, 2);
@@ -147,7 +147,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             symbol = nuclideStateInfo.getSymbol();
 //            mainDecayMode = nuclideStateInfo.getMainDecayMode();
 
-            if (nuclideStateInfo.isStable()) {
+            if (NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
                 color = GREEN_COLOR;
                 mainDecayMode = "Stable";
             }

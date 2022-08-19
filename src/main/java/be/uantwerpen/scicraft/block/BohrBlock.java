@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.block;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.BohrBlockEntity;
 import be.uantwerpen.scicraft.entity.SubatomicParticle;
 import be.uantwerpen.scicraft.item.AtomItem;
@@ -141,7 +142,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             int nrOfElectrons = bohrBlockEntity.getElectronCount();
             int remaining = state.get(TIMER);
             if (NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
-                remaining = 600; // max timer value
+                remaining = 120; // max timer value
             } else {
                 remaining = Math.max(0, remaining - 1);
             }
@@ -149,7 +150,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 NbtCompound nbtCompound = bohrBlockEntity.createNbt();
                 bohrBlockEntity.writeNbt(nbtCompound);
                 bohrBlockEntity.scatterParticles(3);
-                remaining = 30;
+                remaining = 120;
             }
             state = state.with(TIMER, remaining);
             world.setBlockState(pos, state);
@@ -238,26 +239,28 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
             }
 
-            if (isActionResultSuccessful) { // if we changed the amount of protons/neutrons/electrons
-
-                int nrOfProtons = bohrBlockEntity.getProtonCount();
-                int nrOfNeutrons = bohrBlockEntity.getNeutronCount();
-                NucleusState nucleus = NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons);
-                float halflife = 0f;
-                int remainingNew = 0;
-                if (nucleus != null) {
-                    halflife = nucleus.getHalflife();
-                    if (!nucleus.isStable()) {
-                        remainingNew = NuclidesTable.getHalflifeValues(halflife).get(1).intValue();
-                        state = state.with(TIMER, remainingNew);
-                        world.setBlockState(pos, state);
-                    }
-                    else {
-                        remainingNew = 600;
-                    }
-                }
-
-            }
+//            if (isActionResultSuccessful) { // if we changed the amount of protons/neutrons/electrons
+//
+//                int nrOfProtons = bohrBlockEntity.getProtonCount();
+//                int nrOfNeutrons = bohrBlockEntity.getNeutronCount();
+//                NucleusState nucleus = NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons);
+//                float halflife = 0f;
+//                int remainingNew = 0;
+//                if (nucleus != null) {
+//                    halflife = nucleus.getHalflife();
+//                    if (!nucleus.isStable()) {
+//                        remainingNew = NuclidesTable.getHalflifeValues(halflife).get(1).intValue();
+//                        state = state.with(TIMER, remainingNew);
+//                        world.setBlockState(pos, state);
+//                    }
+//                    else {
+//                        remainingNew = 600;
+//                        state = state.with(TIMER, remainingNew);
+//                        world.setBlockState(pos, state);
+//                    }
+//                }
+//
+//            }
 
 
         }
