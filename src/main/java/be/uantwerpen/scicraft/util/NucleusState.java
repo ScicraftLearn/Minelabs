@@ -1,13 +1,10 @@
 package be.uantwerpen.scicraft.util;
 
-import be.uantwerpen.scicraft.item.AtomItem;
 import net.minecraft.item.Item;
-
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
- * The NucleusState class is used to keep information about the atom for every atom.
+ * The NucleusState class is used to keep information about the atom.
  */
 public class NucleusState {
 
@@ -21,7 +18,7 @@ public class NucleusState {
     private final int nrOfProtons;
     private final int nrOfNeutrons;
 
-    private final float unstability; // integer value for how far from the 'black line' (see nuclides table) the atom state is.
+    private final float unstability; // float value for how far from the 'black line' (see nuclides table) the atom state is ([0.01,0.04]).
     private final float halflife; //halfwaardetijd
 
     /**
@@ -33,7 +30,7 @@ public class NucleusState {
      * @param atomItem : minecraft atom item
      * @param nrOfProtons : number of protons
      * @param nrOfNeutrons : number of neutrons
-     * @param unstability : integer value for how far from the 'black line' (see nuclides table) the atom state is
+     * @param unstability : float value for how far from the 'black line' (see nuclides table) the atom state is
      */
     public NucleusState(ArrayList<String> mainDecayMode, String symbol, String atomName, Item atomItem, int nrOfProtons, int nrOfNeutrons, float unstability, float halflife) {
         this.mainDecayModes = mainDecayMode;
@@ -46,9 +43,13 @@ public class NucleusState {
         this.halflife = halflife;
     }
 
+    /**
+     * Adds a decay mode to a nucleus. This function is necessary because the CSV has duplicate proton-neutron combinations, with different decay modes.
+     *
+     * @param DecayMode : decay mode string (from CSV) (with percentage)
+     */
     public void addMainDecayMode(String DecayMode) {
         this.mainDecayModes.add(DecayMode);
-        Collections.sort(this.mainDecayModes);
     }
     public ArrayList<String> getMainDecayModes() {return mainDecayModes;}
     public String getSymbol() {return symbol;}

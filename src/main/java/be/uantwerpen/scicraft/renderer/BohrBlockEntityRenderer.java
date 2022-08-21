@@ -150,17 +150,16 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	 */
 	public void makeNucleus(int protonCount, int neutronCount, int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity) {
 
+		if (protonCount+neutronCount >= 12) {startingOffsetScale = 11f;}
+		else if (protonCount+neutronCount >= 120) {startingOffsetScale = 12f;}
+		else if (protonCount+neutronCount >= 180) {startingOffsetScale = 13f;}
+		else if (protonCount+neutronCount >= 240) {startingOffsetScale = 15f;}
+
 		// variables for placing the particles (they get decreased)
 		int nrOfprotonsLeft = protonCount;
 		int nrOfneutronsLeft = neutronCount;
-
-		// controls the shaking
-		int remaining = blockEntity.getCachedState().get(TIMER);
-
 		// controls the shaking
 		float shake = getShakingFactor(protonCount, neutronCount, electronCount);
-
-		if (protonCount+neutronCount >= 12) {startingOffsetScale = 11f;}
 		boolean isProtonNext = true; // true if a proton entity needs to be placed in the core next, false = neutron next.
 		boolean isProtonAndNeutronLeft = true; // true if both protons and neutrons still need to be placed
 		int particlesCounter = 0; // used to count to 12 to restart (increase) the icosahedron scaleOffset.
@@ -193,7 +192,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			if (particlesCounter == 12) {
 				particlesCounter = 0; // gets increased with one at end of for loop.
 				if (protonCount+neutronCount < 36) {
-					scaleOffset += 1.5f;
+					scaleOffset += 2.5f;
 				}
 				else {
 					scaleOffset += 0.75f;
@@ -204,7 +203,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 //				}
 			}
 
-			float scaleFactor = 2.3f; // lower value => closer to core origin
+			float scaleFactor = 2.5f; // lower value => closer to core origin
 			if (protonCount+neutronCount > 50) {
 				scaleFactor = 1.75f;
 			}
@@ -220,10 +219,10 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				ArrayList<Float> new_y_z = rotateAroundXAxis(offset_y, offset_z, rotateXAngle);
 				offset_y = new_y_z.get(0);
 				offset_z = new_y_z.get(1);
-				float rotateYAngle = (float)Math.PI*(0.125f*((dec_index/12) %4));
-				ArrayList<Float> new_x_z = rotateAroundYAxis(offset_x, offset_z, rotateYAngle);
-				offset_x = new_x_z.get(0);
-				offset_z = new_x_z.get(1);
+//				float rotateYAngle = (float)Math.PI*(0.75f*((dec_index/12) %4));
+//				ArrayList<Float> new_x_z = rotateAroundYAxis(offset_x, offset_z, rotateYAngle);
+//				offset_x = new_x_z.get(0);
+//				offset_z = new_x_z.get(1);
 			}
 
 			matrices.translate(offset_x, offset_y+shake, offset_z);
@@ -282,7 +281,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	 */
 	public void makeElectrons(int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity, float tickDelta) {
 
-		// for the electron-shell distribution, check the NuclidesTable class.
+		// for the electron-shell distribution, check the NuclidesTable class static declaration/definition.
 
 		int currentShell = 1;
 		int electronCounter = 0;
@@ -313,6 +312,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			electronCounter++;
 		}
 
+		// example for drawing of the electron shells, this method is laggy though
 //		currentShell = 1;
 //		electronCounter = 0;
 //		for (int el = 0; el < electronCount; el++) {
@@ -358,17 +358,20 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	}
 
 	/**
-	 * Calculates how much the nucleus should shake based on the stability deviation (from the black line) (this depends on halflife)
+	 * Calculates how much the nucleus should shake based on the stability deviation (from the black line) (this depends on halflife now)
 	 *
 	 * @param protonCount : amount of protons in the core
 	 * @param neutronCount : amount of neutrons in the core
 	 * @param electronCount : amount of electrons around the core
-	 * @return : shake factor
+	 * @return : (float) shake factor (range = [0.01, 0.04])
 	 */
 	public float getShakingFactor(int protonCount, int neutronCount, int electronCount) {
 		float shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount);
 		float shake = 0f;
 		boolean isStable = NuclidesTable.isStable(protonCount, neutronCount, electronCount);
+		if (shakeMultiplier == -1) { // if the amount of protons and amount of neutrons don't represent an atom.
+			shakeMultiplier = 0.04f; // we set it to the hardest shaking
+		}
 		if (!isStable) {
 			if (switchCounter%switchCounterModulo != 0) {
 				shake = 0.01f+(float)Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
