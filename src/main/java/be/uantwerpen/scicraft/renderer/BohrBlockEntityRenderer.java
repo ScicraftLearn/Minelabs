@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
-import static be.uantwerpen.scicraft.block.entity.BohrBlockEntity.*;
 import static be.uantwerpen.scicraft.util.NuclidesTable.calculateNrOfElectrons;
 
 
@@ -33,6 +32,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	private boolean shakeSwitch = true; // (shaking of atom)
 	private int switchCounter = 0; // (shaking of atom) used to know when to 'shake'
 	int switchCounterModulo = 10; // (shaking of atom) determines how fast the particles move back and forth (minimum 5)
+
 	int implodeCounter = 0; // till 20
 	boolean isImploding = false;
 
@@ -42,6 +42,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	private static final List<Vec3f> icosahedron = new ArrayList<>(); // (icosahedron) figure for the nucleus
 	static {
+		// icosahedron points:
 		for (int i = 1; i < 13; i++) {
 			Vec3f punt1 = new Vec3f();
 			if (i == 1) {
@@ -138,7 +139,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	}
 
 	/**
-	 * Handles the scaling and stuff for the nucleus (and protons and neutrons).
+	 * Handles the scaling and placement for the nucleus (protons and neutrons).
+	 *
+	 * Data members used: startingOffsetScale, shakeSwitch, icosahedron, neutron_stack, proton_stack, switchCounter, switchCounterModulo
 	 *
 	 * @param protonCount : amount of protons
 	 * @param neutronCount : amount of neutrons
@@ -150,16 +153,19 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	 */
 	public void makeNucleus(int protonCount, int neutronCount, int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, T blockEntity) {
 
-		if (protonCount+neutronCount >= 12) {startingOffsetScale = 11f;}
-		else if (protonCount+neutronCount >= 120) {startingOffsetScale = 12f;}
-		else if (protonCount+neutronCount >= 180) {startingOffsetScale = 13f;}
-		else if (protonCount+neutronCount >= 240) {startingOffsetScale = 15f;}
+		int mass = protonCount+neutronCount;
+
+		if (mass >= 12) {startingOffsetScale = 11f;}
+		if (mass >= 120) {startingOffsetScale = 12f;}
+		if (mass >= 180) {startingOffsetScale = 13f;}
+		if (mass >= 240) {startingOffsetScale = 15f;}
 
 		// variables for placing the particles (they get decreased)
 		int nrOfprotonsLeft = protonCount;
 		int nrOfneutronsLeft = neutronCount;
 		// controls the shaking
 		float shake = getShakingFactor(protonCount, neutronCount, electronCount);
+
 		boolean isProtonNext = true; // true if a proton entity needs to be placed in the core next, false = neutron next.
 		boolean isProtonAndNeutronLeft = true; // true if both protons and neutrons still need to be placed
 		int particlesCounter = 0; // used to count to 12 to restart (increase) the icosahedron scaleOffset.
@@ -187,11 +193,16 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 //			}
 //		}
 
-		for (int i = 0; i < protonCount+neutronCount; i++) {
+		for (int i = 0; i < mass; i++) {
 
+			float scaleFactor = 2.5f; // lower value => closer to core origin
+
+			if (mass > 50) {
+				scaleFactor = 1.75f;
+			}
 			if (particlesCounter == 12) {
 				particlesCounter = 0; // gets increased with one at end of for loop.
-				if (protonCount+neutronCount < 36) {
+				if (mass < 36) {
 					scaleOffset += 2.5f;
 				}
 				else {
@@ -201,11 +212,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 //				if (isImploding) {
 //					scaleOffset -= 0.5f*implodeCounter;
 //				}
-			}
-
-			float scaleFactor = 2.5f; // lower value => closer to core origin
-			if (protonCount+neutronCount > 50) {
-				scaleFactor = 1.75f;
 			}
 
 			// calculating the x,y,z offsets to place the protons/neutrons on the icosahedron outer points.
@@ -293,10 +299,10 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 				electronCounter = 0;
 			}
 
-			// evenly distribution of electrons around core
+			// evenly distribution of electrons around core. Used for the electron point calculation.
 			int electronsOnCurShell = calcPlaceableElectronsOnShell(electronCount, currentShell, currentNrOfElectrons);
 
-			ArrayList<Float> point = calculatePoint(currentShell, blockEntity, tickDelta, electronsOnCurShell, electronCounter);
+			ArrayList<Float> point = calculateElectronPoint(currentShell, blockEntity, tickDelta, electronsOnCurShell, electronCounter);
 			float x = point.get(0);
 			float y = point.get(1);
 			float z = point.get(2);
@@ -434,7 +440,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	 * @param electronCounter : electron counter
 	 * @return : array of three elements [x, y, z] for our point
 	 */
-	public ArrayList<Float> calculatePoint(int currentShell, T blockEntity, float tickDelta, int electronsOnCurShell, int electronCounter) {
+	public ArrayList<Float> calculateElectronPoint(int currentShell, T blockEntity, float tickDelta, int electronsOnCurShell, int electronCounter) {
 
 		// multiplier for how fast the electrons will spin around, the greater this value, the slower it will be.
 		float speedMultiplier = 40+20*(currentShell-1);

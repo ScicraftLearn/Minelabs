@@ -224,6 +224,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
             }
 
+            // timer decrease
 //            if (isActionResultSuccessful) { // if we changed the amount of protons/neutrons/electrons
 //
 //                int nrOfProtons = bohrBlockEntity.getProtonCount();

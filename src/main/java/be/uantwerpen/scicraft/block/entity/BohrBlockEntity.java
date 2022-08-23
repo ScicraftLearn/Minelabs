@@ -129,6 +129,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             return;
         }
         assert world != null;
+
         int nrOfProtons = getProtonCount();
         int nrOfNeutrons = getNeutronCount();
         int nrOfElectrons = getElectronCount();
@@ -148,6 +149,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         String ion = "ion: " + ionicCharge;
         int color = RED_COLOR;
         boolean doesStableNuclideExist = true;
+
         if (nuclideStateInfo != null) {
             atomName = nuclideStateInfo.getAtomName();
             symbol = nuclideStateInfo.getSymbol();
@@ -171,6 +173,9 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         }
         String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + world.getBlockState(getPos()).get(TIMER);
         String helpInfo = neutronHelp + electronHelp + " to stabilise.";
+        /*
+         * Rendering of text:
+         */
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, atomInfo, 10, 60, color);
         if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
             MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
