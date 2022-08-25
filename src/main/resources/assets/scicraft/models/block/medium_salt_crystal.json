@@ -1,6 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "scicraft:block/medium_salt_crystal_transparent"
-  }
-}

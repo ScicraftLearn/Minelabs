@@ -1,8 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "scicraft:item/erlenmeyer_cork",
-    "layer1": "scicraft:item/erlenmeyer",
-    "layer2": "scicraft:item/erlenmeyer_gas"
-  }
-}

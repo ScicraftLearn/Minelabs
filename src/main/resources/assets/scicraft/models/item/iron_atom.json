@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "scicraft:item/atom_grey",
-    "layer1": "scicraft:item/oxygen",
-    "layer2": "scicraft:item/hydrogen",
-    "layer3": "scicraft:item/electrons8"
-  }
-}

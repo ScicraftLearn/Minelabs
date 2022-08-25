@@ -1,0 +1,23 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "N1", "atom":  "N"},
+      {"key":  "O1", "atom":  "O"},
+      {"key":  "O2", "atom":  "O"},
+      {"key":  "O3", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "O1", "bondOrder": 1},
+      {"from": "O1", "to": "N1", "bondOrder": 1},
+      {"from": "O2", "to": "N1", "bondOrder": 1},
+      {"from": "O3", "to": "N1", "bondOrder": 2}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_hno3"
+  },
+  "density": 8
+}

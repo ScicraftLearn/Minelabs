@@ -1,0 +1,26 @@
+{
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minelabs:upquark_blue"
+                }
+            ],
+            "conditions": [
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minelabs:anti_upquark_blue"
+                }
+            ],
+            "conditions": [
+            ]
+        }
+    ]
+}
