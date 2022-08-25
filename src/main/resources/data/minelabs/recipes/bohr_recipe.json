@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pg",
+    "gp"
+  ],
+  "key": {
+    "p": {
+      "item": "minelabs:photon"},
+    "g": {
+      "item": "minelabs:gluon"
+    }
+  },
+  "result": {
+    "item": "minelabs:bohr_block",
+    "count": 1
+  }
+}

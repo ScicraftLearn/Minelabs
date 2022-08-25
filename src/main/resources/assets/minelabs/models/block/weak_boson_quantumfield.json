@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "minelabs:block/quantumfield/weak_boson/vertical",
+        "up": "minelabs:block/quantumfield/weak_boson/vertical",
+        "north": "minelabs:block/quantumfield/weak_boson/horizontal",
+        "east": "minelabs:block/quantumfield/weak_boson/horizontal",
+        "south": "minelabs:block/quantumfield/weak_boson/horizontal",
+        "west": "minelabs:block/quantumfield/weak_boson/horizontal",
+        "particle": "minelabs:block/quantumfield/weak_boson/vertical"
+    }
+}

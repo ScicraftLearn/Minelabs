@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "scicraft:salt_block"
+    "minelabs:salt_block"
   ]
 }

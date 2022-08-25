@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "minelabs:block/quantumfield/electron/down",
+        "up": "minelabs:block/quantumfield/electron/up",
+        "north": "minelabs:block/quantumfield/electron/north",
+        "east": "minelabs:block/quantumfield/electron/east",
+        "south": "minelabs:block/quantumfield/electron/south",
+        "west": "minelabs:block/quantumfield/electron/west",
+        "particle": "minelabs:block/quantumfield/electron/down"
+    }
+}

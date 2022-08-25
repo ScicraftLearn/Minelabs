@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "minelabs:block/medium_salt_crystal",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "minelabs:block/medium_salt_crystal",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "minelabs:block/medium_salt_crystal",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "minelabs:block/medium_salt_crystal",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "minelabs:block/medium_salt_crystal"
+    },
+    "facing=west": {
+      "model": "minelabs:block/medium_salt_crystal",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

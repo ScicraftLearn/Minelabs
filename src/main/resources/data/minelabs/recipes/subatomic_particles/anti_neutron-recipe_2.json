@@ -1,0 +1,28 @@
+{
+  "group":"anti_neutron",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minelabs:anti_upquark_green"
+    },
+    {
+      "item": "minelabs:anti_downquark_blue"
+    },
+    {
+      "item": "minelabs:anti_downquark_red"
+    },
+    {
+      "item": "minelabs:gluon"
+    },
+    {
+      "item": "minelabs:gluon"
+    },
+    {
+      "item": "minelabs:gluon"
+    }
+  ],
+  "result": {
+    "item": "minelabs:anti_neutron",
+    "count": 1
+  }
+}
