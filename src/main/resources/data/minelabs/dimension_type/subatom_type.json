@@ -1,5 +1,5 @@
 {
-  "type": "scricraft:atom_type",
+  "type": "minelabs:atom_type",
   "ultrawarm": false,
   "natural": false,
   "piglin_safe": true,
