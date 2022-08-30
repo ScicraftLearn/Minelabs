@@ -10,16 +10,37 @@
               "children": [
                 {
                   "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:molecules/si_3_o_4",
                   "weight": 40
                 },
                 {
                   "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:molecules/al_3_o_4",
                   "weight": 40
                 },
                 {
                   "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:molecules/h_2_o",
                   "weight": 20
                 }

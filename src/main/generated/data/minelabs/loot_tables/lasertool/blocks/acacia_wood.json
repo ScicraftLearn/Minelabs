@@ -10,16 +10,37 @@
               "children": [
                 {
                   "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:carbon_atom",
                   "weight": 33
                 },
                 {
                   "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:oxygen_atom",
                   "weight": 22
                 },
                 {
                   "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:hydrogen_atom",
                   "weight": 45
                 }

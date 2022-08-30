@@ -10,11 +10,25 @@
               "children": [
                 {
                   "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:lasertool/blocks/mushroom_stem",
                   "weight": 75
                 },
                 {
                   "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:lasertool/blocks/glowstone",
                   "weight": 25
                 }

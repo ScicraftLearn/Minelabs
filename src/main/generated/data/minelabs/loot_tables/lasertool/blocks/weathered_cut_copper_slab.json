@@ -10,11 +10,25 @@
               "children": [
                 {
                   "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:lasertool/blocks/copper_block",
                   "weight": 90
                 },
                 {
                   "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:molecules/cu_2_c_o_3-o_h-_2",
                   "weight": 10
                 }

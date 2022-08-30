@@ -10,6 +10,13 @@
               "children": [
                 {
                   "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:iron_atom",
                   "weight": 100
                 }

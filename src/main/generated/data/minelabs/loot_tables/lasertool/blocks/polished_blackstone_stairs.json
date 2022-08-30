@@ -10,6 +10,13 @@
               "children": [
                 {
                   "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
                   "name": "minelabs:molecules/mg_2_fe_4_al_12_ti_2_ca_5_na_5_si_10_o_60",
                   "weight": 100
                 }

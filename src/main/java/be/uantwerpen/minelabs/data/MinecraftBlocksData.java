@@ -68,6 +68,16 @@ public class MinecraftBlocksData {
                 }
             }
             jsonObject.add("weight", new JsonPrimitive(distribution.get(i)));
+
+            JsonObject function = new JsonObject();
+            function.add("enchantment", new JsonPrimitive("minecraft:fortune"));
+            // Apply the bonus the same way as ore drops scale with fortune
+            function.add("formula", new JsonPrimitive("minecraft:ore_drops"));
+            function.add("function", new JsonPrimitive("minecraft:apply_bonus"));
+            JsonArray functions = new JsonArray();
+            functions.add(function);
+
+            jsonObject.add("functions", functions);
             entries.add(jsonObject);
         }
         // Build JSON object for the loot table
