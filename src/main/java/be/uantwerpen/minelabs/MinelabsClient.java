@@ -4,7 +4,8 @@ import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.entity.Entities;
-import be.uantwerpen.minelabs.event.ModEvents;
+import be.uantwerpen.minelabs.event.ClientModsEvents;
+import be.uantwerpen.minelabs.event.ServerModEvents;
 import be.uantwerpen.minelabs.network.NetworkingConstants;
 import be.uantwerpen.minelabs.renderer.BohrBlockEntityRenderer;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
@@ -46,7 +47,7 @@ public class MinelabsClient implements ClientModInitializer {
     public void onInitializeClient() {
 
 
-        ModEvents.registerEvents();
+        ClientModsEvents.registerEvents();
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR, RenderLayer.getTranslucent());
         //Register ItemModels
