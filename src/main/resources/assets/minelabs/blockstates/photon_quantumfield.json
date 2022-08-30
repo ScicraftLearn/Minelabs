@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "minelabs:block/photon_quantumfield" }
+    }
+}

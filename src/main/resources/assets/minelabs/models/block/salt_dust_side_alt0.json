@@ -1,0 +1,6 @@
+{
+  "parent": "minelabs:block/salt_dust_side_alt",
+  "textures": {
+    "line": "minelabs:block/salt_dust_line0"
+  }
+}

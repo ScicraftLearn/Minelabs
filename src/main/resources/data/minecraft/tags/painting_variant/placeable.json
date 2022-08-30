@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "scicraft:particle_cpy",
-    "scicraft:particle_rgb"
+    "minelabs:particle_cpy",
+    "minelabs:particle_rgb"
   ]
 }

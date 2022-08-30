@@ -1,0 +1,7 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "minelabs:block/weak_boson",
+        "particle": "minelabs:block/weak_boson"
+    }
+}

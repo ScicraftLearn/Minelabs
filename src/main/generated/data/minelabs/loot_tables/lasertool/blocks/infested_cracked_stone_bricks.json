@@ -1,0 +1,69 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:group",
+              "children": [
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "minelabs:molecules/ca_c_o_3",
+                  "weight": 85
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "minelabs:molecules/si_o_2",
+                  "weight": 10
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "name": "minelabs:molecules/mg_c_o_3",
+                  "weight": 5
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:alternative",
+                  "terms": [
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "minelabs:lasertool_iron"
+                        ]
+                      }
+                    },
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "minelabs:lasertool_gold"
+                        ]
+                      }
+                    },
+                    {
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": [
+                          "minelabs:lasertool_diamond"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "minecraft:loot_table",
+              "name": "minecraft:blocks/infested_cracked_stone_bricks"
+            }
+          ]
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

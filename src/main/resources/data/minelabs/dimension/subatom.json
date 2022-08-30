@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:the_end",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minelabs:atomicbiome",
+      "disable_mob_generation": true,
+      "lakes": false,
+      "structures": {
+
+      },
+
+      "features": false,
+      "layers": [
+        {
+          "block": "minecraft:air",
+          "height": 64
+        },
+        {
+          "block": "minelabs:atomic_floor",
+          "height": 1
+        },
+        {
+          "block": "minecraft:air",
+          "height": 64
+        }
+      ]
+    }
+  }
+}
