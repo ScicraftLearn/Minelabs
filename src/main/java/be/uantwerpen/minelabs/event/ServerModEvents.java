@@ -1,23 +1,17 @@
 package be.uantwerpen.minelabs.event;
 
 import be.uantwerpen.minelabs.block.Blocks;
-import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.dimension.ModDimensions;
 import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 
 
-public class ModEvents {
+public class ServerModEvents {
 
     public static void registerEvents() {
 
@@ -49,24 +43,5 @@ public class ModEvents {
                 world.setBlockState(new BlockPos(0, 65, 0), Blocks.ATOM_PORTAL.getDefaultState());
             }
         }));
-
-//        render bohr block text on hud rendering when a bohr block is being looked at
-        HudRenderCallback.EVENT.register(
-                (matrixStack, delta) -> {
-                    MinecraftClient client = MinecraftClient.getInstance();
-                    HitResult hitResult = client.crosshairTarget;
-
-                    assert client.world != null;
-                    if (hitResult instanceof BlockHitResult blockHitResult) {
-                        BlockEntity blockEntity = client.world.getBlockEntity(blockHitResult.getBlockPos());
-                        if (blockEntity instanceof BohrBlockEntity) {
-                            ((BohrBlockEntity) blockEntity).renderText();
-                        }
-                    }
-
-
-                }
-        );
-
     }
 }
