@@ -5,7 +5,7 @@ import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.crafting.CraftingRecipes;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.ScientificVillager;
-import be.uantwerpen.minelabs.event.ModEvents;
+import be.uantwerpen.minelabs.event.ServerModEvents;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.paintings.Paintings;
@@ -39,6 +39,6 @@ public class Minelabs implements ModInitializer {
 
         ScientificVillager.registerVillagers();
         ScientificVillager.registerTrades();
-        ModEvents.registerEvents();
+        ServerModEvents.registerEvents();
     }
 }
