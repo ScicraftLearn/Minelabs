@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.gui.lewis_gui;
 
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.crafting.molecules.BondManager;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;
@@ -27,8 +28,8 @@ import static be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler.GRIDS
 
 
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler>{
-    private static final Identifier TEXTURE = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
-    private static final Identifier TEXTURE2 = new Identifier("scicraft", "textures/block/lewiscrafting/lewis_block_inventory_default.png");
+    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
+    private static final Identifier TEXTURE2 = new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/lewis_block_inventory_default.png");
     private ButtonWidget buttonWidget;
     private boolean widgetTooltip = false;
 
@@ -155,27 +156,27 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         int cp = this.handler.getProgress();
         if (cp != -1) {
             if (cp == 0 || cp == 1) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp0.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp0.png");
             } else if (cp == 2 || cp == 3) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp2.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp2.png");
             } else if (cp == 4 || cp == 5) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp4.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp4.png");
             } else if (cp == 6 || cp == 7) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp6.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp6.png");
             } else if (cp == 8 || cp == 9) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp8.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp8.png");
             } else if (cp == 10 || cp == 11) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp10.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp10.png");
             } else if (cp == 12 || cp == 13) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp12.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp12.png");
             } else if (cp == 14 || cp == 15) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp14.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp14.png");
             } else if (cp == 16 || cp == 17) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp16.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp16.png");
             } else if (cp == 18 || cp == 19) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp18.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp18.png");
             } else if (cp >= 20) {
-                return new Identifier("scicraft", "textures/block/lewiscrafting/crafting_progress/cp20.png");
+                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp20.png");
             }
         }
         if (!this.handler.hasRecipe() ) {
