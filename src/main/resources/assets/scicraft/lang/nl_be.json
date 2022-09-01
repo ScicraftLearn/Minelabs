@@ -34,5 +34,8 @@
   "item.scicraft.erlenmeyer_n2o.n2o": "Lachgas (N2O)",
   "item.scicraft.erlenmeyer_hcl.hcl": "Waterstofchloride (HCl)",
   "item.scicraft.erlenmeyer_hno3": "Salpeterzuur (HNO3)",
-  "item.scicraft.erlenmeyer_h2o": "Zuurstofgas (H2O)"
+  "item.scicraft.erlenmeyer_h2o": "Zuurstofgas (H2O)",
+  "item.scicraft.erlenmeyer_he.he": "Helium gas (He)",
+  "item.scicraft.erlenmeyer_ne.ne": "Neon gas (Ne)",
+  "item.scicraft.erlenmeyer_ar.ar": "Argon gas (Ar)"
 }

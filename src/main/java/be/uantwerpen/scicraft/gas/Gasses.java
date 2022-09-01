@@ -16,6 +16,9 @@ public class Gasses {
     public static final Gas NH3;
     public static final Gas N2O;
     public static final Gas HCl;
+    public static final Gas He;
+    public static final Gas Ne;
+    public static final Gas Ar;
 
     public Gasses() {
 
@@ -42,5 +45,8 @@ public class Gasses {
         NH3 = register("nh3", new Gas("nh3", 16777215));
         N2O = register("n2o", new Gas("n2o", 16777215));
         HCl = register("hcl", new Gas("hcl", 16777215));
+        He = register("he", new Gas("he", 16777215));
+        Ne = register("ne", new Gas("ne", 16777215));
+        Ar = register("ar", new Gas("ar", 16777215));
     }
 }
