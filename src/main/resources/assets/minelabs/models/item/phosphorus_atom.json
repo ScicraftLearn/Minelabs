@@ -4,5 +4,13 @@
     "layer0": "minelabs:item/atom_orange",
     "layer1": "minelabs:item/phosphorus",
     "layer2": "minelabs:item/electrons5"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/phospoerus_atom_internal"
+    }
+  ]
 }

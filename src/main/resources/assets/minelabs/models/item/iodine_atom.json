@@ -5,5 +5,13 @@
     "layer1": "minelabs:item/oxygen",
     "layer2": "minelabs:item/hydrogen",
     "layer3": "minelabs:item/electrons8"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/iodine_atom_internal"
+    }
+  ]
 }

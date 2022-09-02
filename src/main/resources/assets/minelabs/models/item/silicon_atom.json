@@ -4,5 +4,13 @@
     "layer0": "minelabs:item/atom_beige",
     "layer1": "minelabs:item/silicon",
     "layer2": "minelabs:item/electrons4"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/silicon_atom_internal"
+    }
+  ]
 }
