@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.gui.ionic_gui;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.crafting.molecules.BondManager;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;
@@ -24,7 +25,7 @@ import static be.uantwerpen.minelabs.gui.ionic_gui.IonicBlockScreenHandler.GRIDS
 
 public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implements ScreenHandlerProvider<IonicBlockScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier("scicraft","textures/block/ioniccrafting/ionic_gui.png");
+    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID,"textures/block/ioniccrafting/ionic_gui.png");
 
     //just the height and width of the texture
     public IonicScreen(IonicBlockScreenHandler handler, PlayerInventory inventory, Text title) {
