@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "scicraft:item/atom_violet",
-    "layer1": "scicraft:item/potassium",
-    "layer2": "scicraft:item/electrons1"
+    "layer0": "minelabs:item/atom_violet",
+    "layer1": "minelabs:item/potassium",
+    "layer2": "minelabs:item/electrons1"
   },
   "overrides": [
     {

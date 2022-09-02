@@ -1,10 +1,9 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minelabs:item/atom_grey",
-    "layer1": "minelabs:item/oxygen",
-    "layer2": "minelabs:item/hydrogen",
-    "layer3": "minelabs:item/electrons8"
+    "layer0": "minelabs:item/atom_orange",
+    "layer1": "minelabs:item/copper",
+    "layer2": "minelabs:item/electrons4"
   },
   "overrides": [
     {

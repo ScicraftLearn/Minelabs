@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "scicraft:item/atom_beige",
-    "layer1": "scicraft:item/cadmium"
+    "layer0": "minelabs:item/atom_beige",
+    "layer1": "minelabs:item/cadmium"
   },
   "overrides": [
     {

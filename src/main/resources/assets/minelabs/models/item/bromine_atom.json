@@ -1,9 +1,9 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "scicraft:item/atom_green",
-    "layer1": "scicraft:item/bromine",
-    "layer2": "scicraft:item/electrons7"
+    "layer0": "minelabs:item/atom_green",
+    "layer1": "minelabs:item/bromine",
+    "layer2": "minelabs:item/electrons7"
   },
   "overrides": [
     {
