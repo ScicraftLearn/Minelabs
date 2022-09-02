@@ -43,8 +43,8 @@ public class BondManager {
         public ItemStack getStack() {
             ItemStack stack = new ItemStack(Items.BOND);
             NbtCompound nbt = stack.getOrCreateNbt();
-            nbt.putBoolean("ScicraftBondDirection", vertical);
-            nbt.putInt("ScicraftBondAmount", bondCount);
+            nbt.putBoolean("MinelabsBondDirection", vertical);
+            nbt.putInt("MinelabsBondAmount", bondCount);
             return stack;
         }
 

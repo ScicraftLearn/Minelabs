@@ -13,42 +13,42 @@ import net.minecraft.util.registry.Registry;
 
 public class Items {
     //Atomic portal
-    public static final Item ATOM_PORTAL=register(new BlockItem((Blocks.ATOM_PORTAL),new FabricItemSettings().group(ItemGroups.SCICRAFT)),"atom_portal");
-    public static final Item ATOM_FLOOR=register(new BlockItem((Blocks.ATOM_FLOOR),new FabricItemSettings().group(ItemGroups.SCICRAFT)),"atomic_floor");
+    public static final Item ATOM_PORTAL=register(new BlockItem((Blocks.ATOM_PORTAL),new FabricItemSettings().group(ItemGroups.MINELABS)),"atom_portal");
+    public static final Item ATOM_FLOOR=register(new BlockItem((Blocks.ATOM_FLOOR),new FabricItemSettings().group(ItemGroups.MINELABS)),"atomic_floor");
 
     // Items
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
     public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt");
 
     public static final Item SALT_SHARD = register(new SaltShardItem(
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_shard");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_shard");
 
     public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_ore");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_ore");
 
     public static final Item DEEPSLATE_SALT_ORE = register(new BlockItem(Blocks.DEEPSLATE_SALT_ORE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "deepslate_salt_ore");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "deepslate_salt_ore");
 
     public static final Item SALT_BLOCK = register(new SaltBlockItem(Blocks.SALT_BLOCK,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_block");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_block");
 
     public static final Item SALT_CRYSTAL = register(new BlockItem(Blocks.SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "salt_crystal");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_crystal");
 
     public static final Item SMALL_SALT_CRYSTAL = register(new BlockItem(Blocks.SMALL_SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "small_salt_crystal");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "small_salt_crystal");
 
     public static final Item MEDIUM_SALT_CRYSTAL = register(new BlockItem(Blocks.MEDIUM_SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "medium_salt_crystal");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "medium_salt_crystal");
 
     public static final Item LARGE_SALT_CRYSTAL = register(new BlockItem(Blocks.LARGE_SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "large_salt_crystal");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "large_salt_crystal");
 
     public static final Item BUDDING_SALT_BLOCK = register(new BlockItem(Blocks.BUDDING_SALT_BLOCK,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.SCICRAFT)), "budding_salt_block");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "budding_salt_block");
 
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
@@ -103,7 +103,7 @@ public class Items {
     public static final Item WEAK_BOSON_QUANTUMFIELD = register(new BlockItem(Blocks.WEAK_BOSON_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "weak_boson_quantumfield");
 
     // Items > Electric field
-    public static final Item TIME_FREEZE_BLOCK = register(new BlockItem(Blocks.TIME_FREEZE_BLOCK, new FabricItemSettings().group(ItemGroups.SCICRAFT)), "time_freeze_block");
+    public static final Item TIME_FREEZE_BLOCK = register(new BlockItem(Blocks.TIME_FREEZE_BLOCK, new FabricItemSettings().group(ItemGroups.MINELABS)), "time_freeze_block");
 
     // Items > Elementary particles
 
@@ -144,17 +144,17 @@ public class Items {
     public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "electric_field_sensor");
 
     // helium gas
-    public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.SCICRAFT)), "helium");
+    public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.MINELABS)), "helium");
 
-    public static final Item BOHR_BLOCK = register(new BlockItem(Blocks.BOHR_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "bohr_block");
+    public static final Item BOHR_BLOCK = register(new BlockItem(Blocks.BOHR_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "bohr_block");
 
-    public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "lewis_block");
-    public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "ionic_block");
+    public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "lewis_block");
+    public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "ionic_block");
 
     // Erlenmeyer
     public static final Item ERLENMEYER = register(new Item(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64)), "erlenmeyer");
 
-//    public static final Item ACID_BUCKET = register(new BucketItem(Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.SCICRAFT).maxCount(64)), "erlenmeyer_fluid");
+//    public static final Item ACID_BUCKET = register(new BucketItem(Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.MINELABS).maxCount(64)), "erlenmeyer_fluid");
 
     public static final Item ERLENMEYER_02 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64)), "erlenmeyer_o2");
     public static final Item ERLENMEYER_N2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64)), "erlenmeyer_n2");
