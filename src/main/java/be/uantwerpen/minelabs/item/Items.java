@@ -51,40 +51,40 @@ public class Items {
             new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "budding_salt_block");
 
     public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 1), "lithium_chloride_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 1), "lithium_chloride_dust");
 
     public static final Item STRONTIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 2), "strontium_chloride_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 2), "strontium_chloride_dust");
 
     public static final Item STRONTIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 2), "strontium_nitrate_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 2), "strontium_nitrate_dust");
 
     public static final Item CALCIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 3), "calcium_chloride_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 3), "calcium_chloride_dust");
 
     public static final Item SODIUM_CARBONATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 4), "sodium_carbonate_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 4), "sodium_carbonate_dust");
 
     public static final Item BORAX_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 5), "borax_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 5), "borax_dust");
 
     public static final Item COPPER_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 6), "copper_sulfate_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 6), "copper_sulfate_dust");
 
     public static final Item BORIC_ACID_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 6), "boric_acid_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 6), "boric_acid_dust");
 
     public static final Item COPPER_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 7), "copper_chloride_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 7), "copper_chloride_dust");
 
     public static final Item POTASSIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 9), "potassium_chloride_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 9), "potassium_chloride_dust");
 
     public static final Item MAGNESIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT), 10), "magnesium_sulfate_dust");
+            .maxCount(64).group(ItemGroups.MINELABS), 10), "magnesium_sulfate_dust");
 
     public static final Item ASH_DUST = register(new Item(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.SCICRAFT)), "ash_dust");
+            .maxCount(64).group(ItemGroups.MINELABS)), "ash_dust");
 
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
