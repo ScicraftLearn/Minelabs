@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.block.entity;
+package be.uantwerpen.minelabs.block.entity;
 
 public interface ICampfireBlockEntity {
 

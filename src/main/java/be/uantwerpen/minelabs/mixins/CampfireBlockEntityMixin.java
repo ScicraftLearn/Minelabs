@@ -1,10 +1,9 @@
 package be.uantwerpen.minelabs.mixins;
 
+import be.uantwerpen.minelabs.block.entity.ICampfireBlockEntity;
 import be.uantwerpen.minelabs.item.IFireReaction;
 import be.uantwerpen.minelabs.util.Tags;
-import be.uantwerpen.scicraft.block.entity.ICampfireBlockEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -47,9 +46,10 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity {
             //Scicraft.LOGGER.info("fire color: " + item.getFireColor());
             //System.out.println("fire color: " + item.getFireColor());
             //TODO finish ??
-            //Blocks.CAMPFIRE.getDefaultState().getProperties();t
-            user.world.setBlockState(user.getBlockPos(), Blocks.CAMPFIRE.getDefaultState()
-                    .with(IntProperty.of("fire_color", 0, 10), item.getFireColor()), 3);
+
+            //Blocks.CAMPFIRE.getDefaultState().getProperties();
+            //user.world.setBlockState(user.getBlockPos(), Blocks.CAMPFIRE.getDefaultState()
+            //.with(IntProperty.of("fire_color", 0, 10), item.getFireColor()), 3);
             //user.world.emitGameEvent(GameEvent.BLOCK_CHANGE, user.getPos(), GameEvent.Emitter.of(user));
         }
     }

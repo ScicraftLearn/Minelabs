@@ -1,6 +1,6 @@
 package be.uantwerpen.minelabs.mixins;
 
-import be.uantwerpen.scicraft.block.ICampfireBlock;
+import be.uantwerpen.minelabs.block.ICampfireBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
