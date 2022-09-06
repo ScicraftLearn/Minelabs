@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.mixins;
 
 import be.uantwerpen.minelabs.entity.SubatomicParticle;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
@@ -45,8 +46,8 @@ public abstract class ThrownEntityMixin extends ProjectileEntity {
             // I used command: /tp @p 0 100 0 0 0
             // This teleports player to block x=0 y=100 z=0 and sets the looking direction of the player
             // Then don't move and use an electron. It is easy to verify that the electron flies straight and constant speed.
-//            Scicraft.LOGGER.info(this.getVelocity());
-//            Scicraft.LOGGER.info(this.getPos());
+//            Minelabs.LOGGER.info(this.getVelocity());
+//            Minelabs.LOGGER.info(this.getPos());
             this.setVelocity(blockPos.multiply(getSlowdownFactor()));
             // Gravity gets applied here in the tick method of ThrownEntity that code isn't needed for entities of this class
             // If modified/original gravity code is needed it can be inserted here

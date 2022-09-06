@@ -28,7 +28,7 @@ public class LockableGridSlot extends Slot {
                 case NON_METAL:
                 case NOBLE_GAS:
                     this.setStack(atom.getDefaultStack());
-                    this.getStack().getOrCreateNbt().putBoolean("ScicraftItemInLCT", true);
+                    this.getStack().getOrCreateNbt().putBoolean("MinelabsItemInLCT", true);
                 default:
                     return false;
             }

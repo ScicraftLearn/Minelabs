@@ -57,7 +57,7 @@ public class ItemModels {
      */
     private static void registerAtom(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("lct"),
-                (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("ScicraftItemInLCT") ? 1.0F : 0.0F);
+                (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("MinelabsItemInLCT") ? 1.0F : 0.0F);
     }
 
     /**
@@ -68,9 +68,9 @@ public class ItemModels {
      */
     private static void registerBond(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("bonds"),
-                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("ScicraftBondAmount")) / 10F);
+                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("MinelabsBondAmount")) / 10F);
         ModelPredicateProviderRegistry.register(item, new Identifier("direction"),
-                (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("ScicraftBondDirection") ? 1.0F : 0.0F);
+                (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("MinelabsBondDirection") ? 1.0F : 0.0F);
     }
 
     /**

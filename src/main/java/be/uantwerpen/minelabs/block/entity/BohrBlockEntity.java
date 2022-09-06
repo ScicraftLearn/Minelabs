@@ -4,7 +4,7 @@ import be.uantwerpen.minelabs.block.BohrBlock;
 import be.uantwerpen.minelabs.block.BohrPart;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.state.SciCraftProperties;
+import be.uantwerpen.minelabs.state.MinelabsProperties;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -40,7 +40,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public static final int RED_COLOR = ColorHelper.Argb.getArgb(255, 255, 0, 0);
 
     //    which part of the bohrplate this bohrblock belongs to
-    public static final EnumProperty<BohrPart> PART = SciCraftProperties.BOHR_PART;
+    public static final EnumProperty<BohrPart> PART = MinelabsProperties.BOHR_PART;
 
 
     public static final int maxTimerAmount = 30;
