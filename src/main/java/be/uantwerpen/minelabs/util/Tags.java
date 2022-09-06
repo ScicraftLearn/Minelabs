@@ -23,7 +23,7 @@ public class Tags {
 
         /**
          * Create a Block tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/tags/blocks)
+         * Don't forget the json file (data/minelabs/tags/blocks)
          *
          * @param name : name of the tag
          * @return {@link TagKey}
@@ -50,13 +50,13 @@ public class Tags {
 
         /**
          * Create an Item tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/tags/items)
+         * Don't forget the json file (data/minelabs/tags/items)
          *
          * @param name : name of the tag
          * @return {@link TagKey}
          */
         private static TagKey<Item> createTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier("c", name));
+            return TagKey.of(Registry.ITEM_KEY, new Identifier(Minelabs.MOD_ID, name));
         }
 
         /**
@@ -75,13 +75,13 @@ public class Tags {
 
         /**
          * Create a Fluid tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/tags/fluids)
+         * Don't forget the json file (data/minelabs/tags/fluids)
          *
          * @param name : name of the tag
          * @return {@link TagKey}
          */
         private static TagKey<Fluid> createTag(String name) {
-            return TagKey.of(Registry.FLUID_KEY, new Identifier("c", name));
+            return TagKey.of(Registry.FLUID_KEY, new Identifier(Minelabs.MOD_ID, name));
         }
 
         /**

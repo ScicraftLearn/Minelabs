@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class LewisCraftingItem extends AtomItem {
 
-    protected static final String CURRENT_VALENCE_ELECTRONS = "ScicraftCurrentValenceElectrons";
-    protected static final String CURRENT_BONDS = "ScicraftCurrentBonds";
-    protected static final String CURRENT_NEUTRONS = "ScicraftCurrentNeutrons";
+    protected static final String CURRENT_VALENCE_ELECTRONS = "MinelabsCurrentValenceElectrons";
+    protected static final String CURRENT_BONDS = "MinelabsCurrentBonds";
+    protected static final String CURRENT_NEUTRONS = "MinelabsCurrentNeutrons";
 
     public LewisCraftingItem(Item.Settings settings, Atom atom) {
         super(settings, atom);
