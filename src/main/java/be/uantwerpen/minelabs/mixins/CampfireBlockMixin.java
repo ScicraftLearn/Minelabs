@@ -56,7 +56,6 @@ public abstract class CampfireBlockMixin implements ICampfireBlock {
         block.setDefaultState(block.getStateManager().getDefaultState().with(LIT, true)
                 .with(SIGNAL_FIRE, false).with(WATERLOGGED, false)
                 .with(FACING, Direction.NORTH).with(FIRE_COLOR, 0));
-
     }
 
     @Inject(method = "getPlacementState", at = @At("TAIL"), cancellable = true)

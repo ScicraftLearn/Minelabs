@@ -7,13 +7,14 @@
   },
   "mixins": [
     "BlockAccessorMixin",
+    "BlockEntityAccessorMixin",
     "CampfireBlockEntityMixin",
     "CampfireBlockMixin",
     "CreeperEntityMixin",
-    "LivingEntityMixin",
     "ExplosionAccessor",
     "FireMixin",
-    "ThrownEntityMixin",
+    "LivingEntityMixin",
+    "ThrownEntityMixin"
   ],
   "client": []
 }

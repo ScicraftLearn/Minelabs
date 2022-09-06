@@ -21,11 +21,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CampfireBlockEntity.class)
-public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity {
+public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, BlockEntityAccessorMixin {
 
     @Shadow
     @Final
     private DefaultedList<ItemStack> itemsBeingCooked;
+
+    @Inject(method = "litServerTick", at = @At(value = "TAIL"))
+    private static void injectServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
+        //TODO WHERE ??? or not NECESSARY (Tail for now)
+
+
+    }
 
     @Inject(method = "clientTick", at = @At("TAIL"))
     private static void injectClientTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
@@ -38,19 +45,12 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity {
         world.setBlockState(pos, state.with(IntProperty.of("fire_color", 0, 10), 0));
     }
 
-    @Inject(method = "addItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/CampfireBlockEntity;updateListeners()V"))
-    public void injectAddItem(Entity user, ItemStack stack, int cookTime, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "addItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;emitGameEvent(Lnet/minecraft/world/event/GameEvent;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/event/GameEvent$Emitter;)V"))
+    public void injectAddItems(Entity user, ItemStack stack, int cookTime, CallbackInfoReturnable<Boolean> cir) {
         if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
             IFireReaction item = (IFireReaction) stack.getItem();
             user.sendMessage(Text.literal("fire color: " + item.getFireColor()));
-            //Scicraft.LOGGER.info("fire color: " + item.getFireColor());
-            //System.out.println("fire color: " + item.getFireColor());
-            //TODO finish ??
-
-            //Blocks.CAMPFIRE.getDefaultState().getProperties();
-            //user.world.setBlockState(user.getBlockPos(), Blocks.CAMPFIRE.getDefaultState()
-            //.with(IntProperty.of("fire_color", 0, 10), item.getFireColor()), 3);
-            //user.world.emitGameEvent(GameEvent.BLOCK_CHANGE, user.getPos(), GameEvent.Emitter.of(user));
+            setCachedState(getCachedState().with(IntProperty.of("fire_color", 0, 10), item.getFireColor()));
         }
     }
 
