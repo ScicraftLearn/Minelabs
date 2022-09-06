@@ -1,8 +1,8 @@
-package be.uantwerpen.scicraft.mixins;
+package be.uantwerpen.minelabs.mixins;
 
+import be.uantwerpen.minelabs.item.IFireReaction;
+import be.uantwerpen.minelabs.util.Tags;
 import be.uantwerpen.scicraft.block.entity.ICampfireBlockEntity;
-import be.uantwerpen.scicraft.item.IFireReaction;
-import be.uantwerpen.scicraft.util.Tags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.CampfireBlockEntity;

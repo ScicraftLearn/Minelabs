@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.mixins;
+package be.uantwerpen.minelabs.mixins;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

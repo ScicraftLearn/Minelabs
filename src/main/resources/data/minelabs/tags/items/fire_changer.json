@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "minelabs:salt",
+    "minelabs:lithium_chloride_dust",
+    "minelabs:strontium_chloride_dust",
+    "minelabs:strontium_nitrate_dust",
+    "minelabs:calcium_chloride_dust",
+    "minelabs:sodium_carbonate_dust",
+    "minelabs:borax_dust",
+    "minelabs:copper_sulfate_dust",
+    "minelabs:boric_acid_dust",
+    "minelabs:copper_chloride_dust",
+    "minelabs:potassium_chloride_dust",
+    "minelabs:magnesium_sulfate_dust"
+  ]
+}

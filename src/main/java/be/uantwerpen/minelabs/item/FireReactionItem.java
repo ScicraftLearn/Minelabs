@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.item;
+package be.uantwerpen.minelabs.item;
 
 import net.minecraft.item.Item;
 

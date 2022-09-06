@@ -1,17 +1,21 @@
-package be.uantwerpen.scicraft.item;
+package be.uantwerpen.minelabs.item;
 
-import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.block.Blocks;
-import be.uantwerpen.scicraft.crafting.molecules.Atom;
-import be.uantwerpen.scicraft.entity.Entities;
-import be.uantwerpen.scicraft.fluid.Fluids;
-import be.uantwerpen.scicraft.potion.GasPotion;
+import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.block.Blocks;
+import be.uantwerpen.minelabs.crafting.molecules.Atom;
+import be.uantwerpen.minelabs.entity.Entities;
+import be.uantwerpen.minelabs.fluid.Fluids;
+import be.uantwerpen.minelabs.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class Items {
+    //Atomic portal
+    public static final Item ATOM_PORTAL = register(new BlockItem((Blocks.ATOM_PORTAL), new FabricItemSettings().group(ItemGroups.SCICRAFT)), "atom_portal");
+    public static final Item ATOM_FLOOR = register(new BlockItem((Blocks.ATOM_FLOOR), new FabricItemSettings().group(ItemGroups.SCICRAFT)), "atomic_floor");
+
     // Items
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
@@ -163,7 +167,9 @@ public class Items {
     public static final Item WEAK_BOSON = register(new BlockItem(Blocks.WEAK_BOSON, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "weak_boson");
 
     public static final Item PROTON = register(new ProtonItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "proton");
+    public static final Item ANTI_PROTON = register(new AntiProtonItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_proton");
     public static final Item NEUTRON = register(new NeutronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "neutron");
+    public static final Item ANTI_NEUTRON = register(new AntiNeutronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_neutron");
     public static final Item PION_NUL = register(new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_nul");
     public static final Item PION_MINUS = register(new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_minus");
     public static final Item PION_PLUS = register(new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_plus");
@@ -174,6 +180,7 @@ public class Items {
 
     // helium gas
     public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.SCICRAFT)), "helium");
+    public static final Item BOHR_BLOCK = register(new BlockItem(Blocks.BOHR_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "bohr_block");
 
     public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "lewis_block");
     public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings().group(ItemGroups.SCICRAFT)), "ionic_block");
@@ -250,7 +257,7 @@ public class Items {
      * @return {@link Item}
      */
     private static Item register(Item item, String identifier) {
-        return Registry.register(Registry.ITEM, new Identifier(Scicraft.MOD_ID, identifier), item);
+        return Registry.register(Registry.ITEM, new Identifier(Minelabs.MOD_ID, identifier), item);
     }
 
     /**
@@ -258,6 +265,6 @@ public class Items {
      * Registers all (Block)Items
      */
     public static void registerItems() {
-        Scicraft.LOGGER.info("registering items");
+        Minelabs.LOGGER.info("registering items");
     }
 }

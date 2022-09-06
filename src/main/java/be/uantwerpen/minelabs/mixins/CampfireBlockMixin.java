@@ -1,4 +1,4 @@
-package be.uantwerpen.scicraft.mixins;
+package be.uantwerpen.minelabs.mixins;
 
 import be.uantwerpen.scicraft.block.ICampfireBlock;
 import net.minecraft.block.AbstractBlock;
