@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_blue",
+    "layer1": "minelabs:item/nitrogen"
+  }
+}

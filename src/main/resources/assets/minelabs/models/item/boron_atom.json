@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_beige",
+    "layer1": "minelabs:item/boron",
+    "layer2": "minelabs:item/electrons3"
+  }
+}

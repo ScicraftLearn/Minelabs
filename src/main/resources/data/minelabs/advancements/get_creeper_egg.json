@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:entropy_creeper_spawn_egg"
+    },
+    "title": "What is this mob?",
+    "description": "Acquire an entropy creeper egg",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "minelabs:get_electron",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:entropy_creeper_spawn_egg"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

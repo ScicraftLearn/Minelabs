@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "scicraft",
+  "id": "minelabs",
   "version": "${version}",
-  "name": "Scicraft",
+  "name": "MineLabs",
   "description": "Mod Description: TODO",
   "authors": [
     "Joey De Pauw",
@@ -16,19 +16,19 @@
     "sources": "TODO"
   },
   "license": "TODO",
-  "icon": "assets/scicraft/icon.png",
+  "icon": "assets/minelabs/icon.png",
   "environment": "*",
-  "accessWidener" : "scicraft.accesswidener",
+  "accessWidener" : "minelabs.accesswidener",
   "entrypoints": {
     "main": [
-      "be.uantwerpen.scicraft.Scicraft"
+      "be.uantwerpen.minelabs.Minelabs"
     ],
     "client": [
-      "be.uantwerpen.scicraft.ScicraftClient"
+      "be.uantwerpen.minelabs.MinelabsClient"
     ]
   },
   "mixins": [
-    "scicraft.mixins.json"
+    "minelabs.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.8",

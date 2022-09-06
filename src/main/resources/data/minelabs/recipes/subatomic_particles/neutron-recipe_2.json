@@ -1,0 +1,28 @@
+{
+  "group":"neutron",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minelabs:upquark_green"
+    },
+    {
+      "item": "minelabs:downquark_blue"
+    },
+    {
+      "item": "minelabs:downquark_red"
+    },
+    {
+      "item": "minelabs:gluon"
+    },
+    {
+      "item": "minelabs:gluon"
+    },
+    {
+      "item": "minelabs:gluon"
+    }
+  ],
+  "result": {
+    "item": "minelabs:neutron",
+    "count": 1
+  }
+}

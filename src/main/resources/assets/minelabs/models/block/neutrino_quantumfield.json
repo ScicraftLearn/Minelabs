@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+         "down": "minelabs:block/quantumfield/neutrino/down",
+         "up": "minelabs:block/quantumfield/neutrino/up",
+         "north": "minelabs:block/quantumfield/neutrino/north",
+         "east": "minelabs:block/quantumfield/neutrino/east",
+         "south": "minelabs:block/quantumfield/neutrino/south",
+         "west": "minelabs:block/quantumfield/neutrino/west",
+         "particle": "minelabs:block/quantumfield/neutrino/down"
+    }
+}
