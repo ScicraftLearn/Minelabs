@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -27,11 +28,11 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
     @Final
     private DefaultedList<ItemStack> itemsBeingCooked;
 
-    @Inject(method = "litServerTick", at = @At(value = "TAIL"))
-    private static void injectServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
-        //TODO WHERE ??? or not NECESSARY (Tail for now)
-
-
+    @ModifyArg(method = "litServerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;updateListeners(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;I)V"), index = 2)
+    private static BlockState injectServerTick(BlockState oldState) {
+        //TODO a fire changer was used return to state with fire_color = 0
+        oldState.with(IntProperty.of("fire_color", 0, 10), 4);
+        return oldState;
     }
 
     @Inject(method = "clientTick", at = @At("TAIL"))
@@ -42,7 +43,7 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
                 world.setBlockState(pos, state.with(IntProperty.of("fire_color", 0, 10), item.getFireColor()), 1);
             }
         }
-        world.setBlockState(pos, state.with(IntProperty.of("fire_color", 0, 10), 0));
+        //world.setBlockState(pos, state.with(IntProperty.of("fire_color", 0, 10), 4));
     }
 
     @Inject(method = "addItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;emitGameEvent(Lnet/minecraft/world/event/GameEvent;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/event/GameEvent$Emitter;)V"))
