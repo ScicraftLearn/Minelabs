@@ -2,8 +2,14 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "minelabs:item/atom_grey",
-    "layer1": "minelabs:item/oxygen",
-    "layer2": "minelabs:item/hydrogen",
-    "layer3": "minelabs:item/electrons8"
-  }
+    "layer1": "minelabs:item/lead"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/lead_atom_internal"
+    }
+  ]
 }

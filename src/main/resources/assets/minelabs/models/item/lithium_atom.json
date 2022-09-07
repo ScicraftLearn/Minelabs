@@ -12,5 +12,13 @@
       "translation": [3.25, 3.75, -4.25],
       "scale": [0.5, 0.5, 0.5]
     }
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/lithium_atom_internal"
+    }
+  ]
 }
