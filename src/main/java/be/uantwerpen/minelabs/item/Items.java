@@ -77,6 +77,12 @@ public class Items {
     public static final Item COPPER_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.MINELABS), 7), "copper_chloride_dust");
 
+    public static final Item POTASSIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 8), "potassium_sulfate_dust");
+
+    public static final Item POTASSIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 8), "potassium_nitrate_dust");
+
     public static final Item POTASSIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.MINELABS), 9), "potassium_chloride_dust");
 
