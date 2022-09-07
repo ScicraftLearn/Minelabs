@@ -30,7 +30,7 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
 
     @ModifyArg(method = "litServerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;updateListeners(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;I)V"), index = 2)
     private static BlockState injectServerTick(BlockState oldState) {
-        //TODO a fire changer was used return to state with fire_color = 0
+        //a fire changer was crafted, return to state with fire_color = 0
         oldState.with(IntProperty.of("fire_color", 0, 10), 4);
         return oldState;
     }
