@@ -2,13 +2,12 @@ package be.uantwerpen.minelabs.mixins;
 
 import be.uantwerpen.minelabs.block.entity.ICampfireBlockEntity;
 import be.uantwerpen.minelabs.item.IFireReaction;
+import be.uantwerpen.minelabs.util.Properties;
 import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,7 +30,7 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
     @ModifyArg(method = "litServerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;updateListeners(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;I)V"), index = 2)
     private static BlockState injectServerTick(BlockState oldState) {
         //a fire changer was crafted, return to state with fire_color = 0
-        oldState.with(IntProperty.of("fire_color", 0, 10), 4);
+        oldState.with(Properties.FIRE_COLOR, 0);
         return oldState;
     }
 
@@ -40,7 +39,7 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
         for (int i = 0; i < campfire.getItemsBeingCooked().size(); i++) {
             if (campfire.getItemsBeingCooked().get(i).isIn(Tags.Items.FIRE_CHANGER)) {
                 IFireReaction item = (IFireReaction) campfire.getItemsBeingCooked().get(i).getItem();
-                world.setBlockState(pos, state.with(IntProperty.of("fire_color", 0, 10), item.getFireColor()), 1);
+                world.setBlockState(pos, state.with(Properties.FIRE_COLOR, item.getFireColor()), 1);
             }
         }
         //world.setBlockState(pos, state.with(IntProperty.of("fire_color", 0, 10), 4));
@@ -50,8 +49,8 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
     public void injectAddItems(Entity user, ItemStack stack, int cookTime, CallbackInfoReturnable<Boolean> cir) {
         if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
             IFireReaction item = (IFireReaction) stack.getItem();
-            user.sendMessage(Text.literal("fire color: " + item.getFireColor()));
-            setCachedState(getCachedState().with(IntProperty.of("fire_color", 0, 10), item.getFireColor()));
+            //user.sendMessage(Text.literal("fire color: " + item.getFireColor()));
+            setCachedState(getCachedState().with(Properties.FIRE_COLOR, item.getFireColor()));
         }
     }
 

@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.mixins;
 
 import be.uantwerpen.minelabs.block.ICampfireBlock;
+import be.uantwerpen.minelabs.util.Properties;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -38,7 +39,7 @@ public abstract class CampfireBlockMixin implements ICampfireBlock {
     @Shadow
     protected abstract boolean isSignalFireBaseBlock(BlockState state);
 
-    private static final IntProperty FIRE_COLOR = IntProperty.of("fire_color", 0, 10);
+    private static final IntProperty FIRE_COLOR = Properties.FIRE_COLOR;
 
     @Override
     public IntProperty getFireColor() {
