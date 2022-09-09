@@ -142,7 +142,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
             int nrOfElectrons = bohrBlockEntity.getElectronCount();
             int remaining = state.get(TIMER);
             if (NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
-                remaining = 120; // max timer value
+                remaining = 99; // max timer value
             } else {
                 remaining = Math.max(0, remaining - 1);
             }
@@ -150,7 +150,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 NbtCompound nbtCompound = bohrBlockEntity.createNbt();
                 bohrBlockEntity.writeNbt(nbtCompound);
                 bohrBlockEntity.scatterParticles(3);
-                remaining = 120;
+                remaining = 99;
             }
             state = state.with(TIMER, remaining);
             world.setBlockState(pos, state);
@@ -224,6 +224,8 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
             }
 
+            // commented for testing purposes
+            // timer decrease
 //            if (isActionResultSuccessful) { // if we changed the amount of protons/neutrons/electrons
 //
 //                int nrOfProtons = bohrBlockEntity.getProtonCount();
@@ -235,18 +237,17 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 //                    halflife = nucleus.getHalflife();
 //                    if (!nucleus.isStable()) {
 //                        remainingNew = NuclidesTable.getHalflifeValues(halflife).get(1).intValue();
-//                        state = state.with(TIMER, remainingNew);
-//                        world.setBlockState(pos, state);
 //                    }
 //                    else {
-//                        remainingNew = 600;
-//                        state = state.with(TIMER, remainingNew);
-//                        world.setBlockState(pos, state);
+//                        remainingNew = 99;
+//
 //                    }
 //                }
+//                state = state.with(TIMER, remainingNew);
+//                world.setBlockState(pos, state);
+//                world.createAndScheduleBlockTick(pos, this, 20, TickPriority.VERY_HIGH);
 //
 //            }
-
 
         }
         return ActionResult.SUCCESS;

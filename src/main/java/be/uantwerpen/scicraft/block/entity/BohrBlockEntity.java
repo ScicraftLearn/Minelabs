@@ -28,6 +28,8 @@ import net.minecraft.util.math.ColorHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +44,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public static final EnumProperty<BohrPart> PART = SciCraftProperties.BOHR_PART;
 
 
-    public static final int maxTimerAmount = 120;
+    public static final int maxTimerAmount = 99;
     public static final IntProperty TIMER = IntProperty.of("timer", 0, maxTimerAmount);
     //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
     public static final IntProperty STATUS = IntProperty.of("status", 0, 2);
@@ -127,12 +129,11 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             return;
         }
         assert world != null;
+
         int nrOfProtons = getProtonCount();
         int nrOfNeutrons = getNeutronCount();
         int nrOfElectrons = getElectronCount();
 
-        int neutronDiff = 0;
-        int electronDiff = 0;
         String neutronHelp = "";
         String electronHelp = "";
 
@@ -147,6 +148,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         String ionicCharge = NuclidesTable.calculateIonicCharge(nrOfProtons, nrOfElectrons);
         String ion = "ion: " + ionicCharge;
         int color = RED_COLOR;
+        boolean doesStableNuclideExist = true;
+
         if (nuclideStateInfo != null) {
             atomName = nuclideStateInfo.getAtomName();
             symbol = nuclideStateInfo.getSymbol();
@@ -157,68 +160,22 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
                 mainDecayMode = "Stable";
             }
             else {
-                if (!nuclideStateInfo.isStable()) {
-                    neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons, false); // here: amount of total neutrons we need
-                    if (neutronDiff != -1) {
-                        neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
-                        if (neutronDiff < 0) {
-                            neutronDiff = Math.abs(neutronDiff);
-                            neutronHelp = "Add ";
-                        }
-                        else {
-                            neutronHelp = "Remove ";
-                        }
-                        neutronHelp += neutronDiff + " neutrons";
-                    }
-                }
-
-                if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
-                    if (!neutronHelp.isEmpty()) {
-                        electronHelp += " and ";
-                    }
-                    if (nrOfProtons - nrOfElectrons > 0) {
-                        electronDiff = nrOfProtons - nrOfElectrons - 5;
-                        electronHelp += "add ";
-                    }
-                    else {
-                        electronDiff = nrOfElectrons - (nrOfProtons + 5);
-                        electronHelp += "remove ";
-                    }
-                    electronHelp += electronDiff + " electrons";
-                }
+                doesStableNuclideExist = false;
             }
         }
         else {
-            neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons, false); // here: amount of total neutrons we need
-            if (neutronDiff != -1) {
-                neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
-                if (neutronDiff < 0) {
-                    neutronDiff = Math.abs(neutronDiff);
-                    neutronHelp = "Add ";
-                }
-                else {
-                    neutronHelp = "Remove ";
-                }
-                neutronHelp += neutronDiff + " neutrons";
-            }
-
-            if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
-                if (!neutronHelp.isEmpty()) {
-                    electronHelp += " and ";
-                }
-                if (nrOfProtons - nrOfElectrons > 0) {
-                    electronDiff = nrOfProtons - nrOfElectrons - 5;
-                    electronHelp += "add ";
-                }
-                else {
-                    electronDiff = nrOfElectrons - (nrOfProtons + 5);
-                    electronHelp += "remove ";
-                }
-                electronHelp += electronDiff + " electrons";
-            }
+            doesStableNuclideExist = false;
+        }
+        if (!doesStableNuclideExist) {
+            ArrayList<String> buildHelp = getBuildHelp(nrOfProtons, nrOfNeutrons, nrOfElectrons);
+            neutronHelp = buildHelp.get(0);
+            electronHelp = buildHelp.get(1);
         }
         String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + world.getBlockState(getPos()).get(TIMER);
         String helpInfo = neutronHelp + electronHelp + " to stabilise.";
+        /*
+         * Rendering of text:
+         */
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, atomInfo, 10, 10, color);
         if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
             MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
@@ -226,6 +183,50 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, protonString, 10, 30, WHITE_COLOR);
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, neutronString, 10, 40, WHITE_COLOR);
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, electronString, 10, 50, WHITE_COLOR);
+    }
+
+    /**
+     * Determines the help messages (for neutrons and electrons) to be shown to the player while building an atom.
+     *
+     * @param nrOfProtons : amount of protons
+     * @param nrOfNeutrons : amount of neutrons
+     * @param nrOfElectrons : amount of electrons
+     * @return : array of two values (size=2, type=String) = the neutron help and the electron help message.
+     */
+    public ArrayList<String> getBuildHelp(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons) {
+
+        int neutronDiff;
+        int electronDiff;
+        String neutronHelp = "";
+        String electronHelp = "";
+        neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons, false); // here: amount of total neutrons we need
+        if (neutronDiff != -1 && (neutronDiff != nrOfNeutrons)) {
+            neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
+            if (neutronDiff < 0) {
+                neutronDiff = Math.abs(neutronDiff);
+                neutronHelp = "Add ";
+            }
+            else {
+                neutronHelp = "Remove ";
+            }
+            neutronHelp += neutronDiff + " neutrons";
+        }
+
+        if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
+            if (!neutronHelp.isEmpty()) {
+                electronHelp += " and ";
+            }
+            if (nrOfProtons - nrOfElectrons > 0) {
+                electronDiff = nrOfProtons - nrOfElectrons - 5;
+                electronHelp += "add ";
+            }
+            else {
+                electronDiff = nrOfElectrons - (nrOfProtons + 5);
+                electronHelp += "remove ";
+            }
+            electronHelp += electronDiff + " electrons";
+        }
+        return new ArrayList<>(Arrays.asList(neutronHelp, electronHelp));
     }
 
     /**

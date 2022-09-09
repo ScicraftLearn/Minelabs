@@ -16,16 +16,28 @@ import java.util.*;
  *
  * You can change the working of this by writing something new, however, if you wish to change certain things, here's a little guide:
  *
+ * The CSV that is read for the nuclides table is currently located at : src/main/resources/data/nuclidesTable/nndc_nudat_data_export.csv
+ * Should you change the CSV, don't forget to add the line "0,0,Void,0.0,STABLE," under the header.
+ * The parseNuclideInfo is used inside the readCSV() function and handles the parsing (of each line in the file).
+ * The halflifeRanges variable has specific halflife ranges that are associated with certain values, in this case a shake multiplier and timer, both used in the bohrplate rendering function (BohrBlockEntityRenderer.java).
+ * The parseHalflife and convertToSeconds functions are both for converting the CSV halflife column value to a useful value for us.
+ *
+ * This class works together well with the NucleusState class (located in the same folder (see NucleusState.java)).
+ * When we make an atom, we create a NucleusState object provided with the atom's information.
+ *
+ * If you want to parse the decay modes, which isn't being done right now, you can do so by going to the parseNuclideInfo function,
+ * getting the mainDecayMode variable (it is already declared inside the function and assigned (a unique decay mode if it is present in the CSV))
+ * and pass it to a parse method of your making, before you add it to the nucleus in question.
  */
 public class NuclidesTable {
 
-    private static final LinkedHashMap<Float, ArrayList<Float>> halflifeRanges = makeHalflifeRanges(); // map with key=halflife and value=multiplier
+    private static final LinkedHashMap<Float, ArrayList<Float>> halflifeRanges = makeHalflifeRanges(); // map with key=halflife and value=[multiplier,timer]
     private static final Map<String, NucleusState> nuclidesTable = readCSV(); // map with key=nrOfProtons:nrOfNeutrons and value=nucleus_state_object
     private static final Map<Integer, Integer> shells = new HashMap<>(); // map with key=amount_of_shells and value=amount_of_electrons (corresponding)
 
     static { // see https://www.nndc.bnl.gov/nudat3/ for the nuclides table
 
-        // define electron shells map
+        // define electron shells map (source: wikipedia)
         shells.put(1, 2);
         shells.put(2, 8);
         shells.put(3, 18);
@@ -39,7 +51,7 @@ public class NuclidesTable {
     }
 
     /**
-     * reads CSV file containing nuclides table data
+     * Reads CSV file containing nuclides table data
      *
      * @return : own nuclides table map
      */
@@ -72,18 +84,20 @@ public class NuclidesTable {
      * @param n : amount of neutrons
      * @param atomName : String name of the atom
      * @param symbol : String name of the symbol associated with the atom
-     * @param mainDecayMode : String name of the decay mode (possible options are: alpha, EC+ beta+, beta-, p, n, EC, SF, Stable)
+     * @param mainDecayModes : Array of decay modes
      * @param atomItem : minecraft atom item
-     * @param unstability : integer value for how far from the black line we are on the nuclides table
+     * @param unstability : float value for how far from the black line we are on the nuclides table
+     * @param nuclidestable : nuclides table map (by reference)
+     * @param halflife : halflife value of the atom
      */
-    private static void addNuclidesTableEntry(int z, int n, String atomName, String symbol, ArrayList<String> mainDecayMode, Item atomItem, float unstability, Map<String, NucleusState> nuclidestable, float halflife) {
+    private static void addNuclidesTableEntry(int z, int n, String atomName, String symbol, ArrayList<String> mainDecayModes, Item atomItem, float unstability, Map<String, NucleusState> nuclidestable, float halflife) {
         String compositeAtomKey = z + ":" + n;
-        NucleusState nucleus = new NucleusState(mainDecayMode, symbol, atomName, atomItem, z, n, unstability, halflife);
+        NucleusState nucleus = new NucleusState(mainDecayModes, symbol, atomName, atomItem, z, n, unstability, halflife);
         nuclidestable.put(compositeAtomKey, nucleus);
     }
 
     /**
-     * Finds the value associated with the key ("nrOfProtons:nrOfNeutrons") in the nuclides map.
+     * Finds the value associated with the composite key ("nrOfProtons:nrOfNeutrons") in the nuclides map.
      *
      * @param nrOfProtons : amount of protons
      * @param nrOfNeutrons : amount of neutrons
@@ -102,10 +116,10 @@ public class NuclidesTable {
     }
 
     /**
-     * Calculates the number of electrons given the shell number.
+     * Calculates the number of electrons given the shell number (shell number range = [1,9]).
      *
      * @param shell : shell number
-     * @return : integer amount of electrons
+     * @return : (integer) amount of electrons
      */
     public static int calculateNrOfElectrons(int shell) {
         for (Map.Entry<Integer, Integer> entry : shells.entrySet()) {
@@ -152,7 +166,7 @@ public class NuclidesTable {
         if (nucleusState != null) {
             return nucleusState.getUnstability();
         }
-        return 0;
+        return -1; // nucleusState = null => non-existing atom
     }
 
     public static Map<String, NucleusState> getNuclidesTable() {
@@ -195,7 +209,7 @@ public class NuclidesTable {
     }
 
     /**
-     * Used to convert a (string) float number with unit to (float) seconds
+     * Used to convert a (string) float number with unit (see CSV) to (float) seconds
      *
      * @param floatNumber : string representation of float number
      * @param unit : string representation of the unit corresponding to the float number
@@ -264,7 +278,7 @@ public class NuclidesTable {
         }
         if (halflifeValue.isEmpty()) {
             halflifeValue.add(0.005f);
-            halflifeValue.add(600f);
+            halflifeValue.add(99f);
         }
         return halflifeValue;
     }
@@ -281,13 +295,13 @@ public class NuclidesTable {
         // ]1maand-1jaar],]1jaar - 10jaar], ]10jaar - 10000jaar], ]10000jaar-oneindig[
 
         LinkedHashMap<Float, ArrayList<Float>> _halflifeRanges = new LinkedHashMap<>();
-        _halflifeRanges.put(1f, new ArrayList<>(Arrays.asList(0.04f, 5f))); // 1 second
-        _halflifeRanges.put(3600f, new ArrayList<>(Arrays.asList(0.035f, 10f))); // 1 hour
-        _halflifeRanges.put(86400f, new ArrayList<>(Arrays.asList(0.03f, 20f))); // 1 day
+        _halflifeRanges.put(1f, new ArrayList<>(Arrays.asList(0.04f, 10f))); // 1 second
+        _halflifeRanges.put(3600f, new ArrayList<>(Arrays.asList(0.035f, 20f))); // 1 hour
+        _halflifeRanges.put(86400f, new ArrayList<>(Arrays.asList(0.03f, 30f))); // 1 day
         _halflifeRanges.put(2629743.83f, new ArrayList<>(Arrays.asList(0.025f, 40f))); // 1 month
-        _halflifeRanges.put(31556926f, new ArrayList<>(Arrays.asList(0.02f, 60f))); // 1 year
-        _halflifeRanges.put(315569260f, new ArrayList<>(Arrays.asList(0.015f, 120f))); // 10 years
-        _halflifeRanges.put(315569260000f, new ArrayList<>(Arrays.asList(0.01f, 300f))); // 10000 years
+        _halflifeRanges.put(31556926f, new ArrayList<>(Arrays.asList(0.02f, 55f))); // 1 year
+        _halflifeRanges.put(315569260f, new ArrayList<>(Arrays.asList(0.015f, 75f))); // 10 years
+        _halflifeRanges.put(315569260000f, new ArrayList<>(Arrays.asList(0.01f, 90f))); // 10000 years
         return  _halflifeRanges;
     }
 
@@ -303,15 +317,17 @@ public class NuclidesTable {
         Atom atom = Atom.getBySymbol(symbol);
         String atomName = "";
         Item atomItem = null;
+        int z = Integer.parseInt(nuclideInfo[0]);
+        int n = Integer.parseInt(nuclideInfo[1]);
+        String mainDecayMode = "unstable";
+        String halflife = "";
+        float _halflife = 0f;
+        float unstability = 0f;
+
         if (atom != null) {
             atomName = atom.name();
             atomItem = atom.getItem();
         }
-        int z = Integer.parseInt(nuclideInfo[0]);
-        int n = Integer.parseInt(nuclideInfo[1]);
-
-        String mainDecayMode = "unstable";
-        String halflife = "";
         if (nuclideInfo.length > 5) {
             halflife = nuclideInfo[4];
             mainDecayMode = nuclideInfo[5].toLowerCase();
@@ -319,17 +335,14 @@ public class NuclidesTable {
         else if (nuclideInfo.length > 4 && nuclideInfo[4].equals("STABLE")) {
             mainDecayMode = "stable";
         }
-        float _halflife = 0f;
-        float unstability = 0;
         if (!halflife.isEmpty()) {
             _halflife = parseHalflife(halflife);
             unstability = getHalflifeValues(_halflife).get(0);
         }
-
         // a, b+, b-, sf, n, p (ec = b+)
-        // bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
+        // possible decays: bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
         NucleusState nucleus = null;
-        if (getNuclidesTable() != null) {
+        if (getNuclidesTable() != null) { // for first atom
             nucleus = getNuclide(z, n);
         }
         try {
@@ -357,14 +370,13 @@ public class NuclidesTable {
         catch (NullPointerException e) {
             Scicraft.LOGGER.info("NullPointerException");
         }
-
     }
 
     /**
      * finds the next stable atom, given the amount of protons.
      *
      * @param protonAmount : amount of protons
-     * @param isUnstableAllowed :
+     * @param isUnstableAllowed : set to true if the return of an unstable atom is allowed (if there is no stable version). Set to false otherwise.
      * @return : (int) amount of neutrons or -1 if there is no stable atom with the amount of protons and isUnstableAllowed parameter is set to false
      */
     public static int findNextStableAtom(int protonAmount, boolean isUnstableAllowed) {
@@ -374,8 +386,7 @@ public class NuclidesTable {
         for (Map.Entry<String, NucleusState> entry : NuclidesTable.getNuclidesTable().entrySet()) {
             NucleusState nucleusValue = entry.getValue();
             int protons = nucleusValue.getNrOfProtons();
-            if (protons == protonAmount) {
-
+            if (protons == protonAmount) { // we have found the right amount of protons
                 if (nucleusValue.isStable()) {
                     _neutronAmount = nucleusValue.getNrOfNeutrons();
                     break;
@@ -386,7 +397,7 @@ public class NuclidesTable {
                 }
             }
         }
-        if (_neutronAmount == 0) { // no stable (black) square
+        if (_neutronAmount == 0) { // no stable (black) square found
             _neutronAmount = tempNeutronAmount;
             if (!isUnstableAllowed) {
                 _neutronAmount = -1;
