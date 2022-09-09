@@ -224,6 +224,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
             }
 
+            // commented for testing purposes
             // timer decrease
 //            if (isActionResultSuccessful) { // if we changed the amount of protons/neutrons/electrons
 //

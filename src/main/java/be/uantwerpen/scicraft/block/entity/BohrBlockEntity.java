@@ -176,7 +176,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         /*
          * Rendering of text:
          */
-        MinecraftClient.getInstance().textRenderer.draw(matrixStack, atomInfo, 10, 60, color);
+        MinecraftClient.getInstance().textRenderer.draw(matrixStack, atomInfo, 10, 10, color);
         if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
             MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
         }
