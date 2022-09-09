@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.mixins;
 
 import be.uantwerpen.minelabs.block.ICampfireBlock;
+import be.uantwerpen.minelabs.block.entity.ICampfireBlockEntity;
 import be.uantwerpen.minelabs.util.Properties;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -65,11 +66,18 @@ public abstract class CampfireBlockMixin implements ICampfireBlock {
         WorldAccess worldAccess = ctx.getWorld();
         BlockPos blockPos = ctx.getBlockPos();
         boolean bl = worldAccess.getFluidState(blockPos).getFluid() == Fluids.WATER;
-        //ICampfireBlockEntity entity = (ICampfireBlockEntity) worldAccess.getBlockEntity(blockPos);
+        ICampfireBlockEntity entity = (ICampfireBlockEntity) worldAccess.getBlockEntity(blockPos);
+        if (entity != null) {
+            //In case Minecraft uses PlacementState as "default state"
+            cir.setReturnValue(block.getStateManager().getDefaultState().with(WATERLOGGED, bl)
+                    .with(SIGNAL_FIRE, isSignalFireBaseBlock(worldAccess.getBlockState(blockPos.down()))).with(LIT, !bl)
+                    .with(FACING, ctx.getPlayerFacing()).with(FIRE_COLOR, entity.getLatestFire()));
 
-        cir.setReturnValue(block.getStateManager().getDefaultState().with(WATERLOGGED, bl)
-                .with(SIGNAL_FIRE, isSignalFireBaseBlock(worldAccess.getBlockState(blockPos.down()))).with(LIT, !bl)
-                .with(FACING, ctx.getPlayerFacing()).with(FIRE_COLOR, 0));
+        } else {
+            cir.setReturnValue(block.getStateManager().getDefaultState().with(WATERLOGGED, bl)
+                    .with(SIGNAL_FIRE, isSignalFireBaseBlock(worldAccess.getBlockState(blockPos.down()))).with(LIT, !bl)
+                    .with(FACING, ctx.getPlayerFacing()).with(FIRE_COLOR, 0));
+        }
         cir.cancel();
     }
 }

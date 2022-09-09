@@ -27,9 +27,13 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
     @Final
     private DefaultedList<ItemStack> itemsBeingCooked;
 
+    /**
+     * REDUNDANT
+     */
     @ModifyArg(method = "litServerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;updateListeners(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;I)V"), index = 2)
     private static BlockState injectServerTick(BlockState oldState) {
         //a fire changer was crafted, return to state with fire_color = 0
+        //TODO CHECK IF THERE ARE STILL OTHER FIRE_CHANGERS PRESENT -> USE THAT COLOR INSTEAD IF THATS THE CASE
         oldState.with(Properties.FIRE_COLOR, 0);
         return oldState;
     }
@@ -55,7 +59,7 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
     }
 
     public boolean hasFireChanger() {
-        for (ItemStack stack : this.itemsBeingCooked) {
+        for (ItemStack stack : itemsBeingCooked) {
             if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
                 return true;
             }
@@ -63,4 +67,16 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
         return false;
     }
 
+    public int getLatestFire() {
+        int color = 0;
+        if (hasFireChanger()) {
+            for (ItemStack stack : itemsBeingCooked) {
+                if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
+                    IFireReaction item = (IFireReaction) stack.getItem();
+                    color = item.getFireColor();
+                }
+            }
+        }
+        return color;
+    }
 }
