@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_pink",
+    "layer1": "minelabs:item/uranium"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/uranium_atom_internal"
+    }
+  ]
+}

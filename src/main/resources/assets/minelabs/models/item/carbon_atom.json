@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_black",
+    "layer1": "minelabs:item/carbon",
+    "layer2": "minelabs:item/electrons4"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/carbon_atom_internal"
+    }
+  ]
+}

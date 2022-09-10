@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_green",
+    "layer1": "minelabs:item/chlorine",
+    "layer2": "minelabs:item/electrons7"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/chlorine_atom_internal"
+    }
+  ]
+}

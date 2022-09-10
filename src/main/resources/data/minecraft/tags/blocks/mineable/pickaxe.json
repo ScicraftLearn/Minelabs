@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "scicraft:salt_ore",
-    "scicraft:deepslate_salt_ore",
-    "scicraft:salt_block",
-    "scicraft:budding_salt_block",
-    "scicraft:bohr_block"
+    "minelabs:salt_ore",
+    "minelabs:deepslate_salt_ore",
+    "minelabs:salt_block",
+    "minelabs:budding_salt_block",
+    "minelabs:bohr_block"
   ]
 }

@@ -1,0 +1,25 @@
+{
+  "group":"pion_minus",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minelabs:downquark_blue"
+    },
+    {
+      "item": "minelabs:anti_upquark_blue"
+    },
+    {
+      "item": "minelabs:gluon"
+    },
+    {
+      "item": "minelabs:gluon"
+    },
+    {
+      "item": "minelabs:gluon"
+    }
+  ],
+  "result": {
+    "item": "minelabs:pion_minus",
+    "count": 1
+  }
+}

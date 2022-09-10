@@ -1,0 +1,26 @@
+{
+  "type": "minelabs:atom_type",
+  "ultrawarm": false,
+  "natural": false,
+  "piglin_safe": true,
+  "respawn_anchor_works": false,
+  "bed_works": false,
+  "has_raids": false,
+  "has_skylight": true,
+  "has_ceiling": true,
+  "coordinate_scale": 1,
+  "ambient_light": 1,
+  "logical_height": 128,
+  "effects": "minecraft:overworld",
+  "infiniburn": "#minecraft:infiniburn_overworld",
+  "min_y": 0,
+  "height": 128,
+  "monster_spawn_light_level": {
+    "type": "minecraft:uniform",
+    "value": {
+      "min_inclusive": 0,
+      "max_inclusive": 7
+    }
+  },
+  "monster_spawn_block_light_limit": 0
+}
