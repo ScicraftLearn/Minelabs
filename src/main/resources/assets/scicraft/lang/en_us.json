@@ -48,6 +48,7 @@
 
   "block.scicraft.lewis_block": "Lewis Crafting Table",
   "block.scicraft.ionic_block": "Ionic Crafting Table",
+  "block.scicraft.bohr_block": "Bohr Blueprint",
 
   "item.scicraft.proton": "Proton",
   "item.scicraft.anti_proton": "AntiProton",
