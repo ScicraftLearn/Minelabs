@@ -74,9 +74,12 @@ public abstract class CampfireBlockMixin implements ICampfireBlock {
                     .with(FACING, ctx.getPlayerFacing()).with(FIRE_COLOR, entity.getLatestFire()));
 
         } else {
-            cir.setReturnValue(block.getStateManager().getDefaultState().with(WATERLOGGED, bl)
-                    .with(SIGNAL_FIRE, isSignalFireBaseBlock(worldAccess.getBlockState(blockPos.down()))).with(LIT, !bl)
-                    .with(FACING, ctx.getPlayerFacing()).with(FIRE_COLOR, 0));
+            cir.setReturnValue(block.getStateManager().getDefaultState()
+                    .with(WATERLOGGED, bl)
+                    .with(SIGNAL_FIRE, isSignalFireBaseBlock(worldAccess.getBlockState(blockPos.down())))
+                    .with(LIT, !bl)
+                    .with(FACING, ctx.getPlayerFacing())
+                    .with(FIRE_COLOR, 0));
         }
         cir.cancel();
     }
