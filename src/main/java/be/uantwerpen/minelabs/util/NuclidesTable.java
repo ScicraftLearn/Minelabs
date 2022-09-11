@@ -60,7 +60,7 @@ public class NuclidesTable {
         String splitBy = ",";
         try {
             //parsing a CSV file into BufferedReader class constructor
-            BufferedReader br = new BufferedReader(new FileReader("../src/main/resources/data/nuclidesTable/nndc_nudat_data_export.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("../src/main/resources/data/minelabs/nuclides_table/nndc_nudat_data_export.csv"));
             int it = 0;
             while ((line = br.readLine()) != null) {
                 if (it == 0) {it++; continue;}
