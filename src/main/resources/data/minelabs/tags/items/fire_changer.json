@@ -12,6 +12,8 @@
     "minelabs:boric_acid_dust",
     "minelabs:copper_chloride_dust",
     "minelabs:potassium_chloride_dust",
+    "minelabs:potassium_sulfate_dust",
+    "minelabs:potassium_nitrate_dust",
     "minelabs:magnesium_sulfate_dust"
   ]
 }

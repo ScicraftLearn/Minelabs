@@ -13,7 +13,7 @@ public class FireReactionItem extends Item implements IFireReaction {
      *                   2 : Red,
      *                   3 : Orange,
      *                   4 : Yellow,
-     *                   5 : Yellow-Green (? lime ?),
+     *                   5 : Lime ( yellow-green ),
      *                   6 : Green,
      *                   7 : Blue (Soul fire),
      *                   8 : Violet,
