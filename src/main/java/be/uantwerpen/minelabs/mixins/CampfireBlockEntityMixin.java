@@ -34,12 +34,22 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
             }
         }
         if (color != state.get(Properties.FIRE_COLOR)) {
-
             world.setBlockState(pos, state.with(Properties.FIRE_COLOR, color), 3);
             //campfire.setCachedState(state.with(Properties.FIRE_COLOR, color));
         }
     }
 
+    @Inject(method = "litServerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;updateListeners(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;I)V"))
+    private static void craftServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
+        ICampfireBlockEntity castedE = (ICampfireBlockEntity) campfire;
+        world.setBlockState(pos, state.with(Properties.FIRE_COLOR, castedE.getLatestFire()), 3);
+    }
+
+    /**
+     * Does the campfire have a fire_changer item
+     *
+     * @return boolean
+     */
     public boolean hasFireChanger() {
         for (ItemStack stack : itemsBeingCooked) {
             if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
@@ -49,14 +59,19 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
         return false;
     }
 
+    /**
+     * Get the latest fire color of the items in the campfire
+     *
+     * @return Integer
+     */
     public int getLatestFire() {
         int color = 0;
-            for (ItemStack stack : itemsBeingCooked) {
-                if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
-                    IFireReaction item = (IFireReaction) stack.getItem();
-                    color = item.getFireColor();
-                }
+        for (ItemStack stack : itemsBeingCooked) {
+            if (stack.isIn(Tags.Items.FIRE_CHANGER)) {
+                IFireReaction item = (IFireReaction) stack.getItem();
+                color = item.getFireColor();
             }
+        }
         return color;
     }
 }

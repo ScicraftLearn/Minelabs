@@ -46,7 +46,7 @@ public class Tags {
 
     public static class Items {
 
-        public static final TagKey<Item> FIRE_CHANGER = createTag("fire_changer");
+        public static final TagKey<Item> FIRE_CHANGER = createCommonTag("fire_changer");
 
         /**
          * Create an Item tag (tag is only used inside this mod)
