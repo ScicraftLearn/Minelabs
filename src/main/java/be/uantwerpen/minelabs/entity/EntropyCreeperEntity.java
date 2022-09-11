@@ -27,12 +27,8 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-import org.apache.commons.compress.utils.Lists;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class EntropyCreeperEntity extends CreeperEntity {
@@ -45,8 +41,8 @@ public class EntropyCreeperEntity extends CreeperEntity {
 
     private final int explosionRadius = 3;
 
-    private final List<BlockPos> blocksToShuffle = Lists.newArrayList();
-    private final List<LivingEntity> entitiesToShuffle = Lists.newArrayList();
+    private final List<BlockPos> blocksToShuffle = new ArrayList<>();
+    private final List<LivingEntity> entitiesToShuffle = new ArrayList<>();
 
     // After it exploded, how many ticks to shuffle for.
     private int ticksToGo = -1;
@@ -141,7 +137,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @return List of {@link LivingEntity}
      */
     protected List<LivingEntity> getAffectedEntities(ExplosionAccessor explosion) {
-        List<LivingEntity> entities = Lists.newArrayList();
+        List<LivingEntity> entities = new ArrayList<>();
         float j = explosion.getPower() * 2.0f;
         int k = MathHelper.floor(explosion.getX() - (double) j - 1.0);
         int l = MathHelper.floor(explosion.getX() + (double) j + 1.0);
