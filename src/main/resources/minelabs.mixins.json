@@ -7,7 +7,6 @@
   },
   "mixins": [
     "BlockAccessorMixin",
-    "BlockEntityAccessorMixin",
     "CampfireBlockEntityMixin",
     "CampfireBlockMixin",
     "CreeperEntityMixin",

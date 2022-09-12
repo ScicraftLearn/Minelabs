@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CampfireBlockEntity.class)
-public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, BlockEntityAccessorMixin {
+public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity {
 
     @Shadow
     @Final
@@ -34,6 +34,7 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
             }
         }
         if (color != state.get(Properties.FIRE_COLOR)) {
+            //Change 3 -> 19 if you don't want observer updates
             world.setBlockState(pos, state.with(Properties.FIRE_COLOR, color), 3);
             //campfire.setCachedState(state.with(Properties.FIRE_COLOR, color));
         }
@@ -42,6 +43,7 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity, 
     @Inject(method = "litServerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;updateListeners(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;I)V"))
     private static void craftServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
         ICampfireBlockEntity castedE = (ICampfireBlockEntity) campfire;
+        //Change 3 -> 19 if you don't want observer updates
         world.setBlockState(pos, state.with(Properties.FIRE_COLOR, castedE.getLatestFire()), 3);
     }
 
