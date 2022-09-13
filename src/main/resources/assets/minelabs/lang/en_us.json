@@ -130,5 +130,7 @@
   "item.minelabs.erlenmeyer_nh3.effect.empty": "Ammonia (NH3)",
   "item.minelabs.erlenmeyer_n2o.effect.empty": "Laughing gas (N2O)",
   "item.minelabs.erlenmeyer_hcl.effect.empty": "Hydrogen chloride (HCl)",
-  "item.minelabs.erlenmeyer_hno3": "Nitric acid (HNO3)"
+  "item.minelabs.erlenmeyer_hno3": "Nitric acid (HNO3)",
+  "item.minelabs.safety_glasses": "Safety Glasses",
+  "item.minelabs.lab_coat": "Lab Coat"
 }

@@ -2,11 +2,12 @@ package be.uantwerpen.minelabs.item;
 
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.Blocks;
+import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.fluid.Fluids;
-import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -49,6 +50,12 @@ public class Items {
 
     public static final Item BUDDING_SALT_BLOCK = register(new BlockItem(Blocks.BUDDING_SALT_BLOCK,
             new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "budding_salt_block");
+
+    public static final Item SAFETY_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.HEAD,
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "safety_glasses");
+
+    public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_coat");
 
     // Items > Atoms
     public static Item HYDROGEN_ATOM;

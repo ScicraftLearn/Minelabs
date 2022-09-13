@@ -95,13 +95,7 @@ public class Blocks {
 
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).nonOpaque()), "lewis_block");
     public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
-
-//    public static final Block ACID = Registry.register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
-
-    public static final Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)) {
-    });
-
-
+    public static final Block ACID = register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
     public static final Block BOHR_BLOCK = register(new BohrBlock(), "bohr_block");
 
     /**
@@ -110,7 +104,6 @@ public class Blocks {
      *
      * @param block      : Block Object to register
      * @param identifier : String name of the Item
-     * @return
      * @return {@link Block}
      */
     private static <T extends Block> T register(T block, String identifier) {

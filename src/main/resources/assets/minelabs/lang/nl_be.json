@@ -116,5 +116,7 @@
   "item.minelabs.erlenmeyer_nh3.effect.empty": "Ammoniak (NH3)",
   "item.minelabs.erlenmeyer_n2o.effect.empty": "Lachgas (N2O)",
   "item.minelabs.erlenmeyer_hcl.effect.empty": "Waterstofchloride (HCl)",
-  "item.minelabs.erlenmeyer_hno3": "Salpeterzuur (HNO3)"
+  "item.minelabs.erlenmeyer_hno3": "Salpeterzuur (HNO3)",
+  "item.minelabs.safety_glasses": "Veiligheidsbril",
+  "item.minelabs.lab_coat": "Lab Jas"
 }
