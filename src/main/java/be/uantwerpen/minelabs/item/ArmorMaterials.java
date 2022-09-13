@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public enum ArmorMaterials implements ArmorMaterial {
 
-    CLOTH("cloth", 5, new int[]{1, 2, 3, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,
+    CLOTH("cloth", 8, new int[]{2, 3, 4, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,
             0.0F, 0.0F, () -> Ingredient.ofItems(Items.WHITE_WOOL));
     private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
     private final String name;
