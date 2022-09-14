@@ -45,12 +45,12 @@ public class Blocks {
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY), ()->{
                 return BlockEntities.LAB_COUNTER_BLOCK_ENTITY;
     }), "lab_counter");*/
-    public static final Block LAB_COUNTER = register(new Block(
+    public static final Block LAB_COUNTER = register(new LabBlock(
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY)), "lab_counter");
 
-    public static final Block LAB_DRAWER = register(new Block(
+    public static final Block LAB_DRAWER = register(new LabBlock(
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY)), "lab_drawer");
-    public static final Block LAB_SINK = register(new Block(
+    public static final Block LAB_SINK = register(new LabBlock(
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY)), "lab_sink");
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
