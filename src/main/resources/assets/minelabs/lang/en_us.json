@@ -48,6 +48,7 @@
 
   "block.minelabs.lewis_block": "Lewis Crafting Table",
   "block.minelabs.ionic_block": "Ionic Crafting Table",
+  "block.minelabs.bohr_block": "Bohr Blueprint",
 
   "item.minelabs.proton": "Proton",
   "item.minelabs.anti_proton": "AntiProton",
