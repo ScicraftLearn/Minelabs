@@ -110,6 +110,9 @@ public class Blocks {
     public static final Block ACID = register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
     public static final Block BOHR_BLOCK = register(new BohrBlock(), "bohr_block");
 
+    public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
+            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "erlenmeyer_stand");
+
     /**
      * Register a Block
      * <p>

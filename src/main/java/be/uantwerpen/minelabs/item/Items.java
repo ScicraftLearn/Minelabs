@@ -168,6 +168,8 @@ public class Items {
     public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "ionic_block");
 
     // Erlenmeyer
+    public static final Item ERLENMEYER_STAND = register(new BlockItem(Blocks.ERLENMEYER_STAND,
+            new FabricItemSettings().group(ItemGroups.CHEMICALS)), "erlenmeyer_stand");
     public static final Item ERLENMEYER = register(new Item(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64)), "erlenmeyer");
 
 //    public static final Item ACID_BUCKET = register(new BucketItem(Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.MINELABS).maxCount(64)), "erlenmeyer_fluid");

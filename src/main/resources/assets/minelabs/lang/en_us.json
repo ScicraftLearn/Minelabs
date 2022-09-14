@@ -38,6 +38,7 @@
   "block.minelabs.lab_drawer": "Lab Drawers",
   "block.minelabs.lab_sink": "Lab Sink",
   "block.minelabs.lab_counter": "Lab Counter",
+  "block.minelabs.erlenmeyer_stand": "Erlenmeyer Stand",
   "blockEntity.minelabs.charged_block": "Charged Block",
   "entity.minecraft.villager.sciencevillager": "Science Villager",
   "entity.minelabs.entropy_creeper": "Entropy Creeper",
@@ -45,7 +46,6 @@
   "item.minelabs.salt_shard": "Salt Shard",
   "block.minelabs.lewis_block": "Lewis Crafting Table",
   "block.minelabs.ionic_block": "Ionic Crafting Table",
-
   "item.minelabs.proton": "Proton",
   "item.minelabs.anti_proton": "AntiProton",
   "item.minelabs.electron": "Electron",

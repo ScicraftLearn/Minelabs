@@ -17,7 +17,6 @@
   "block.minelabs.neutrino": "Neutrino",
   "block.minelabs.antineutrino": "Antineutrino",
   "block.minelabs.helium": "Helium Gas",
-
   "block.minelabs.gluon_quantumfield": "Gluon Kwantumveld",
   "block.minelabs.photon_quantumfield": "Foton Kwantumveld",
   "block.minelabs.weak_boson_quantumfield": "Zwak Boson Kwantumveld",
@@ -25,16 +24,12 @@
   "block.minelabs.neutrino_quantumfield": "Neutrino Kwantumveld",
   "block.minelabs.upquark_quantumfield": "Upquark Kwantumveld",
   "block.minelabs.downquark_quantumfield": "Downquark Kwantumveld",
-
   "block.minelabs.time_freeze_block": "Tijdstop Blok",
-
+  "block.minelabs.erlenmeyer_stand": "Erlenmeyer Stand",
   "blockEntity.minelabs.charged_block": "Geladen Blok",
-
   "entity.minecraft.villager.sciencevillager": "Wetenschaps Dorpeling",
-
   "entity.minelabs.entropy_creeper": "Entropie Creeper",
   "item.minelabs.entropy_creeper_spawn_egg": "EntropieCreeper Spawnei",
-
   "block.minelabs.lewis_block": "Lewis Werkbank",
 
   "item.minelabs.proton": "Proton",
