@@ -214,7 +214,10 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             else {
                 neutronHelp = "Remove ";
             }
-            neutronHelp += neutronDiff + " neutrons";
+            neutronHelp += neutronDiff + " neutron";
+            if (neutronDiff > 1) {
+                neutronHelp += "s";
+            }
         }
 
         if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
@@ -229,7 +232,10 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
                 electronDiff = nrOfElectrons - (nrOfProtons + 5);
                 electronHelp += "remove ";
             }
-            electronHelp += electronDiff + " electrons";
+            electronHelp += electronDiff + " electron";
+            if (electronDiff > 1) {
+                electronHelp += "s";
+            }
         }
         return new ArrayList<>(Arrays.asList(neutronHelp, electronHelp));
     }
