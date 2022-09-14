@@ -19,8 +19,19 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
+      - name: Upload to server
+        run: source <(grep mod_version gradle.properties) \
+          && source <(grep archives_base_name gradle.properties) \
+          && source <(grep loader_version gradle.properties) \
+          && source <(grep minecraft_version gradle.properties) \
+          && echo ${archives_base_name}-${mod_version}.jar \
+          && mkdir output \
+          && cp build/libs/${archives_base_name}-${mod_version}.jar output/. \
+          && echo "ok"
+
       - name: Upload build reports
         uses: actions/upload-artifact@v3
         with:
-          name: build-report
-          path: build/libs/
+          name: mod
+          path: output
+
