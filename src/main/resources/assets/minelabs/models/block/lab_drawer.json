@@ -1,0 +1,484 @@
+{
+  "credit": "Made with Blockbench",
+  "texture_size": [
+    64,
+    64
+  ],
+  "textures": {
+    "1": "minelabs:block/counter_texture",
+    "2": "minelabs:block/drawer_texture"
+  },
+  "elements": [
+    {
+      "name": "Tablebase",
+      "from": [
+        0,
+        0,
+        1
+      ],
+      "to": [
+        16,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            7.5,
+            8,
+            10.75
+          ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [
+            8,
+            0,
+            11.75,
+            3.25
+          ],
+          "texture": "#1"
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            4,
+            11.25
+          ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            8,
+            3.25,
+            11.75,
+            6.5
+          ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            8,
+            3.75,
+            4,
+            0
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            8,
+            3.75,
+            4,
+            7.5
+          ],
+          "texture": "#1"
+        }
+      }
+    },
+    {
+      "name": "Tabletop",
+      "from": [
+        0,
+        13,
+        0
+      ],
+      "to": [
+        16,
+        14,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            6.5,
+            12,
+            6.75
+          ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [
+            8,
+            6.75,
+            12,
+            7
+          ],
+          "texture": "#1"
+        },
+        "south": {
+          "uv": [
+            8,
+            7,
+            12,
+            7.25
+          ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            8,
+            7.25,
+            12,
+            7.5
+          ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            0,
+            0
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            0,
+            8
+          ],
+          "texture": "#1"
+        }
+      }
+    },
+    {
+      "name": "Tabletopedge",
+      "from": [
+        0,
+        14,
+        15
+      ],
+      "to": [
+        16,
+        15,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            7.5,
+            12,
+            7.75
+          ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [
+            8,
+            8.5,
+            8.25,
+            8.75
+          ],
+          "texture": "#1"
+        },
+        "south": {
+          "uv": [
+            8,
+            7.75,
+            12,
+            8
+          ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            8.25,
+            8.5,
+            8.5,
+            8.75
+          ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            12,
+            8.25,
+            8,
+            8
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            12,
+            8.25,
+            8,
+            8.5
+          ],
+          "texture": "#1"
+        }
+      }
+    },
+    {
+      "name": "top drawer",
+      "from": [
+        2,
+        8,
+        0
+      ],
+      "to": [
+        14,
+        11,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            3,
+            6,
+            4.5
+          ],
+          "texture": "#2"
+        },
+        "east": {
+          "uv": [
+            6,
+            4.5,
+            6.5,
+            6
+          ],
+          "texture": "#2"
+        },
+        "south": {
+          "uv": [
+            0,
+            4.5,
+            6,
+            6
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            6,
+            6,
+            6.5,
+            7.5
+          ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [
+            12,
+            1,
+            6,
+            0.5
+          ],
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            12,
+            1,
+            6,
+            1.5
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "bottom drawer",
+      "from": [
+        2,
+        3,
+        0
+      ],
+      "to": [
+        14,
+        6,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            1.5
+          ],
+          "texture": "#2"
+        },
+        "east": {
+          "uv": [
+            6,
+            1.5,
+            6.5,
+            3
+          ],
+          "texture": "#2"
+        },
+        "south": {
+          "uv": [
+            0,
+            1.5,
+            6,
+            3
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            6,
+            3,
+            6.5,
+            4.5
+          ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [
+            6,
+            6.5,
+            0,
+            6
+          ],
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [
+            12,
+            0,
+            6,
+            0.5
+          ],
+          "texture": "#2"
+        }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        1.5,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "ground": {
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "gui": {
+      "rotation": [
+        14,
+        145,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "head": {
+      "translation": [
+        0,
+        1.5,
+        0
+      ]
+    }
+  },
+  "groups": [
+    {
+      "name": "counter",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "color": 0,
+      "children": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "name": "external",
+      "origin": [
+        8,
+        8,
+        8
+      ],
+      "color": 0,
+      "children": [
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}

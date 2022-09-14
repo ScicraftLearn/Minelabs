@@ -27,7 +27,6 @@
   "block.minelabs.neutrino": "Neutrino",
   "block.minelabs.antineutrino": "Antineutrino",
   "block.minelabs.helium": "Helium Gas",
-
   "block.minelabs.gluon_quantumfield": "Gluon Quantumfield",
   "block.minelabs.photon_quantumfield": "Photon Quantumfield",
   "block.minelabs.weak_boson_quantumfield": "Weak Boson Quantumfield",
@@ -35,17 +34,15 @@
   "block.minelabs.neutrino_quantumfield": "Neutrino Quantumfield",
   "block.minelabs.upquark_quantumfield": "Upquark Quantumfield",
   "block.minelabs.downquark_quantumfield": "Downquark Quantumfield",
-
   "block.minelabs.time_freeze_block": "Time Freeze Block",
-
+  "block.minelabs.lab_drawer": "Lab Drawers",
+  "block.minelabs.lab_sink": "Lab Sink",
+  "block.minelabs.lab_counter": "Lab Counter",
   "blockEntity.minelabs.charged_block": "Charged Block",
-
   "entity.minecraft.villager.sciencevillager": "Science Villager",
-
   "entity.minelabs.entropy_creeper": "Entropy Creeper",
   "item.minelabs.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
   "item.minelabs.salt_shard": "Salt Shard",
-
   "block.minelabs.lewis_block": "Lewis Crafting Table",
   "block.minelabs.ionic_block": "Ionic Crafting Table",
 

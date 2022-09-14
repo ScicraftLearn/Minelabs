@@ -57,6 +57,15 @@ public class Items {
     public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
             new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_coat");
 
+    public static final Item LAB_COUNTER = register(new BlockItem(Blocks.LAB_COUNTER,
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_counter");
+
+    public static final Item LAB_DRAWER = register(new BlockItem(Blocks.LAB_DRAWER,
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_drawer");
+
+    public static final Item LAB_SINK = register(new BlockItem(Blocks.LAB_SINK,
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_sink");
+
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
     public static Item HELIUM_ATOM;
