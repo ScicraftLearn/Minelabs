@@ -6,11 +6,14 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "BlockAccessorMixin",
+    "CampfireBlockEntityMixin",
+    "CampfireBlockMixin",
     "CreeperEntityMixin",
-    "LivingEntityMixin",
     "ExplosionAccessor",
     "FireMixin",
-    "ThrownEntityMixin",
+    "LivingEntityMixin",
+    "ThrownEntityMixin"
   ],
   "client": []
 }
