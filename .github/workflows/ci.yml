@@ -26,7 +26,9 @@ jobs:
           && source <(grep minecraft_version gradle.properties) \
           && echo ${archives_base_name}-${mod_version}.jar \
           && mkdir output \
-          && cp build/libs/${archives_base_name}-${mod_version}.jar output/. \
+          && cd output \
+          && cp ../build/libs/${archives_base_name}-${mod_version}.jar . \
+          && cd .. \
           && echo "ok"
 
       - name: Upload build reports
