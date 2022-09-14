@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 
 public enum ArmorMaterials implements ArmorMaterial {
 
+    // Don't forget Armor Overlay with names: typename_layer_1.png (helmet, chest, boots) and typename_layer_2.png
     CLOTH("cloth", 8, new int[]{2, 3, 4, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,
             0.0F, 0.0F, () -> Ingredient.ofItems(Items.WHITE_WOOL));
     private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
