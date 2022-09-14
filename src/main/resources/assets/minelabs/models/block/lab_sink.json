@@ -7,7 +7,8 @@
   "textures": {
     "1": "minelabs:block/counter_texture",
     "2": "minelabs:block/sink_texture",
-    "3": "minelabs:block/cabin_texture"
+    "3": "minelabs:block/cabin_texture",
+    "particle": "minelabs:block/counter_texture"
   },
   "elements": [
     {

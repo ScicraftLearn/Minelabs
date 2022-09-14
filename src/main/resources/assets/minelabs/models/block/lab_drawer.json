@@ -6,7 +6,8 @@
   ],
   "textures": {
     "1": "minelabs:block/counter_texture",
-    "2": "minelabs:block/drawer_texture"
+    "2": "minelabs:block/drawer_texture",
+    "particle": "minelabs:block/counter_texture"
   },
   "elements": [
     {
