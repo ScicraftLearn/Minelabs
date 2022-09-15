@@ -45,10 +45,10 @@ public class Blocks {
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY), ()->{
                 return BlockEntities.LAB_COUNTER_BLOCK_ENTITY;
     }), "lab_counter");*/
-    public static final Block LAB_COUNTER = register(new LabBlock(
+    public static final Block LAB_COUNTER = register(new LabChestBlock(
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY)), "lab_counter");
 
-    public static final Block LAB_DRAWER = register(new LabBlock(
+    public static final Block LAB_DRAWER = register(new LabChestBlock(
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY)), "lab_drawer");
     public static final Block LAB_SINK = register(new LabSinkBlock(
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY)), "lab_sink");
