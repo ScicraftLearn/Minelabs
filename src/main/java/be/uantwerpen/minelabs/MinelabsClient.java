@@ -4,9 +4,6 @@ import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
-import be.uantwerpen.minelabs.event.ServerModEvents;
-import be.uantwerpen.minelabs.network.NetworkingConstants;
-import be.uantwerpen.minelabs.renderer.BohrBlockEntityRenderer;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisScreen;
@@ -14,10 +11,8 @@ import be.uantwerpen.minelabs.item.ItemModels;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.network.IonicDataPacket;
 import be.uantwerpen.minelabs.network.LewisDataPacket;
-import be.uantwerpen.minelabs.renderer.ChargedBlockEntityRenderer;
-import be.uantwerpen.minelabs.renderer.ChargedPlaceholderBlockEntityRenderer;
-import be.uantwerpen.minelabs.renderer.ElectricFieldSensorRenderer;
-import be.uantwerpen.minelabs.renderer.EntropyCreeperEntityRenderer;
+import be.uantwerpen.minelabs.network.NetworkingConstants;
+import be.uantwerpen.minelabs.renderer.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -108,14 +103,14 @@ public class MinelabsClient implements ClientModInitializer {
         // TODO - enchantment visuals voor zeldzame stoffen
 
         // Tier 1
-        registerErlenmeyer(Items.ERLENMEYER_02, 0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_O2, 0x7F7F7F, 2);
         registerErlenmeyer(Items.ERLENMEYER_N2, 0x7F7F7F, 2);
         registerErlenmeyer(Items.ERLENMEYER_CH4, 0x7F7F7F, 2);
 
         // Tier 2
         registerErlenmeyer(Items.ERLENMEYER_H2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N0, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N02, 0x991c00, 2);
+        registerErlenmeyer(Items.ERLENMEYER_NO, 0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_NO2, 0x991c00, 2);
         registerErlenmeyer(Items.ERLENMEYER_Cl2, 0xE8F48C, 2);
         registerErlenmeyer(Items.ERLENMEYER_CO2, 0x7F7F7F, 2);
         registerErlenmeyer(Items.ERLENMEYER_CO, 0x7F7F7F, 2);

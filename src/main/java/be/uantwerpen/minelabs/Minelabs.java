@@ -6,6 +6,7 @@ import be.uantwerpen.minelabs.crafting.CraftingRecipes;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.ScientificVillager;
 import be.uantwerpen.minelabs.event.ServerModEvents;
+import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.paintings.Paintings;
@@ -25,11 +26,14 @@ public class Minelabs implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        //Gasses.registerPotions(); // Must be before Items/Blocks
+
         Items.registerItems();
         Blocks.registerBlocks();
         BlockEntities.registerBlockEntities();
         Entities.registerEntities();
         ExtraDispenserBehavior.registerBehaviors();
+        Fluids.registerFluids();
         SoundEvents.registerSounds();
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();

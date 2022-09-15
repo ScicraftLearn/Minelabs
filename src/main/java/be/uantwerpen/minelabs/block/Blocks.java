@@ -50,7 +50,7 @@ public class Blocks {
 
     public static final Block LAB_DRAWER = register(new LabBlock(
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY)), "lab_drawer");
-    public static final Block LAB_SINK = register(new LabBlock(
+    public static final Block LAB_SINK = register(new LabSinkBlock(
             FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY)), "lab_sink");
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
