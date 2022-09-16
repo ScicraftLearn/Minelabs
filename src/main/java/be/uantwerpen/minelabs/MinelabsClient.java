@@ -6,6 +6,7 @@ import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicScreen;
+import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreen;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisScreen;
 import be.uantwerpen.minelabs.item.ItemModels;
 import be.uantwerpen.minelabs.item.Items;
@@ -94,6 +95,7 @@ public class MinelabsClient implements ClientModInitializer {
 
         //Register rendering ionic block inventory
         HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
+        HandledScreens.register(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, LabChestScreen::new);
 
 //        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LEWIS_BLOCK, RenderLayer.getTranslucent());
 
