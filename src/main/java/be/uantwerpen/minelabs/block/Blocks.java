@@ -41,15 +41,12 @@ public class Blocks {
             FabricBlockSettings.of(Material.AMETHYST).ticksRandomly().strength(1.5F)
                     .sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool()), "budding_salt_block");
 
-    public static final Block LAB_CABIN = register(new LabChestBlock(
-                    FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()),
-            "lab_cabin");
-    public static final Block LAB_DRAWER = register(new LabChestBlock(
-                    FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()),
-            "lab_drawer");
-    public static final Block LAB_SINK = register(new LabSinkBlock(
-                    FabricBlockSettings.of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()),
-            "lab_sink");
+    public static final Block LAB_CABIN = register(new LabChestBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_cabin");
+    public static final Block LAB_DRAWER = register(new LabChestBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_drawer");
+    public static final Block LAB_SINK = register(new LabSinkBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_sink");
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block PION_NUL = register(new PionNulBlock(FabricBlockSettings.of(Material.WOOL)
