@@ -59,8 +59,8 @@ public class Items {
 
     //TODO ADD PANTS? AND BOOTS ?
 
-    public static final Item LAB_COUNTER = register(new BlockItem(Blocks.LAB_COUNTER,
-            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_counter");
+    public static final Item LAB_COUNTER = register(new BlockItem(Blocks.LAB_CABIN,
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_cabin");
 
     public static final Item LAB_DRAWER = register(new BlockItem(Blocks.LAB_DRAWER,
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_drawer");
