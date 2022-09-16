@@ -15,8 +15,7 @@ public class ScreenHandlers {
 
     public static final ExtendedScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register(LewisBlockScreenHandler::new, "lewis_block");
     public static final ExtendedScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER = register(IonicBlockScreenHandler::new, "inonic_block");
-    //public static final ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER = register(LabChestScreenHandler::new, "");
-    public static ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER;
+    public static ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER = new ScreenHandlerType<>(LabChestScreenHandler::new);
 
     /**
      * Register a Screen
@@ -52,6 +51,5 @@ public class ScreenHandlers {
      */
     public static void registerScreens() {
         Minelabs.LOGGER.info("registering screens");
-        LAB_CHEST_SCREEN_HANDLER = new ScreenHandlerType<>(LabChestScreenHandler::new);
     }
 }

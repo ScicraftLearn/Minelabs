@@ -6,22 +6,28 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ArrayPropertyDelegate;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.NotNull;
 
 public class LabChestScreenHandler extends ScreenHandler {
     private final Inventory inventory;
+    private final PropertyDelegate propertyDelegate;
 
     public LabChestScreenHandler(int syncId, PlayerInventory inventory) {
-        this(syncId, inventory, new SimpleInventory(21));
+        this(syncId, inventory, new SimpleInventory(21), new ArrayPropertyDelegate(0));
     }
 
-    public LabChestScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
+    public LabChestScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
         super(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, syncId);
+        this.propertyDelegate = propertyDelegate;
         checkSize(inventory, 21);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
+
+        this.addProperties(propertyDelegate);
 
         for (int i = 0; i < 3; ++i) { // rows
             for (int j = 0; j < 7; ++j) {
