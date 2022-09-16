@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,zoom=false": {
+      "model": "minelabs:block/microscope"
+    },
+    "facing=east,zoom=false": {
+      "model": "minelabs:block/microscope",
+      "y": 90
+    },
+    "facing=south,zoom=false": {
+      "model": "minelabs:block/microscope",
+      "y": 180
+    },
+    "facing=west,zoom=false": {
+      "model": "minelabs:block/microscope",
+      "y": 270
+    },
+    "facing=north,zoom=true": {
+      "model": "minelabs:block/microscope_2"
+    },
+    "facing=east,zoom=true": {
+      "model": "minelabs:block/microscope_2",
+      "y": 90
+    },
+    "facing=south,zoom=true": {
+      "model": "minelabs:block/microscope_2",
+      "y": 180
+    },
+    "facing=west,zoom=true": {
+      "model": "minelabs:block/microscope_2",
+      "y": 270
+    }
+  }
+}

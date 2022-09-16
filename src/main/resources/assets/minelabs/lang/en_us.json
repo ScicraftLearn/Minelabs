@@ -38,6 +38,7 @@
   "block.minelabs.lab_drawer": "Lab Drawers",
   "block.minelabs.lab_sink": "Lab Sink",
   "block.minelabs.lab_cabin": "Lab Cabin",
+  "block.minelabs.microscope": "Microscope",
   "block.minelabs.erlenmeyer_stand": "Erlenmeyer Stand",
   "blockEntity.minelabs.charged_block": "Charged Block",
   "entity.minecraft.villager.sciencevillager": "Science Villager",

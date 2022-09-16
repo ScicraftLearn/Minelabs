@@ -68,6 +68,9 @@ public class Items {
     public static final Item LAB_SINK = register(new BlockItem(Blocks.LAB_SINK,
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_sink");
 
+    public static final Item MICROSCOPE = register(new BlockItem(Blocks.MICROSCOPE,
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "microscope");
+
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
     public static Item HELIUM_ATOM;

@@ -108,6 +108,9 @@ public class Blocks {
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
             FabricBlockSettings.of(Material.METAL).strength(4.0f)), "erlenmeyer_stand");
 
+    public static final Block MICROSCOPE = register(new MicroscopeBlock(
+            FabricBlockSettings.of(Material.METAL).strength(4.0f).luminance(1)), "microscope");
+
     /**
      * Register a Block
      * <p>
