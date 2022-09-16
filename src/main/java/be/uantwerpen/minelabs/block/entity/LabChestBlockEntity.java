@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.block.entity;
 
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
+import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,7 +16,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-public class LabChestBlockEntity extends BlockEntity implements ImplementedInv, NamedScreenHandlerFactory {
+public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
 
     public LabChestBlockEntity(BlockPos pos, BlockState state) {

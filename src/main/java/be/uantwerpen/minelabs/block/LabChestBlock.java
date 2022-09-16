@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public class LabChestBlock extends LabBlock implements BlockEntityProvider {
 
 
-    // TODO introduce an inventory/screenhandler/serversync/animations/..
+    // TODO introduce an serversync/animations/..
     // DOOR/DRAWER ANIMATION
     public LabChestBlock(Settings settings) {
         super(settings);
@@ -45,6 +45,9 @@ public class LabChestBlock extends LabBlock implements BlockEntityProvider {
         return blockEntity == null ? false : blockEntity.onSyncedBlockEvent(type, data);
     }
 
+    /**
+     * COPIED FORM {@Link BlockWithEntity}
+     */
     @Nullable
     public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
