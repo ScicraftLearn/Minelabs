@@ -25,7 +25,8 @@ public class LabChestScreenHandler extends ScreenHandler {
 
         for (int i = 0; i < 3; ++i) { // rows
             for (int j = 0; j < 7; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9, 26 + j * 18, 18 + i * 18));
+                //Minelabs.LOGGER.info("index: " + j+(i*7));
+                this.addSlot(new Slot(inventory, j + i * 7, 26 + j * 18, 18 + i * 18));
             }
         }
 
@@ -66,14 +67,14 @@ public class LabChestScreenHandler extends ScreenHandler {
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
     }
 }

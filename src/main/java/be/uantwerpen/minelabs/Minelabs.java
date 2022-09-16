@@ -9,6 +9,7 @@ import be.uantwerpen.minelabs.event.ServerModEvents;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.network.NetworkingConstants;
 import be.uantwerpen.minelabs.paintings.Paintings;
 import be.uantwerpen.minelabs.sound.SoundEvents;
 import be.uantwerpen.minelabs.world.gen.OreGenerations;
@@ -44,5 +45,6 @@ public class Minelabs implements ModInitializer {
         ScientificVillager.registerVillagers();
         ScientificVillager.registerTrades();
         ServerModEvents.registerEvents();
+        NetworkingConstants.registerS2CPackets();
     }
 }
