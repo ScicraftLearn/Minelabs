@@ -129,7 +129,6 @@ public class MinelabsClient implements ClientModInitializer {
         //Lewis Data Sync
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.IONICDATASYNC, (c, h, b, s) -> IonicDataPacket.receive(c.world, b, s));
-        //ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LABCHESTDATASYNC, (c, h, b, s) -> LabChestDataPacket.receive(c.world, b, s));
         NetworkingConstants.registerC2SPackets();
     }
 

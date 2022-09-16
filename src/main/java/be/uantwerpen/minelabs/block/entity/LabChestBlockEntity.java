@@ -9,7 +9,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
+    protected final PropertyDelegate propertyDelegate = new ArrayPropertyDelegate(0);
 
     public LabChestBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.LAB_CHEST_BLOCK_ENTITY, pos, state);
@@ -48,11 +51,6 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new LabChestScreenHandler(syncId, inv, this);
-    }
-
-    @Override
-    public void onClose(PlayerEntity player) {
-        ImplementedInventory.super.onClose(player);
+        return new LabChestScreenHandler(syncId, inv, this, propertyDelegate);
     }
 }
