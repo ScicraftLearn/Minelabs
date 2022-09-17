@@ -46,8 +46,8 @@ public class MicroscopeBlock extends Block {
         Boolean bl = state.get(COUNTER);
         Direction dir = state.get(FACING);
         return switch (dir) {
-            case NORTH, SOUTH -> VoxelShapes.cuboid(0.375f, bl ? -0.2f : 0f, 0.250f, 0.625f, bl ? 0.4f : 0.6f, 0.750f);
-            case EAST, WEST -> VoxelShapes.cuboid(0.250f, bl ? -0.2f : 0f, 0.375f, 0.750f, bl ? 0.4f : 0.6f, 0.625f);
+            case NORTH, SOUTH -> VoxelShapes.cuboid(0.375f, bl ? -0.1f : 0f, 0.250f, 0.625f, bl ? 0.4f : 0.6f, 0.750f);
+            case EAST, WEST -> VoxelShapes.cuboid(0.250f, bl ? -0.1f : 0f, 0.375f, 0.750f, bl ? 0.4f : 0.6f, 0.625f);
             default -> VoxelShapes.fullCube();
         };
     }

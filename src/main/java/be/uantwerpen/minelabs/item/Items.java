@@ -71,6 +71,13 @@ public class Items {
     public static final Item MICROSCOPE = register(new BlockItem(Blocks.MICROSCOPE,
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "microscope");
 
+    public static final Item LENS = register(new Item(
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "lens");
+
+    public static final Item BIG_LENS = register(new Item(
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "big_lens");
+
+
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
     public static Item HELIUM_ATOM;
