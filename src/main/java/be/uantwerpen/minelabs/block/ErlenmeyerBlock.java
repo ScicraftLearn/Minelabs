@@ -42,8 +42,9 @@ public class ErlenmeyerBlock extends HorizontalFacingBlock {
         Direction dir = state.get(FACING);
         return switch (dir) {
             case NORTH, SOUTH ->
-                    VoxelShapes.cuboid(0.3750f, bl ? -0.1f : 0f, 0.3125f, 0.625f, bl ? 0.6f : 0.8f, 0.6875f);
-            case EAST, WEST -> VoxelShapes.cuboid(0.3125f, bl ? -0.1f : 0f, 0.375f, 0.6875f, bl ? 0.6f : 0.8f, 0.625f);
+                    VoxelShapes.cuboid(0.3750f, bl ? -0.125f : 0f, 0.3125f, 0.625f, bl ? 0.65f : 0.8f, 0.6875f);
+            case EAST, WEST ->
+                    VoxelShapes.cuboid(0.3125f, bl ? -0.125f : 0f, 0.375f, 0.6875f, bl ? 0.65f : 0.8f, 0.625f);
             default -> VoxelShapes.fullCube();
         };
     }
