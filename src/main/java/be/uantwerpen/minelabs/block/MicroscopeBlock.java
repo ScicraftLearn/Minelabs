@@ -1,11 +1,14 @@
 package be.uantwerpen.minelabs.block;
 
+import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.state.MinelabsProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -42,6 +45,33 @@ public class MicroscopeBlock extends Block {
     }
 
     @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return this.getDefaultState()
+                .with(FACING, ctx.getPlayerFacing().getOpposite())
+                .with(ZOOM, false)
+                .with(COUNTER, ctx.getWorld().getBlockState(ctx.getBlockPos().down()).getBlock() instanceof LabBlock);
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (!world.isClient && hand == Hand.MAIN_HAND) {
+            ItemStack stack = player.getStackInHand(hand);
+            if (state.get(ZOOM) && stack.getItem() == Items.LENS) {
+                world.setBlockState(pos, state.cycle(ZOOM));
+                player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.BIG_LENS)));
+                return ActionResult.SUCCESS;
+            }
+            if (!state.get(ZOOM) && stack.getItem() == Items.BIG_LENS) {
+                world.setBlockState(pos, state.cycle(ZOOM));
+                player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.LENS)));
+                return ActionResult.SUCCESS;
+            }
+            return ActionResult.FAIL;
+        }
+        return ActionResult.FAIL;
+    }
+
+    @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
         Boolean bl = state.get(COUNTER);
         Direction dir = state.get(FACING);
@@ -61,21 +91,5 @@ public class MicroscopeBlock extends Block {
     @Override
     public BlockState mirror(BlockState state, BlockMirror mirror) {
         return state.rotate(mirror.getRotation(state.get(FACING)));
-    }
-
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState()
-                .with(FACING, ctx.getPlayerFacing().getOpposite())
-                .with(ZOOM, false)
-                .with(COUNTER, ctx.getWorld().getBlockState(ctx.getBlockPos().down()).getBlock() instanceof LabBlock);
-    }
-
-    @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient && hand == Hand.MAIN_HAND) {
-            world.setBlockState(pos, state.cycle(ZOOM));
-        }
-        return ActionResult.SUCCESS;
     }
 }

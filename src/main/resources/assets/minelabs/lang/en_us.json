@@ -130,5 +130,7 @@
   "item.minelabs.erlenmeyer_hcl.effect.empty": "Hydrogen chloride (HCl)",
   "item.minelabs.erlenmeyer_hno3": "Nitric acid (HNO3)",
   "item.minelabs.safety_glasses": "Safety Glasses",
-  "item.minelabs.lab_coat": "Lab Coat"
+  "item.minelabs.lab_coat": "Lab Coat",
+  "item.minelabs.lens": "Microscope Lens",
+  "item.minelabs.big_lens": "Microscope Lens x2"
 }
