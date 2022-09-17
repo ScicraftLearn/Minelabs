@@ -26,24 +26,28 @@ public class MicroscopeBlock extends Block {
 
     private static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
     private static final BooleanProperty ZOOM = MinelabsProperties.ZOOMED;
+    private static final BooleanProperty COUNTER = MinelabsProperties.COUNTER;
 
     public MicroscopeBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(ZOOM, false));
+        this.setDefaultState(this.stateManager.getDefaultState()
+                .with(FACING, Direction.NORTH).with(ZOOM, false).with(COUNTER, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING);
         builder.add(ZOOM);
+        builder.add(COUNTER);
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
+        Boolean bl = state.get(COUNTER);
         Direction dir = state.get(FACING);
         return switch (dir) {
-            case NORTH, SOUTH -> VoxelShapes.cuboid(0.375f, 0f, 0.25f, 0.625f, 0.6f, 0.75f);
-            case EAST, WEST -> VoxelShapes.cuboid(0.25f, 0f, 0.375f, 0.75f, 0.6f, 0.625f);
+            case NORTH, SOUTH -> VoxelShapes.cuboid(0.375f, bl ? -0.2f : 0f, 0.250f, 0.625f, bl ? 0.4f : 0.6f, 0.750f);
+            case EAST, WEST -> VoxelShapes.cuboid(0.250f, bl ? -0.2f : 0f, 0.375f, 0.750f, bl ? 0.4f : 0.6f, 0.625f);
             default -> VoxelShapes.fullCube();
         };
     }
@@ -60,7 +64,10 @@ public class MicroscopeBlock extends Block {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite()).with(ZOOM, false);
+        return this.getDefaultState()
+                .with(FACING, ctx.getPlayerFacing().getOpposite())
+                .with(ZOOM, false)
+                .with(COUNTER, ctx.getWorld().getBlockState(ctx.getBlockPos().down()).getBlock() instanceof LabBlock);
     }
 
     @Override

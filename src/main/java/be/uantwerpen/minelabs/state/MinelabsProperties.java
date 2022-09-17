@@ -8,5 +8,5 @@ public class MinelabsProperties {
     public static final EnumProperty<BohrPart> BOHR_PART = EnumProperty.of("part", BohrPart.class);
 
     public static final BooleanProperty ZOOMED = BooleanProperty.of("zoom");
-
+    public static final BooleanProperty COUNTER = BooleanProperty.of("counter");
 }
