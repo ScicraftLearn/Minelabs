@@ -48,6 +48,12 @@ public class Blocks {
     public static final Block LAB_SINK = register(new LabSinkBlock(FabricBlockSettings
             .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_sink");
 
+    public static final Block LAB_CENTER = register(new LabCenterBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_center");
+
+    public static final Block LAB_CORNER = register(new LabCornerBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_corner");
+
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block PION_NUL = register(new PionNulBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");

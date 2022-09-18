@@ -6,8 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -19,13 +19,13 @@ import net.minecraft.world.BlockView;
 
 public class TubeRackBlock extends Block {
 
-    private static final BooleanProperty COUNTER = MinelabsProperties.COUNTER;
+    private static final IntProperty COUNTER = MinelabsProperties.COUNTER;
     private static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
 
     public TubeRackBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState()
-                .with(FACING, Direction.NORTH).with(COUNTER, false));
+                .with(FACING, Direction.NORTH).with(COUNTER, 0));
     }
 
     @Override
@@ -35,18 +35,29 @@ public class TubeRackBlock extends Block {
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
+        int base = 0;
+        if (ctx.getWorld().getBlockState(ctx.getBlockPos().down()).getBlock() instanceof LabBlock) {
+            base = 2;
+        } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().down()).getBlock() instanceof LabCenterBlock) {
+            base = 1;
+        }
         return this.getDefaultState()
                 .with(FACING, ctx.getPlayerFacing().getOpposite())
-                .with(COUNTER, ctx.getWorld().getBlockState(ctx.getBlockPos().down()).getBlock() instanceof LabBlock);
+                .with(COUNTER, base);
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
-        Boolean bl = state.get(COUNTER);
+        float offset = 0.0f;
+        int i = state.get(COUNTER);
         Direction dir = state.get(FACING);
+        switch (i) {
+            case 0 -> offset = 0f;
+            case 1 -> offset = 0.0625f;
+            case 2 -> offset = 0.125f;
+        }
         return switch (dir) {
-            case NORTH, SOUTH ->
-                    VoxelShapes.cuboid(0.375f, bl ? -0.125f : 0f, 0.250f, 0.625f, bl ? 0.25f : 0.4f, 0.750f);
-            case EAST, WEST -> VoxelShapes.cuboid(0.250f, bl ? -0.125f : 0f, 0.375f, 0.750f, bl ? 0.25f : 0.4f, 0.625f);
+            case NORTH, SOUTH -> VoxelShapes.cuboid(0.375f, (0f - offset), 0.250f, 0.625f, (0.4f - offset), 0.750f);
+            case EAST, WEST -> VoxelShapes.cuboid(0.250f, (0f - offset), 0.375f, 0.750f, (0.4f - offset), 0.625f);
             default -> VoxelShapes.fullCube();
         };
     }

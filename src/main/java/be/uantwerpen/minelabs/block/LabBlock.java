@@ -17,7 +17,7 @@ import net.minecraft.world.BlockView;
 
 public class LabBlock extends Block {
 
-    private static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
+    protected static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
 
     private static final VoxelShape SHAPE_N = VoxelShapes.union(
             Block.createCuboidShape(0.0, 0.0, 1.0, 16.0, 13.0, 16.0), //base

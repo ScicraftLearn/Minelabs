@@ -1,6 +1,6 @@
 {
   "variants": {
-    "facing=north,counter=false": [
+    "facing=north,counter=0": [
       {
         "model": "minelabs:block/erlenmeyer_stand",
         "y": 180
@@ -14,7 +14,7 @@
         "y": 180
       }
     ],
-    "facing=east,counter=false": [
+    "facing=east,counter=0": [
       {
         "model": "minelabs:block/erlenmeyer_stand",
         "y": 270
@@ -28,7 +28,7 @@
         "y": 270
       }
     ],
-    "facing=south,counter=false": [
+    "facing=south,counter=0": [
       {
         "model": "minelabs:block/erlenmeyer_stand"
       },
@@ -39,7 +39,7 @@
         "model": "minelabs:block/erlenmeyer_stand_alt1"
       }
     ],
-    "facing=west,counter=false": [
+    "facing=west,counter=0": [
       {
         "model": "minelabs:block/erlenmeyer_stand",
         "y": 90
@@ -53,56 +53,109 @@
         "y": 90
       }
     ],
-    "facing=north,counter=true": [
+    "facing=north,counter=1": [
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter",
+        "model": "minelabs:block/erlenmeyer_stand_counter1",
         "y": 180
       },
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter_alt0",
+        "model": "minelabs:block/erlenmeyer_stand_counter1_alt0",
         "y": 180
       },
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter_alt1",
+        "model": "minelabs:block/erlenmeyer_stand_counter1_alt1",
         "y": 180
       }
     ],
-    "facing=east,counter=true": [
+    "facing=east,counter=1": [
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter",
+        "model": "minelabs:block/erlenmeyer_stand_counter1",
         "y": 270
       },
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter_alt0",
+        "model": "minelabs:block/erlenmeyer_stand_counter1_alt0",
         "y": 270
       },
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter_alt1",
+        "model": "minelabs:block/erlenmeyer_stand_counter1_alt1",
         "y": 270
       }
     ],
-    "facing=south,counter=true": [
+    "facing=south,counter=1": [
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter"
+        "model": "minelabs:block/erlenmeyer_stand_counter1"
       },
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter_alt0"
+        "model": "minelabs:block/erlenmeyer_stand_counter1_alt0"
       },
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter_alt1"
+        "model": "minelabs:block/erlenmeyer_stand_counter1_alt1"
       }
     ],
-    "facing=west,counter=true": [
+    "facing=west,counter=1": [
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter",
+        "model": "minelabs:block/erlenmeyer_stand_counter1",
         "y": 90
       },
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter_alt0",
+        "model": "minelabs:block/erlenmeyer_stand_counter1_alt0",
         "y": 90
       },
       {
-        "model": "minelabs:block/erlenmeyer_stand_counter_alt1",
+        "model": "minelabs:block/erlenmeyer_stand_counter1_alt1",
+        "y": 90
+      }
+    ],
+    "facing=north,counter=2": [
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2",
+        "y": 180
+      },
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2_alt0",
+        "y": 180
+      },
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2_alt1",
+        "y": 180
+      }
+    ],
+    "facing=east,counter=2": [
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2",
+        "y": 270
+      },
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2_alt0",
+        "y": 270
+      },
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2_alt1",
+        "y": 270
+      }
+    ],
+    "facing=south,counter=2": [
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2"
+      },
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2_alt0"
+      },
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2_alt1"
+      }
+    ],
+    "facing=west,counter=2": [
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2",
+        "y": 90
+      },
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2_alt0",
+        "y": 90
+      },
+      {
+        "model": "minelabs:block/erlenmeyer_stand_counter2_alt1",
         "y": 90
       }
     ]

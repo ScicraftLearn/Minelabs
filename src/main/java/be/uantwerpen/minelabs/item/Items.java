@@ -68,6 +68,12 @@ public class Items {
     public static final Item LAB_SINK = register(new BlockItem(Blocks.LAB_SINK,
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_sink");
 
+    public static final Item LAB_CENTER = register(new BlockItem(Blocks.LAB_CENTER,
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_center");
+
+    public static final Item LAB_CORNER = register(new BlockItem(Blocks.LAB_CORNER,
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_corner");
+
     public static final Item MICROSCOPE = register(new BlockItem(Blocks.MICROSCOPE,
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "microscope");
 

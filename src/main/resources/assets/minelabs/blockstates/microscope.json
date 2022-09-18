@@ -1,63 +1,93 @@
 {
   "variants": {
-    "facing=north,zoom=false,counter=false": {
+    "facing=north,zoom=false,counter=0": {
       "model": "minelabs:block/microscope"
     },
-    "facing=east,zoom=false,counter=false": {
+    "facing=east,zoom=false,counter=0": {
       "model": "minelabs:block/microscope",
       "y": 90
     },
-    "facing=south,zoom=false,counter=false": {
+    "facing=south,zoom=false,counter=0": {
       "model": "minelabs:block/microscope",
       "y": 180
     },
-    "facing=west,zoom=false,counter=false": {
+    "facing=west,zoom=false,counter=0": {
       "model": "minelabs:block/microscope",
       "y": 270
     },
-    "facing=north,zoom=true,counter=false": {
+    "facing=north,zoom=true,counter=0": {
       "model": "minelabs:block/microscope_2"
     },
-    "facing=east,zoom=true,counter=false": {
+    "facing=east,zoom=true,counter=0": {
       "model": "minelabs:block/microscope_2",
       "y": 90
     },
-    "facing=south,zoom=true,counter=false": {
+    "facing=south,zoom=true,counter=0": {
       "model": "minelabs:block/microscope_2",
       "y": 180
     },
-    "facing=west,zoom=true,counter=false": {
+    "facing=west,zoom=true,counter=0": {
       "model": "minelabs:block/microscope_2",
       "y": 270
     },
-    "facing=north,zoom=false,counter=true": {
-      "model": "minelabs:block/microscope_counter"
+    "facing=north,zoom=false,counter=1": {
+      "model": "minelabs:block/microscope_counter1"
     },
-    "facing=east,zoom=false,counter=true": {
-      "model": "minelabs:block/microscope_counter",
+    "facing=east,zoom=false,counter=1": {
+      "model": "minelabs:block/microscope_counter1",
       "y": 90
     },
-    "facing=south,zoom=false,counter=true": {
-      "model": "minelabs:block/microscope_counter",
+    "facing=south,zoom=false,counter=1": {
+      "model": "minelabs:block/microscope_counter1",
       "y": 180
     },
-    "facing=west,zoom=false,counter=true": {
-      "model": "minelabs:block/microscope_counter",
+    "facing=west,zoom=false,counter=1": {
+      "model": "minelabs:block/microscope_counter1",
       "y": 270
     },
-    "facing=north,zoom=true,counter=true": {
-      "model": "minelabs:block/microscope_counter_2"
+    "facing=north,zoom=true,counter=1": {
+      "model": "minelabs:block/microscope_counter1_2"
     },
-    "facing=east,zoom=true,counter=true": {
-      "model": "minelabs:block/microscope_counter_2",
+    "facing=east,zoom=true,counter=1": {
+      "model": "minelabs:block/microscope_counter1_2",
       "y": 90
     },
-    "facing=south,zoom=true,counter=true": {
-      "model": "minelabs:block/microscope_counter_2",
+    "facing=south,zoom=true,counter=1": {
+      "model": "minelabs:block/microscope_counter1_2",
       "y": 180
     },
-    "facing=west,zoom=true,counter=true": {
-      "model": "minelabs:block/microscope_counter_2",
+    "facing=west,zoom=true,counter=1": {
+      "model": "minelabs:block/microscope_counter1_2",
+      "y": 270
+    },
+    "facing=north,zoom=false,counter=2": {
+      "model": "minelabs:block/microscope_counter2"
+    },
+    "facing=east,zoom=false,counter=2": {
+      "model": "minelabs:block/microscope_counter2",
+      "y": 90
+    },
+    "facing=south,zoom=false,counter=2": {
+      "model": "minelabs:block/microscope_counter2",
+      "y": 180
+    },
+    "facing=west,zoom=false,counter=2": {
+      "model": "minelabs:block/microscope_counter2",
+      "y": 270
+    },
+    "facing=north,zoom=true,counter=2": {
+      "model": "minelabs:block/microscope_counter2_2"
+    },
+    "facing=east,zoom=true,counter=2": {
+      "model": "minelabs:block/microscope_counter2_2",
+      "y": 90
+    },
+    "facing=south,zoom=true,counter=2": {
+      "model": "minelabs:block/microscope_counter2_2",
+      "y": 180
+    },
+    "facing=west,zoom=true,counter=2": {
+      "model": "minelabs:block/microscope_counter2_2",
       "y": 270
     }
   }
