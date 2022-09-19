@@ -7,14 +7,15 @@ jobs:
   gradle:
     runs-on: ubuntu-latest
     environment: minelabs_upload
-    env:
-      PRIVATE_MINELABS_KEY: ${{ secrets.PRIVATE_MINELABS_KEY }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
+      - uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_MINELABS_KEY }}
 
       - name: Test sftp
         run: ./.github/scripts/sftp_test.sh
