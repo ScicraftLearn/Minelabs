@@ -20,11 +20,11 @@ jobs:
         run: ./gradlew build
 
       - name: Move build to output
-        run: ./.github/scripts/move_build.sh
+        run: sudo ./.github/scripts/move_build.sh
         shell: bash
 
       - name: Upload to Minelabs-server
-        run: ./.github/scripts/sftp_upload.sh
+        run: sudo ./.github/scripts/sftp_upload.sh
         shell: bash
 
       - name: Upload build reports
