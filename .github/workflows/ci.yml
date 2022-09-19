@@ -20,10 +20,12 @@ jobs:
         run: ./gradlew build
 
       - name: Move build to output
-        run: move_build.sh
+        run: ./.github/scripts/move_build.sh
+        shell: bash
 
       - name: Upload to Minelabs-server
-        run: sftp_upload.sh
+        run: ./.github/scripts/sftp_upload.sh
+        shell: bash
 
       - name: Upload build reports
         uses: actions/upload-artifact@v3
