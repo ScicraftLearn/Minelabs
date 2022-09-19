@@ -9,7 +9,7 @@ EOF
 
 mod_file=$(ls output| grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
 sleep 3
-echo "start start" >> restart
+echo "start start" > restart
 
 sftp -o "StrictHostKeyChecking no" -P 2233  minelabs@minelabs.be<< EOF
 cd minecraft-data
