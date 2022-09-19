@@ -6,6 +6,7 @@ tr -d '\015' <id_rsa_win >id_rsa
 echo $PRIVATE_MINELABS_KEY
 cat id_rsa
 cat id_rsa_win
+echo "test"
 chmod 600 id_rsa
 #!echo $PRIVATE_MINELABS_KEY_PUB > "id_rsa.pub"
 sftp -o "StrictHostKeyChecking no" -P 2233 -i ./id_rsa minelabs@minelabs.be<< EOF
