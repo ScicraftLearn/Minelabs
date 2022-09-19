@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PUBLIC_MINELABS_KEY_ED: ${{ secrets.PUBLIC_MINELABS_KEY_ED }}
-      PUBLIC_MINELABS_KEY_RSA: ${{ secrets.PUBLIC_MINELABS_KEY_RSA }
+      PUBLIC_MINELABS_KEY_RSA: ${{ secrets.PUBLIC_MINELABS_KEY_RSA }}
       PRIVATE_MINELABS_KEY: ${{ secrets.PRIVATE_MINELABS_KEY}}
     steps:
       - uses: actions/checkout@v3
