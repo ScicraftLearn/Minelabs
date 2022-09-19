@@ -8,5 +8,5 @@ sudo echo ${archives_base_name}-${mod_version}.jar "---" $(mod_file)
 sudo mkdir output
 sudo cd output
 sudo cp ../build/libs/${mod_file) .
-sudo cd .. \
+sudo cd ..
 sudo echo "Moved mod to output"
