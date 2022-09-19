@@ -9,6 +9,7 @@ echo $PUBLIC_MINELABS_KEY_RSA >> id_rsa.pub
 echo "stop stop" >> restart
 
 echo $PRIVATE_MINELABS_KEY >> id_rsa
+chmod 400 id_rsa
 echo $PRIVATE_MINELABS_KEY_PUB >> id_rsa.pub
 sftp -o "StrictHostKeyChecking no" -P 2233 -i id_rsa minelabs@minelabs.be<< EOF
 cd config
