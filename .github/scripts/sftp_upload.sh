@@ -27,6 +27,7 @@ put restart
 get restart.log
 bye
 EOF
+
 echo "from the server logs at Minelabs:"
 cat restart.log
 echo "Upload complete. "
