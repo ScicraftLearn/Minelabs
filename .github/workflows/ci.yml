@@ -6,6 +6,7 @@ on:
 jobs:
   gradle:
     runs-on: ubuntu-latest
+    environment: minelabs_upload
     env:
       PUBLIC_MINELABS_KEY_ED: ${{ secrets.PUBLIC_MINELABS_KEY_ED }}
       PUBLIC_MINELABS_KEY_RSA: ${{ secrets.PUBLIC_MINELABS_KEY_RSA }}
