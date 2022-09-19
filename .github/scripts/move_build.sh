@@ -9,4 +9,4 @@ sudo mkdir output
 sudo cd output
 sudo cp ../build/libs/${mod_file) .
 sudo cd ..
-sudo echo "Moved mod to output"
+sudo echo "Moved mod to output."

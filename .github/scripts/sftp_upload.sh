@@ -23,4 +23,4 @@ put restart
 bye
 EOF
 
-sudo echo "Upload complete."
+sudo echo "Upload complete. "
