@@ -18,6 +18,10 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Test sftp
+        run: ./.github/scripts/sftp_test.sh
+        shell: bash
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
