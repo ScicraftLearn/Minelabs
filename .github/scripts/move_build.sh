@@ -1,5 +1,5 @@
 #!/bin/bash
-mod_file=$(ls | grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
+mod_file=$(ls build/libs| grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
 . <(grep mod_version gradle.properties)
 . <(grep archives_base_name gradle.properties)
 . <(grep loader_version gradle.properties)
