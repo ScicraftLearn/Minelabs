@@ -17,10 +17,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.PRIVATE_MINELABS_KEY }}
 
-      - name: Test sftp
-        run: ./.github/scripts/sftp_test.sh
-        shell: bash
-
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
