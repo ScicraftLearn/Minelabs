@@ -17,11 +17,16 @@ rm minelabs*
 put output/$mod_file
 cd ../config
 put restart
-get restart.log
 bye
 EOF
 
 sleep 3
+sftp -o "StrictHostKeyChecking no" -P 2233  minelabs@minelabs.be<< EOF
+cd config
+put restart
+get restart.log
+bye
+EOF
 echo "from the server logs at Minelabs:"
 cat restart.log
 echo "Upload complete. "
