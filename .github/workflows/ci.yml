@@ -19,7 +19,7 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
-      - name: Upload to server
+      - name: Move build to output
         run: source <(grep mod_version gradle.properties) \
           && source <(grep archives_base_name gradle.properties) \
           && source <(grep loader_version gradle.properties) \
@@ -30,6 +30,9 @@ jobs:
           && cp ../build/libs/${archives_base_name}-${mod_version}.jar . \
           && cd .. \
           && echo "ok"
+
+      - name: Upload to Minelabs-server
+        run: sftp_upload.sh
 
       - name: Upload build reports
         uses: actions/upload-artifact@v3
