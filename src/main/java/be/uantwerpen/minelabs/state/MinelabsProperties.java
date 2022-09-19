@@ -16,5 +16,5 @@ public class MinelabsProperties {
     // 1 : Center Lab block (1 pixel offset) -> float offset = 0.0625f
     // 2 : Lab Block (2 pixel offset)        -> float offset = 0.1250f
     public static final IntProperty COUNTER = IntProperty.of("counter", 0, 2);
-    public static final EnumProperty<CornerShape> CONNECT = EnumProperty.of("", CornerShape.class);
+    public static final EnumProperty<CornerShape> CONNECT = EnumProperty.of("connect", CornerShape.class);
 }

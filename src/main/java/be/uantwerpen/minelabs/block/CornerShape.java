@@ -4,6 +4,7 @@ import net.minecraft.util.StringIdentifiable;
 
 public enum CornerShape implements StringIdentifiable {
 
+    STRAIGHT("straight"),
     LEFT("left"),
     RIGHT("right");
 
