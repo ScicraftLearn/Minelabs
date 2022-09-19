@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public class LabChestBlock extends LabBlock implements BlockEntityProvider {
 
 
-    // TODO introduce an serversync/animations/..
+    // TODO introduce an animations/..
     // DOOR/DRAWER ANIMATION
     public LabChestBlock(Settings settings) {
         super(settings);

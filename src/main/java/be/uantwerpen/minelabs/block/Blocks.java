@@ -47,10 +47,8 @@ public class Blocks {
             .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_drawer");
     public static final Block LAB_SINK = register(new LabSinkBlock(FabricBlockSettings
             .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_sink");
-
     public static final Block LAB_CENTER = register(new LabCenterBlock(FabricBlockSettings
             .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_center");
-
     public static final Block LAB_CORNER = register(new LabCornerBlock(FabricBlockSettings
             .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_corner");
 
@@ -113,9 +111,10 @@ public class Blocks {
 
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
             FabricBlockSettings.of(Material.METAL).strength(4.0f)), "erlenmeyer_stand");
-
     public static final Block MICROSCOPE = register(new MicroscopeBlock(
             FabricBlockSettings.of(Material.METAL).strength(4.0f).luminance(1)), "microscope");
+    public static final Block TUBERACK = register(new TubeRackBlock(
+            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "tuberack");
 
     /**
      * Register a Block

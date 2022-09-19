@@ -56,8 +56,10 @@ public class TubeRackBlock extends Block {
             case 2 -> offset = 0.125f;
         }
         return switch (dir) {
-            case NORTH, SOUTH -> VoxelShapes.cuboid(0.375f, (0f - offset), 0.250f, 0.625f, (0.4f - offset), 0.750f);
-            case EAST, WEST -> VoxelShapes.cuboid(0.250f, (0f - offset), 0.375f, 0.750f, (0.4f - offset), 0.625f);
+            case NORTH -> VoxelShapes.cuboid(0.1875f, (0f - offset), 0.3125f, 0.8125f, (0.4f - offset), 0.6250f);//
+            case SOUTH -> VoxelShapes.cuboid(0.1875f, (0f - offset), 0.3750f, 0.8125f, (0.4f - offset), 0.6875f);//
+            case EAST -> VoxelShapes.cuboid(0.3750f, (0f - offset), 0.1875f, 0.6875f, (0.4f - offset), 0.8125f);//
+            case WEST -> VoxelShapes.cuboid(0.3125f, (0f - offset), 0.1875f, 0.6250f, (0.4f - offset), 0.8125f);
             default -> VoxelShapes.fullCube();
         };
     }

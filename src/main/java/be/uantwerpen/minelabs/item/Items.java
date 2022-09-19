@@ -75,8 +75,10 @@ public class Items {
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_corner");
 
     public static final Item MICROSCOPE = register(new BlockItem(Blocks.MICROSCOPE,
-            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "microscope");
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "microscope");
 
+    public static final Item TUBERACK = register(new BlockItem(Blocks.TUBERACK,
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "tuberack");
     public static final Item LENS = register(new Item(
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "lens");
 
