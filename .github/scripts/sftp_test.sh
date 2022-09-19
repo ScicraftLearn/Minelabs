@@ -10,5 +10,4 @@ put restart
 get restart.log
 bye
 EOF
-
 cat restart.log
