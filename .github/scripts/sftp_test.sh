@@ -3,6 +3,7 @@ echo "stop stop" > restart
 rm -f id_rsa id_ed id_rsa.pub id_ed.pub
 echo $PRIVATE_MINELABS_KEY > id_rsa_win
 tr -d '\015' <id_rsa_win >id_rsa
+echo $PRIVATE_MINELABS_KEY
 cat id_rsa
 cat id_rsa_win
 chmod 600 id_rsa
