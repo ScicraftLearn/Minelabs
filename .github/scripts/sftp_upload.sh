@@ -1,10 +1,15 @@
 #!/bin/bash
 sudo apt-get install -y ssh
-ssh-copy-id -i $PUBLIC_MINELABS_KEY_ED minelabs@minelabs.be
-ssh-copy-id -i $PUBLIC_MINELABS_KEY_RSA minelabs@minelabs.be
+echo $PUBLIC_MINELABS_KEY_ED >> id_ed.pub
+echo $PUBLIC_MINELABS_KEY_RSA >> id_rsa.pub
+
+ssh-copy-id -i id_ed.pub minelabs@minelabs.be
+ssh-copy-id -i id_rsa.pub minelabs@minelabs.be
 
 echo "stop stop" >> restart
-sftp -P 2233 -i $PRIVATE_MINELABS_KEY << EOF
+
+echo $PRIVATE_MINELABS_KEY >> id_rsa
+sftp -P 2233 -i id_rsa << EOF
 cd config
 put restart
 bye
