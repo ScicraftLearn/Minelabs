@@ -1,29 +1,43 @@
 #!/bin/bash
 
+mkdir mods
+cd mods
 echo "stop stop" > restart
+
 sftp -o "StrictHostKeyChecking no" -P 2233 minelabs@minelabs.be<< EOF
 cd config
 put restart
+cd ../minecraft-data/mods
+get *
 bye
 EOF
 
+rm restart
+rm $(ls | grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
+
 mod_file=$(ls output| grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
+. <(grep archives_base_name gradle.properties)
+. <(grep loader_version gradle.properties)
+. <(grep minecraft_version gradle.properties)
+echo "MC_TYPE=FABRIC
+MC_VERSION=$minecraft_version
+MC_FABRIC_LOADER_VERSION=$loader_version" > ../minecraft.env
 sleep 3
-echo "start start" > restart
+echo "start start" > ../restart
 
 sftp -o "StrictHostKeyChecking no" -P 2233  minelabs@minelabs.be<< EOF
-cd minecraft-data
-rm minelabs*
-put output/$mod_file
+cd minecraft-data/mods
+rm *
+put *
 cd ../config
-put restart
+put ../restart
+put ../minecraft.env
 bye
 EOF
 
 sleep 3
 sftp -o "StrictHostKeyChecking no" -P 2233  minelabs@minelabs.be<< EOF
 cd config
-put restart
 get restart.log
 bye
 EOF
