@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.block;
 
+import be.uantwerpen.minelabs.state.MinelabsProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +22,7 @@ import net.minecraft.world.event.GameEvent;
 
 public class LabSinkBlock extends LabBlock {
 
-    public static BooleanProperty FILLED = BooleanProperty.of("filled");
+    public static BooleanProperty FILLED = MinelabsProperties.FILLED;
 
     public LabSinkBlock(Settings settings) {
         super(settings);
@@ -36,41 +37,45 @@ public class LabSinkBlock extends LabBlock {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient && hand == Hand.MAIN_HAND) {
+        if (hand == Hand.MAIN_HAND) {
             ItemStack stack = player.getStackInHand(hand);
             if (state.get(FILLED)) {
                 //FILLED
                 if (stack.isOf(Items.BUCKET)) {// remove a bucket and give Water bucket
-                    // TODO WHY PLACE WATER??
-                    player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.WATER_BUCKET)));
-                    world.setBlockState(pos, state.cycle(FILLED));
-                    world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
-                    return ActionResult.PASS;
-                } else if (PotionUtil.getPotion(stack) == Potions.EMPTY) {// fill the bottle
-
-                    player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, PotionUtil.setPotion(new ItemStack(Items.POTION), Potions.WATER)));
-                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
-                    return ActionResult.SUCCESS;
+                    if (!world.isClient) {
+                        player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.WATER_BUCKET)));
+                        world.setBlockState(pos, state.cycle(FILLED));
+                        world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
+                    }
+                    return ActionResult.success(world.isClient);
+                } else if (stack.getItem() == Items.GLASS_BOTTLE) {// fill the bottle
+                    if (!world.isClient) {
+                        player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, PotionUtil.setPotion(new ItemStack(Items.POTION), Potions.WATER)));
+                        world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
+                    }
+                    return ActionResult.success(world.isClient);
                 }
             } else {
                 //NOT FILLED
                 if (stack.isOf(Items.WATER_BUCKET)) {//set water bucket to empty bucket
-                    // TODO WHY PLACE WATER??
-                    player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.BUCKET)));
-                    world.setBlockState(pos, state.cycle(FILLED));
-                    world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
-                    return ActionResult.PASS;
+                    if (!world.isClient) {
+                        player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.BUCKET)));
+                        world.setBlockState(pos, state.cycle(FILLED));
+                        world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+                    }
+                    return ActionResult.success(world.isClient);
                 } else if (PotionUtil.getPotion(stack) == Potions.WATER) {// empty the bottle
-
-                    player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
-                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
-                    return ActionResult.SUCCESS;
+                    if (!world.isClient) {
+                        player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+                        world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
+                    }
+                    return ActionResult.success(world.isClient);
                 }
             }
-            return ActionResult.PASS;
+            return ActionResult.FAIL;
         }
-        return ActionResult.PASS;
+        return ActionResult.FAIL;
     }
 }
