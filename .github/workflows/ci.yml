@@ -2,7 +2,7 @@ name: Run Gradle on puch to branch
 on:
   push:
     branches:
-      - build
+      - testserver
 jobs:
   gradle:
     runs-on: ubuntu-latest

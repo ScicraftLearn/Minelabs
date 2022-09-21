@@ -9,4 +9,4 @@ mkdir output
 cd output
 cp "../build/libs/$mod_file" .
 cd ..
-echo "Moved mod to output."
+echo "Moved mod to output.."
