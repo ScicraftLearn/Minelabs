@@ -40,6 +40,8 @@ public class MinelabsClient implements ClientModInitializer {
         ClientModsEvents.registerEvents();
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR, RenderLayer.getTranslucent());
+        //BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PORTAL_BLOCK, RenderLayer.getTranslucent());
+
         //Register ItemModels
         ItemModels.registerModels();
 

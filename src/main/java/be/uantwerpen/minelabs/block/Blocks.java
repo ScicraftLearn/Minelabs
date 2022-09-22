@@ -13,9 +13,12 @@ import net.minecraft.util.registry.Registry;
 public class Blocks {
 
     //Atom portal to subatom dimension
-    public static final Block ATOM_PORTAL = register(new PortalBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1.5f)),"atom_portal");
+    public static final Block ATOM_PORTAL = register(new PortalBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1.5f)), "atom_portal");
     //Atomic floor for atomic dimension
-    public static final Block ATOM_FLOOR = register(new AtomicFloor(),"atomic_floor");
+    public static final Block ATOM_FLOOR = register(new AtomicFloor(), "atomic_floor");
+
+    public static final Block PORTAL_BLOCK = register(new PortalBlock2(
+            FabricBlockSettings.of(Material.DECORATION)), "portal_block");
 
     public static final Block SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
             .mapColor(MapColor.WHITE_GRAY).strength(3.0f, 3.0f).requiresTool(), UniformIntProvider.create(0, 3)), "salt_ore");
