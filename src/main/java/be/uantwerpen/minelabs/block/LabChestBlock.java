@@ -1,10 +1,13 @@
 package be.uantwerpen.minelabs.block;
 
+import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.block.entity.LabChestBlockEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
@@ -76,5 +79,11 @@ public class LabChestBlock extends LabBlock implements BlockEntityProvider {
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return world.isClient ? checkType(type, BlockEntities.LAB_CHEST_BLOCK_ENTITY, LabChestBlockEntity::tick) : null;
     }
 }

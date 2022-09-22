@@ -26,12 +26,15 @@ public class LabChestBlockEntityRenderer implements BlockEntityRenderer<LabChest
 
         //TODO FINISH
 
+        //RENDER NORMAL BASE BLOCK
+
+
         //SpriteIdentifier spriteIdentifier = TexturedRenderLayers.getChestTexture(entity, chestType, this.christmas);
         //VertexConsumer vertexConsumer = spriteIdentifier.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
         if (isDrawer) {
-            renderDrawer(matrices, vertexConsumers, g, light, overlay);
+            //renderDrawer(matrices, vertexConsumers, g, light, overlay);
         } else {
-            renderCabin(matrices, vertexConsumers, g, light, overlay);
+            //renderCabin(matrices, vertexConsumers, g, light, overlay);
 
         }
     }
