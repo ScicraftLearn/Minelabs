@@ -14,7 +14,7 @@ public class ModDimensions {
     public static final RegistryKey<DimensionType> DIMENSION_TYPE_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, new Identifier(Minelabs.MOD_ID, "subatom_type"));
 
     public static void register() {
-        System.out.println(
-                "Dimension done");
+        Minelabs.LOGGER.info("Dimension done");
+        //System.out.println("Dimension done");
     }
 }
