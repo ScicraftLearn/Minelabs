@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.state.MinelabsProperties;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -77,5 +78,10 @@ public class LabSinkBlock extends LabBlock {
             return ActionResult.FAIL;
         }
         return ActionResult.FAIL;
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
     }
 }

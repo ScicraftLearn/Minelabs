@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.state.MinelabsProperties;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.item.ItemPlacementContext;
@@ -87,5 +88,10 @@ public class LabCornerBlock extends LabBlock {
 
         }
         return state.with(CONNECT, CornerShape.STRAIGHT);
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
     }
 }
