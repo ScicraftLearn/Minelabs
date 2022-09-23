@@ -38,7 +38,6 @@ public class LabChestBlock extends LabBlock implements BlockEntityProvider {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
-
     /**
      * COPIED FORM {@Link BlockWithEntity}
      */

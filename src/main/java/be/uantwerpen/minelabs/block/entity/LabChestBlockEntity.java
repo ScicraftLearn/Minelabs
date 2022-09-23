@@ -4,7 +4,6 @@ import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.LidOpenable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -21,8 +20,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory, LidOpenable {
+public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory, IAnimatable {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
     protected final PropertyDelegate propertyDelegate = new ArrayPropertyDelegate(0);
 
@@ -30,6 +36,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     private float animationProgress;
     private float prevAnimationProgress;
     private int viewerCount;
+    private AnimationFactory factory = new AnimationFactory(this);
 
     public LabChestBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.LAB_CHEST_BLOCK_ENTITY, pos, state);
@@ -68,7 +75,6 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
         blockEntity.updateAnimation(world, pos, state);
     }
 
-    @Override
     public float getAnimationProgress(float delta) {
         return MathHelper.lerp(delta, this.prevAnimationProgress, this.animationProgress);
     }
@@ -150,6 +156,34 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
                 // PLAY SOUND
             }
         }
+    }
+
+    @Override
+    public void registerControllers(AnimationData animationData) {
+        animationData.addAnimationController(new AnimationController<LabChestBlockEntity>
+                (this, "controller", 0, this::predicate));
+    }
+
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        switch (this.animationStage) {
+            case CLOSED, OPENED -> {
+                return PlayState.STOP;
+            }
+            case OPENING -> {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
+                return PlayState.CONTINUE;
+            }
+            case CLOSING -> {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("close", false));
+                return PlayState.CONTINUE;
+            }
+        }
+        return PlayState.STOP;
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 
 

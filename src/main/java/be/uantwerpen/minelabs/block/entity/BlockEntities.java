@@ -92,7 +92,7 @@ public class BlockEntities {
                         Blocks.UPQUARK_QUANTUMFIELD).build(null), "quantum_field_entity");
 
         LAB_CHEST_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder
-                .create(LabChestBlockEntity::new, Blocks.LAB_CABIN, Blocks.LAB_DRAWER).build(null), "lab_chest_entity");
+                .create(LabChestBlockEntity::new, Blocks.LAB_CABIN, Blocks.LAB_DRAWER).build(null), "lab_chest_block_entity");
 
     }
 
