@@ -16,7 +16,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
@@ -74,20 +73,15 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     public static void tick(World world, BlockPos pos, BlockState state, LabChestBlockEntity blockEntity) {
         blockEntity.updateAnimation(world, pos, state);
     }
-
-    public float getAnimationProgress(float delta) {
-        return MathHelper.lerp(delta, this.prevAnimationProgress, this.animationProgress);
-    }
-
     private void updateAnimation(World world, BlockPos pos, BlockState state) {
         this.prevAnimationProgress = this.animationProgress;
         switch (this.animationStage) {
             case CLOSED -> this.animationProgress = 0.0F;
             case OPENING -> {
                 this.animationProgress += 0.1F;
-                if (this.animationProgress >= 1.0F) {
+                if (this.animationProgress >= 2.0F) {
                     this.animationStage = AnimationStage.OPENED;
-                    this.animationProgress = 1.0F;
+                    this.animationProgress = 20.0F;
                     //updateNeighborStates(world, pos, state);
                 }
             }
@@ -101,7 +95,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
                     //updateNeighborStates(world, pos, state);
                 }
             }
-            case OPENED -> this.animationProgress = 1.0F;
+            case OPENED -> this.animationProgress = 2.0F;
         }
 
     }
@@ -165,23 +159,23 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
-        return PlayState.CONTINUE;
-        /*
+        //event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
+        //return PlayState.CONTINUE;
+
         switch (this.animationStage) {
             case CLOSED, OPENED -> {
                 return PlayState.STOP;
             }
             case OPENING -> {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("open", true));
                 return PlayState.CONTINUE;
             }
             case CLOSING -> {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("close", false));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("close", true));
                 return PlayState.CONTINUE;
             }
         }
-        return PlayState.STOP;*/
+        return PlayState.STOP;
     }
 
     @Override
