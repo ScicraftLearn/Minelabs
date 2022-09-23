@@ -87,6 +87,7 @@ public class MinelabsClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.ELECTRIC_FIELD_SENSOR, ElectricFieldSensorRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.LAB_CHEST_BLOCK_ENTITY, LabChestBlockEntityRenderer::new);
+        //BlockEntityRendererRegistry.register(BlockEntities.TEST_BLOCK_ENTITY, TestBlockEntityRenderer::new);
 
         // Register rendering lewis crafting table inventory
         HandledScreens.register(ScreenHandlers.LEWIS_SCREEN_HANDLER, LewisScreen::new);
