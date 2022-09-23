@@ -161,21 +161,24 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         //event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
         //return PlayState.CONTINUE;
-
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("open").addAnimation("close"));
+        //TODO TRIGGERS/EVENTS
         switch (this.animationStage) {
-            case CLOSED, OPENED -> {
+            case CLOSED -> {
+                event.getController().clearAnimationCache();
                 return PlayState.STOP;
             }
-            case OPENING -> {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("open", true));
-                return PlayState.CONTINUE;
+            case OPENED -> {
+                return PlayState.STOP;
+
             }
-            case CLOSING -> {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("close", true));
+            case OPENING, CLOSING -> {
+                // event.getController().setAnimation(new AnimationBuilder().addAnimation("close", false));
+                // event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
                 return PlayState.CONTINUE;
             }
         }
-        return PlayState.STOP;
+        return PlayState.CONTINUE;
     }
 
     @Override
