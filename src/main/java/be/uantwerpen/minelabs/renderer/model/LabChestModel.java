@@ -8,16 +8,22 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class LabChestModel extends AnimatedGeoModel<LabChestBlockEntity> {
     @Override
     public Identifier getModelResource(LabChestBlockEntity object) {
-        return new Identifier(Minelabs.MOD_ID, "animations/bike.animation.json");
+        return new Identifier(Minelabs.MOD_ID, "animations/cabin.animation.json");
+
+        // if (object.getCachedState().getBlock() == Blocks.LAB_DRAWER){ // DRAWER ANIMATION
+        //    return  new Identifier(Minelabs.MOD_ID, "animations/drawer.animation.json");
+        //} else { // CABIN ANIMATION
+        //    return new Identifier(Minelabs.MOD_ID, "animations/cabin.animation.json");
+        //}
     }
 
     @Override
     public Identifier getTextureResource(LabChestBlockEntity object) {
-        return new Identifier(Minelabs.MOD_ID, "geo/bike.geo.json");
+        return new Identifier(Minelabs.MOD_ID, "geo/lab_chest.geo.json");
     }
 
     @Override
     public Identifier getAnimationResource(LabChestBlockEntity animatable) {
-        return new Identifier(Minelabs.MOD_ID, "textures/model/entity/bike.png");
+        return new Identifier(Minelabs.MOD_ID, "textures/block/counter.png");
     }
 }

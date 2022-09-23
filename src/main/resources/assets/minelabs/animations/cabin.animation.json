@@ -1,0 +1,28 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "open": {
+      "animation_length": 1,
+      "bones": {
+        "door": {
+          "rotation": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "1.0": {
+              "vector": [
+                0,
+                90,
+                0
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

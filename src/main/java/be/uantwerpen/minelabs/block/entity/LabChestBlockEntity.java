@@ -165,6 +165,9 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
+        return PlayState.CONTINUE;
+        /*
         switch (this.animationStage) {
             case CLOSED, OPENED -> {
                 return PlayState.STOP;
@@ -178,7 +181,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
                 return PlayState.CONTINUE;
             }
         }
-        return PlayState.STOP;
+        return PlayState.STOP;*/
     }
 
     @Override
