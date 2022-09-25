@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.block.entity;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import net.minecraft.block.BlockState;
@@ -106,6 +107,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
 
     @Override
     public boolean onSyncedBlockEvent(int type, int data) {
+        //Minelabs.LOGGER.info("type: " + type +" data:"+ data);
         if (type == 1) {
             this.viewerCount = data;
             if (data == 0) {
@@ -117,7 +119,6 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
                 this.animationStage = LabChestBlockEntity.AnimationStage.OPENING;
                 //updateNeighborStates(this.getWorld(), this.pos, this.getCachedState());
             }
-
             return true;
         } else {
             return super.onSyncedBlockEvent(type, data);
@@ -126,6 +127,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
 
     @Override
     public void onOpen(PlayerEntity player) {
+        //Minelabs.LOGGER.info("Open Viewers:" + viewerCount);
         if (!player.isSpectator()) {
             if (this.viewerCount < 0) {
                 this.viewerCount = 0;
@@ -142,6 +144,8 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
 
     @Override
     public void onClose(PlayerEntity player) {
+        //TODO WHY IS IT NOT CALLED
+        Minelabs.LOGGER.info("Close Viewers:" + viewerCount);
         if (!player.isSpectator()) {
             --this.viewerCount;
             this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1, this.viewerCount);
@@ -161,8 +165,9 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         //event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
         //return PlayState.CONTINUE;
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("open").addAnimation("close"));
+        //event.getController().setAnimation(new AnimationBuilder().addAnimation("open"));
         //TODO TRIGGERS/EVENTS
+        Minelabs.LOGGER.info(this.animationStage);
         switch (this.animationStage) {
             case CLOSED -> {
                 event.getController().clearAnimationCache();
@@ -172,7 +177,12 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
                 return PlayState.STOP;
 
             }
-            case OPENING, CLOSING -> {
+            case OPENING -> {
+                event.getController().clearAnimationCache();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
+                return PlayState.CONTINUE;
+            }
+            case CLOSING -> {
                 // event.getController().setAnimation(new AnimationBuilder().addAnimation("close", false));
                 // event.getController().setAnimation(new AnimationBuilder().addAnimation("open", false));
                 return PlayState.CONTINUE;
@@ -187,7 +197,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     }
 
 
-    public static enum AnimationStage {
+    public enum AnimationStage {
         CLOSED,
         OPENING,
         OPENED,
