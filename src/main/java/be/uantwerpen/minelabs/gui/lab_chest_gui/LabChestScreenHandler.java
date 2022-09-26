@@ -70,6 +70,12 @@ public class LabChestScreenHandler extends ScreenHandler {
         return this.inventory.canPlayerUse(player);
     }
 
+    @Override
+    public void close(PlayerEntity player) {
+        super.close(player);
+        inventory.onClose(player);
+    }
+
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
