@@ -68,23 +68,27 @@ public class LabCornerBlock extends LabBlock {
         if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() != Blocks.LAB_CENTER) {
             boolean invert = ctx.getPlayerFacing().getDirection() == Direction.AxisDirection.NEGATIVE;
             if (ctx.getPlayerFacing().getAxis() == Direction.Axis.X) {
-                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, 1)).getBlock() instanceof LabBlock) {
-                    return state.with(CONNECT, invert ? CornerShape.LEFT : CornerShape.RIGHT);
-                } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, -1)).getBlock() instanceof LabBlock) {
-                    return state.with(CONNECT, invert ? CornerShape.RIGHT : CornerShape.LEFT);
-                } else {
+                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() instanceof LabBlock) {
+                    if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, 1)).getBlock() instanceof LabBlock) {
+                        return state.with(CONNECT, invert ? CornerShape.LEFT : CornerShape.RIGHT);
+                    } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, -1)).getBlock() instanceof LabBlock) {
+                        return state.with(CONNECT, invert ? CornerShape.RIGHT : CornerShape.LEFT);
+                    }
                     return state.with(CONNECT, CornerShape.STRAIGHT);
                 }
-            } else if (ctx.getPlayerFacing().getAxis() == Direction.Axis.Z) {
-                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.X, 1)).getBlock() instanceof LabBlock) {
-                    return state.with(CONNECT, invert ? CornerShape.RIGHT : CornerShape.LEFT);
-                } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.X, -1)).getBlock() instanceof LabBlock) {
-                    return state.with(CONNECT, invert ? CornerShape.LEFT : CornerShape.RIGHT);
-                } else {
-                    return state.with(CONNECT, CornerShape.STRAIGHT);
-                }
-            }
+                return state.with(CONNECT, CornerShape.STRAIGHT);
 
+            } else if (ctx.getPlayerFacing().getAxis() == Direction.Axis.Z) {
+                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() instanceof LabBlock) {
+                    if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.X, 1)).getBlock() instanceof LabBlock) {
+                        return state.with(CONNECT, invert ? CornerShape.RIGHT : CornerShape.LEFT);
+                    } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.X, -1)).getBlock() instanceof LabBlock) {
+                        return state.with(CONNECT, invert ? CornerShape.LEFT : CornerShape.RIGHT);
+                    }
+                    return state.with(CONNECT, CornerShape.STRAIGHT);
+                }
+                return state.with(CONNECT, CornerShape.STRAIGHT);
+            }
         }
         return state.with(CONNECT, CornerShape.STRAIGHT);
     }
