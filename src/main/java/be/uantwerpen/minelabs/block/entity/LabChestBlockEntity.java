@@ -6,17 +6,17 @@ import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.ViewerCountManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.DoubleInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.*;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.screen.ArrayPropertyDelegate;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -56,9 +56,9 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
 
         @Override
         protected boolean isPlayerViewing(PlayerEntity player) {
-            if (player.currentScreenHandler instanceof GenericContainerScreenHandler) {
-                Inventory inventory = ((GenericContainerScreenHandler)player.currentScreenHandler).getInventory();
-                return inventory == LabChestBlockEntity.this || inventory instanceof DoubleInventory && ((DoubleInventory)inventory).isPart(LabChestBlockEntity.this);
+            if (player.currentScreenHandler instanceof LabChestScreenHandler) {
+                Inventory inventory = ((LabChestScreenHandler) player.currentScreenHandler).getInventory();
+                return inventory == LabChestBlockEntity.this;
             }
             return false;
         }
@@ -82,10 +82,12 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, inventory);
+        nbt.putBoolean("minelabs.open", open);
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
+        open = nbt.getBoolean("minelabs.open");
         Inventories.readNbt(nbt, inventory);
         super.readNbt(nbt);
     }
@@ -139,6 +141,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
 
     //TODO TRIGGERS/EVENTS
     private <E extends IAnimatable> PlayState predicateOpen(AnimationEvent<E> event) {
+        Minelabs.LOGGER.info(open);
         if (this.open){
             event.getController().setAnimation(new AnimationBuilder().addAnimation("open"));
             return PlayState.CONTINUE;

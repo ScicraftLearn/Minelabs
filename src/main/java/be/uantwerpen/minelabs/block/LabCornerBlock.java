@@ -65,6 +65,7 @@ public class LabCornerBlock extends LabBlock {
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState state = super.getPlacementState(ctx);
+        assert state != null;
         if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() != Blocks.LAB_CENTER) {
             boolean invert = ctx.getPlayerFacing().getDirection() == Direction.AxisDirection.NEGATIVE;
             if (ctx.getPlayerFacing().getAxis() == Direction.Axis.X) {

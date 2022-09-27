@@ -89,4 +89,8 @@ public class LabChestScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
     }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
 }
