@@ -3,7 +3,6 @@ package be.uantwerpen.minelabs.block.entity;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ViewerCountManager;
@@ -113,8 +112,8 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     }
 
     protected void onInvOpenOrClose(World world, BlockPos pos, BlockState state, int oldViewerCount, int newViewerCount) {
-        Block block = state.getBlock();
-        world.addSyncedBlockEvent(pos, block, 1, newViewerCount);
+        //Block block = state.getBlock();
+        //world.addSyncedBlockEvent(pos, block, 1, newViewerCount);
     }
 
     @Override
@@ -135,13 +134,13 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     public void registerControllers(AnimationData animationData) {
         animationData.addAnimationController(new AnimationController<LabChestBlockEntity>
                 (this, "controllerOpen", 20, this::predicateOpen));
-        animationData.addAnimationController(new AnimationController<LabChestBlockEntity>
-                (this, "controllerClose", 20, this::predicateClose));
+        //animationData.addAnimationController(new AnimationController<LabChestBlockEntity>
+        //       (this, "controllerClose", 20, this::predicateClose));
     }
 
     //TODO TRIGGERS/EVENTS
     private <E extends IAnimatable> PlayState predicateOpen(AnimationEvent<E> event) {
-        Minelabs.LOGGER.info(open);
+        //Minelabs.LOGGER.info(open);
         if (this.open){
             event.getController().setAnimation(new AnimationBuilder().addAnimation("open"));
             return PlayState.CONTINUE;

@@ -1,7 +1,7 @@
 package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.state.MinelabsProperties;
+import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
