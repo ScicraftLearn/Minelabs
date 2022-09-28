@@ -31,6 +31,8 @@
   "entity.minelabs.entropy_creeper": "Entropie Creeper",
   "item.minelabs.entropy_creeper_spawn_egg": "EntropieCreeper Spawnei",
   "block.minelabs.lewis_block": "Lewis Werkbank",
+  "block.minelabs.ionic_block": "Ion Werkbank",
+  "block.minelabs.bohr_block": "Bohr Blauwdruk",
 
   "item.minelabs.proton": "Proton",
   "item.minelabs.electron": "Elektron",

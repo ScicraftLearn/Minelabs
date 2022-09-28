@@ -14,15 +14,15 @@ import net.minecraft.util.registry.Registry;
 
 public class Items {
     //Atomic portal
-    public static final Item ATOM_PORTAL=register(new BlockItem((Blocks.ATOM_PORTAL),new FabricItemSettings().group(ItemGroups.MINELABS)),"atom_portal");
-    public static final Item ATOM_FLOOR=register(new BlockItem((Blocks.ATOM_FLOOR),new FabricItemSettings().group(ItemGroups.MINELABS)),"atomic_floor");
+    public static final Item ATOM_PORTAL = register(new BlockItem((Blocks.ATOM_PORTAL), new FabricItemSettings().group(ItemGroups.MINELABS)), "atom_portal");
+    public static final Item ATOM_FLOOR = register(new BlockItem((Blocks.ATOM_FLOOR), new FabricItemSettings().group(ItemGroups.MINELABS)), "atomic_floor");
 
     // Items
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
     public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS), 4), "salt");
 
     public static final Item SALT_SHARD = register(new SaltShardItem(
             new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_shard");
@@ -85,6 +85,48 @@ public class Items {
     public static final Item BIG_LENS = register(new Item(
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "big_lens");
 
+
+    public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 1), "lithium_chloride_dust");
+
+    public static final Item STRONTIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 2), "strontium_chloride_dust");
+
+    public static final Item STRONTIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 2), "strontium_nitrate_dust");
+
+    public static final Item CALCIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 3), "calcium_chloride_dust");
+
+    public static final Item SODIUM_CARBONATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 4), "sodium_carbonate_dust");
+
+    public static final Item BORAX_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 5), "borax_dust");
+
+    public static final Item COPPER_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 6), "copper_sulfate_dust");
+
+    public static final Item BORIC_ACID_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 6), "boric_acid_dust");
+
+    public static final Item COPPER_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 7), "copper_chloride_dust");
+
+    public static final Item POTASSIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 8), "potassium_sulfate_dust");
+
+    public static final Item POTASSIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 8), "potassium_nitrate_dust");
+
+    public static final Item POTASSIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 9), "potassium_chloride_dust");
+
+    public static final Item MAGNESIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS), 10), "magnesium_sulfate_dust");
+
+    public static final Item ASH_DUST = register(new Item(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.MINELABS)), "ash_dust");
 
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
@@ -170,7 +212,6 @@ public class Items {
     public static final Item ANTI_PROTON = register(new AntiProtonItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_proton");
     public static final Item NEUTRON = register(new NeutronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "neutron");
     public static final Item ANTI_NEUTRON = register(new AntiNeutronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_neutron");
-
     public static final Item PION_NUL = register(new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_nul");
     public static final Item PION_MINUS = register(new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_minus");
     public static final Item PION_PLUS = register(new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_plus");

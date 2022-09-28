@@ -6,6 +6,9 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "BlockAccessorMixin",
+    "CampfireBlockEntityMixin",
+    "CampfireBlockMixin",
     "CreeperEntityMixin",
     "ExplosionAccessor",
     "FireMixin",
