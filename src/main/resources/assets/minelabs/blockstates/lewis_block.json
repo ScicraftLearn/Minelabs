@@ -1,5 +1,10 @@
 {
   "variants": {
-    "": { "model": "minelabs:block/lewis_block" }
+    "waterlogged=false": {
+      "model": "minelabs:block/lewis_block"
+    },
+    "waterlogged=true": {
+      "model": "minelabs:block/lewis_block"
+    }
   }
 }
