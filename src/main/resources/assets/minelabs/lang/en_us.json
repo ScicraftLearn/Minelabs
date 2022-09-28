@@ -35,7 +35,13 @@
   "block.minelabs.upquark_quantumfield": "Upquark Quantumfield",
   "block.minelabs.downquark_quantumfield": "Downquark Quantumfield",
   "block.minelabs.time_freeze_block": "Time Freeze Block",
-
+  "block.minelabs.lab_drawer": "Lab Drawers",
+  "block.minelabs.lab_sink": "Lab Sink",
+  "block.minelabs.lab_cabin": "Lab Cabin",
+  "block.minelabs.lab_center": "Lab Center",
+  "block.minelabs.lab_corner": "Lab Corner",
+  "block.minelabs.microscope": "Microscope",
+  "block.minelabs.erlenmeyer_stand": "Erlenmeyer Stand",
   "blockEntity.minelabs.charged_block": "Charged Block",
   "entity.minecraft.villager.sciencevillager": "Science Villager",
   "entity.minelabs.entropy_creeper": "Entropy Creeper",
@@ -131,7 +137,7 @@
   "item.minelabs.safety_glasses": "Safety Glasses",
   "item.minelabs.lab_coat": "Lab Coat",
   "item.minelabs.lens": "Microscope Lens",
-  "item.minelabs.big_lens": "Microscope Lens x2"
+  "item.minelabs.big_lens": "Microscope Lens x2",
   "item.minelabs.lithium_chloride_dust": "Lithium Chloride Dust",
   "item.minelabs.strontium_chloride_dust": "Strontium Chloride Dust",
   "item.minelabs.strontium_nitrate_dust": "Strontium Nitrate Dust",
