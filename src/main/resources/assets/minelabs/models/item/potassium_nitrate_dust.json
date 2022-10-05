@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/potassium_nitrate_dust"
+  }
+}

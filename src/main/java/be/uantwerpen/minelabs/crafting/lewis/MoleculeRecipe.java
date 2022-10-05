@@ -36,8 +36,8 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
         this.id = id;
         this.json = json;
         this.density = density;
-//        Scicraft.LOGGER.info("Recipe made: " + id.toString());
-//        Scicraft.LOGGER.info(molecule.getStructure().toCanonical());
+//        Minelabs.LOGGER.info("Recipe made: " + id.toString());
+//        Minelabs.LOGGER.info(molecule.getStructure().toCanonical());
     }
 
     public Integer getDensity() {return density;}
@@ -131,7 +131,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
         @Override
         public void write(PacketByteBuf buf, MoleculeRecipe recipe) {
             // Writing graph optimized to bytes is hard -> just send json over.
-//            Scicraft.LOGGER.info(recipe.getJson().toString());
+//            Minelabs.LOGGER.info(recipe.getJson().toString());
             buf.writeString(recipe.getJson().toString());
         }
     }

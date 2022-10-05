@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 public class ItemGroups {
-    public static final ItemGroup SCICRAFT = FabricItemGroupBuilder.create(
-                    new Identifier(Minelabs.MOD_ID, "scicraft"))
+    public static final ItemGroup MINELABS = FabricItemGroupBuilder.create(
+                    new Identifier(Minelabs.MOD_ID, "minelabs"))
             .icon(() -> new ItemStack(Items.HELIUM))
             .build();
 

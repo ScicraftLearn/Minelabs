@@ -4,5 +4,13 @@
     "layer0": "minelabs:item/atom_darkgreen",
     "layer1": "minelabs:item/magnesium",
     "layer2": "minelabs:item/electrons2"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/magnesium_atom_internal"
+    }
+  ]
 }

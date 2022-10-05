@@ -19,7 +19,7 @@ import net.minecraft.world.biome.SpawnSettings;
 
 import java.util.function.Predicate;
 
-//import static be.uantwerpen.scicraft.block.Blocks.LEWIS_BLOCK;
+//import static be.uantwerpen.minelabs.block.Blocks.LEWIS_BLOCK;
 
 
 public class Entities {

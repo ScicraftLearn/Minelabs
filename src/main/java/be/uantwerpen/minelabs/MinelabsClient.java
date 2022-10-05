@@ -133,7 +133,7 @@ public class MinelabsClient implements ClientModInitializer {
 
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 2);
-//        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.scicraft.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
+//        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
 
         //Lewis Data Sync
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));

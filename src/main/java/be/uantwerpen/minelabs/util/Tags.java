@@ -24,7 +24,7 @@ public class Tags {
 
         /**
          * Create a Block tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/tags/blocks)
+         * Don't forget the json file (data/minelabs/tags/blocks)
          *
          * @param name : name of the tag
          * @return {@link TagKey}
@@ -46,12 +46,12 @@ public class Tags {
     }
 
     public static class Items {
-
         public static final TagKey<Item> LASERTOOLS = createTag("lasertools");
+        public static final TagKey<Item> FIRE_CHANGER = createCommonTag("fire_changer");
 
         /**
          * Create an Item tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/tags/items)
+         * Don't forget the json file (data/minelabs/tags/items)
          *
          * @param name : name of the tag
          * @return {@link TagKey}
@@ -76,7 +76,7 @@ public class Tags {
 
         /**
          * Create a Fluid tag (tag is only used inside this mod)
-         * Don't forget the json file (data/scicraft/tags/fluids)
+         * Don't forget the json file (data/minelabs/tags/fluids)
          *
          * @param name : name of the tag
          * @return {@link TagKey}

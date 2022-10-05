@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.crafting.lewis;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.crafting.molecules.Bond;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;
@@ -102,11 +103,11 @@ public class LewisCraftingGrid extends OrderedInventory {
         MoleculeItemGraph positionGraph = getPositionGraph();
 
         // debug
-//        Scicraft.LOGGER.info("Position graph\n" + positionGraph.toString());
+//        Minelabs.LOGGER.info("Position graph\n" + positionGraph.toString());
 
         // We use MoleculeItemGraph which can keep a mapping between vertices and ItemStacks.
         MoleculeItemGraph structure = positionGraphToMoleculeItemGraph(positionGraph);
-//        Scicraft.LOGGER.info("Molecule formed: " + structure.toString());
+//        Minelabs.LOGGER.info("Molecule formed: " + structure.toString());
         return new PartialMolecule(structure);
     }
 
