@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": ""
+    "facing=north": {
+      "model": "minelabs:block/lab_drawer"
+    },
+    "facing=east": {
+      "model": "minelabs:block/lab_drawer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "minelabs:block/lab_drawer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "minelabs:block/lab_drawer",
+      "y": 270
     }
   }
 }

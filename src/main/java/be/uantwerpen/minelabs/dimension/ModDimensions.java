@@ -23,6 +23,7 @@ public class ModDimensions {
 
     private static void registerPortals() {
         //TODO CUSTOM TEXTURE ?? -> custom portal block (must extend CustomPortalBlock)
+        // Light Item -> ATOM ?
         CustomPortalBuilder.beginPortal()
                 .frameBlock(Blocks.SALT_BLOCK)
                 .destDimID(new Identifier(Minelabs.MOD_ID, "subatom"))
