@@ -20,6 +20,10 @@ public class Items {
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
+    public static final Item LASERTOOL_IRON = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.IRON, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_iron");
+    public static final Item LASERTOOL_GOLD = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.GOLD, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_gold");
+    public static final Item LASERTOOL_DIAMOND = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.DIAMOND, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_diamond");
+
     public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
             new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS), 4), "salt");
 
@@ -117,6 +121,8 @@ public class Items {
 
     public static Item POTASSIUM_ATOM;
     public static Item CALCIUM_ATOM;
+    public static Item TITANIUM_ATOM;
+    public static Item MANGANESE_ATOM;
     public static Item IRON_ATOM;
     public static Item COPPER_ATOM;
     public static Item ZINC_ATOM;
@@ -127,6 +133,7 @@ public class Items {
     public static Item TIN_ATOM;
     public static Item IODINE_ATOM;
 
+    public static Item TUNGSTEN_ATOM;
     public static Item GOLD_ATOM;
     public static Item MERCURY_ATOM;
     public static Item LEAD_ATOM;
@@ -237,6 +244,8 @@ public class Items {
 
         POTASSIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.POTASSIUM), "potassium_atom");
         CALCIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CALCIUM), "calcium_atom");
+        TITANIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.TITANIUM), "titanium_atom");
+        MANGANESE_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.MANGANESE), "manganese_atom");
         IRON_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.IRON), "iron_atom");
         COPPER_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.COPPER), "copper_atom");
         ZINC_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.ZINC), "zinc_atom");
@@ -247,6 +256,7 @@ public class Items {
         TIN_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.TIN), "tin_atom");
         IODINE_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.IODINE), "iodine_atom");
 
+        TUNGSTEN_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.TUNGSTEN), "tungsten_atom");
         GOLD_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.GOLD), "gold_atom");
         MERCURY_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.MERCURY), "mercury_atom");
         LEAD_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.LEAD), "lead_atom");

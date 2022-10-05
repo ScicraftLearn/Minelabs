@@ -12,9 +12,7 @@ import net.minecraft.util.math.BlockPos;
 
 
 public class ServerModEvents {
-
     public static void registerEvents() {
-
         //Check for dimension and block used
         UseBlockCallback.EVENT.register((player, world, hand, block) -> {
             ItemStack stack = player.getStackInHand(hand);
