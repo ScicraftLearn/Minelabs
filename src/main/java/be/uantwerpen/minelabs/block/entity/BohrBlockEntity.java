@@ -148,14 +148,15 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             entity.timer = MAX_TIMER;
         }
 
-
         int status = 0;
         if (entity.isCollectable()) {
             status = 1;
         } else if (!NuclidesTable.isStable(entity.getProtonCount(), entity.getNeutronCount(), entity.getElectronCount())) {
             status = 2;
         }
-        world.setBlockState(blockPos, state.with(MinelabsProperties.STATUS, status));
+        if (world.getBlockState(blockPos).get(MinelabsProperties.STATUS) != status) {
+            world.setBlockState(blockPos, state.with(MinelabsProperties.STATUS, status));
+        }
     }
 
     /**
@@ -312,20 +313,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
                 }
             }
         }
-        /*
-        if (this.getCachedState().getBlock() instanceof BohrBlock && this.getCachedState().get(MinelabsProperties.MASTER)) {
-            BlockPos blockPos = getMasterPos(world, this.getCachedState(), pos);
-            BlockEntity blockEntity = world.getBlockEntity(blockPos);
-            if (blockEntity instanceof BohrBlockEntity bohrBlockEntity && world.getBlockState(blockPos).get(MinelabsProperties.MASTER)) {
-                return bohrBlockEntity;
-            } else {
-                world.removeBlock(pos, false);
-
-//                System.out.println("No base bohr block found");
-//                world.breakBlock(getPos(), false);
-                return null;
-            }
-        }*/
         return this;
     }
 
@@ -505,6 +492,4 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             markDirty();
         }
     }
-
-
 }

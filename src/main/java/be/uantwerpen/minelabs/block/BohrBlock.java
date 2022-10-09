@@ -40,13 +40,13 @@ import java.util.List;
 
 
 public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
-    public static final DirectionProperty HORIZONTAL_FACING = Properties.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final IntProperty STATUS = MinelabsProperties.STATUS;
     public static final BooleanProperty MASTER = MinelabsProperties.MASTER;
 
     public BohrBlock() {
         super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque().luminance(100));
-        this.setDefaultState(this.stateManager.getDefaultState().with(STATUS, 0).with(MASTER, false).with(HORIZONTAL_FACING, Direction.NORTH));
+        this.setDefaultState(this.stateManager.getDefaultState().with(STATUS, 0).with(MASTER, false).with(FACING, Direction.NORTH));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(STATUS).add(MASTER).add(HORIZONTAL_FACING);
+        builder.add(STATUS).add(MASTER).add(FACING);
     }
 
     @Override
@@ -223,7 +223,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         //super.onPlaced(world, pos, state, placer, itemStack);
         BlockPos blockPos1, blockPos2, blockPos3;
         if (!world.isClient) {
-            switch (state.get(HORIZONTAL_FACING)) {
+            switch (state.get(FACING)) {
                 case SOUTH -> {
                     blockPos1 = pos.offset(Direction.NORTH);
                     blockPos2 = pos.offset(Direction.WEST);
@@ -286,7 +286,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 return null;
             }
         }
-        return getDefaultState().with(HORIZONTAL_FACING, ctx.getPlayerFacing().getOpposite()).with(MASTER, true);
+        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite()).with(MASTER, true);
     }
 
     @Nullable
