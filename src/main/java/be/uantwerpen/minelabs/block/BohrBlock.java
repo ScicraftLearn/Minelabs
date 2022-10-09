@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.block;
 
-import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.entity.SubatomicParticle;
@@ -320,7 +319,6 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 blockPos1 = blockPos.offset(Direction.SOUTH);
                 blockPos2 = blockPos.offset(Direction.WEST);
                 blockPos3 = blockPos.south().west();
-                Minelabs.LOGGER.info(blockPos1 + " | " + blockPos2 + " | " + blockPos3 + " | ");
             }
             default -> {
                 blockPos1 = blockPos.offset(Direction.SOUTH);
