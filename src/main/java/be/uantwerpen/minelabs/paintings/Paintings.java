@@ -15,7 +15,7 @@ public class Paintings {
     public static final RegistryKey<PaintingVariant> LAB_EXPLOSIVE = register("lab_explosive", new PaintingVariant(16, 16));
     public static final RegistryKey<PaintingVariant> LAB_CORROSIVE = register("lab_corrosive", new PaintingVariant(16, 16));
     public static final RegistryKey<PaintingVariant> LAB_HARMFUL = register("lab_harmful", new PaintingVariant(16, 16));
-    public static final RegistryKey<PaintingVariant> LAB_OXIDATION = register("lab_oxidation", new PaintingVariant(16, 16));
+    public static final RegistryKey<PaintingVariant> LAB_OXIDIZING = register("lab_oxidizing", new PaintingVariant(16, 16));
 
     /**
      * Register a new painting
