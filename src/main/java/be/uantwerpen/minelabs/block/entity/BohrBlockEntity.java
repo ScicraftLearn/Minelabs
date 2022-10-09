@@ -1,7 +1,6 @@
 package be.uantwerpen.minelabs.block.entity;
 
-import be.uantwerpen.minelabs.block.BohrBlock;
-import be.uantwerpen.minelabs.block.BohrPart;
+import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
@@ -15,17 +14,16 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,21 +38,45 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public static final int WHITE_COLOR = ColorHelper.Argb.getArgb(255, 255, 255, 255);
     public static final int GREEN_COLOR = ColorHelper.Argb.getArgb(255, 0, 255, 0);
     public static final int RED_COLOR = ColorHelper.Argb.getArgb(255, 255, 0, 0);
+    public static final int MAX_TIMER = 99;
+    private int timer = MAX_TIMER;
 
-    //    which part of the bohrplate this bohrblock belongs to
-    public static final EnumProperty<BohrPart> PART = MinelabsProperties.BOHR_PART;
-
-
-    public static final int maxTimerAmount = 99;
-    public static final IntProperty TIMER = IntProperty.of("timer", 0, maxTimerAmount);
-    //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
-    public static final IntProperty STATUS = IntProperty.of("status", 0, 2);
+    // status: 0 = normal, 1 = atom collectible, 2 = atom unstable
 
     //the inventory stack [0,3[ = protons, [3,6[ = neutrons, [6,9[ = electrons
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9, ItemStack.EMPTY);
 
     public BohrBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.BOHR_BLOCK_ENTITY, pos, state);
+    }
+
+    public static List<BlockPos> getBohrParts(BlockPos pos, World world) {
+        List<BlockPos> poses = new ArrayList<>();
+        if (world.getBlockState(pos).getBlock() == Blocks.BOHR_BLOCK) {
+            poses.add(pos);
+        }
+        for (Direction dir : Properties.HORIZONTAL_FACING.getValues()) {
+            if (world.getBlockState(pos.offset(dir)).getBlock() == Blocks.BOHR_BLOCK) {
+                poses.add(pos.offset(dir));
+            }
+            if (dir == Direction.NORTH || dir == Direction.SOUTH) {
+                if (world.getBlockState(pos.offset(dir).offset(Direction.EAST)).getBlock() == Blocks.BOHR_BLOCK) {
+                    poses.add(pos.offset(dir));
+                }
+                if (world.getBlockState(pos.offset(dir).offset(Direction.WEST)).getBlock() == Blocks.BOHR_BLOCK) {
+                    poses.add(pos.offset(dir));
+                }
+            } else if (dir == Direction.EAST || dir == Direction.WEST) {
+                if (world.getBlockState(pos.offset(dir).offset(Direction.NORTH)).getBlock() == Blocks.BOHR_BLOCK) {
+                    poses.add(pos.offset(dir));
+                }
+                if (world.getBlockState(pos.offset(dir).offset(Direction.SOUTH)).getBlock() == Blocks.BOHR_BLOCK) {
+                    poses.add(pos.offset(dir));
+                }
+            }
+
+        }
+        return poses;
     }
 
     /**
@@ -107,8 +129,17 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         return count;
     }
 
-    public boolean isMaster() {
-        return this.getCachedState().get(PART) == BohrPart.BASE;
+    public static void tick(World world, BlockPos blockPos, BlockState state, BohrBlockEntity entity) {
+        if (world.isClient()) {
+            return;
+        }
+        int status = 0;
+        if (entity.isCollectable()) {
+            status = 1;
+        } else if (!NuclidesTable.isStable(entity.getProtonCount(), entity.getNeutronCount(), entity.getElectronCount())) {
+            status = 2;
+        }
+        world.setBlockState(blockPos, state.with(MinelabsProperties.STATUS, status));
     }
 
     /**
@@ -118,10 +149,83 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public DefaultedList<ItemStack> getItems() {
 //        return items if master otherwise return the items of the master
         BohrBlockEntity master = getMaster(world);
-        if (master == null){
+        if (master == null) {
             return DefaultedList.of();
         }
         return isMaster() ? items : master.items;
+    }
+
+    /**
+     * getter for the position of the master block of the bohrplate
+     *
+     * @param state    state of a certain block of the plate
+     * @param blockPos the position of the block of the plate
+     * @return the position of the bohr plate master
+     */
+    @Nullable
+    public static BlockPos getMasterPos(World world, BlockState state, BlockPos blockPos) {
+        if (state.get(MinelabsProperties.MASTER)) {
+            return blockPos;
+        } else {
+            for (BlockPos pos : getBohrParts(blockPos, world)) {
+                if (world.getBlockState(pos).get(MinelabsProperties.MASTER)) {
+                    return pos;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Determines the help messages (for neutrons and electrons) to be shown to the player while building an atom.
+     *
+     * @param nrOfProtons   : amount of protons
+     * @param nrOfNeutrons  : amount of neutrons
+     * @param nrOfElectrons : amount of electrons
+     * @return : array of two values (size=2, type=String) = the neutron help and the electron help message.
+     */
+    public ArrayList<String> getBuildHelp(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons) {
+
+        int neutronDiff;
+        int electronDiff;
+        String neutronHelp = "";
+        String electronHelp = "";
+        neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons, false); // here: amount of total neutrons we need
+        if (neutronDiff != -1 && (neutronDiff != nrOfNeutrons)) {
+            neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
+            if (neutronDiff < 0) {
+                neutronDiff = Math.abs(neutronDiff);
+                neutronHelp = "Add ";
+            } else {
+                neutronHelp = "Remove ";
+            }
+            neutronHelp += neutronDiff + " neutron";
+            if (neutronDiff > 1) {
+                neutronHelp += "s";
+            }
+        }
+
+        if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
+            if (!neutronHelp.isEmpty()) {
+                electronHelp += " and ";
+            }
+            if (nrOfProtons - nrOfElectrons > 0) {
+                electronDiff = nrOfProtons - nrOfElectrons - 5;
+                electronHelp += "add ";
+            } else {
+                electronDiff = nrOfElectrons - (nrOfProtons + 5);
+                electronHelp += "remove ";
+            }
+            electronHelp += electronDiff + " electron";
+            if (electronDiff > 1) {
+                electronHelp += "s";
+            }
+        }
+        return new ArrayList<>(Arrays.asList(neutronHelp, electronHelp));
+    }
+
+    public boolean isMaster() {
+        return this.getCachedState().get(MinelabsProperties.MASTER);
     }
 
     /**
@@ -176,7 +280,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             neutronHelp = buildHelp.get(0);
             electronHelp = buildHelp.get(1);
         }
-        String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + world.getBlockState(getPos()).get(TIMER);
+        String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + this.timer;
         String helpInfo = neutronHelp + electronHelp + " to stabilise.";
         /*
          * Rendering of text:
@@ -191,78 +295,11 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     }
 
     /**
-     * Determines the help messages (for neutrons and electrons) to be shown to the player while building an atom.
-     *
-     * @param nrOfProtons : amount of protons
-     * @param nrOfNeutrons : amount of neutrons
-     * @param nrOfElectrons : amount of electrons
-     * @return : array of two values (size=2, type=String) = the neutron help and the electron help message.
-     */
-    public ArrayList<String> getBuildHelp(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons) {
-
-        int neutronDiff;
-        int electronDiff;
-        String neutronHelp = "";
-        String electronHelp = "";
-        neutronDiff = NuclidesTable.findNextStableAtom(nrOfProtons, false); // here: amount of total neutrons we need
-        if (neutronDiff != -1 && (neutronDiff != nrOfNeutrons)) {
-            neutronDiff = nrOfNeutrons - neutronDiff; // here: the actual difference between what we need and what we have
-            if (neutronDiff < 0) {
-                neutronDiff = Math.abs(neutronDiff);
-                neutronHelp = "Add ";
-            }
-            else {
-                neutronHelp = "Remove ";
-            }
-            neutronHelp += neutronDiff + " neutron";
-            if (neutronDiff > 1) {
-                neutronHelp += "s";
-            }
-        }
-
-        if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
-            if (!neutronHelp.isEmpty()) {
-                electronHelp += " and ";
-            }
-            if (nrOfProtons - nrOfElectrons > 0) {
-                electronDiff = nrOfProtons - nrOfElectrons - 5;
-                electronHelp += "add ";
-            }
-            else {
-                electronDiff = nrOfElectrons - (nrOfProtons + 5);
-                electronHelp += "remove ";
-            }
-            electronHelp += electronDiff + " electron";
-            if (electronDiff > 1) {
-                electronHelp += "s";
-            }
-        }
-        return new ArrayList<>(Arrays.asList(neutronHelp, electronHelp));
-    }
-
-    /**
      * needs to be called on inventory change
      */
     @Override
     public void markDirty() {
         super.markDirty();
-        int nrOfProtons = getProtonCount();
-        int nrOfNeutrons = getNeutronCount();
-        int nrOfElectrons = getElectronCount();
-        assert world != null;
-        BlockState state = world.getBlockState(getPos());
-//        normal texture
-        int status = 0;
-//        collectible -> green texture
-        if (isCollectable()) {
-            status = 1;
-        }
-//        unstable => red texture
-        else if (!NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
-            status = 2;
-        }
-        state = state.with(STATUS, status);
-        world.setBlockState(pos, state);
     }
 
     /**
@@ -273,11 +310,18 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      */
     @Nullable
     public BohrBlockEntity getMaster(World world) {
-        if (this.getCachedState().getBlock() instanceof BohrBlock && this.getCachedState().get(PART) != BohrPart.BASE) {
-            BlockPos blockPos = getMasterPos(this.getCachedState(), pos);
+        for (BlockPos pos : getBohrParts(pos, world)) {
+            if (world.getBlockState(pos).isOf(Blocks.BOHR_BLOCK) && world.getBlockState(pos).get(MinelabsProperties.MASTER)) {
+                if (world.getBlockEntity(pos) instanceof BohrBlockEntity entity && entity != this) {
+                    return entity;
+                }
+            }
+        }
+        /*
+        if (this.getCachedState().getBlock() instanceof BohrBlock && this.getCachedState().get(MinelabsProperties.MASTER)) {
+            BlockPos blockPos = getMasterPos(world, this.getCachedState(), pos);
             BlockEntity blockEntity = world.getBlockEntity(blockPos);
-            BohrPart bohrPart = world.getBlockState(blockPos).get(PART);
-            if (blockEntity instanceof BohrBlockEntity bohrBlockEntity && bohrPart == BohrPart.BASE) {
+            if (blockEntity instanceof BohrBlockEntity bohrBlockEntity && world.getBlockState(blockPos).get(MinelabsProperties.MASTER)) {
                 return bohrBlockEntity;
             } else {
                 world.removeBlock(pos, false);
@@ -286,66 +330,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 //                world.breakBlock(getPos(), false);
                 return null;
             }
-        }
+        }*/
         return this;
-    }
-
-    /**
-     * getter for the position of the master block of the bohrplate
-     *
-     * @param state    state of a certain block of the plate
-     * @param blockPos the position of the block of the plate
-     * @return the position of the bohr plate master
-     */
-    @Nullable
-    public static BlockPos getMasterPos(BlockState state, BlockPos blockPos) {
-        BohrPart part = state.get(PART);
-        switch (part) {
-            case BASE -> {
-                return blockPos;
-            }
-            case SOUTH -> {
-                return blockPos.north();
-            }
-            case EAST -> {
-                return blockPos.west();
-            }
-            case SOUTH_EAST -> {
-                return blockPos.north().west();
-            }
-            default -> {
-                return null;
-            }
-        }
-    }
-
-
-    /**
-     * takes a starting block and find the positions of the other 3 bohr-blocks
-     *
-     * @param state    the state of the starting block
-     * @param blockPos the position of the starting block
-     * @param world    the world of the starting block
-     * @return a list of other bohr block belonging to the same bohr plate
-     */
-    @Nullable
-    public static java.util.List<BlockPos> getBohrParts(BlockState state, BlockPos blockPos, World world) {
-        BohrPart part = state.get(PART);
-        switch (part) {
-            case BASE -> {
-                return java.util.List.of(blockPos.east(), blockPos.east().south(), blockPos.south());
-            }
-            case SOUTH -> {
-                return java.util.List.of(blockPos.north(), blockPos.east().north(), blockPos.east());
-            }
-            case EAST -> {
-                return java.util.List.of(blockPos.west(), blockPos.west().south(), blockPos.south());
-            }
-            case SOUTH_EAST -> {
-                return java.util.List.of(blockPos.north(), blockPos.west().north(), blockPos.west());
-            }
-        }
-        return null;
     }
 
     @Override
@@ -370,11 +356,18 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         return protons == electrons && nucleusState != null && nucleusState.getAtomItem() != null && nucleusState.isStable() && protons != 0;
     }
 
-
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         Inventories.readNbt(nbt, this.items);
+        timer = nbt.getInt("Timer");
+    }
+
+    @Override
+    public void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
+        nbt.putInt("Timer", timer);
+        Inventories.writeNbt(nbt, this.items);
     }
 
     /**
@@ -486,24 +479,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             }
         }
         return ActionResult.FAIL;
-    }
-
-    @Override
-    public void writeNbt(NbtCompound nbt) {
-        writeNbt(nbt, items);
-        super.writeNbt(nbt);
-    }
-
-    public static void writeNbt(NbtCompound nbt, DefaultedList<ItemStack> stacks) {
-        NbtList nbtList = new NbtList();
-        for (int i = 0; i < stacks.size(); ++i) {
-            ItemStack itemStack = stacks.get(i);
-            NbtCompound nbtCompound = new NbtCompound();
-            nbtCompound.putByte("Slot", (byte) i);
-            itemStack.writeNbt(nbtCompound);
-            nbtList.add(nbtCompound);
-        }
-        nbt.put("Items", nbtList);
     }
 
     /**

@@ -1,7 +1,94 @@
 {
   "variants": {
-    "status=0": { "model": "minelabs:block/bohr_block" },
-    "status=1": { "model": "minelabs:block/bohr_block_ready" },
-    "status=2": { "model": "minelabs:block/bohr_block_unstable" }
+    "status=0,facing=north,master=false": {
+      "model": "minelabs:block/bohr_block"
+    },
+    "status=1,facing=north,master=false": {
+      "model": "minelabs:block/bohr_block_ready"
+    },
+    "status=2,facing=north,master=false": {
+      "model": "minelabs:block/bohr_block_unstable"
+    },
+    "status=0,facing=south,master=false": {
+      "model": "minelabs:block/bohr_block",
+      "y": 90
+    },
+    "status=1,facing=south,master=false": {
+      "model": "minelabs:block/bohr_block_ready",
+      "y": 90
+    },
+    "status=2,facing=south,master=false": {
+      "model": "minelabs:block/bohr_block_unstable",
+      "y": 90
+    },
+    "status=0,facing=east,master=false": {
+      "model": "minelabs:block/bohr_block",
+      "y": 180
+    },
+    "status=1,facing=east,master=false": {
+      "model": "minelabs:block/bohr_block_ready",
+      "y": 180
+    },
+    "status=2,facing=east,master=false": {
+      "model": "minelabs:block/bohr_block_unstable",
+      "y": 180
+    },
+    "status=0,facing=west,master=false": {
+      "model": "minelabs:block/bohr_block",
+      "y": 270
+    },
+    "status=1,facing=west,master=false": {
+      "model": "minelabs:block/bohr_block_ready",
+      "y": 270
+    },
+    "status=2,facing=west,master=false": {
+      "model": "minelabs:block/bohr_block_unstable",
+      "y": 270
+    },
+    "status=0,facing=north,master=true": {
+      "model": "minelabs:block/bohr_block"
+    },
+    "status=1,facing=north,master=true": {
+      "model": "minelabs:block/bohr_block_ready"
+    },
+    "status=2,facing=north,master=true": {
+      "model": "minelabs:block/bohr_block_unstable"
+    },
+    "status=0,facing=south,master=true": {
+      "model": "minelabs:block/bohr_block",
+      "y": 90
+    },
+    "status=1,facing=south,master=true": {
+      "model": "minelabs:block/bohr_block_ready",
+      "y": 90
+    },
+    "status=2,facing=south,master=true": {
+      "model": "minelabs:block/bohr_block_unstable",
+      "y": 90
+    },
+    "status=0,facing=east,master=true": {
+      "model": "minelabs:block/bohr_block",
+      "y": 180
+    },
+    "status=1,facing=east,master=true": {
+      "model": "minelabs:block/bohr_block_ready",
+      "y": 180
+    },
+    "status=2,facing=east,master=true": {
+      "model": "minelabs:block/bohr_block_unstable",
+      "y": 180
+    },
+    "status=0,facing=west,master=true": {
+      "model": "minelabs:block/bohr_block",
+      "y": 270
+    },
+    "status=1,facing=west,master=true": {
+      "model": "minelabs:block/bohr_block_ready",
+      "y": 270
+    },
+    "status=2,facing=west,master=true": {
+      "model": "minelabs:block/bohr_block_unstable",
+      "y": 270
+    }
   }
 }
