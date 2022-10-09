@@ -4,13 +4,11 @@ package be.uantwerpen.minelabs.block;
 
 import net.minecraft.util.StringIdentifiable;
 
-public enum BohrPart implements StringIdentifiable
-{
+public enum BohrPart implements StringIdentifiable {
     BASE("base"),
-
-    SOUTH("south"),
-    EAST("east"),
-    SOUTH_EAST("southeast");
+    BACK("back"),
+    RIGHT("right"),
+    CORNER("corner");
 
     private final String name;
 

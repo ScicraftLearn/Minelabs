@@ -21,8 +21,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
@@ -39,14 +39,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
+public class BohrBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final IntProperty STATUS = MinelabsProperties.STATUS;
-    public static final BooleanProperty MASTER = MinelabsProperties.MASTER;
+    public static final EnumProperty<BohrPart> BOHR_PART = MinelabsProperties.BOHR_PART;
 
     public BohrBlock() {
         super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque().luminance(100));
-        this.setDefaultState(this.stateManager.getDefaultState().with(STATUS, 0).with(MASTER, false).with(FACING, Direction.NORTH));
+        this.setDefaultState(this.stateManager.getDefaultState()
+                .with(STATUS, 0).with(BOHR_PART, BohrPart.BASE).with(FACING, Direction.NORTH));
     }
 
     @Override
@@ -56,25 +57,20 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     }
 
     public boolean isMaster(BlockState state) {
-        return state.get(MASTER);
+        return state.get(BOHR_PART) == BohrPart.BASE;
     }
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (world.getBlockState(pos).get(MASTER)) {
-            ((BohrBlockEntity) world.getBlockEntity(pos)).scatterParticles();
+        if (world.getBlockEntity(BohrBlockEntity.getMasterPos(state, pos)) instanceof BohrBlockEntity bohrBlockEntity) {
+            bohrBlockEntity.scatterParticles();
         }
         super.onBreak(world, pos, state, player);
-        // destroy ALL BLOCKS
-        for (BlockPos blockPos : BohrBlockEntity.getBohrParts(pos, world)) {
-            if (pos != blockPos) {
-                if (world.getBlockState(blockPos).getBlock() == this) {
-                    if (world.getBlockState(blockPos).get(MASTER)) {
-                        ((BohrBlockEntity) world.getBlockEntity(blockPos)).scatterParticles();
-                    }
-                    world.breakBlock(blockPos, false);
-                    world.emitGameEvent(GameEvent.BLOCK_DESTROY, blockPos, GameEvent.Emitter.of(player, world.getBlockState(blockPos)));
-                }
+        // destroy the three other parts
+        for (BlockPos blockPos : BohrBlockEntity.getBohrParts(state, pos, world)) {
+            if (world.getBlockState(blockPos).getBlock() == this) {
+                world.breakBlock(blockPos, false);
+                world.emitGameEvent(GameEvent.BLOCK_DESTROY, blockPos, GameEvent.Emitter.of(player, world.getBlockState(blockPos)));
             }
         }
         world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(player, world.getBlockState(pos)));
@@ -82,7 +78,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(STATUS).add(MASTER).add(FACING);
+        builder.add(STATUS).add(BOHR_PART).add(FACING);
     }
 
     @Override
@@ -119,7 +115,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return state.get(MASTER) ? new BohrBlockEntity(pos, state) : null;
+        return new BohrBlockEntity(pos, state);
     }
 
     @Override
@@ -245,11 +241,11 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                     blockPos3 = pos.south().east();
                 }
             }
-            world.setBlockState(blockPos1, state.with(MASTER, false), Block.NOTIFY_ALL);
-            world.setBlockState(blockPos2, state.with(MASTER, false), Block.NOTIFY_ALL);
-            world.setBlockState(blockPos3, state.with(MASTER, false), Block.NOTIFY_ALL);
+            world.setBlockState(blockPos1, state.with(BOHR_PART, BohrPart.BACK), Block.NOTIFY_ALL);
+            world.setBlockState(blockPos2, state.with(BOHR_PART, BohrPart.RIGHT), Block.NOTIFY_ALL);
+            world.setBlockState(blockPos3, state.with(BOHR_PART, BohrPart.CORNER), Block.NOTIFY_ALL);
             world.updateNeighbors(pos, Blocks.AIR);
-            world.createAndScheduleBlockTick(pos, this, 1);
+            //world.createAndScheduleBlockTick(pos, this, 1);
         }
     }
 
@@ -286,7 +282,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 return null;
             }
         }
-        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite()).with(MASTER, true);
+        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite()).with(BOHR_PART, BohrPart.BASE);
     }
 
     @Nullable
