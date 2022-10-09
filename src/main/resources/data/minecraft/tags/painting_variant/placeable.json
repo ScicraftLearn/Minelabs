@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minelabs:particle_cpy",
-    "minelabs:particle_rgb"
+    "minelabs:particle_rgb",
+    "minelabs:flammable"
   ]
 }

@@ -9,7 +9,7 @@ import net.minecraft.util.registry.RegistryKey;
 public class Paintings {
     public static final RegistryKey<PaintingVariant> PARTICLE_CPY = register("particle_cpy", new PaintingVariant(32, 32));
     public static final RegistryKey<PaintingVariant> PARTICLE_RGB = register("particle_rgb", new PaintingVariant(32, 32));
-    //public static final RegistryKey<PaintingVariant> VAR_SAFETY = register("var_safety", new PaintingVariant(16,16));
+    public static final RegistryKey<PaintingVariant> FLAMMABLE = register("flammable", new PaintingVariant(16, 16));
 
     /**
      * Register a new painting
