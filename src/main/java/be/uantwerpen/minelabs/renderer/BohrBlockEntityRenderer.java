@@ -2,7 +2,6 @@ package be.uantwerpen.minelabs.renderer;
 
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
-
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,11 +14,15 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Conte
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
-import net.minecraft.item.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 import static be.uantwerpen.minelabs.util.NuclidesTable.calculateNrOfElectrons;
 
@@ -78,8 +81,22 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
 
 			// origin
-			matrices.translate(1f, 1.75f, 1f);
-			matrices.scale(1.5f,1.5f,1.5f);
+			switch (blockEntity.getWorld().getBlockState(blockEntity.getPos()).get(Properties.HORIZONTAL_FACING)) {
+				case NORTH -> {
+					matrices.translate(1f, 1.75f, 1f);
+				}
+				case EAST -> {
+					matrices.translate(0f, 1.75f, 1f);
+				}
+				case SOUTH -> {
+					matrices.translate(0f, 1.75f, 0f);
+				}
+				case WEST -> {
+					matrices.translate(1f, 1.75f, 0f);
+				}
+			}
+
+			matrices.scale(1.5f, 1.5f, 1.5f);
 
 			// for facing the player
 			PlayerEntity player = MinecraftClient.getInstance().player;
