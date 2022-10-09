@@ -64,9 +64,9 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (world.getBlockState(pos).get(MASTER)) {
-            ((BohrBlockEntity) world.getBlockEntity(pos)).scatterParticles();
-        }
+        //if (world.getBlockState(pos).get(MASTER)) {
+        //((BohrBlockEntity) world.getBlockEntity(pos)).scatterParticles();
+        //}
         super.onBreak(world, pos, state, player);
         // destroy ALL BLOCKS
         for (BlockPos blockPos : BohrBlockEntity.getBohrParts(pos, world)) {
@@ -267,10 +267,33 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         //super.onPlaced(world, pos, state, placer, itemStack);
+        BlockPos blockPos1, blockPos2, blockPos3;
         if (!world.isClient) {
-            world.setBlockState(pos.south(), state.with(MASTER, false), Block.NOTIFY_ALL);
-            world.setBlockState(pos.east(), state.with(MASTER, false), Block.NOTIFY_ALL);
-            world.setBlockState(pos.south().east(), state.with(MASTER, false), Block.NOTIFY_ALL);
+            switch (state.get(HORIZONTAL_FACING)) {
+                case SOUTH -> {
+                    blockPos1 = pos.offset(Direction.SOUTH);
+                    blockPos2 = pos.offset(Direction.WEST);
+                    blockPos3 = pos.south().west();
+                }
+                case WEST -> {
+                    blockPos1 = pos.offset(Direction.NORTH);
+                    blockPos2 = pos.offset(Direction.EAST);
+                    blockPos3 = pos.north().east();
+                }
+                case EAST -> {
+                    blockPos1 = pos.offset(Direction.SOUTH);
+                    blockPos2 = pos.offset(Direction.EAST);
+                    blockPos3 = pos.south().west();
+                }
+                default -> {
+                    blockPos1 = pos.offset(Direction.SOUTH);
+                    blockPos2 = pos.offset(Direction.EAST);
+                    blockPos3 = pos.south().east();
+                }
+            }
+            world.setBlockState(blockPos1, state.with(MASTER, false), Block.NOTIFY_ALL);
+            world.setBlockState(blockPos2, state.with(MASTER, false), Block.NOTIFY_ALL);
+            world.setBlockState(blockPos3, state.with(MASTER, false), Block.NOTIFY_ALL);
             world.updateNeighbors(pos, Blocks.AIR);
             world.createAndScheduleBlockTick(pos, this, 1);
         }
@@ -279,12 +302,32 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     @Override
     @Nullable
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        BlockPos blockPos = ctx.getBlockPos();
-        BlockPos blockPos2 = blockPos.offset(Direction.SOUTH);
-        BlockPos blockPos3 = blockPos.offset(Direction.EAST);
-        BlockPos blockPos4 = blockPos.south().east();
+        BlockPos blockPos = ctx.getBlockPos(), blockPos1, blockPos2, blockPos3;
+        switch (ctx.getPlayerFacing().getOpposite()) {
+            case SOUTH -> {
+                blockPos1 = blockPos.offset(Direction.SOUTH);
+                blockPos2 = blockPos.offset(Direction.WEST);
+                blockPos3 = blockPos.south().west();
+            }
+            case WEST -> {
+                blockPos1 = blockPos.offset(Direction.NORTH);
+                blockPos2 = blockPos.offset(Direction.EAST);
+                blockPos3 = blockPos.north().west();
+            }
+            case EAST -> {
+                blockPos1 = blockPos.offset(Direction.SOUTH);
+                blockPos2 = blockPos.offset(Direction.WEST);
+                blockPos3 = blockPos.south().west();
+            }
+            default -> {
+                blockPos1 = blockPos.offset(Direction.SOUTH);
+                blockPos2 = blockPos.offset(Direction.EAST);
+                blockPos3 = blockPos.south().east();
+            }
+        }
+
         World world = ctx.getWorld();
-        for (BlockPos pos : List.of(blockPos, blockPos2, blockPos3, blockPos4)) {
+        for (BlockPos pos : List.of(blockPos, blockPos1, blockPos2, blockPos3)) {
             if (!world.getBlockState(pos).canReplace(ctx) || !world.getWorldBorder().contains(pos)) {
                 return null;
             }

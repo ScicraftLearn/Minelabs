@@ -38,8 +38,9 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public static final int WHITE_COLOR = ColorHelper.Argb.getArgb(255, 255, 255, 255);
     public static final int GREEN_COLOR = ColorHelper.Argb.getArgb(255, 0, 255, 0);
     public static final int RED_COLOR = ColorHelper.Argb.getArgb(255, 255, 0, 0);
-    public static final int MAX_TIMER = 99;
+    public static final int MAX_TIMER = 99 * 20;
     private int timer = MAX_TIMER;
+    private BlockPos masterPos;
 
     // status: 0 = normal, 1 = atom collectible, 2 = atom unstable
 
@@ -74,7 +75,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
                     poses.add(pos.offset(dir));
                 }
             }
-
         }
         return poses;
     }
@@ -133,6 +133,22 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         if (world.isClient()) {
             return;
         }
+
+        int nrOfProtons = entity.getProtonCount();
+        int nrOfNeutrons = entity.getNeutronCount();
+        int nrOfElectrons = entity.getElectronCount();
+        if (NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
+            entity.timer = MAX_TIMER; // max timer value
+        } else {
+            entity.timer = Math.max(0, entity.timer - 1);
+        }
+
+        if (entity.timer == 0) {
+            entity.scatterParticles(3);
+            entity.timer = MAX_TIMER;
+        }
+
+
         int status = 0;
         if (entity.isCollectable()) {
             status = 1;
@@ -153,27 +169,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             return DefaultedList.of();
         }
         return isMaster() ? items : master.items;
-    }
-
-    /**
-     * getter for the position of the master block of the bohrplate
-     *
-     * @param state    state of a certain block of the plate
-     * @param blockPos the position of the block of the plate
-     * @return the position of the bohr plate master
-     */
-    @Nullable
-    public static BlockPos getMasterPos(World world, BlockState state, BlockPos blockPos) {
-        if (state.get(MinelabsProperties.MASTER)) {
-            return blockPos;
-        } else {
-            for (BlockPos pos : getBohrParts(blockPos, world)) {
-                if (world.getBlockState(pos).get(MinelabsProperties.MASTER)) {
-                    return pos;
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -280,7 +275,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             neutronHelp = buildHelp.get(0);
             electronHelp = buildHelp.get(1);
         }
-        String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + this.timer;
+        String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + this.timer / 20;
         String helpInfo = neutronHelp + electronHelp + " to stabilise.";
         /*
          * Rendering of text:
