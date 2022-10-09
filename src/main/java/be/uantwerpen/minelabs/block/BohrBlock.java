@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.block;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.entity.SubatomicParticle;
@@ -271,9 +272,9 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         if (!world.isClient) {
             switch (state.get(HORIZONTAL_FACING)) {
                 case SOUTH -> {
-                    blockPos1 = pos.offset(Direction.SOUTH);
+                    blockPos1 = pos.offset(Direction.NORTH);
                     blockPos2 = pos.offset(Direction.WEST);
-                    blockPos3 = pos.south().west();
+                    blockPos3 = pos.north().west();
                 }
                 case WEST -> {
                     blockPos1 = pos.offset(Direction.NORTH);
@@ -282,7 +283,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
                 }
                 case EAST -> {
                     blockPos1 = pos.offset(Direction.SOUTH);
-                    blockPos2 = pos.offset(Direction.EAST);
+                    blockPos2 = pos.offset(Direction.WEST);
                     blockPos3 = pos.south().west();
                 }
                 default -> {
@@ -305,19 +306,20 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         BlockPos blockPos = ctx.getBlockPos(), blockPos1, blockPos2, blockPos3;
         switch (ctx.getPlayerFacing().getOpposite()) {
             case SOUTH -> {
-                blockPos1 = blockPos.offset(Direction.SOUTH);
+                blockPos1 = blockPos.offset(Direction.NORTH);
                 blockPos2 = blockPos.offset(Direction.WEST);
-                blockPos3 = blockPos.south().west();
+                blockPos3 = blockPos.north().west();
             }
             case WEST -> {
                 blockPos1 = blockPos.offset(Direction.NORTH);
                 blockPos2 = blockPos.offset(Direction.EAST);
-                blockPos3 = blockPos.north().west();
+                blockPos3 = blockPos.north().east();
             }
             case EAST -> {
                 blockPos1 = blockPos.offset(Direction.SOUTH);
                 blockPos2 = blockPos.offset(Direction.WEST);
                 blockPos3 = blockPos.south().west();
+                Minelabs.LOGGER.info(blockPos1 + " | " + blockPos2 + " | " + blockPos3 + " | ");
             }
             default -> {
                 blockPos1 = blockPos.offset(Direction.SOUTH);
