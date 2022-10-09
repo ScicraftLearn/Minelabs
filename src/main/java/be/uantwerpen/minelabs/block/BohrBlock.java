@@ -257,12 +257,13 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return switch (state.get(HORIZONTAL_FACING)) {
+        return Block.createCuboidShape(0, 0, 0, 16, 1, 16);
+        /*return switch (state.get(HORIZONTAL_FACING)) {
             default -> Block.createCuboidShape(0, 0, 0, 16, 1, 16);
             case SOUTH -> Block.createCuboidShape(0, 0, 0, 16, 1, 16);
-            case EAST -> Block.createCuboidShape(0, 0, 0, 16, 1, 0);
+            case EAST -> Block.createCuboidShape(0, 0, 0, 16, 1, 16);
             case WEST -> Block.createCuboidShape(0, 0, 0, 16, 1, 16);
-        };
+        };*/
     }
 
     @Override
