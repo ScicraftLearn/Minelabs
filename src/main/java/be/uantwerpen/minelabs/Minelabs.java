@@ -15,6 +15,8 @@ import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.InputStream;
+
 
 public class Minelabs implements ModInitializer {
 
@@ -23,8 +25,11 @@ public class Minelabs implements ModInitializer {
     // This logger is used to write text to the console and the log file.
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
+    public static InputStream csvFile;
+
     @Override
     public void onInitialize() {
+        csvFile = getClass().getResourceAsStream("/data/minelabs/nuclides_table/nndc_nudat_data_export.csv");
         Items.registerItems();
         Blocks.registerBlocks();
         BlockEntities.registerBlockEntities();
