@@ -22,34 +22,34 @@ public class Items {
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
     public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS), 4), "salt");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), 4), "salt");
 
     public static final Item SALT_SHARD = register(new SaltShardItem(
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_shard");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_shard");
 
     public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_ore");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_ore");
 
     public static final Item DEEPSLATE_SALT_ORE = register(new BlockItem(Blocks.DEEPSLATE_SALT_ORE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "deepslate_salt_ore");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "deepslate_salt_ore");
 
     public static final Item SALT_BLOCK = register(new SaltBlockItem(Blocks.SALT_BLOCK,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_block");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_block");
 
     public static final Item SALT_CRYSTAL = register(new BlockItem(Blocks.SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "salt_crystal");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_crystal");
 
     public static final Item SMALL_SALT_CRYSTAL = register(new BlockItem(Blocks.SMALL_SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "small_salt_crystal");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "small_salt_crystal");
 
     public static final Item MEDIUM_SALT_CRYSTAL = register(new BlockItem(Blocks.MEDIUM_SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "medium_salt_crystal");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "medium_salt_crystal");
 
     public static final Item LARGE_SALT_CRYSTAL = register(new BlockItem(Blocks.LARGE_SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "large_salt_crystal");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "large_salt_crystal");
 
     public static final Item BUDDING_SALT_BLOCK = register(new BlockItem(Blocks.BUDDING_SALT_BLOCK,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.MINELABS)), "budding_salt_block");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "budding_salt_block");
 
     public static final Item SAFETY_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.HEAD,
             new FabricItemSettings().group(ItemGroups.MINELABS)), "safety_glasses");
@@ -87,46 +87,46 @@ public class Items {
 
 
     public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 1), "lithium_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 1), "lithium_chloride_dust");
 
     public static final Item STRONTIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 2), "strontium_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 2), "strontium_chloride_dust");
 
     public static final Item STRONTIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 2), "strontium_nitrate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 2), "strontium_nitrate_dust");
 
     public static final Item CALCIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 3), "calcium_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 3), "calcium_chloride_dust");
 
     public static final Item SODIUM_CARBONATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 4), "sodium_carbonate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 4), "sodium_carbonate_dust");
 
     public static final Item BORAX_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 5), "borax_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 5), "borax_dust");
 
     public static final Item COPPER_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 6), "copper_sulfate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 6), "copper_sulfate_dust");
 
     public static final Item BORIC_ACID_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 6), "boric_acid_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 6), "boric_acid_dust");
 
     public static final Item COPPER_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 7), "copper_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 7), "copper_chloride_dust");
 
     public static final Item POTASSIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 8), "potassium_sulfate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 8), "potassium_sulfate_dust");
 
     public static final Item POTASSIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 8), "potassium_nitrate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 8), "potassium_nitrate_dust");
 
     public static final Item POTASSIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 9), "potassium_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 9), "potassium_chloride_dust");
 
     public static final Item MAGNESIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS), 10), "magnesium_sulfate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 10), "magnesium_sulfate_dust");
 
     public static final Item ASH_DUST = register(new Item(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.MINELABS)), "ash_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS)), "ash_dust");
 
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
@@ -218,10 +218,10 @@ public class Items {
 
     //public static final Item CHARGED_BLOCK = register(new BlockItem(Blocks.CHARGED_BLOCK, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "charged_block");
 
-    public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "electric_field_sensor");
+    public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings().group(ItemGroups.MINELABS)), "electric_field_sensor");
 
     // helium gas
-    public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.MINELABS)), "helium");
+    public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.CHEMICALS)), "helium");
 
     public static final Item BOHR_BLOCK = register(new BlockItem(Blocks.BOHR_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "bohr_block");
 

@@ -33,6 +33,9 @@
   "block.minelabs.lewis_block": "Lewis Werkbank",
   "block.minelabs.ionic_block": "Ion Werkbank",
   "block.minelabs.bohr_block": "Bohr Blauwdruk",
+  "block.minelabs.atom_portal": "Subatomair Portaal",
+  "block.minelabs.atomic_floor": "",
+  "block.minelabs.electric_field_sensor": "Elektrisch Veld Sensor",
 
   "item.minelabs.proton": "Proton",
   "item.minelabs.electron": "Elektron",

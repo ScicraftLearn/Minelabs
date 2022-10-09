@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minelabs:item/calcium_chloride_dust"
+    "layer0": "minelabs:item/dust_placeholder"
   }
 }

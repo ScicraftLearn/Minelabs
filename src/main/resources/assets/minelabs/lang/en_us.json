@@ -50,8 +50,10 @@
   "item.minelabs.salt_shard": "Salt Shard",
   "block.minelabs.lewis_block": "Lewis Crafting Table",
   "block.minelabs.ionic_block": "Ionic Crafting Table",
-  "block.minelabs.portal_block": "Atomic Portal",
+  "block.minelabs.atom_portal": "Subatomic Portal",
+  "block.minelabs.atomic_floor": "",
   "block.minelabs.bohr_block": "Bohr Blueprint",
+  "block.minelabs.electric_field_sensor": "Electric Field Sensor",
 
   "item.minelabs.proton": "Proton",
   "item.minelabs.anti_proton": "AntiProton",
