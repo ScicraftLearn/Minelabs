@@ -1,0 +1,16 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_yellow",
+    "layer1": "minelabs:item/sulfur",
+    "layer2": "minelabs:item/electrons6"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/sulfur_atom_internal"
+    }
+  ]
+}
