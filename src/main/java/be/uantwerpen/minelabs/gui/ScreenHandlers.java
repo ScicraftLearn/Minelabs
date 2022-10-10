@@ -8,25 +8,26 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ScreenHandlers {
 
     public static final ExtendedScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register(LewisBlockScreenHandler::new, "lewis_block");
-    public static final ExtendedScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER = register(IonicBlockScreenHandler::new, "inonic_block");
-    public static ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER = new ScreenHandlerType<>(LabChestScreenHandler::new);
+    public static final ExtendedScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER = register(IonicBlockScreenHandler::new, "ionic_block");
+    public static final ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER = registerSimple(LabChestScreenHandler::new, "lab_chest");
 
     /**
      * Register a Screen
      * <p>
      *
-     * @param screenHandlerType : ScreenHandler Object to register
+     * @param factory : ScreenHandlerType.Factory<T> constructor of screenhandler to register
      * @param identifier        : String name of the Item
      * @return {@link ScreenHandler}
      */
-    private static <T extends ScreenHandler> ScreenHandlerType<T> register(ScreenHandlerRegistry.SimpleClientHandlerFactory<T> screenHandlerType, String identifier) {
-        return ScreenHandlerRegistry.registerSimple(new Identifier(Minelabs.MOD_ID, identifier), screenHandlerType);
+    private static <T extends ScreenHandler> ScreenHandlerType<T> registerSimple(ScreenHandlerType.Factory<T> factory, String identifier) {
+        return (ScreenHandlerType) Registry.register(Registry.SCREEN_HANDLER, new Identifier(Minelabs.MOD_ID, identifier), new ScreenHandlerType(factory));
     }
 
     /**

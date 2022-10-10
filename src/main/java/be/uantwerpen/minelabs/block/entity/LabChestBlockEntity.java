@@ -12,15 +12,14 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
 
 public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
@@ -55,6 +54,10 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
         }
     };
 
+    public LabChestBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntities.LAB_CHEST_BLOCK_ENTITY, pos, state);
+    }
+
     @Override
     public boolean onSyncedBlockEvent(int type, int data) {
         Minelabs.LOGGER.info("viewcount: " + Integer.toString(data));
@@ -63,10 +66,6 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
             return true;
         }
         return super.onSyncedBlockEvent(type, data);
-    }
-
-    public LabChestBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.LAB_CHEST_BLOCK_ENTITY, pos, state);
     }
 
     @Override
@@ -96,7 +95,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new LabChestScreenHandler(syncId, inv, this, propertyDelegate);
+        return new LabChestScreenHandler(syncId, inv, this);
     }
 
     public static void tick(World world, BlockPos pos, BlockState state) {
