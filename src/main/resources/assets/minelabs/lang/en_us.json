@@ -115,6 +115,7 @@
   "item.minelabs.copper_atom": "Copper",
   "item.minelabs.iodine_atom": "Iodine",
   "item.minelabs.iron_atom": "Iron",
+  "item.minelabs.gold_atom": "Gold",
   "item.minelabs.lead_atom": "Lead",
   "item.minelabs.mercury_atom": "Mercury",
   "item.minelabs.potassium_atom": "Potassium",
@@ -122,7 +123,9 @@
   "item.minelabs.tin_atom": "Tin",
   "item.minelabs.uranium_atom": "Uranium",
   "item.minelabs.zinc_atom": "Zinc",
-
+  "item.minelabs.titanium_atom": "Titanium",
+  "item.minelabs.manganese_atom": "Manganese",
+  "item.minelabs.tungsten_atom": "Tungsten",
   "item.minelabs.erlenmeyer": "Erlenmeyer",
   "item.minelabs.erlenmeyer_o2.effect.empty": "Oxygen gas (O2)",
   "item.minelabs.erlenmeyer_n2.effect.empty": "Nytrogen gas (N2)",
@@ -147,12 +150,15 @@
   "item.minelabs.calcium_chloride_dust": "Calcium Chloride Dust",
   "item.minelabs.sodium_carbonate_dust": "Sodium Carbonate Dust",
   "item.minelabs.borax_dust": "Borax Dust",
-  "item.minelabs.boric_acid_dust": "Boric Acid Dust",
+  "item.minelabs.boric_acid": "Boric Acid",
   "item.minelabs.copper_sulfate_dust": "Copper Sulfate Dust",
   "item.minelabs.copper_chloride_dust": "Copper Chloride Dust",
   "item.minelabs.potassium_sulfate_dust": "Potassium Sulfate Dust",
   "item.minelabs.potassium_nitrate_dust": "Potassium Nitrate Dust",
   "item.minelabs.potassium_chloride_dust": "Potassium Chloride Dust",
   "item.minelabs.magnesium_sulfate_dust": "Magnesium Sulfate Dust",
-  "item.minelabs.ash_dust": "Ash Dust"
+  "item.minelabs.ash_dust": "Ash Dust",
+  "item.minelabs.lasertool_iron": "Iron Laser Tool",
+  "item.minelabs.lasertool_gold": "Gold Laser Tool",
+  "item.minelabs.lasertool_diamond": "Diamond Laser Tool"
 }

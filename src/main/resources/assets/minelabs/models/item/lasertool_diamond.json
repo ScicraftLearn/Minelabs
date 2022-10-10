@@ -1,0 +1,24 @@
+{
+    "parent": "minecraft:item/handheld",
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [-40, 90, 0],
+            "translation": [0, 2.25, -1.25]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [-40, -90, 0],
+            "translation": [0, 2.25, -1.25]
+        },
+        "firstperson_righthand": {
+            "rotation": [15, 100, -40],
+            "translation": [0, 1.75, -1.25]
+        },
+        "firstperson_lefthand": {
+            "rotation": [15, -80, 40],
+            "translation": [0, 1.75, -1.25]
+        }
+    },
+    "textures": {
+        "layer0": "minelabs:item/lasertool_diamond"
+    }
+}

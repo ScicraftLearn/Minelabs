@@ -102,7 +102,9 @@
   "item.minelabs.tin_atom": "Tin",
   "item.minelabs.uranium_atom": "Uranium",
   "item.minelabs.zinc_atom": "Zink",
-
+  "item.minelabs.tungsten_atom": "Wolfraam",
+  "item.minelabs.manganese_atom": "Mangaan",
+  "item.minelabs.titanium_atom": "Titanium",
   "item.minelabs.erlenmeyer": "Erlenmeyer",
   "item.minelabs.erlenmeyer_o2.effect.empty": "Zuurstofgas (O2)",
   "item.minelabs.erlenmeyer_n2.effect.empty": "Stikstofgas (N2)",
@@ -118,5 +120,8 @@
   "item.minelabs.erlenmeyer_hcl.effect.empty": "Waterstofchloride (HCl)",
   "item.minelabs.erlenmeyer_hno3": "Salpeterzuur (HNO3)",
   "item.minelabs.safety_glasses": "Veiligheidsbril",
-  "item.minelabs.lab_coat": "Lab Jas"
+  "item.minelabs.lab_coat": "Lab Jas",
+  "item.minelabs.lasertool_iron": "Ijzeren Laser Tool",
+  "item.minelabs.lasertool_gold": "Gouden Laser Tool",
+  "item.minelabs.lasertool_diamond": "Diamante Laser Tool"
 }
