@@ -12,31 +12,21 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory, IAnimatable {
+
+public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
-    //protected final PropertyDelegate propertyDelegate = new ArrayPropertyDelegate(0);
-    private final AnimationFactory factory = new AnimationFactory(this);
 
     private boolean open = false;
 
-    private final ViewerCountManager stateManager = new ViewerCountManager(){
+    private final ViewerCountManager stateManager = new ViewerCountManager() {
 
         @Override
         protected void onContainerOpen(World world, BlockPos pos, BlockState state) {
@@ -63,6 +53,10 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
         }
     };
 
+    public LabChestBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntities.LAB_CHEST_BLOCK_ENTITY, pos, state);
+    }
+
     @Override
     public boolean onSyncedBlockEvent(int type, int data) {
         Minelabs.LOGGER.info("viewcount: " + Integer.toString(data));
@@ -71,10 +65,6 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
             return true;
         }
         return super.onSyncedBlockEvent(type, data);
-    }
-
-    public LabChestBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.LAB_CHEST_BLOCK_ENTITY, pos, state);
     }
 
     @Override
@@ -128,40 +118,5 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
         if (!this.removed && !player.isSpectator()) {
             this.stateManager.closeContainer(player, this.getWorld(), this.getPos(), this.getCachedState());
         }
-    }
-
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<LabChestBlockEntity>
-                (this, "controllerOpen", 20, this::predicateOpen));
-        //animationData.addAnimationController(new AnimationController<LabChestBlockEntity>
-        //       (this, "controllerClose", 20, this::predicateClose));
-    }
-
-    //TODO TRIGGERS/EVENTS
-    private <E extends IAnimatable> PlayState predicateOpen(AnimationEvent<E> event) {
-        //Minelabs.LOGGER.info(open);
-        if (this.open){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("open"));
-            return PlayState.CONTINUE;
-        }else{
-            event.getController().markNeedsReload();
-            return PlayState.STOP;
-        }
-    }
-
-    private <E extends IAnimatable> PlayState predicateClose(AnimationEvent<E> event) {
-        if (!this.open){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("close"));
-            return PlayState.CONTINUE;
-        }else{
-            event.getController().markNeedsReload();
-            return PlayState.STOP;
-        }
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
     }
 }
