@@ -219,28 +219,9 @@ public class BohrBlock extends BlockWithEntity {
         //super.onPlaced(world, pos, state, placer, itemStack);
         BlockPos blockPos1, blockPos2, blockPos3;
         if (!world.isClient) {
-            switch (state.get(FACING)) {
-                case SOUTH -> {
-                    blockPos1 = pos.offset(Direction.NORTH);
-                    blockPos2 = pos.offset(Direction.WEST);
-                    blockPos3 = pos.north().west();
-                }
-                case WEST -> {
-                    blockPos1 = pos.offset(Direction.NORTH);
-                    blockPos2 = pos.offset(Direction.EAST);
-                    blockPos3 = pos.north().east();
-                }
-                case EAST -> {
-                    blockPos1 = pos.offset(Direction.SOUTH);
-                    blockPos2 = pos.offset(Direction.WEST);
-                    blockPos3 = pos.south().west();
-                }
-                default -> {
-                    blockPos1 = pos.offset(Direction.SOUTH);
-                    blockPos2 = pos.offset(Direction.EAST);
-                    blockPos3 = pos.south().east();
-                }
-            }
+            blockPos1 = pos.offset(state.get(FACING).getOpposite()); // BACK
+            blockPos2 = pos.offset(state.get(FACING).rotateYClockwise()); // RIGHT
+            blockPos3 = pos.offset(state.get(FACING).rotateYClockwise()).offset(state.get(FACING).getOpposite()); //CORNER
             world.setBlockState(blockPos1, state.with(BOHR_PART, BohrPart.BACK), Block.NOTIFY_ALL);
             world.setBlockState(blockPos2, state.with(BOHR_PART, BohrPart.RIGHT), Block.NOTIFY_ALL);
             world.setBlockState(blockPos3, state.with(BOHR_PART, BohrPart.CORNER), Block.NOTIFY_ALL);

@@ -346,7 +346,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     @Override
     public void markDirty() {
         super.markDirty();
-        clear();
     }
 
     @Override
