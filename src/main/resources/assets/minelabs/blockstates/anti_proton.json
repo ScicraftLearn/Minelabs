@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minelabs:block/proton"
+      "model": "minelabs:block/anti_proton"
     }
   }
 }

@@ -966,6 +966,20 @@
       }
     }
   ],
+  "display": {
+    "gui": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        1,
+        0
+      ]
+    }
+  },
   "groups": [
     0,
     1,

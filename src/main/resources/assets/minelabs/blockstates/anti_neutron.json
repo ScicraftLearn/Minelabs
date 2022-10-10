@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minelabs:block/neutron"
+      "model": "minelabs:block/anti_neutron"
     }
   }
 }

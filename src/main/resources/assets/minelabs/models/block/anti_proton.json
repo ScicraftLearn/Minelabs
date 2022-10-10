@@ -1,6 +1,6 @@
 {
   "parent": "block/cross",
   "textures": {
-    "cross": "minelabs:block/proton"
+    "cross": "minelabs:block/anti_proton"
   }
 }
