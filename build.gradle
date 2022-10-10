@@ -24,9 +24,6 @@ repositories {
 	maven {
 		url = "https://maven.kyrptonaught.dev"
 	}
-	maven {
-		url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-	}
 }
 
 dependencies {
@@ -40,8 +37,6 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
-
-	modImplementation "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
 
 	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
 
