@@ -111,8 +111,8 @@ public class Items {
     public static final Item COPPER_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), 6), "copper_sulfate_dust");
 
-    public static final Item BORIC_ACID_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 6), "boric_acid_dust");
+    public static final Item BORIC_ACID = register(new FireReactionItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.CHEMICALS), 6), "boric_acid");
 
     public static final Item COPPER_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), 7), "copper_chloride_dust");
