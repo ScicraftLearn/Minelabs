@@ -15,8 +15,8 @@ import net.minecraft.util.registry.Registry;
 public class ScreenHandlers {
 
     public static final ExtendedScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register(LewisBlockScreenHandler::new, "lewis_block");
-    public static final ExtendedScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER = register(IonicBlockScreenHandler::new, "inonic_block");
-    public static ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER = new ScreenHandlerType<>(LabChestScreenHandler::new);
+    public static final ExtendedScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER = register(IonicBlockScreenHandler::new, "ionic_block");
+    public static final ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER = registerSimple(LabChestScreenHandler::new, "lab_chest");
 
     /**
      * Register a Screen
