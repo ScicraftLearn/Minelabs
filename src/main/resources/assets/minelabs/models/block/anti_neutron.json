@@ -1,6 +1,6 @@
 {
   "parent": "block/cross",
   "textures": {
-    "cross": "minelabs:block/neutron"
+    "cross": "minelabs:block/anti_neutron"
   }
 }
