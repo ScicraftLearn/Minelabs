@@ -29,14 +29,23 @@ public class ChargedBlockEntity extends BlockEntity{
     private static final double e_move = 0.5;
     private final Block anti_block;
     private final double decay_time;
-    private final ItemStack decay_drop;
+    private final ArrayList<ItemStack> decay_drop;
+    private final Block decay_replace;
 
-    public ChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, double charge, Block anit_block, double decay_time, ItemStack decay_drop) {
+    public ChargedBlockEntity(BlockEntityType<?> type,
+                              BlockPos pos,
+                              BlockState state,
+                              double charge,
+                              Block anit_block,
+                              double decay_time,
+                              ArrayList<ItemStack> decay_drop,
+                              Block decay_replace) {
         super(type, pos, state);
         this.charge = charge;
         this.anti_block = anit_block;
         this.decay_time = decay_time;
         this.decay_drop = decay_drop;
+        this.decay_replace = decay_replace;
     }
     @Override
     public void writeNbt(NbtCompound tag) {
@@ -248,8 +257,14 @@ public class ChargedBlockEntity extends BlockEntity{
                 if (decay()) {
                     world.removeBlockEntity(pos);
                     world.removeBlock(pos, false);
-                    ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), decay_drop);
-                    world.spawnEntity(itemEntity);
+                    if (decay_drop != null) {
+                        for (ItemStack itemStack : decay_drop) {
+                            world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack));
+                        }
+                    }
+                    if (decay_replace != null) {
+                        world.setBlockState(pos, decay_replace.getDefaultState());
+                    }
                     markDirty();
                 } else {
                     Direction movement_annihilation = this.checkAnnihilation();
