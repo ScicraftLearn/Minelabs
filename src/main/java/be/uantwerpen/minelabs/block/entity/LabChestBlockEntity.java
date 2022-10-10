@@ -23,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
-    protected final PropertyDelegate propertyDelegate = new ArrayPropertyDelegate(0);
 
     private boolean open = false;
 
