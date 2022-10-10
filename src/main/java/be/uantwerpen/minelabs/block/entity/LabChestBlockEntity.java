@@ -31,7 +31,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory, IAnimatable {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
-    protected final PropertyDelegate propertyDelegate = new ArrayPropertyDelegate(0);
+    //protected final PropertyDelegate propertyDelegate = new ArrayPropertyDelegate(0);
     private final AnimationFactory factory = new AnimationFactory(this);
 
     private boolean open = false;
@@ -104,7 +104,7 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new LabChestScreenHandler(syncId, inv, this, propertyDelegate);
+        return new LabChestScreenHandler(syncId, inv, this);
     }
 
     public static void tick(World world, BlockPos pos, BlockState state) {

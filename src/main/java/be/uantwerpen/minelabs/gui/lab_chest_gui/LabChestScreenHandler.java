@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.gui.lab_chest_gui;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,20 +15,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class LabChestScreenHandler extends ScreenHandler {
     private final Inventory inventory;
-    private final PropertyDelegate propertyDelegate;
 
     public LabChestScreenHandler(int syncId, PlayerInventory inventory) {
-        this(syncId, inventory, new SimpleInventory(21), new ArrayPropertyDelegate(0));
+        this(syncId, inventory, new SimpleInventory(21));
     }
 
-    public LabChestScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
+    public LabChestScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
         super(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, syncId);
-        this.propertyDelegate = propertyDelegate;
         checkSize(inventory, 21);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
-
-        this.addProperties(propertyDelegate);
 
         for (int i = 0; i < 3; ++i) { // rows
             for (int j = 0; j < 7; ++j) {
