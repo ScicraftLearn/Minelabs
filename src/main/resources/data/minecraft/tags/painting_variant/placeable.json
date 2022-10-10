@@ -2,6 +2,12 @@
   "replace": false,
   "values": [
     "minelabs:particle_cpy",
-    "minelabs:particle_rgb"
+    "minelabs:particle_rgb",
+    "minelabs:lab_flammable",
+    "minelabs:lab_creeper",
+    "minelabs:lab_explosive",
+    "minelabs:lab_corrosive",
+    "minelabs:lab_harmful",
+    "minelabs:lab_oxidizing"
   ]
 }

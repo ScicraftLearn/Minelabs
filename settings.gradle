@@ -8,6 +8,9 @@ pluginManagement {
             name = "WTHIT"
             url = "https://maven.bai.lol"
         }
+        maven {
+            url = "https://maven.kyrptonaught.dev"
+        }
         mavenCentral()
         gradlePluginPortal()
     }
