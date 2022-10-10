@@ -122,7 +122,9 @@
   "item.minelabs.tin_atom": "Tin",
   "item.minelabs.uranium_atom": "Uranium",
   "item.minelabs.zinc_atom": "Zinc",
-
+  "item.minelabs.titanium_atom": "Titanium",
+  "item.minelabs.manganese_atom": "Manganese",
+  "item.minelabs.tungsten_atom": "Tungsten",
   "item.minelabs.erlenmeyer": "Erlenmeyer",
   "item.minelabs.erlenmeyer_o2.effect.empty": "Oxygen gas (O2)",
   "item.minelabs.erlenmeyer_n2.effect.empty": "Nytrogen gas (N2)",
@@ -154,5 +156,6 @@
   "item.minelabs.potassium_nitrate_dust": "Potassium Nitrate Dust",
   "item.minelabs.potassium_chloride_dust": "Potassium Chloride Dust",
   "item.minelabs.magnesium_sulfate_dust": "Magnesium Sulfate Dust",
-  "item.minelabs.ash_dust": "Ash Dust"
+  "item.minelabs.ash_dust": "Ash Dust",
+  "item.minelabs.erlenmeyer_hno3": "Nitric acid (HNO3)"
 }
