@@ -5,11 +5,10 @@ import be.uantwerpen.minelabs.entity.SubatomicParticle;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.*;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,7 +32,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.List;
 
 import static be.uantwerpen.minelabs.block.entity.BohrBlockEntity.*;
@@ -42,12 +40,10 @@ import static be.uantwerpen.minelabs.block.entity.BohrBlockEntity.*;
 public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     VoxelShape shape = Block.createCuboidShape(0, 0, 0, 16, 1, 16);
 
-
     public BohrBlock() {
         super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque().luminance(100));
         this.setDefaultState(this.stateManager.getDefaultState().with(TIMER, 30).with(STATUS, 0).with(PART, BohrPart.BASE));
     }
-
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
@@ -58,8 +54,6 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
     public boolean isMaster(BlockState state) {
         return state.get(PART) == BohrPart.BASE;
     }
-
-
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
@@ -114,13 +108,11 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         }
     }
 
-
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new BohrBlockEntity(pos, state);
     }
-
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
@@ -159,11 +151,8 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
         super.scheduledTick(state,world,pos,random);
     }
 
-
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-
-
         BlockEntity blockEntity = world.getBlockEntity(pos);
         ItemStack stack = player.getStackInHand(hand);
         Item item = stack.getItem();
@@ -261,7 +250,7 @@ public class BohrBlock extends BlockWithEntity implements BlockEntityProvider {
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
+        //super.onPlaced(world, pos, state, placer, itemStack);
         if (!world.isClient) {
             world.setBlockState(pos.south(), state.with(PART, BohrPart.SOUTH), Block.NOTIFY_ALL);
             world.setBlockState(pos.east(), state.with(PART, BohrPart.EAST), Block.NOTIFY_ALL);
