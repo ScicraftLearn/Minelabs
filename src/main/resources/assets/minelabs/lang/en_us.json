@@ -27,7 +27,6 @@
   "block.minelabs.neutrino": "Neutrino",
   "block.minelabs.antineutrino": "Antineutrino",
   "block.minelabs.helium": "Helium Gas",
-
   "block.minelabs.gluon_quantumfield": "Gluon Quantumfield",
   "block.minelabs.photon_quantumfield": "Photon Quantumfield",
   "block.minelabs.weak_boson_quantumfield": "Weak Boson Quantumfield",
@@ -35,20 +34,26 @@
   "block.minelabs.neutrino_quantumfield": "Neutrino Quantumfield",
   "block.minelabs.upquark_quantumfield": "Upquark Quantumfield",
   "block.minelabs.downquark_quantumfield": "Downquark Quantumfield",
-
   "block.minelabs.time_freeze_block": "Time Freeze Block",
-
+  "block.minelabs.lab_drawer": "Lab Drawers",
+  "block.minelabs.lab_sink": "Lab Sink",
+  "block.minelabs.lab_cabin": "Lab Cabin",
+  "block.minelabs.lab_center": "Lab Center",
+  "block.minelabs.lab_corner": "Lab Corner",
+  "block.minelabs.microscope": "Microscope",
+  "block.minelabs.tuberack": "Tube rack",
+  "block.minelabs.erlenmeyer_stand": "Erlenmeyer Stand",
   "blockEntity.minelabs.charged_block": "Charged Block",
-
   "entity.minecraft.villager.sciencevillager": "Science Villager",
-
   "entity.minelabs.entropy_creeper": "Entropy Creeper",
   "item.minelabs.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
   "item.minelabs.salt_shard": "Salt Shard",
-
   "block.minelabs.lewis_block": "Lewis Crafting Table",
   "block.minelabs.ionic_block": "Ionic Crafting Table",
+  "block.minelabs.atom_portal": "Subatomic Portal",
+  "block.minelabs.atomic_floor": "",
   "block.minelabs.bohr_block": "Bohr Blueprint",
+  "block.minelabs.electric_field_sensor": "Electric Field Sensor",
 
   "item.minelabs.proton": "Proton",
   "item.minelabs.anti_proton": "AntiProton",
@@ -110,6 +115,7 @@
   "item.minelabs.copper_atom": "Copper",
   "item.minelabs.iodine_atom": "Iodine",
   "item.minelabs.iron_atom": "Iron",
+  "item.minelabs.gold_atom": "Gold",
   "item.minelabs.lead_atom": "Lead",
   "item.minelabs.mercury_atom": "Mercury",
   "item.minelabs.potassium_atom": "Potassium",
@@ -133,13 +139,18 @@
   "item.minelabs.erlenmeyer_nh3.effect.empty": "Ammonia (NH3)",
   "item.minelabs.erlenmeyer_n2o.effect.empty": "Laughing gas (N2O)",
   "item.minelabs.erlenmeyer_hcl.effect.empty": "Hydrogen chloride (HCl)",
+  "item.minelabs.erlenmeyer_hno3": "Nitric acid (HNO3)",
+  "item.minelabs.safety_glasses": "Safety Glasses",
+  "item.minelabs.lab_coat": "Lab Coat",
+  "item.minelabs.lens": "Microscope Lens",
+  "item.minelabs.big_lens": "Microscope Lens x2",
   "item.minelabs.lithium_chloride_dust": "Lithium Chloride Dust",
   "item.minelabs.strontium_chloride_dust": "Strontium Chloride Dust",
   "item.minelabs.strontium_nitrate_dust": "Strontium Nitrate Dust",
   "item.minelabs.calcium_chloride_dust": "Calcium Chloride Dust",
   "item.minelabs.sodium_carbonate_dust": "Sodium Carbonate Dust",
   "item.minelabs.borax_dust": "Borax Dust",
-  "item.minelabs.boric_acid_dust": "Boric Acid Dust",
+  "item.minelabs.boric_acid": "Boric Acid",
   "item.minelabs.copper_sulfate_dust": "Copper Sulfate Dust",
   "item.minelabs.copper_chloride_dust": "Copper Chloride Dust",
   "item.minelabs.potassium_sulfate_dust": "Potassium Sulfate Dust",
@@ -147,5 +158,7 @@
   "item.minelabs.potassium_chloride_dust": "Potassium Chloride Dust",
   "item.minelabs.magnesium_sulfate_dust": "Magnesium Sulfate Dust",
   "item.minelabs.ash_dust": "Ash Dust",
-  "item.minelabs.erlenmeyer_hno3": "Nitric acid (HNO3)"
+  "item.minelabs.lasertool_iron": "Iron Laser Tool",
+  "item.minelabs.lasertool_gold": "Gold Laser Tool",
+  "item.minelabs.lasertool_diamond": "Diamond Laser Tool"
 }
