@@ -1,7 +1,7 @@
-package be.uantwerpen.scicraft.block;
+package be.uantwerpen.minelabs.block;
 
-import be.uantwerpen.scicraft.block.entity.ChargedBlockEntity;
-import be.uantwerpen.scicraft.block.entity.TimeFreezeBlockEntity;
+import be.uantwerpen.minelabs.block.entity.ChargedBlockEntity;
+import be.uantwerpen.minelabs.block.entity.TimeFreezeBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
