@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.entity.Entities;
+import be.uantwerpen.minelabs.entity.LabCoat2Renderer;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicScreen;
@@ -28,6 +29,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.item.Item;
+import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 
 @SuppressWarnings("UNUSED")
@@ -102,6 +104,8 @@ public class MinelabsClient implements ClientModInitializer {
         //Register rendering ionic block inventory
         HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
         HandledScreens.register(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, LabChestScreen::new);
+
+        GeoArmorRenderer.registerArmorRenderer(new LabCoat2Renderer(),Items.LAB_COAT2);
 
 //        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LEWIS_BLOCK, RenderLayer.getTranslucent());
 

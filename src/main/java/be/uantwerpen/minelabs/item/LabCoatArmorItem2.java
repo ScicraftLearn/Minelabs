@@ -54,8 +54,7 @@ public class LabCoatArmorItem2 extends ArmorItem implements IAnimatable {
 
         // Make sure the player is wearing all the armor. If they are, continue playing
         // the animation, otherwise stop
-        boolean isWearingAll = armorList.containsAll(Arrays.asList(Items.SAFETY_GLASSES,
-               Items.LAB_COAT2));
+        boolean isWearingAll = armorList.containsAll(Arrays.asList(Items.LAB_COAT2));
         return isWearingAll ? PlayState.CONTINUE : PlayState.STOP;
     }
 

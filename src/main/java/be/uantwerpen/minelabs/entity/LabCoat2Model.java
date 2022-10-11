@@ -13,7 +13,7 @@ public class LabCoat2Model extends AnimatedGeoModel<LabCoatArmorItem2> {
 
     @Override
     public Identifier getTextureResource(LabCoatArmorItem2 object) {
-        return new Identifier(Minelabs.MOD_ID, "textures/models/armor/labcoat2.png");
+        return new Identifier(Minelabs.MOD_ID, "textures/misc/labcoat2.png");
     }
 
     @Override
