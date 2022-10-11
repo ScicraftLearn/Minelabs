@@ -4,7 +4,9 @@ import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.entity.Entities;
+import be.uantwerpen.minelabs.model.BalloonEntityModel;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
+import be.uantwerpen.minelabs.renderer.BalloonEntityRenderer;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreen;
@@ -22,6 +24,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -31,6 +34,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.util.Identifier;
 import net.minecraft.item.Item;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -88,6 +93,8 @@ public class MinelabsClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ANTI_NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(Entities.BALLOON_MODEL, BalloonEntityModel::getTexturedModelData);
 
         BlockEntityRendererRegistry.register(BlockEntities.BOHR_BLOCK_ENTITY, BohrBlockEntityRenderer::new);
 
