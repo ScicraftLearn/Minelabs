@@ -57,6 +57,9 @@ public class Items {
     public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
             new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_coat");
 
+    public static final Item LAB_COAT2 = register(new LabCoatArmorItem2(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_coat2");
+
     //TODO ADD PANTS? AND BOOTS ?
 
     public static final Item LAB_COUNTER = register(new BlockItem(Blocks.LAB_CABIN,
