@@ -27,7 +27,7 @@ public class BalloonItem extends Item {
         BalloonEntity balloon = Entities.BALLOON.create(world);
         balloon.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), 0.0F, 0.0F);
         world.spawnEntity(balloon);
-        balloon.setBallooned(entity, true);
+        balloon.attachLeash(entity, true);
         return balloon;
     }
 
@@ -59,21 +59,8 @@ public class BalloonItem extends Item {
         if(!(entity instanceof PlayerEntity) && !(entity instanceof BalloonEntity)) {
             World world = user.getWorld();
             if(!world.isClient) {
-                LivingEntity target = null;
-                for(UUID id: BalloonEntity.balloons) {
-                    BalloonEntity balloon = ((BalloonEntity) ((ServerWorld) world).getEntity(id));
-                    if(balloon != null) {
-                        target = balloon.getBallooned();
-                        if (target != null && target == entity) {
-                            break;
-                        }
-                    }
-                    target = null;
-                }
-                if(target == null) {
-                    summon(world, entity);
-                    stack.decrement(1);
-                }
+                summon(world, entity);
+                stack.decrement(1);
             }
             return ActionResult.success(world.isClient);
         }
