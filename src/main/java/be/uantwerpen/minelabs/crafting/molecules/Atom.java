@@ -110,10 +110,10 @@ public enum Atom {
     }
 
     public int getMaxPossibleBonds(){
-        if(atomNumber <= 18)
-            return Math.min(initialValenceElectrons, 8 - initialValenceElectrons);
+        if(atomNumber==2)
+            return 0;
         else
-            return initialValenceElectrons;
+            return Math.min(initialValenceElectrons, 8 - initialValenceElectrons);
     }
 
     @Nullable
