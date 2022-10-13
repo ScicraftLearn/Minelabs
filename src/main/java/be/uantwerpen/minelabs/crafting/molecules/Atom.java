@@ -110,7 +110,7 @@ public enum Atom {
     }
 
     public int getMaxPossibleBonds(){
-        if(atomNumber==2)
+        if (type == AtomType.NOBLE_GAS)
             return 0;
         else
             return Math.min(initialValenceElectrons, 8 - initialValenceElectrons);
