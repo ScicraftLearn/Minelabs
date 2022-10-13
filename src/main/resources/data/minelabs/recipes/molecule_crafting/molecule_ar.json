@@ -1,0 +1,14 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Ar1", "atom":  "Ar"}
+    ],
+    "bonds": []
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_ar"
+  },
+  "density": 8
+}
