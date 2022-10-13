@@ -9,6 +9,11 @@
     "minelabs:electron_quantumfield",
     "minelabs:photon_quantumfield",
     "minelabs:neutrino_quantumfield",
-    "minelabs:weak_boson_quantumfield"
+    "minelabs:weak_boson_quantumfield",
+    "minecraft:sticky_piston",
+    "minecraft:piston",
+    "minecraft:piston_head",
+    "c:shulker_boxes",
+    "c:chests"
   ]
 }
