@@ -111,24 +111,24 @@ public class MinelabsClient implements ClientModInitializer {
         // TODO - enchantment visuals voor zeldzame stoffen
 
         // GASSES
-        registerErlenmeyer(Items.ERLENMEYER_O2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CH4, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_H2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_NO, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_NO2, 0x991c00, 2);
-        registerErlenmeyer(Items.ERLENMEYER_Cl2, 0xE8F48C, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CO2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CO, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_NH3, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N2O, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_HCl, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_He, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_Ne, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_Ar, 0x7F7F7F, 2);
+        registerErlenmeyer(Items.ERLENMEYER_O2, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_N2, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_CH4, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_H2, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_NO, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_NO2, 0x991c00, 1);
+        registerErlenmeyer(Items.ERLENMEYER_Cl2, 0xE8F48C, 1);
+        registerErlenmeyer(Items.ERLENMEYER_CO2, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_CO, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_NH3, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_N2O, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_HCl, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_He, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_Ne, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_Ar, 0xAFAFAF, 1);
         //Fluids
-        registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 2);
-        registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 2);
+        registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 0);
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
 
         //Lewis Data Sync
@@ -141,7 +141,7 @@ public class MinelabsClient implements ClientModInitializer {
     public void registerErlenmeyer(Item item, int color, int index) {
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
             if (tintIndex == index) return color;
-            return 0x7F7F7F;
+            return 0xFFFFFF;
         }, item);
     }
 
