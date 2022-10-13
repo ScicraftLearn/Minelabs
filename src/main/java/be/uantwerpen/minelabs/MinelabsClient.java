@@ -111,21 +111,21 @@ public class MinelabsClient implements ClientModInitializer {
         // TODO - enchantment visuals voor zeldzame stoffen
 
         // GASSES
-        registerErlenmeyer(Items.ERLENMEYER_O2, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_N2, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_CH4, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_H2, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_NO, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_NO2, 0x991c00, 1);
-        registerErlenmeyer(Items.ERLENMEYER_Cl2, 0xE8F48C, 1);
-        registerErlenmeyer(Items.ERLENMEYER_CO2, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_CO, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_NH3, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_N2O, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_HCl, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_He, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_Ne, 0xAFAFAF, 1);
-        registerErlenmeyer(Items.ERLENMEYER_Ar, 0xAFAFAF, 1);
+        registerErlenmeyer(Items.ERLENMEYER_O2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_N2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH4, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_NO, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_NO2, 0x991c00, 0);
+        registerErlenmeyer(Items.ERLENMEYER_Cl2, 0xE8F48C, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CO2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CO, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_NH3, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_N2O, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_HCl, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_He, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_Ne, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_Ar, 0xAFAFAF, 0);
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);
         registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 0);
