@@ -3,11 +3,16 @@
   "values": [
     "minelabs:particle_cpy",
     "minelabs:particle_rgb",
-    "minelabs:lab_flammable",
+    "minelabs:lab_compressedgas",
+    "minelabs:lab_corrosive",
     "minelabs:lab_creeper",
     "minelabs:lab_explosive",
-    "minelabs:lab_corrosive",
-    "minelabs:lab_harmful",
-    "minelabs:lab_oxidizing"
+    "minelabs:lab_flammable",
+    "minelabs:lab_healthhazard",
+    "minelabs:lab_ionizingradiation",
+    "minelabs:lab_irritant",
+    "minelabs:lab_laser",
+    "minelabs:lab_oxidizing",
+    "minelabs:lab_toxic"
   ]
 }
