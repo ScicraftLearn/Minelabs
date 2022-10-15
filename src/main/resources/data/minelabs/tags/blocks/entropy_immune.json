@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "minelabs:atomic_floor",
+    "minelabs:bohr_block",
+    "minelabs:upquark_quantumfield",
+    "minelabs:downquark_quantumfield",
+    "minelabs:gluon_quantumfield",
+    "minelabs:electron_quantumfield",
+    "minelabs:photon_quantumfield",
+    "minelabs:neutrino_quantumfield",
+    "minelabs:weak_boson_quantumfield",
+    "minecraft:sticky_piston",
+    "minecraft:piston",
+    "minecraft:piston_head",
+    "minecraft:shulker_box",
+    "minecraft:chest"
+  ]
+}

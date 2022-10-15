@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "minelabs:block/atom_portal_temp"
-  }
-}
