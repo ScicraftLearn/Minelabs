@@ -1,8 +1,8 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minelabs:item/erlenmeyer_cork",
+    "layer0": "minelabs:item/erlenmeyer_gas",
     "layer1": "minelabs:item/erlenmeyer",
-    "layer2": "minelabs:item/erlenmeyer_gas"
+    "layer2": "minelabs:item/erlenmeyer_cork"
   }
 }

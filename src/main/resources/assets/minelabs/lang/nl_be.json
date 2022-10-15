@@ -134,6 +134,7 @@
   "item.minelabs.tungsten_atom": "Wolfraam",
 
   "item.minelabs.erlenmeyer": "Erlenmeyer",
+  "item.minelabs.erlenmeyer_h2o": "Water (H\u2082O)",
   "item.minelabs.erlenmeyer_o2.effect.empty": "Zuurstofgas (O\u2082)",
   "item.minelabs.erlenmeyer_n2.effect.empty": "Stikstofgas (N\u2082)",
   "item.minelabs.erlenmeyer_ch4.effect.empty": "Methaan (CH\u2084)",
@@ -147,7 +148,9 @@
   "item.minelabs.erlenmeyer_n2o.effect.empty": "Lachgas (N\u2082O)",
   "item.minelabs.erlenmeyer_hcl.effect.empty": "Waterstofchloride (HCl)",
   "item.minelabs.erlenmeyer_hno3": "Salpeterzuur (HNO\u2083)",
-  "item.minelabs.erlenmeyer_no": "Stikstofoxide (NO)",
+  "item.minelabs.erlenmeyer_he.effect.empty": "Helium (He)",
+  "item.minelabs.erlenmeyer_ne.effect.empty": "Neon (Ne)",
+  "item.minelabs.erlenmeyer_ar.effect.empty": "Argon (Ar)",
 
   "item.minelabs.safety_glasses": "Veiligheidsbril",
   "item.minelabs.lab_coat": "Labojas",

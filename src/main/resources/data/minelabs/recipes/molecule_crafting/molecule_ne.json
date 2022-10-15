@@ -1,0 +1,14 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Ne1", "atom":  "Ne"}
+    ],
+    "bonds": []
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_ne"
+  },
+  "density": 8
+}
