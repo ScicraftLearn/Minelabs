@@ -3,7 +3,6 @@ package be.uantwerpen.scicraft.renderer;
 import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
 import be.uantwerpen.scicraft.item.MoleculeItem;
-import be.uantwerpen.scicraft.particle.Particles;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -15,7 +14,6 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
-import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -25,13 +23,11 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-import java.util.Locale;
 import java.util.Random;
 
 public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockEntity> {
 
-    private static ItemStack stack = ItemStack.EMPTY;
-    public static final Identifier BEAM_TEXTURE2 = new Identifier("scicraft:textures/block/helium.png");
+    public static final Identifier BEAM_TEXTURE2 = new Identifier(Scicraft.MOD_ID, "textures/block/helium.png");
 
     public MologramBlockRenderer(BlockEntityRendererFactory.Context ctx) {
     }
@@ -44,7 +40,7 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
         if (world == null) return;
 
         BlockPos pos = entity.getPos();
-        stack = entity.getInventory().getStack(0);
+        ItemStack stack = entity.getStack(0);
 
         if (stack.isEmpty()) return;
 
@@ -68,7 +64,8 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
         // Render molecule above
         BakedModel model;
         if (stack.getItem() instanceof MoleculeItem molecule) {
-            model = MinecraftClient.getInstance().getBakedModelManager().models.get(new Identifier(Scicraft.MOD_ID, "molecules/" + molecule.getMolecule().toLowerCase()));
+            model = MinecraftClient.getInstance().getBakedModelManager().models.get(
+                    new Identifier(Scicraft.MOD_ID, "molecules/" + molecule.getMolecule().toLowerCase()));
         } else {
             return;
         }

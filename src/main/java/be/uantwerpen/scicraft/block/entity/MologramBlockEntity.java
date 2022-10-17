@@ -1,10 +1,12 @@
 package be.uantwerpen.scicraft.block.entity;
 
 
+import be.uantwerpen.scicraft.inventory.ImplementedInventory;
+import be.uantwerpen.scicraft.item.AtomItem;
+import be.uantwerpen.scicraft.item.MoleculeItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
@@ -12,14 +14,12 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import javax.annotation.Nullable;
 
-public class MologramBlockEntity extends BlockEntity {
-    public SimpleInventory inventory = new SimpleInventory(1);
-    private int rot_x = 0;
-    private int rot_y = 0;
-    private int rot_z = 0;
+public class MologramBlockEntity extends BlockEntity implements ImplementedInventory {
+    private static final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(1, ItemStack.EMPTY);
 
     public MologramBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.MOLOGRAM_BLOCK_ENTITY, pos, state);
@@ -28,14 +28,8 @@ public class MologramBlockEntity extends BlockEntity {
 
     // Serialize the BlockEntity
     @Override
-    public void writeNbt(NbtCompound tag) { //should this be void? or not? https://fabricmc.net/wiki/tutorial:inventory
-        // Save the current value of the number to the tag
-        tag.putInt("rotate_x", rot_x);
-        tag.putInt("rotate_y", rot_y);
-        tag.putInt("rotate_z", rot_z);
-
-        Inventories.writeNbt(tag, DefaultedList.ofSize(1, inventory.getStack(0)));
-
+    public void writeNbt(NbtCompound tag) {
+        Inventories.writeNbt(tag, INVENTORY);
         super.writeNbt(tag);
     }
 
@@ -43,14 +37,7 @@ public class MologramBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound tag) {
         super.readNbt(tag);
-
-        rot_x = tag.getInt("rotate_x");
-        rot_y = tag.getInt("rotate_y");
-        rot_z = tag.getInt("rotate_z");
-
-        DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1,ItemStack.EMPTY);
-        Inventories.readNbt(tag, stacks);
-        inventory.setStack(0,stacks.get(0));
+        Inventories.readNbt(tag, INVENTORY);
     }
 
     //sync data server client:
@@ -66,7 +53,49 @@ public class MologramBlockEntity extends BlockEntity {
         return createNbt();
     }
 
-    public SimpleInventory getInventory() {
-        return inventory;
+    @Override
+    public DefaultedList<ItemStack> getItems() {
+        return INVENTORY;
+    }
+
+    /**
+     * Returns true if the stack can be inserted from the slot at the side.
+     *
+     * <p> side can be null in case of MANUAL PLAYER insertion
+     * <p> ATM only allows Atoms and Chemicals (Molecules) as Input ItemStack
+     *
+     * @param slot  the slot (0 in this case)
+     * @param stack the stack
+     * @param side  the side (UP, DOWN, EAST, WEST, NORTH, SOUTH)
+     * @return true if the stack can be extracted
+     */
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+        if (!(stack.getItem() instanceof AtomItem) && !(stack.getItem() instanceof MoleculeItem)) {
+            return false;
+        }
+        if (side == null) {
+            return true;
+        }
+        return switch (side) {
+            case UP, DOWN -> false;
+            default -> true;
+        };
+
+    }
+
+    /**
+     * Returns true if the stack can be extracted from the slot at the side.
+     *
+     * <p> We only extract form the bottom
+     *
+     * @param slot  the slot
+     * @param stack the stack
+     * @param side  the side
+     * @return true if the stack can be extracted
+     */
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction side) {
+        return side == Direction.DOWN;
     }
 }
