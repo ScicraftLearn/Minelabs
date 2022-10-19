@@ -53,11 +53,11 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
     private ModelTransformation transformation;
 
-    Map<String, Pair<Atom, Vec3f>> position;
+    Map<String, Pair<Atom, Vec3f>> positions;
     Map<Pair<String, String>, Bond> bonds;
 
     public SphereModel(Map<String, Pair<Atom, Vec3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
-        this.position = positions;
+        this.positions = positions;
         this.bonds = bondMap;
     }
 

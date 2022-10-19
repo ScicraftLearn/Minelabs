@@ -11,7 +11,7 @@
     "bonds": [
       {"from": "N1", "to": "O1", "bondOrder": 1},
       {"from": "N1", "to": "O2", "bondOrder": 2},
-      {"from": "N1", "to": "C3", "bondOrder": 2},
+      {"from": "N1", "to": "O3", "bondOrder": 2},
       {"from": "O1", "to": "H1", "bondOrder": 1}
     ]
   },
