@@ -133,7 +133,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         //float radius = 0.15f;
 
         //makeSphere(emitter, center, radius);
-        position.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.15f, atomVec3fPair.getFirst().getColor())); //RGB color in hex
+        position.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.10f, atomVec3fPair.getFirst().getColor())); //RGB color in hex
         bonds.forEach((s, bond) -> makeBond(emitter, position.get(s.getFirst()).getSecond(), position.get(s.getSecond()).getSecond(), bond));
 
         mesh = builder.build();
@@ -294,19 +294,20 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
             Atom readAtom = Atom.getBySymbol(atomJson.get("atom").getAsString());
             JsonArray pos = atomJson.getAsJsonArray("position");
             Vec3f vec3f = Vec3f.ZERO.copy();
+            float scale_factor = 4.5f;
             int i = 0;
             for (JsonElement position: pos) {
                 switch (i) {
                     case 0:
-                        vec3f.add(position.getAsFloat(),0,0);
+                        vec3f.add(position.getAsFloat()/scale_factor,0,0);
                         i++;
                         break;
                     case 1:
-                        vec3f.add(0,position.getAsFloat(),0);
+                        vec3f.add(0,position.getAsFloat()/scale_factor,0);
                         i++;
                         break;
                     case 2:
-                        vec3f.add(0,0,position.getAsFloat());
+                        vec3f.add(0,0,position.getAsFloat()/scale_factor);
                         i++;
                         break;
                 }
