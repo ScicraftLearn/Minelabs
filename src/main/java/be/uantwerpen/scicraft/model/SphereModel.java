@@ -1,5 +1,6 @@
 package be.uantwerpen.scicraft.model;
 
+import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.lewisrecipes.Bond;
 import be.uantwerpen.scicraft.lewisrecipes.MoleculeGraphJsonFormat;
@@ -37,6 +38,7 @@ import net.minecraft.world.BlockRenderView;
 
 import java.io.Reader;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -129,12 +131,9 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         MeshBuilder builder = renderer.meshBuilder();
         QuadEmitter emitter = builder.getEmitter();
 
-        //Vec3f center = new Vec3f(0, 0, 0);
-        //float radius = 0.15f;
-
         //makeSphere(emitter, center, radius);
-        position.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.10f, atomVec3fPair.getFirst().getColor())); //RGB color in hex
-        bonds.forEach((s, bond) -> makeBond(emitter, position.get(s.getFirst()).getSecond(), position.get(s.getSecond()).getSecond(), bond));
+        positions.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.10f, atomVec3fPair.getFirst().getColor())); //RGB color in hex
+        bonds.forEach((s, bond) -> makeBond(emitter, positions.get(s.getFirst()).getSecond(), positions.get(s.getSecond()).getSecond(), bond));
 
         mesh = builder.build();
 
@@ -170,17 +169,18 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
     private void makeSphere(QuadEmitter emitter, Vec3f center, float radius, int color) {
         for (Vec3f[] quad : getSphereVertices(center, radius)) {
             for (int i = 0; i < 4; i++) {
-                emitter.pos(i, quad[i].getX(), quad[i].getY(), quad[i].getZ());
+                emitter.pos(i, quad[i]);
                 quad[i].subtract(center);
                 quad[i].normalize();
                 emitter.normal(i, quad[i]);
             }
 //                emitter.spriteUnitSquare(0);
 
-            emitter.sprite(0, 0, 8, 8);
-            emitter.sprite(1, 0, 8, 8);
-            emitter.sprite(2, 0, 8, 8);
-            emitter.sprite(3, 0, 8, 8);
+            float p = 7f / 16f;
+            emitter.sprite(0, 0, p, p);
+            emitter.sprite(1, 0, p, 0.5f);
+            emitter.sprite(2, 0, 0.5f, 0.5f);
+            emitter.sprite(3, 0, 0.5f, p);
 
             emitter.spriteBake(0, SPRITE, MutableQuadView.BAKE_ROTATE_NONE);
 
