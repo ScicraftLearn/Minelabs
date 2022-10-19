@@ -21,24 +21,35 @@ import javax.annotation.Nullable;
 
 public class MologramBlockEntity extends BlockEntity implements ImplementedInventory {
     private final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    private float rotation;
 
     public MologramBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.MOLOGRAM_BLOCK_ENTITY, pos, state);
+        rotation = 0.0f;
     }
     // Store the current value of the number
+
+    public static void tick(World world, BlockPos blockPos, BlockState state, MologramBlockEntity entity) {
+        if (!world.isClient) {
+            // SERVER
+            if (state.get(Properties.LIT) && entity.getStack(0).isEmpty()) { // hopper extracted
+                world.setBlockState(blockPos, state.with(Properties.LIT, false));
+            } else if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {// hopper inserted
+                world.setBlockState(blockPos, state.with(Properties.LIT, true));
+            }
+
+        } else {
+            //CLIENT
+            entity.rotation += 3.6;
+        }
+    }
 
     // Serialize the BlockEntity
     @Override
     public void writeNbt(NbtCompound tag) {
         Inventories.writeNbt(tag, INVENTORY);
+        tag.putFloat("rotation", rotation);
         super.writeNbt(tag);
-    }
-
-    // Deserialize the BlockEntity
-    @Override
-    public void readNbt(NbtCompound tag) {
-        super.readNbt(tag);
-        Inventories.readNbt(tag, INVENTORY);
     }
 
     //sync data server client:
@@ -100,17 +111,15 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
         return side == Direction.DOWN;
     }
 
+    // Deserialize the BlockEntity
+    @Override
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
+        Inventories.readNbt(tag, INVENTORY);
+        rotation = tag.getFloat("rotation");
+    }
 
-    public static void tick(World world, BlockPos blockPos, BlockState state, MologramBlockEntity entity) {
-        if (!world.isClient) {
-            // SERVER
-            if (state.get(Properties.LIT) && entity.getStack(0).isEmpty()) { // hopper extracted
-                world.setBlockState(blockPos, state.with(Properties.LIT, false));
-            } else if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {// hopper inserted
-                world.setBlockState(blockPos, state.with(Properties.LIT, true));
-            }
-        } else {
-            //CLIENT
-        }
+    public float getRotation() {
+        return rotation;
     }
 }

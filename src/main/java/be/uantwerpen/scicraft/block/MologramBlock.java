@@ -53,38 +53,35 @@ public class MologramBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult blockHitResult) {
-        if (!world.isClient) {
-            BlockEntity blockEntity = world.getBlockEntity(blockPos);
-            if (!(blockEntity instanceof MologramBlockEntity)) {
-                return ActionResult.PASS;
+        BlockEntity blockEntity = world.getBlockEntity(blockPos);
+        if (!(blockEntity instanceof MologramBlockEntity)) {
+            return ActionResult.PASS;
+        }
+        Inventory blockInventory = ((MologramBlockEntity) blockEntity);
+        if (!player.getStackInHand(hand).isEmpty()) { // insert
+            if (((MologramBlockEntity) blockEntity).canInsert(0, player.getStackInHand(hand), null)) { // WHAT IS ALLOWED IN THE INVENTORY
+                // Check what is the first open slot and put an item from the player's hand there
+                if (blockInventory.getStack(0).isEmpty()) {
+                    // Put the stack the player is holding into the inventory
+                    blockInventory.setStack(0, player.getStackInHand(hand).copy());
+                    world.setBlockState(blockPos, blockState.with(LIT, true));
+                    blockInventory.getStack(0).setCount(1);
+                    // Decrement the stack from the player's hand
+                    player.getStackInHand(hand).decrement(1);
+                }
+            } else {
+                // If the inventory is full we'll print it's contents
+                System.out.println("The first slot holds " + blockInventory.getStack(0));
             }
-            Inventory blockInventory = ((MologramBlockEntity) blockEntity);
-            if (!player.getStackInHand(hand).isEmpty()) { // insert
-                if (((MologramBlockEntity) blockEntity).canInsert(0, player.getStackInHand(hand), null)) { // WHAT IS ALLOWED IN THE INVENTORY
-                    // Check what is the first open slot and put an item from the player's hand there
-                    if (blockInventory.getStack(0).isEmpty()) {
-                        // Put the stack the player is holding into the inventory
-                        blockInventory.setStack(0, player.getStackInHand(hand).copy());
-                        world.setBlockState(blockPos, blockState.with(LIT, true));
-                        blockInventory.getStack(0).setCount(1);
-                        // Decrement the stack from the player's hand
-                        player.getStackInHand(hand).decrement(1);
-                    }
-                } else {
-                    // If the inventory is full we'll print it's contents
-                    System.out.println("The first slot holds " + blockInventory.getStack(0));
-                }
-            } else { // extract
-                // If the player is not holding anything we'll get give him the items in the block entity one by one
-                // Find the first slot that has an item and give it to the player
-                if (!blockInventory.getStack(0).isEmpty()) {
-                    player.getInventory().offerOrDrop(blockInventory.getStack(0));
-                    world.setBlockState(blockPos, blockState.with(LIT, false));
-                    blockInventory.removeStack(0);
-                }
+        } else { // extract
+            // If the player is not holding anything we'll get give him the items in the block entity one by one
+            // Find the first slot that has an item and give it to the player
+            if (!blockInventory.getStack(0).isEmpty()) {
+                player.getInventory().offerOrDrop(blockInventory.getStack(0));
+                world.setBlockState(blockPos, blockState.with(LIT, false));
+                blockInventory.removeStack(0);
             }
         }
-
         return ActionResult.SUCCESS;
     }
 
