@@ -141,6 +141,26 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         return this;
     }
 
+    private float norm(Vec3f vec) {
+        return (float) Math.sqrt(vec.dot(vec));
+    }
+
+    private void transformQuad(Vec3f[] quad, Consumer<Vec3f> op){
+        for(Vec3f point: quad){
+            op.accept(point);
+        }
+    }
+
+    private void transformQuads(List<Vec3f[]> quads, Consumer<Vec3f> op){
+        quads.forEach(quad -> transformQuad(quad, op));
+    }
+
+    /**
+     * @param emitter : QuadEmitter
+     * @param pos1 : position Atom 1
+     * @param pos2 : position Atom 2
+     * @param bond : type of bond between Atoms
+     */
     private void makeBond(QuadEmitter emitter, Vec3f pos1, Vec3f pos2, Bond bond) {
         for (int i = 0; i < bond.bondOrder; i++) {
             //TODO Draw each bond
