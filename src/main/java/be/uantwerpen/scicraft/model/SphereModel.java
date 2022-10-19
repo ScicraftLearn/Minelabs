@@ -134,15 +134,22 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
         //makeSphere(emitter, center, radius);
         position.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.15f, atomVec3fPair.getFirst().getColor())); //RGB color in hex
+        bonds.forEach((s, bond) -> makeBond(emitter, position.get(s.getFirst()).getSecond(), position.get(s.getSecond()).getSecond(), bond));
 
         mesh = builder.build();
 
         return this;
     }
 
+    private void makeBond(QuadEmitter emitter, Vec3f pos1, Vec3f pos2, Bond bond) {
+        for (int i = 0; i < bond.bondOrder; i++) {
+            //TODO Draw each bond
+        }
+    }
+
     private void makeSphere(QuadEmitter emitter, Vec3f center, float radius, int color) {
-        for (Vec3f[] quad: getSphereVertices(center, radius)){
-            for(int i=0; i < 4; i++) {
+        for (Vec3f[] quad : getSphereVertices(center, radius)) {
+            for (int i = 0; i < 4; i++) {
                 emitter.pos(i, quad[i].getX(), quad[i].getY(), quad[i].getZ());
                 quad[i].subtract(center);
                 quad[i].normalize();

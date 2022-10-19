@@ -62,7 +62,7 @@ public enum Atom {
     private Item item;
 
     Atom(int AN, String symbol, double EN, AtomType type, int initialVE, int initialN, @NotNull Item item) {
-        this(AN, symbol, EN, type, initialVE, initialN, item, 0xFF0000);
+        this(AN, symbol, EN, type, initialVE, initialN, item, 0xFF0000); // DEFAULT COLOR FOR UNDEFINED
     }
 
     Atom(int AN, String symbol, double EN, AtomType type, int initialVE, int initialN, @NotNull Item item, int color) {
