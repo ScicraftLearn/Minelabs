@@ -2,7 +2,6 @@ package be.uantwerpen.scicraft.block.entity;
 
 
 import be.uantwerpen.scicraft.inventory.ImplementedInventory;
-import be.uantwerpen.scicraft.item.AtomItem;
 import be.uantwerpen.scicraft.item.MoleculeItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -62,7 +61,7 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
      * Returns true if the stack can be inserted from the slot at the side.
      *
      * <p> side can be null in case of MANUAL PLAYER insertion
-     * <p> ATM only allows Atoms and Chemicals (Molecules) as Input ItemStack
+     * <p> ATM only allows Chemicals (Molecules) as Input ItemStack
      *
      * @param slot  the slot (0 in this case)
      * @param stack the stack
@@ -71,7 +70,7 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
      */
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
-        if (!(stack.getItem() instanceof AtomItem) && !(stack.getItem() instanceof MoleculeItem)) {
+        if (!(stack.getItem() instanceof MoleculeItem)) {
             return false;
         }
         if (side == null) {

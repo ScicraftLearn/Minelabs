@@ -63,6 +63,7 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
 
         // Render molecule above
         BakedModel model;
+        Scicraft.LOGGER.info(stack.getItem());
         if (stack.getItem() instanceof MoleculeItem molecule) {
             model = MinecraftClient.getInstance().getBakedModelManager().models.get(
                     new Identifier(Scicraft.MOD_ID, "molecules/" + molecule.getMolecule().toLowerCase()));

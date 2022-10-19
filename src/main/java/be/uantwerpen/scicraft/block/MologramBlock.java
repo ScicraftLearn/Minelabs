@@ -1,6 +1,7 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.block.entity.MologramBlockEntity;
+import be.uantwerpen.scicraft.item.MoleculeItem;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,28 +56,28 @@ public class MologramBlock extends BlockWithEntity {
                 return ActionResult.PASS;
             }
             Inventory blockInventory = ((MologramBlockEntity) blockEntity);
-            //Onderstaande toevoegen aan if statement zodat er geen blocks ingestoken kunnen worden
-            //&&Block.getBlockFromItem(player.getStackInHand(hand).getItem()) == Blocks.AIR
-            if (!player.getStackInHand(hand).isEmpty()) {
-                // Check what is the first open slot and put an item from the player's hand there
-                if (blockInventory.getStack(0).isEmpty()) {
-                    // Put the stack the player is holding into the inventory
-                    blockInventory.setStack(0, player.getStackInHand(hand).copy());
-                    world.setBlockState(blockPos, blockState.with(LIT, true));
-                    blockInventory.getStack(0).setCount(1);
-                    // Decrement the stack from the player's hand
-                    player.getStackInHand(hand).decrement(1);
-                } else {
-                    // If the inventory is full we'll print it's contents
-                    System.out.println("The first slot holds " + blockInventory.getStack(0));
-                }
-            } else { // open
-                // If the player is not holding anything we'll get give him the items in the block entity one by one
-                // Find the first slot that has an item and give it to the player
-                if (!blockInventory.getStack(0).isEmpty()) {
-                    player.getInventory().offerOrDrop(blockInventory.getStack(0));
-                    world.setBlockState(blockPos, blockState.with(LIT, false));
-                    blockInventory.removeStack(0);
+            if (player.getStackInHand(hand).getItem() instanceof MoleculeItem) { // WHAT IS ALLOWED IN THE INVENTORY
+                if (!player.getStackInHand(hand).isEmpty()) { // insert
+                    // Check what is the first open slot and put an item from the player's hand there
+                    if (blockInventory.getStack(0).isEmpty()) {
+                        // Put the stack the player is holding into the inventory
+                        blockInventory.setStack(0, player.getStackInHand(hand).copy());
+                        world.setBlockState(blockPos, blockState.with(LIT, true));
+                        blockInventory.getStack(0).setCount(1);
+                        // Decrement the stack from the player's hand
+                        player.getStackInHand(hand).decrement(1);
+                    } else {
+                        // If the inventory is full we'll print it's contents
+                        System.out.println("The first slot holds " + blockInventory.getStack(0));
+                    }
+                } else { // extract
+                    // If the player is not holding anything we'll get give him the items in the block entity one by one
+                    // Find the first slot that has an item and give it to the player
+                    if (!blockInventory.getStack(0).isEmpty()) {
+                        player.getInventory().offerOrDrop(blockInventory.getStack(0));
+                        world.setBlockState(blockPos, blockState.with(LIT, false));
+                        blockInventory.removeStack(0);
+                    }
                 }
             }
         }
