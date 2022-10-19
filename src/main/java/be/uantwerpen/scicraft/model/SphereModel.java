@@ -18,7 +18,6 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
@@ -32,7 +31,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
@@ -135,7 +133,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         //float radius = 0.15f;
 
         //makeSphere(emitter, center, radius);
-        position.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.15f, 0xFF0000)); //RGB color in hex
+        position.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.15f, atomVec3fPair.getFirst().getColor())); //RGB color in hex
 
         mesh = builder.build();
 

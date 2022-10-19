@@ -9,15 +9,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public enum Atom {
-    HYDROGEN(1, "H", 2.1, AtomType.NON_METAL, 1, 0, Items.HYDROGEN_ATOM),
+    HYDROGEN(1, "H", 2.1, AtomType.NON_METAL, 1, 0, Items.HYDROGEN_ATOM, 0xFFFFFF),
     HELIUM(2, "He", 0, AtomType.NOBLE_GAS, 2, 2, Items.HELIUM_ATOM),
 
     LITHIUM(3, "Li", 1.0, AtomType.ALKALI_METAL, 1, 4, Items.LITHIUM_ATOM),
     BERYLLIUM(4, "Be", 1.5, AtomType.ALKALINE_EARTH_METAL, 2, 5, Items.BERYLLIUM_ATOM),
     BORON(5, "B", 2.0, AtomType.NON_METAL, 3, 6, Items.BORON_ATOM),
-    CARBON(6, "C", 2.5, AtomType.NON_METAL, 4, 6, Items.CARBON_ATOM),
-    NITROGEN(7, "N", 3.0, AtomType.NON_METAL, 5, 7, Items.NITROGEN_ATOM),
-    OXYGEN(8, "O", 3.5, AtomType.NON_METAL, 6, 8, Items.OXYGEN_ATOM),
+    CARBON(6, "C", 2.5, AtomType.NON_METAL, 4, 6, Items.CARBON_ATOM, 0x808080),
+    NITROGEN(7, "N", 3.0, AtomType.NON_METAL, 5, 7, Items.NITROGEN_ATOM, 0x00FFFF),
+    OXYGEN(8, "O", 3.5, AtomType.NON_METAL, 6, 8, Items.OXYGEN_ATOM, 0xFF0000),
     FLUORINE(9, "F", 4.0, AtomType.NON_METAL, 7, 10, Items.FLUORINE_ATOM),
     NEON(10, "Ne", 0, AtomType.NOBLE_GAS, 8, 10, Items.NEON_ATOM),
 
@@ -25,9 +25,9 @@ public enum Atom {
     MAGNESIUM(12, "Mg", 1.2, AtomType.ALKALINE_EARTH_METAL, 2, 12, Items.MAGNESIUM_ATOM),
     ALUMINIUM(13, "Al", 1.5, AtomType.POST_TRANSITION_METAL, 3, 14, Items.ALUMINIUM_ATOM),
     SILICON(14, "Si", 1.8, AtomType.NON_METAL, 4, 14, Items.SILICON_ATOM),
-    PHOSPHORUS(15, "P", 2.1, AtomType.NON_METAL, 5, 16, Items.PHOSPHORUS_ATOM),
-    SULFUR(16, "S", 2.5, AtomType.NON_METAL, 6, 16, Items.SULFUR_ATOM),
-    CHLORINE(17, "Cl", 3.0, AtomType.NON_METAL, 7, 18, Items.CHLORINE_ATOM),
+    PHOSPHORUS(15, "P", 2.1, AtomType.NON_METAL, 5, 16, Items.PHOSPHORUS_ATOM, 0xFF8C00),
+    SULFUR(16, "S", 2.5, AtomType.NON_METAL, 6, 16, Items.SULFUR_ATOM, 0xFFFF00),
+    CHLORINE(17, "Cl", 3.0, AtomType.NON_METAL, 7, 18, Items.CHLORINE_ATOM, 0x00FF00),
     ARGON(18, "Ar", 0, AtomType.NOBLE_GAS, 8, 22, Items.ARGON_ATOM),
 
 
@@ -57,9 +57,15 @@ public enum Atom {
     private final int initialValenceElectrons;
     private final int initialNeutrons;
 
+    private final int color;
+
     private Item item;
 
     Atom(int AN, String symbol, double EN, AtomType type, int initialVE, int initialN, @NotNull Item item) {
+        this(AN, symbol, EN, type, initialVE, initialN, item, 0xFF0000);
+    }
+
+    Atom(int AN, String symbol, double EN, AtomType type, int initialVE, int initialN, @NotNull Item item, int color) {
         this.atomNumber = AN;
         this.symbol = symbol;
         this.electronegativity = EN;
@@ -67,6 +73,7 @@ public enum Atom {
         this.initialValenceElectrons = initialVE;
         this.initialNeutrons = initialN;
         this.item = item;
+        this.color = color;
     }
 
     public int getAtomNumber() {
@@ -120,6 +127,10 @@ public enum Atom {
     @Override
     public String toString() {
         return symbol;
+    }
+
+    public int getColor() {
+        return this.color;
     }
 
     public enum AtomType {
