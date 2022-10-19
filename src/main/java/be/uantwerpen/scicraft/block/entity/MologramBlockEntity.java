@@ -11,14 +11,16 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public class MologramBlockEntity extends BlockEntity implements ImplementedInventory {
-    private static final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(1, ItemStack.EMPTY);
 
     public MologramBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.MOLOGRAM_BLOCK_ENTITY, pos, state);
@@ -96,5 +98,19 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction side) {
         return side == Direction.DOWN;
+    }
+
+
+    public static void tick(World world, BlockPos blockPos, BlockState state, MologramBlockEntity entity) {
+        if (!world.isClient) {
+            // SERVER
+            if (state.get(Properties.LIT) && entity.getStack(0).isEmpty()) { // hopper extracted
+                world.setBlockState(blockPos, state.with(Properties.LIT, false));
+            } else if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {// hopper inserted
+                world.setBlockState(blockPos, state.with(Properties.LIT, true));
+            }
+        } else {
+            //CLIENT
+        }
     }
 }
