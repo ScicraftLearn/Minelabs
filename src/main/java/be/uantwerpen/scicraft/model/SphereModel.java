@@ -30,9 +30,7 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 
@@ -161,9 +159,121 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
      * @param bond : type of bond between Atoms
      */
     private void makeBond(QuadEmitter emitter, Vec3f pos1, Vec3f pos2, Bond bond) {
-        for (int i = 0; i < bond.bondOrder; i++) {
-            //TODO Draw each bond
+        if (bond == Bond.COVALENT_ZERO){
+            return;
         }
+
+        Vec3f pos_diff = pos2.copy();
+        pos_diff.subtract(pos1);
+        float pos_norm = norm(pos_diff);
+
+        List<Vec3f[]> bondQuads = switch (bond){
+            case COVALENT_SINGLE -> getSingleBondVertices(pos_norm, 0.05f);
+            case COVALENT_DOUBLE -> getDoubleBondVertices(pos_norm, 0.05f);
+            case COVALENT_TRIPLE -> getTripleBondVertices(pos_norm, 0.05f);
+            default -> throw new IllegalStateException("Unknown bond count " + bond);
+        };
+
+        // direction is the orientation of the bond
+        Vec3f direction = pos2.copy();
+        direction.subtract(pos1);
+        direction.normalize();
+        // compute angle between positive X and direction
+        float angle = (float) Math.acos(direction.dot(Vec3f.POSITIVE_X));
+        // rotate within plane described by two vectors
+        direction.cross(Vec3f.POSITIVE_X);
+        direction.normalize();
+
+        Quaternion rotation = direction.getRadialQuaternion(angle);
+        rotation.conjugate();
+        transformQuads(bondQuads, v -> v.rotate(rotation));
+        transformQuads(bondQuads, v -> v.add(pos1));
+
+        int color = Random.create().nextBetween(0, 255 * 255 * 255);
+        for (Vec3f[] quad : bondQuads) {
+            // TODO: if needed, compute cross product of two points in quad and use this as normal vector for all points in the quad
+            for (int i = 0; i < 4; i++) {
+                emitter.pos(i, quad[i]);
+//                emitter.normal(i, quad[i]);
+            }
+
+            float p = 7f / 16f;
+            emitter.sprite(0, 0, p, p);
+            emitter.sprite(1, 0, p, 0.5f);
+            emitter.sprite(2, 0, 0.5f, 0.5f);
+            emitter.sprite(3, 0, 0.5f, p);
+
+            emitter.spriteBake(0, SPRITE, MutableQuadView.BAKE_ROTATE_NONE);
+
+            // Enable texture usage
+            emitter.spriteColor(0, color, color, color, color);
+
+            // Add the quad to the mesh
+            emitter.emit();
+        }
+    }
+
+    public List<Vec3f[]> getSingleBondVertices(float len, float a) {
+        return getUnitBeam(len, a);
+    }
+
+    public List<Vec3f[]> getDoubleBondVertices(float len, float a) {
+        // TODO implement
+        return getUnitBeam(len, a);
+    }
+
+    public List<Vec3f[]> getTripleBondVertices(float len, float a) {
+        // TODO implement
+        return getUnitBeam(len, a);
+    }
+
+    /**
+     * Create a cuboid (beam) of specified length and square endpoint.
+     * Bean follows and is centered around the x-axis.
+     * @param len : length of beam
+     * @param b   : size of square (endpoint)
+     * @return
+     */
+    public List<Vec3f[]> getUnitBeam(float len, float b){
+        float a= b/2;
+        List<Vec3f[]> quads = new ArrayList<>();
+        quads.add(new Vec3f[]{//links
+                new Vec3f(0, a, -a),
+                new Vec3f(len, a, -a),
+                new Vec3f(len, -a, -a),
+                new Vec3f(0, -a, -a)
+        });
+        quads.add(new Vec3f[]{//rechts
+                new Vec3f(0, -a, a),
+                new Vec3f(len, -a, a),
+                new Vec3f(len, a, a),
+                new Vec3f(0, a, a)
+        });
+        quads.add(new Vec3f[]{//onder
+                new Vec3f(0, -a, a),
+                new Vec3f(0, -a, -a),
+                new Vec3f(len, -a, -a),
+                new Vec3f(len, -a, a)
+        });
+        quads.add(new Vec3f[]{//boven
+                new Vec3f(0, a, a),
+                new Vec3f(len, a, a),
+                new Vec3f(len, a, -a),
+                new Vec3f(0, a, -a)
+        });
+        quads.add(new Vec3f[]{ //voorkant
+                new Vec3f(0, a, a),
+                new Vec3f(0, a, -a),
+                new Vec3f(0, -a, -a),
+                new Vec3f(0, -a, a),
+        });
+        quads.add(new Vec3f[]{ //achterkant
+                new Vec3f(len, -a, a),
+                new Vec3f(len, -a, -a),
+                new Vec3f(len, a, -a),
+                new Vec3f(len, a, a),
+        });
+        return quads;
     }
 
     private void makeSphere(QuadEmitter emitter, Vec3f center, float radius, int color) {

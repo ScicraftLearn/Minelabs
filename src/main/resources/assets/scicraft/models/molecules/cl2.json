@@ -6,7 +6,7 @@
       {"key":  "Cl2", "atom":  "Cl", "position": [ 0.00,  0.00, -1.10]}
     ],
     "bonds": [
-      {"from": "Cl1", "to": "Cl1", "bondOrder": 1}
+      {"from": "Cl1", "to": "Cl2", "bondOrder": 1}
     ]
   },
   "items": ["scicraft:erlenmeyer_cl2"]
