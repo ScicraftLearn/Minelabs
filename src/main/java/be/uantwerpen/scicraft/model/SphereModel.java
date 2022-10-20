@@ -224,7 +224,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         for (int i = 0; i < 2; i++) {
             for (Vec3f[] quad : getUnitBeam(len, a)) {
                 for (Vec3f face : quad) {
-                    face.add(0, i == 0 ? 0.056f : -0.05f, 0);
+                    face.add(0, i == 0 ? 0.05f : -0.05f, 0);
                 }
                 quads.add(quad);
             }
@@ -233,8 +233,21 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     public List<Vec3f[]> getTripleBondVertices(float len, float a) {
-        // TODO implement
-        return getUnitBeam(len, a);
+        float offset = 0.08f;
+        List<Vec3f[]> quads = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            for (Vec3f[] quad : getUnitBeam(len, a)) {
+                for (Vec3f face : quad) {
+                    if (i == 2) {
+                        face.add(0, -offset, -offset);
+                    } else {
+                        face.add(0, i == 1 ? offset : 0, i == 0 ? offset : 0);
+                    }
+                }
+                quads.add(quad);
+            }
+        }
+        return quads;
     }
 
     /**
