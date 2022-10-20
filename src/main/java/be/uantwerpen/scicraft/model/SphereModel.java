@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.model;
 
-import be.uantwerpen.scicraft.Scicraft;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.lewisrecipes.Bond;
 import be.uantwerpen.scicraft.lewisrecipes.MoleculeGraphJsonFormat;
@@ -30,7 +29,10 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 
@@ -218,8 +220,16 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     public List<Vec3f[]> getDoubleBondVertices(float len, float a) {
-        // TODO implement
-        return getUnitBeam(len, a);
+        List<Vec3f[]> quads = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            for (Vec3f[] quad : getUnitBeam(len, a)) {
+                for (Vec3f face : quad) {
+                    face.add(0, i == 0 ? 0.056f : -0.05f, 0);
+                }
+                quads.add(quad);
+            }
+        }
+        return quads;
     }
 
     public List<Vec3f[]> getTripleBondVertices(float len, float a) {
