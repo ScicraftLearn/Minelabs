@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.LeashKnotEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -62,9 +63,9 @@ public class BalloonEntity extends MobEntity {
         return helium;
     }
 
-    @Override
-    protected void swimUpward(TagKey<Fluid> fluid) {
-        this.setVelocity(this.getVelocity().add(0.0D, 0.3D, 0.0D));
+    protected void initGoals() {
+        // Fixes #398
+        this.goalSelector.add(0, new SwimGoal(this));
     }
 
     @Override
@@ -89,8 +90,8 @@ public class BalloonEntity extends MobEntity {
     public void tick() {
         super.tick();
 
-        rotationY += 0.01F;
         addStatusEffect(new StatusEffectInstance(StatusEffects.LEVITATION, 10, 3, false, false));
+        MobEntity target = this.target;  // Prevent crashes when the target becomes null during the tick
         if(target != null) {
             if(!target.isAlive()) {
                 kill();
@@ -114,13 +115,12 @@ public class BalloonEntity extends MobEntity {
                 double z = (tpos.getZ() - this.getZ()) / (double)distance;
 
                 // Fixes Issue #401
-//                target.setVelocity(this.getVelocity().subtract(Math.copySign(d * d * 0.4D, d), Math.copySign(e * e * 0.4D, e), Math.copySign(g * g * 0.4D, g)));
                 Vec3d xz = new Vec3d(x, 0.0, z).normalize().multiply(-0.1);
                 Vec3d vertical = new Vec3d(0.0, Math.copySign(y * y, y), 0.0).normalize();
                 if(target.isAiDisabled() || !helium) {
                     this.setVelocity(xz.add(vertical.multiply(0.1)));
-                } else {
-                    target.setVelocity(xz.add(vertical.multiply(-0.18)));
+                } else if(this.target != null) {
+                    this.target.setVelocity(xz.add(vertical.multiply(-0.18)));
                 }
             }
         }
