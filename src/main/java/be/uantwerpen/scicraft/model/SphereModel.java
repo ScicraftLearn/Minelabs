@@ -171,8 +171,8 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
         List<Vec3f[]> bondQuads = switch (bond){
             case COVALENT_SINGLE -> getSingleBondVertices(pos_norm, 0.05f);
-            case COVALENT_DOUBLE -> getDoubleBondVertices(pos_norm, 0.05f);
-            case COVALENT_TRIPLE -> getTripleBondVertices(pos_norm, 0.05f);
+            case COVALENT_DOUBLE -> getDoubleBondVertices(pos_norm, 0.045f);
+            case COVALENT_TRIPLE -> getTripleBondVertices(pos_norm, 0.038f);
             default -> throw new IllegalStateException("Unknown bond count " + bond);
         };
 
@@ -233,13 +233,13 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
     }
 
     public List<Vec3f[]> getTripleBondVertices(float len, float a) {
-        float offset = 0.08f;
+        float offset = 0.06f;
         List<Vec3f[]> quads = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (Vec3f[] quad : getUnitBeam(len, a)) {
                 for (Vec3f face : quad) {
                     if (i == 2) {
-                        face.add(0, -offset, -offset);
+                        face.add(0, 2 * -offset / 6, 3 * -offset / 6);
                     } else {
                         face.add(0, i == 1 ? offset : 0, i == 0 ? offset : 0);
                     }
