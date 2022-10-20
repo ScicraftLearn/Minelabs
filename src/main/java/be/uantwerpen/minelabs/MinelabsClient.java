@@ -2,7 +2,6 @@ package be.uantwerpen.minelabs;
 
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
-import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.model.BalloonEntityModel;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
@@ -26,19 +25,14 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 import net.minecraft.item.Item;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 
 
 @SuppressWarnings("UNUSED")
@@ -123,26 +117,25 @@ public class MinelabsClient implements ClientModInitializer {
         // TODO - toevoegen van 02, N2, ... als extra texture voor kleurloze gassen.
         // TODO - enchantment visuals voor zeldzame stoffen
 
-        // Tier 1
-        registerErlenmeyer(Items.ERLENMEYER_O2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CH4, 0x7F7F7F, 2);
-
-        // Tier 2
-        registerErlenmeyer(Items.ERLENMEYER_H2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_NO, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_NO2, 0x991c00, 2);
-        registerErlenmeyer(Items.ERLENMEYER_Cl2, 0xE8F48C, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CO2, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_CO, 0x7F7F7F, 2);
-
-        // Tier 3
-        registerErlenmeyer(Items.ERLENMEYER_NH3, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_N2O, 0x7F7F7F, 2);
-        registerErlenmeyer(Items.ERLENMEYER_HCl, 0x7F7F7F, 2);
-
+        // GASSES
+        registerErlenmeyer(Items.ERLENMEYER_O2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_N2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH4, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_NO, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_NO2, 0x991c00, 0);
+        registerErlenmeyer(Items.ERLENMEYER_Cl2, 0xE8F48C, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CO2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CO, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_NH3, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_N2O, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_HCl, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_He, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_Ne, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_Ar, 0xAFAFAF, 0);
         //Fluids
-        registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 2);
+        registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 0);
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
 
         //Lewis Data Sync
@@ -155,7 +148,7 @@ public class MinelabsClient implements ClientModInitializer {
     public void registerErlenmeyer(Item item, int color, int index) {
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
             if (tintIndex == index) return color;
-            return 0x7F7F7F;
+            return 0xFFFFFF;
         }, item);
     }
 

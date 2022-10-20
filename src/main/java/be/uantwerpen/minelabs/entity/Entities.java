@@ -88,10 +88,8 @@ public class Entities {
     public static void registerEntities() {
         Minelabs.LOGGER.info("registering entities");
         FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
-        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.all(),
-                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1));
-
-        // Balloon
+        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld().or(BiomeSelectors.foundInTheNether()),
+                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 0, 1));
         FabricDefaultAttributeRegistry.register(BALLOON, BalloonEntity.createMobAttributes());
     }
 }

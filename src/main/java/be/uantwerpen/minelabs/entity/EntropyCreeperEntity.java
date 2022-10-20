@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs.entity;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.mixins.ExplosionAccessor;
 import be.uantwerpen.minelabs.sound.SoundEvents;
+import be.uantwerpen.minelabs.util.Tags;
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -192,6 +193,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
     public boolean preExplode() {
         if (!this.world.isClient) {
             dead = true;
+            this.setInvulnerable(true);
             setInvisible(true);     // so we can't see it (discard happens after animation)
             // TODO: entity can still be attacked in this state.
             //  Either prevent this or have the entropy creeper spawn an entropy bomb upon explode?
@@ -269,6 +271,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @return whether the block should be movable.
      */
     private boolean isShuffleable(BlockState blockState) {
-        return !blockState.isIn(BlockTags.DRAGON_IMMUNE);
+        return !blockState.isIn(BlockTags.DRAGON_IMMUNE) &&
+                !blockState.isIn(Tags.Blocks.ENTROPY_IMMUNE);
     }
 }
