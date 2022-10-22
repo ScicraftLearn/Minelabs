@@ -7,7 +7,6 @@ import be.uantwerpen.scicraft.fluid.Fluids;
 import be.uantwerpen.scicraft.lewisrecipes.Atom;
 import be.uantwerpen.scicraft.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -60,7 +59,7 @@ public class Items {
     // Items > Bond to display in LCT (internal)
     public static Item BOND;
 
-    public static final Item SPHERE_ITEM = register(new BlockItem(Blocks.SPHERE, new FabricItemSettings().group(ItemGroups.ATOMS)), "sphere");
+    //public static final Item SPHERE_ITEM = register(new BlockItem(Blocks.SPHERE, new FabricItemSettings().group(ItemGroups.ATOMS)), "sphere");
 
 
     // Items > Quantum fields

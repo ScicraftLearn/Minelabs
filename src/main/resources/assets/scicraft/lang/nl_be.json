@@ -24,15 +24,11 @@
   "block.scicraft.neutrino_quantumfield": "Neutrino Kwantumveld",
   "block.scicraft.upquark_quantumfield": "Upquark Kwantumveld",
   "block.scicraft.downquark_quantumfield": "Downquark Kwantumveld",
-
   "blockEntity.scicraft.charged_block": "Geladen Blok",
-
   "entity.scicraft.entropy_creeper": "EntropieCreeper",
-
   "item.scicraft.entropy_creeper_spawn_egg": "EntropieCreeper Spawnei",
-
   "block.scicraft.lewis_block": "Lewis Werkbank",
-
+  "block.scicraft.mologram": "Molograaf",
   "item.scicraft.proton": "Proton",
   "item.scicraft.electron": "Elektron",
   "item.scicraft.neutron": "Neutron",

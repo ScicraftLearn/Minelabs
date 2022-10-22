@@ -1,10 +1,9 @@
 package be.uantwerpen.scicraft.block;
 
 import be.uantwerpen.scicraft.Scicraft;
-import be.uantwerpen.scicraft.fluid.Fluids;
 import be.uantwerpen.scicraft.block.entity.BlockEntities;
+import be.uantwerpen.scicraft.fluid.Fluids;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.MapColor;
@@ -61,17 +60,16 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
     public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT)?10:0)), "mologram");
+            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.CHEST).nonOpaque()), "lewis_block");
 
 //    public static final Block ACID = Registry.register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
 
-    public static final Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"), new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)) {
-    });
+    public static final Block ACID = Registry.register(Registry.BLOCK, new Identifier(Scicraft.MOD_ID, "acid"),
+            new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)));
 
-
-    public static final Block SPHERE = register(new Block(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque()), "sphere");
+    //public static final Block SPHERE = register(new Block(FabricBlockSettings.of(Material.WOOL)
+    //.mapColor(MapColor.WHITE).strength(2f).nonOpaque()), "sphere");
 
     /**
      * Register a Block

@@ -1,6 +1,5 @@
 package be.uantwerpen.scicraft.model;
 
-import be.uantwerpen.scicraft.Scicraft;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
@@ -10,14 +9,13 @@ import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
 @Environment(EnvType.CLIENT)
 public class ModelProvider implements ModelResourceProvider {
-    public static final Identifier SPHERE_BLOCK_MODEL = new Identifier(Scicraft.MOD_ID, "block/sphere");
-    public static final Identifier SPHERE_ITEM_MODEL = new Identifier(Scicraft.MOD_ID, "item/sphere");
+    //public static final Identifier SPHERE_BLOCK_MODEL = new Identifier(Scicraft.MOD_ID, "block/sphere");
+    //public static final Identifier SPHERE_ITEM_MODEL = new Identifier(Scicraft.MOD_ID, "item/sphere");
     private final ResourceManager resourceManager;
 
     public ModelProvider(ResourceManager rm) {
@@ -26,7 +24,7 @@ public class ModelProvider implements ModelResourceProvider {
 
     @Override
     public UnbakedModel loadModelResource(Identifier identifier, ModelProviderContext modelProviderContext) throws ModelProviderException {
-        if(identifier.getPath().startsWith("molecules")) {
+        if (identifier.getPath().startsWith("molecules")) {
             try {
                 Reader reader = this.resourceManager.openAsReader(new Identifier(identifier.getNamespace(), "models/" + identifier.getPath() + ".json"));
                 return SphereModel.deserialize(reader);

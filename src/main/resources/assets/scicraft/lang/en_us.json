@@ -17,7 +17,6 @@
   "block.scicraft.neutrino": "Neutrino",
   "block.scicraft.antineutrino": "Antineutrino",
   "block.scicraft.helium": "Helium Gas",
-
   "block.scicraft.gluon_quantumfield": "Gluon Quantumfield",
   "block.scicraft.photon_quantumfield": "Photon Quantumfield",
   "block.scicraft.weak_boson_quantumfield": "Weak Boson Quantumfield",
@@ -25,16 +24,12 @@
   "block.scicraft.neutrino_quantumfield": "Neutrino Quantumfield",
   "block.scicraft.upquark_quantumfield": "Upquark Quantumfield",
   "block.scicraft.downquark_quantumfield": "Downquark Quantumfield",
-
   "block.scicraft.lewis_block": "Lewis Crafting Table",
-
+  "block.scicraft.mologram": "Mologram",
   "blockEntity.scicraft.charged_block": "Charged Block",
-
   "entity.scicraft.entropy_creeper": "Entropy Creeper",
   "entity.minecraft.villager.sciencevillager": "Science Villager",
-
   "item.scicraft.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
-
   "item.scicraft.proton": "Proton",
   "item.scicraft.electron": "Electron",
   "item.scicraft.neutron": "Neutron",
