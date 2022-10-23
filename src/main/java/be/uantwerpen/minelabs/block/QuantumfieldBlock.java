@@ -22,8 +22,8 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
     public static final int MAX_AGE = 10;
     public static final int decayrate = 1;
     //    max 15 in minecraft
-    public static final int max_light = 15;
-    public static final int min_light = 0;
+    public static final int MAX_LIGHT = 15;
+    public static final int MIN_LIGHT = 0;
     public static final BooleanProperty MASTER = MinelabsProperties.MASTER;
     public static final IntProperty AGE = IntProperty.of("age", 0, 10);
 
@@ -31,7 +31,9 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
         // Change the first value in strength to get the wanted mining speed
-        super(FabricBlockSettings.of(Material.METAL).strength(0.5f, 2.0f).ticksRandomly().luminance(state -> Math.round(min_light + ((float) (MAX_AGE - state.get(AGE) - 1) / MAX_AGE) * (max_light - min_light))));
+        super(FabricBlockSettings.of(Material.METAL).strength(0.5f, 2.0f)
+                .ticksRandomly().luminance(state ->
+                        Math.round(MIN_LIGHT + ((float) (MAX_AGE - state.get(AGE) - 1) / MAX_AGE) * (MAX_LIGHT - MIN_LIGHT))));
         this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false));
     }
 
@@ -96,7 +98,6 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
         super.onBreak(world,pos,state,player);
     }
 
-
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return isMaster(state) ? createMasterBlockEntity(pos, state) : null;
@@ -106,15 +107,11 @@ public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntity
         return new QuantumFieldBlockEntity(pos, state);
     }
 
-
     @Override
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
         if (!world.isClient()) {
             world.setBlockState(pos, state,Block.NOTIFY_ALL);
         }
-
     }
-
-
 }
