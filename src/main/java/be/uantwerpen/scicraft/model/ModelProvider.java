@@ -27,7 +27,7 @@ public class ModelProvider implements ModelResourceProvider {
         if (identifier.getPath().startsWith("molecules")) {
             try {
                 Reader reader = this.resourceManager.openAsReader(new Identifier(identifier.getNamespace(), "models/" + identifier.getPath() + ".json"));
-                return SphereModel.deserialize(reader);
+                return MoleculeModel.deserialize(reader);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

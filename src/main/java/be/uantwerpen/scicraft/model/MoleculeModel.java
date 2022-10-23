@@ -43,7 +43,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
+public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
     private Mesh mesh;
 
@@ -58,7 +58,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
     Map<String, Pair<Atom, Vec3f>> positions;
     Map<Pair<String, String>, Bond> bonds;
 
-    public SphereModel(Map<String, Pair<Atom, Vec3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
+    public MoleculeModel(Map<String, Pair<Atom, Vec3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
         this.positions = positions;
         this.bonds = bondMap;
     }
@@ -434,7 +434,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
         context.meshConsumer().accept(mesh);
     }
 
-    public static SphereModel deserialize(Reader reader) {
+    public static MoleculeModel deserialize(Reader reader) {
 
         Map<String, Pair<Atom, Vec3f>> positions = new HashMap<>();
         Map<Pair<String, String>, Bond> bondMap = new HashMap<>();
@@ -473,7 +473,7 @@ public class SphereModel implements UnbakedModel, BakedModel, FabricBakedModel {
             MoleculeGraphJsonFormat.BondJson bondJson = new Gson().fromJson(bond.getAsJsonObject(), MoleculeGraphJsonFormat.BondJson.class);
             bondMap.put(new Pair<>(bondJson.from, bondJson.to), Bond.get(bondJson.bondOrder));
         }
-        return new SphereModel(positions, bondMap);
+        return new MoleculeModel(positions, bondMap);
     }
 
 }
