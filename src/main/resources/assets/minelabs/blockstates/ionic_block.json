@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "waterlogged=false": {
+      "model": "minelabs:block/ionic_block"
+    },
+    "waterlogged=true": {
+      "model": "minelabs:block/ionic_block"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -11,19 +11,18 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-	//maven { url "https://maven.bai.lol" }
+
 	maven {
 		name = "WTHIT"
 		url = "https://maven.bai.lol"
 	}
 	maven {
-		name = "CottonMC"
-		url = "https://server.bbkr.space/artifactory/libs-release"
+		url = "https://maven.kyrptonaught.dev"
 	}
 }
 
@@ -32,17 +31,17 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	//modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthitVersion}"
-	//modRuntimeOnly "lol.bai:badpackets:fabric-0.1.2"
+	modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
+	modRuntimeOnly "lol.bai:badpackets:fabric-0.1.2"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
+
+	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
 
 	// WTHIT mod (TODO: if it's only for development, do we need this here?)
 	modCompileOnly "mcp.mobius.waila:wthit-api:fabric-${project.wthit_version}"
-
-	// GUI Lib
-	modImplementation include("io.github.cottonmc:LibGui:${project.cotton_gui_version}")
 }
 
 processResources {
@@ -72,7 +71,30 @@ jar {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/scicraft.accesswidener")
+	accessWidenerPath = file("src/main/resources/minelabs.accesswidener")
+	
+	runs {
+		datagen {
+			server()
+
+			name = "Data Generation"
+			runDir = "build/datagen"
+
+			vmArg("-Dfabric-api.datagen")
+			vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
+		}
+	}
+}
+assemble.dependsOn(runDatagen)
+
+sourceSets {
+	main {
+		resources {
+			srcDirs += [
+				"src/main/generated"
+			]
+		}
+	}
 }
 
 // configure the maven publication

@@ -1,0 +1,29 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:calcium_atom",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:hydrogen_atom",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:oxygen_atom",
+          "weight": 26
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:phosphorus_atom",
+          "weight": 6
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

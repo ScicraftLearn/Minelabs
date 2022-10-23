@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "minelabs:block/downquark_quantumfield" }
+    }
+}

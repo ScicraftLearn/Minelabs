@@ -1,0 +1,24 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_white",
+    "layer1": "minelabs:item/hydrogen",
+    "layer2": "minelabs:item/electrons1"
+  },
+  "gui_light": "front",
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 4, 0],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/hydrogen_atom_internal"
+    }
+  ]
+}

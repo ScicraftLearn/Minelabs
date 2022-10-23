@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_beige",
+    "layer1": "minelabs:item/cadmium"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/cadmium_atom_internal"
+    }
+  ]
+}

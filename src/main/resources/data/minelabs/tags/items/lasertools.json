@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "minelabs:lasertool_iron",
+        "minelabs:lasertool_gold",
+        "minelabs:lasertool_diamond"
+    ]
+}
