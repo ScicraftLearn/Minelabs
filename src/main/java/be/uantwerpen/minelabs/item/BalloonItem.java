@@ -1,11 +1,11 @@
 package be.uantwerpen.minelabs.item;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.entity.BalloonEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,12 +33,10 @@ public class BalloonItem extends Item {
         if (!world.isClient()) {
             if (entity instanceof PlayerEntity pe) {
                 if (!(pe.getAbilities().creativeMode)) {
-                    for (ItemStack is : pe.getHandItems()) {
-                        if (is.getItem() instanceof BalloonItem) {
-                            StatusEffectInstance sei = new StatusEffectInstance(StatusEffects.LEVITATION, 1, 2, false, false);
-                            pe.addStatusEffect(sei);
-                            break;
-                        }
+                    if (pe.getOffHandStack().getItem() instanceof BalloonItem) {
+                        System.out.println("aangeroepen 1");
+                        StatusEffectInstance sei = new StatusEffectInstance(Minelabs.FLYING, 2, 2, false, false);
+                        pe.addStatusEffect(sei);
                     }
                 }
             }
