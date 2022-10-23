@@ -49,13 +49,16 @@ public class MinelabsClient implements ClientModInitializer {
         //Register ItemModels
         ItemModels.registerModels();
 
+
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(ModelProvider::new);
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
             Map<Identifier, Resource> molecules = manager.findResources("models/molecules", (i) -> true);
             for (Identifier resource: molecules.keySet()) {
                 out.accept(new Identifier(resource.getNamespace(), resource.getPath().split("models/")[1].split(".json")[0]));
             }
+            out.accept(new Identifier(Minelabs.MOD_ID,"block/mologram_beam"));
         });
+
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());

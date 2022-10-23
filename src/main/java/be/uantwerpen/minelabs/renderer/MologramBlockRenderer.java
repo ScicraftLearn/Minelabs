@@ -24,6 +24,7 @@ import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockEntity> {
 
@@ -84,14 +85,33 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
 //                be.uantwerpen.scicraft.block.Blocks.SPHERE.getDefaultState(), pos, world, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create());
         matrices.pop();
 
-        renderBeam(0.4f, 0.7f, pos, matrices, vertexConsumers);
+
+        // renderBeam
+        BakedModel model2;
+        //Scicraft.LOGGER.info(stack.getItem());
+
+        model2 = MinecraftClient.getInstance().getBakedModelManager().models.get(
+                new Identifier(Minelabs.MOD_ID, "block/mologram_beam"));
+
+
+        if (model2 == null) {
+            return;
+        }
+
+        matrices.push();
+        matrices.translate(0.5,10f/16f,0.5);
+        MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model2, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getTranslucent()), false,  net.minecraft.util.math.random.Random.create(), 0, overlay);
+
+        matrices.pop();
+
+        //renderBeam(0.4f, 0.7f, pos, matrices, vertexConsumers);
 
 
     }
     private void renderBeam(float width, float height, BlockPos pos, MatrixStack matrices, VertexConsumerProvider vertexConsumers){
         matrices.push();
         // Important: may not collide with model, otherwise we get rendering glitches
-        matrices.translate(0.5,12f/16f,0.5);
+        matrices.translate(0.5,10f/16f,0.5);
         renderBeamLayer(matrices, vertexConsumers.getBuffer(RenderLayer.getBeaconBeam(BEAM_TEXTURE2, true)), 1f, 1f, 1f, .6F, height, width, 1.0F, 0.0F, 0F, 1f);
         matrices.pop();
     }

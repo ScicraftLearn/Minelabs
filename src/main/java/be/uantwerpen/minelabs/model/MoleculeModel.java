@@ -131,6 +131,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         JsonUnbakedModel defaultBlockModel = (JsonUnbakedModel) loader.getOrLoadModel(DEFAULT_BLOCK_MODEL);
         // Get its ModelTransformation
         transformation = defaultBlockModel.getTransformations();
+        transformation = defaultBlockModel.getTransformations();
 
         // Build the mesh using the Renderer API
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
