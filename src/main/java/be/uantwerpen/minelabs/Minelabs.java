@@ -4,6 +4,7 @@ import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.crafting.CraftingRecipes;
 import be.uantwerpen.minelabs.dimension.ModDimensions;
+import be.uantwerpen.minelabs.effect.Effects;
 import be.uantwerpen.minelabs.effect.HeliumFlight;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.ScientificVillager;
@@ -33,7 +34,6 @@ public class Minelabs implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     public static InputStream csvFile;
-    public static final StatusEffect FLYING = new HeliumFlight();
 
     @Override
     public void onInitialize() {
@@ -52,6 +52,7 @@ public class Minelabs implements ModInitializer {
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();
         OreGenerations.generateOres();
+        Effects.registerStatusEffects();
 
         CraftingRecipes.register();
 
@@ -61,6 +62,5 @@ public class Minelabs implements ModInitializer {
         ScientificVillager.registerTrades();
         ServerModEvents.registerEvents();
         NetworkingConstants.registerS2CPackets();
-        Registry.register(Registry.STATUS_EFFECT, new Identifier("minelabs", "flying"), FLYING);
     }
 }

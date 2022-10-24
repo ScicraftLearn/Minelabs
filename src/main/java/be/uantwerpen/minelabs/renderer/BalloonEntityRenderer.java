@@ -1,7 +1,7 @@
 package be.uantwerpen.minelabs.renderer;
 
 import be.uantwerpen.minelabs.entity.BalloonEntity;
-import be.uantwerpen.minelabs.entity.Entities;
+import be.uantwerpen.minelabs.entity.EntityModelLayers;
 import be.uantwerpen.minelabs.model.BalloonEntityModel;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -15,7 +15,7 @@ public class BalloonEntityRenderer extends MobEntityRenderer<BalloonEntity, Ball
 
 
     public BalloonEntityRenderer(EntityRendererFactory.Context context) {
-        super(context, new BalloonEntityModel(context.getPart(Entities.BALLOON_MODEL)), 0.7F);
+        super(context, new BalloonEntityModel(context.getPart(EntityModelLayers.BALLOON_MODEL)), 0.7F);
     }
 
     @Override

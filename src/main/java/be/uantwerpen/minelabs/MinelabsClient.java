@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.entity.Entities;
+import be.uantwerpen.minelabs.entity.EntityModelLayers;
 import be.uantwerpen.minelabs.model.BalloonEntityModel;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
 import be.uantwerpen.minelabs.renderer.BalloonEntityRenderer;
@@ -88,7 +89,7 @@ public class MinelabsClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.ANTI_NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
         EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
-        EntityModelLayerRegistry.registerModelLayer(Entities.BALLOON_MODEL, BalloonEntityModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(EntityModelLayers.BALLOON_MODEL, BalloonEntityModel::getTexturedModelData);
 
         BlockEntityRendererRegistry.register(BlockEntities.BOHR_BLOCK_ENTITY, BohrBlockEntityRenderer::new);
 

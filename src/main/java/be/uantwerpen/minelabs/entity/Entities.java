@@ -39,8 +39,7 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
     public static final EntityType<BalloonEntity> BALLOON = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, BalloonEntity::new)
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "balloon");
-    public static final EntityModelLayer BALLOON_MODEL =
-            new EntityModelLayer(new Identifier("minelabs:balloon"), "main");
+
 
     /**
      * Register a single entity

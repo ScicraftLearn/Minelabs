@@ -24,18 +24,18 @@ public class HeliumFlight extends StatusEffect {
         if (entity instanceof PlayerEntity pe) {
             if (entity.getWorld().isClient()) {
                 if (pe.getOffHandStack().getItem() instanceof BalloonItem) {
-                    System.out.println("aangeroepen 2");
+                    System.out.println("Try to fly: can we still fly?");
                     if (!pe.getAbilities().allowFlying) {
                         pe.getAbilities().allowFlying = true;
                         ((ClientPlayerEntity) entity).sendAbilitiesUpdate();
-                        System.out.println("aangeroepen 2BIS");
+                        System.out.println("Try to fly: allow the flight :)");
                     }
                 } else {
-                    System.out.println("aangeroepen 3b");
+                    System.out.println("Try to fly: naughty you, you may not fly anymore! 3b");
                     pe.getAbilities().allowFlying = false;
                     pe.getAbilities().flying = false;
                     ((ClientPlayerEntity) entity).sendAbilitiesUpdate();
-                    System.out.println("aangeroepen 3bBIS");
+                    System.out.println("Try to fly: we sorted stuff out, now you're normal again");
 
                 }
             }

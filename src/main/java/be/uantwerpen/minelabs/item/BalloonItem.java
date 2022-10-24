@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.item;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.effect.Effects;
 import be.uantwerpen.minelabs.entity.BalloonEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import net.minecraft.entity.Entity;
@@ -34,8 +35,8 @@ public class BalloonItem extends Item {
             if (entity instanceof PlayerEntity pe) {
                 if (!(pe.getAbilities().creativeMode)) {
                     if (pe.getOffHandStack().getItem() instanceof BalloonItem) {
-                        System.out.println("aangeroepen 1");
-                        StatusEffectInstance sei = new StatusEffectInstance(Minelabs.FLYING, 2, 2, false, false);
+                        System.out.println("Try to fly: call effect");
+                        StatusEffectInstance sei = new StatusEffectInstance(Effects.FLYING, 2, 2, false, false);
                         pe.addStatusEffect(sei);
                     }
                 }
