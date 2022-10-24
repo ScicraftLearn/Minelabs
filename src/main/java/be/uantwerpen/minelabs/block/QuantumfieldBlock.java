@@ -3,7 +3,10 @@ package be.uantwerpen.minelabs.block;
 import be.uantwerpen.minelabs.block.entity.QuantumFieldBlockEntity;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -18,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-public class QuantumfieldBlock extends AbstractGlassBlock implements BlockEntityProvider {
+public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     public static final int MAX_AGE = 10;
     public static final int decayrate = 1;
     //    max 15 in minecraft

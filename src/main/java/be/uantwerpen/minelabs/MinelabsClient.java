@@ -66,14 +66,6 @@ public class MinelabsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.HELIUM, RenderLayer.getTranslucent());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ELECTRON_QUANTUMFIELD, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GLUON_QUANTUMFIELD, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.DOWNQUARK_QUANTUMFIELD, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PHOTON_QUANTUMFIELD, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.NEUTRINO_QUANTUMFIELD, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.UPQUARK_QUANTUMFIELD, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.WEAK_BOSON_QUANTUMFIELD, RenderLayer.getTranslucent());
-
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ERLENMEYER_STAND, RenderLayer.getCutout());
         // Register rendering for electron entity
         EntityRendererRegistry.register(Entities.ELECTRON_ENTITY, FlyingItemEntityRenderer::new);
