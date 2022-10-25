@@ -87,22 +87,22 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
 
 
         // renderBeam
-        BakedModel model2;
-        //Scicraft.LOGGER.info(stack.getItem());
-
-        model2 = MinecraftClient.getInstance().getBakedModelManager().models.get(
-                new Identifier(Minelabs.MOD_ID, "block/mologram_beam"));
-
-
-        if (model2 == null) {
-            return;
-        }
-
-        matrices.push();
-        matrices.translate(0.5,10f/16f,0.5);
-        MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model2, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getTranslucent()), false,  net.minecraft.util.math.random.Random.create(), 0, overlay);
-
-        matrices.pop();
+//        BakedModel model2;
+//        //Scicraft.LOGGER.info(stack.getItem());
+//
+//        model2 = MinecraftClient.getInstance().getBakedModelManager().models.get(
+//                new Identifier(Minelabs.MOD_ID, "block/mologram_beam"));
+//
+//
+//        if (model2 == null) {
+//            return;
+//        }
+//
+//        matrices.push();
+//        matrices.translate(0.5,10f/16f,0.5);
+//        MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model2, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getTranslucent()), false,  net.minecraft.util.math.random.Random.create(), 0, overlay);
+//
+//        matrices.pop();
 
         //renderBeam(0.4f, 0.7f, pos, matrices, vertexConsumers);
 

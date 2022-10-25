@@ -151,17 +151,17 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         return this;
     }
 
-    private float norm(Vec3f vec) {
+    private static float norm(Vec3f vec) {
         return (float) Math.sqrt(vec.dot(vec));
     }
 
-    private void transformQuad(Vec3f[] quad, Consumer<Vec3f> op){
+    private static void transformQuad(Vec3f[] quad, Consumer<Vec3f> op){
         for(Vec3f point: quad){
             op.accept(point);
         }
     }
 
-    private void transformQuads(List<Vec3f[]> quads, Consumer<Vec3f> op){
+    protected static void transformQuads(List<Vec3f[]> quads, Consumer<Vec3f> op){
         quads.forEach(quad -> transformQuad(quad, op));
     }
 

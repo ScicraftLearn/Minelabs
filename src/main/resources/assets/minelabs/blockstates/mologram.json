@@ -1,7 +1,14 @@
 {
-  "variants":{
-    "":{
-      "model": "minelabs:block/mologram"
+  "multipart": [
+    {
+      "apply": {
+        "model": "minelabs:block/mologram"
+      }
+    },
+    {
+      "apply": {
+        "model": "minelabs:block/mologram_beam"
+      }
     }
-  }
+  ]
 }

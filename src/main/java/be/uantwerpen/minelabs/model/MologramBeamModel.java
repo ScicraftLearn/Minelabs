@@ -152,6 +152,7 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
         face(quads, height,-width, width);
 
 
+        MoleculeModel.transformQuads(quads, v -> v.add(0.5f, 0.65f, 0.5f));
         return quads;
     }
 
