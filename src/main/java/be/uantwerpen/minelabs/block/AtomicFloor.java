@@ -3,8 +3,6 @@ package be.uantwerpen.minelabs.block;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.QuantumFieldSpawner;
 import net.minecraft.block.*;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -16,13 +14,7 @@ public class AtomicFloor extends AbstractGlassBlock {
     public final static int AtomicFloorLayer = 64;
 
     public AtomicFloor() {
-        super(Settings.of(Material.AMETHYST).hardness(200f).strength(200f).nonOpaque().ticksRandomly());
-
-    }
-
-    @Override
-    public VoxelShape getCameraCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShapes.empty();
+        super(Settings.of(Material.AMETHYST).hardness(-1f).strength(3600000.0F).nonOpaque().ticksRandomly());
     }
 
     @Override
@@ -39,18 +31,10 @@ public class AtomicFloor extends AbstractGlassBlock {
         QuantumFieldSpawner.tryToSpawnCloud(world, pos);
     }
 
-    @Override
+
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        if (world instanceof ClientWorld clientWorld){
-            PlayerEntity player = clientWorld.getClosestPlayer(pos.getX(),pos.getY(),pos.getZ(),10,false);
-            if (player != null && player.getMainHandStack() != null){
-                var item = player.getMainHandStack().getItem();
-                if (item == Items.BOHR_BLOCK){
-                    return VoxelShapes.fullCube();
-                }
-            }
-        }
-        return VoxelShapes.empty();
+        return context.isHolding(Items.ATOM_FLOOR) || context.isHolding(Items.BOHR_BLOCK) ?
+                VoxelShapes.fullCube() : VoxelShapes.empty();
     }
 
     @Override
