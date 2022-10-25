@@ -13,12 +13,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.Map;
+import java.util.Random;
 
-import static be.uantwerpen.minelabs.block.QuantumfieldBlock.MASTER;
+//import static be.uantwerpen.minelabs.block.QuantumfieldBlock.MASTER;
 
 public class QuantumFieldSpawner {
-    static java.util.Random r = new java.util.Random();
-
+    static java.util.Random r = new Random();
 
     public static void tryToSpawnCloud(World world, BlockPos pos) {
         BlockState field_to_spawn;
@@ -59,7 +59,7 @@ public class QuantumFieldSpawner {
 
     public static BlockState pickField(World world, BlockPos pos) {
         BlockState quantumfield = null;
-        int type = r.nextInt(7);
+        int type = world.random.nextInt(7);
         //Only change air blocks so other fields don't get replaced
         switch (type) {
             case 0 -> quantumfield = Blocks.ELECTRON_QUANTUMFIELD.getDefaultState();
@@ -72,8 +72,6 @@ public class QuantumFieldSpawner {
         }
         return quantumfield;
     }
-
-
 
     private static void spawnCloud(World world, BlockPos pos, BlockState state) {
 
@@ -97,7 +95,7 @@ public class QuantumFieldSpawner {
          * (a,0,0); (0,b,0),(0,0,c)
          */
         if (!checkFields(pos, world, x_size, y_size, z_size)) {
-            world.setBlockState(pos, state.with(MASTER, true));
+            world.setBlockState(pos, state.with(MinelabsProperties.MASTER, true));
             for (int x = -x_size / 2; x <= x_size / 2; x++) {
 //                x_sub = x^2/a^2
                 x_sub = x * x / (a * a);
