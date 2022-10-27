@@ -270,16 +270,16 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         float a= b/2;
         List<Vec3f[]> quads = new ArrayList<>();
         quads.add(new Vec3f[]{//links
+                new Vec3f(0, -a, -a),
                 new Vec3f(0, a, -a),
                 new Vec3f(len, a, -a),
-                new Vec3f(len, -a, -a),
-                new Vec3f(0, -a, -a)
+                new Vec3f(len, -a, -a)
         });
         quads.add(new Vec3f[]{//rechts
+                new Vec3f(0, a, a),
                 new Vec3f(0, -a, a),
                 new Vec3f(len, -a, a),
-                new Vec3f(len, a, a),
-                new Vec3f(0, a, a)
+                new Vec3f(len, a, a)
         });
         quads.add(new Vec3f[]{//onder
                 new Vec3f(0, -a, a),
@@ -288,22 +288,10 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
                 new Vec3f(len, -a, a)
         });
         quads.add(new Vec3f[]{//boven
-                new Vec3f(0, a, a),
-                new Vec3f(len, a, a),
-                new Vec3f(len, a, -a),
-                new Vec3f(0, a, -a)
-        });
-        quads.add(new Vec3f[]{ //voorkant
-                new Vec3f(0, a, a),
                 new Vec3f(0, a, -a),
-                new Vec3f(0, -a, -a),
-                new Vec3f(0, -a, a),
-        });
-        quads.add(new Vec3f[]{ //achterkant
-                new Vec3f(len, -a, a),
-                new Vec3f(len, -a, -a),
-                new Vec3f(len, a, -a),
+                new Vec3f(0, a, a),
                 new Vec3f(len, a, a),
+                new Vec3f(len, a, -a)
         });
         return quads;
     }
