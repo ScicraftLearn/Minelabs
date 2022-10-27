@@ -130,15 +130,15 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
     }
     private void face(List<Vec3f[]> quads, float height, float x, float z){
         quads.add(new Vec3f[]{
-                new Vec3f(0, 0, 0),
-                new Vec3f(0, 0, 0),
+                new Vec3f(0, 2/16f, 2/16f*z/height),
+                new Vec3f(2/16f*x/height, 2/16f, 0),
                 new Vec3f(x, height, 0),
                 new Vec3f(0, height, z)
 
     });
         quads.add(new Vec3f[]{
-                new Vec3f(0, 0, 0),
-                new Vec3f(0, 0, 0),
+                new Vec3f(2/16f*x/height, 2/16f, 0),
+                new Vec3f(0, 2/16f, 2/16f*z/height),
                 new Vec3f(0, height, z),
                 new Vec3f(x, height, 0)
                         });
