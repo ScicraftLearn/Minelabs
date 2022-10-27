@@ -35,7 +35,7 @@ import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedModel {
-    private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "block/helium"));
+    private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "block/mologram/mologram_beam"));
     private static final Identifier DEFAULT_BLOCK_MODEL = new Identifier("minecraft:block/block");
     private ModelTransformation transformation;
     private Sprite SPRITE;
@@ -123,7 +123,7 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
 
         //makeBEAM(emitter, center, radius);
         makeBeam(emitter,0.7f, 0.4f);
-
+        makeBeam(emitter,0.55f, 0.45f);
         mesh = builder.build();
 
         return this;
@@ -137,10 +137,10 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
 
     });
         quads.add(new Vec3f[]{
-                new Vec3f(0, height, z),
-                new Vec3f(x, height, 0),
                 new Vec3f(0, 0, 0),
-                new Vec3f(0, 0, 0)
+                new Vec3f(0, 0, 0),
+                new Vec3f(0, height, z),
+                new Vec3f(x, height, 0)
                         });
 
     }
@@ -163,10 +163,10 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
                 //emitter.normal(i, quad[i]);
             }
 
-            emitter.sprite(0, 0, 1, 1);
-            emitter.sprite(1, 0, 1, 0);
+            emitter.sprite(0, 0, 16, 16);
+            emitter.sprite(3, 0, 16, 0);
             emitter.sprite(2, 0, 0, 0);
-            emitter.sprite(3, 0, 0, 1);
+            emitter.sprite(1, 0, 0, 16);
 
             emitter.spriteBake(0, SPRITE, MutableQuadView.BAKE_ROTATE_NONE);
 
