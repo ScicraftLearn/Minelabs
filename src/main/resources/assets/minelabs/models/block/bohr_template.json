@@ -1,0 +1,79 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "BP": "minelabs:block/bohrcrafting/bohr_block",
+    "sides": "minelabs:block/bohrcrafting/none_side",
+    "particle": "minelabs:block/bohrcrafting/bohr_block"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        32,
+        1,
+        32
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8,
+            1
+          ],
+          "texture": "#sides"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            8,
+            2
+          ],
+          "texture": "#sides"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            8,
+            3
+          ],
+          "texture": "#sides"
+        },
+        "west": {
+          "uv": [
+            0,
+            3,
+            8,
+            4
+          ],
+          "texture": "#sides"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#BP"
+        },
+        "down": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "rotation": 180,
+          "texture": "#BP"
+        }
+      }
+    }
+  ]
+}
