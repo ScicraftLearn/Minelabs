@@ -1,19 +1,20 @@
 package be.uantwerpen.minelabs.item;
 
+import be.uantwerpen.minelabs.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.FluidModificationItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class ErlenmeyerItem extends Item
+public class ErlenmeyerItem extends BlockItem
         implements FluidModificationItem {
 
     public ErlenmeyerItem(Settings settings) {
-        super(settings);
+        super(Blocks.ERLENMEYER_STAND, settings);
     }
 
     @Override

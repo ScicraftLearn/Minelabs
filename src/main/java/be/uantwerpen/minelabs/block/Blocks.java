@@ -12,10 +12,11 @@ import net.minecraft.util.registry.Registry;
 
 public class Blocks {
 
-    //Atom portal to subatom dimension
-    public static final Block ATOM_PORTAL = register(new PortalBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1.5f)),"atom_portal");
     //Atomic floor for atomic dimension
-    public static final Block ATOM_FLOOR = register(new AtomicFloor(),"atomic_floor");
+    public static final Block ATOM_FLOOR = register(new AtomicFloor(), "atomic_floor");
+
+    //Portal block
+    public static final Block PORTAL_BLOCK = register(new PortalBlock(FabricBlockSettings.of(Material.DECORATION)), "portal_block");
 
     public static final Block SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
             .mapColor(MapColor.WHITE_GRAY).strength(3.0f, 3.0f).requiresTool(), UniformIntProvider.create(0, 3)), "salt_ore");
@@ -41,16 +42,27 @@ public class Blocks {
             FabricBlockSettings.of(Material.AMETHYST).ticksRandomly().strength(1.5F)
                     .sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool()), "budding_salt_block");
 
+    public static final Block LAB_CABIN = register(new LabChestBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_cabin");
+    public static final Block LAB_DRAWER = register(new LabChestBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_drawer");
+    public static final Block LAB_SINK = register(new LabSinkBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_sink");
+    public static final Block LAB_CENTER = register(new LabCenterBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_center");
+    public static final Block LAB_CORNER = register(new LabCornerBlock(FabricBlockSettings
+            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab_corner");
+
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
-    public static final Block PION_NUL = register(new PionNulBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "pion_nul");
+    public static final Block PION_NUL = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_NUL_BLOCK_ENTITY), "pion_nul");
     public static final Block PION_MINUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_MINUS_BLOCK_ENTITY), "pion_minus");
     public static final Block PION_PLUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_PLUS_BLOCK_ENTITY), "pion_plus");
 
-    public static final Block WEAK_BOSON = register(new Block(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "weak_boson");
+    public static final Block WEAK_BOSON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.WEAK_BOSON_BLOCK_ENTITY), "weak_boson");
     public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutrino");
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
@@ -66,8 +78,9 @@ public class Blocks {
     public static final ChargedBlock ANTI_PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANTI_PROTON_BLOCK_ENTITY), "anti_proton");
 
-    public static final Block NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "neutron");
+    public static final ChargedBlock NEUTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.NEUTRON_BLOCK_ENTITY), "neutron");
+
     public static final Block ANTI_NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "anti_neutron");
 
@@ -90,19 +103,20 @@ public class Blocks {
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE, MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "green_fire");
-    public static final Block HELIUM = register(new PionNulBlock(FabricBlockSettings.of(Material.AIR)
+    public static final Block HELIUM = register(new Block(FabricBlockSettings.of(Material.AIR)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "lewis_block");
     public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
-
-//    public static final Block ACID = Registry.register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
-
-    public static final Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)) {
-    });
-
-
+    public static final Block ACID = register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
     public static final Block BOHR_BLOCK = register(new BohrBlock(), "bohr_block");
+
+    public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
+            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "erlenmeyer_stand");
+    public static final Block MICROSCOPE = register(new MicroscopeBlock(
+            FabricBlockSettings.of(Material.METAL).strength(4.0f).luminance(6)), "microscope");
+    public static final Block TUBERACK = register(new TubeRackBlock(
+            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "tuberack");
 
     /**
      * Register a Block
@@ -110,7 +124,6 @@ public class Blocks {
      *
      * @param block      : Block Object to register
      * @param identifier : String name of the Item
-     * @return
      * @return {@link Block}
      */
     private static <T extends Block> T register(T block, String identifier) {

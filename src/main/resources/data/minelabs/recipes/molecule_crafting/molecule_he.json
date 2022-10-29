@@ -1,0 +1,14 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "He1", "atom":  "He"}
+    ],
+    "bonds": []
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_he"
+  },
+  "density": 8
+}

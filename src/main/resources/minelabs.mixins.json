@@ -18,5 +18,7 @@
     "LivingEntityMixin",
     "ThrownEntityMixin"
   ],
-  "client": []
+  "client": [
+    "InGameHudMixin"
+  ]
 }

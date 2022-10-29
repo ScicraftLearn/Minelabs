@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minelabs:item/neutron"
+    "layer0": "minelabs:item/anti_neutron"
   }
 }

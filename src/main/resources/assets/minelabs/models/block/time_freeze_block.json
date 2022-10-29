@@ -1,12 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "block/cube_all",
   "textures": {
-    "down": "minelabs:block/quantumfield/photon/vertical",
-    "up": "minelabs:block/quantumfield/photon/vertical",
-    "north": "minelabs:block/quantumfield/photon/horizontal",
-    "east": "minelabs:block/quantumfield/photon/horizontal",
-    "south": "minelabs:block/quantumfield/photon/horizontal",
-    "west": "minelabs:block/quantumfield/photon/horizontal",
-    "particle": "minelabs:block/quantumfield/photon/vertical"
+    "all": "minelabs:block/time_freeze_temp"
   }
 }
