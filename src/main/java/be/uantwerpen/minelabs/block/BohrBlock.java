@@ -41,7 +41,9 @@ import java.util.List;
 
 public class BohrBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
     public static final IntProperty STATUS = MinelabsProperties.STATUS;
+    //    which part of the bohrplate this bohrblock belongs to
     public static final EnumProperty<BohrPart> BOHR_PART = MinelabsProperties.BOHR_PART;
 
     public BohrBlock() {

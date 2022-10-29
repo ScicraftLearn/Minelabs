@@ -1,7 +1,7 @@
 package be.uantwerpen.minelabs.renderer;
 
-import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
+import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -39,19 +39,19 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	int implodeCounter = 0; // till 20
 	boolean isImploding = false;
 
-	private static final ItemStack proton_stack = new ItemStack(Blocks.PROTON, 1);
-	private static final ItemStack neutron_stack = new ItemStack(Blocks.NEUTRON, 1);
-	private static final ItemStack electron_stack = new ItemStack(Blocks.ELECTRON, 1);
+	private static final ItemStack proton_stack = new ItemStack(Items.PROTON, 1);
+	private static final ItemStack neutron_stack = new ItemStack(Items.NEUTRON, 1);
+	private static final ItemStack electron_stack = new ItemStack(Items.ELECTRON, 1);
 
 	private static final List<Vec3f> icosahedron = new ArrayList<>(); // (icosahedron) figure for the nucleus
+
 	static {
 		// icosahedron points:
 		for (int i = 1; i < 13; i++) {
 			Vec3f punt1 = new Vec3f();
 			if (i == 1) {
-				punt1 = new Vec3f(0, 0, (float)Math.sqrt(5)/2);
-			}
-			else if (i > 1 && i < 7) {
+				punt1 = new Vec3f(0, 0, (float) Math.sqrt(5) / 2);
+			} else if (i > 1 && i < 7) {
 				punt1 = new Vec3f((float)Math.cos((i-2)*(2*Math.PI)/5), (float)Math.sin((i-2)*(2*Math.PI)/5), 0.5f);
 			}
 			else if (i > 6 && i < 12) {
@@ -75,7 +75,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	@Override
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
 		if (blockEntity.isMaster()) {
-
 			matrices.push();
 
 			int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
@@ -254,23 +253,23 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			matrices.scale(0.2f, 0.2f, 0.2f);
 
 			if (nrOfprotonsLeft == 0) {
-				MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+				context.getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 				nrOfneutronsLeft -= 1;
 				isProtonAndNeutronLeft = false;
 			}
 			else if (nrOfneutronsLeft == 0) {
-				MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+				context.getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 				nrOfprotonsLeft -= 1;
 				isProtonAndNeutronLeft = false;
 			}
 			if (isProtonAndNeutronLeft) {
 				if (isProtonNext) {
-					MinecraftClient.getInstance().getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					context.getItemRenderer().renderItem(proton_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 					isProtonNext = false;
 					nrOfprotonsLeft -= 1;
 				}
 				else {
-					MinecraftClient.getInstance().getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+					context.getItemRenderer().renderItem(neutron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 					isProtonNext = true;
 					nrOfneutronsLeft -= 1;
 				}
@@ -329,7 +328,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			matrices.translate(x, y, z);
 			matrices.scale(0.1f, 0.1f, 0.1f);
 
-			MinecraftClient.getInstance().getItemRenderer().renderItem(electron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+			context.getItemRenderer().renderItem(electron_stack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 
 			matrices.scale(10, 10, 10);
 			matrices.translate(-x, -y, -z);

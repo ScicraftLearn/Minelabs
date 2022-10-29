@@ -41,10 +41,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public static final int GREEN_COLOR = ColorHelper.Argb.getArgb(255, 0, 255, 0);
     public static final int RED_COLOR = ColorHelper.Argb.getArgb(255, 255, 0, 0);
 
-    //    which part of the bohrplate this bohrblock belongs to
     private static final int MAX_TIMER = 99 * 20;
     private int timer = MAX_TIMER;
-    //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
 
     //the inventory stack [0,3[ = protons, [3,6[ = neutrons, [6,9[ = electrons
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9, ItemStack.EMPTY);
@@ -179,34 +177,32 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             return;
         }
 
+        // normal texture
+        int status = 0;
+
         int nrOfProtons = entity.getProtonCount();
         int nrOfNeutrons = entity.getNeutronCount();
         int nrOfElectrons = entity.getElectronCount();
 
         if (NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
             entity.timer = MAX_TIMER; // max timer value
-        } else {
+            if (entity.isCollectable()) {// collectible -> green texture
+                status = 1;
+            }
+        } else { // unstable => red texture
+            status = 2;
             entity.timer = Math.max(0, entity.timer - 1);
         }
         if (entity.timer == 0) {
-            NbtCompound nbtCompound = entity.createNbt();
-            entity.writeNbt(nbtCompound);
+            //NbtCompound nbtCompound = entity.createNbt();
+            //entity.writeNbt(nbtCompound);
             entity.scatterParticles(3);
             entity.timer = MAX_TIMER;
+            markDirty(world, pos, state);
         }
-        world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
 
-
-        // normal texture
-        int status = 0;
-        if (entity.isCollectable()) {
-            // collectible -> green texture
-            status = 1;
-        } else if (!NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
-            // unstable => red texture
-            status = 2;
-        }
         world.setBlockState(pos, state.with(MinelabsProperties.STATUS, status));
+        world.updateListeners(pos, state, state.with(MinelabsProperties.STATUS, status), Block.NOTIFY_LISTENERS);
     }
 
     public boolean isMaster() {
@@ -425,7 +421,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         markDirty();
         return ActionResult.SUCCESS;
     }
-
 
     public void scatterParticles() {
         this.scatterParticles(1);
