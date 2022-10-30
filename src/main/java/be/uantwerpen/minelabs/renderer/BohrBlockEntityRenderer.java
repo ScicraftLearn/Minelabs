@@ -66,7 +66,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 	}
 
 
-    private Context context;
+    private final Context context;
 
 	public BohrBlockEntityRenderer(Context ctx) {
     	this.context = ctx;
@@ -397,8 +397,8 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			shakeMultiplier = 0.04f; // we set it to the hardest shaking
 		}
 		if (!isStable) {
-			if (switchCounter%switchCounterModulo != 0) {
-				shake = 0.01f+(float)Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
+			if (switchCounter % switchCounterModulo != 0) {
+				shake = 0.01f + (float) Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
 			}
 		}
 		return shake;
