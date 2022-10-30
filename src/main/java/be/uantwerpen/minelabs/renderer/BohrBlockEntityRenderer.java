@@ -82,18 +82,10 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			// origin
 			if (!blockEntity.isRemoved()) {
 				switch (blockEntity.getWorld().getBlockState(blockEntity.getPos()).get(Properties.HORIZONTAL_FACING)) {
-					case NORTH -> {
-						matrices.translate(1f, 1.75f, 1f);
-					}
-					case EAST -> {
-						matrices.translate(0f, 1.75f, 1f);
-					}
-					case SOUTH -> {
-						matrices.translate(0f, 1.75f, 0f);
-					}
-					case WEST -> {
-						matrices.translate(1f, 1.75f, 0f);
-					}
+					case NORTH -> matrices.translate(1f, 1.75f, 1f);
+					case EAST -> matrices.translate(0f, 1.75f, 1f);
+					case SOUTH -> matrices.translate(0f, 1.75f, 0f);
+					case WEST -> matrices.translate(1f, 1.75f, 0f);
 				}
 			}
 
