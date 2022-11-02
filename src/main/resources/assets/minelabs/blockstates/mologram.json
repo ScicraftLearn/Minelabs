@@ -6,6 +6,9 @@
       }
     },
     {
+      "when": {
+        "lit": true
+      },
       "apply": {
         "model": "minelabs:block/mologram_beam"
       }
