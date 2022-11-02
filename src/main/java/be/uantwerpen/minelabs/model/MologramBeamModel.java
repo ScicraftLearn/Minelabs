@@ -160,7 +160,7 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
         for (Vec3f[] quad : getBeamVertices(height, width)) {
             for (int i = 0; i < 4; i++) {
                 emitter.pos(i, quad[i]);
-                //emitter.normal(i, quad[i]);
+                emitter.normal(i, new Vec3f(0,1,0));
             }
 
             emitter.sprite(0, 0, 16, 16);
