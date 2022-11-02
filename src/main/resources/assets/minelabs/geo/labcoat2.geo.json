@@ -4,8 +4,8 @@
 		{
 			"description": {
 				"identifier": "geometry.unknown",
-				"texture_width": 64,
-				"texture_height": 64,
+				"texture_width": 128,
+				"texture_height": 128,
 				"visible_bounds_width": 3,
 				"visible_bounds_height": 3.5,
 				"visible_bounds_offset": [0, 1.25, 0]
@@ -41,8 +41,8 @@
 					"parent": "bipedRightArm",
 					"pivot": [-4, 22, 0],
 					"cubes": [
-						{"origin": [-8, 12, -2], "size": [4, 2, 4], "uv": [0, 0]},
-						{"origin": [-9, 14, -3], "size": [6, 11, 6], "uv": [0, 0]}
+						{"origin": [-8.2, 11.8, -2.2], "size": [4.4, 2.4, 4.4], "uv": [50, 0]},
+						{"origin": [-9, 14, -3], "size": [6, 11, 6], "uv": [32, 0]}
 					]
 				},
 				{
@@ -54,8 +54,8 @@
 					"parent": "bipedLeftArm",
 					"pivot": [4, 22, 0],
 					"cubes": [
-						{"origin": [4, 12, -2], "size": [4, 2, 4], "uv": [0, 0]},
-						{"origin": [3, 14, -3], "size": [6, 11, 6], "uv": [0, 0]}
+						{"origin": [3.8, 11.8 , -2.2], "size": [4.4, 2.4, 4.4], "uv": [50, 17]},
+						{"origin": [3, 14, -3], "size": [6, 11, 6], "uv": [32, 17]}
 					]
 				},
 				{
