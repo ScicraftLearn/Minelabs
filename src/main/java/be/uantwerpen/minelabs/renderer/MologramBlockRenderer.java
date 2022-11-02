@@ -79,7 +79,7 @@ public class MologramBlockRenderer implements BlockEntityRenderer<MologramBlockE
         matrices.push();
         matrices.translate(0.5, 0, 0.5);
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(entity.getRotation()));
-        matrices.translate(-0.5, 15/16f, -0.5);
+        matrices.translate(-0.5, 13/16f, -0.5);
         MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create(), 0, overlay);
 //        MinecraftClient.getInstance().getBlockRenderManager().renderBlock(
 //                be.uantwerpen.scicraft.block.Blocks.SPHERE.getDefaultState(), pos, world, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create());

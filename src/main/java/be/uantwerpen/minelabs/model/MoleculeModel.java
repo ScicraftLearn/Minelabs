@@ -238,7 +238,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         List<Vec3f[]> quads = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             List<Vec3f[]> beam = getUnitBeam(len, a);
-            Vec3f offset = new Vec3f(0, i == 0 ? 0.05f : -0.05f, 0);
+            Vec3f offset = new Vec3f(0, i == 0 ? 0.04f : -0.04f, 0);
             transformQuads(beam, v -> v.add(offset));
             quads.addAll(beam);
         }
@@ -246,21 +246,16 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
     }
 
     public List<Vec3f[]> getTripleBondVertices(float len, float a) {
-        float offset = 0.06f;
-        // TODO: FIX this
-
+        float offset = 0.05f;
         List<Vec3f[]> quads = new ArrayList<>();
+        //Vec3f[] offsets = new Vec3f[]{new Vec3f(0,0,offset), new Vec3f(0,-offset/3,-offset/2), };
+        Vec3f direction = Vec3f.POSITIVE_X;
         for (int i = 0; i < 3; i++) {
-            for (Vec3f[] quad : getUnitBeam(len, a)) {
-                for (Vec3f face : quad) {
-                    if (i == 2) {
-                        face.add(0, 2 * -offset / 6, 3 * -offset / 6);
-                    } else {
-                        face.add(0, i == 1 ? offset : 0, i == 0 ? offset : 0);
-                    }
-                }
-                quads.add(quad);
-            }
+            List<Vec3f[]> beam = getUnitBeam(len, a);
+            transformQuads(beam, v -> v.add(new Vec3f(0,offset,0)));
+            Quaternion rotation = direction.getDegreesQuaternion(i*120);
+            transformQuads(beam, v -> v.rotate(rotation));
+            quads.addAll(beam);
         }
         return quads;
     }
@@ -322,7 +317,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
                 emitter.normal(i, norm);
             }
 
-            float p = 2;
+            float p = 1;
             emitter.sprite(0, 0, p, p);
             emitter.sprite(1, 0, p, 0);
             emitter.sprite(2, 0, 0, 0);
