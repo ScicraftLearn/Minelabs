@@ -60,6 +60,7 @@
   "block.minelabs.bohr_block": "Bohr Blauwdruk",
   "block.minelabs.atomic_floor": "",
   "block.minelabs.electric_field_sensor": "Elektrisch Veld Sensor",
+  "block.minelabs.mologram": "Molograaf",
 
   "item.minelabs.proton": "Proton",
   "item.minelabs.anti_proton": "Anti-Proton",
