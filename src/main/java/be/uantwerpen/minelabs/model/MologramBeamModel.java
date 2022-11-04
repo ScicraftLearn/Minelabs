@@ -110,8 +110,6 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         SPRITE = textureGetter.apply(SPRITE_ID);
 
-        Minelabs.LOGGER.info(SPRITE);
-
         JsonUnbakedModel defaultBlockModel = (JsonUnbakedModel) loader.getOrLoadModel(DEFAULT_BLOCK_MODEL);
         // Get its ModelTransformation
         transformation = defaultBlockModel.getTransformations();
