@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.block.entity;
 
-
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import be.uantwerpen.minelabs.item.MoleculeItem;
 import net.minecraft.block.BlockState;
@@ -39,7 +38,7 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
 
         } else {
             //CLIENT
-            entity.rotation += 3.6;
+            entity.rotation = (entity.rotation + 3.6f) % 360f;
         }
     }
 

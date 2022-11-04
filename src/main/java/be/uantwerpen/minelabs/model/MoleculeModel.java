@@ -62,6 +62,9 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
     Map<String, Pair<Atom, Vec3f>> positions;
     Map<Pair<String, String>, Bond> bonds;
 
+    private final float RADIUS = 0.10f;
+    private final float MARGIN = 0.04f;
+
     public MoleculeModel(Map<String, Pair<Atom, Vec3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
         this.positions = positions;
         this.bonds = bondMap;
@@ -138,7 +141,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         QuadEmitter emitter = builder.getEmitter();
 
         //makeSphere(emitter, center, radius);
-        positions.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), 0.10f, atomVec3fPair.getFirst().getColor())); //RGB color in hex
+        positions.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), RADIUS, atomVec3fPair.getFirst().getColor())); //RGB color in hex
         bonds.forEach((s, bond) -> makeBond(emitter, positions.get(s.getFirst()).getSecond(),
                 positions.get(s.getSecond()).getSecond(),
                 positions.get(s.getFirst()).getFirst().getColor(),
@@ -160,8 +163,9 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         }
     }
 
-    private void transformQuads(List<Vec3f[]> quads, Consumer<Vec3f> op){
+    private List<Vec3f[]> transformQuads(List<Vec3f[]> quads, Consumer<Vec3f> op){
         quads.forEach(quad -> transformQuad(quad, op));
+        return quads;
     }
 
     /**
@@ -180,9 +184,9 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         float pos_norm = norm(pos_diff);
 
         List<Vec3f[]> bondQuads = switch (bond){
-            case COVALENT_SINGLE -> getSingleBondVertices(pos_norm, 0.05f);
-            case COVALENT_DOUBLE -> getDoubleBondVertices(pos_norm, 0.045f);
-            case COVALENT_TRIPLE -> getTripleBondVertices(pos_norm, 0.038f);
+            case COVALENT_SINGLE -> getSingleBondVertices(pos_norm);
+            case COVALENT_DOUBLE -> getDoubleBondVertices(pos_norm);
+            case COVALENT_TRIPLE -> getTripleBondVertices(pos_norm);
             default -> throw new IllegalStateException("Unknown bond count " + bond);
         };
 
@@ -224,38 +228,44 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         }
     }
 
-    public List<Vec3f[]> getSingleBondVertices(float len, float a) {
+    public List<Vec3f[]> getSingleBondVertices(float len) {
+        float a = 0.05f;
         return getUnitBeam(len, a);
     }
 
-    public List<Vec3f[]> getDoubleBondVertices(float len, float a) {
+    public List<Vec3f[]> getDoubleBondVertices(float len) {
+        float a = 0.045f;
+        float offset = 0.035f;
         List<Vec3f[]> quads = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            List<Vec3f[]> beam = getUnitBeam(len, a);
-            Vec3f offset = new Vec3f(0, i == 0 ? 0.05f : -0.05f, 0);
-            transformQuads(beam, v -> v.add(offset));
-            quads.addAll(beam);
-        }
+        quads.addAll(transformQuads(getUnitBeam(len, a), v -> v.add(0, offset, 0)));
+        quads.addAll(transformQuads(getUnitBeam(len, a), v -> v.add(0, -offset, 0)));
         return quads;
     }
 
-    public List<Vec3f[]> getTripleBondVertices(float len, float a) {
-        float offset = 0.06f;
-        // TODO: FIX this
+    public List<Vec3f[]> getTripleBondVertices(float len) {
+        float a = 0.038f;
+        float offset = 0.045f;
 
         List<Vec3f[]> quads = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            for (Vec3f[] quad : getUnitBeam(len, a)) {
-                for (Vec3f face : quad) {
-                    if (i == 2) {
-                        face.add(0, 2 * -offset / 6, 3 * -offset / 6);
-                    } else {
-                        face.add(0, i == 1 ? offset : 0, i == 0 ? offset : 0);
-                    }
-                }
-                quads.add(quad);
-            }
-        }
+        Vec3f offsetDirection = new Vec3f(0, offset, 0);
+        quads.addAll(transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
+        offsetDirection.rotate(Vec3f.POSITIVE_X.getDegreesQuaternion(120));
+        quads.addAll(transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
+        offsetDirection.rotate(Vec3f.POSITIVE_X.getDegreesQuaternion(120));
+        quads.addAll(transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
+
+//        for (int i = 0; i < 3; i++) {
+//            for (Vec3f[] quad : getUnitBeam(len, a)) {
+//                for (Vec3f face : quad) {
+//                    if (i == 2) {
+//                        face.add(0, 2 * -offset / 6, 3 * -offset / 6);
+//                    } else {
+//                        face.add(0, i == 1 ? offset : 0, i == 0 ? offset : 0);
+//                    }
+//                }
+//                quads.add(quad);
+//            }
+//        }
         return quads;
     }
 
@@ -266,44 +276,34 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
      * @param b   : size of square (endpoint)
      */
     public List<Vec3f[]> getUnitBeam(float len, float b){
-        float a= b/2;
+        float a = b/2;
+        len -= 2 * RADIUS - 2 * MARGIN;
         List<Vec3f[]> quads = new ArrayList<>();
         quads.add(new Vec3f[]{//links
+                new Vec3f(0, -a, -a),
                 new Vec3f(0, a, -a),
                 new Vec3f(len, a, -a),
                 new Vec3f(len, -a, -a),
-                new Vec3f(0, -a, -a)
         });
         quads.add(new Vec3f[]{//rechts
+                new Vec3f(0, a, a),
                 new Vec3f(0, -a, a),
                 new Vec3f(len, -a, a),
                 new Vec3f(len, a, a),
-                new Vec3f(0, a, a)
         });
         quads.add(new Vec3f[]{//onder
                 new Vec3f(0, -a, a),
                 new Vec3f(0, -a, -a),
                 new Vec3f(len, -a, -a),
-                new Vec3f(len, -a, a)
+                new Vec3f(len, -a, a),
         });
         quads.add(new Vec3f[]{//boven
-                new Vec3f(0, a, a),
-                new Vec3f(len, a, a),
-                new Vec3f(len, a, -a),
-                new Vec3f(0, a, -a)
-        });
-        quads.add(new Vec3f[]{ //voorkant
-                new Vec3f(0, a, a),
                 new Vec3f(0, a, -a),
-                new Vec3f(0, -a, -a),
-                new Vec3f(0, -a, a),
-        });
-        quads.add(new Vec3f[]{ //achterkant
-                new Vec3f(len, -a, a),
-                new Vec3f(len, -a, -a),
-                new Vec3f(len, a, -a),
+                new Vec3f(0, a, a),
                 new Vec3f(len, a, a),
+                new Vec3f(len, a, -a),
         });
+        transformQuads(quads, v -> v.add(RADIUS - MARGIN, 0, 0));
         return quads;
     }
 
