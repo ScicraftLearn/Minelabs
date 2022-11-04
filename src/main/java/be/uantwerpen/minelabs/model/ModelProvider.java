@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.model;
 
+import be.uantwerpen.minelabs.Minelabs;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
@@ -29,6 +30,9 @@ public class ModelProvider implements ModelResourceProvider {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if (identifier.equals(new Identifier(Minelabs.MOD_ID,"block/mologram_beam"))) {
+            return new MologramBeamModel();
         }
         return null;
     }

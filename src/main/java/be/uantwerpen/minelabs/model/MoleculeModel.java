@@ -206,10 +206,10 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         transformQuads(bondQuads, v -> v.add(pos1));
 
         for (Vec3f[] quad : bondQuads) {
-            // TODO: if needed, compute cross product of two points in quad and use this as normal vector for all points in the quad
             for (int i = 0; i < 4; i++) {
                 emitter.pos(i, quad[i]);
-//                emitter.normal(i, quad[i]);
+                Vec3f norm = normalOnVertices(quad[i],quad[(((i+1 % 4) + 4) % 4)], quad[(((i-1 % 4) + 4) % 4)]); //zodat licht van beam lijkt te komen
+                emitter.normal(i, norm);
             }
 
             float p = 15f / 32f;
@@ -221,8 +221,13 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
             emitter.spriteBake(0, SPRITE, MutableQuadView.BAKE_ROTATE_NONE);
 
             // Enable texture usage
-            emitter.spriteColor(0, color1, color1, color2, color2);
-
+            if (color1==color2){
+                int color = color1; //TODO darken integer color
+                emitter.spriteColor(0, color, color, color, color);
+            }
+            else {
+                emitter.spriteColor(0, color1, color1, color2, color2);
+            }
             // Add the quad to the mesh
             emitter.emit();
         }
@@ -253,19 +258,6 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         quads.addAll(transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
         offsetDirection.rotate(Vec3f.POSITIVE_X.getDegreesQuaternion(120));
         quads.addAll(transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
-
-//        for (int i = 0; i < 3; i++) {
-//            for (Vec3f[] quad : getUnitBeam(len, a)) {
-//                for (Vec3f face : quad) {
-//                    if (i == 2) {
-//                        face.add(0, 2 * -offset / 6, 3 * -offset / 6);
-//                    } else {
-//                        face.add(0, i == 1 ? offset : 0, i == 0 ? offset : 0);
-//                    }
-//                }
-//                quads.add(quad);
-//            }
-//        }
         return quads;
     }
 
@@ -306,21 +298,32 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         transformQuads(quads, v -> v.add(RADIUS - MARGIN, 0, 0));
         return quads;
     }
-
+    Vec3f cross(Vec3f dir1, Vec3f dir2){
+        Vec3f l = dir2.copy();
+        l.cross(dir1);
+        l.scale(1/norm(l));
+        return l;
+    }
+    Vec3f normalOnVertices(Vec3f v1, Vec3f v2, Vec3f v3){
+        Vec3f dir1 = v2.copy();
+        dir1.subtract(v1);
+        Vec3f dir2 = v3.copy();
+        dir2.subtract(v1);
+        return cross(dir1, dir2);
+    }
     private void makeSphere(QuadEmitter emitter, Vec3f center, float radius, int color) {
         for (Vec3f[] quad : getSphereVertices(center, radius)) {
             for (int i = 0; i < 4; i++) {
                 emitter.pos(i, quad[i]);
-                quad[i].subtract(center);
-                quad[i].normalize();
-                emitter.normal(i, quad[i]);
+                Vec3f norm = normalOnVertices(quad[i],quad[(((i+1 % 4) + 4) % 4)], quad[(((i-1 % 4) + 4) % 4)]); //zodat licht van beam lijkt te komen
+                emitter.normal(i, norm);
             }
 
-            float p = 15f / 32f;
+            float p = 1;
             emitter.sprite(0, 0, p, p);
-            emitter.sprite(1, 0, p, 0.5f);
-            emitter.sprite(2, 0, 0.5f, 0.5f);
-            emitter.sprite(3, 0, 0.5f, p);
+            emitter.sprite(1, 0, p, 0);
+            emitter.sprite(2, 0, 0, 0);
+            emitter.sprite(3, 0, 0, p);
 
             emitter.spriteBake(0, SPRITE, MutableQuadView.BAKE_ROTATE_NONE);
 
@@ -337,7 +340,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
 
         List<Vec3f[]> quads = new ArrayList<>();
         int RESOLUTION = 2;
-        float offset = 0.5f;
+        float offset = 1/(float) Math.sqrt(3); //moet genormaliseerd zijn
 
         Vec3f[] face = {
                 new Vec3f(-offset, offset, -offset),
@@ -387,13 +390,8 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         };
         recursiveSubdivision(face, RESOLUTION, quads);
 
-        for (Vec3f[] quad: quads){
-            for(Vec3f vertex:quad){
-                vertex.scale(r);
-                vertex.add(center);
-            }
-        }
-
+        transformQuads(quads, v -> v.scale(r));
+        transformQuads(quads, v -> v.add(center));
         return quads;
     }
 

@@ -60,6 +60,7 @@
   "block.minelabs.atomic_floor": "",
   "block.minelabs.bohr_block": "Bohr Blueprint",
   "block.minelabs.electric_field_sensor": "Electric Field Sensor",
+  "block.minelabs.mologram": "Mologram",
 
   "item.minelabs.proton": "Proton",
   "item.minelabs.anti_proton": "AntiProton",
