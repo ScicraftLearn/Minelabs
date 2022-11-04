@@ -10,7 +10,7 @@
 		"3": "minelabs:block/mologram/mologram4",
 		"4": "minelabs:block/mologram/mologram5",
 		"5": "minelabs:block/mologram/mologram6",
-		"particle": "minelabs:block/mologram/mologram1"
+		"particle": "minelabs:block/mologram/mologram2"
 	},
 	"elements": [
 		{
@@ -269,18 +269,6 @@
 			"origin": [0, 0, 0],
 			"color": 0,
 			"children": [15, 16, 17, 18]
-		},
-		{
-			"name": "beam1",
-			"origin": [8, 12, 8],
-			"color": 0,
-			"children": [19, 20, 21, 22]
-		},
-		{
-			"name": "beam2",
-			"origin": [8, 12, 8],
-			"color": 0,
-			"children": [23, 24, 25, 26]
 		}
 	]
 }
