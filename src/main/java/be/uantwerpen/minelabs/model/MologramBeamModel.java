@@ -128,6 +128,7 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
 
         return this;
     }
+
     private void face(List<Vec3f[]> quads, float height, float x, float z){
         quads.add(new Vec3f[]{
                 new Vec3f(0, 2/16f, 2/16f*z/height),
@@ -142,8 +143,8 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
                 new Vec3f(0, height, z),
                 new Vec3f(x, height, 0)
                         });
-
     }
+
     public List<Vec3f[]> getBeamVertices(float height, float width) {
         List<Vec3f[]> quads = new ArrayList<>();
         face(quads, height, width,-width);
@@ -151,8 +152,7 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
         face(quads, height, width, width);
         face(quads, height,-width, width);
 
-
-        MoleculeModel.transformQuads(quads, v -> v.add(0.5f, 0.65f, 0.5f));
+        ModelUtil.transformQuads(quads, v -> v.add(0.5f, 0.65f, 0.5f));
         return quads;
     }
 
