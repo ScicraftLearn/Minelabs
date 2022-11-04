@@ -66,7 +66,6 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
         matrices.translate(-0.5, 13/16f, -0.5);
         MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create(), 0, overlay);
         matrices.pop();
-
     }
 
     @Override

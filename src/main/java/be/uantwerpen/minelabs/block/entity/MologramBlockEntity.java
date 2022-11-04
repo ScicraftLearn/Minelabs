@@ -25,7 +25,6 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
         super(BlockEntities.MOLOGRAM_BLOCK_ENTITY, pos, state);
         rotation = 0.0f;
     }
-    // Store the current value of the number
 
     public static void tick(World world, BlockPos blockPos, BlockState state, MologramBlockEntity entity) {
         if (!world.isClient) {
@@ -35,7 +34,6 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
             } else if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {// hopper inserted
                 world.setBlockState(blockPos, state.with(Properties.LIT, true));
             }
-
         } else {
             //CLIENT
             entity.rotation = (entity.rotation + 3.6f) % 360f;
@@ -49,7 +47,13 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
         tag.putFloat("rotation", rotation);
         super.writeNbt(tag);
     }
-
+    // Deserialize the BlockEntity
+    @Override
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
+        Inventories.readNbt(tag, INVENTORY);
+        rotation = tag.getFloat("rotation");
+    }
     //sync data server client:
     //Warning: Need to call world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS); to trigger the update. //
     @Nullable
@@ -77,7 +81,7 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
      * @param slot  the slot (0 in this case)
      * @param stack the stack
      * @param side  the side (UP, DOWN, EAST, WEST, NORTH, SOUTH)
-     * @return true if the stack can be extracted
+     * @return true if the stack can be inserted
      */
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
@@ -91,9 +95,7 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
             case UP, DOWN -> false;
             default -> true;
         };
-
     }
-
     /**
      * Returns true if the stack can be extracted from the slot at the side.
      *
@@ -107,14 +109,6 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction side) {
         return side == Direction.DOWN;
-    }
-
-    // Deserialize the BlockEntity
-    @Override
-    public void readNbt(NbtCompound tag) {
-        super.readNbt(tag);
-        Inventories.readNbt(tag, INVENTORY);
-        rotation = tag.getFloat("rotation");
     }
 
     public float getRotation() {
