@@ -96,7 +96,7 @@ public class Items {
             .maxCount(64).group(ItemGroups.CHEMICALS), 2, "SrCl2"), "strontium_chloride_dust");
 
     public static final Item STRONTIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 2, ""), "strontium_nitrate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 2, "srn2o6"), "strontium_nitrate_dust"); // Sr(NO3)2
 
     public static final Item CALCIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), 3, "CaCl2"), "calcium_chloride_dust");
@@ -105,13 +105,13 @@ public class Items {
             .maxCount(64).group(ItemGroups.CHEMICALS), 4, "Na2CO3"), "sodium_carbonate_dust");
 
     public static final Item BORAX_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 5, ""), "borax_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 5, "borax"), "borax_dust");
 
     public static final Item COPPER_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), 6, "CuSO4"), "copper_sulfate_dust");
 
     public static final Item BORIC_ACID = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 6, "H3BO3"), "boric_acid");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 6, "BH3O3"), "boric_acid");
 
     public static final Item COPPER_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), 7, "CuCl2"), "copper_chloride_dust");
@@ -162,6 +162,7 @@ public class Items {
     public static Item COPPER_ATOM;
     public static Item ZINC_ATOM;
     public static Item BROMINE_ATOM;
+    public static Item STRONTIUM_ATOM;
 
     public static Item SILVER_ATOM;
     public static Item CADMIUM_ATOM;
@@ -320,6 +321,7 @@ public class Items {
         COPPER_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.COPPER), "copper_atom");
         ZINC_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.ZINC), "zinc_atom");
         BROMINE_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.BROMINE), "bromine_atom");
+        STRONTIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.Strontium), "strontium_atom");
 
         SILVER_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SILVER), "silver_atom");
         CADMIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CADMIUM), "cadmium_atom");

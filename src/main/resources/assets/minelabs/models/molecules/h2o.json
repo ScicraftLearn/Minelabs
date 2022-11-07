@@ -4,7 +4,15 @@
     "atoms": [
       {"key":  "O1", "atom":  "O", "position": [ 0.00,  0.00,  0.12]},
       {"key":  "H1", "atom":  "H", "position": [ 0.00,  0.79, -0.47]},
-      {"key":  "H2", "atom":  "H", "position": [ 1.03, -0.79, -0.47]}
+      {
+        "key": "H2",
+        "atom": "H",
+        "position": [
+          0.00,
+          -0.79,
+          -0.47
+        ]
+      }
     ],
     "bonds": [
       {"from": "O1", "to": "H1", "bondOrder": 1},

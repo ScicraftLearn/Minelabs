@@ -2,11 +2,11 @@
   "structure": {
     "atoms": [
       {
-        "key": "O1",
-        "atom": "O",
+        "key": "Sr1",
+        "atom": "Sr",
         "position": [
-          1.72,
-          0.51,
+          0.15,
+          -0.32,
           0.00
         ]
       },
@@ -14,8 +14,8 @@
         "key": "Cl1",
         "atom": "Cl",
         "position": [
-          0.86,
-          0.00,
+          -0.68,
+          -0.32,
           0.00
         ]
       },
@@ -23,26 +23,26 @@
         "key": "Cl2",
         "atom": "Cl",
         "position": [
-          0.00,
-          0.51,
+          0.68,
+          0.32,
           0.00
         ]
       }
     ],
     "bonds": [
       {
-        "from": "O1",
+        "from": "Sr1",
         "to": "Cl1",
         "bondOrder": 1
       },
       {
-        "from": "O1",
+        "from": "Sr1",
         "to": "Cl2",
         "bondOrder": 1
       }
     ]
   },
   "items": [
-    "minelabs:erlenmeyer_cl2o"
+    "minelabs:strontium_chloride_dust"
   ]
 }

@@ -2,11 +2,11 @@
   "structure": {
     "atoms": [
       {
-        "key": "O1",
-        "atom": "O",
+        "key": "Cu1",
+        "atom": "Cu",
         "position": [
-          1.72,
-          0.51,
+          0.87,
+          0.50,
           0.00
         ]
       },
@@ -14,7 +14,7 @@
         "key": "Cl1",
         "atom": "Cl",
         "position": [
-          0.86,
+          1.73,
           0.00,
           0.00
         ]
@@ -24,25 +24,25 @@
         "atom": "Cl",
         "position": [
           0.00,
-          0.51,
+          0.00,
           0.00
         ]
       }
     ],
     "bonds": [
       {
-        "from": "O1",
+        "from": "Cu1",
         "to": "Cl1",
         "bondOrder": 1
       },
       {
-        "from": "O1",
+        "from": "Cu1",
         "to": "Cl2",
         "bondOrder": 1
       }
     ]
   },
   "items": [
-    "minelabs:erlenmeyer_cl2o"
+    "minelabs:copper_chloride_dust"
   ]
 }

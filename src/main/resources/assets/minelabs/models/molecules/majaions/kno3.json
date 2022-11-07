@@ -1,50 +1,49 @@
 {
-  "structure":
-  {
+  "structure": {
     "atoms": [
+      {
+        "key": "K1",
+        "atom": "K",
+        "position": [
+          -0.76,
+          1.10,
+          1.03
+        ]
+      },
       {
         "key": "N1",
         "atom": "N",
         "position": [
-          1.79,
-          1.00,
-          0.29
+          1.48,
+          -0.27,
+          -0.29
         ]
       },
       {
         "key": "O1",
         "atom": "O",
         "position": [
-          2.45,
-          0.01,
-          0.45
+          0.99,
+          0.81,
+          -0.78
         ]
       },
       {
         "key": "O2",
         "atom": "O",
         "position": [
-          2.13,
-          2.17,
-          0.26
+          0.97,
+          -0.72,
+          0.79
         ]
       },
       {
         "key": "O3",
         "atom": "O",
         "position": [
-          0.41,
-          0.76,
-          0.12
-        ]
-      },
-      {
-        "key": "H1",
-        "atom": "H",
-        "position": [
-          0.05,
-          1.66,
-          0.00
+          2.42,
+          -0.84,
+          -0.84
         ]
       }
     ],
@@ -52,24 +51,21 @@
       {
         "from": "O1",
         "to": "N1",
-        "bondOrder": 2
+        "bondOrder": 1
       },
       {
         "from": "O2",
         "to": "N1",
-        "bondOrder": 1
+        "bondOrder": 2
       },
       {
         "from": "O3",
         "to": "N1",
         "bondOrder": 1
-      },
-      {
-        "from": "H1",
-        "to": "O3",
-        "bondOrder": 1
       }
     ]
   },
-  "items": ["minelabs:erlenmeyer_hno3"]
+  "items": [
+    "minelabs:potassium_nitrate_dust"
+  ]
 }

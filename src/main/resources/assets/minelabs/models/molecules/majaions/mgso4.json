@@ -1,0 +1,85 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "Mg1",
+        "atom": "Mg",
+        "position": [
+          2.46,
+          -1.03,
+          1.08
+        ]
+      },
+      {
+        "key": "S1",
+        "atom": "S",
+        "position": [
+          0.97,
+          0.25,
+          -0.43
+        ]
+      },
+      {
+        "key": "O1",
+        "atom": "O",
+        "position": [
+          0.52,
+          1.59,
+          -0.05
+        ]
+      },
+      {
+        "key": "O2",
+        "atom": "O",
+        "position": [
+          0.54,
+          -0.32,
+          -1.70
+        ]
+      },
+      {
+        "key": "O3",
+        "atom": "O",
+        "position": [
+          0.64,
+          -0.79,
+          0.79
+        ]
+      },
+      {
+        "key": "O4",
+        "atom": "O",
+        "position": [
+          2.60,
+          0.18,
+          -0.33
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "O1",
+        "to": "S1",
+        "bondOrder": 2
+      },
+      {
+        "from": "O2",
+        "to": "S1",
+        "bondOrder": 2
+      },
+      {
+        "from": "O3",
+        "to": "S1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O4",
+        "to": "S1",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:magnesium_sulfate_dust"
+  ]
+}
