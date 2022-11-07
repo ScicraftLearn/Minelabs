@@ -40,7 +40,8 @@ public enum Atom {
     COPPER(29, "Cu", 1.9, AtomType.TRANSITION_METAL, 1, 34, Items.COPPER_ATOM, 0x8E5A0D),//orange /*Valence electrons may not be correct */
     ZINC(30, "Zn", 1.6, AtomType.TRANSITION_METAL, 2, 34, Items.ZINC_ATOM, 0x4A4A50),//grey /*Valence electrons may not be correct */
     BROMINE(35, "Br", 2.8, AtomType.NON_METAL, 7, 44, Items.BROMINE_ATOM, 0x518141),//green
-    Strontium(38, "Sr", 0.59, AtomType.ALKALINE_EARTH_METAL, 2, 50, Items.STRONTIUM_ATOM),
+    Strontium(38, "Sr", 0.59, AtomType.ALKALINE_EARTH_METAL, 2, 50, Items.STRONTIUM_ATOM, 0x1b5502), //dark green
+
     SILVER(47, "Ag", 1.9, AtomType.TRANSITION_METAL, 1, 60, Items.SILVER_ATOM, 0x4A4A50),//grey /*Valence electrons may not be correct */
     CADMIUM(48, "Cd", 1.7, AtomType.TRANSITION_METAL, 2, 66, Items.CADMIUM_ATOM, 0x7B6B46),//beige /*Valence electrons may not be correct */
     TIN(50, "Sn", 1.8, AtomType.POST_TRANSITION_METAL, 4, 70, Items.TIN_ATOM, 0x4A4A50),//grey

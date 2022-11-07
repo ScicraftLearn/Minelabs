@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minelabs:item/atom_darkgreen",
+    "layer2": "minelabs:item/electrons2"
+  },
+  "gui_light": "front",
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        -27,
+        0
+      ],
+      "translation": [
+        3.25,
+        3.75,
+        -4.25
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/strontium_atom_internal"
+    }
+  ]
+}
