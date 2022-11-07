@@ -92,4 +92,14 @@ public class MologramBlock extends BlockWithEntity {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return checkType(type, BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntity::tick);
     }
+
+    @Override
+    public boolean hasComparatorOutput(BlockState state) {
+        return state.get(LIT);
+    }
+
+    @Override
+    public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+        return state.get(LIT) ? 15 : 0;
+    }
 }
