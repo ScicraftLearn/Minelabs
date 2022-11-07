@@ -90,43 +90,43 @@ public class Items {
 
 
     public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 1), "lithium_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 1, "LiCl"), "lithium_chloride_dust");
 
     public static final Item STRONTIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 2), "strontium_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 2, "SrCl2"), "strontium_chloride_dust");
 
     public static final Item STRONTIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 2), "strontium_nitrate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 2, ""), "strontium_nitrate_dust");
 
     public static final Item CALCIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 3), "calcium_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 3, "CaCl2"), "calcium_chloride_dust");
 
     public static final Item SODIUM_CARBONATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 4), "sodium_carbonate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 4, "Na2CO3"), "sodium_carbonate_dust");
 
     public static final Item BORAX_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 5), "borax_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 5, ""), "borax_dust");
 
     public static final Item COPPER_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 6), "copper_sulfate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 6, "CuSO4"), "copper_sulfate_dust");
 
     public static final Item BORIC_ACID = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 6), "boric_acid");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 6, "H3BO3"), "boric_acid");
 
     public static final Item COPPER_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 7), "copper_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 7, "CuCl2"), "copper_chloride_dust");
 
     public static final Item POTASSIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 8), "potassium_sulfate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 8, "K2SO4"), "potassium_sulfate_dust");
 
     public static final Item POTASSIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 8), "potassium_nitrate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 8, "KNO3"), "potassium_nitrate_dust");
 
     public static final Item POTASSIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 9), "potassium_chloride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 9, "KCl"), "potassium_chloride_dust");
 
     public static final Item MAGNESIUM_SULFATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 10), "magnesium_sulfate_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), 10, "MgSO4"), "magnesium_sulfate_dust");
 
     public static final Item ASH_DUST = register(new Item(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS)), "ash_dust");
