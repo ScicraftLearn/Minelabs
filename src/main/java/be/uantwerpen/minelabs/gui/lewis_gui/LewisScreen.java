@@ -81,6 +81,15 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
                 BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
                 this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+                // hier bijhouden per slot welke richtingen een bond hebben
+                //
+            }
+            for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
+                Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
+                valentieE = VE(slot, directions, vertex.data.valenceElectrons);
+                //Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
+                //BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
+                this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(), valentieE.getX(), valentieE.getY());
             }
         }
 
