@@ -85,16 +85,19 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
      */
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
-        if (!(stack.getItem() instanceof MoleculeItem)) {
-            return false;
+        if (this.isEmpty()) {
+            if (!(stack.getItem() instanceof MoleculeItem)) {
+                return false;
+            }
+            if (side == null) {
+                return true;
+            }
+            return switch (side) {
+                case UP, DOWN -> false;
+                default -> true;
+            };
         }
-        if (side == null) {
-            return true;
-        }
-        return switch (side) {
-            case UP, DOWN -> false;
-            default -> true;
-        };
+        return false;
     }
     /**
      * Returns true if the stack can be extracted from the slot at the side.
