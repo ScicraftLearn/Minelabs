@@ -77,17 +77,24 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
          */
         LewisCraftingGrid grid = handler.getLewisCraftingGrid();
         if (grid.getPartialMolecule().getStructure() instanceof MoleculeItemGraph graph){
+            Map<String, Boolean> bondDirections= Map.of(
+                    "N", false,
+                    "E", false,
+                    "S", false,
+                    "W", false
+            );
             for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
                 Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
                 Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
                 BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
                 this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
-                // hier bijhouden per slot welke richtingen een bond hebben
-                //
+                //TODO hier bijhouden per slot welke richtingen een bond hebben
+                // bondDirections.put(direction, true);
             }
             for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
                 Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
                 ValenceElectrons valentieE = ValenceElectrons(bondDirections, vertex.data.valenceElectrons);
+                //TODO add valence electrons data to graph
                 this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(), slot.x, slot.y);
             }
         }

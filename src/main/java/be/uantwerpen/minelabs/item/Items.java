@@ -176,6 +176,7 @@ public class Items {
 
     // Items > Bond to display in LCT (internal)
     public static Item BOND;
+    public static Item VALENCEE;
 
     // Items > Quantum fields
     public static final Item UPQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.UPQUARK_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "upquark_quantumfield");
@@ -333,6 +334,7 @@ public class Items {
 
         // Items > Bindings (internal)
         BOND = register(new Item(new Item.Settings()), "bond");
+        VALENCEE = register(new Item(new Item.Settings()), "valencee");
     }
 
     /**
