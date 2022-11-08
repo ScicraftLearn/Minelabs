@@ -7,10 +7,16 @@ import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.potion.GasPotion;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class Items {
 
@@ -20,15 +26,25 @@ public class Items {
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings().group(ItemGroup.MISC)), "entropy_creeper_spawn_egg");
 
-    public static final Item LASERTOOL_IRON = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.IRON, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_iron");
-    public static final Item LASERTOOL_GOLD = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.GOLD, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_gold");
-    public static final Item LASERTOOL_DIAMOND = register(new LaserTool( 2.5f, -2.4f, ToolMaterials.DIAMOND, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_diamond");
+    public static final Item LASERTOOL_IRON = register(new LaserTool(2.5f, -2.4f, ToolMaterials.IRON, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_iron");
+    public static final Item LASERTOOL_GOLD = register(new LaserTool(2.5f, -2.4f, ToolMaterials.GOLD, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_gold");
+    public static final Item LASERTOOL_DIAMOND = register(new LaserTool(2.5f, -2.4f, ToolMaterials.DIAMOND, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_diamond");
 
-    public static final Item SALT = register(new SaltItem(Blocks.SALT_WIRE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), 4), "salt");
+    public static final Item SALT = register(new FireReactionBlockItem(Blocks.SALT_WIRE,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), 4, "NaCl") {
+        @Override
+        public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+            tooltip.add(Text.literal("NaCl"));
+        }
+    }, "salt");
 
-    public static final Item SALT_SHARD = register(new SaltShardItem(
-            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_shard");
+    public static final Item SALT_SHARD = register(new Item(
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)) {
+        @Override
+        public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+            tooltip.add(Text.literal("NaCl"));
+        }
+    }, "salt_shard");
 
     public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE,
             new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_ore");
@@ -36,8 +52,13 @@ public class Items {
     public static final Item DEEPSLATE_SALT_ORE = register(new BlockItem(Blocks.DEEPSLATE_SALT_ORE,
             new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "deepslate_salt_ore");
 
-    public static final Item SALT_BLOCK = register(new SaltBlockItem(Blocks.SALT_BLOCK,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_block");
+    public static final Item SALT_BLOCK = register(new BlockItem(Blocks.SALT_BLOCK,
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)) {
+        @Override
+        public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+            tooltip.add(Text.literal("4x NaCl"));
+        }
+    }, "salt_block");
 
     public static final Item SALT_CRYSTAL = register(new BlockItem(Blocks.SALT_CRYSTAL,
             new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_crystal");
