@@ -1,0 +1,65 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "minelabs:item/internal_bonds/valence_1"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "N": 1
+      },
+      "model": "minelabs:item/internal_bonds/valence_1"
+
+    },
+    {
+      "predicate": {
+        "N": 2
+      },
+      "model": "minelabs:item/internal_bonds/valence_2"
+
+    },
+    {
+      "predicate": {
+        "E": 1
+      },
+      "model": "minelabs:item/internal_bonds/valence_1",
+      "y": 90
+    },
+    {
+      "predicate": {
+        "E": 2
+      },
+      "model": "minelabs:item/internal_bonds/valence_2",
+      "y": 90
+
+    },
+    {
+      "predicate": {
+        "S": 1
+      },
+      "model": "minelabs:item/internal_bonds/valence_1",
+      "y": 180
+    },
+    {
+      "predicate": {
+        "S": 2
+      },
+      "model": "minelabs:item/internal_bonds/valence_2",
+      "y": 180
+    },
+    {
+      "predicate": {
+        "W": 1
+      },
+      "model": "minelabs:item/internal_bonds/valence_1",
+      "y": 270
+    },
+    {
+      "predicate": {
+        "W": 2
+      },
+      "model": "minelabs:item/internal_bonds/valence_2",
+      "y": 270
+    }
+    ]
+}

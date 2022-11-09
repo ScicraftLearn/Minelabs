@@ -28,18 +28,13 @@ public class ValenceElectrons {
     private void addElectrons(){
         //inverse bonddir & voorkeur N-E-S-W
         // int: in  elke richting 0,1,2
-        for(String key: directionalValence.keySet()){
-            if(electronCount==0){break;}
-            if(!bondDirections.get(key)){
-                addEDir(key);
-                electronCount -=1;
-            }
-        }
-        for(String key: directionalValence.keySet()){
-            if(electronCount==0){break;}
-            if(!bondDirections.get(key)){
-                addEDir(key);
-                electronCount -=1;
+        while (electronCount>0){
+            for(String key: directionalValence.keySet()){
+                if(electronCount==0){break;}
+                if(!bondDirections.get(key)){
+                    addEDir(key);
+                    electronCount -=1;
+                }
             }
         }
     }
@@ -49,15 +44,11 @@ public class ValenceElectrons {
     }
 
     @NotNull
-    public ItemStack getStack() {
+    public ItemStack getStack(String direction) {
         ItemStack stack = new ItemStack(Items.VALENCEE);
         //TODO make item and overrides for model
         NbtCompound nbt = stack.getOrCreateNbt();
-        nbt.putInt("N", directionalValence.get("N"));
-        nbt.putInt("E", directionalValence.get("E"));
-        nbt.putInt("S", directionalValence.get("S"));
-        nbt.putInt("W", directionalValence.get("W"));
-        // int: in  elke richting 0,1,2
+        nbt.putInt(direction, directionalValence.get(direction));
         return stack;
     }
 }
