@@ -8,8 +8,8 @@
       {"key":  "O1", "atom":  "O"}
     ],
     "bonds": [
-      {"from": "O1", "to": "Cl1", "bondOrder": 1},
-      {"from": "O2", "to": "Cl1", "bondOrder": 1}
+      {"from": "Cl1", "to": "O1", "bondOrder": 1},
+      {"from": "Cl2", "to": "O1", "bondOrder": 1}
     ]
   },
   "result": {
