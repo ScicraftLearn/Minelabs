@@ -90,7 +90,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
                 Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
                 ValenceElectrons valentieE = new ValenceElectrons(bondDirections, vertex.data.getInitialValenceElectrons()- vertex.getEdgesData().stream().map(bond -> bond.bondOrder).mapToInt(Integer::intValue).sum()); //no clue: copied it from getOpenConnections in the MoleculeGraph class
-                for(String i: Arrays.asList("N", "E!", "S", "W")) { //render item 4x: N-E-S-W
+                for(String i: Arrays.asList("N", "E", "S", "W")) { //render item 4x: N-E-S-W
                     this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(i), slot.x, slot.y);
                 }
             }
