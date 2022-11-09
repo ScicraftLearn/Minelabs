@@ -10,6 +10,7 @@ import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreen;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisScreen;
 import be.uantwerpen.minelabs.item.ItemModels;
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.model.ModelProvider;
 import be.uantwerpen.minelabs.network.IonicDataPacket;
 import be.uantwerpen.minelabs.network.LewisDataPacket;
 import be.uantwerpen.minelabs.network.NetworkingConstants;
@@ -18,6 +19,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -28,6 +30,10 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
+
+import java.util.Map;
 
 
 @SuppressWarnings("UNUSED")
@@ -35,8 +41,6 @@ import net.minecraft.item.Item;
 public class MinelabsClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
-
-
         ClientModsEvents.registerEvents();
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR, RenderLayer.getTranslucent());
@@ -44,6 +48,17 @@ public class MinelabsClient implements ClientModInitializer {
 
         //Register ItemModels
         ItemModels.registerModels();
+
+
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(ModelProvider::new);
+        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+            Map<Identifier, Resource> molecules = manager.findResources("models/molecules", (i) -> true);
+            for (Identifier resource: molecules.keySet()) {
+                out.accept(new Identifier(resource.getNamespace(), resource.getPath().split("models/")[1].split(".json")[0]));
+            }
+            out.accept(new Identifier(Minelabs.MOD_ID,"block/mologram_beam"));
+        });
+
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_NUL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PION_MINUS, RenderLayer.getCutout());
@@ -62,6 +77,9 @@ public class MinelabsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MEDIUM_SALT_CRYSTAL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.SMALL_SALT_CRYSTAL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.SALT_WIRE, RenderLayer.getCutout());
+
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MOLOGRAM_BLOCK, RenderLayer.getTranslucent());
+        BlockEntityRendererRegistry.register(BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntityRenderer::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.HELIUM, RenderLayer.getTranslucent());

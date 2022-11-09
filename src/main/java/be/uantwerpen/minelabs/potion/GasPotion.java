@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.potion;
 
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.item.MoleculeItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -10,9 +11,11 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.collection.DefaultedList;
 
-public class GasPotion extends LingeringPotionItem {
-    public GasPotion(Settings settings) {
+public class GasPotion extends LingeringPotionItem implements MoleculeItem {
+    private final String molecule;
+    public GasPotion(Settings settings, String molecule) {
         super(settings);
+        this.molecule = molecule;
     }
 
     @Override
@@ -37,5 +40,10 @@ public class GasPotion extends LingeringPotionItem {
             return super.useOnBlock(context);
         }
 
+    }
+
+    @Override
+    public String getMolecule() {
+        return molecule;
     }
 }

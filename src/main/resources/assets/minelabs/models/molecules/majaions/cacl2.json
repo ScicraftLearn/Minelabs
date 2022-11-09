@@ -1,0 +1,48 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "Ca1",
+        "atom": "Ca",
+        "position": [
+          0.15,
+          -0.32,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl1",
+        "atom": "Cl",
+        "position": [
+          -0.82,
+          0.00,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl2",
+        "atom": "Cl",
+        "position": [
+          0.82,
+          0.00,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "Ca1",
+        "to": "Cl1",
+        "bondOrder": 1
+      },
+      {
+        "from": "Ca1",
+        "to": "Cl2",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:calcium_chloride_dust"
+  ]
+}

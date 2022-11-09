@@ -1,0 +1,17 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "P1", "atom":  "P", "position": [ 0.00,  0.00, 0.7351]},
+      {"key":  "Cl1", "atom":  "Cl", "position": [ 0.0000,  1.8544,  -0.2162]},
+      {"key":  "Cl2", "atom":  "Cl", "position": [ 1.6059,  -0.9272,  -0.2162]},
+      {"key":  "Cl3", "atom":  "Cl", "position": [ -1.6059,  -0.9272,  -0.2162]}
+    ],
+    "bonds": [
+      {"from": "P1", "to": "Cl1", "bondOrder": 1},
+      {"from": "P1", "to": "Cl2", "bondOrder": 1},
+      {"from": "P1", "to": "Cl3", "bondOrder": 1}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_PCl3"]
+}

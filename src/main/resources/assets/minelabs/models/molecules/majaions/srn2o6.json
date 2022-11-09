@@ -1,0 +1,122 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "Sr1",
+        "atom": "Sr",
+        "position": [
+          0.98,
+          0.29,
+          -0.09
+        ]
+      },
+      {
+        "key": "N1",
+        "atom": "N",
+        "position": [
+          2.75,
+          -1.93,
+          -0.50
+        ]
+      },
+      {
+        "key": "O1",
+        "atom": "O",
+        "position": [
+          2.57,
+          -1.40,
+          0.66
+        ]
+      },
+      {
+        "key": "O2",
+        "atom": "O",
+        "position": [
+          2.08,
+          -1.40,
+          -1.48
+        ]
+      },
+      {
+        "key": "O3",
+        "atom": "O",
+        "position": [
+          3.49,
+          -2.87,
+          -0.67
+        ]
+      },
+      {
+        "key": "N2",
+        "atom": "N",
+        "position": [
+          -0.77,
+          2.53,
+          0.30
+        ]
+      },
+      {
+        "key": "O4",
+        "atom": "O",
+        "position": [
+          -1.19,
+          1.31,
+          0.39
+        ]
+      },
+      {
+        "key": "O5",
+        "atom": "O",
+        "position": [
+          -1.51,
+          3.47,
+          0.47
+        ]
+      },
+      {
+        "key": "O6",
+        "atom": "O",
+        "position": [
+          0.48,
+          2.68,
+          0.02
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "O1",
+        "to": "N1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O2",
+        "to": "N1",
+        "bondOrder": 2
+      },
+      {
+        "from": "O3",
+        "to": "N1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O4",
+        "to": "N2",
+        "bondOrder": 1
+      },
+      {
+        "from": "O5",
+        "to": "N2",
+        "bondOrder": 2
+      },
+      {
+        "from": "O6",
+        "to": "N2",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:strontium_nitrate_dust"
+  ]
+}
