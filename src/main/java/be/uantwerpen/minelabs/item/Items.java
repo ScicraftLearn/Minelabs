@@ -334,7 +334,7 @@ public class Items {
 
         // Items > Bindings (internal)
         BOND = register(new Item(new Item.Settings()), "bond");
-        VALENCEE = register(new Item(new Item.Settings()), "valencee");
+        VALENCEE = register(new Item(new Item.Settings()), "valence_electrons");
     }
 
     /**

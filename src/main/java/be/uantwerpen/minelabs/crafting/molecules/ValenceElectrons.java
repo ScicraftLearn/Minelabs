@@ -5,20 +5,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ValenceElectrons {
     private final int totalElectronCount;
+
+    public Integer getDirectionalValence(String direction) {
+        return directionalValence.get(direction);
+    }
+
     private Map<String, Integer> directionalValence;
 
     public ValenceElectrons(Map<String, Boolean> bondDirections, int valenceE) {
         this.totalElectronCount = valenceE;
         directionalValence = new HashMap<>(Map.of(
-                "N", 0,
-                "E", 0,
-                "S", 0,
-                "W", 0
+                "n", 0,
+                "e", 0,
+                "s", 0,
+                "w", 0
         ));
         addElectrons(bondDirections, valenceE);
     }
@@ -27,17 +33,17 @@ public class ValenceElectrons {
         //todo infinite loop!
         //inverse bonddir & voorkeur N-E-S-W
         // int: in  elke richting 0,1,2
-        // while (electronCount>0){
-        for (String key : directionalValence.keySet()) {
-            if (count == 0) {
-                break;
-            }
-            if (bondDirections.get(key)) {
-                addEDir(key);
-                count -= 1;
+        while (count>0){
+            for (String key : Arrays.asList("n", "e", "s", "w")) {
+                if (count == 0) {
+                    break;
+                }
+                if (bondDirections.get(key)) {
+                    addEDir(key);
+                    count -= 1;
+                }
             }
         }
-        //}
     }
 
     private void addEDir(String direction){
@@ -49,7 +55,9 @@ public class ValenceElectrons {
         ItemStack stack = new ItemStack(Items.VALENCEE);
         //TODO make item and overrides for model
         NbtCompound nbt = stack.getOrCreateNbt();
+
         nbt.putInt(direction, directionalValence.get(direction));
+
         return stack;
     }
 }

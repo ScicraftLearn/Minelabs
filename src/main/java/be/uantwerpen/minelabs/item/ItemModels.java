@@ -2,8 +2,13 @@ package be.uantwerpen.minelabs.item;
 
 import be.uantwerpen.minelabs.Minelabs;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 public class ItemModels {
 
@@ -47,6 +52,7 @@ public class ItemModels {
         registerAtom(Items.URANIUM_ATOM);
 
         registerBond(Items.BOND);
+        registerValence(Items.VALENCEE);
     }
 
     /**
@@ -72,7 +78,25 @@ public class ItemModels {
         ModelPredicateProviderRegistry.register(item, new Identifier("direction"),
                 (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("MinelabsBondDirection") ? 1.0F : 0.0F);
     }
-
+    private static void registerValence(Item item) {
+        ModelPredicateProviderRegistry.register(item, new Identifier("n"), new UnclampedModelPredicateProvider() {
+            @Override
+            public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
+                return (stack.getOrCreateNbt().getInt("n"));
+            }
+            @Override
+            public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
+                return unclampedCall(stack, world, entity, seed);
+            }
+        }
+        );
+        ModelPredicateProviderRegistry.register(item, new Identifier("eeeeeast"),
+                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("e"))/2f );
+        ModelPredicateProviderRegistry.register(item, new Identifier("s"),
+                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("s"))/10f);
+        ModelPredicateProviderRegistry.register(item, new Identifier("w"),
+                (stack, world, entity, seed) -> stack.getOrCreateNbt().getInt("w") );
+    }
     /**
      * Main class method<br>
      * Registers all ItemModels

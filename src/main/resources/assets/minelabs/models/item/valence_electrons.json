@@ -1,65 +1,60 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minelabs:item/internal_bonds/valence_1"
+    "layer0": "minelabs:item/internal_bonds/valence_electron_1"
   },
   "overrides": [
     {
       "predicate": {
-        "N": 1
+        "n": 2
       },
-      "model": "minelabs:item/internal_bonds/valence_1"
+      "model": "minelabs:item/internal_bonds/valence_n_2"
+    },
+    {
+      "predicate": {
+        "n": 1
+      },
+      "model": "minelabs:item/internal_bonds/valence_n_1"
+    },
+    {
+      "predicate": {
+        "eeeeeast": 1.0
+      },
+      "model": "minelabs:item/internal_bonds/valence_e_2"
+    },
+    {
+      "predicate": {
+        "eeeeeast": 0.5
+      },
+      "model": "minelabs:item/internal_bonds/valence_e_1"
+    },
+    {
+      "predicate": {
+        "s": 0.2
+      },
+      "model": "minelabs:item/internal_bonds/valence_s_2"
 
     },
     {
       "predicate": {
-        "N": 2
+        "s": 0.1
       },
-      "model": "minelabs:item/internal_bonds/valence_2"
+      "model": "minelabs:item/internal_bonds/valence_s_1"
+    },
+    {
+      "predicate": {
+        "w": 2
+      },
+      "model": "minelabs:item/internal_bonds/valence_w_2"
 
     },
     {
       "predicate": {
-        "E": 1
+        "w": 1
       },
-      "model": "minelabs:item/internal_bonds/valence_1",
-      "y": 90
-    },
-    {
-      "predicate": {
-        "E": 2
-      },
-      "model": "minelabs:item/internal_bonds/valence_2",
-      "y": 90
+      "model": "minelabs:item/internal_bonds/valence_w_1"
 
-    },
-    {
-      "predicate": {
-        "S": 1
-      },
-      "model": "minelabs:item/internal_bonds/valence_1",
-      "y": 180
-    },
-    {
-      "predicate": {
-        "S": 2
-      },
-      "model": "minelabs:item/internal_bonds/valence_2",
-      "y": 180
-    },
-    {
-      "predicate": {
-        "W": 1
-      },
-      "model": "minelabs:item/internal_bonds/valence_1",
-      "y": 270
-    },
-    {
-      "predicate": {
-        "W": 2
-      },
-      "model": "minelabs:item/internal_bonds/valence_2",
-      "y": 270
     }
+
     ]
 }

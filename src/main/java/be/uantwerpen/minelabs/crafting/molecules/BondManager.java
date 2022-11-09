@@ -46,7 +46,7 @@ public class BondManager {
             ItemStack stack = new ItemStack(Items.BOND);
             NbtCompound nbt = stack.getOrCreateNbt();
             nbt.putBoolean("MinelabsBondDirection", vertical);
-            nbt.putInt("MinelabsBondAmount", bondCount);
+                nbt.putInt("MinelabsBondAmount", bondCount);
             return stack;
         }
 
@@ -105,39 +105,39 @@ public class BondManager {
 
     public Map<String, Boolean> findEmptyBonds(Slot slot) {
         Map<String, Boolean> dirs = new HashMap<>(Map.of(
-                "N", true,
-                "E", true,
-                "S", true,
-                "W", true
+                "n", true,
+                "e", true,
+                "s", true,
+                "w", true
         ));
 
         for (Bond bond : bonds) {
             if (bond.slot1 == slot) { // given slot is bond's slot 1
                 // CHECK Y
                 if (bond.slot1.y > bond.slot2.y) { // ABOVE
-                    dirs.put("N", false);
+                    dirs.put("n", false);
                 } else if (bond.slot1.y < bond.slot2.y) { //BELOW
-                    dirs.put("S", false);
+                    dirs.put("s", false);
                 } else {
                     // CHECK X
                     if (bond.slot1.x > bond.slot2.x) { // LEFT
-                        dirs.put("W", false);
+                        dirs.put("w", false);
                     } else if (bond.slot1.x < bond.slot2.x) { //RIGHT
-                        dirs.put("E", false);
+                        dirs.put("e", false);
                     }
                 }
             } else if (bond.slot2 == slot) { // given slot is bond's slot 2
                 // CHECK Y
                 if (bond.slot1.y > bond.slot2.y) { // BLOW
-                    dirs.put("S", false);
+                    dirs.put("s", false);
                 } else if (bond.slot1.y < bond.slot2.y) { //ABOVE
-                    dirs.put("N", false);
+                    dirs.put("n", false);
                 } else {
                     // CHECK X
                     if (bond.slot1.x > bond.slot2.x) { // RIGHT
-                        dirs.put("E", false);
+                        dirs.put("e", false);
                     } else if (bond.slot1.x < bond.slot2.x) { //LEFT
-                        dirs.put("W", false);
+                        dirs.put("w", false);
                     }
                 }
             }
