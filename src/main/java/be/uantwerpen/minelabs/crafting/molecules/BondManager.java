@@ -8,7 +8,9 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BondManager {
 
@@ -90,5 +92,56 @@ public class BondManager {
 
     public void clear() {
         bonds.clear();
+    }
+
+    public Bond getBond(Slot slot1, Slot slot2) {
+        for (Bond bond : bonds) {
+            if (bond.slot1 == slot1 && bond.slot2 == slot2) {
+                return bond;
+            }
+        }
+        return null;
+    }
+
+    public Map<String, Boolean> findEmptyBonds(Slot slot) {
+        Map<String, Boolean> dirs = new HashMap<>(Map.of(
+                "N", true,
+                "E", true,
+                "S", true,
+                "W", true
+        ));
+
+        for (Bond bond : bonds) {
+            if (bond.slot1 == slot) { // given slot is bond's slot 1
+                // CHECK Y
+                if (bond.slot1.y > bond.slot2.y) { // ABOVE
+                    dirs.put("N", false);
+                } else if (bond.slot1.y < bond.slot2.y) { //BELOW
+                    dirs.put("S", false);
+                } else {
+                    // CHECK X
+                    if (bond.slot1.x > bond.slot2.x) { // LEFT
+                        dirs.put("W", false);
+                    } else if (bond.slot1.x < bond.slot2.x) { //RIGHT
+                        dirs.put("E", false);
+                    }
+                }
+            } else if (bond.slot2 == slot) { // given slot is bond's slot 2
+                // CHECK Y
+                if (bond.slot1.y > bond.slot2.y) { // BLOW
+                    dirs.put("S", false);
+                } else if (bond.slot1.y < bond.slot2.y) { //ABOVE
+                    dirs.put("N", false);
+                } else {
+                    // CHECK X
+                    if (bond.slot1.x > bond.slot2.x) { // RIGHT
+                        dirs.put("E", false);
+                    } else if (bond.slot1.x < bond.slot2.x) { //LEFT
+                        dirs.put("W", false);
+                    }
+                }
+            }
+        }
+        return dirs;
     }
 }

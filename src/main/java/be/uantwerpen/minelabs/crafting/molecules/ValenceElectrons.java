@@ -5,11 +5,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ValenceElectrons {
     private final Map<String, Boolean> bondDirections;
+    private List<Integer> bonds;
     private final int totalElectronCount;
     private int electronCount;
     private Map<String, Integer> directionalValence = Map.of(
@@ -18,6 +19,7 @@ public class ValenceElectrons {
             "S", 0,
             "W", 0
     );
+
     public ValenceElectrons(Map<String, Boolean> bondDirections, int valenceE){
         this.bondDirections = bondDirections;
         this.totalElectronCount = valenceE;
@@ -26,9 +28,10 @@ public class ValenceElectrons {
     }
 
     private void addElectrons(){
+        //todo infinite loop!
         //inverse bonddir & voorkeur N-E-S-W
         // int: in  elke richting 0,1,2
-        while (electronCount>0){
+        // while (electronCount>0){
             for(String key: directionalValence.keySet()){
                 if(electronCount==0){break;}
                 if(!bondDirections.get(key)){
@@ -36,7 +39,7 @@ public class ValenceElectrons {
                     electronCount -=1;
                 }
             }
-        }
+        //}
     }
 
     private void addEDir(String direction){

@@ -2,11 +2,10 @@ package be.uantwerpen.minelabs.gui.lewis_gui;
 
 
 import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.crafting.molecules.BondManager;
-import be.uantwerpen.minelabs.crafting.molecules.MoleculeGraph;
-import be.uantwerpen.minelabs.crafting.molecules.ValenceElectrons;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
+import be.uantwerpen.minelabs.crafting.molecules.BondManager;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;
+import be.uantwerpen.minelabs.crafting.molecules.ValenceElectrons;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
@@ -78,20 +77,23 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
          * Draw Bonds on screen
          */
         LewisCraftingGrid grid = handler.getLewisCraftingGrid();
+        BondManager manager = new BondManager();
         if (grid.getPartialMolecule().getStructure() instanceof MoleculeItemGraph graph){
             for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
                 Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
                 Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
                 BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
+                manager.addBond(bond);
                 this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
                 //TODO hier bijhouden per slot welke richtingen een bond hebben
                 // bondDirections.put(direction, true);
             }
             for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
                 Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
-                ValenceElectrons valentieE = new ValenceElectrons(bondDirections, vertex.data.getInitialValenceElectrons()- vertex.getEdgesData().stream().map(bond -> bond.bondOrder).mapToInt(Integer::intValue).sum()); //no clue: copied it from getOpenConnections in the MoleculeGraph class
-                for(String i: Arrays.asList("N", "E", "S", "W")) { //render item 4x: N-E-S-W
-                    this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(i), slot.x, slot.y);
+                ValenceElectrons valentieE = new ValenceElectrons(manager.findEmptyBonds(slot),
+                        vertex.data.getInitialValenceElectrons() - vertex.getEdgesData().stream().map(bond -> bond.bondOrder).mapToInt(Integer::intValue).sum()); //no clue: copied it from getOpenConnections in the MoleculeGraph class
+                for (String i : Arrays.asList("N", "E", "S", "W")) { //render item 4x: N-E-S-W
+                    this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(i), slot.x + x, slot.y + y);
                 }
             }
         }
