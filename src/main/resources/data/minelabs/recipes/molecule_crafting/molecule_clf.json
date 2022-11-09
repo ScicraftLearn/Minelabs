@@ -1,0 +1,17 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Cl1", "atom":  "Cl"},
+      {"key":  "F1", "atom":  "F"}
+    ],
+    "bonds": [
+      {"from": "Cl1", "to": "F1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_clf"
+  },
+  "density": 8
+}
