@@ -96,7 +96,8 @@ public class BondManager {
 
     public Bond getBond(Slot slot1, Slot slot2) {
         for (Bond bond : bonds) {
-            if (bond.slot1 == slot1 && bond.slot2 == slot2) {
+            if (bond.slot1 == slot1 && bond.slot2 == slot2
+                    || bond.slot1 == slot2 && bond.slot2 == slot2) {
                 return bond;
             }
         }
@@ -143,5 +144,12 @@ public class BondManager {
             }
         }
         return dirs;
+    }
+
+    public Bond getOrCreateBond(Slot slot1, Slot slot2, int bondOrder) {
+        if (getBond(slot1, slot2) == null) {
+            this.addBond(new Bond(slot1, slot2, bondOrder));
+        }
+        return getBond(slot1, slot2);
     }
 }

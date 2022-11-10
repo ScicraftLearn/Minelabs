@@ -12,10 +12,6 @@ import java.util.Map;
 public class ValenceElectrons {
     private final int totalElectronCount;
 
-    public Integer getDirectionalValence(String direction) {
-        return directionalValence.get(direction);
-    }
-
     private Map<String, Integer> directionalValence;
 
     public ValenceElectrons(Map<String, Boolean> bondDirections, int valenceE) {
@@ -59,6 +55,10 @@ public class ValenceElectrons {
         nbt.putInt(direction, directionalValence.get(direction));
 
         return stack;
+    }
+
+    public Integer getDirectionalValence(String direction) {
+        return directionalValence.get(direction);
     }
 }
 
