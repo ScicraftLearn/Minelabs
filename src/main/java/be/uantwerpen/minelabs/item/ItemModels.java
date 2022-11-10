@@ -79,23 +79,14 @@ public class ItemModels {
                 (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("MinelabsBondDirection") ? 1.0F : 0.0F);
     }
     private static void registerValence(Item item) {
-        ModelPredicateProviderRegistry.register(item, new Identifier("n"), new UnclampedModelPredicateProvider() {
-            @Override
-            public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
-                return (stack.getOrCreateNbt().getInt("n"));
-            }
-            @Override
-            public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
-                return unclampedCall(stack, world, entity, seed);
-            }
-        }
-        );
-        ModelPredicateProviderRegistry.register(item, new Identifier("eeeeeast"),
+        ModelPredicateProviderRegistry.register(item, new Identifier("n"),
+                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("n"))/2f );
+        ModelPredicateProviderRegistry.register(item, new Identifier("e"),
                 (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("e"))/2f );
         ModelPredicateProviderRegistry.register(item, new Identifier("s"),
-                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("s"))/10f);
+                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("s"))/2f );
         ModelPredicateProviderRegistry.register(item, new Identifier("w"),
-                (stack, world, entity, seed) -> stack.getOrCreateNbt().getInt("w") );
+                (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("w"))/2f );
     }
     /**
      * Main class method<br>
