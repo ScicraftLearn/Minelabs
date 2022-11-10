@@ -1,0 +1,17 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Al1", "atom":  "Al"},
+      {"key":  "N1", "atom":  "N"}
+    ],
+    "bonds": [
+      {"from": "Al1", "to": "N1", "bondOrder": 3}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_aln"
+  },
+  "density": 8
+}

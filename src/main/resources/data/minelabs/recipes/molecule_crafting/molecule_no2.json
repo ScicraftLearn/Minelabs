@@ -1,0 +1,19 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "N1", "atom":  "N"},
+      {"key":  "O1", "atom":  "O"},
+      {"key":  "O2", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "N1", "to": "O1", "bondOrder": 1},
+      {"from": "N1", "to": "O2", "bondOrder": 2}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_no2"
+  },
+  "density": 8
+}

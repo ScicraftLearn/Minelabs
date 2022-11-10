@@ -1,0 +1,21 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "S1", "atom":  "S"},
+      {"key":  "O1", "atom":  "O"},
+      {"key":  "O2", "atom":  "O"},
+      {"key":  "O3", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "O1", "to": "S1", "bondOrder": 2},
+      {"from": "O2", "to": "S1", "bondOrder": 2}
+      {"from": "O3", "to": "S1", "bondOrder": 2}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_so3"
+  },
+  "density": 8
+}

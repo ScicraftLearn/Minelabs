@@ -2,9 +2,10 @@ package be.uantwerpen.minelabs.item;
 
 import net.minecraft.item.Item;
 
-public class FireReactionItem extends Item implements IFireReaction {
+public class FireReactionItem extends Item implements IFireReaction, MoleculeItem {
 
     private final int FIRE_COLOR;
+    private final String molecule;
 
     /**
      * @param settings   : Item settings
@@ -20,12 +21,18 @@ public class FireReactionItem extends Item implements IFireReaction {
      *                   9 : Purple,
      *                   10: White,
      */
-    public FireReactionItem(Settings settings, int fire_color) {
+    public FireReactionItem(Settings settings, int fire_color, String molecule) {
         super(settings);
-        FIRE_COLOR = fire_color;
+        this.FIRE_COLOR = fire_color;
+        this.molecule = molecule;
     }
 
     public int getFireColor() {
         return FIRE_COLOR;
+    }
+
+    @Override
+    public String getMolecule() {
+        return this.molecule;
     }
 }
