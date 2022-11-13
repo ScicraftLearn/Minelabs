@@ -34,7 +34,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	private boolean shakeSwitch = true; // (shaking of atom)
 	private int switchCounter = 0; // (shaking of atom) used to know when to 'shake'
-	int switchCounterModulo = 10; // (shaking of atom) determines how fast the particles move back and forth (minimum 5)
+	int switchCounterModulo = 5; // (shaking of atom) determines how fast the particles move back and forth (minimum 5)
 
 	int implodeCounter = 0; // till 20
 	boolean isImploding = false;
@@ -64,7 +64,6 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			icosahedron.add(punt1);
 		}
 	}
-
 
     private final Context context;
 
@@ -268,11 +267,15 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			}
 
 			matrices.scale(5, 5, 5);
-			matrices.translate(-offset_x, -offset_y-shake, -offset_z);
+			matrices.translate(-offset_x, -offset_y - shake, -offset_z);
 
 			particlesCounter++;
 		}
+		if (switchCounter >= 100) {
+			switchCounter = 0;
+		}
 		switchCounter++;
+
 //		if (isImploding) {
 //			implodeCounter++;
 //		}
@@ -389,7 +392,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			shakeMultiplier = 0.04f; // we set it to the hardest shaking
 		}
 		if (!isStable) {
-			if (switchCounter % switchCounterModulo != 0) {
+			if (switchCounter % switchCounterModulo == 0) {
 				shake = 0.01f + (float) Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
 			}
 		}

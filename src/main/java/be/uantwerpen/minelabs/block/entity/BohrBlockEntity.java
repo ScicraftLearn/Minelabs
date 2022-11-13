@@ -139,7 +139,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      * @param world    the world of the starting block
      * @return a list of other bohr block belonging to the same bohr plate
      */
-    @Nullable
     public static List<BlockPos> getBohrParts(BlockState state, BlockPos blockPos, World world) {
         BohrPart part = state.get(MinelabsProperties.BOHR_PART);
         Direction direction = state.get(Properties.HORIZONTAL_FACING);
@@ -168,8 +167,10 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
                         blockPos.offset(direction.rotateYCounterclockwise()).offset(direction), // BASE
                         blockPos.offset(direction.rotateYCounterclockwise())); // BACK
             }
+            default -> {
+                return new ArrayList<>();
+            }
         }
-        return null;
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, BohrBlockEntity entity) {
@@ -194,8 +195,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             entity.timer = Math.max(0, entity.timer - 1);
         }
         if (entity.timer == 0) {
-            //NbtCompound nbtCompound = entity.createNbt();
-            //entity.writeNbt(nbtCompound);
+            NbtCompound nbtCompound = entity.createNbt();
+            entity.writeNbt(nbtCompound);
             entity.scatterParticles(3);
             entity.timer = MAX_TIMER;
             markDirty(world, pos, state);
