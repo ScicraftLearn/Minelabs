@@ -2,7 +2,7 @@ package be.uantwerpen.minelabs.renderer;
 
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.entity.MologramBlockEntity;
-import be.uantwerpen.minelabs.item.MoleculeItem;
+import be.uantwerpen.minelabs.item.IMoleculeItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -49,7 +49,7 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
 
         // Render molecule above
         BakedModel model;
-        if (stack.getItem() instanceof MoleculeItem molecule) {
+        if (stack.getItem() instanceof IMoleculeItem molecule) {
             model = MinecraftClient.getInstance().getBakedModelManager().models.get(
                     new Identifier(Minelabs.MOD_ID, "molecules/" + molecule.getMolecule().toLowerCase()));
         } else {
