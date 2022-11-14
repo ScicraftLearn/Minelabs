@@ -170,6 +170,9 @@ public class Items {
     public static final Item DUST_SIC = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), "sic"), "silicon_carbide_dust");
 
+    public static final Item DUST_ALN = register(new MoleculeItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.CHEMICALS), "aln"), "aluminium_nitride_dust");
+
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
     public static Item HELIUM_ATOM;
