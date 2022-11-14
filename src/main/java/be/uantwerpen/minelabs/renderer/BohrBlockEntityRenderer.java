@@ -184,12 +184,14 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		float scaleOffset = 0f;
 		int dec_index = 0; // variable to stay inside the list indexes of the icosahedron points.
 
-		if (shakeSwitch) {
-			shakeSwitch = false;
-			shake = -shake;
-		}
-		else {
-			shakeSwitch = true;
+		if (!NuclidesTable.isStable(protonCount, neutronCount, electronCount)) {
+			if (shakeSwitch) {
+				shakeSwitch = false;
+				shake = -shake;
+			} else {
+				shakeSwitch = true;
+			}
+			switchCounter++;
 		}
 
 //		if (!isImploding) {
@@ -275,6 +277,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			switchCounter = 0;
 		}
 		switchCounter++;
+
 
 //		if (isImploding) {
 //			implodeCounter++;
@@ -395,6 +398,8 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			if (switchCounter % switchCounterModulo == 0) {
 				shake = 0.01f + (float) Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
 			}
+		} else {
+			switchCounter = 0;
 		}
 		return shake;
 	}
