@@ -117,7 +117,7 @@ public class Items {
             .maxCount(64).group(ItemGroups.CHEMICALS), 2, "SrCl2"), "strontium_chloride_dust");
 
     public static final Item STRONTIUM_NITRATE_DUST = register(new FireReactionItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), 2, "srn2o6"), "strontium_nitrate_dust"); // Sr(NO3)2
+            .maxCount(64).group(ItemGroups.CHEMICALS), 2, "SrN2O6"), "strontium_nitrate_dust"); // Sr(NO3)2
 
     public static final Item CALCIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), 3, "CaCl2"), "calcium_chloride_dust");
@@ -162,16 +162,16 @@ public class Items {
             .maxCount(64).group(ItemGroups.CHEMICALS), "AlCl3"), "aluminium_trichloride_dust");
 
     public static final Item DUST_BN = register(new MoleculeItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), "bn"), "boron_nitride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), "BN"), "boron_nitride_dust");
 
     public static final Item DUST_BEO = register(new MoleculeItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), "beo"), "beryllium_oxide_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), "BeO"), "beryllium_oxide_dust");
 
     public static final Item DUST_SIC = register(new MoleculeItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), "sic"), "silicon_carbide_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), "SiC"), "silicon_carbide_dust");
 
     public static final Item DUST_ALN = register(new MoleculeItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), "aln"), "aluminium_nitride_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), "AlN"), "aluminium_nitride_dust");
 
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
@@ -331,6 +331,8 @@ public class Items {
             Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HNO3"), "erlenmeyer_hno3");
     public static final Item ERLENMEYER_H2O = register(new ErlenmeyerItem(
             net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "H2O"), "erlenmeyer_h2o");
+    public static final Item ERLENMEYER_NCL3 = register(new ErlenmeyerItem(
+            net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "NCl3"), "erlenmeyer_ncl3");
 
     static {
         // Items > Atoms
