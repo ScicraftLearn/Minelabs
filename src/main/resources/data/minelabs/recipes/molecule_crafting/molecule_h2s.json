@@ -1,0 +1,19 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "H2", "atom":  "H"},
+      {"key":  "S1", "atom":  "S"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "S1", "bondOrder": 1},
+      {"from": "H2", "to": "S1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:h2s"
+  },
+  "density": 8
+}

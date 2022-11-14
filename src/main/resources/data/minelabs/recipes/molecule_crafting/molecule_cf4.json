@@ -1,0 +1,23 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C"},
+      {"key":  "F1", "atom":  "F"},
+      {"key":  "F2", "atom":  "F"},
+      {"key":  "F3", "atom":  "F"},
+      {"key":  "F4", "atom":  "F"}
+    ],
+    "bonds": [
+      {"from": "F1", "to": "C1", "bondOrder": 1},
+      {"from": "F2", "to": "C1", "bondOrder": 1},
+      {"from": "F3", "to": "C1", "bondOrder": 1},
+      {"from": "F4", "to": "C1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_cf4"
+  },
+  "density": 8
+}

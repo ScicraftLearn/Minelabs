@@ -1,0 +1,17 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Be1", "atom":  "Be"},
+      {"key":  "O1", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "O1", "to": "Be1", "bondOrder": 2}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_beo"
+  },
+  "density": 8
+}

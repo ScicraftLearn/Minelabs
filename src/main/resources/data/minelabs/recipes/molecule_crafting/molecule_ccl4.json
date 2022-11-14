@@ -1,0 +1,25 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C"},
+      {"key":  "Cl1", "atom":  "Cl"},
+      {"key":  "Cl2", "atom":  "Cl"},
+      {"key":  "Cl3", "atom":  "Cl"},
+      {"key":  "Cl4", "atom":  "Cl"}
+
+    ],
+    "bonds": [
+      {"from": "Cl1", "to": "C1", "bondOrder": 1},
+      {"from": "Cl2", "to": "C1", "bondOrder": 1},
+      {"from": "Cl3", "to": "C1", "bondOrder": 1},
+      {"from": "Cl4", "to": "C1", "bondOrder": 1}
+
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_ccl4"
+  },
+  "density": 8
+}

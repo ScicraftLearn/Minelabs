@@ -1,0 +1,24 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Si1", "atom":  "Si"},
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "H2", "atom":  "H"},
+      {"key":  "H3", "atom":  "H"},
+      {"key":  "H4", "atom":  "H"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "Si1", "bondOrder": 1},
+      {"from": "H2", "to": "Si1", "bondOrder": 1},
+      {"from": "H3", "to": "Si1", "bondOrder": 1},
+      {"from": "H4", "to": "Si1", "bondOrder": 1}
+
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_sih4"
+  },
+  "density": 8
+}

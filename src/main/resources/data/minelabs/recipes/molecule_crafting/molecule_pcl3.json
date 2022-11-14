@@ -3,19 +3,19 @@
   "structure":
   {
     "atoms": [
-      {"key":  "Al1", "atom":  "Al"},
+      {"key":  "P1", "atom":  "P"},
       {"key":  "Cl1", "atom":  "Cl"},
       {"key":  "Cl2", "atom":  "Cl"},
       {"key":  "Cl3", "atom":  "Cl"}
     ],
     "bonds": [
-      {"from": "Cl1", "to": "Al1", "bondOrder": 1},
-      {"from": "Cl2", "to": "Al1", "bondOrder": 1},
-      {"from": "Cl3", "to": "Al1", "bondOrder": 1}
+      {"from": "Cl1", "to": "P1", "bondOrder": 1},
+      {"from": "Cl2", "to": "P1", "bondOrder": 1},
+      {"from": "Cl3", "to": "P1", "bondOrder": 1}
     ]
   },
   "result": {
-    "item": "minelabs:erlenmeyer_alcl3"
+    "item": "minelabs:erlenmeyer_pcl3"
   },
   "density": 8
 }
