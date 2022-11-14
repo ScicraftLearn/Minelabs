@@ -166,6 +166,10 @@ public class Items {
 
     public static final Item DUST_BEO = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), "beo"), "beryllium_oxide_dust");
+
+    public static final Item DUST_SIC = register(new MoleculeItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.CHEMICALS), "sic"), "silicon_carbide_dust");
+
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
     public static Item HELIUM_ATOM;
