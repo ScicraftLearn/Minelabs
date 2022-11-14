@@ -157,6 +157,9 @@ public class Items {
 
     public static final Item DUST_SIO2 = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), "SiO2"), "silicon_dioxide_dust");
+
+    public static final Item DUST_AlCl3 = register(new MoleculeItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.CHEMICALS), "AlCl3"), "aluminium_trichloride_dust");
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
     public static Item HELIUM_ATOM;
