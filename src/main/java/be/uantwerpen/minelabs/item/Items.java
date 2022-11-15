@@ -173,6 +173,9 @@ public class Items {
     public static final Item DUST_ALN = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), "AlN"), "aluminium_nitride_dust");
 
+    public static final Item DUST_MGO = register(new MoleculeItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.CHEMICALS), "MgO"), "magnesium_oxide_dust");
+
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
     public static Item HELIUM_ATOM;
