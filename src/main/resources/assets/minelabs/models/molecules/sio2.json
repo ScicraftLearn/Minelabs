@@ -11,5 +11,5 @@
       {"from": "O2", "to": "Si1", "bondOrder": 1}
     ]
   },
-  "items": ["minelabs:erlenmeyer_sio2"]
+  "items": ["minelabs:dust_sio2"]
 }

@@ -184,6 +184,10 @@
   "item.minelabs.erlenmeyer_ncl3": "Aluminum Nitride (NCl\u2083)",
   "item.minelabs.magnesium_oxide_dust": "Magnesium Oxide (MgO)",
   "item.minelabs.sulfur_trioxide_dust": "Sulfur Trioxide (SO\u2083)",
+  "item.minelabs.erlenmeyer_cs2" : "Carbon disulfide (CS\u2082)",
+  "item.minelabs.erlenmeyer_ccl4" : "Carbon tetrachloride (CCl\u2084)",
+  "item.minelabs.erlenmeyer_pcl3" : "Phosphorus trichloride (PCl\u2083)",
+  "item.minelabs.erlenmeyer_scl2" : "Sulfur dichloride (PCl\u2082)",
 
   "item.minelabs.lasertool_iron": "Iron Laser Tool",
   "item.minelabs.lasertool_gold": "Gold Laser Tool",

@@ -339,6 +339,14 @@ public class Items {
             net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "H2O"), "erlenmeyer_h2o");
     public static final Item ERLENMEYER_NCL3 = register(new ErlenmeyerItem(
             net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "NCl3"), "erlenmeyer_ncl3");
+    public static final Item ERLENMEYER_CS2 = register(new ErlenmeyerItem(
+            net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CS2"), "erlenmeyer_cs2");
+    public static final Item ERLENMEYER_CCL4 = register(new ErlenmeyerItem(
+            net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CCl4"), "erlenmeyer_ccl4");
+    public static final Item ERLENMEYER_PCl3 = register(new ErlenmeyerItem(
+            net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "PCl3"), "erlenmeyer_pcl3");
+    public static final Item ERLENMEYER_SCl2 = register(new ErlenmeyerItem(
+            net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SCl2"), "erlenmeyer_scl2");
 
     static {
         // Items > Atoms
