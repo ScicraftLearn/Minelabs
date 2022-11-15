@@ -176,6 +176,8 @@ public class Items {
     public static final Item DUST_MGO = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), "MgO"), "magnesium_oxide_dust");
 
+    public static final Item DUST_SO3 = register(new MoleculeItem(new FabricItemSettings()
+            .maxCount(64).group(ItemGroups.CHEMICALS), "SO3"), "sulfur_trioxide_dust");
     // Items > Atoms
     public static Item HYDROGEN_ATOM;
     public static Item HELIUM_ATOM;
