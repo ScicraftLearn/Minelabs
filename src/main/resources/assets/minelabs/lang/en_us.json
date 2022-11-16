@@ -188,6 +188,11 @@
   "item.minelabs.erlenmeyer_ccl4" : "Carbon Tetrachloride (CCl\u2084)",
   "item.minelabs.erlenmeyer_pcl3" : "Phosphorus Trichloride (PCl\u2083)",
   "item.minelabs.erlenmeyer_scl2" : "Sulfur Dichloride (SCl\u2082)",
+  "item.minelabs.erlenmeyer_hcn" : "Hydrogen Cyanide (HCN)",
+  "item.minelabs.erlenmeyer_ch4o" : "Methanol (CH\u2084O)",
+  "item.minelabs.erlenmeyer_methanethiol" : "Methanethiol (CH\u2084S)",
+  "item.minelabs.erlenmeyer_formaldehyde" : "Formaldehyde (CH\u2082O)",
+  "item.minelabs.erlenmeyer_carbonic_acid" : "Carbonic acid (H\u2082CO\u2083)",
 
   "item.minelabs.lasertool_iron": "Iron Laser Tool",
   "item.minelabs.lasertool_gold": "Gold Laser Tool",

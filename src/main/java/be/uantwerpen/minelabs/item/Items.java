@@ -305,6 +305,9 @@ public class Items {
     public static final Item ERLENMEYER_Ne = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "Ne"), "erlenmeyer_ne");
     public static final Item ERLENMEYER_Ar = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "Ar"), "erlenmeyer_ar");
     public static final Item ERLENMEYER_CL2O = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "Cl2O"), "erlenmeyer_cl2o");
+    public static final Item ERLENMEYER_CH4S = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), "CH4S"), "erlenmeyer_methanethiol");
+    public static final Item ERLENMEYER_CH2O = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), "CH2O"), "erlenmeyer_formaldehyde");
+    public static final Item ERLENMEYER_H2CO3 = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), "H2CO3"), "erlenmeyer_carbonic_acid");
 
     /*
         public static final Item ERLENMEYER_O2 = register(new GasPotion(
@@ -347,6 +350,13 @@ public class Items {
             net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "PCl3"), "erlenmeyer_pcl3");
     public static final Item ERLENMEYER_SCl2 = register(new ErlenmeyerItem(
             net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SCl2"), "erlenmeyer_scl2");
+
+    public static final Item ERLENMEYER_HCN = register(new ErlenmeyerItem(
+            net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HCN"), "erlenmeyer_hcn");
+
+    public static final Item ERLENMEYER_CH4O = register(new ErlenmeyerItem(
+            net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CH4O"), "erlenmeyer_ch4o");
+
 
     static {
         // Items > Atoms

@@ -137,6 +137,9 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_Ne, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_Ar, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CL2O,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2CO3,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH4S,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH2O,0xAFAFAF, 0);
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);
         registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 0);
@@ -145,6 +148,8 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_CCL4, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_PCl3, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_SCl2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_HCN, 0xCCCCFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH4O, 0xAFAFAF, 0);
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
 
         //Lewis Data Sync
