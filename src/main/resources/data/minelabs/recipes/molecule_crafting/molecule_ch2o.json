@@ -6,9 +6,7 @@
       {"key":  "C1", "atom":  "C"},
       {"key":  "H1", "atom":  "H"},
       {"key":  "H2", "atom":  "H"},
-      {"key":  "H3", "atom":  "H"},
-      {"key":  "H4", "atom":  "H"},
-      {"key":  "S1", "atom":  "S"}
+      {"key":  "O1", "atom":  "O"},
     ],
     "bonds": [
       {"from": "H1", "to": "C1", "bondOrder": 1},
