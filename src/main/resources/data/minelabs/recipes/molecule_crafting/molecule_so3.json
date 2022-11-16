@@ -10,7 +10,7 @@
     ],
     "bonds": [
       {"from": "O1", "to": "S1", "bondOrder": 2},
-      {"from": "O2", "to": "S1", "bondOrder": 2}
+      {"from": "O2", "to": "S1", "bondOrder": 2},
       {"from": "O3", "to": "S1", "bondOrder": 2}
     ]
   },
