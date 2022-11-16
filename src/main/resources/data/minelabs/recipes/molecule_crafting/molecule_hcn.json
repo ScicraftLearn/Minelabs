@@ -4,7 +4,7 @@
   {
     "atoms": [
       {"key":  "H1", "atom":  "H"},
-      {"key":  "C1", "atom":  "c"},
+      {"key":  "C1", "atom":  "C"},
       {"key":  "N1", "atom":  "N"}
     ],
     "bonds": [
