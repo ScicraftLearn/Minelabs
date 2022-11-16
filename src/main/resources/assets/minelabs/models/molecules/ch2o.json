@@ -1,0 +1,17 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C", "position": [17.00, 28.81, 0.00]},
+      {"key":  "H1", "atom":  "H", "position": [16.06, 28.22, 0.00]},
+      {"key":  "H2", "atom":  "H", "position": [17.93, 28.22, 0.00]},
+      {"key":  "O1", "atom":  "O", "position": [17.00, 30.02, 0.00]}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "C1", "bondOrder": 1},
+      {"from": "H2", "to": "C1", "bondOrder": 1},
+      {"from": "O1", "to": "C1", "bondOrder": 2}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_ch2o"]
+}
