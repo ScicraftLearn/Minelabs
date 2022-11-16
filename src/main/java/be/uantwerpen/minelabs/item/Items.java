@@ -153,7 +153,7 @@ public class Items {
             .maxCount(64).group(ItemGroups.CHEMICALS)), "ash_dust");
 
     public static final Item DUST_ALH3 = register(new MoleculeItem(new FabricItemSettings()
-            .maxCount(64).group(ItemGroups.CHEMICALS), "AlH3"), "aluminium_hydroxide_dust");
+            .maxCount(64).group(ItemGroups.CHEMICALS), "AlH3"), "aluminium_hydride_dust");
 
     public static final Item DUST_SIO2 = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), "SiO2"), "silicon_dioxide_dust");

@@ -174,7 +174,7 @@
   "item.minelabs.potassium_chloride_dust": "Potassium Chloride Dust",
   "item.minelabs.magnesium_sulfate_dust": "Magnesium Sulfate Dust",
   "item.minelabs.ash_dust": "Ash Dust",
-  "item.minelabs.aluminium_hydroxide_dust": "Aluminium Hydroxide (AlH\u2083)",
+  "item.minelabs.aluminium_hydride_dust": "Aluminium Hydride (AlH\u2083)",
   "item.minelabs.silicon_dioxide_dust": "Silicon Dioxide (SiO\u2082)",
   "item.minelabs.aluminium_trichloride_dust": "Aluminium Trichloride (AlCl\u2083)",
   "item.minelabs.boron_nitride_dust": "Boron nitride (BN)",
@@ -187,7 +187,7 @@
   "item.minelabs.erlenmeyer_cs2" : "Carbon disulfide (CS\u2082)",
   "item.minelabs.erlenmeyer_ccl4" : "Carbon tetrachloride (CCl\u2084)",
   "item.minelabs.erlenmeyer_pcl3" : "Phosphorus trichloride (PCl\u2083)",
-  "item.minelabs.erlenmeyer_scl2" : "Sulfur dichloride (PCl\u2082)",
+  "item.minelabs.erlenmeyer_scl2" : "Sulfur dichloride (SCl\u2082)",
 
   "item.minelabs.lasertool_iron": "Iron Laser Tool",
   "item.minelabs.lasertool_gold": "Gold Laser Tool",
