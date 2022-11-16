@@ -9,5 +9,5 @@
       {"from": "Si1", "to": "C1", "bondOrder": 3}
     ]
   },
-  "items": ["minelabs:erlenmeyer_SiC"]
+  "items": ["minelabs:erlenmeyer_sic"]
 }
