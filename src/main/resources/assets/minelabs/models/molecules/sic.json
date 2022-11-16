@@ -1,0 +1,13 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Si1", "atom":  "Si", "position": [ -0.50,  0.00, 0.00]},
+      {"key":  "C1", "atom":  "C", "position": [ 0.50,  0.00,  0.00]}
+    ],
+    "bonds": [
+      {"from": "Si", "to": "C1", "bondOrder": 3}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_SiC"]
+}
