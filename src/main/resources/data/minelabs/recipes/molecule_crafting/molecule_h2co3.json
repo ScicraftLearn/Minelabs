@@ -6,15 +6,15 @@
       {"key":  "C1", "atom":  "C"},
       {"key":  "H1", "atom":  "H"},
       {"key":  "H2", "atom":  "H"},
-      {"key":  "H3", "atom":  "H"},
-      {"key":  "H4", "atom":  "H"},
-      {"key":  "S1", "atom":  "S"}
+      {"key":  "O1", "atom":  "O"},
+      {"key":  "O2", "atom":  "O"},
+      {"key":  "O3", "atom":  "O"}
     ],
     "bonds": [
       {"from": "O1", "to": "C1", "bondOrder": 1},
-      {"from": "O2", "to": "O1", "bondOrder": 1},
+      {"from": "O2", "to": "C1", "bondOrder": 1},
       {"from": "O3", "to": "C1", "bondOrder": 2},
-      {"from": "H1", "to": "C1", "bondOrder": 1},
+      {"from": "H1", "to": "O1", "bondOrder": 1},
       {"from": "O2", "to": "H2", "bondOrder": 1}      
     ]
   },
