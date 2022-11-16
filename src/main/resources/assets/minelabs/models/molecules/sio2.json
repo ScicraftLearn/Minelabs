@@ -7,8 +7,8 @@
       {"key": "O2", "atom": "O", "position": [ 0.00, 0.00, -1.57]}
     ],
     "bonds": [
-      {"from": "O1", "to": "Si1", "bondOrder": 1},
-      {"from": "O2", "to": "Si1", "bondOrder": 1}
+      {"from": "O1", "to": "Si1", "bondOrder": 2},
+      {"from": "O2", "to": "Si1", "bondOrder": 2}
     ]
   },
   "items": ["minelabs:dust_sio2"]

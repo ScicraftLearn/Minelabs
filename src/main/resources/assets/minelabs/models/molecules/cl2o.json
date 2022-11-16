@@ -2,13 +2,13 @@
   "structure": {
     "atoms": [
       {
-        "key": "O1",
-        "atom": "O",
+        "key": "Cl1",
+        "atom": "Cl",
         "position": [1.72, 0.51, 0.00]
       },
       {
-        "key": "Cl1",
-        "atom": "Cl",
+        "key": "O1",
+        "atom": "O",
         "position": [0.86, 0.00, 0.00]
       },
       {
