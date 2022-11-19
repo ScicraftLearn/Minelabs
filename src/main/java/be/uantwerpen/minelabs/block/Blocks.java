@@ -116,8 +116,8 @@ public class Blocks {
     public static final Block PCl3 = register(new FluidBlock(Fluids.STILL_PCl3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "pcl3");
     public static final Block SCl2 = register(new FluidBlock(Fluids.STILL_SCl2, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "scl2");
     public static final Block NCl3 = register(new FluidBlock(Fluids.STILL_NCl3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ncl3");
-    public static final Block HCN = register(new FluidBlock(Fluids.STILL_HCN, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ncl3");
-    public static final Block CH4O = register(new FluidBlock(Fluids.STILL_CH4O, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ncl3");
+    public static final Block HCN = register(new FluidBlock(Fluids.STILL_HCN, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "hcn");
+    public static final Block CH4O = register(new FluidBlock(Fluids.STILL_CH4O, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ch4o");
 
     public static final Block BOHR_BLOCK = register(new BohrBlock(), "bohr_block");
 
