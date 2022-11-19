@@ -29,7 +29,7 @@ public abstract class HCNFluid extends AbstractFluid {
         return Blocks.HCN.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
     }
 
-    public static class Flowing extends CCl4Fluid {
+    public static class Flowing extends HCNFluid {
         @Override
         protected void appendProperties(net.minecraft.state.StateManager.Builder<Fluid, FluidState> builder) {
             super.appendProperties(builder);
@@ -47,7 +47,7 @@ public abstract class HCNFluid extends AbstractFluid {
         }
     }
 
-    public static class Still extends PCl3Fluid {
+    public static class Still extends HCNFluid {
         @Override
         public int getLevel(FluidState fluidState) {
             return 2;

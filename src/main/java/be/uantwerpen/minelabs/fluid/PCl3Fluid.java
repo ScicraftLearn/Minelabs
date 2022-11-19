@@ -29,7 +29,7 @@ public abstract class PCl3Fluid extends AbstractFluid {
         return Blocks.PCl3.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
     }
 
-    public static class Flowing extends CCl4Fluid {
+    public static class Flowing extends PCl3Fluid {
         @Override
         protected void appendProperties(net.minecraft.state.StateManager.Builder<Fluid, FluidState> builder) {
             super.appendProperties(builder);
