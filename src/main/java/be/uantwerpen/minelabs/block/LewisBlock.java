@@ -139,6 +139,6 @@ public class LewisBlock extends BlockWithEntity implements Waterloggable {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.LEWIS_BLOCK_ENTITY, world.isClient? null : LewisBlockEntity::tick); //Only tick server, the result will be synced in this case
+        return checkType(type, BlockEntities.LEWIS_BLOCK_ENTITY, world.isClient ? null : LewisBlockEntity::tick); //Only tick server, the result will be synced in this case
     }
 }

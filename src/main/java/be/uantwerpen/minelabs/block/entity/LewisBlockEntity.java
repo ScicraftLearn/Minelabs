@@ -48,6 +48,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private final RecipeManager.MatchGetter<LewisCraftingGrid, MoleculeRecipe> matchGetter;
     //Progress of the recipe; -1 means not started; Synced by propertyDelegate
     public int progress = -1;
+    public int maxProgress = 23;
     //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int density;
     //Current recipe selected; NOT synced
@@ -64,7 +65,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             public int get(int index) {
                 return switch (index) {
                     case 0 -> LewisBlockEntity.this.progress; //progress of the recipe
-                    case 1 -> LewisBlockEntity.this.density; //Density (amount) of items needed for the recipe
+                    case 1 -> LewisBlockEntity.this.maxProgress;
+                    case 2 -> LewisBlockEntity.this.density; //Density (amount) of items needed for the recipe
                     default -> 0;
                 };
             }
@@ -73,13 +75,14 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             public void set(int index, int value) {
                 switch (index) {
                     case 0 -> LewisBlockEntity.this.progress = value;
-                    case 1 -> LewisBlockEntity.this.density = value;
+                    case 1 -> LewisBlockEntity.this.maxProgress = value;
+                    case 2 -> LewisBlockEntity.this.density = value;
                 }
             }
 
             @Override
             public int size() {
-                return 2;
+                return 3;
             }
         };
     }
@@ -168,25 +171,32 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             if (lewis.progress >= 23) { //Done crafting
                 if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
                     lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput());
-                }
-                else {
+                } else {
+                    lewis.ioInventory.getStack(10);
+
                     lewis.ioInventory.getStack(10).increment(1);
                 }
                 lewis.ioInventory.getStack(9).decrement(1);
                 for (int i = 0; i < lewis.ingredients.size(); i++) {
                     lewis.ioInventory.getStack(i).decrement(lewis.density);
                 }
-                lewis.resetRecipe();
+                lewis.resetProgress();
+                //lewis.resetRecipe();
             }
         }
         lewis.markDirty();
+    }
+
+    private void resetProgress() {
+        progress = 0;
+        markDirty();
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
         return craftingGrid;
     }
 
-    public Inventory getIoInventory(){
+    public Inventory getIoInventory() {
         return ioInventory;
 
     }
