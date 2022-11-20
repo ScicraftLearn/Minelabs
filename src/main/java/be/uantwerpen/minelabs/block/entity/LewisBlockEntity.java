@@ -54,7 +54,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     //Current recipe selected; NOT synced
     private MoleculeRecipe currentRecipe;
 
-
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.LEWIS_BLOCK_ENTITY, pos, state);
         this.matchGetter = RecipeManager.createCachedMatchGetter(CraftingRecipes.MOLECULE_CRAFTING);
@@ -87,7 +86,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         };
     }
 
-
     //These Methods are from the NamedScreenHandlerFactory Interface
     //createMenu creates the ScreenHandler itself
     //getDisplayName will Provide its name which is normally shown at the top
@@ -110,7 +108,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.craftingGrid.readNbtList(nbt.getList("grid", NbtElement.COMPOUND_TYPE));
         this.ioInventory.readNbtList(nbt.getList("io_inv", NbtElement.COMPOUND_TYPE));
         this.density = nbt.getInt("dens");
-
     }
 
     @Override
@@ -172,8 +169,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
                     lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput());
                 } else {
-                    lewis.ioInventory.getStack(10);
-
                     lewis.ioInventory.getStack(10).increment(1);
                 }
                 lewis.ioInventory.getStack(9).decrement(1);
@@ -181,14 +176,13 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                     lewis.ioInventory.getStack(i).decrement(lewis.density);
                 }
                 lewis.resetProgress();
-                //lewis.resetRecipe();
             }
         }
         lewis.markDirty();
     }
 
     private void resetProgress() {
-        progress = 0;
+        progress = -1;
         markDirty();
     }
 
@@ -198,7 +192,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     public Inventory getIoInventory() {
         return ioInventory;
-
     }
 
     /**
