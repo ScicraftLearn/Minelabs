@@ -154,10 +154,15 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_HCN, 0xCCCCFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CH4O, 0xAFAFAF, 0);
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
-        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_ACID, Fluids.FLOWING_ACID, new SimpleFluidRenderHandler(
+        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_HNO3, Fluids.FLOWING_HNO3, new SimpleFluidRenderHandler(
                 new Identifier("minecraft:block/water_still"),
                 new Identifier("minecraft:block/water_flow"),
                 0xA1FFCC33 // ARGB (alpha / R / G /B)
+        ));
+        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_H2O, Fluids.FLOWING_H2O, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                0xA10084FF // ARGB (alpha / R / G /B)
         ));
         FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, new SimpleFluidRenderHandler(
                 new Identifier("minecraft:block/water_still"),
@@ -169,7 +174,8 @@ public class MinelabsClient implements ClientModInitializer {
                 new Identifier("minecraft:block/water_flow"),
                 0xA1CCCCFF));
         BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(),
-                Fluids.FLOWING_ACID, Fluids.STILL_ACID,
+                Fluids.STILL_HNO3, Fluids.FLOWING_HNO3,
+                Fluids.STILL_H2O, Fluids.FLOWING_H2O,
                 Fluids.STILL_HCN, Fluids.FLOWING_HCN,
                 Fluids.STILL_NCl3, Fluids.FLOWING_NCl3);
         //Lewis Data Sync

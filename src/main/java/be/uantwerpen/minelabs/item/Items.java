@@ -337,9 +337,9 @@ public class Items {
 
     */
     public static final Item ERLENMEYER_HNO3 = register(new ErlenmeyerItem(
-            Fluids.STILL_ACID, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HNO3"), "erlenmeyer_hno3");
+            Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HNO3"), "erlenmeyer_hno3");
     public static final Item ERLENMEYER_H2O = register(new ErlenmeyerItem(
-            net.minecraft.fluid.Fluids.WATER, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "H2O"), "erlenmeyer_h2o");
+            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "H2O"), "erlenmeyer_h2o");
     public static final Item ERLENMEYER_NCL3 = register(new ErlenmeyerItem(
             Fluids.STILL_NCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "NCl3"), "erlenmeyer_ncl3");
     public static final Item ERLENMEYER_CS2 = register(new ErlenmeyerItem(

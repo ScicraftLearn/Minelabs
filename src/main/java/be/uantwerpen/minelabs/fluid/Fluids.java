@@ -9,8 +9,10 @@ public class Fluids {
 
     // Fluids
     // TODO - https://fabricmc.net/wiki/tutorial:fluids
-    public static final FlowableFluid STILL_ACID = register(new AcidFluid.Still(), "acid");
-    public static final FlowableFluid FLOWING_ACID = register(new AcidFluid.Flowing(), "flowing_acid");
+    public static final FlowableFluid STILL_HNO3 = register(new HNO3Fluid.Still(), "hno3");
+    public static final FlowableFluid FLOWING_HNO3 = register(new HNO3Fluid.Flowing(), "flowing_hno3");
+    public static final FlowableFluid STILL_H2O = register(new H2OFluid.Still(), "h2o");
+    public static final FlowableFluid FLOWING_H2O = register(new H2OFluid.Flowing(), "flowing_h2o");
 
     public static final FlowableFluid STILL_CS2 = register(new CS2Fluid.Still(), "cs2");
     public static final FlowableFluid FLOWING_CS2 = register(new CS2Fluid.Flowing(), "flowing_cs2");

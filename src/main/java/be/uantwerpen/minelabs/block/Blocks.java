@@ -110,7 +110,8 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "lewis_block");
     public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
-    public static final Block ACID = register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
+    public static final Block HNO3 = register(new FluidBlock(Fluids.STILL_HNO3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "hno3");
+    public static final Block H2O = register(new FluidBlock(Fluids.STILL_H2O, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "h2o");
     public static final Block CS2 = register(new FluidBlock(Fluids.STILL_CS2, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "cs2");
     public static final Block CCl4 = register(new FluidBlock(Fluids.STILL_CCl4, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ccl4");
     public static final Block PCl3 = register(new FluidBlock(Fluids.STILL_PCl3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "pcl3");
