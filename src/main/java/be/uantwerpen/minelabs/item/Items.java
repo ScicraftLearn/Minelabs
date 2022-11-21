@@ -319,7 +319,6 @@ public class Items {
     public static final Item ERLENMEYER_SO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SO2"), "erlenmeyer_so2");
     public static final Item ERLENMEYER_CLF = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "ClF"), "erlenmeyer_clf");
     public static final Item ERLENMEYER_F2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "F2"), "erlenmeyer_f2");
-    public static final Item ERLENMEYER_SICL4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SiCl4"), "erlenmeyer_sicl4");
 
     /*
         public static final Item ERLENMEYER_O2 = register(new GasPotion(
@@ -366,6 +365,8 @@ public class Items {
             Fluids.STILL_HCN, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HCN"), "erlenmeyer_hcn");
     public static final Item ERLENMEYER_CH4O = register(new ErlenmeyerItem(
             Fluids.STILL_CH4O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CH4O"), "erlenmeyer_ch4o");
+    public static final Item ERLENMEYER_SICL4 = register(new ErlenmeyerItem(
+            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SiCl4"), "erlenmeyer_sicl4");
 
 
     static {

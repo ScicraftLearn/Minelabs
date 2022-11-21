@@ -11,6 +11,7 @@ public class Fluids {
     // TODO - https://fabricmc.net/wiki/tutorial:fluids
     public static final FlowableFluid STILL_HNO3 = register(new HNO3Fluid.Still(), "hno3");
     public static final FlowableFluid FLOWING_HNO3 = register(new HNO3Fluid.Flowing(), "flowing_hno3");
+
     public static final FlowableFluid STILL_H2O = register(new H2OFluid.Still(), "h2o");
     public static final FlowableFluid FLOWING_H2O = register(new H2OFluid.Flowing(), "flowing_h2o");
 
@@ -34,6 +35,9 @@ public class Fluids {
 
     public static final FlowableFluid STILL_CH4O = register(new CH4OFluid.Still(), "ch4o");
     public static final FlowableFluid FLOWING_CH4O = register(new CH4OFluid.Flowing(), "flowing_ch4o");
+
+    public static final FlowableFluid STILL_SiCl4 = register(new SiCl4Fluid.Still(), "sicl4");
+    public static final FlowableFluid FLOWING_SiCl4 = register(new SiCl4Fluid.Flowing(), "flowing_sicl4");
 
     /**
      * Register a Fluid
