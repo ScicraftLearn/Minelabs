@@ -2,11 +2,11 @@
   "structure":
   {
     "atoms": [
-      {"key": "C1", "atom": "C", "position": [ 0.00, 0.00, 0.00]},
-      {"key": "F1", "atom": "F", "position": [ 0.81, 0.81, 0.81]},
-      {"key": "F2", "atom": "F", "position": [ -0.81, -0.81, 0.81]},
-      {"key": "F3", "atom": "F", "position": [-0.81, 0.81, -0.81]},
-      {"key": "F4", "atom": "F", "position": [-0.81, -0.81, -0.81]}
+      {"key": "C1", "atom": "C", "position": [ 0.00,  0.00, 0.00]},
+      {"key": "F1", "atom": "F", "position": [ 0.81,  0.81, 0.81]},
+      {"key": "F2", "atom": "F", "position": [-0.81, -0.81, 0.81]},
+      {"key": "F3", "atom": "F", "position": [-0.81,  0.81, -0.81]},
+      {"key": "F4", "atom": "F", "position": [ 0.81, -0.81, -0.81]}
     ],
     "bonds": [
       {"from": "F1", "to": "C1", "bondOrder": 1},
