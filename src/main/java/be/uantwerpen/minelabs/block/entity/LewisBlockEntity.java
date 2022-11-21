@@ -48,11 +48,11 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private final RecipeManager.MatchGetter<LewisCraftingGrid, MoleculeRecipe> matchGetter;
     //Progress of the recipe; -1 means not started; Synced by propertyDelegate
     public int progress = -1;
+    public int maxProgress = 23;
     //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int density;
     //Current recipe selected; NOT synced
     private MoleculeRecipe currentRecipe;
-
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.LEWIS_BLOCK_ENTITY, pos, state);
@@ -64,7 +64,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             public int get(int index) {
                 return switch (index) {
                     case 0 -> LewisBlockEntity.this.progress; //progress of the recipe
-                    case 1 -> LewisBlockEntity.this.density; //Density (amount) of items needed for the recipe
+                    case 1 -> LewisBlockEntity.this.maxProgress;
+                    case 2 -> LewisBlockEntity.this.density; //Density (amount) of items needed for the recipe
                     default -> 0;
                 };
             }
@@ -73,17 +74,17 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             public void set(int index, int value) {
                 switch (index) {
                     case 0 -> LewisBlockEntity.this.progress = value;
-                    case 1 -> LewisBlockEntity.this.density = value;
+                    case 1 -> LewisBlockEntity.this.maxProgress = value;
+                    case 2 -> LewisBlockEntity.this.density = value;
                 }
             }
 
             @Override
             public int size() {
-                return 2;
+                return 3;
             }
         };
     }
-
 
     //These Methods are from the NamedScreenHandlerFactory Interface
     //createMenu creates the ScreenHandler itself
@@ -107,7 +108,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.craftingGrid.readNbtList(nbt.getList("grid", NbtElement.COMPOUND_TYPE));
         this.ioInventory.readNbtList(nbt.getList("io_inv", NbtElement.COMPOUND_TYPE));
         this.density = nbt.getInt("dens");
-
     }
 
     @Override
@@ -117,7 +117,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         nbt.put("grid", craftingGrid.toNbtList());
         nbt.put("io_inv", ioInventory.toNbtList());
         nbt.putInt("dens", this.density);
-
     }
 
     @Nullable
@@ -147,7 +146,10 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         //recipe loaded, check if enough items
         else if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
             //System.out.println(lewis.currentRecipe.getIngredients());
-            if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) return; //has erlenmeyer
+            if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) {
+                lewis.resetProgress();
+                return; //has NO erlenmeyer
+            }
             boolean correct = false;
             for (int i = 0; i < lewis.ingredients.size(); i++) {
                 correct = true;
@@ -157,38 +159,43 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 }
             }
             if (lewis.progress > 0) {
-                lewis.progress = correct? lewis.progress : -1; //enough items? continue or reset;
+                lewis.progress = correct ? lewis.progress : -1; //enough items? continue or reset;
             } else {
                 lewis.progress = correct? 0 : -1; //enough items? start or reset;
             }
         }
         //Busy crafting
         if (lewis.progress > -1 && lewis.currentRecipe != null) {
-            lewis.progress += 1;
-            if (lewis.progress >= 23) { //Done crafting
+            if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).getMaxCount() > 1) {
+                lewis.progress += 1;
+            }
+            if (lewis.progress >= lewis.maxProgress) { //Done crafting
                 if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
                     lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput());
-                }
-                else {
+                } else {
                     lewis.ioInventory.getStack(10).increment(1);
                 }
                 lewis.ioInventory.getStack(9).decrement(1);
                 for (int i = 0; i < lewis.ingredients.size(); i++) {
                     lewis.ioInventory.getStack(i).decrement(lewis.density);
                 }
-                lewis.resetRecipe();
+                lewis.resetProgress();
             }
         }
         lewis.markDirty();
+    }
+
+    private void resetProgress() {
+        progress = -1;
+        markDirty();
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
         return craftingGrid;
     }
 
-    public Inventory getIoInventory(){
+    public Inventory getIoInventory() {
         return ioInventory;
-
     }
 
     /**
@@ -218,5 +225,9 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     public DefaultedList<Ingredient> getIngredients() {
         return this.ingredients;
+    }
+
+    public MoleculeRecipe getCurrentRecipe() {
+        return this.currentRecipe;
     }
 }
