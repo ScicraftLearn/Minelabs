@@ -146,7 +146,10 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         //recipe loaded, check if enough items
         else if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
             //System.out.println(lewis.currentRecipe.getIngredients());
-            if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) return; //has erlenmeyer
+            if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) {
+                lewis.resetProgress();
+                return; //has NO erlenmeyer
+            }
             boolean correct = false;
             for (int i = 0; i < lewis.ingredients.size(); i++) {
                 correct = true;
@@ -156,7 +159,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 }
             }
             if (lewis.progress > 0) {
-                lewis.progress = correct? lewis.progress : -1; //enough items? continue or reset;
+                lewis.progress = correct ? lewis.progress : -1; //enough items? continue or reset;
             } else {
                 lewis.progress = correct? 0 : -1; //enough items? start or reset;
             }
