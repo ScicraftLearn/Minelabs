@@ -222,4 +222,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public DefaultedList<Ingredient> getIngredients() {
         return this.ingredients;
     }
+
+    public MoleculeRecipe getCurrentRecipe() {
+        return this.currentRecipe;
+    }
 }

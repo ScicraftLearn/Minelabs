@@ -10,10 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -29,8 +26,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class LewisBlock extends BlockWithEntity implements Waterloggable {
 
@@ -122,18 +117,13 @@ public class LewisBlock extends BlockWithEntity implements Waterloggable {
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-        return super.getDroppedStacks(state, builder);
-    }
-
-    @Override
     public boolean hasComparatorOutput(BlockState state) {
         return true;
     }
 
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
+        return world.getBlockEntity(pos, BlockEntities.LEWIS_BLOCK_ENTITY).get().getCurrentRecipe() != null ? 15 : 0;
     }
 
     @Nullable
