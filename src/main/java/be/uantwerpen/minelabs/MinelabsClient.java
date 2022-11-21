@@ -152,7 +152,6 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_BF3,0xFFFFFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_BCL3,0xFFFFFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_SO2,0xFFFFFF, 0);
-        registerErlenmeyer(Items.ERLENMEYER_SICL4,0xFFFFFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CLF,0xFFFFFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_F2,0xFFFFFF, 0);
 
@@ -166,6 +165,7 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_SCl2, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_HCN, 0xCCCCFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CH4O, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SICL4, 0xAFAFAF, 0);
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
         FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_HNO3, Fluids.FLOWING_HNO3, new SimpleFluidRenderHandler(
                 new Identifier("minecraft:block/water_still"),
