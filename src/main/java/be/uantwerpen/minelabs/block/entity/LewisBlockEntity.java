@@ -117,7 +117,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         nbt.put("grid", craftingGrid.toNbtList());
         nbt.put("io_inv", ioInventory.toNbtList());
         nbt.putInt("dens", this.density);
-
     }
 
     @Nullable
@@ -164,7 +163,9 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         }
         //Busy crafting
         if (lewis.progress > -1 && lewis.currentRecipe != null) {
-            lewis.progress += 1;
+            if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).getMaxCount() > 1) {
+                lewis.progress += 1;
+            }
             if (lewis.progress >= 23) { //Done crafting
                 if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
                     lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput());
