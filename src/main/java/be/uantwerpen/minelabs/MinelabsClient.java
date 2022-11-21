@@ -4,6 +4,7 @@ import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
+import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreen;
@@ -21,6 +22,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -140,6 +143,18 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_H2CO3,0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CH4S,0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CH2O,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BH3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_HF,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SIH4,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_PH3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2S,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CF4,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BF3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BCL3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SO2,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CLF,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_F2,0xFFFFFF, 0);
+
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);
         registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 0);
@@ -150,8 +165,32 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_SCl2, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_HCN, 0xCCCCFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CH4O, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SICL4, 0xAFAFAF, 0);
 //        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
-
+        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_HNO3, Fluids.FLOWING_HNO3, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                0xA1FFCC33 // ARGB (alpha / R / G /B)
+        ));
+        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_H2O, Fluids.FLOWING_H2O, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                0xA10084FF // ARGB (alpha / R / G /B)
+        ));
+        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                0xA1E8DC5A
+        ));
+        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_HCN, Fluids.FLOWING_HCN, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                0xA1CCCCFF));
+        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(),
+                Fluids.STILL_HNO3, Fluids.FLOWING_HNO3,
+                Fluids.STILL_H2O, Fluids.FLOWING_H2O,
+                Fluids.STILL_HCN, Fluids.FLOWING_HCN,
+                Fluids.STILL_NCl3, Fluids.FLOWING_NCl3);
         //Lewis Data Sync
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.IONICDATASYNC, (c, h, b, s) -> IonicDataPacket.receive(c.world, b, s));
