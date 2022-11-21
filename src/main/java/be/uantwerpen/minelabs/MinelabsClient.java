@@ -143,6 +143,19 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_H2CO3,0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CH4S,0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CH2O,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BH3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_HF,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SIH4,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_PH3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2S,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CF4,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BF3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BCL3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SO2,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SICL4,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CLF,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_F2,0xFFFFFF, 0);
+
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);
         registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 0);
