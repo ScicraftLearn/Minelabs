@@ -172,7 +172,7 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyerFluid(Fluids.STILL_H2O, Fluids.FLOWING_H2O, 0xA10084FF);
         registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1E8DC5A);
         registerErlenmeyerFluid(Fluids.STILL_HCN, Fluids.FLOWING_HCN, 0xA1CCCCFF);
-        registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1AFAFAF); // Default
+        registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1e8dc5a); // Default
         registerErlenmeyerFluid(Fluids.STILL_CS2, Fluids.FLOWING_CS2, 0xA1AFAFAF);
         registerErlenmeyerFluid(Fluids.STILL_CCl4, Fluids.FLOWING_CCl4, 0xA1AFAFAF);
         registerErlenmeyerFluid(Fluids.STILL_PCl3, Fluids.FLOWING_PCl3, 0xA1AFAFAF);
@@ -199,7 +199,7 @@ public class MinelabsClient implements ClientModInitializer {
      *
      * @param still   :  Still Fluid
      * @param flowing : Flowing Fluid
-     * @param tint    : Tint in ARGB (alpha / R / G /B)
+     * @param tint    : Tint in ARGB (alpha / R / G /B) use as hex: 0x........
      */
     public void registerErlenmeyerFluid(Fluid still, Fluid flowing, int tint) {
         FluidRenderHandlerRegistry.INSTANCE.register(still, flowing, new SimpleFluidRenderHandler(
