@@ -32,6 +32,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
@@ -166,31 +167,19 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_HCN, 0xCCCCFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CH4O, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_SICL4, 0xAFAFAF, 0);
-//        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
-        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_HNO3, Fluids.FLOWING_HNO3, new SimpleFluidRenderHandler(
-                new Identifier("minecraft:block/water_still"),
-                new Identifier("minecraft:block/water_flow"),
-                0xA1FFCC33 // ARGB (alpha / R / G /B)
-        ));
-        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_H2O, Fluids.FLOWING_H2O, new SimpleFluidRenderHandler(
-                new Identifier("minecraft:block/water_still"),
-                new Identifier("minecraft:block/water_flow"),
-                0xA10084FF // ARGB (alpha / R / G /B)
-        ));
-        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, new SimpleFluidRenderHandler(
-                new Identifier("minecraft:block/water_still"),
-                new Identifier("minecraft:block/water_flow"),
-                0xA1E8DC5A
-        ));
-        FluidRenderHandlerRegistry.INSTANCE.register(Fluids.STILL_HCN, Fluids.FLOWING_HCN, new SimpleFluidRenderHandler(
-                new Identifier("minecraft:block/water_still"),
-                new Identifier("minecraft:block/water_flow"),
-                0xA1CCCCFF));
-        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(),
-                Fluids.STILL_HNO3, Fluids.FLOWING_HNO3,
-                Fluids.STILL_H2O, Fluids.FLOWING_H2O,
-                Fluids.STILL_HCN, Fluids.FLOWING_HCN,
-                Fluids.STILL_NCl3, Fluids.FLOWING_NCl3);
+
+        registerErlenmeyerFluid(Fluids.STILL_HNO3, Fluids.FLOWING_HNO3, 0xA1FFCC33);
+        registerErlenmeyerFluid(Fluids.STILL_H2O, Fluids.FLOWING_H2O, 0xA10084FF);
+        registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1E8DC5A);
+        registerErlenmeyerFluid(Fluids.STILL_HCN, Fluids.FLOWING_HCN, 0xA1CCCCFF);
+        registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1AFAFAF); // Default
+        registerErlenmeyerFluid(Fluids.STILL_CS2, Fluids.FLOWING_CS2, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_CCl4, Fluids.FLOWING_CCl4, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_PCl3, Fluids.FLOWING_PCl3, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_SCl2, Fluids.FLOWING_SCl2, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_CH4O, Fluids.FLOWING_CH4O, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_SiCl4, Fluids.FLOWING_SiCl4, 0xA1AFAFAF);
+
         //Lewis Data Sync
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.IONICDATASYNC, (c, h, b, s) -> IonicDataPacket.receive(c.world, b, s));
@@ -203,6 +192,21 @@ public class MinelabsClient implements ClientModInitializer {
             if (tintIndex == index) return color;
             return 0xFFFFFF;
         }, item);
+    }
+
+    /**
+     * Fully register the Fluid rendering, water texture recolored and transparent
+     *
+     * @param still   :  Still Fluid
+     * @param flowing : Flowing Fluid
+     * @param tint    : Tint in ARGB (alpha / R / G /B)
+     */
+    public void registerErlenmeyerFluid(Fluid still, Fluid flowing, int tint) {
+        FluidRenderHandlerRegistry.INSTANCE.register(still, flowing, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                tint));
+        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), still, flowing);
     }
 
 }
