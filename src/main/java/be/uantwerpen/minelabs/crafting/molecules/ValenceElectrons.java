@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ValenceElectrons {
@@ -26,11 +27,10 @@ public class ValenceElectrons {
     }
 
     private void addElectrons(Map<String, Boolean> bondDirections, int count) {
-        //todo infinite loop!
         //inverse bonddir & voorkeur N-E-S-W
         // int: in  elke richting 0,1,2
         while (count>0){
-            for (String key : Arrays.asList("n", "e", "s", "w")) {
+            for (String key : getBestList(bondDirections)) {
                 if (count == 0) {
                     break;
                 }
@@ -44,6 +44,14 @@ public class ValenceElectrons {
                     }
                 }
             }
+        }
+    }
+
+    private List<String> getBestList(Map<String, Boolean> bondDirections) {
+        if (!bondDirections.get("n") || !bondDirections.get("s")) {
+            return Arrays.asList("e", "w", "n", "s");
+        } else {
+            return Arrays.asList("n", "s", "e", "w");
         }
     }
 
