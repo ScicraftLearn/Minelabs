@@ -15,7 +15,12 @@ public class ValenceElectrons {
 
     private Map<String, Integer> directionalValence;
 
-    public ValenceElectrons(Map<String, Boolean> bondDirections, int valenceE) {
+    /**
+     * @param bondDirections : amount of bonds in which direction
+     * @param valenceE       : amount of electrons on the current atom
+     * @param forced         : True = Use 1's, False = use pairs
+     */
+    public ValenceElectrons(Map<String, Integer> bondDirections, int valenceE, boolean forced) {
         this.totalElectronCount = valenceE;
         directionalValence = new HashMap<>(Map.of(
                 "n", 0,
@@ -23,19 +28,24 @@ public class ValenceElectrons {
                 "s", 0,
                 "w", 0
         ));
-        addElectrons(bondDirections, valenceE);
+        addElectrons(bondDirections, valenceE, forced);
     }
 
-    private void addElectrons(Map<String, Boolean> bondDirections, int count) {
+    /**
+     * @param bondDirections
+     * @param count
+     * @param forced         : True = Use 1's, False = use pairs
+     */
+    private void addElectrons(Map<String, Integer> bondDirections, int count, boolean forced) {
         //inverse bonddir & voorkeur N-E-S-W
         // int: in  elke richting 0,1,2
-        while (count>0){
-            for (String key : getBestList(bondDirections)) {
+        while (count > 0) {
+            for (String key : getBestList(bondDirections, forced)) {
                 if (count == 0) {
                     break;
                 }
-                if (bondDirections.get(key)) {
-                    if (count >= 2 && directionalValence.get(key) == 0) {
+                if (bondDirections.get(key) == 0) {
+                    if (count >= 2 && directionalValence.get(key) == 0 && forced) {
                         addEDir(key, 2);
                         count -= 2;
                     } else {
@@ -47,11 +57,13 @@ public class ValenceElectrons {
         }
     }
 
-    private List<String> getBestList(Map<String, Boolean> bondDirections) {
-        if (!bondDirections.get("n") || !bondDirections.get("s")) {
+    private List<String> getBestList(Map<String, Integer> bondDirections, boolean forced) {
+        if (bondDirections.get("n") != 0 || bondDirections.get("s") != 0) {
             return Arrays.asList("e", "w", "n", "s");
-        } else {
+        } else if (bondDirections.get("e") != 0 || bondDirections.get("w") != 0) {
             return Arrays.asList("n", "s", "e", "w");
+        } else {
+            return Arrays.asList("n", "e", "s", "w");
         }
     }
 

@@ -104,41 +104,41 @@ public class BondManager {
         return null;
     }
 
-    public Map<String, Boolean> findEmptyBonds(Slot slot) {
-        Map<String, Boolean> dirs = new HashMap<>(Map.of(
-                "n", true,
-                "e", true,
-                "s", true,
-                "w", true
+    public Map<String, Integer> findEmptyBonds(Slot slot) {
+        Map<String, Integer> dirs = new HashMap<>(Map.of(
+                "n", 0,
+                "e", 0,
+                "s", 0,
+                "w", 0
         ));
 
         for (Bond bond : bonds) {
             if (bond.slot1 == slot) { // given slot is bond's slot 1
                 // CHECK Y
                 if (bond.slot1.y > bond.slot2.y) { // ABOVE
-                    dirs.put("n", false);
+                    dirs.put("n", bond.bondCount);
                 } else if (bond.slot1.y < bond.slot2.y) { //BELOW
-                    dirs.put("s", false);
+                    dirs.put("s", bond.bondCount);
                 } else {
                     // CHECK X
                     if (bond.slot1.x > bond.slot2.x) { // LEFT
-                        dirs.put("w", false);
+                        dirs.put("w", bond.bondCount);
                     } else if (bond.slot1.x < bond.slot2.x) { //RIGHT
-                        dirs.put("e", false);
+                        dirs.put("e", bond.bondCount);
                     }
                 }
             } else if (bond.slot2 == slot) { // given slot is bond's slot 2
                 // CHECK Y
                 if (bond.slot1.y > bond.slot2.y) { // BLOW
-                    dirs.put("s", false);
+                    dirs.put("s", bond.bondCount);
                 } else if (bond.slot1.y < bond.slot2.y) { //ABOVE
-                    dirs.put("n", false);
+                    dirs.put("n", bond.bondCount);
                 } else {
                     // CHECK X
                     if (bond.slot1.x > bond.slot2.x) { // RIGHT
-                        dirs.put("e", false);
+                        dirs.put("e", bond.bondCount);
                     } else if (bond.slot1.x < bond.slot2.x) { //LEFT
-                        dirs.put("w", false);
+                        dirs.put("w", bond.bondCount);
                     }
                 }
             }

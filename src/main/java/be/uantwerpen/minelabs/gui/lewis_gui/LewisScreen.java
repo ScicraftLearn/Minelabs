@@ -87,8 +87,15 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             }
             for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
                 Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
-                ValenceElectrons valentieE = new ValenceElectrons(manager.findEmptyBonds(slot),
-                        vertex.data.getInitialValenceElectrons() - vertex.getEdgesData().stream().map(bond -> bond.bondOrder).mapToInt(Integer::intValue).sum()); //no clue: copied it from getOpenConnections in the MoleculeGraph class
+                int total_bonds = 0;
+                Map<String, Integer> bonds = manager.findEmptyBonds(slot);
+                for (String key : bonds.keySet()) {
+                    total_bonds += bonds.get(key);
+                }
+
+                ValenceElectrons valentieE = new ValenceElectrons(bonds,
+                        vertex.data.getInitialValenceElectrons() - vertex.getEdgesData().stream().map(bond -> bond.bondOrder).mapToInt(Integer::intValue).sum()
+                        , vertex.data.getMaxPossibleBonds() == total_bonds); //no clue: copied it from getOpenConnections in the MoleculeGraph class
                 for (String i : Arrays.asList("n", "e", "s", "w")) { //render item 4x: N-E-S-W
                     if (valentieE.getDirectionalValence(i) != 0) {
                         this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(i), slot.x + x, slot.y + y);
