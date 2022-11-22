@@ -69,6 +69,7 @@ public class NuclidesTable {
                 String[] nuclideInfo = line.split(splitBy); // use comma as separator (see .csv file)
                 parseNuclideInfo(nuclideInfo, _nuclidesTable);
             }
+            br.close();
         }
         catch (IOException e) {
             e.printStackTrace();

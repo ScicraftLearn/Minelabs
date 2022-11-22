@@ -60,6 +60,7 @@
   "block.minelabs.atomic_floor": "",
   "block.minelabs.bohr_block": "Bohr Blueprint",
   "block.minelabs.electric_field_sensor": "Electric Field Sensor",
+  "block.minelabs.mologram": "Mologram",
 
   "item.minelabs.proton": "Proton",
   "item.minelabs.anti_proton": "AntiProton",
@@ -116,6 +117,7 @@
   "item.minelabs.chlorine_atom": "Chlorine",
   "item.minelabs.argon_atom": "Argon",
   "item.minelabs.bromine_atom": "Bromine",
+  "item.minelabs.strontium_atom": "Strontium",
   "item.minelabs.cadmium_atom": "Cadmium",
   "item.minelabs.calcium_atom": "Calcium",
   "item.minelabs.copper_atom": "Copper",

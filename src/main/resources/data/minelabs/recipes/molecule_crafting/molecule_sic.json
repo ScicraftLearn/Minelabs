@@ -1,0 +1,17 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Si1", "atom":  "Si"},
+      {"key":  "C1", "atom":  "C"}
+    ],
+    "bonds": [
+      {"from": "Si1", "to": "C1", "bondOrder": 3}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_sic"
+  },
+  "density": 8
+}

@@ -1,0 +1,90 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "Na1",
+        "atom": "Na",
+        "position": [
+          1.07,
+          0.21,
+          0.00
+        ]
+      },
+      {
+        "key": "Na2",
+        "atom": "Na",
+        "position": [
+          -1.07,
+          -1.03,
+          0.00
+        ]
+      },
+      {
+        "key": "C1",
+        "atom": "C",
+        "position": [
+          -0.36,
+          0.21,
+          0.00
+        ]
+      },
+      {
+        "key": "O1",
+        "atom": "O",
+        "position": [
+          -1.07,
+          -0.21,
+          0.00
+        ]
+      },
+      {
+        "key": "O2",
+        "atom": "O",
+        "position": [
+          -0.36,
+          1.03,
+          0.00
+        ]
+      },
+      {
+        "key": "O3",
+        "atom": "O",
+        "position": [
+          0.36,
+          -0.21,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "C1",
+        "to": "O1",
+        "bondOrder": 1
+      },
+      {
+        "from": "C1",
+        "to": "O2",
+        "bondOrder": 2
+      },
+      {
+        "from": "C1",
+        "to": "O3",
+        "bondOrder": 1
+      },
+      {
+        "from": "Na1",
+        "to": "O3",
+        "bondOrder": 1
+      },
+      {
+        "from": "Na2",
+        "to": "O1",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:sodium_carbonate_dust"
+  ]
+}

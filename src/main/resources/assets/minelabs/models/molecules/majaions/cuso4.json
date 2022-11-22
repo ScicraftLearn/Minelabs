@@ -1,0 +1,85 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "Cu1",
+        "atom": "Cu",
+        "position": [
+          2.50,
+          1.87,
+          0.00
+        ]
+      },
+      {
+        "key": "S1",
+        "atom": "S",
+        "position": [
+          1.00,
+          1.00,
+          0.00
+        ]
+      },
+      {
+        "key": "O1",
+        "atom": "O",
+        "position": [
+          1.00,
+          0.00,
+          0.00
+        ]
+      },
+      {
+        "key": "O2",
+        "atom": "O",
+        "position": [
+          1.00,
+          2.00,
+          0.00
+        ]
+      },
+      {
+        "key": "O3",
+        "atom": "O",
+        "position": [
+          0.00,
+          1.00,
+          0.00
+        ]
+      },
+      {
+        "key": "O4",
+        "atom": "O",
+        "position": [
+          2.00,
+          1.00,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "S1",
+        "to": "O1",
+        "bondOrder": 2
+      },
+      {
+        "from": "S1",
+        "to": "O2",
+        "bondOrder": 1
+      },
+      {
+        "from": "S1",
+        "to": "O3",
+        "bondOrder": 2
+      },
+      {
+        "from": "S1",
+        "to": "O4",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:copper_sulfate_dust"
+  ]
+}

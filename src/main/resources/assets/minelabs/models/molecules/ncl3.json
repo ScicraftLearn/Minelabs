@@ -1,0 +1,62 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "N1",
+        "atom": "N",
+        "position": [
+          0.86,
+          0.50,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl1",
+        "atom": "Cl",
+        "position": [
+          0.00,
+          0.00,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl2",
+        "atom": "Cl",
+        "position": [
+          1.73,
+          0.00,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl3",
+        "atom": "Cl",
+        "position": [
+          0.86,
+          1.50,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "N1",
+        "to": "Cl1",
+        "bondOrder": 1
+      },
+      {
+        "from": "N1",
+        "to": "Cl2",
+        "bondOrder": 1
+      },
+      {
+        "from": "N1",
+        "to": "Cl3",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:erlenmeyer_ncl3"
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "K1",
+        "atom": "K",
+        "position": [
+          0.06,
+          3.77,
+          -0.91
+        ]
+      },
+      {
+        "key": "K2",
+        "atom": "K",
+        "position": [
+          -1.39,
+          -0.71,
+          -0.02
+        ]
+      },
+      {
+        "key": "S1",
+        "atom": "S",
+        "position": [
+          0.79,
+          1.11,
+          -0.20
+        ]
+      },
+      {
+        "key": "O1",
+        "atom": "O",
+        "position": [
+          -0.25,
+          1.65,
+          0.81
+        ]
+      },
+      {
+        "key": "O2",
+        "atom": "O",
+        "position": [
+          0.02,
+          1.09,
+          -1.53
+        ]
+      },
+      {
+        "key": "O3",
+        "atom": "O",
+        "position": [
+          1.17,
+          -0.29,
+          0.18
+        ]
+      },
+      {
+        "key": "O4",
+        "atom": "O",
+        "position": [
+          1.94,
+          2.08,
+          -0.29
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "O1",
+        "to": "S1",
+        "bondOrder": 2
+      },
+      {
+        "from": "O2",
+        "to": "S1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O3",
+        "to": "S1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O4",
+        "to": "S1",
+        "bondOrder": 2
+      },
+      {
+        "from": "K1",
+        "to": "O2",
+        "bondOrder": 1
+      },
+      {
+        "from": "K2",
+        "to": "O3",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:potassium_sulfate_dust"
+  ]
+}
