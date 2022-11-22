@@ -35,15 +35,20 @@ public class ValenceElectrons {
                     break;
                 }
                 if (bondDirections.get(key)) {
-                    addEDir(key);
-                    count -= 1;
+                    if (count >= 2 && directionalValence.get(key) == 0) {
+                        addEDir(key, 2);
+                        count -= 2;
+                    } else {
+                        addEDir(key, 1);
+                        count -= 1;
+                    }
                 }
             }
         }
     }
 
-    private void addEDir(String direction){
-        directionalValence.put(direction, directionalValence.get(direction) + 1);
+    private void addEDir(String direction, int amount) {
+        directionalValence.put(direction, directionalValence.get(direction) + amount);
     }
 
     @NotNull
