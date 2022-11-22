@@ -366,7 +366,7 @@ public class Items {
     public static final Item ERLENMEYER_CH4O = register(new ErlenmeyerItem(
             Fluids.STILL_CH4O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CH4O"), "erlenmeyer_ch4o");
     public static final Item ERLENMEYER_SICL4 = register(new ErlenmeyerItem(
-            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SiCl4"), "erlenmeyer_sicl4");
+            Fluids.STILL_SiCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SiCl4"), "erlenmeyer_sicl4");
 
 
     static {
