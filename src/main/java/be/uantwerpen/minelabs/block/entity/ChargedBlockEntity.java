@@ -212,7 +212,7 @@ public class ChargedBlockEntity extends BlockEntity{
 
     private Direction movementDirection(World world, BlockPos pos, Vec3f oldField) {
         if (oldField.equals(Vec3f.ZERO)) {
-            return null;
+            return Direction.fromVector(0, 0, 0);
         }
         ArrayList<Float> list = new ArrayList<>();
         list.add(Math.abs(oldField.getX()));
@@ -220,7 +220,7 @@ public class ChargedBlockEntity extends BlockEntity{
         list.add(Math.abs(oldField.getZ()));
         float max = Collections.max(list);
         if (max < e_move ) {
-            return null;
+            return Direction.fromVector(0, 0, 0);
         }
         oldField.scale(1/max);
         Vec3f movement = new Vec3f(Math.round(oldField.getX()), Math.round(oldField.getY()), Math.round(oldField.getZ()));
