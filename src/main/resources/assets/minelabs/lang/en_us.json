@@ -4,7 +4,9 @@
   "itemGroup.minelabs.chemicals": "Chemicals",
   "itemGroup.minelabs.elementary_particles": "Elementary Particles",
   "itemGroup.minelabs.atoms": "Atoms",
-
+  "text.minelabs.valid": "Valid Compound",
+  "text.minelabs.invalid": "Invalid Compound",
+  "text.minelabs.not_implemented": "Item is not implemented",
   "block.minelabs.salt_ore": "Salt Ore",
   "block.minelabs.deepslate_salt_ore": "Deepslate Salt Ore",
   "block.minelabs.salt_block": "Block of Salt",
