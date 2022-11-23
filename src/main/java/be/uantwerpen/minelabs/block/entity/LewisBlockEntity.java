@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.block.entity;
 
-import be.uantwerpen.minelabs.crafting.CraftingRecipes;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.lewis.MoleculeRecipe;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler;
@@ -20,7 +19,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -45,7 +43,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private final PropertyDelegate propertyDelegate;
     //List of needed input ingredients; Synced by LewisDataPacket
     private DefaultedList<Ingredient> ingredients = DefaultedList.of();
-    private final RecipeManager.MatchGetter<LewisCraftingGrid, MoleculeRecipe> matchGetter;
+    //private final RecipeManager.MatchGetter<LewisCraftingGrid, MoleculeRecipe> matchGetter;
     //Progress of the recipe; -1 means not started; Synced by propertyDelegate
     public int progress = -1;
     public int maxProgress = 23;
@@ -56,7 +54,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.LEWIS_BLOCK_ENTITY, pos, state);
-        this.matchGetter = RecipeManager.createCachedMatchGetter(CraftingRecipes.MOLECULE_CRAFTING);
+        //this.matchGetter = RecipeManager.createCachedMatchGetter(CraftingRecipes.MOLECULE_CRAFTING);
 
         propertyDelegate = new PropertyDelegate() {
 
@@ -133,7 +131,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public static void tick(World world, BlockPos pos, BlockState state, LewisBlockEntity lewis) {
         //No recipe loaded, try to load one.
         if (lewis.currentRecipe == null) {
-            Optional<MoleculeRecipe> recipe = lewis.matchGetter.getFirstMatch(lewis.craftingGrid, world);
+            Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MoleculeRecipeType.INSTANCE, lewis.craftingGrid, world);
+            //Optional<MoleculeRecipe> recipe = lewis.matchGetter.getFirstMatch(lewis.craftingGrid, world);
             recipe.ifPresent(r -> {
                 lewis.ingredients = DefaultedList.ofSize(0);
                 lewis.currentRecipe = r;

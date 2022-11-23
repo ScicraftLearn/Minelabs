@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.block.entity;
 
-import be.uantwerpen.minelabs.crafting.CraftingRecipes;
 import be.uantwerpen.minelabs.crafting.ionic.IonicInventory;
 import be.uantwerpen.minelabs.crafting.ionic.IonicRecipe;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicBlockScreenHandler;
@@ -21,7 +20,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,7 +42,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private IonicInventory inventory = new IonicInventory(9, 9, 11);
     //PropertyDelegate that holds the progress, density and charge of both sides. synced to the client
     private final PropertyDelegate propertyDelegate;
-    private final RecipeManager.MatchGetter<IonicInventory, IonicRecipe> matchGetter;
+    //private final RecipeManager.MatchGetter<IonicInventory, IonicRecipe> matchGetter;
     //List of needed input left ingredients; Synced by IonicDataPacket
     private DefaultedList<Ingredient> leftIngredients = DefaultedList.of();
     //List of needed input right ingredients; Synced by IonicDataPacket
@@ -64,8 +62,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     public IonicBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.IONIC_BLOCK_ENTITY, pos, state);
-
-        this.matchGetter = RecipeManager.createCachedMatchGetter(CraftingRecipes.IONIC_CRAFTING);
+        //this.matchGetter = RecipeManager.createCachedMatchGetter(CraftingRecipes.IONIC_CRAFTING);
 
         this.inventory.addListener(sender -> IonicBlockEntity.this.markDirty());
 
@@ -174,8 +171,9 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public static void tick(World world, BlockPos pos, BlockState state, IonicBlockEntity ionic){
         //No recipe loaded, try to load one.
         if (ionic.currentrecipe == null) {
-            Optional<IonicRecipe> recipe = ionic.matchGetter.getFirstMatch(ionic.inventory, world);
-            recipe.ifPresent( r -> {
+            Optional<IonicRecipe> recipe = world.getRecipeManager().getFirstMatch(IonicRecipe.IonicRecipeType.INSTANCE, ionic.inventory, world);
+            //Optional<IonicRecipe> recipe = ionic.mactchGetter.getFirstMatch(ionic.inventory, world)
+            recipe.ifPresent(r -> {
                 ionic.currentrecipe = r;
                 ionic.leftIngredients = r.getLeftingredients();
                 ionic.rightIngredients = r.getRightingredients();
