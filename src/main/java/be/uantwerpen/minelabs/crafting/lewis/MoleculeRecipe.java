@@ -18,9 +18,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-import static be.uantwerpen.minelabs.crafting.CraftingRecipes.MOLECULE_CRAFTING;
-
-
 public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 
     private final Molecule molecule;
@@ -90,14 +87,24 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 
     @Override
     public RecipeType<?> getType() {
-        return MOLECULE_CRAFTING;
+        return MoleculeRecipeType.INSTANCE;
+    }
+
+    public static class MoleculeRecipeType implements RecipeType<MoleculeRecipe> {
+        public static final MoleculeRecipeType INSTANCE = new MoleculeRecipeType();
+        public static final String ID = "molecule_crafting";
+
+        private MoleculeRecipeType() {
+        }
     }
 
     public static class MoleculeRecipeSerializer implements RecipeSerializer<MoleculeRecipe> {
 
-        private MoleculeRecipeSerializer() {}
+        private MoleculeRecipeSerializer() {
+        }
 
         public static final MoleculeRecipeSerializer INSTANCE = new MoleculeRecipeSerializer();
+        public static final String ID = "molecule_crafting";
 
         @Override
         public MoleculeRecipe read(Identifier id, JsonObject json) {

@@ -13,5 +13,5 @@
       {"from": "Al1", "to": "Cl3", "bondOrder": 1}
     ]
   },
-  "items": ["minelabs:erlenmeyer_AlCl3"]
+  "items": ["minelabs:dust_alcl3"]
 }

@@ -1,0 +1,22 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C", "position": [0.80,  0.99,  0.88]},
+      {"key":  "H1", "atom":  "H", "position": [-0.01,   0.29,  0.69]},
+      {"key":  "H2", "atom":  "H", "position": [0.95,  1.61, -0.01]},
+      {"key":  "H3", "atom":  "H", "position": [0.55,  1.61,  1.74]},
+      {"key":  "H4", "atom":  "H", "position": [3.15,  0.99,  1.42]},
+      {"key":  "S1", "atom":  "S", "position": [2.29, -0.03,  1.22]}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "C1", "bondOrder": 1},
+      {"from": "H2", "to": "C1", "bondOrder": 1},
+      {"from": "H3", "to": "C1", "bondOrder": 1},
+      {"from": "S1", "to": "C1", "bondOrder": 1},
+      {"from": "H4", "to": "S1", "bondOrder": 1}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_ch4s"]
+}
+

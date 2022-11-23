@@ -2,7 +2,9 @@ package be.uantwerpen.minelabs.crafting.ionic;
 
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeGraphJsonFormat;
 import be.uantwerpen.minelabs.crafting.molecules.PartialMolecule;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
@@ -10,7 +12,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import static be.uantwerpen.minelabs.crafting.CraftingRecipes.IONIC_CRAFTING;
 
 
 public class IonicRecipe implements Recipe<IonicInventory> {
@@ -86,7 +87,7 @@ public class IonicRecipe implements Recipe<IonicInventory> {
 
     @Override
     public RecipeType<?> getType() {
-        return IONIC_CRAFTING;
+        return IonicRecipeType.INSTANCE;
     }
 
     @Override
@@ -118,9 +119,18 @@ public class IonicRecipe implements Recipe<IonicInventory> {
         return rightCharge;
     }
 
+    public static class IonicRecipeType implements RecipeType<IonicRecipe> {
+        public static final IonicRecipeType INSTANCE = new IonicRecipeType();
+        public static final String ID = "ionic_crafting";
+
+        private IonicRecipeType() {
+        }
+    }
+
     public static class IonicRecipeSerializer implements RecipeSerializer<IonicRecipe> {
 
         public static final IonicRecipeSerializer INSTANCE = new IonicRecipeSerializer();
+        public static final String ID = "ionic_crafting";
 
         @Override
         public IonicRecipe read(Identifier id, JsonObject json) {
