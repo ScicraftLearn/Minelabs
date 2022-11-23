@@ -7,6 +7,7 @@
   "text.minelabs.valid": "Correct Molecule",
   "text.minelabs.invalid": "Incomplete Molecule",
   "text.minelabs.not_implemented": "Molecule is not implemented",
+  "text.minelabs.multiple_molecules": "Too many molecules",
 
   "block.minelabs.salt_ore": "Salt Ore",
   "block.minelabs.deepslate_salt_ore": "Deepslate Salt Ore",
