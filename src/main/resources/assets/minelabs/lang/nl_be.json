@@ -4,9 +4,9 @@
   "itemGroup.minelabs.chemicals": "Chemische Stoffen",
   "itemGroup.minelabs.elementary_particles": "Elementaire Deeltjes",
   "itemGroup.minelabs.atoms": "Atomen",
-  "text.minelabs.valid": "TODO",
-  "text.minelabs.invalid": "TODO",
-  "text.minelabs.not_implemented": "TODO",
+  "text.minelabs.valid": "Correcte Molecule",
+  "text.minelabs.invalid": "Onvolledige Molecule",
+  "text.minelabs.not_implemented": "Molecule niet geïmplementeerd",
 
   "block.minelabs.salt_ore": "Zouterts",
   "block.minelabs.deepslate_salt_ore": "Deepslate Zouterts",
