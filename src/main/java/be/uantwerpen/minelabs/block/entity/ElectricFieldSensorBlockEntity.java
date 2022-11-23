@@ -62,7 +62,7 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
     }
 
     public void calculateField(World world, BlockPos pos, BlockPos removedBlockPos) {
-        int e_radius = 8;
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
         field = new Vec3f(0f, 0f, 0f);
