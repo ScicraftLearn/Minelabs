@@ -38,7 +38,7 @@ public class TimeFreezeBlock extends BlockWithEntity {
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        int e_radius = 8;
+        int e_radius = 16;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
 
         // go over all blocks in range of the time freeze block that you just broke
