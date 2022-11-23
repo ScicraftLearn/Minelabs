@@ -147,7 +147,7 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public void removeField(World world, BlockPos pos) {
-        int e_radius = 8;
+        int e_radius = 16;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
 
