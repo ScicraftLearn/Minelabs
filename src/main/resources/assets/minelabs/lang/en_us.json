@@ -171,10 +171,12 @@
   "item.minelabs.erlenmeyer_clf.effect.empty": "Chlorine monofluoride (ClF)",
   "item.minelabs.erlenmeyer_f2.effect.empty": "Difluorine (F\u2082)",
   "item.minelabs.erlenmeyer_sicl4": "Silicon tetrachloride (SiCl\u2084)",
+
   "item.minelabs.safety_glasses": "Safety Glasses",
   "item.minelabs.lab_coat": "Lab Coat",
   "item.minelabs.lens": "Microscope Lens",
   "item.minelabs.big_lens": "Microscope Lens x2",
+
   "item.minelabs.lithium_chloride_dust": "Lithium Chloride (LiCl)",
   "item.minelabs.strontium_chloride_dust": "Strontium Chloride (SrCl\u2082)",
   "item.minelabs.strontium_nitrate_dust": "Strontium Nitrate (Sr(NO\u2083)\u2082)",
