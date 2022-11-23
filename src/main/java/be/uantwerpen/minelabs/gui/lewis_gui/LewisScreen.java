@@ -174,7 +174,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private void renderRecipeCheck(MatrixStack matrices, int x, int y) {
         switch (handler.getStatus()) {
             case 1 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16); // NOT IMPLEMENTED
-            case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 54, 16, 16); // VALID
+            case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 55, 16, 16); // VALID
             default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
         }
     }
