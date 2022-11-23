@@ -4,6 +4,7 @@ import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
+import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreen;
@@ -21,6 +22,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -29,6 +32,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
@@ -136,10 +140,45 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyer(Items.ERLENMEYER_He, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_Ne, 0xAFAFAF, 0);
         registerErlenmeyer(Items.ERLENMEYER_Ar, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CL2O,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2CO3,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH4S,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH2O,0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BH3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_HF,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SIH4,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_PH3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_H2S,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CF4,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BF3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_BCL3,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SO2,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CLF,0xFFFFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_F2,0xFFFFFF, 0);
+
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);
         registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 0);
-//        public static Block ACID = Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, "acid"), new FluidBlock(be.uantwerpen.minelabs.item.Items.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.)){});
+        registerErlenmeyer(Items.ERLENMEYER_NCL3, 0xe8dc5a, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CS2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CCL4, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_PCl3, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SCl2, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_HCN, 0xCCCCFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH4O, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SICL4, 0xAFAFAF, 0);
+
+        registerErlenmeyerFluid(Fluids.STILL_HNO3, Fluids.FLOWING_HNO3, 0xA1FFCC33);
+        registerErlenmeyerFluid(Fluids.STILL_H2O, Fluids.FLOWING_H2O, 0xA10084FF);
+        registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1E8DC5A);
+        registerErlenmeyerFluid(Fluids.STILL_HCN, Fluids.FLOWING_HCN, 0xA1CCCCFF);
+        registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1e8dc5a); // Default
+        registerErlenmeyerFluid(Fluids.STILL_CS2, Fluids.FLOWING_CS2, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_CCl4, Fluids.FLOWING_CCl4, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_PCl3, Fluids.FLOWING_PCl3, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_SCl2, Fluids.FLOWING_SCl2, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_CH4O, Fluids.FLOWING_CH4O, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_SiCl4, Fluids.FLOWING_SiCl4, 0xA1AFAFAF);
 
         //Lewis Data Sync
         ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
@@ -153,6 +192,21 @@ public class MinelabsClient implements ClientModInitializer {
             if (tintIndex == index) return color;
             return 0xFFFFFF;
         }, item);
+    }
+
+    /**
+     * Fully register the Fluid rendering, water texture recolored and transparent
+     *
+     * @param still   :  Still Fluid
+     * @param flowing : Flowing Fluid
+     * @param tint    : Tint in ARGB (alpha / R / G /B) use as hex: 0x........
+     */
+    public void registerErlenmeyerFluid(Fluid still, Fluid flowing, int tint) {
+        FluidRenderHandlerRegistry.INSTANCE.register(still, flowing, new SimpleFluidRenderHandler(
+                new Identifier("minecraft:block/water_still"),
+                new Identifier("minecraft:block/water_flow"),
+                tint));
+        BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), still, flowing);
     }
 
 }

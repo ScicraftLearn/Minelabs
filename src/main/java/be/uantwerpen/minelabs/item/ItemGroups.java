@@ -17,9 +17,9 @@ public class ItemGroups {
             .icon(() -> new ItemStack(Items.ERLENMEYER))
             .build();
 
-    public static final ItemGroup QUANTUM_FIELDS = FabricItemGroupBuilder.create(
-                    new Identifier(Minelabs.MOD_ID, "quantum_fields"))
-            .icon(() -> new ItemStack(Items.GLUON_QUANTUMFIELD))
+    public static final ItemGroup ATOMS = FabricItemGroupBuilder.create(
+                    new Identifier(Minelabs.MOD_ID, "atoms"))
+            .icon(() -> new ItemStack(Items.HYDROGEN_ATOM))
             .build();
 
     public static final ItemGroup ELEMENTARY_PARTICLES = FabricItemGroupBuilder.create(
@@ -27,9 +27,9 @@ public class ItemGroups {
             .icon(() -> new ItemStack(Items.PION_NUL))
             .build();
 
-    public static final ItemGroup ATOMS = FabricItemGroupBuilder.create(
-                    new Identifier(Minelabs.MOD_ID, "atoms"))
-            .icon(() -> new ItemStack(Items.HYDROGEN_ATOM))
+    public static final ItemGroup QUANTUM_FIELDS = FabricItemGroupBuilder.create(
+                    new Identifier(Minelabs.MOD_ID, "quantum_fields"))
+            .icon(() -> new ItemStack(Items.GLUON_QUANTUMFIELD))
             .build();
 
 }

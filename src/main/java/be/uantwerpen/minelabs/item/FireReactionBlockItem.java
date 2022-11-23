@@ -3,7 +3,7 @@ package be.uantwerpen.minelabs.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 
-public class FireReactionBlockItem extends BlockItem implements IFireReaction, MoleculeItem {
+public class FireReactionBlockItem extends BlockItem implements IFireReaction, IMoleculeItem {
 
     private final int FIRE_COLOR;
     private final String molecule;

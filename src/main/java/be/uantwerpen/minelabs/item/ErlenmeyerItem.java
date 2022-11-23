@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class ErlenmeyerItem extends Item implements FluidModificationItem, MoleculeItem {
+public class ErlenmeyerItem extends Item implements FluidModificationItem, IMoleculeItem {
     private final Fluid fluid;
     private final String molecule;
 

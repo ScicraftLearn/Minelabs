@@ -1,0 +1,25 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C"},
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "H2", "atom":  "H"},
+      {"key":  "H3", "atom":  "H"},
+      {"key":  "H4", "atom":  "H"},
+      {"key":  "O1", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "C1", "bondOrder": 1},
+      {"from": "H2", "to": "C1", "bondOrder": 1},
+      {"from": "H3", "to": "C1", "bondOrder": 1},
+      {"from": "O1", "to": "C1", "bondOrder": 1},
+      {"from": "H4", "to": "O1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_ch4o"
+  },
+  "density": 8
+}
