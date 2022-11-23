@@ -6,7 +6,7 @@
   "itemGroup.minelabs.atoms": "Atomen",
   "text.minelabs.valid": "Correcte Molecule",
   "text.minelabs.invalid": "Onvolledige Molecule",
-  "text.minelabs.not_implemented": "Molecule niet geïmplementeerd",
+  "text.minelabs.not_implemented": "Molecule zit niet in het spel",
 
   "block.minelabs.salt_ore": "Zouterts",
   "block.minelabs.deepslate_salt_ore": "Deepslate Zouterts",
