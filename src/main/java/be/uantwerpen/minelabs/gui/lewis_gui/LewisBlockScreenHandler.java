@@ -278,4 +278,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         int arrowSize = 26;
         return maxProgress != 0 && progress != 0 ? progress * arrowSize / maxProgress : 0;
     }
+
+    public int getStatus() {
+        if (propertyDelegate.get(2) > 0) { // Density found -> json recipe found
+            return 2;
+        } else {
+            if (craftingGrid.isEmpty()
+                    || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0) {
+                // Empty grid or still has possible conections
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+    }
 }

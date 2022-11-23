@@ -63,6 +63,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
         renderProgressArrow(matrices, this.x, this.y);
+        renderRecipeCheck(matrices, this.x, this.y);
         buttonWidget.renderButton(matrices, mouseX, mouseY, delta);
 
         // Keep mapping between stack (in graph) and slots (for rendering)
@@ -120,6 +121,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         }
     }
 
+
     @Override
     protected void init() {
         super.init();
@@ -167,12 +169,32 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 buttonWidget.renderTooltip(matrices, mouseX, mouseY);
                 widgetTooltip = true;
             }
+            if (mouseX >= x + 105 && mouseX < x + 105 + 16 && mouseY >= y + 17 && mouseY < y + 17 + 16) {
+                switch (handler.getStatus()) {
+                    case 1 -> renderTooltip(matrices, Arrays.asList(
+                            Text.translatable("text.minelabs.valid"),
+                            Text.translatable("text.minelabs.not_implemented")), mouseX, mouseY);
+                    case 2 -> renderTooltip(matrices,
+                            Text.translatable("text.minelabs.valid"), mouseX, mouseY);
+                    default -> renderTooltip(matrices,
+                            Text.translatable("text.minelabs.invalid"), mouseX, mouseY);
+                }
+
+            }
         }
     }
 
     private void renderProgressArrow(MatrixStack matrices, int x, int y) {
         if (handler.isCrafting()) {
             drawTexture(matrices, x + 102, y + 52, 176, 0, handler.getScaledProgress(), 20);
+        }
+    }
+
+    private void renderRecipeCheck(MatrixStack matrices, int x, int y) {
+        switch (handler.getStatus()) {
+            case 1 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16); // NOT IMPLEMENTED
+            case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 55, 16, 16); // VALID
+            default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
         }
     }
 }

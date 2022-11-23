@@ -4,6 +4,9 @@
   "itemGroup.minelabs.chemicals": "Chemische Stoffen",
   "itemGroup.minelabs.elementary_particles": "Elementaire Deeltjes",
   "itemGroup.minelabs.atoms": "Atomen",
+  "text.minelabs.valid": "Correcte Molecule",
+  "text.minelabs.invalid": "Onvolledige Molecule",
+  "text.minelabs.not_implemented": "Molecule zit niet in het spel",
 
   "block.minelabs.salt_ore": "Zouterts",
   "block.minelabs.deepslate_salt_ore": "Deepslate Zouterts",
@@ -163,7 +166,7 @@
   "item.minelabs.erlenmeyer_hf.effect.empty": "Waterstoffluoride (HF)",
   "item.minelabs.erlenmeyer_sih4.effect.empty": "Silaan (SiH\u2084)",
   "item.minelabs.erlenmeyer_ph3.effect.empty": "Fosfine (PH\u2083)",
-  "item.minelabs.erlenmeyer_h2s.effect.empty": "Waterstofsulfide (H\u2082§S)",
+  "item.minelabs.erlenmeyer_h2s.effect.empty": "Waterstofsulfide (H\u2082S)",
   "item.minelabs.erlenmeyer_cf4.effect.empty": "Koolstoftetrafluoride (CF\u2084)",
   "item.minelabs.erlenmeyer_bf3.effect.empty": "Boortrifluoride (BF\u2083)",
   "item.minelabs.erlenmeyer_bcl3.effect.empty": "Boortrichloride (BCl\u2083)",
