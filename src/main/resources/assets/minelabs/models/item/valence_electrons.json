@@ -1,0 +1,56 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "minelabs:item/internal_bonds/valence_electron_1"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "n": 0.5
+      },
+      "model": "minelabs:item/internal_bonds/valence_n_1"
+    },
+    {
+      "predicate": {
+        "n": 1
+      },
+      "model": "minelabs:item/internal_bonds/valence_n_2"
+    },
+    {
+      "predicate": {
+        "e": 0.5
+      },
+      "model": "minelabs:item/internal_bonds/valence_e_1"
+    },
+    {
+      "predicate": {
+        "e": 1.0
+      },
+      "model": "minelabs:item/internal_bonds/valence_e_2"
+    },
+    {
+      "predicate": {
+        "s": 0.5
+      },
+      "model": "minelabs:item/internal_bonds/valence_s_1"
+    },
+    {
+      "predicate": {
+        "s": 1
+      },
+      "model": "minelabs:item/internal_bonds/valence_s_2"
+    },
+    {
+      "predicate": {
+        "w": 0.5
+      },
+      "model": "minelabs:item/internal_bonds/valence_w_1"
+    },
+    {
+      "predicate": {
+        "w": 1
+      },
+      "model": "minelabs:item/internal_bonds/valence_w_2"
+    }
+  ]
+}

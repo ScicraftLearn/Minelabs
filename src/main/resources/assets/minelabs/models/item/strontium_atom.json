@@ -2,6 +2,7 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "minelabs:item/atom_darkgreen",
+    "layer1": "minelabs:item/strontium",
     "layer2": "minelabs:item/electrons2"
   },
   "gui_light": "front",
