@@ -284,9 +284,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             return 2;
         } else {
             if (craftingGrid.isEmpty()
-                    || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0) {
+                    || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0 ) {
                 // Empty grid or still has possible conections
                 return 0;
+            } if (!craftingGrid.getPartialMolecule().getStructure().isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()){
+                return 3;
             } else {
                 return 1;
             }

@@ -176,6 +176,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                             Text.translatable("text.minelabs.not_implemented")), mouseX, mouseY);
                     case 2 -> renderTooltip(matrices,
                             Text.translatable("text.minelabs.valid"), mouseX, mouseY);
+                    case 3 ->  renderTooltip(matrices,
+                            Text.translatable("text.minelabs.multiple_molecules"), mouseX, mouseY);
                     default -> renderTooltip(matrices,
                             Text.translatable("text.minelabs.invalid"), mouseX, mouseY);
                 }
@@ -194,6 +196,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         switch (handler.getStatus()) {
             case 1 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16); // NOT IMPLEMENTED
             case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 55, 16, 16); // VALID
+            case 3 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16);
             default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
         }
     }
