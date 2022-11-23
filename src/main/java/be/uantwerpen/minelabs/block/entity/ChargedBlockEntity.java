@@ -102,7 +102,7 @@ public class ChargedBlockEntity extends BlockEntity{
 
     //First time field
     public void makeField(World world, BlockPos pos, boolean afterTimeFreeze) {
-        int e_radius = 16;
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
         field = new Vec3f(0f, 0f, 0f);
@@ -147,7 +147,7 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public void removeField(World world, BlockPos pos) {
-        int e_radius = 16;
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
 
