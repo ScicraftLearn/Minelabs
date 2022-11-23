@@ -10,12 +10,12 @@
     ],
     "bonds": [
       {"from": "O1", "to": "S1", "bondOrder": 2},
-      {"from": "O2", "to": "S1", "bondOrder": 2}
+      {"from": "O2", "to": "S1", "bondOrder": 2},
       {"from": "O3", "to": "S1", "bondOrder": 2}
     ]
   },
   "result": {
-    "item": "minelabs:erlenmeyer_so3"
+    "item": "minelabs:sulfur_trioxide_dust"
   },
   "density": 8
 }

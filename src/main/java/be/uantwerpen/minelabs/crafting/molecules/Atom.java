@@ -24,7 +24,7 @@ public enum Atom {
     SODIUM(11, "Na", 0.9, AtomType.ALKALI_METAL, 1, 12, Items.SODIUM_ATOM, 0x5700A3),// violet
     MAGNESIUM(12, "Mg", 1.2, AtomType.ALKALINE_EARTH_METAL, 2, 12, Items.MAGNESIUM_ATOM, 0x113900),//dark green
     ALUMINIUM(13, "Al", 1.5, AtomType.POST_TRANSITION_METAL, 3, 14, Items.ALUMINIUM_ATOM, 0x4A4A50),//grey
-    SILICON(14, "Si", 1.8, AtomType.NON_METAL, 4, 14, Items.SILICON_ATOM, 0x00079D),//blue
+    SILICON(14, "Si", 1.8, AtomType.NON_METAL, 4, 14, Items.SILICON_ATOM, 0x7B6B46),//blue
     PHOSPHORUS(15, "P", 2.1, AtomType.NON_METAL, 5, 16, Items.PHOSPHORUS_ATOM, 0x8E5A0D),//orange
     SULFUR(16, "S", 2.5, AtomType.NON_METAL, 6, 16, Items.SULFUR_ATOM, 0xADA10F), //yellow
     CHLORINE(17, "Cl", 3.0, AtomType.NON_METAL, 7, 18, Items.CHLORINE_ATOM, 0x518141),//green

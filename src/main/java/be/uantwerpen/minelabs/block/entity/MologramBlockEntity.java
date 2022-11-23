@@ -1,7 +1,7 @@
 package be.uantwerpen.minelabs.block.entity;
 
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
-import be.uantwerpen.minelabs.item.MoleculeItem;
+import be.uantwerpen.minelabs.item.IMoleculeItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
@@ -86,7 +86,7 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
         if (this.isEmpty()) {
-            if (!(stack.getItem() instanceof MoleculeItem)) {
+            if (!(stack.getItem() instanceof IMoleculeItem)) {
                 return false;
             }
             if (side == null) {
