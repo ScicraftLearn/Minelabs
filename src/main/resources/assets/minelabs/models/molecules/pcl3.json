@@ -13,5 +13,5 @@
       {"from": "P1", "to": "Cl3", "bondOrder": 1}
     ]
   },
-  "items": ["minelabs:erlenmeyer_PCl3"]
+  "items": ["minelabs:erlenmeyer_pcl3"]
 }

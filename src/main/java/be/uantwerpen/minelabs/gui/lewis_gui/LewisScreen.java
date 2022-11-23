@@ -5,6 +5,7 @@ import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.molecules.BondManager;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;
+import be.uantwerpen.minelabs.crafting.molecules.ValenceElectrons;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
@@ -75,12 +76,30 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
          * Draw Bonds on screen
          */
         LewisCraftingGrid grid = handler.getLewisCraftingGrid();
+        BondManager manager = new BondManager();
         if (grid.getPartialMolecule().getStructure() instanceof MoleculeItemGraph graph){
             for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
                 Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
                 Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
-                BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
+                BondManager.Bond bond = manager.getOrCreateBond(slot1, slot2, edge.data.bondOrder);
                 this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+            }
+            for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
+                Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
+                int total_bonds = 0;
+                Map<String, Integer> bonds = manager.findEmptyBonds(slot);
+                for (String key : bonds.keySet()) {
+                    total_bonds += bonds.get(key);
+                }
+
+                ValenceElectrons valentieE = new ValenceElectrons(bonds,
+                        vertex.data.getInitialValenceElectrons() - vertex.getEdgesData().stream().map(bond -> bond.bondOrder).mapToInt(Integer::intValue).sum()
+                        , vertex.data.getMaxPossibleBonds() == total_bonds); //no clue: copied it from getOpenConnections in the MoleculeGraph class
+                for (String i : Arrays.asList("n", "e", "s", "w")) { //render item 4x: N-E-S-W
+                    if (valentieE.getDirectionalValence(i) != 0) {
+                        this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(i), slot.x + x, slot.y + y);
+                    }
+                }
             }
         }
 

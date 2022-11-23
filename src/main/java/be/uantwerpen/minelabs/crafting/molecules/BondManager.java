@@ -8,7 +8,9 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BondManager {
 
@@ -44,7 +46,7 @@ public class BondManager {
             ItemStack stack = new ItemStack(Items.BOND);
             NbtCompound nbt = stack.getOrCreateNbt();
             nbt.putBoolean("MinelabsBondDirection", vertical);
-            nbt.putInt("MinelabsBondAmount", bondCount);
+                nbt.putInt("MinelabsBondAmount", bondCount);
             return stack;
         }
 
@@ -90,5 +92,64 @@ public class BondManager {
 
     public void clear() {
         bonds.clear();
+    }
+
+    public Bond getBond(Slot slot1, Slot slot2) {
+        for (Bond bond : bonds) {
+            if (bond.slot1 == slot1 && bond.slot2 == slot2
+                    || bond.slot1 == slot2 && bond.slot2 == slot2) {
+                return bond;
+            }
+        }
+        return null;
+    }
+
+    public Map<String, Integer> findEmptyBonds(Slot slot) {
+        Map<String, Integer> dirs = new HashMap<>(Map.of(
+                "n", 0,
+                "e", 0,
+                "s", 0,
+                "w", 0
+        ));
+
+        for (Bond bond : bonds) {
+            if (bond.slot1 == slot) { // given slot is bond's slot 1
+                // CHECK Y
+                if (bond.slot1.y > bond.slot2.y) { // ABOVE
+                    dirs.put("n", bond.bondCount);
+                } else if (bond.slot1.y < bond.slot2.y) { //BELOW
+                    dirs.put("s", bond.bondCount);
+                } else {
+                    // CHECK X
+                    if (bond.slot1.x > bond.slot2.x) { // LEFT
+                        dirs.put("w", bond.bondCount);
+                    } else if (bond.slot1.x < bond.slot2.x) { //RIGHT
+                        dirs.put("e", bond.bondCount);
+                    }
+                }
+            } else if (bond.slot2 == slot) { // given slot is bond's slot 2
+                // CHECK Y
+                if (bond.slot1.y > bond.slot2.y) { // BLOW
+                    dirs.put("s", bond.bondCount);
+                } else if (bond.slot1.y < bond.slot2.y) { //ABOVE
+                    dirs.put("n", bond.bondCount);
+                } else {
+                    // CHECK X
+                    if (bond.slot1.x > bond.slot2.x) { // RIGHT
+                        dirs.put("e", bond.bondCount);
+                    } else if (bond.slot1.x < bond.slot2.x) { //LEFT
+                        dirs.put("w", bond.bondCount);
+                    }
+                }
+            }
+        }
+        return dirs;
+    }
+
+    public Bond getOrCreateBond(Slot slot1, Slot slot2, int bondOrder) {
+        if (getBond(slot1, slot2) == null) {
+            this.addBond(new Bond(slot1, slot2, bondOrder));
+        }
+        return getBond(slot1, slot2);
     }
 }

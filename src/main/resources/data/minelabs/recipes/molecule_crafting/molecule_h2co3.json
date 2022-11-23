@@ -1,0 +1,26 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C"},
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "H2", "atom":  "H"},
+      {"key":  "O1", "atom":  "O"},
+      {"key":  "O2", "atom":  "O"},
+      {"key":  "O3", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "O1", "to": "C1", "bondOrder": 1},
+      {"from": "O2", "to": "C1", "bondOrder": 1},
+      {"from": "O3", "to": "C1", "bondOrder": 2},
+      {"from": "H1", "to": "O1", "bondOrder": 1},
+      {"from": "O2", "to": "H2", "bondOrder": 1}      
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_carbonic_acid"
+  },
+  "density": 8
+}
+
