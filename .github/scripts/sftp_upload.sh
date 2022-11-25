@@ -3,16 +3,18 @@
 mkdir mods
 cd mods
 echo "stop stop" > restart
-
+echo $RANDOM > random_key
 sftp -o "StrictHostKeyChecking no" -P 2233 minelabs@minelabs.be<< EOF
 cd config
 put restart
+put random_key
 cd ../minecraft-data/mods
 get *
 bye
 EOF
 rm restart
 rm $(ls | grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
+mv random_key random_key_local
 cd ..
 
 
@@ -45,9 +47,23 @@ sleep 3
 sftp -o "StrictHostKeyChecking no" -P 2233  minelabs@minelabs.be<< EOF
 cd config
 get restart.log
+get random_key
 bye
 EOF
 
 echo "from the server logs at Minelabs:"
 cat restart.log
+if ! $(( $(cat random_key) == -2 * $(cat random_key_local) )) ; then
+  if $(( $(cat random_key) == $(cat random_key_local) )) ; then
+    echo "::error::The restart script is not running on the server."
+    exit -1
+  fi
+  if $(( $(cat random_key) == 2 * $(cat random_key_local) )) ; then
+    echo "::warning::The server wasn't running, but it started."
+  fi
+  if $(( $(cat random_key) == -1 * $(cat random_key_local) )) ; then
+    echo "::warning::The server stopped, but didn't start again."
+    exit -1
+  fi
+fi
 echo "Upload complete. "
