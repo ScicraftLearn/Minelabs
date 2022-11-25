@@ -13,7 +13,7 @@ get *
 bye
 EOF
 rm restart
-rm $(ls | grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
+rm -f $(ls | grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
 mv random_key random_key_local
 cd ..
 
