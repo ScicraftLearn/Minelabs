@@ -62,12 +62,16 @@ if ! test $(( $(cat random_key) == -2 * $(cat random_key_local) )) ; then
     echo "::error::The restart script is not running on the server."
     exit -1
   fi
-  if test $(( $(cat random_key) == 2 * $(cat random_key_local) )) ; then
-    echo "::warning::The server wasn't running, but it started."
-  fi
   if test $(( $(cat random_key) == -1 * $(cat random_key_local) )) ; then
     echo "::warning::The server stopped, but didn't start again."
     exit -1
   fi
+  if test $(( $(cat random_key) == 2 * $(cat random_key_local) )) ; then
+    echo "::warning::The server wasn't running, but it started."
+  else
+    echo "::error::Something went wrong; maybe another upload at the same time?!"
+    exit -1
+  fi
 fi
+
 echo "Upload complete. "
