@@ -57,6 +57,9 @@ if ! cat restart.log ; then
   exit -1
 fi
 
+cat random_key
+cat random_key_local
+
 if ! test $(( $(cat random_key) == -2 * $(cat random_key_local) )) ; then
   if test $(( $(cat random_key) == $(cat random_key_local) )) ; then
     echo "::error::The restart script is not running on the server."
@@ -72,6 +75,6 @@ if ! test $(( $(cat random_key) == -2 * $(cat random_key_local) )) ; then
     echo "::error::Something went wrong; maybe another upload at the same time?!"
     exit -1
   fi
+else
+  echo "Upload complete. "
 fi
-
-echo "Upload complete. "
