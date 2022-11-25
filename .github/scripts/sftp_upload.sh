@@ -3,7 +3,7 @@
 mkdir mods
 cd mods
 echo "stop stop" > restart
-echo $$RANDOM>random_key
+echo $RANDOM>random_key
 sftp -o "StrictHostKeyChecking no" -P 2233 minelabs@minelabs.be<< EOF
 cd config
 put restart
