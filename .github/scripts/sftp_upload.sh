@@ -65,7 +65,6 @@ if ! (($(cat random_key)==-2*$(cat random_key_local))) ; then
     echo "::error::The restart script is not running on the server."
     exit -1
   fi
-  # the next lines don't work ....
   if (($(cat random_key)==-1*$(cat random_key_local))) ; then
     echo "::error::The server stopped, but didn't start again."
     exit -1
