@@ -43,7 +43,7 @@ put ../minecraft.env
 bye
 EOF
 
-sleep 3
+sleep 6
 sftp -o "StrictHostKeyChecking no" -P 2233  minelabs@minelabs.be<< EOF
 cd config
 get restart.log
