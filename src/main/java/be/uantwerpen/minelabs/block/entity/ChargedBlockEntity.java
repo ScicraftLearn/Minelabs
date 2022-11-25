@@ -26,7 +26,7 @@ public class ChargedBlockEntity extends BlockEntity{
     private double charge;
     private Vec3f field;
     private boolean update_next_tick = false;
-    private static final double e_move = 0.5;
+    private static final double e_move = 0.1; //if force is larger, then particles can move
     private final Block anti_block;
     private final double decay_time;
     private final ArrayList<ItemStack> decay_drop;
@@ -102,7 +102,7 @@ public class ChargedBlockEntity extends BlockEntity{
 
     //First time field
     public void makeField(World world, BlockPos pos, boolean afterTimeFreeze) {
-        int e_radius = 8;
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
         field = new Vec3f(0f, 0f, 0f);
@@ -147,7 +147,7 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public void removeField(World world, BlockPos pos) {
-        int e_radius = 8;
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
 

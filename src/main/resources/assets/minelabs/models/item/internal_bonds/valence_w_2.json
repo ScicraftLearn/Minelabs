@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "minelabs:item/internal_bonds/valence_electron_2"
+  },
+  "display": {"gui":{"rotation": [0,0,90]}}
+}

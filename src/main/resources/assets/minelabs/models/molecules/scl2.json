@@ -1,0 +1,15 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "S1", "atom":  "S", "position": [ 0.00,  0.00, 0.8510]},
+      {"key":  "Cl1", "atom":  "Cl", "position": [ 0.0000,  1.6202,  -0.4005]},
+      {"key":  "Cl2", "atom":  "Cl", "position": [ 0.0000,  -1.6202,  -0.4005]}
+    ],
+    "bonds": [
+      {"from": "S1", "to": "Cl1", "bondOrder": 1},
+      {"from": "S1", "to": "Cl2", "bondOrder": 1}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_SCl2"]
+}

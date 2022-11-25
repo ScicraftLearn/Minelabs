@@ -1,0 +1,311 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "O1",
+        "atom": "O",
+        "position": [
+          9.76,
+          -3.39,
+          0.00
+        ]
+      },
+      {
+        "key": "O2",
+        "atom": "O",
+        "position": [
+          11.51,
+          -5.13,
+          0.00
+        ]
+      },
+      {
+        "key": "O3",
+        "atom": "O",
+        "position": [
+          10.64,
+          -2.08,
+          0.00
+        ]
+      },
+      {
+        "key": "O4",
+        "atom": "O",
+        "position": [
+          12.82,
+          -4.26,
+          0.00
+        ]
+      },
+      {
+        "key": "O5",
+        "atom": "O",
+        "position": [
+          10.64,
+          -6.44,
+          0.00
+        ]
+      },
+      {
+        "key": "B1",
+        "atom": "B",
+        "position": [
+          10.64,
+          -3.02,
+          0.00
+        ]
+      },
+      {
+        "key": "B2",
+        "atom": "B",
+        "position": [
+          11.87,
+          -4.26,
+          0.00
+        ]
+      },
+      {
+        "key": "B3",
+        "atom": "B",
+        "position": [
+          10.64,
+          -5.50,
+          0.00
+        ]
+      },
+      {
+        "key": "B4",
+        "atom": "B",
+        "position": [
+          9.39,
+          -4.26,
+          0.00
+        ]
+      },
+      {
+        "key": "O5",
+        "atom": "O",
+        "position": [
+          10.16,
+          -4.26,
+          0.00
+        ]
+      },
+      {
+        "key": "O6",
+        "atom": "O",
+        "position": [
+          11.50,
+          -3.39,
+          0.00
+        ]
+      },
+      {
+        "key": "O7",
+        "atom": "O",
+        "position": [
+          9.76,
+          -5.13,
+          0.00
+        ]
+      },
+      {
+        "key": "O8",
+        "atom": "O",
+        "position": [
+          8.45,
+          -4.26,
+          0.00
+        ]
+      },
+      {
+        "key": "Na1",
+        "atom": "Na",
+        "position": [
+          12.81,
+          -2.62,
+          0.00
+        ]
+      },
+      {
+        "key": "Na2",
+        "atom": "Na",
+        "position": [
+          8.45,
+          -5.90,
+          0.00
+        ]
+      },
+      {
+        "key": "O9",
+        "atom": "O",
+        "position": [
+          11.03,
+          -1.04,
+          0.00
+        ]
+      },
+      {
+        "key": "O10",
+        "atom": "O",
+        "position": [
+          9.30,
+          -1.04,
+          0.00
+        ]
+      },
+      {
+        "key": "O11",
+        "atom": "O",
+        "position": [
+          7.53,
+          -1.04,
+          0.00
+        ]
+      },
+      {
+        "key": "O12",
+        "atom": "O",
+        "position": [
+          12.66,
+          -1.05,
+          0.00
+        ]
+      },
+      {
+        "key": "O13",
+        "atom": "O",
+        "position": [
+          14.38,
+          -1.05,
+          0.00
+        ]
+      },
+      {
+        "key": "O9",
+        "atom": "O",
+        "position": [
+          14.40,
+          -7.41,
+          0.00
+        ]
+      },
+      {
+        "key": "O10",
+        "atom": "O",
+        "position": [
+          12.68,
+          -7.41,
+          0.00
+        ]
+      },
+      {
+        "key": "O11",
+        "atom": "O",
+        "position": [
+          7.55,
+          -7.40,
+          0.00
+        ]
+      },
+      {
+        "key": "O12",
+        "atom": "O",
+        "position": [
+          9.33,
+          -7.40,
+          0.00
+        ]
+      },
+      {
+        "key": "O13",
+        "atom": "O",
+        "position": [
+          11.05,
+          -7.40,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "O1",
+        "to": "B4",
+        "bondOrder": 1
+      },
+      {
+        "from": "O1",
+        "to": "B1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O6",
+        "to": "B1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O6",
+        "to": "B2",
+        "bondOrder": 1
+      },
+      {
+        "from": "O3",
+        "to": "B1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O3",
+        "to": "B1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O7",
+        "to": "B3",
+        "bondOrder": 1
+      },
+      {
+        "from": "O7",
+        "to": "B4",
+        "bondOrder": 1
+      },
+      {
+        "from": "O2",
+        "to": "B3",
+        "bondOrder": 1
+      },
+      {
+        "from": "O2",
+        "to": "B2",
+        "bondOrder": 1
+      },
+      {
+        "from": "O5",
+        "to": "B3",
+        "bondOrder": 1
+      },
+      {
+        "from": "O8",
+        "to": "B4",
+        "bondOrder": 1
+      },
+      {
+        "from": "O4",
+        "to": "B2",
+        "bondOrder": 1
+      },
+      {
+        "from": "O5",
+        "to": "B1",
+        "bondOrder": 1
+      },
+      {
+        "from": "O5",
+        "to": "B3",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:borax"
+  ]
+}
