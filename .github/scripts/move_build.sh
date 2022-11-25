@@ -7,6 +7,6 @@ mod_file=$(ls build/libs| grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.j
 echo "$archives_base_name-$mod_version.jar --- $mod_file"
 mkdir output
 cd output
-cp "../build/libs/$mod_file" .
+cp "../build/libss/$mod_file" . || (echo "::error::Can't move the mod")
 cd ..
 echo "Moved mod to output.."
