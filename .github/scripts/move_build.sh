@@ -8,10 +8,10 @@ echo "$archives_base_name-$mod_version.jar --- $mod_file"
 mkdir output
 cd output
 
-if cp "../build/libss/$mod_file" . then
-  cd ..
-  echo "Moved mod to output.."
-else
+if ! cp "../build/libss/$mod_file" . ; then
   echo "::error::Can't move the mod"
   exit -1
 fi
+
+cd ..
+echo "Moved mod to output.."
