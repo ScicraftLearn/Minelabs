@@ -56,6 +56,7 @@ if ! cat restart.log ; then
   echo "::error::Can't download files from the SSH-server."
   exit -1
 fi
+
 if ! $(( $(cat random_key) == -2 * $(cat random_key_local) )) ; then
   if $(( $(cat random_key) == $(cat random_key_local) )) ; then
     echo "::error::The restart script is not running on the server."
