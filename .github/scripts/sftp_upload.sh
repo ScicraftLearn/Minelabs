@@ -57,15 +57,15 @@ if ! cat restart.log ; then
   exit -1
 fi
 
-if ! $(( $(cat random_key) == -2 * $(cat random_key_local) )) ; then
-  if $(( $(cat random_key) == $(cat random_key_local) )) ; then
+if ! test $(( $(cat random_key) == -2 * $(cat random_key_local) )) ; then
+  if test $(( $(cat random_key) == $(cat random_key_local) )) ; then
     echo "::error::The restart script is not running on the server."
     exit -1
   fi
-  if $(( $(cat random_key) == 2 * $(cat random_key_local) )) ; then
+  if test $(( $(cat random_key) == 2 * $(cat random_key_local) )) ; then
     echo "::warning::The server wasn't running, but it started."
   fi
-  if $(( $(cat random_key) == -1 * $(cat random_key_local) )) ; then
+  if test $(( $(cat random_key) == -1 * $(cat random_key_local) )) ; then
     echo "::warning::The server stopped, but didn't start again."
     exit -1
   fi
