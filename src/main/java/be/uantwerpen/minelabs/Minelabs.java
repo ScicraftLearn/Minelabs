@@ -55,6 +55,6 @@ public class Minelabs implements ModInitializer {
         ScientificVillager.registerVillagers();
         ScientificVillager.registerTrades();
         ServerModEvents.registerEvents();
-        NetworkingConstants.registerS2CPackets();
+        NetworkingConstants.registerC2SPackets();
     }
 }
