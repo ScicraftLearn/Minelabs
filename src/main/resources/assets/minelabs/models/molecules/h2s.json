@@ -1,0 +1,15 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key": "S1", "atom": "S", "position": [ 0.00, 0.00, 0.11]},
+      {"key": "H1", "atom": "H", "position": [ 0.00, 0.97, -0.85]},
+      {"key": "H2", "atom": "H", "position": [ 0.00, -0.97, -0.85]}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "S1", "bondOrder": 1},
+      {"from": "H2", "to": "S1", "bondOrder": 1}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_h2s"]
+}

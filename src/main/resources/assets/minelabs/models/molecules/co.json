@@ -1,0 +1,34 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "C1",
+        "atom": "C",
+        "position": [
+          1.00,
+          0.00,
+          0.00
+        ]
+      },
+      {
+        "key": "O1",
+        "atom": "O",
+        "position": [
+          0.00,
+          0.00,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "O1",
+        "to": "C1",
+        "bondOrder": 3
+      }
+    ]
+  },
+  "items": [
+    "minelabs:erlenmeyer_co"
+  ]
+}

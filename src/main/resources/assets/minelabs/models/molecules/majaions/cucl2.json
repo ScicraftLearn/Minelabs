@@ -1,0 +1,48 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "Cu1",
+        "atom": "Cu",
+        "position": [
+          0.87,
+          0.50,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl1",
+        "atom": "Cl",
+        "position": [
+          1.73,
+          0.00,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl2",
+        "atom": "Cl",
+        "position": [
+          0.00,
+          0.00,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "Cu1",
+        "to": "Cl1",
+        "bondOrder": 1
+      },
+      {
+        "from": "Cu1",
+        "to": "Cl2",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:copper_chloride_dust"
+  ]
+}

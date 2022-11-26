@@ -1,0 +1,48 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "Sr1",
+        "atom": "Sr",
+        "position": [
+          0.15,
+          -0.32,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl1",
+        "atom": "Cl",
+        "position": [
+          -0.68,
+          -0.32,
+          0.00
+        ]
+      },
+      {
+        "key": "Cl2",
+        "atom": "Cl",
+        "position": [
+          0.68,
+          0.32,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "Sr1",
+        "to": "Cl1",
+        "bondOrder": 1
+      },
+      {
+        "from": "Sr1",
+        "to": "Cl2",
+        "bondOrder": 1
+      }
+    ]
+  },
+  "items": [
+    "minelabs:strontium_chloride_dust"
+  ]
+}

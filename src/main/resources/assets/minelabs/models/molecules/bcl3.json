@@ -1,0 +1,17 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key": "B1", "atom": "B", "position": [ 0.00, 0.00, 0.00]},
+      {"key": "Cl1", "atom": "Cl", "position": [ 0.00, 1.78, 0.00]},
+      {"key": "Cl2", "atom": "Cl", "position": [ 1.55, -0.89, 0.00]},
+      {"key": "Cl3", "atom": "Cl", "position": [-1.55, -0.89, 0.00]}
+    ],
+    "bonds": [
+      {"from": "Cl1", "to": "B1", "bondOrder": 1},
+      {"from": "Cl2", "to": "B1", "bondOrder": 1},
+      {"from": "Cl3", "to": "B1", "bondOrder": 1}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_bcl3"]
+}

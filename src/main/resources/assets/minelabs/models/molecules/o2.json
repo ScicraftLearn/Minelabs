@@ -1,0 +1,13 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "O1", "atom":  "O", "position": [ 0.00,  0.00,  0.64]},
+      {"key":  "O2", "atom":  "O", "position": [ 0.00,  0.00, -0.64]}
+    ],
+    "bonds": [
+      {"from": "O1", "to": "O2", "bondOrder": 2}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_o2"]
+}

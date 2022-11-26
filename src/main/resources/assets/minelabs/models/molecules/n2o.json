@@ -1,0 +1,48 @@
+{
+  "structure": {
+    "atoms": [
+      {
+        "key": "N1",
+        "atom": "N",
+        "position": [
+          0.00,
+          0.00,
+          0.00
+        ]
+      },
+      {
+        "key": "N2",
+        "atom": "N",
+        "position": [
+          1.03,
+          0.00,
+          0.00
+        ]
+      },
+      {
+        "key": "O1",
+        "atom": "O",
+        "position": [
+          2.00,
+          0.00,
+          0.00
+        ]
+      }
+    ],
+    "bonds": [
+      {
+        "from": "N1",
+        "to": "N2",
+        "bondOrder": 3
+      },
+      {
+        "from": "N2",
+        "to": "O1",
+        "bondOrder": 2
+      }
+    ]
+  },
+  "items": [
+    "minelabs:erlenmeyer_n2o"
+  ]
+}

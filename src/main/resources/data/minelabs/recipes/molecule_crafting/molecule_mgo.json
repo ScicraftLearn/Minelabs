@@ -1,0 +1,17 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Mg1", "atom":  "Mg"},
+      {"key":  "O1", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "O1", "to": "Mg1", "bondOrder": 2}
+    ]
+  },
+  "result": {
+    "item": "minelabs:magnesium_oxide_dust"
+  },
+  "density": 8
+}

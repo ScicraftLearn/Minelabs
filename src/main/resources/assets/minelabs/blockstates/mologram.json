@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "minelabs:block/mologram"
+      }
+    },
+    {
+      "when": {
+        "lit": true
+      },
+      "apply": {
+        "model": "minelabs:block/mologram_beam"
+      }
+    }
+  ]
+}
