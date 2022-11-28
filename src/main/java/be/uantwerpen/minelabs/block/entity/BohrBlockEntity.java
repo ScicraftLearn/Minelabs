@@ -547,4 +547,18 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         nbt.putInt("Timer", timer);
         super.writeNbt(nbt);
     }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+        //TODO
+        // INSERT INTO CORRECT SLOTS
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction side) {
+        //TODO
+        // EXTACTABLE WHEN COLLECTABLE
+        return false;
+    }
 }
