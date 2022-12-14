@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "a b",
+    "c c",
+    "ccc"
+  ],
+  "key": {
+    "a": {
+      "item": "minelabs:proton"
+    },
+    "b": {
+      "item": "minelabs:electron"
+    },
+    "c": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "minelabs:magnet"
+  }
+}
