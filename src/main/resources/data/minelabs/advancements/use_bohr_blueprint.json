@@ -15,13 +15,6 @@
     "use_bohr_blueprint": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
-        "item": {
-          "items": [
-            "minelabs:electron",
-            "minelabs:proton",
-            "minelabs:neutron"
-          ]
-        },
         "location": {
           "block": {
             "blocks": ["minelabs:bohr_block"]
