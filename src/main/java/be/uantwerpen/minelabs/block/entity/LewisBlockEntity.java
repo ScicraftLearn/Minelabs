@@ -1,5 +1,7 @@
 package be.uantwerpen.minelabs.block.entity;
 
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
+import be.uantwerpen.minelabs.advancement.criterion.LCTMakeBondCriterion;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.lewis.MoleculeRecipe;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler;
@@ -134,10 +136,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MoleculeRecipeType.INSTANCE, lewis.craftingGrid, world);
             //Optional<MoleculeRecipe> recipe = lewis.matchGetter.getFirstMatch(lewis.craftingGrid, world);
             recipe.ifPresent(r -> {
-                lewis.ingredients = DefaultedList.ofSize(0);
-                lewis.currentRecipe = r;
-                lewis.ingredients = r.getIngredients();
-                lewis.density = r.getDensity();
+                lewis.setRecipe(r);
                 LewisDataPacket packet = new LewisDataPacket(pos, lewis.ingredients); //custom packet to sync ingredients
                 packet.send(world, pos);
             });
@@ -182,6 +181,13 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
         }
         lewis.markDirty();
+    }
+
+    private void setRecipe(MoleculeRecipe recipe){
+        this.currentRecipe = recipe;
+        ingredients = DefaultedList.ofSize(0); // why?
+        ingredients = recipe.getIngredients();
+        density = recipe.getDensity();
     }
 
     private void resetProgress() {

@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs;
 
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.crafting.CraftingRecipes;
@@ -56,5 +57,7 @@ public class Minelabs implements ModInitializer {
         ScientificVillager.registerTrades();
         ServerModEvents.registerEvents();
         NetworkingConstants.registerS2CPackets();
+
+        Criteria.registerCriteria();
     }
 }
