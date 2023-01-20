@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:silver_atom"
+    },
+    "title": "The silver lining",
+    "description": "Make silver",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:use_bohr_blueprint",
+  "criteria": {
+    "make_silver": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:silver_atom"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "make_silver"
+    ]
+  ]
+}
