@@ -1,23 +1,22 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:bohr_block"
+      "item": "minelabs:lewis_block"
     },
-    "title": "Bohr-ing",
-    "description": "Use the Bohr blueprint",
+    "title": "Molecules",
+    "description": "Craft all the molecules",
     "frame": "task",
-    "show_toast": true,
-    "announce_to_chat": true,
+    "show_toast": false,
+    "announce_to_chat": false,
     "background": "minelabs:textures/block/advancements_bg.png"
   },
-  "parent": "minelabs:root_minelabs",
   "criteria": {
-    "use_bohr_blueprint": {
+    "use_lewis_crafting_table": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
         "location": {
           "block": {
-            "blocks": ["minelabs:bohr_block"]
+            "blocks": ["minelabs:lewis_block"]
           }
         }
       }
@@ -25,7 +24,7 @@
   },
   "requirements": [
     [
-      "use_bohr_blueprint"
+      "use_lewis_crafting_table"
     ]
   ]
 }

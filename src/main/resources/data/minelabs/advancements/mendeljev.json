@@ -11,7 +11,7 @@
     "hidden": false,
     "background": "minelabs:textures/block/advancements_bg.png"
   },
-  "parent": "minelabs:use_bohr_blueprint",
+  "parent": "minelabs:make_an_atom",
   "criteria": {
     "make_hydrogen": {
       "trigger": "minecraft:inventory_changed",
