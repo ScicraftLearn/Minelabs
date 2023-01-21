@@ -41,13 +41,13 @@ public class LCTMakeBondCriterion extends AbstractCriterion<LCTMakeBondCriterion
 
         private final int order;
 
-        public Condition(EntityPredicate.Extended playerPredicate, int order) {
+        private Condition(EntityPredicate.Extended playerPredicate, int order) {
             super(IDENTIFIER, playerPredicate);
             this.order = order;
         }
 
-        private boolean test(int bond_made_order){
-            return this.order == bond_made_order;
+        private boolean test(int bondMadeOrder){
+            return this.order == bondMadeOrder;
         }
 
         @Override
