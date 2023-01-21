@@ -12,11 +12,14 @@
   },
   "criteria": {
     "use_lewis_crafting_table": {
-      "trigger": "minecraft:item_used_on_block",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "location": {
-          "block": {
-            "blocks": ["minelabs:lewis_block"]
+        "player": {
+          "type_specific": {
+            "type": "player",
+            "advancements": {
+              "minelabs:basic/use_lewis_crafting_table": true
+            }
           }
         }
       }

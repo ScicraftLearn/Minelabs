@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:bohr_block"
+      "item": "minelabs:hydrogen_atom"
     },
     "title": "Atoms",
     "description": "Craft all the atoms",
@@ -12,11 +12,14 @@
   },
   "criteria": {
     "use_bohr_blueprint": {
-      "trigger": "minecraft:item_used_on_block",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "location": {
-          "block": {
-            "blocks": ["minelabs:bohr_block"]
+        "player": {
+          "type_specific": {
+            "type": "player",
+            "advancements": {
+              "minelabs:basic/use_bohr_blueprint": true
+            }
           }
         }
       }
