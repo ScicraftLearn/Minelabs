@@ -1,24 +1,24 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:hydrogen_atom"
+      "item": "minelabs:lithium_atom"
     },
-    "title": "It's so simple",
-    "description": "Make hydrogen",
+    "title": "Battery pack",
+    "description": "Make lithium",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "background": "minelabs:textures/block/advancements_bg.png"
   },
-  "parent": "minelabs:root_use_bohr_blueprint",
+  "parent": "minelabs:atoms/root_use_bohr_blueprint",
   "criteria": {
-    "make_hydrogen": {
+    "make_lithium": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minelabs:hydrogen_atom"
+              "minelabs:lithium_atom"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "make_hydrogen"
+      "make_lithium"
     ]
   ]
 }
