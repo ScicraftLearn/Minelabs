@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:gluon_quantumfield"
+    },
+    "title": "Elementary Particles",
+    "description": "Obtain all the elementary particles",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "criteria": {
+    "enter_subatomic_dimension": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "minelabs:subatom"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "enter_subatomic_dimension"
+    ]
+  ]
+}

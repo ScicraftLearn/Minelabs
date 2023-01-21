@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:gluon_quantumfield"
+    },
+    "title": "I feel so small",
+    "description": "Enter the subatomic dimension",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:root_minelabs",
+  "criteria": {
+    "enter_subatomic_dimension": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "minelabs:subatom"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "enter_subatomic_dimension"
+    ]
+  ]
+}
