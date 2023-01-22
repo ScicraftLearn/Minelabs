@@ -1,24 +1,24 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:silver_atom"
+      "item": "minelabs:bromine_atom"
     },
-    "title": "The silver lining",
-    "description": "Make silver",
+    "title": "You are my Bro(mine)",
+    "description": "Make bromine",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "background": "minelabs:textures/block/advancements_bg.png"
   },
-  "parent": "minelabs:atoms/obtain_copper",
+  "parent": "minelabs:atoms/obtain_chlorine",
   "criteria": {
-    "make_silver": {
+    "make_bromine": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minelabs:silver_atom"
+              "minelabs:bromine_atom"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "make_silver"
+      "make_bromine"
     ]
   ]
 }

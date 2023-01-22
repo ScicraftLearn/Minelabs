@@ -1,24 +1,24 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:silver_atom"
+      "item": "minelabs:lead_atom"
     },
-    "title": "The silver lining",
-    "description": "Make silver",
+    "title": "Heavy metal!",
+    "description": "Make lead",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "background": "minelabs:textures/block/advancements_bg.png"
   },
-  "parent": "minelabs:atoms/obtain_copper",
+  "parent": "minelabs:atoms/obtain_tin",
   "criteria": {
-    "make_silver": {
+    "make_lead": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minelabs:silver_atom"
+              "minelabs:lead_atom"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "make_silver"
+      "make_lead"
     ]
   ]
 }

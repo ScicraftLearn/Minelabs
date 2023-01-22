@@ -1,24 +1,24 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:silver_atom"
+      "item": "minelabs:oxygen_atom"
     },
-    "title": "The silver lining",
-    "description": "Make silver",
+    "title": "Just breathe",
+    "description": "Make oxygen",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "background": "minelabs:textures/block/advancements_bg.png"
   },
-  "parent": "minelabs:atoms/obtain_copper",
+  "parent": "minelabs:atoms/obtain_nitrogen",
   "criteria": {
-    "make_silver": {
+    "make_oxygen": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minelabs:silver_atom"
+              "minelabs:oxygen_atom"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "make_silver"
+      "make_oxygen"
     ]
   ]
 }
