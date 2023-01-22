@@ -1,24 +1,24 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:lewis_block"
+      "item": "minelabs:hydrogen_atom"
     },
-    "title": "Molecules",
-    "description": "Craft all the molecules",
+    "title": "Atoms",
+    "description": "Craft all the atoms",
     "frame": "task",
     "show_toast": false,
     "announce_to_chat": false,
     "background": "minelabs:textures/block/advancements_bg.png"
   },
   "criteria": {
-    "use_lewis_crafting_table": {
+    "use_bohr_blueprint": {
       "trigger": "minecraft:tick",
       "conditions": {
         "player": {
           "type_specific": {
             "type": "player",
             "advancements": {
-              "minelabs:basic/use_lewis_crafting_table": true
+              "minelabs:basic/make_an_atom": true
             }
           }
         }
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "use_lewis_crafting_table"
+      "use_bohr_blueprint"
     ]
   ]
 }
