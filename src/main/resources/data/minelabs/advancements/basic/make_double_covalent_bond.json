@@ -2,10 +2,10 @@
   "display": {
     "icon": {
       "item": "minelabs:bond",
-      "nbt": "{\"MinelabsBondAmount\": 1}"
+      "nbt": "{\"MinelabsBondAmount\": 2}"
     },
-    "title": "Covalently Bonded",
-    "description": "Make a covalent bond",
+    "title": "Double trouble",
+    "description": "Make a double bond",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
@@ -13,10 +13,10 @@
   },
   "parent": "minelabs:basic/use_lewis_crafting_table",
   "criteria": {
-    "make_single_bond": {
+    "make_double_bond": {
       "trigger": "minelabs:lct_make_bond",
       "conditions": {
-        "order": 1
+        "order": 2
       }
     }
   }
