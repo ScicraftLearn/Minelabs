@@ -4,7 +4,7 @@
       "item": "minelabs:fluorine_atom"
     },
     "title": "Toothpaste",
-    "description": "Make fluorine",
+    "description": "Obtain fluorine",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

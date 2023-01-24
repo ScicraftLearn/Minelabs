@@ -4,7 +4,7 @@
       "item": "minelabs:hydrogen_atom"
     },
     "title": "It's so simple",
-    "description": "Make hydrogen",
+    "description": "Obtain hydrogen",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

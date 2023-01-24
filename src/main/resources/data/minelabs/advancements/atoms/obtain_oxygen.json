@@ -4,7 +4,7 @@
       "item": "minelabs:oxygen_atom"
     },
     "title": "Just breathe",
-    "description": "Make oxygen",
+    "description": "Obtain oxygen",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

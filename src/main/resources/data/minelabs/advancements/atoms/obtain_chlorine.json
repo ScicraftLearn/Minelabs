@@ -4,7 +4,7 @@
       "item": "minelabs:chlorine_atom"
     },
     "title": "Do you smell the swimming pool?",
-    "description": "Make chlorine",
+    "description": "Obtain chlorine",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

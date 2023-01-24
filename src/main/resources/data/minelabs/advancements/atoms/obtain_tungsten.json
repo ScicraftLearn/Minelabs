@@ -4,7 +4,7 @@
       "item": "minelabs:tungsten_atom"
     },
     "title": "The brightest light casts the darkest shadow",
-    "description": "Make tungsten",
+    "description": "Obtain tungsten",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

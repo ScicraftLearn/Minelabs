@@ -4,7 +4,7 @@
       "item": "minelabs:mercury_atom"
     },
     "title": "Liquid metal (but don't drink it!)",
-    "description": "Make mercury",
+    "description": "Obtain mercury",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

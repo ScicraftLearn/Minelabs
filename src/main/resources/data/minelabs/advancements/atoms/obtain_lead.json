@@ -4,7 +4,7 @@
       "item": "minelabs:lead_atom"
     },
     "title": "Heavy metal!",
-    "description": "Make lead",
+    "description": "Obtain lead",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

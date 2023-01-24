@@ -4,7 +4,7 @@
       "item": "minelabs:iron_atom"
     },
     "title": "Iron Man",
-    "description": "Make iron",
+    "description": "Obtain iron",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

@@ -4,7 +4,7 @@
       "item": "minelabs:helium_atom"
     },
     "title": "HeHeHe",
-    "description": "Make helium",
+    "description": "Obtain helium",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

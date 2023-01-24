@@ -4,7 +4,7 @@
       "item": "minelabs:strontium_atom"
     },
     "title": "Red fireworks",
-    "description": "Make strontium",
+    "description": "Obtain strontium",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

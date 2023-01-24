@@ -4,7 +4,7 @@
       "item": "minelabs:hydrogen_atom"
     },
     "title": "Atoms",
-    "description": "Craft all the atoms",
+    "description": "Obtain all atoms",
     "frame": "task",
     "show_toast": false,
     "announce_to_chat": false,

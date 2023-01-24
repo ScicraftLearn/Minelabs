@@ -4,7 +4,7 @@
       "item": "minelabs:bromine_atom"
     },
     "title": "You are my Bro(mine)",
-    "description": "Make bromine",
+    "description": "Obtain bromine",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

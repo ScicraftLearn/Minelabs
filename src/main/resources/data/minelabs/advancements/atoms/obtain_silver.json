@@ -4,7 +4,7 @@
       "item": "minelabs:silver_atom"
     },
     "title": "The silver lining",
-    "description": "Make silver",
+    "description": "Obtain silver",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

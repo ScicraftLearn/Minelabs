@@ -4,7 +4,7 @@
       "item": "minelabs:zinc_atom"
     },
     "title": "Just another metal",
-    "description": "Make zinc",
+    "description": "Obtain zinc",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

@@ -4,7 +4,7 @@
       "item": "minelabs:argon_atom"
     },
     "title": "The good jokes argon",
-    "description": "Make argon",
+    "description": "Obtain argon",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

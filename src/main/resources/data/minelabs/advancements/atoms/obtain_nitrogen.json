@@ -4,7 +4,7 @@
       "item": "minelabs:nitrogen_atom"
     },
     "title": "Essential for fertilizer",
-    "description": "Make nitrogen",
+    "description": "Obtain nitrogen",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

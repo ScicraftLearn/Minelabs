@@ -4,7 +4,7 @@
       "item": "minelabs:boron_atom"
     },
     "title": "You moron, you made boron",
-    "description": "Make boron",
+    "description": "Obtain boron",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

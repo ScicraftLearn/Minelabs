@@ -4,7 +4,7 @@
       "item": "minelabs:phosphorus_atom"
     },
     "title": "Lucifer",
-    "description": "Make phosphorus",
+    "description": "Obtain phosphorus",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

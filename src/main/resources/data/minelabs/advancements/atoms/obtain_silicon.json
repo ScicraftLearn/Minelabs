@@ -4,7 +4,7 @@
       "item": "minelabs:silicon_atom"
     },
     "title": "Sand and computerchips",
-    "description": "Make silicon",
+    "description": "Obtain silicon",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

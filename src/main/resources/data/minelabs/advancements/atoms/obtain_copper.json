@@ -4,7 +4,7 @@
       "item": "minelabs:copper_atom"
     },
     "title": "Electrically conductive",
-    "description": "Make copper",
+    "description": "Obtain copper",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

@@ -4,7 +4,7 @@
       "item": "minelabs:uranium_atom"
     },
     "title": "Fuel for fission",
-    "description": "Make uranium",
+    "description": "Obtain uranium",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

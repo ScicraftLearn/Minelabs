@@ -4,7 +4,7 @@
       "item": "minelabs:cadmium_atom"
     },
     "title": "Pretty poisonous",
-    "description": "Make cadmium",
+    "description": "Obtain cadmium",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

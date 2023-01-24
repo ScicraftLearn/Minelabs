@@ -4,7 +4,7 @@
       "item": "minelabs:lithium_atom"
     },
     "title": "Battery pack",
-    "description": "Make lithium",
+    "description": "Obtain lithium",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
