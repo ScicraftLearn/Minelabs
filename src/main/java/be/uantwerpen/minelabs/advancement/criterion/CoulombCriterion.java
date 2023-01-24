@@ -15,7 +15,8 @@ public class CoulombCriterion extends NeighbourhoodCriterion<CoulombCriterion.Co
 
     public enum Type {
         MOVE,
-        ANNIHILATE
+        ANNIHILATE,
+        DECAY
     }
 
     public static final Identifier IDENTIFIER = new Identifier(Minelabs.MOD_ID, "coulomb_observe");

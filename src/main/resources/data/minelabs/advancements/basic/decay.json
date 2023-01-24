@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:weak_boson"
+    },
+    "title": "Radioactive",
+    "description": "Observe a decay",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/root_minelabs",
+  "criteria": {
+    "make_single_bond": {
+      "trigger": "minelabs:coulomb_observe",
+      "conditions": {
+        "type": "DECAY"
+      }
+    }
+  }
+}
