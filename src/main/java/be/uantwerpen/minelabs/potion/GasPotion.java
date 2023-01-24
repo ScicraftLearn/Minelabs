@@ -1,15 +1,20 @@
 package be.uantwerpen.minelabs.potion;
 
+import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
+import be.uantwerpen.minelabs.advancement.criterion.ErlenmeyerCriterion;
 import be.uantwerpen.minelabs.item.IMoleculeItem;
 import be.uantwerpen.minelabs.item.Items;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.LingeringPotionItem;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.world.World;
 
 public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     private final String molecule;
@@ -34,11 +39,22 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     }
 
     @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        TypedActionResult<ItemStack> result = super.use(world, user, hand);
+        // Advancement
+        if (result.getResult().isAccepted() && user instanceof ServerPlayerEntity serverPlayer){
+            Criteria.ERLENMEYER_CRITERION.trigger(serverPlayer, ErlenmeyerCriterion.Type.THROW);
+        }
+        return result;
+    }
+
+    @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (context.getPlayer().isSneaking()) {
             return Items.ERLENMEYER_STAND.useOnBlock(context);
         } else {
-            return super.useOnBlock(context);
+            ActionResult result = super.useOnBlock(context);
+            return result;
         }
 
     }

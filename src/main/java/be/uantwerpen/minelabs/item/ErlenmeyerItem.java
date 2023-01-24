@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.item;
 
+import be.uantwerpen.minelabs.advancement.criterion.ErlenmeyerCriterion;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -139,6 +140,8 @@ public class ErlenmeyerItem extends Item implements FluidModificationItem, IMole
                     return false;
                 } else {
                     this.playEmptyingSound(player, world, pos);
+                    if (player instanceof ServerPlayerEntity serverPlayer)
+                        be.uantwerpen.minelabs.advancement.criterion.Criteria.ERLENMEYER_CRITERION.trigger(serverPlayer, ErlenmeyerCriterion.Type.POUR);
                     return true;
                 }
             }

@@ -7,6 +7,7 @@ public class Criteria {
 
     public static LCTMakeBondCriterion LCT_MAKE_BOND_CRITERION = register(new LCTMakeBondCriterion());
     public static CoulombCriterion COULOMB_FORCE_CRITERION = register(new CoulombCriterion());
+    public static ErlenmeyerCriterion ERLENMEYER_CRITERION = register(new ErlenmeyerCriterion());
 
 
     private static <T extends Criterion<?>> T register(T c){
