@@ -34,7 +34,8 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
         // Change the first value in strength to get the wanted mining speed
-        super(FabricBlockSettings.of(Material.METAL).strength(0.5f, 2.0f)
+        // Made material not solid so portals can't spawn on it.
+        super(FabricBlockSettings.of(Material.POWDER_SNOW).strength(0.5f, 2.0f)
                 .ticksRandomly().luminance(state ->
                         Math.round(MIN_LIGHT + ((float) (MAX_AGE - state.get(AGE) - 1) / MAX_AGE) * (MAX_LIGHT - MIN_LIGHT))));
         this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false));
