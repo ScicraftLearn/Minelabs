@@ -1,12 +1,11 @@
 package be.uantwerpen.minelabs.item;
 
-import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.effect.Effects;
 import be.uantwerpen.minelabs.entity.BalloonEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,9 +33,12 @@ public class BalloonItem extends Item {
         if (!world.isClient()) {
             if (entity instanceof PlayerEntity pe) {
                 if (!(pe.getAbilities().creativeMode)) {
-                    if (pe.getOffHandStack().getItem() instanceof BalloonItem) {
-                        System.out.println("Try to fly: call effect");
-                        StatusEffectInstance sei = new StatusEffectInstance(Effects.FLYING, 2, 2, false, false);
+                    if (pe.getOffHandStack().getItem() instanceof BalloonItem
+                            || pe.getMainHandStack().getItem() instanceof BalloonItem) {
+                        // TODO FIX custom effect (temp fix: use levitation)
+                        //System.out.println("Try to fly: call effect");
+                        //StatusEffectInstance sei = new StatusEffectInstance(Effects.FLYING, 2, 2, false, false);
+                        StatusEffectInstance sei = new StatusEffectInstance(StatusEffects.LEVITATION, 4, 2, false, false);
                         pe.addStatusEffect(sei);
                     }
                 }
