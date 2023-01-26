@@ -1,0 +1,17 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Al1", "atom":  "Al"},
+      {"key":  "N1", "atom":  "N"}
+    ],
+    "bonds": [
+      {"from": "Al1", "to": "N1", "bondOrder": 3}
+    ]
+  },
+  "result": {
+    "item": "minelabs:aluminium_nitride_dust"
+  },
+  "density": 8
+}

@@ -51,4 +51,12 @@ public class MoleculeGraph extends Graph<Atom, Bond> {
         // for the simple graphs we deal with, comparing the canonical string representation should suffice.
         return toCanonical().equals(other.toCanonical());
     }
+
+    public int getTotalOpenConnections() {
+        int totalOpenConnections = 0;
+        for (Vertex vertex : new ArrayList<>(getVertices())) {
+            totalOpenConnections += getOpenConnections(vertex);
+        }
+        return totalOpenConnections;
+    }
 }

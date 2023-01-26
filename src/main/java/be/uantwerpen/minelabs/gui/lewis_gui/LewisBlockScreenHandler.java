@@ -1,13 +1,13 @@
 package be.uantwerpen.minelabs.gui.lewis_gui;
 
 import be.uantwerpen.minelabs.block.entity.LewisBlockEntity;
+import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.inventory.OrderedInventory;
 import be.uantwerpen.minelabs.inventory.slot.CraftingResultSlot;
 import be.uantwerpen.minelabs.inventory.slot.FilteredSlot;
 import be.uantwerpen.minelabs.inventory.slot.LockableGridSlot;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -55,7 +55,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @param buf
      */
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId, playerInventory, new LewisCraftingGrid(5,5), new OrderedInventory(11), new ArrayPropertyDelegate(2), buf.readBlockPos());
+        this(syncId, playerInventory, new LewisCraftingGrid(5, 5), new OrderedInventory(11), new ArrayPropertyDelegate(3), buf.readBlockPos());
     }
 
     /**
@@ -127,14 +127,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 @Override
                 public boolean isEnabled() {
                     return hasRecipe();
-                }
-
-                @Override
-                public int getMaxItemCount(ItemStack stack) {
-                    if (lewis.getIngredients().size() > this.getIndex()) { //Slot differnce of GRIDSIZE due to the grid
-                        return getDensity();
-                    }
-                    return 0;
                 }
 
                 @Override
@@ -259,16 +251,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return true;
     }
 
-    public int getProgress() {
-        return propertyDelegate.get(0);
-    }
-
     public DefaultedList<Ingredient> getIngredients() {
         return lewis.getIngredients();
     }
 
     public int getDensity() {
-        return propertyDelegate.get(1);
+        return propertyDelegate.get(2);
     }
 
     //A recipe is found (so the density is larger than 0)
@@ -278,5 +266,32 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     public LewisCraftingGrid getLewisCraftingGrid() {
         return craftingGrid;
+    }
+
+    public boolean isCrafting() {
+        return propertyDelegate.get(0) > 0;
+    }
+
+    public int getScaledProgress() {
+        int progress = propertyDelegate.get(0);
+        int maxProgress = propertyDelegate.get(1);
+        int arrowSize = 26;
+        return maxProgress != 0 && progress != 0 ? progress * arrowSize / maxProgress : 0;
+    }
+
+    public int getStatus() {
+        if (propertyDelegate.get(2) > 0) { // Density found -> json recipe found
+            return 2;
+        } else {
+            if (craftingGrid.isEmpty()
+                    || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0 ) {
+                // Empty grid or still has possible conections
+                return 0;
+            } if (!craftingGrid.getPartialMolecule().getStructure().isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()){
+                return 3;
+            } else {
+                return 1;
+            }
+        }
     }
 }

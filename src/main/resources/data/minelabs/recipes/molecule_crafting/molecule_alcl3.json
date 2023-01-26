@@ -1,0 +1,21 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Al1", "atom":  "Al"},
+      {"key":  "Cl1", "atom":  "Cl"},
+      {"key":  "Cl2", "atom":  "Cl"},
+      {"key":  "Cl3", "atom":  "Cl"}
+    ],
+    "bonds": [
+      {"from": "Cl1", "to": "Al1", "bondOrder": 1},
+      {"from": "Cl2", "to": "Al1", "bondOrder": 1},
+      {"from": "Cl3", "to": "Al1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:aluminium_trichloride_dust"
+  },
+  "density": 8
+}

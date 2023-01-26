@@ -1,0 +1,15 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key":  "H1",  "atom":  "H",  "position": [ 0.00,  0.00, 0.00]},
+      {"key":  "C1", "atom":  "C", "position": [ 1.03,  0.00,  0.00]},
+      {"key":  "N1",  "atom":  "N",  "position": [ 2.00,  0.00, 0.00]}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "C1", "bondOrder": 1},
+      {"from": "C1", "to": "N1", "bondOrder": 3}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_hcn"]
+}
