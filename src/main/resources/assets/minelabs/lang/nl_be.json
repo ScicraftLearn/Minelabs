@@ -56,6 +56,7 @@
   "blockEntity.minelabs.charged_block": "Geladen Blok",
   "entity.minecraft.villager.sciencevillager": "Wetenschaps Dorpeling",
   "entity.minelabs.entropy_creeper": "Entropie Creeper",
+  "entity.minelabs.balloon": "Ballon",
   "item.minelabs.entropy_creeper_spawn_egg": "EntropieCreeper Spawnei",
   "item.minelabs.salt_shard": "Zoutscherf",
 
@@ -138,7 +139,8 @@
   "item.minelabs.titanium_atom": "Titanium",
   "item.minelabs.manganese_atom": "Mangaan",
   "item.minelabs.tungsten_atom": "Wolfraam",
-
+  "item.minelabs.titanium_atom": "Titanium",
+  "item.minelabs.balloon": "Ballon",
   "item.minelabs.erlenmeyer": "Erlenmeyer",
   "item.minelabs.erlenmeyer_h2o": "Water (H\u2082O)",
   "item.minelabs.erlenmeyer_o2.effect.empty": "Zuurstofgas (O\u2082)",
