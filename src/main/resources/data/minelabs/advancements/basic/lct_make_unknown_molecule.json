@@ -1,22 +1,22 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:bond",
-      "nbt": "{\"MinelabsBondAmount\": 1}"
+      "item": "minelabs:boric_acid"
     },
-    "title": "Covalently Bonded",
-    "description": "Make a covalent bond",
-    "frame": "task",
+    "title": "Smarter than the teacher",
+    "description": "Form a molecule that is not craftable",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
+    "hidden": true,
     "background": "minelabs:textures/block/advancements_bg.png"
   },
-  "parent": "minelabs:basic/use_lewis_crafting_table",
+  "parent": "minelabs:basic/make_single_covalent_bond",
   "criteria": {
     "make_single_bond": {
       "trigger": "minelabs:lct",
       "conditions": {
-        "order": 1
+        "type": "UNKNOWN_MOLECULE"
       }
     }
   }
