@@ -1,5 +1,7 @@
 package be.uantwerpen.minelabs.block.entity;
 
+import be.uantwerpen.minelabs.advancement.criterion.CoulombCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,6 +13,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
@@ -265,6 +268,7 @@ public class ChargedBlockEntity extends BlockEntity{
                     if (decay_replace != null) {
                         world.setBlockState(pos, decay_replace.getDefaultState());
                     }
+                    Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, pos, 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
                     markDirty();
                 } else {
                     Direction movement_annihilation = this.checkAnnihilation();
