@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:pig_spawn_egg"
+    },
+    "title": "Pigs can fly?!",
+    "description": "Attach a balloon to a pig",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/make_balloon",
+  "criteria": {
+    "attach_balloon_to_pig": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "item": {
+          "items": [
+            "minelabs:balloon"
+          ]
+        },
+        "entity": {
+          "type": "minecraft:pig"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "attach_balloon_to_pig"
+    ]
+  ]
+}
