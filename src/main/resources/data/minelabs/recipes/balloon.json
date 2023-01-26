@@ -1,5 +1,5 @@
 {
-  "group":"scicraft",
+  "group": "scicraft",
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "lll",
@@ -15,9 +15,14 @@
         "tag": "minecraft:wool"
       }
     ],
-    "h": {
-      "item": "minelabs:helium"
-    },
+    "h": [
+      {
+        "item": "minelabs:helium"
+      },
+      {
+        "item": "minelabs:erlenmeyer_he"
+      }
+    ],
     "s": {
       "item": "minecraft:string"
     }
