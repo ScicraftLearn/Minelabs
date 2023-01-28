@@ -1,13 +1,18 @@
 package be.uantwerpen.minelabs.gui.lewis_gui;
 
+import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.entity.LewisBlockEntity;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
+import be.uantwerpen.minelabs.crafting.molecules.Bond;
+import be.uantwerpen.minelabs.crafting.molecules.MoleculeGraph;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.inventory.OrderedInventory;
 import be.uantwerpen.minelabs.inventory.slot.CraftingResultSlot;
 import be.uantwerpen.minelabs.inventory.slot.FilteredSlot;
 import be.uantwerpen.minelabs.inventory.slot.LockableGridSlot;
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.util.Graph;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,6 +25,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -155,6 +161,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (int m = 0; m < 9; ++m) {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - o + 5));
         }
+
     }
 
     public Inventory getIoInventory(){
@@ -185,6 +192,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         Slot slot = this.slots.get(invSlot);
         if (invSlot < GRIDSIZE) {
             slot.setStack(itemStack);
+            onGridChangedByPlayer(player);
             return itemStack;
         }
         if (slot.hasStack()) {
@@ -208,6 +216,34 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return itemStack;
     }
 
+    @Override
+    public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+        super.onSlotClick(slotIndex, button, actionType, player);
+        if (slotIndex < GRIDSIZE)
+            onGridChangedByPlayer(player);
+    }
+
+    /**
+     * Callback used for advancements
+     */
+    private void onGridChangedByPlayer(PlayerEntity player){
+        Minelabs.LOGGER.info("onGridChangedByPlayer");
+        if (!(player instanceof ServerPlayerEntity serverPlayer))
+            return;
+        MoleculeGraph structure = getLewisCraftingGrid().getPartialMolecule().getStructure();
+
+        boolean[] foundOrders = {false, false, false};
+        for(MoleculeGraph.Edge edge : structure.getEdges()){
+            Bond bond = edge.data;
+            foundOrders[bond.bondOrder-1] = true;
+        }
+        for(int order = 1;order < foundOrders.length + 1;order++){
+            if (foundOrders[order-1]){
+                Minelabs.LOGGER.info("criterion for order fired: " + order);
+                Criteria.LCT_MAKE_BOND_CRITERION.trigger(serverPlayer, order);
+            }
+        }
+    }
 
     /**
      * Inserts the item into a slot, trying indexes from {@param startIndex} to {@param endIndex}.

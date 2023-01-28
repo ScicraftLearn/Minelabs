@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:potassium_atom"
+    },
+    "title": "Banana!",
+    "description": "Obtain potassium",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:atoms/obtain_sodium",
+  "criteria": {
+    "make_potassium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:potassium_atom"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "make_potassium"
+    ]
+  ]
+}

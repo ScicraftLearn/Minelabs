@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:erlenmeyer_h2o"
+    },
+    "title": "Wo-Tah",
+    "description": "Craft water in the Lewis Crafting Table",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:molecules/root_craft_all_molecules",
+  "criteria": {
+    "make_water": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:erlenmeyer_h2o"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "make_water"
+    ]
+  ]
+}
