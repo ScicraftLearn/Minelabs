@@ -14,7 +14,7 @@
   "parent": "minelabs:basic/make_single_covalent_bond",
   "criteria": {
     "make_triple_bond": {
-      "trigger": "minelabs:lct_make_bond",
+      "trigger": "minelabs:lct",
       "conditions": {
         "order": 3
       }

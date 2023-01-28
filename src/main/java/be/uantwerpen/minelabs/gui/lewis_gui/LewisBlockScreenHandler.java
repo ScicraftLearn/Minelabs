@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.gui.lewis_gui;
 
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
+import be.uantwerpen.minelabs.advancement.criterion.LCTCriterion;
 import be.uantwerpen.minelabs.block.entity.LewisBlockEntity;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.molecules.Bond;
@@ -12,7 +13,6 @@ import be.uantwerpen.minelabs.inventory.slot.CraftingResultSlot;
 import be.uantwerpen.minelabs.inventory.slot.FilteredSlot;
 import be.uantwerpen.minelabs.inventory.slot.LockableGridSlot;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.util.Graph;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -27,6 +27,7 @@ import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -227,7 +228,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * Callback used for advancements
      */
     private void onGridChangedByPlayer(PlayerEntity player){
-        Minelabs.LOGGER.info("onGridChangedByPlayer");
         if (!(player instanceof ServerPlayerEntity serverPlayer))
             return;
         MoleculeGraph structure = getLewisCraftingGrid().getPartialMolecule().getStructure();
@@ -239,9 +239,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
         for(int order = 1;order < foundOrders.length + 1;order++){
             if (foundOrders[order-1]){
-                Minelabs.LOGGER.info("criterion for order fired: " + order);
-                Criteria.LCT_MAKE_BOND_CRITERION.trigger(serverPlayer, order);
+                Criteria.LCT_CRITERION.trigger(serverPlayer, order);
             }
+        }
+
+        if(getStatus() == 0){
+            Criteria.LCT_CRITERION.trigger(serverPlayer, LCTCriterion.Type.UNKNOWN_MOLECULE);
         }
     }
 

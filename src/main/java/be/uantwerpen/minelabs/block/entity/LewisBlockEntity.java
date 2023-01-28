@@ -1,7 +1,5 @@
 package be.uantwerpen.minelabs.block.entity;
 
-import be.uantwerpen.minelabs.advancement.criterion.Criteria;
-import be.uantwerpen.minelabs.advancement.criterion.LCTMakeBondCriterion;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.lewis.MoleculeRecipe;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler;
