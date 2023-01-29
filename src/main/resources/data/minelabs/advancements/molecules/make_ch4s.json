@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:erlenmeyer_methanethiol"
+    },
+    "title": "The smell of bad breath",
+    "description": "Craft methanethiol in the Lewis Crafting Table",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:molecules/root_craft_all_molecules",
+  "criteria": {
+    "make_methanethiol": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:erlenmeyer_methanethiol"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "make_methanethiol"
+    ]
+  ]
+}
