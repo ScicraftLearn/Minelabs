@@ -5,7 +5,7 @@ import net.minecraft.advancement.criterion.Criterion;
 public class Criteria {
 
 
-    public static LCTMakeBondCriterion LCT_MAKE_BOND_CRITERION = register(new LCTMakeBondCriterion());
+    public static LCTCriterion LCT_CRITERION = register(new LCTCriterion());
     public static CoulombCriterion COULOMB_FORCE_CRITERION = register(new CoulombCriterion());
     public static ErlenmeyerCriterion ERLENMEYER_CRITERION = register(new ErlenmeyerCriterion());
 

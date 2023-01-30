@@ -11,6 +11,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -67,17 +68,19 @@ public class MologramBlock extends BlockWithEntity implements Waterloggable {
         }
         Inventory blockInventory = ((MologramBlockEntity) blockEntity);
 
-        if (!blockInventory.getStack(0).isEmpty()) {
+        if (!blockInventory.getStack(0).isEmpty()) { //remove molecule
             player.getInventory().offerOrDrop(blockInventory.getStack(0));
             world.setBlockState(blockPos, blockState.with(LIT, false));
             blockInventory.removeStack(0);
+            if (!world.isClient){((ServerWorld) world).getChunkManager().markForUpdate(blockPos);}
 
-        } else if (!player.getStackInHand(hand).isEmpty()) {
+        } else if (!player.getStackInHand(hand).isEmpty()) { //insert molecule
             if (((MologramBlockEntity) blockEntity).canInsert(0, player.getStackInHand(hand), null)) {
                 blockInventory.setStack(0, player.getStackInHand(hand).copy());
                 world.setBlockState(blockPos, blockState.with(LIT, true));
                 blockInventory.getStack(0).setCount(1);
                 player.getStackInHand(hand).decrement(1);
+                if (!world.isClient){((ServerWorld) world).getChunkManager().markForUpdate(blockPos);}
             }
         }
         return ActionResult.SUCCESS;
