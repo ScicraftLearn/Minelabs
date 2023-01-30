@@ -1,7 +1,10 @@
 package be.uantwerpen.minelabs.block.entity;
 
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
+import be.uantwerpen.minelabs.advancement.criterion.LCTCriterion;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.lewis.MoleculeRecipe;
+import be.uantwerpen.minelabs.crafting.molecules.MoleculeGraph;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler;
 import be.uantwerpen.minelabs.inventory.OrderedInventory;
 import be.uantwerpen.minelabs.item.Items;
@@ -22,6 +25,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -138,6 +142,13 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                 LewisDataPacket packet = new LewisDataPacket(pos, lewis.ingredients); //custom packet to sync ingredients
                 packet.send(world, pos);
             });
+            // Advancement, to be refactored along with everything else
+            if (recipe.isEmpty() && world instanceof ServerWorld serverWorld){
+                MoleculeGraph structure = lewis.craftingGrid.getPartialMolecule().getStructure();
+                if (structure.getVertices().size() > 0 && structure.getTotalOpenConnections() == 0 && structure.isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()){
+                    Criteria.LCT_CRITERION.trigger(serverWorld, pos, 5, c -> c.test(LCTCriterion.Type.UNKNOWN_MOLECULE));
+                }
+            }
         }
         //recipe loaded, check if enough items
         else if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
