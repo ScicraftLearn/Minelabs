@@ -351,25 +351,25 @@ public class Items {
 
     */
     public static final Item ERLENMEYER_HNO3 = register(new ErlenmeyerItem(
-            Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HNO3"), "erlenmeyer_hno3");
+            Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HNO3"), "erlenmeyer_hno3");
     public static final Item ERLENMEYER_H2O = register(new ErlenmeyerItem(
-            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "H2O"), "erlenmeyer_h2o");
+            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "H2O"), "erlenmeyer_h2o");
     public static final Item ERLENMEYER_NCL3 = register(new ErlenmeyerItem(
-            Fluids.STILL_NCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "NCl3"), "erlenmeyer_ncl3");
+            Fluids.STILL_NCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "NCl3"), "erlenmeyer_ncl3");
     public static final Item ERLENMEYER_CS2 = register(new ErlenmeyerItem(
-            Fluids.STILL_CS2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CS2"), "erlenmeyer_cs2");
+            Fluids.STILL_CS2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CS2"), "erlenmeyer_cs2");
     public static final Item ERLENMEYER_CCL4 = register(new ErlenmeyerItem(
-            Fluids.STILL_CCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CCl4"), "erlenmeyer_ccl4");
+            Fluids.STILL_CCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CCl4"), "erlenmeyer_ccl4");
     public static final Item ERLENMEYER_PCl3 = register(new ErlenmeyerItem(
-            Fluids.STILL_PCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "PCl3"), "erlenmeyer_pcl3");
+            Fluids.STILL_PCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "PCl3"), "erlenmeyer_pcl3");
     public static final Item ERLENMEYER_SCl2 = register(new ErlenmeyerItem(
-            Fluids.STILL_SCl2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SCl2"), "erlenmeyer_scl2");
+            Fluids.STILL_SCl2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SCl2"), "erlenmeyer_scl2");
     public static final Item ERLENMEYER_HCN = register(new ErlenmeyerItem(
-            Fluids.STILL_HCN, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HCN"), "erlenmeyer_hcn");
+            Fluids.STILL_HCN, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HCN"), "erlenmeyer_hcn");
     public static final Item ERLENMEYER_CH4O = register(new ErlenmeyerItem(
-            Fluids.STILL_CH4O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CH4O"), "erlenmeyer_ch4o");
+            Fluids.STILL_CH4O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CH4O"), "erlenmeyer_ch4o");
     public static final Item ERLENMEYER_SICL4 = register(new ErlenmeyerItem(
-            Fluids.STILL_SiCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SiCl4"), "erlenmeyer_sicl4");
+            Fluids.STILL_SiCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SiCl4"), "erlenmeyer_sicl4");
 
 
     static {
