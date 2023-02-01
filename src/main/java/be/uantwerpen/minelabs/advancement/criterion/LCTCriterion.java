@@ -12,7 +12,7 @@ import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class LCTCriterion extends AbstractCriterion<LCTCriterion.Condition> {
+public class LCTCriterion extends NeighbourhoodCriterion<LCTCriterion.Condition> {
 
     public enum Type {
         SINGLE_BOND,
