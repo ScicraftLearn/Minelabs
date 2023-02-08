@@ -23,9 +23,10 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
+// TODO: Make "Fabric"-like
+public class GasEntity extends PotionEntity { // TODO: better to extends from ThrownItemEntity, but the throw animation is buggy
 
-public class GasEntity extends PotionEntity {
-
+    // TODO: opt to make this an enum that will handle the reactions
     private final String molecule;
 
     public GasEntity(World world, LivingEntity player, String molecule) {
