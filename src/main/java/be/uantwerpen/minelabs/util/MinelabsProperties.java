@@ -20,5 +20,6 @@ public class MinelabsProperties {
     public static final IntProperty COUNTER = IntProperty.of("counter", 0, 2);
 
     public static final BooleanProperty FILLED = BooleanProperty.of("filled");
+    public static final BooleanProperty OXYGENATED = BooleanProperty.of("oxygenated");
     public static final EnumProperty<CornerShape> CONNECT = EnumProperty.of("connect", CornerShape.class);
 }

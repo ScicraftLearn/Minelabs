@@ -129,6 +129,9 @@ public class Blocks {
     public static final Block TUBERACK = register(new TubeRackBlock(
             FabricBlockSettings.of(Material.METAL).strength(4.0f)), "tuberack");
 
+    public static final Block BURNER = register(new BurnerBlock(
+            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "burner");
+
     /**
      * Register a Block
      * <p>
