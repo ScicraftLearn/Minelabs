@@ -6,6 +6,7 @@ import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.potion.GasPotion;
+import be.uantwerpen.minelabs.potion.Molecule;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
@@ -292,64 +293,37 @@ public class Items {
     public static final Item ERLENMEYER = register(new ErlenmeyerItem(net.minecraft.fluid.Fluids.EMPTY,
             new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), ""), "erlenmeyer");
 
-    public static final Item ERLENMEYER_O2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "O2"), "erlenmeyer_o2");
-    public static final Item ERLENMEYER_N2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "N2"), "erlenmeyer_n2");
-    public static final Item ERLENMEYER_CH4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CH4"), "erlenmeyer_ch4");
-    public static final Item ERLENMEYER_H2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "H2"), "erlenmeyer_h2");
-    public static final Item ERLENMEYER_NO = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "NO"), "erlenmeyer_no");
-    public static final Item ERLENMEYER_NO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "NO2"), "erlenmeyer_no2");
-    public static final Item ERLENMEYER_Cl2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "Cl2"), "erlenmeyer_cl2");
-    public static final Item ERLENMEYER_CO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CO2"), "erlenmeyer_co2");
-    public static final Item ERLENMEYER_CO = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CO"), "erlenmeyer_co");
-    public static final Item ERLENMEYER_NH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "NH3"), "erlenmeyer_nh3");
-    public static final Item ERLENMEYER_N2O = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "N2O"), "erlenmeyer_n2o");
-    public static final Item ERLENMEYER_HCl = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HCl"), "erlenmeyer_hcl");
-    public static final Item ERLENMEYER_He = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "He"), "erlenmeyer_he");
-    public static final Item ERLENMEYER_Ne = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "Ne"), "erlenmeyer_ne");
-    public static final Item ERLENMEYER_Ar = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "Ar"), "erlenmeyer_ar");
-    public static final Item ERLENMEYER_CL2O = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "Cl2O"), "erlenmeyer_cl2o");
-    public static final Item ERLENMEYER_CH4S = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), "CH4S"), "erlenmeyer_methanethiol");
-    public static final Item ERLENMEYER_CH2O = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), "CH2O"), "erlenmeyer_formaldehyde");
-    public static final Item ERLENMEYER_H2CO3 = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), "H2CO3"), "erlenmeyer_carbonic_acid");
-    public static final Item ERLENMEYER_BH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "BH3"), "erlenmeyer_bh3");
-    public static final Item ERLENMEYER_HF = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HF"), "erlenmeyer_hf");
-    public static final Item ERLENMEYER_SIH4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SiH4"), "erlenmeyer_sih4");
-    public static final Item ERLENMEYER_PH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "PH3"), "erlenmeyer_ph3");
-    public static final Item ERLENMEYER_H2S = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "H2S"), "erlenmeyer_h2s");
-    public static final Item ERLENMEYER_CF4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CF4"), "erlenmeyer_cf4");
-    public static final Item ERLENMEYER_BF3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "BF3"), "erlenmeyer_bf3");
-    public static final Item ERLENMEYER_BCL3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "BCl3"), "erlenmeyer_bcl3");
-    public static final Item ERLENMEYER_SO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SO2"), "erlenmeyer_so2");
-    public static final Item ERLENMEYER_CLF = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "ClF"), "erlenmeyer_clf");
-    public static final Item ERLENMEYER_F2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "F2"), "erlenmeyer_f2");
+    public static final Item ERLENMEYER_O2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.O2), "erlenmeyer_o2");
+    public static final Item ERLENMEYER_N2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.N2), "erlenmeyer_n2");
+    public static final Item ERLENMEYER_CH4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CH4), "erlenmeyer_ch4");
+    public static final Item ERLENMEYER_H2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.H2), "erlenmeyer_h2");
+    public static final Item ERLENMEYER_NO = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.NO), "erlenmeyer_no");
+    public static final Item ERLENMEYER_NO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.NO2), "erlenmeyer_no2");
+    public static final Item ERLENMEYER_Cl2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CL2), "erlenmeyer_cl2");
+    public static final Item ERLENMEYER_CO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CO2), "erlenmeyer_co2");
+    public static final Item ERLENMEYER_CO = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CO), "erlenmeyer_co");
+    public static final Item ERLENMEYER_NH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.NH3), "erlenmeyer_nh3");
+    public static final Item ERLENMEYER_N2O = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.N2O), "erlenmeyer_n2o");
+    public static final Item ERLENMEYER_HCl = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.HCL), "erlenmeyer_hcl");
+    public static final Item ERLENMEYER_He = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.HE), "erlenmeyer_he");
+    public static final Item ERLENMEYER_Ne = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.NE), "erlenmeyer_ne");
+    public static final Item ERLENMEYER_Ar = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.AR), "erlenmeyer_ar");
+    public static final Item ERLENMEYER_CL2O = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CL2O), "erlenmeyer_cl2o");
+    public static final Item ERLENMEYER_CH4S = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), Molecule.CH4S), "erlenmeyer_methanethiol");
+    public static final Item ERLENMEYER_CH2O = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), Molecule.CH2O), "erlenmeyer_formaldehyde");
+    public static final Item ERLENMEYER_H2CO3 = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), Molecule.H2CO3), "erlenmeyer_carbonic_acid");
+    public static final Item ERLENMEYER_BH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.BH3), "erlenmeyer_bh3");
+    public static final Item ERLENMEYER_HF = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.HF), "erlenmeyer_hf");
+    public static final Item ERLENMEYER_SIH4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.SIH4), "erlenmeyer_sih4");
+    public static final Item ERLENMEYER_PH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.PH3), "erlenmeyer_ph3");
+    public static final Item ERLENMEYER_H2S = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.H2S), "erlenmeyer_h2s");
+    public static final Item ERLENMEYER_CF4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CF4), "erlenmeyer_cf4");
+    public static final Item ERLENMEYER_BF3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.BF3), "erlenmeyer_bf3");
+    public static final Item ERLENMEYER_BCL3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.BCL3), "erlenmeyer_bcl3");
+    public static final Item ERLENMEYER_SO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.SO2), "erlenmeyer_so2");
+    public static final Item ERLENMEYER_CLF = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CLF), "erlenmeyer_clf");
+    public static final Item ERLENMEYER_F2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.F2), "erlenmeyer_f2");
 
-    /*
-        public static final Item ERLENMEYER_O2 = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.O2), "erlenmeyer_o2");
-    public static final Item ERLENMEYER_N2 = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.N2), "erlenmeyer_n2");
-    public static final Item ERLENMEYER_CH4 = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.CH4), "erlenmeyer_ch4");
-    public static final Item ERLENMEYER_H2 = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.H2), "erlenmeyer_h2");
-    public static final Item ERLENMEYER_NO = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.NO), "erlenmeyer_n0");
-    public static final Item ERLENMEYER_NO2 = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.NO2), "erlenmeyer_no2");
-    public static final Item ERLENMEYER_Cl2 = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.Cl2), "erlenmeyer_cl2");
-    public static final Item ERLENMEYER_CO2 = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.CO2), "erlenmeyer_co2");
-    public static final Item ERLENMEYER_CO = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.CO), "erlenmeyer_co");
-    public static final Item ERLENMEYER_NH3 = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.NH3), "erlenmeyer_nh3");
-    public static final Item ERLENMEYER_N2O = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.N2O), "erlenmeyer_n2o");
-    public static final Item ERLENMEYER_HCl = register(new GasPotion(
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Gasses.HCl), "erlenmeyer_hcl");
-
-    */
     public static final Item ERLENMEYER_HNO3 = register(new ErlenmeyerItem(
             Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HNO3"), "erlenmeyer_hno3");
     public static final Item ERLENMEYER_H2O = register(new ErlenmeyerItem(

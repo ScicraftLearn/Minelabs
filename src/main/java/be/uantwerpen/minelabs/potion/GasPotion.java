@@ -17,26 +17,27 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
-    private final String molecule;
+    private final Molecule molecule;
 
-    public GasPotion(Settings settings, String molecule) {
+    public GasPotion(Settings settings, Molecule molecule) {
         super(settings);
         this.molecule = molecule;
     }
 
-    @Override
-    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-        Potion potion = new Potion("Test");
-        if (this.isIn(group))
-            stacks.add(PotionUtil.setPotion(new ItemStack(this), potion));
-    }
-
-    @Override
-    public ItemStack getDefaultStack() {
-        ItemStack stack = new ItemStack(this);
-        stack.getOrCreateNbt().putString("Potion", "minecraft:empty");
-        return stack;
-    }
+    // TODO: Are these necessary?
+//    @Override
+//    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+//        Potion potion = new Potion("Test");
+//        if (this.isIn(group))
+//            stacks.add(PotionUtil.setPotion(new ItemStack(this), potion));
+//    }
+//
+//    @Override
+//    public ItemStack getDefaultStack() {
+//        ItemStack stack = new ItemStack(this);
+//        stack.getOrCreateNbt().putString("Potion", "minecraft:empty");
+//        return stack;
+//    }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -59,12 +60,6 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
         }
 
         return TypedActionResult.success(itemStack, world.isClient());
-//        TypedActionResult<ItemStack> result = super.use(world, user, hand);
-//        // Advancement
-//        if (result.getResult().isAccepted() && user instanceof ServerPlayerEntity serverPlayer){
-//            Criteria.ERLENMEYER_CRITERION.trigger(serverPlayer, ErlenmeyerCriterion.Type.THROW);
-//        }
-//        return result;
     }
 
     @Override
@@ -80,6 +75,6 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
 
     @Override
     public String getMolecule() {
-        return molecule;
+        return molecule.toString();
     }
 }
