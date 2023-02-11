@@ -1,198 +1,89 @@
 package be.uantwerpen.minelabs.potion;
 
+import be.uantwerpen.minelabs.potion.reactions.*;
+import com.ibm.icu.text.MessagePattern;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FireBlock;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public enum Molecule {
     // TODO: add lore with "reacts with stone, is toxic, is poisonous, ..."
-    O2("O2", ParticleTypes.SPLASH,
-            (world, x, y, z, blockHitResult) -> {
-        BlockState blockState = world.getBlockState(blockHitResult.getBlockPos());
-        System.out.println(blockState.getBlock());
-        if (blockState.getBlock() == net.minecraft.block.Blocks.WATER)
-            world.createExplosion(null, x, y, z, 2, false, Explosion.DestructionType.DESTROY);
-        if (blockState.getBlock() == net.minecraft.block.Blocks.STONE)
-            world.createExplosion(null, x, y, z, 2, false, Explosion.DestructionType.DESTROY);
-        },
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    N2("N2", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {
-        BlockState blockState = world.getBlockState(blockHitResult.getBlockPos());
-        for(Entity entity: world.getOtherEntities(null,  new Box(x-2,y-2,z-2,x+2,y+2,z+2)))
-            if (entity instanceof LivingEntity livingEntity)
-                livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, 1));
-        if (blockState.getBlock() == Blocks.IRON_BLOCK) {
-            world.createExplosion(null, x, y, z, 2, false, Explosion.DestructionType.DESTROY);
-        }},
-            (world, x, y, z, entityHitResult) -> {
-        if (entityHitResult.getEntity() instanceof LivingEntity livingEntity)
-            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 400, 1));
-        }
-    ),
-    CH4("CH4", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    H2("H2", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    NO("NO", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    NO2("NO2", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    CL2("CL2", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    CO2("CO2", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    CO("CO", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    NH3("NH3", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    N2O("N2O", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    HCL("HCl", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    HE("He", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    NE("Ne", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    AR("Ar", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    CL2O("Cl2O", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    BH3("BH3", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    HF("HF", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    SIH4("SiH4", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    PH3("PH3", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    H2S("H2S", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    CF4("CF4", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    BF3("BF3", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    BCL3("BCl3", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    SO2("SO2", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    CLF("ClF", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    F2("F2", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    CH4S("CH4S", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    CH2O("CH2O", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
-    H2CO3("F2", ParticleTypes.SOUL_FIRE_FLAME,
-            (world, x, y, z, blockHitResult) -> {},
-            (world, x, y, z, entityHitResult) -> {}
-    ),
+
+    O2("O2", 0xAFAFAF, List.of()),
+    N2("N2", 0xAFAFAF, Arrays.asList()),
+    CH4("CH4", 0xAFAFAF, List.of(new FlammableReaction(20*3))),
+    H2("H2", 0xAFAFAF, Arrays.asList()),
+    NO("NO", 0xAFAFAF, Arrays.asList()),
+    NO2("NO2", 0x991c00, Arrays.asList()),
+    CL2("CL2", 0xE8F48C, List.of(new PoisonousReaction(2, 200, 1))),
+    CO2("CO2", 0xAFAFAF, Arrays.asList()),
+    CO("CO", 0xAFAFAF, Arrays.asList()),
+    NH3("NH3", 0xAFAFAF, Arrays.asList()),
+    N2O("N2O", 0xAFAFAF, Arrays.asList()),
+    HCL("HCl", 0xAFAFAF, List.of(new CorrosiveReaction())),
+    HE("He", 0xAFAFAF, Arrays.asList()),
+    NE("Ne", 0xAFAFAF, Arrays.asList()),
+    AR("Ar", 0xAFAFAF, Arrays.asList()),
+    CL2O("Cl2O", 0xAFAFAF, Arrays.asList()),
+    H2CO3("H2CO3", 0xAFAFAF, Arrays.asList()),
+    CH4S("CH4S", 0xAFAFAF, Arrays.asList()),
+    CH2O("CH2O", 0xAFAFAF, Arrays.asList()),
+    BH3("BH3", 0xFFFFFF, Arrays.asList()),
+    HF("HF", 0xFFFFFF, Arrays.asList()),
+    SIH4("SiH4", 0xFFFFFF, Arrays.asList()),
+    PH3("PH3", 0xFFFFFF, Arrays.asList()),
+    H2S("H2S", 0xFFFFFF, Arrays.asList()),
+    CF4("CF4", 0xFFFFFF, Arrays.asList()),
+    BF3("BF3", 0xFFFFFF, Arrays.asList()),
+    BCL3("BCl3", 0xFFFFFF, Arrays.asList()),
+    SO2("SO2", 0xFFFFFF, Arrays.asList()),
+    CLF("ClF", 0xFFFFFF, Arrays.asList()),
+    F2("F2", 0xFFFFFF, Arrays.asList()),
+
     ;
 
-    interface BlockHit {
-        void react(World world, double x, double y, double z, BlockHitResult hitResult);
-    }
-    interface EntityHit {
-        void react(World world, double x, double y, double z, EntityHitResult hitResult);
-    }
 
-    private final BlockHit blockHit;
-    private final EntityHit entityHit;
-    private final DefaultParticleType particleType;
+    private final int color;
     private final String name;
+    private final List<Reaction> reactions;
 
-    Molecule(String name, DefaultParticleType particleType, BlockHit blockHit, EntityHit entityHit) {
+    Molecule(String name, int color, List<Reaction> reactions) {
+        Objects.requireNonNull(name);
         assert !name.isEmpty();
-        Objects.requireNonNull(blockHit);
-        Objects.requireNonNull(entityHit);
         this.name = name;
-        this.particleType = particleType;
-        this.blockHit = blockHit;
-        this.entityHit = entityHit;
+        this.color = color;
+        this.reactions = reactions;
     }
 
     public void react(World world, Vec3d position, HitResult hitResult) {
         Objects.requireNonNull(world);
         Objects.requireNonNull(position);
         Objects.requireNonNull(hitResult);
-        if (hitResult instanceof BlockHitResult blockHitResult)
-            blockHit.react(world, position.x, position.y, position.z, blockHitResult);
-        else if(hitResult instanceof EntityHitResult entityHitResult)
-            entityHit.react(world, position.x, position.y, position.z, entityHitResult);
+        reactions.forEach(reaction -> reaction.react(world, position, hitResult));
     }
 
-    public DefaultParticleType getParticleType() {
-        return particleType;
+    public int getColor() {
+        return color;
     }
 
     @Override

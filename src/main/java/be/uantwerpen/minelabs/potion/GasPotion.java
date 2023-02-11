@@ -24,20 +24,17 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
         this.molecule = molecule;
     }
 
-    // TODO: Are these necessary?
-//    @Override
-//    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-//        Potion potion = new Potion("Test");
-//        if (this.isIn(group))
-//            stacks.add(PotionUtil.setPotion(new ItemStack(this), potion));
-//    }
-//
-//    @Override
-//    public ItemStack getDefaultStack() {
-//        ItemStack stack = new ItemStack(this);
-//        stack.getOrCreateNbt().putString("Potion", "minecraft:empty");
-//        return stack;
-//    }
+    @Override
+    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+        Potion potion = new Potion("Test");
+        if (this.isIn(group))
+            stacks.add(PotionUtil.setPotion(new ItemStack(this), potion));
+    }
+
+    @Override
+    public ItemStack getDefaultStack() {
+        return new ItemStack(this);
+    }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
