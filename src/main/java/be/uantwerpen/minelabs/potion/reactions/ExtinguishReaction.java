@@ -18,6 +18,7 @@ public class ExtinguishReaction extends Reaction {
         BlockPos pos = hitResult.getBlockPos();
         BlockState blockState = world.getBlockState(pos);
         // TODO: this is copied from PotionEntity, rewrite
+        // TODO: doesnt work for normal fire, only for campfire
         if (blockState.isIn(BlockTags.FIRE)) {
             world.removeBlock(pos, false);
         } else if (AbstractCandleBlock.isLitCandle(blockState)) {
