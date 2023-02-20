@@ -75,7 +75,6 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
 
     @Override
     public void onClose(PlayerEntity player) {
-        //TODO CHECK
         if (!INVENTORY.get(0).isEmpty()) {
             int count = INVENTORY.get(0).getCount();
             if (INVENTORY.get(0).isIn(Tags.Items.POSITIVE_CHARGE)) {

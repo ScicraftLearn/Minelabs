@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "minelabs:block/charged_point"
+    },
+    "facing=south": {
+      "model": "minelabs:block/charged_point",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "minelabs:block/charged_point",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "minelabs:block/charged_point",
+      "y": 270
     }
   }
 }
