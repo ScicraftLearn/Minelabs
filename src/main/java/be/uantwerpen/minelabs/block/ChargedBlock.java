@@ -48,7 +48,7 @@ public class ChargedBlock extends BlockWithEntity{
 
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ChargedBlockEntity charged) {
-			int e_radius = 8;
+			int e_radius = TimeFreezeBlock.e_radius;
 			BlockPos c_pos = charged.getPos();
 			Iterable<BlockPos> blocks_in_radius_of_charged = BlockPos.iterate(c_pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), c_pos.mutableCopy().add(e_radius, e_radius, e_radius));
 			boolean update = true;
