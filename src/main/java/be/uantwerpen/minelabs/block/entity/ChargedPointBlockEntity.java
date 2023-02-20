@@ -1,0 +1,76 @@
+package be.uantwerpen.minelabs.block.entity;
+
+import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
+import be.uantwerpen.minelabs.inventory.ImplementedInventory;
+import be.uantwerpen.minelabs.util.Tags;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+
+public class ChargedPointBlockEntity extends ChargedBlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
+
+    private final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(1, ItemStack.EMPTY);
+
+    public ChargedPointBlockEntity(BlockPos pos, BlockState state,
+                                   double charge,
+                                   Block anit_block,
+                                   double decay_time,
+                                   ArrayList<ItemStack> decay_drop,
+                                   Block decay_replace) {
+        super(BlockEntities.CHARGED_POINT_BLOCK_ENTITY, pos, state, charge, anit_block, decay_time, decay_drop, decay_replace);
+    }
+
+    @Override
+    public DefaultedList<ItemStack> getItems() {
+        return INVENTORY;
+    }
+
+    //BLOCK HOPPER
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+        return false;
+    }
+
+    //BLOCK HOPPER
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction side) {
+        return false;
+    }
+
+    @Override
+    public Text getDisplayName() {
+        return Text.translatable(getCachedState().getBlock().getTranslationKey());
+    }
+
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+        return new LabChestScreenHandler(syncId, inv, this);
+    }
+
+    @Override
+    public void onClose(PlayerEntity player) {
+        ImplementedInventory.super.onClose(player);
+        if (INVENTORY.get(0).isEmpty()) {
+            this.charge = 0;
+        } else {
+            int count = INVENTORY.get(0).getCount();
+            if (INVENTORY.get(0).isIn(Tags.Items.POSITIVE_CHARGE)) {
+                this.charge = count;
+            } else if (INVENTORY.get(0).isIn(Tags.Items.NEGATIVE_CHARGE)) {
+                this.charge = -count;
+            }
+        }
+    }
+}

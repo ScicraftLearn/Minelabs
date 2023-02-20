@@ -26,6 +26,7 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_NUL_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedPointBlockEntity> CHARGED_POINT_BLOCK_ENTITY;
     public static BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY;
     public static BlockEntityType<IonicBlockEntity> IONIC_BLOCK_ENTITY;
     public static BlockEntityType<ElectricFieldSensorBlockEntity> ELECTRIC_FIELD_SENSOR;
@@ -89,12 +90,16 @@ public class BlockEntities {
                 "weak_boson_block_entity");
 
         ANIMATED_CHARGED_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new AnimatedChargedBlockEntity(ANIMATED_CHARGED_BLOCK_ENTITY, p, s), Blocks.ANIMATED_CHARGED).build(null),
+                FabricBlockEntityTypeBuilder.create((p, s) -> new AnimatedChargedBlockEntity(ANIMATED_CHARGED_BLOCK_ENTITY, p, s), Blocks.ANIMATED_CHARGED).build(null),
                 "animated_charged_block_entity");
 
         CHARGED_PLACEHOLDER_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
+                FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
                 "charged_placeholder_block_entity");
+
+        CHARGED_POINT_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedPointBlockEntity(p, s, 0, null, 0, null, null), Blocks.CHARGED_POINT_BLOCK).build(null),
+                "weak_boson_block_entity");
 
         BOHR_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "bohr_block"),
                 FabricBlockEntityTypeBuilder.create(BohrBlockEntity::new,

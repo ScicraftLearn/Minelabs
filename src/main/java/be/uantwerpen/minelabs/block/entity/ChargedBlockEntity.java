@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class ChargedBlockEntity extends BlockEntity{
-    private double charge;
+    protected double charge;
     private Vec3f field;
     private boolean update_next_tick = false;
     private static final double e_move = 0.1; //if force is larger, then particles can move
