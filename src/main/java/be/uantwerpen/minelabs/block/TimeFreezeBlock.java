@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class TimeFreezeBlock extends BlockWithEntity {
+    public static final int e_radius = 8;
 
     public TimeFreezeBlock() {
         super(FabricBlockSettings.of(Material.GLASS).noCollision().strength(0.5f, 2.0f));
@@ -38,7 +39,6 @@ public class TimeFreezeBlock extends BlockWithEntity {
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        int e_radius = 12;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
 
         // go over all blocks in range of the time freeze block that you just broke
@@ -93,7 +93,7 @@ public class TimeFreezeBlock extends BlockWithEntity {
         super.randomDisplayTick(state, world, pos, random); // does nothing
 
         // freeze the entities
-//        List<Entity> entitiesInRange_8_BLOCKS = getEntitiesInRange(pos, world, 8);
+//        List<Entity> entitiesInRange_8_BLOCKS = getEntitiesInRange(pos, world, e_radius);
 //        for(Entity entity : entitiesInRange_8_BLOCKS) {
 //
 //            // don't freeze players
