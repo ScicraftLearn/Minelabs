@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minelabs:positron",
-    "minelabs:proton"
+    "minelabs:proton",
+    "minelabs:pion_plus"
   ]
 }

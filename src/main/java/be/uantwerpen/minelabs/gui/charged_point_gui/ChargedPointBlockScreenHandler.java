@@ -19,7 +19,7 @@ public class ChargedPointBlockScreenHandler extends ScreenHandler {
     }
 
     public ChargedPointBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
-        super(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, syncId);
+        super(ScreenHandlers.CHARGED_POINT_SCREEN_HANDLER, syncId);
         checkSize(inventory, 1);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);

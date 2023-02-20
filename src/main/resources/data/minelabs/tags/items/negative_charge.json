@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "minelabs:electron"
+    "minelabs:electron",
+    "minelabs:pion_minus",
+    "minelabs:anti_proton"
   ]
 }
