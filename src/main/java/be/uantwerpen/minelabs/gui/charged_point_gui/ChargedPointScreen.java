@@ -18,6 +18,12 @@ public class ChargedPointScreen extends HandledScreen<ChargedPointBlockScreenHan
     }
 
     @Override
+    protected void init() {
+        super.init();
+        playerInventoryTitleY -= 15;
+    }
+
+    @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

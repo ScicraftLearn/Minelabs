@@ -5,7 +5,8 @@
     64
   ],
   "textures": {
-    "0": "minelabs:block/charged_point"
+    "0": "minelabs:block/charged_point",
+    "particle": "minelabs:item/charged_point"
   },
   "elements": [
     {
