@@ -7,7 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -29,6 +31,18 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
                                    ArrayList<ItemStack> decay_drop,
                                    Block decay_replace) {
         super(BlockEntities.CHARGED_POINT_BLOCK_ENTITY, pos, state, charge, anit_block, decay_time, decay_drop, decay_replace);
+    }
+
+    @Override
+    public void writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
+        Inventories.writeNbt(tag, INVENTORY);
+    }
+
+    @Override
+    public void readNbt(NbtCompound tag) {
+        Inventories.readNbt(tag, INVENTORY);
+        super.readNbt(tag);
     }
 
     @Override

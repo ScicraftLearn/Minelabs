@@ -18,7 +18,6 @@ public class ChargedPointBlock extends ChargedBlock {
 
     public ChargedPointBlock(Settings settings, Supplier<BlockEntityType<? extends ChargedBlockEntity>> lazy) {
         super(settings, lazy);
-
     }
 
     @Override

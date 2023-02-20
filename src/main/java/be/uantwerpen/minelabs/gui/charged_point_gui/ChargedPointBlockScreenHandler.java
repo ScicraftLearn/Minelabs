@@ -24,12 +24,8 @@ public class ChargedPointBlockScreenHandler extends ScreenHandler {
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
 
-        for (int i = 0; i < 3; ++i) { // rows
-            for (int j = 0; j < 7; ++j) {
-                //Minelabs.LOGGER.info("index: " + j+(i*7));
-                this.addSlot(new Slot(inventory, j + i * 7, 26 + j * 18, 18 + i * 18));
-            }
-        }
+        //TODO CORRECT COORDS SLOT
+        this.addSlot(new Slot(inventory, 0, 26, 18));
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
