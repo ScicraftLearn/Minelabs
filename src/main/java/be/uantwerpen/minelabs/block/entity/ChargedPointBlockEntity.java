@@ -87,6 +87,7 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
         } else {
             this.charge = 0;
         }
+        this.updateField(world, pos);
         needsUpdate(true);
     }
 }

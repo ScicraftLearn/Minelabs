@@ -103,6 +103,12 @@ public class ChargedBlockEntity extends BlockEntity{
         this.update_next_tick = b;
     }
 
+    public void updateField(World world, BlockPos pos) {
+        this.removeField(world, pos);
+        this.makeField(world, pos, false);
+        markDirty();
+    }
+
     //First time field
     public void makeField(World world, BlockPos pos, boolean afterTimeFreeze) {
         int e_radius = 12;
