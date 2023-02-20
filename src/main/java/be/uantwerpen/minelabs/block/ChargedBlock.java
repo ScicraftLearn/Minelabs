@@ -60,10 +60,8 @@ public class ChargedBlock extends BlockWithEntity{
 				}
 			}
 			// if there are no other time freeze blocks around them, you can play their animation (if there is one)
-			if(update) {
-				charged.needsUpdate(true);
-				//System.out.println("UPDATE NOW");
-			}
+			charged.needsUpdate(update);
+			//System.out.println("UPDATE NOW");
 		}
 
 		super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);

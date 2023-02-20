@@ -28,6 +28,8 @@ import java.util.function.Supplier;
 public class ChargedPointBlock extends ChargedBlock {
 
     private static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
+    private static final VoxelShape shape = VoxelShapes
+            .cuboid(3f / 16, 0f, 3f / 16, 13f / 16, 10f / 16, 13f / 16);
 
     public ChargedPointBlock(Settings settings, Supplier<BlockEntityType<? extends ChargedBlockEntity>> lazy) {
         super(settings, lazy);
@@ -59,7 +61,7 @@ public class ChargedPointBlock extends ChargedBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShapes.cuboid(3f / 16, 0f, 3f / 16, 13f / 16, 10f / 16, 13f / 16);
+        return shape;
     }
 
     @Override
