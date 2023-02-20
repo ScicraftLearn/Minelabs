@@ -1,6 +1,6 @@
 package be.uantwerpen.minelabs.block.entity;
 
-import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
+import be.uantwerpen.minelabs.gui.charged_point_gui.ChargedPointBlockScreenHandler;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.block.Block;
@@ -56,21 +56,23 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new LabChestScreenHandler(syncId, inv, this);
+        return new ChargedPointBlockScreenHandler(syncId, inv, this);
     }
 
     @Override
     public void onClose(PlayerEntity player) {
-        ImplementedInventory.super.onClose(player);
-        if (INVENTORY.get(0).isEmpty()) {
-            this.charge = 0;
-        } else {
+        //TODO CHECK
+        if (!INVENTORY.get(0).isEmpty()) {
             int count = INVENTORY.get(0).getCount();
             if (INVENTORY.get(0).isIn(Tags.Items.POSITIVE_CHARGE)) {
                 this.charge = count;
             } else if (INVENTORY.get(0).isIn(Tags.Items.NEGATIVE_CHARGE)) {
                 this.charge = -count;
+            } else {
+                this.charge = 0;
             }
+        } else {
+            this.charge = 0;
         }
     }
 }
