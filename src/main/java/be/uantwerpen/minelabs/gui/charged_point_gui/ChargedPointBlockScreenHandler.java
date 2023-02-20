@@ -1,6 +1,8 @@
 package be.uantwerpen.minelabs.gui.charged_point_gui;
 
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
+import be.uantwerpen.minelabs.inventory.slot.FilteredSlot;
+import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -25,7 +27,7 @@ public class ChargedPointBlockScreenHandler extends ScreenHandler {
         inventory.onOpen(playerInventory.player);
 
         //TODO CORRECT COORDS SLOT
-        this.addSlot(new Slot(inventory, 0, 26, 18));
+        this.addSlot(new FilteredSlot(inventory, 0, 8, 2, s -> s.isIn(Tags.Items.CHARGE)));
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
