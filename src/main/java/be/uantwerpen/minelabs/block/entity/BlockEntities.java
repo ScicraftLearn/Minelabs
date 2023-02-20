@@ -62,7 +62,7 @@ public class BlockEntities {
                 "pion_plus_block_entity");
 
         PION_NUL_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_NUL_BLOCK_ENTITY, p, s, 1, Blocks.PION_NUL, 44, photons_drop, null), Blocks.PION_NUL).build(null),
+                FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedBlockEntity(PION_NUL_BLOCK_ENTITY, p, s, 0, Blocks.PION_NUL, 44, photons_drop, null), Blocks.PION_NUL).build(null),
                 "pion_nul_block_entity");
 
     	ELECTRON_BLOCK_ENTITY = register(
@@ -99,7 +99,7 @@ public class BlockEntities {
 
         CHARGED_POINT_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedPointBlockEntity(p, s, 0, null, 0, null, null), Blocks.CHARGED_POINT_BLOCK).build(null),
-                "weak_boson_block_entity");
+                "charged_point_block_entity");
 
         BOHR_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "bohr_block"),
                 FabricBlockEntityTypeBuilder.create(BohrBlockEntity::new,

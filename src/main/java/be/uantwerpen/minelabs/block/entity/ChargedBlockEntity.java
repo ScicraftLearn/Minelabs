@@ -39,13 +39,13 @@ public class ChargedBlockEntity extends BlockEntity{
                               BlockPos pos,
                               BlockState state,
                               double charge,
-                              Block anit_block,
+                              Block anti_block,
                               double decay_time,
                               ArrayList<ItemStack> decay_drop,
                               Block decay_replace) {
         super(type, pos, state);
         this.charge = charge;
-        this.anti_block = anit_block;
+        this.anti_block = anti_block;
         this.decay_time = decay_time;
         this.decay_drop = decay_drop;
         this.decay_replace = decay_replace;
