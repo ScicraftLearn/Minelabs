@@ -252,6 +252,9 @@ public class ChargedBlockEntity extends BlockEntity{
         return dir;
     }
 
+    protected ItemStack getInventory() {
+        return ItemStack.EMPTY;
+    }
     public static void tick(World world, BlockPos pos, BlockState state, ChargedBlockEntity be) {
         be.tick(world, pos, state);
     }
@@ -307,6 +310,7 @@ public class ChargedBlockEntity extends BlockEntity{
                                 if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity animation1) {
                                     animation1.movement_direction = movement;
                                     animation1.render_state = getCachedState();
+                                    animation1.setInventory(getInventory());
                                 }
                             }
                             markDirty();

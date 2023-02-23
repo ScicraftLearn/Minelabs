@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -73,8 +74,17 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
         return new ChargedPointBlockScreenHandler(syncId, inv, this);
     }
 
+    public void setInventory(ItemStack inventoryIn) {
+        INVENTORY.set(0, inventoryIn);
+        inventoryChanged();
+    }
+
     @Override
-    public void onClose(PlayerEntity player) {
+    protected ItemStack getInventory() {
+        return INVENTORY.get(0);
+    }
+
+    private void inventoryChanged() {
         if (!INVENTORY.get(0).isEmpty()) {
             int count = INVENTORY.get(0).getCount();
             if (INVENTORY.get(0).isIn(Tags.Items.POSITIVE_CHARGE)) {
@@ -89,5 +99,10 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
         }
         this.updateField(world, pos);
         needsUpdate(true);
+    }
+
+    @Override
+    public void onClose(PlayerEntity player) {
+        inventoryChanged();
     }
 }
