@@ -9,6 +9,8 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -39,6 +41,9 @@ public class ChargedBlock extends BlockWithEntity{
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ChargedBlockEntity charged && !newState.isOf(Blocks.ANIMATED_CHARGED)) {
 			charged.removeField(world, pos);
+			if (charged.getInventory() != ItemStack.EMPTY) {
+				world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), charged.getInventory()));
+			}
 		}
 		super.onStateReplaced(state, world, pos, newState, moved);
 	}

@@ -252,9 +252,10 @@ public class ChargedBlockEntity extends BlockEntity{
         return dir;
     }
 
-    protected ItemStack getInventory() {
+    public ItemStack getInventory() {
         return ItemStack.EMPTY;
     }
+
     public static void tick(World world, BlockPos pos, BlockState state, ChargedBlockEntity be) {
         be.tick(world, pos, state);
     }

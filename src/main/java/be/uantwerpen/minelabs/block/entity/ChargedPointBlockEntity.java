@@ -80,7 +80,7 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
     }
 
     @Override
-    protected ItemStack getInventory() {
+    public ItemStack getInventory() {
         return INVENTORY.get(0);
     }
 
