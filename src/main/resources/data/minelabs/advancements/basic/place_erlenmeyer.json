@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:erlenmeyer_stand"
+    },
+    "title": "Careful now",
+    "description": "Place an erlenmeyer in the world",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/wear_goggles",
+  "criteria": {
+    "place_erlenmeyer": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "minelabs:erlenmeyer_stand"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "place_erlenmeyer"
+    ]
+  ]
+}

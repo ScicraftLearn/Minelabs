@@ -1,5 +1,7 @@
 package be.uantwerpen.minelabs.block.entity;
 
+import be.uantwerpen.minelabs.advancement.criterion.CoulombCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,6 +13,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
@@ -26,17 +29,26 @@ public class ChargedBlockEntity extends BlockEntity{
     private double charge;
     private Vec3f field;
     private boolean update_next_tick = false;
-    private static final double e_move = 0.5;
+    private static final double e_move = 0.1; //if force is larger, then particles can move
     private final Block anti_block;
     private final double decay_time;
-    private final ItemStack decay_drop;
+    private final ArrayList<ItemStack> decay_drop;
+    private final Block decay_replace;
 
-    public ChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, double charge, Block anit_block, double decay_time, ItemStack decay_drop) {
+    public ChargedBlockEntity(BlockEntityType<?> type,
+                              BlockPos pos,
+                              BlockState state,
+                              double charge,
+                              Block anit_block,
+                              double decay_time,
+                              ArrayList<ItemStack> decay_drop,
+                              Block decay_replace) {
         super(type, pos, state);
         this.charge = charge;
         this.anti_block = anit_block;
         this.decay_time = decay_time;
         this.decay_drop = decay_drop;
+        this.decay_replace = decay_replace;
     }
     @Override
     public void writeNbt(NbtCompound tag) {
@@ -82,41 +94,75 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public void needsUpdate(boolean b) {
+//        if(b) {
+//            System.out.println("PROCESSING UPDATE!");
+//        } else {
+//        System.out.println("NOT PROCESSING ANY UPDATES!");
+//        }
+
         this.update_next_tick = b;
     }
 
     //First time field
-    public void makeField(World world, BlockPos pos) {
-        int e_radius = 8;
+    public void makeField(World world, BlockPos pos, boolean afterTimeFreeze) {
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
         field = new Vec3f(0f, 0f, 0f);
+
+        // first look whether there is a time freeze block in range
+        boolean freeze = false;
         for (BlockPos pos_block : blocks_in_radius) {
+            if (world.getBlockEntity(pos_block) instanceof TimeFreezeBlockEntity tf_block && !pos.equals(pos_block)) {
+                //System.out.println("freeze now!");
+                freeze = true;
+                break;
+            }
+        }
+
+        for (BlockPos pos_block : blocks_in_radius) {
+            // if there is a time freeze block in range, no effect should happen to the particles themselves
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.field != null) {
+                //System.out.println("calculating.....");
                 Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
                 float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
                 vec_pos.scale(d_E);
                 field.add(vec_pos);
                 particle2.field.subtract(vec_pos);
-                needsUpdate(true);
-                particle2.needsUpdate(true);
+                needsUpdate(!freeze);
+                particle2.needsUpdate(!freeze);
             }
-            if (world.getBlockEntity(pos_block) instanceof ElectricFieldSensorBlockEntity sensor && !pos.equals(pos_block) ){
-                Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
-                float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                vec_pos.scale(d_E);
-                sensor.getField().subtract(vec_pos);
-                sensor.markDirty();
-                sensor.sync();
+
+            // electric field sensors can still change when the time is frozen
+            // therefore they must not be recalculated after the time freeze stops
+            if(!afterTimeFreeze) {
+                if (world.getBlockEntity(pos_block) instanceof ElectricFieldSensorBlockEntity sensor && !pos.equals(pos_block) ){
+                    Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                    float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
+                    vec_pos.scale(d_E);
+                    sensor.getField().subtract(vec_pos);
+                    sensor.markDirty();
+                    sensor.sync();
+                }
             }
         }
         markDirty();
     }
 
     public void removeField(World world, BlockPos pos) {
-        int e_radius = 8;
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
+
+        // first look whether there is a time freeze block in range
+        boolean freeze = false;
+        for (BlockPos pos_block : blocks_in_radius) {
+            if (world.getBlockEntity(pos_block) instanceof TimeFreezeBlockEntity tf_block && !pos.equals(pos_block)) {
+                //System.out.println("freeze now!");
+                freeze = true;
+                break;
+            }
+        }
         for (BlockPos pos_block : blocks_in_radius) {
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.field != null) {
                 Vec3f vec_pos = new Vec3f(pos.getX() - pos_block.getX(), pos.getY() - pos_block.getY(), pos.getZ() - pos_block.getZ());
@@ -124,7 +170,7 @@ public class ChargedBlockEntity extends BlockEntity{
                 vec_pos.scale(d_E);
                 particle2.field.add(vec_pos);
                 particle2.markDirty();
-                particle2.needsUpdate(true);
+                particle2.needsUpdate(!freeze);
             }
 
             //for sensors, we calculate the entire field again
@@ -208,18 +254,25 @@ public class ChargedBlockEntity extends BlockEntity{
     public void tick(World world, BlockPos pos, BlockState state) {
         if (!world.isClient) {
             if (field == null) {
-                makeField(world, pos);
+                makeField(world, pos, false);
             }
             if (world.getTime() % 10 == 0) {
                 if (decay()) {
                     world.removeBlockEntity(pos);
                     world.removeBlock(pos, false);
-                    ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), decay_drop);
-                    world.spawnEntity(itemEntity);
+                    if (decay_drop != null) {
+                        for (ItemStack itemStack : decay_drop) {
+                            world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack));
+                        }
+                    }
+                    if (decay_replace != null) {
+                        world.setBlockState(pos, decay_replace.getDefaultState());
+                    }
+                    Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, pos, 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
                     markDirty();
                 } else {
                     Direction movement_annihilation = this.checkAnnihilation();
-                    if (movement_annihilation != null) {
+                    if (movement_annihilation != null && update_next_tick) {
                         BlockPos nPos = pos.mutableCopy().offset(movement_annihilation);
                         if (world.getBlockEntity(nPos) instanceof ChargedBlockEntity particle2) {
                             BlockState render_state2 = particle2.getCachedState();
@@ -239,6 +292,7 @@ public class ChargedBlockEntity extends BlockEntity{
                         markDirty();
                     }
                     if (update_next_tick) {
+                        //System.out.println("OVERRIDING ANYWAY");
                         Direction movement = movementDirection(world, pos, field.copy());
                         if (movement != null) {
                             BlockPos nPos = pos.mutableCopy().offset(movement);

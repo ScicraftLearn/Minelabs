@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:lewis_block"
+    },
+    "title": "Molecules",
+    "description": "Craft all the molecules",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "criteria": {
+    "use_lewis_crafting_table": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type_specific": {
+            "type": "player",
+            "advancements": {
+              "minelabs:basic/make_a_molecule": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "use_lewis_crafting_table"
+    ]
+  ]
+}

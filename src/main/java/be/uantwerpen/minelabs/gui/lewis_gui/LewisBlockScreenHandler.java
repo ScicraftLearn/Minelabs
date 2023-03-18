@@ -1,13 +1,18 @@
 package be.uantwerpen.minelabs.gui.lewis_gui;
 
+import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
+import be.uantwerpen.minelabs.advancement.criterion.LCTCriterion;
 import be.uantwerpen.minelabs.block.entity.LewisBlockEntity;
+import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
+import be.uantwerpen.minelabs.crafting.molecules.Bond;
+import be.uantwerpen.minelabs.crafting.molecules.MoleculeGraph;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.inventory.OrderedInventory;
 import be.uantwerpen.minelabs.inventory.slot.CraftingResultSlot;
 import be.uantwerpen.minelabs.inventory.slot.FilteredSlot;
 import be.uantwerpen.minelabs.inventory.slot.LockableGridSlot;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,7 +25,9 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +53,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * This constructor gets called on the client when the server wants it to open the screenHandler<br>
      * The client will call the other constructor with an empty Inventory and the screenHandler will automatically
      * sync this empty inventory with the inventory on the server.
-     *
+     * <p>
      * This constructor uses the buffer from {@link LewisBlockEntity#writeScreenOpeningData(ServerPlayerEntity, PacketByteBuf)}
      * This gives it the Blockpos of the BlockEntity
      *
@@ -55,7 +62,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @param buf
      */
     public LewisBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(syncId, playerInventory, new LewisCraftingGrid(5,5), new OrderedInventory(11), new ArrayPropertyDelegate(2), buf.readBlockPos());
+        this(syncId, playerInventory, new LewisCraftingGrid(5, 5), new OrderedInventory(11), new ArrayPropertyDelegate(3), buf.readBlockPos());
     }
 
     /**
@@ -88,7 +95,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 if (slotId < GRIDSIZE) {
                     lewis.resetRecipe();
                     handler.updateToClient();
-                }else{
+                } else {
                     handler.updateToClient();
                 }
             }
@@ -130,14 +137,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 }
 
                 @Override
-                public int getMaxItemCount(ItemStack stack) {
-                    if (lewis.getIngredients().size() > this.getIndex()) { //Slot differnce of GRIDSIZE due to the grid
-                        return getDensity();
-                    }
-                    return 0;
-                }
-
-                @Override
                 public boolean canInsert(ItemStack stack) {
                     if (getIngredients().size() > this.getIndex()) {
                         return getIngredients().get(this.getIndex()).test(stack);
@@ -163,9 +162,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (int m = 0; m < 9; ++m) {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - o + 5));
         }
+
     }
 
-    public Inventory getIoInventory(){
+    public Inventory getIoInventory() {
         return ioInventory;
     }
 
@@ -193,6 +193,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         Slot slot = this.slots.get(invSlot);
         if (invSlot < GRIDSIZE) {
             slot.setStack(itemStack);
+            onGridChangedByPlayer(player);
             return itemStack;
         }
         if (slot.hasStack()) {
@@ -216,6 +217,32 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return itemStack;
     }
 
+    @Override
+    public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+        super.onSlotClick(slotIndex, button, actionType, player);
+        if (slotIndex < GRIDSIZE)
+            onGridChangedByPlayer(player);
+    }
+
+    /**
+     * Callback used for advancements
+     */
+    private void onGridChangedByPlayer(PlayerEntity player) {
+        if (!(player instanceof ServerPlayerEntity serverPlayer))
+            return;
+        MoleculeGraph structure = getLewisCraftingGrid().getPartialMolecule().getStructure();
+
+        boolean[] foundOrders = {false, false, false};
+        for (MoleculeGraph.Edge edge : structure.getEdges()) {
+            Bond bond = edge.data;
+            foundOrders[bond.bondOrder - 1] = true;
+        }
+        for (int order = 1; order < foundOrders.length + 1; order++) {
+            if (foundOrders[order - 1]) {
+                Criteria.LCT_CRITERION.trigger(serverPlayer, order);
+            }
+        }
+    }
 
     /**
      * Inserts the item into a slot, trying indexes from {@param startIndex} to {@param endIndex}.
@@ -229,7 +256,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     @Override
     protected boolean insertItem(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
-        if(startIndex < GRIDSIZE) {
+        if (startIndex < GRIDSIZE) {
             return false;
         }
         return super.insertItem(stack, startIndex, endIndex, fromLast);
@@ -243,7 +270,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     @Override
     public boolean canInsertIntoSlot(Slot slot) {
-        if(slot.getIndex() > GRIDSIZE-1) {
+        if (slot.getIndex() > GRIDSIZE - 1) {
             return false;
         }
         return super.canInsertIntoSlot(slot);
@@ -259,16 +286,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return true;
     }
 
-    public int getProgress() {
-        return propertyDelegate.get(0);
-    }
-
     public DefaultedList<Ingredient> getIngredients() {
         return lewis.getIngredients();
     }
 
     public int getDensity() {
-        return propertyDelegate.get(1);
+        return propertyDelegate.get(2);
     }
 
     //A recipe is found (so the density is larger than 0)
@@ -278,5 +301,30 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     public LewisCraftingGrid getLewisCraftingGrid() {
         return craftingGrid;
+    }
+
+    public boolean isCrafting() {
+        return propertyDelegate.get(0) > 0;
+    }
+
+    public int getScaledProgress() {
+        int progress = propertyDelegate.get(0);
+        int maxProgress = propertyDelegate.get(1);
+        int arrowSize = 26;
+        return maxProgress != 0 && progress != 0 ? progress * arrowSize / maxProgress : 0;
+    }
+
+    public int getStatus() {
+        if (propertyDelegate.get(2) > 0) {
+            // Density found -> json recipe found
+            return 2;
+        }else if (craftingGrid.isEmpty() || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0) {
+            // Empty grid or still has possible conections
+            return 0;
+        }else if (craftingGrid.getPartialMolecule().getStructure().isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
+            return 1;
+        } else {
+            return 3;
+        }
     }
 }

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "minelabs",
   "version": "${version}",
-  "name": "MineLabs",
+  "name": "Minelabs",
   "description": "Mod Description: TODO",
   "authors": [
     "Joey De Pauw",
@@ -25,6 +25,9 @@
     ],
     "client": [
       "be.uantwerpen.minelabs.MinelabsClient"
+    ],
+    "fabric-datagen": [
+      "be.uantwerpen.minelabs.MinelabsDatagen"
     ]
   },
   "mixins": [

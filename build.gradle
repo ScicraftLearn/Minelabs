@@ -19,13 +19,10 @@ repositories {
 
 	maven {
 		name = "WTHIT"
-		url = "https://maven.bai.lol"
+		url = "https://mavGeoArmorRendereren.bai.lol"
 	}
 	maven {
 		url = "https://maven.kyrptonaught.dev"
-	}
-	maven {
-		url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
 	}
 }
 
@@ -40,8 +37,6 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
-
-	modImplementation "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
 
 	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
 
@@ -77,6 +72,29 @@ jar {
 
 loom {
 	accessWidenerPath = file("src/main/resources/minelabs.accesswidener")
+	
+	runs {
+		datagen {
+			server()
+
+			name = "Data Generation"
+			runDir = "build/datagen"
+
+			vmArg("-Dfabric-api.datagen")
+			vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
+		}
+	}
+}
+assemble.dependsOn(runDatagen)
+
+sourceSets {
+	main {
+		resources {
+			srcDirs += [
+				"src/main/generated"
+			]
+		}
+	}
 }
 
 // configure the maven publication

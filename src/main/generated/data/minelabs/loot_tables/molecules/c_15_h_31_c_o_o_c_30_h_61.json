@@ -1,0 +1,24 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:carbon_atom",
+          "weight": 46
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:hydrogen_atom",
+          "weight": 92
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:oxygen_atom",
+          "weight": 2
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minelabs:item/erlenmeyer",
-    "layer1": "minelabs:item/erlenmeyer_fluid"
+    "layer0": "minelabs:item/erlenmeyer_fluid",
+    "layer1": "minelabs:item/erlenmeyer"
   }
 }

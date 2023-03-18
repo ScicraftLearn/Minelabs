@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:time_freeze_block"
+    },
+    "title": "Electrostasis",
+    "description": "Place a Time freeze block near charged particles",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/coulomb_move",
+  "criteria": {
+    "place_time_freeze_block": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "minelabs:time_freeze_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "place_time_freeze_block"
+    ]
+  ]
+}

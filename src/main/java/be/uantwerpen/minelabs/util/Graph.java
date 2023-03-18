@@ -162,4 +162,30 @@ public class Graph<V, E> {
     public String toString() {
         return toCanonical();
     }
+
+    public boolean isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak() {
+        // Dit is de beste functie die sowiezo nooit gaat crashen <3 LIEEEESSSSSS
+        // we've been bamboozled!!!!!!!!!!!!!
+        // NEVERRRRRRRRRRRRRRR! I AM ALL POWERFUL! I AM GOD
+
+        if (vertices.size() == 0)
+            return true;
+
+        List<Vertex> vertices = new ArrayList<>();
+        vertices.add(this.vertices.get(0));
+        boolean hasAdded = true;
+        while(hasAdded) {
+            hasAdded = false;
+            List<Vertex> copy = new ArrayList<>(vertices);
+            for(Vertex v: copy) {
+                for(Vertex w: v.getNeighbours()) {
+                    if(!vertices.contains(w)) {
+                        vertices.add(w);
+                        hasAdded = true;
+                    }
+                }
+            }
+        }
+        return (vertices.size() == this.vertices.size());
+    }
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "B1", "atom":  "B"},
+      {"key":  "Cl1", "atom":  "Cl"},
+      {"key":  "Cl2", "atom":  "Cl"},
+      {"key":  "Cl3", "atom":  "Cl"}
+    ],
+    "bonds": [
+      {"from": "Cl1", "to": "B1", "bondOrder": 1},
+      {"from": "Cl2", "to": "B1", "bondOrder": 1},
+      {"from": "Cl3", "to": "B1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_bcl3"
+  },
+  "density": 8
+}

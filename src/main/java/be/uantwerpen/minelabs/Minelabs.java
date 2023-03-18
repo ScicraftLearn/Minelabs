@@ -1,9 +1,12 @@
 package be.uantwerpen.minelabs;
 
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.crafting.CraftingRecipes;
 import be.uantwerpen.minelabs.dimension.ModDimensions;
+import be.uantwerpen.minelabs.effect.Effects;
+import be.uantwerpen.minelabs.effect.HeliumFlight;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.ScientificVillager;
 import be.uantwerpen.minelabs.event.ServerModEvents;
@@ -15,8 +18,13 @@ import be.uantwerpen.minelabs.paintings.Paintings;
 import be.uantwerpen.minelabs.sound.SoundEvents;
 import be.uantwerpen.minelabs.world.gen.OreGenerations;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.InputStream;
 
 
 public class Minelabs implements ModInitializer {
@@ -26,10 +34,15 @@ public class Minelabs implements ModInitializer {
     // This logger is used to write text to the console and the log file.
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
+    public static InputStream csvFile;
+
     @Override
     public void onInitialize() {
+
         //Gasses.registerPotions(); // Must be before Items/Blocks
 
+        csvFile = getClass().getResourceAsStream("/data/minelabs/nuclides_table/nndc_nudat_data_export.csv");
+        
         Items.registerItems();
         Blocks.registerBlocks();
         BlockEntities.registerBlockEntities();
@@ -40,6 +53,7 @@ public class Minelabs implements ModInitializer {
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();
         OreGenerations.generateOres();
+        Effects.registerStatusEffects();
 
         CraftingRecipes.register();
 
@@ -49,5 +63,7 @@ public class Minelabs implements ModInitializer {
         ScientificVillager.registerTrades();
         ServerModEvents.registerEvents();
         NetworkingConstants.registerS2CPackets();
+
+        Criteria.registerCriteria();
     }
 }

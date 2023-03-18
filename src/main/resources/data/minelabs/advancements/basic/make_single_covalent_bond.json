@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:bond",
+      "nbt": "{\"MinelabsBondAmount\": 1}"
+    },
+    "title": "Covalently Bonded",
+    "description": "Make a covalent bond",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/use_lewis_crafting_table",
+  "criteria": {
+    "make_single_bond": {
+      "trigger": "minelabs:lct",
+      "conditions": {
+        "order": 1
+      }
+    }
+  }
+}

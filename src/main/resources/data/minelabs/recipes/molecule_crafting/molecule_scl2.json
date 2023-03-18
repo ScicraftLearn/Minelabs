@@ -1,0 +1,19 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "S1", "atom":  "S"},
+      {"key":  "Cl1", "atom":  "Cl"},
+      {"key":  "Cl2", "atom":  "Cl"}
+    ],
+    "bonds": [
+      {"from": "Cl1", "to": "S1", "bondOrder": 1},
+      {"from": "Cl2", "to": "S1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_scl2"
+  },
+  "density": 8
+}

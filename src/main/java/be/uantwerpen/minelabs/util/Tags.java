@@ -18,8 +18,10 @@ import net.minecraft.util.registry.Registry;
 public class Tags {
     public static class Blocks {
 
+        public static final TagKey<Block> LASERTOOL_MINEABLE = createTag("lasertool_mineable");
         public static final TagKey<Block> COPPER_BLOCKS = createTag("copper_blocks");
         public static final TagKey<Block> CHARGED_BLOCKS = createTag("charged_blocks");
+        public static final TagKey<Block> ENTROPY_IMMUNE = createTag("entropy_immune");
 
         /**
          * Create a Block tag (tag is only used inside this mod)
@@ -45,7 +47,7 @@ public class Tags {
     }
 
     public static class Items {
-
+        public static final TagKey<Item> LASERTOOLS = createTag("lasertools");
         public static final TagKey<Item> FIRE_CHANGER = createCommonTag("fire_changer");
 
         /**

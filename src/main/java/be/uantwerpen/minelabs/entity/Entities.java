@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
@@ -36,6 +37,9 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "anti_neutron_entity");
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
+    public static final EntityType<BalloonEntity> BALLOON = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, BalloonEntity::new)
+            .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "balloon");
+
 
     /**
      * Register a single entity
@@ -83,7 +87,8 @@ public class Entities {
     public static void registerEntities() {
         Minelabs.LOGGER.info("registering entities");
         FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
-        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.all(),
-                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 1, 1));
+        registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld().or(BiomeSelectors.foundInTheNether()),
+                new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 0, 1));
+        FabricDefaultAttributeRegistry.register(BALLOON, BalloonEntity.createMobAttributes());
     }
 }
