@@ -1,0 +1,17 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "F1", "atom":  "F"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "F1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_hf"
+  },
+  "density": 8
+}

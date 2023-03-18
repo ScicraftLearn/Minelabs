@@ -1,0 +1,17 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "B1", "atom":  "B"},
+      {"key":  "N1", "atom":  "N"}
+    ],
+    "bonds": [
+      {"from": "N1", "to": "B1", "bondOrder": 3}
+    ]
+  },
+  "result": {
+    "item": "minelabs:boron_nitride_dust"
+  },
+  "density": 8
+}

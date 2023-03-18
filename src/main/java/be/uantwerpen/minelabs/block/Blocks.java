@@ -106,9 +106,20 @@ public class Blocks {
     public static final Block HELIUM = register(new Block(FabricBlockSettings.of(Material.AIR)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
+    public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.METAL)
+            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "lewis_block");
     public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
-    public static final Block ACID = register(new FluidBlock(Fluids.STILL_ACID, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "acid");
+    public static final Block HNO3 = register(new FluidBlock(Fluids.STILL_HNO3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "hno3");
+    public static final Block H2O = register(new FluidBlock(Fluids.STILL_H2O, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "h2o");
+    public static final Block CS2 = register(new FluidBlock(Fluids.STILL_CS2, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "cs2");
+    public static final Block CCl4 = register(new FluidBlock(Fluids.STILL_CCl4, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ccl4");
+    public static final Block PCl3 = register(new FluidBlock(Fluids.STILL_PCl3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "pcl3");
+    public static final Block SCl2 = register(new FluidBlock(Fluids.STILL_SCl2, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "scl2");
+    public static final Block NCl3 = register(new FluidBlock(Fluids.STILL_NCl3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ncl3");
+    public static final Block HCN = register(new FluidBlock(Fluids.STILL_HCN, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "hcn");
+    public static final Block CH4O = register(new FluidBlock(Fluids.STILL_CH4O, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ch4o");
+    public static final Block SICL4 = register(new FluidBlock(Fluids.STILL_SiCl4, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "sicl4");
     public static final Block BOHR_BLOCK = register(new BohrBlock(), "bohr_block");
 
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(

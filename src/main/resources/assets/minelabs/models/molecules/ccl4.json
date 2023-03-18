@@ -1,0 +1,19 @@
+{
+  "structure":
+  {
+    "atoms": [
+      {"key": "C1", "atom": "C", "position": [ 0.00, 0.00, 0.00]},
+      {"key": "Cl1", "atom": "Cl", "position": [ 1.07, 1.07, 1.07]},
+      {"key": "Cl2", "atom": "Cl", "position": [ -1.07, -1.07, 1.07]},
+      {"key": "Cl3", "atom": "Cl", "position": [-1.07, 1.07, -1.07]},
+      {"key": "Cl4", "atom": "Cl", "position": [1.07, -1.07, -1.07]}
+    ],
+    "bonds": [
+      {"from": "Cl1", "to": "C1", "bondOrder": 1},
+      {"from": "Cl2", "to": "C1", "bondOrder": 1},
+      {"from": "Cl3", "to": "C1", "bondOrder": 1},
+      {"from": "Cl4", "to": "C1", "bondOrder": 1}
+    ]
+  },
+  "items": ["minelabs:erlenmeyer_ccl4"]
+}

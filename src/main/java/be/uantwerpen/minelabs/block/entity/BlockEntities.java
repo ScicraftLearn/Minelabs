@@ -38,6 +38,9 @@ public class BlockEntities {
 
     public static BlockEntityType<LabChestBlockEntity> LAB_CHEST_BLOCK_ENTITY;
 
+    public static BlockEntityType<MologramBlockEntity> MOLOGRAM_BLOCK_ENTITY;
+
+
     static {
         ArrayList<ItemStack> weak_boson_drop = new ArrayList<>();
         weak_boson_drop.add(new ItemStack(Items.WEAK_BOSON));
@@ -121,6 +124,8 @@ public class BlockEntities {
         LAB_CHEST_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder
                 .create(LabChestBlockEntity::new, Blocks.LAB_CABIN, Blocks.LAB_DRAWER).build(null), "lab_chest_block_entity");
 
+        MOLOGRAM_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(MologramBlockEntity::new,
+                Blocks.MOLOGRAM_BLOCK).build(null), "mologram_block_entity");
     }
 
     /**

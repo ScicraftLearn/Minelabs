@@ -1,0 +1,19 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "C1", "atom":  "C"},
+      {"key":  "N1", "atom":  "N"}
+    ],
+    "bonds": [
+      {"from": "C1", "to": "H1", "bondOrder": 1},
+      {"from": "C1", "to": "N1", "bondOrder": 3}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer_hcn"
+  },
+  "density": 8
+}

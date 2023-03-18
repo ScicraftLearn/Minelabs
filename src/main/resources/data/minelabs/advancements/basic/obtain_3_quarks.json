@@ -1,0 +1,58 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:upquark_green"
+    },
+    "title": "Three quarks for muster mark",
+    "description": "Obtain a red, blue and green quark",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/obtain_a_quark",
+  "criteria": {
+    "obtain_red_quark": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:upquark_red",
+              "minelabs:downquark_red"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_green_quark": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:upquark_green",
+              "minelabs:downquark_green"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_blue_quark": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:upquark_blue",
+              "minelabs:downquark_blue"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+
+  ]
+}

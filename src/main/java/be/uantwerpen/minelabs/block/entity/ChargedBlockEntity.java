@@ -1,5 +1,7 @@
 package be.uantwerpen.minelabs.block.entity;
 
+import be.uantwerpen.minelabs.advancement.criterion.CoulombCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,6 +13,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
@@ -26,7 +29,7 @@ public class ChargedBlockEntity extends BlockEntity{
     private double charge;
     private Vec3f field;
     private boolean update_next_tick = false;
-    private static final double e_move = 0.5;
+    private static final double e_move = 0.1; //if force is larger, then particles can move
     private final Block anti_block;
     private final double decay_time;
     private final ArrayList<ItemStack> decay_drop;
@@ -102,7 +105,7 @@ public class ChargedBlockEntity extends BlockEntity{
 
     //First time field
     public void makeField(World world, BlockPos pos, boolean afterTimeFreeze) {
-        int e_radius = 8;
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
         field = new Vec3f(0f, 0f, 0f);
@@ -147,7 +150,7 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public void removeField(World world, BlockPos pos) {
-        int e_radius = 8;
+        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
 
@@ -265,6 +268,7 @@ public class ChargedBlockEntity extends BlockEntity{
                     if (decay_replace != null) {
                         world.setBlockState(pos, decay_replace.getDefaultState());
                     }
+                    Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, pos, 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
                     markDirty();
                 } else {
                     Direction movement_annihilation = this.checkAnnihilation();

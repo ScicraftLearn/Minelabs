@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:erlenmeyer"
+    },
+    "title": "Baby's first molecule",
+    "description": "Craft a molecule in the Lewis Crafting Table",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/use_lewis_crafting_table",
+  "criteria": {
+    "make_a_molecule": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "minelabs:molecule_item"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "make_a_molecule"
+    ]
+  ]
+}

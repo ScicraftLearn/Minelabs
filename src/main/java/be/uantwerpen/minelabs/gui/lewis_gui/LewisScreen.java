@@ -2,9 +2,10 @@ package be.uantwerpen.minelabs.gui.lewis_gui;
 
 
 import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.crafting.molecules.BondManager;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
+import be.uantwerpen.minelabs.crafting.molecules.BondManager;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;
+import be.uantwerpen.minelabs.crafting.molecules.ValenceElectrons;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
@@ -21,15 +22,16 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler.GRIDSIZE;
 
 
-public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler>{
-    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/lewis_block_inventory_craftable.png");
-    private static final Identifier TEXTURE2 = new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/lewis_block_inventory_default.png");
+public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler> {
+    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory_craftable.png");
+    private static final Identifier TEXTURE2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory.png");
     private ButtonWidget buttonWidget;
     private boolean widgetTooltip = false;
 
@@ -53,17 +55,16 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, getCorrectTexture());
+        if (this.handler.hasRecipe()) {
+            RenderSystem.setShaderTexture(0, TEXTURE);
+        } else {
+            RenderSystem.setShaderTexture(0, TEXTURE2);
+        }
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        renderProgressArrow(matrices, this.x, this.y);
+        renderRecipeCheck(matrices, this.x, this.y);
         buttonWidget.renderButton(matrices, mouseX, mouseY, delta);
-
-        // get crafting progress and handle its
-//        int cp = handler.getProgress();
-//        if (cp >= 0) {
-//            drawTexture(matrices, x + 100, y + 51, 176, 0, cp, 20);
-//        }
-
 
         // Keep mapping between stack (in graph) and slots (for rendering)
         Map<ItemStack, Slot> stackToSlotMap = new HashMap<>();
@@ -75,12 +76,30 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
          * Draw Bonds on screen
          */
         LewisCraftingGrid grid = handler.getLewisCraftingGrid();
+        BondManager manager = new BondManager();
         if (grid.getPartialMolecule().getStructure() instanceof MoleculeItemGraph graph){
             for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
                 Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
                 Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
-                BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
+                BondManager.Bond bond = manager.getOrCreateBond(slot1, slot2, edge.data.bondOrder);
                 this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+            }
+            for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
+                Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
+                int total_bonds = 0;
+                Map<String, Integer> bonds = manager.findEmptyBonds(slot);
+                for (String key : bonds.keySet()) {
+                    total_bonds += bonds.get(key);
+                }
+
+                ValenceElectrons valentieE = new ValenceElectrons(bonds,
+                        vertex.data.getInitialValenceElectrons() - vertex.getEdgesData().stream().map(bond -> bond.bondOrder).mapToInt(Integer::intValue).sum()
+                        , vertex.data.getMaxPossibleBonds() == total_bonds); //no clue: copied it from getOpenConnections in the MoleculeGraph class
+                for (String i : Arrays.asList("n", "e", "s", "w")) { //render item 4x: N-E-S-W
+                    if (valentieE.getDirectionalValence(i) != 0) {
+                        this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(i), slot.x + x, slot.y + y);
+                    }
+                }
             }
         }
 
@@ -101,6 +120,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
         }
     }
+
 
     @Override
     protected void init() {
@@ -149,40 +169,35 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 buttonWidget.renderTooltip(matrices, mouseX, mouseY);
                 widgetTooltip = true;
             }
+            if (mouseX >= x + 105 && mouseX < x + 105 + 16 && mouseY >= y + 17 && mouseY < y + 17 + 16) {
+                switch (handler.getStatus()) {
+                    case 1 -> renderTooltip(matrices, Arrays.asList(
+                            Text.translatable("text.minelabs.valid"),
+                            Text.translatable("text.minelabs.not_implemented")), mouseX, mouseY);
+                    case 2 -> renderTooltip(matrices,
+                            Text.translatable("text.minelabs.valid"), mouseX, mouseY);
+                    case 3 ->  renderTooltip(matrices,
+                            Text.translatable("text.minelabs.multiple_molecules"), mouseX, mouseY);
+                    default -> renderTooltip(matrices,
+                            Text.translatable("text.minelabs.invalid"), mouseX, mouseY);
+                }
+
+            }
         }
     }
 
-    protected Identifier getCorrectTexture() {
-        int cp = this.handler.getProgress();
-        if (cp != -1) {
-            if (cp == 0 || cp == 1) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp0.png");
-            } else if (cp == 2 || cp == 3) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp2.png");
-            } else if (cp == 4 || cp == 5) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp4.png");
-            } else if (cp == 6 || cp == 7) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp6.png");
-            } else if (cp == 8 || cp == 9) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp8.png");
-            } else if (cp == 10 || cp == 11) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp10.png");
-            } else if (cp == 12 || cp == 13) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp12.png");
-            } else if (cp == 14 || cp == 15) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp14.png");
-            } else if (cp == 16 || cp == 17) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp16.png");
-            } else if (cp == 18 || cp == 19) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp18.png");
-            } else if (cp >= 20) {
-                return new Identifier(Minelabs.MOD_ID, "textures/block/lewiscrafting/crafting_progress/cp20.png");
-            }
+    private void renderProgressArrow(MatrixStack matrices, int x, int y) {
+        if (handler.isCrafting()) {
+            drawTexture(matrices, x + 102, y + 52, 176, 0, handler.getScaledProgress(), 20);
         }
-        if (!this.handler.hasRecipe() ) {
-            return TEXTURE2;
-        } else {
-            return TEXTURE;
+    }
+
+    private void renderRecipeCheck(MatrixStack matrices, int x, int y) {
+        switch (handler.getStatus()) {
+            case 1 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16); // NOT IMPLEMENTED
+            case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 55, 16, 16); // VALID
+            case 3 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16);
+            default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
         }
     }
 }

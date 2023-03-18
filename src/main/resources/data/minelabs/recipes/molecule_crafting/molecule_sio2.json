@@ -1,0 +1,19 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "Si1", "atom":  "Si"},
+      {"key":  "O1", "atom":  "O"},
+      {"key":  "O2", "atom":  "O"}
+    ],
+    "bonds": [
+      {"from": "O1", "to": "Si1", "bondOrder": 2},
+      {"from": "O2", "to": "Si1", "bondOrder": 2}
+    ]
+  },
+  "result": {
+    "item": "minelabs:silicon_dioxide_dust"
+  },
+  "density": 8
+}
