@@ -376,6 +376,8 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
 
             Vec3f vc = quad[0].copy();
             vc.add(quad[2]);
+            vc.add(quad[1]);
+            vc.add(quad[3]);
             vc.normalize();
 
             Vec3f vd = quad[2].copy();

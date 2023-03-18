@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:hydrogen_atom"
+    },
+    "title": "Atoms",
+    "description": "Obtain all atoms",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "criteria": {
+    "use_bohr_blueprint": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type_specific": {
+            "type": "player",
+            "advancements": {
+              "minelabs:basic/make_an_atom": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "use_bohr_blueprint"
+    ]
+  ]
+}

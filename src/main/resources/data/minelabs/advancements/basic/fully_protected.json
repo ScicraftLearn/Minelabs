@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:lab_coat"
+    },
+    "title": "Like a real scientist",
+    "description": "Wear safety glasses and a lab coat",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/wear_goggles",
+  "criteria": {
+    "wear_gear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": {
+          "equipment": {
+            "head": {
+              "items": [
+                "minelabs:safety_glasses"
+              ]
+            },
+            "chest": {
+              "items": [
+                "minelabs:lab_coat"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ]
+}

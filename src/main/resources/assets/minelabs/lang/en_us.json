@@ -1,5 +1,5 @@
 {
-  "itemGroup.minelabs.minelabs": "MineLabs",
+  "itemGroup.minelabs.minelabs": "Minelabs",
   "itemGroup.minelabs.quantum_fields": "Quantum Fields",
   "itemGroup.minelabs.chemicals": "Chemicals",
   "itemGroup.minelabs.elementary_particles": "Elementary Particles",
@@ -58,6 +58,7 @@
   "blockEntity.minelabs.charged_block": "Charged Block",
   "entity.minecraft.villager.sciencevillager": "Science Villager",
   "entity.minelabs.entropy_creeper": "Entropy Creeper",
+  "entity.minelabs.balloon": "Balloon",
   "item.minelabs.entropy_creeper_spawn_egg": "Entropy Creeper Spawn Egg",
   "item.minelabs.salt_shard": "Salt Shard",
 
@@ -140,7 +141,7 @@
   "item.minelabs.titanium_atom": "Titanium",
   "item.minelabs.manganese_atom": "Manganese",
   "item.minelabs.tungsten_atom": "Tungsten",
-
+  "item.minelabs.balloon": "Balloon",
   "item.minelabs.erlenmeyer": "Erlenmeyer",
   "item.minelabs.erlenmeyer_h2o": "Water (H\u2082O)",
   "item.minelabs.erlenmeyer_o2.effect.empty": "Oxygen gas (O\u2082)",
