@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:electric_field_sensor"
+    },
+    "title": "Spidey-senses",
+    "description": "Place an electric field sensor near charged particles",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/coulomb_move",
+  "criteria": {
+    "place_electric_field_sensor": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "minelabs:electric_field_sensor"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "place_electric_field_sensor"
+    ]
+  ]
+}

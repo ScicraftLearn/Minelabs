@@ -1,4 +1,4 @@
-# <img src="src/main/resources/assets/minelabs/icon.png" height=50px/> MineLabs 
+# <img src="src/main/resources/assets/minelabs/icon.png" height=50px/> Minelabs 
 _A mod to add physics and chemistry to your life (and Minecraft)_
 
 This is the first version of the mod. We use the [Fabric](https://fabricmc.net) toolchain. For more info, visit [our website](https://scicraft.be) or join our [Discord server](https://discord.com/invite/g3zMkEXzRN).

@@ -168,6 +168,9 @@ public class Graph<V, E> {
         // we've been bamboozled!!!!!!!!!!!!!
         // NEVERRRRRRRRRRRRRRR! I AM ALL POWERFUL! I AM GOD
 
+        if (vertices.size() == 0)
+            return true;
+
         List<Vertex> vertices = new ArrayList<>();
         vertices.add(this.vertices.get(0));
         boolean hasAdded = true;

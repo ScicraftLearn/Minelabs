@@ -1,0 +1,17 @@
+{
+    "replace": false,
+    "values": [
+        "minelabs:upquark_red",
+        "minelabs:upquark_green",
+        "minelabs:upquark_blue",
+        "minelabs:anti_upquark_red",
+        "minelabs:anti_upquark_green",
+        "minelabs:anti_upquark_blue",
+        "minelabs:downquark_red",
+        "minelabs:downquark_green",
+        "minelabs:downquark_blue",
+        "minelabs:anti_downquark_red",
+        "minelabs:anti_downquark_green",
+        "minelabs:anti_downquark_blue"
+    ]
+}
