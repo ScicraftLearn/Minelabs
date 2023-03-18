@@ -15,11 +15,11 @@ import java.util.Map;
 public class MinecraftBlocksData {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private final String name;
+    private final Identifier name;
     private final ArrayList<String> molecules;
     private final ArrayList<Integer> distribution;
 
-    public MinecraftBlocksData(String name, JsonArray molecules, JsonArray distribution) {
+    public MinecraftBlocksData(Identifier name, JsonArray molecules, JsonArray distribution) {
         this.name = name;
         this.molecules = new ArrayList<>(molecules.size());
         for (JsonElement molecule : molecules) {
@@ -37,18 +37,22 @@ public class MinecraftBlocksData {
             Map<String, Integer> map = ChemicalFormulaParser.parseFormula(molecules.get(i));
             String convertedMoleculeName = MinecraftBlocksData.convertMoleculeName(molecules.get(i));
 
+            Identifier convertedMoleculeId = new Identifier(convertedMoleculeName);
+            convertedMoleculeName = convertedMoleculeId.getPath();
+
             JsonObject jsonObject = new JsonObject();
             // Expand the block name if possible
             // For example convert concrete to list of all colors of concrete and take the first item of that
-            if (LaserToolDataProvider.isExpandable(convertedMoleculeName)) {
-                convertedMoleculeName = LaserToolDataProvider.expandBlock(convertedMoleculeName).get(0);
+            if (LaserToolDataProvider.isExpandable(convertedMoleculeId)) {
+                convertedMoleculeId = LaserToolDataProvider.expandBlock(convertedMoleculeName).get(0);
+                convertedMoleculeName = convertedMoleculeId.getPath();
             }
-            if(!Registry.BLOCK.get(new Identifier("minecraft", convertedMoleculeName)).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
+            if(!Registry.BLOCK.get(convertedMoleculeId).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
                 jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "loot_table").toString()));
                 jsonObject.add("name", new JsonPrimitive(new Identifier(Minelabs.MOD_ID, "lasertool/blocks/" + convertedMoleculeName).toString()));
-            } else if(!Registry.ITEM.get(new Identifier("minecraft", convertedMoleculeName)).equals(Registry.ITEM.get(Registry.ITEM.getDefaultId()))) {
+            } else if(!Registry.ITEM.get(convertedMoleculeId).equals(Registry.ITEM.get(Registry.ITEM.getDefaultId()))) {
                 jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "item").toString()));
-                jsonObject.add("name", new JsonPrimitive(new Identifier("minecraft", convertedMoleculeName).toString()));
+                jsonObject.add("name", new JsonPrimitive(convertedMoleculeId.toString()));
             } else if(map.size() == 1) {
                 map.keySet().forEach(key -> {
                     jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "item").toString()));
@@ -87,13 +91,13 @@ public class MinecraftBlocksData {
         group.add("children", entries);
         JsonObject lootTable = new JsonObject();
         lootTable.add("type", new JsonPrimitive("minecraft:loot_table"));
-        lootTable.add("name", new JsonPrimitive(new Identifier("minecraft", "blocks/" + this.name).toString()));
+        lootTable.add("name", new JsonPrimitive(new Identifier(name.getNamespace(), "blocks/" + this.name.getPath()).toString()));
         JsonObject alternatives = new JsonObject();
         alternatives.add("type", new JsonPrimitive("minecraft:alternatives"));
         JsonArray children = new JsonArray();
         children.add(group);
         // No vanilla loot table for these blocks in vanilla minecraft
-        if (!this.name.matches("lava|water|bedrock")) {
+        if (!this.name.getPath().matches("lava|water|bedrock")) {
             children.add(lootTable);
         }
         alternatives.add("children", children);
@@ -114,7 +118,7 @@ public class MinecraftBlocksData {
     }
 
     public Identifier getId() {
-        return new Identifier(Minelabs.MOD_ID, name);
+        return new Identifier(Minelabs.MOD_ID, name.getPath());
     }
 
     public static String convertMoleculeName(String moleculeName) {
