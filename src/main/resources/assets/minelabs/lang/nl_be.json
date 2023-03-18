@@ -32,7 +32,6 @@
   "block.minelabs.weak_boson": "Zwak Boson",
   "block.minelabs.neutrino": "Neutrino",
   "block.minelabs.antineutrino": "Anti-Neutrino",
-  "block.minelabs.helium": "Helium Gas",
 
   "block.minelabs.gluon_quantumfield": "Gluon Kwantumveld",
   "block.minelabs.photon_quantumfield": "Foton Kwantumveld",
@@ -139,7 +138,6 @@
   "item.minelabs.titanium_atom": "Titanium",
   "item.minelabs.manganese_atom": "Mangaan",
   "item.minelabs.tungsten_atom": "Wolfraam",
-  "item.minelabs.titanium_atom": "Titanium",
   "item.minelabs.balloon": "Ballon",
   "item.minelabs.erlenmeyer": "Erlenmeyer",
   "item.minelabs.erlenmeyer_h2o": "Water (H\u2082O)",
