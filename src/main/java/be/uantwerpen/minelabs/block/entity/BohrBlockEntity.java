@@ -98,7 +98,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         return count;
     }
 
-  
+
     @Nullable
   /*  public static BlockPos getMasterPos(BlockState state, BlockPos blockPos) {
         BohrPart part = state.get(MinelabsProperties.BOHR_PART);

@@ -218,7 +218,7 @@ public class BohrBlock extends BlockWithEntity {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return Block.createCuboidShape(0, 0, 0, 16, 1, 16);
+        return Block.createCuboidShape(0, 0, 0, 16, 5, 16);
     }
 
   /*  @Override
