@@ -1,10 +1,13 @@
 package be.uantwerpen.minelabs.block.entity;
 
+import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.MinelabsClient;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
 import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,6 +21,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -26,10 +30,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
+import static net.minecraft.client.gui.DrawableHelper.drawTexture;
 
 public class BohrBlockEntity extends BlockEntity implements ImplementedInventory {
 
@@ -39,6 +42,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public static final int RED_COLOR = ColorHelper.Argb.getArgb(255, 255, 0, 0);
 
     private static final int MAX_TIMER = 99 * 20;
+    private static final Identifier BARS_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/bohr_bars.png");
+    private static final int BARS_TEXTURE_WIDTH = 256;
     private int timer = MAX_TIMER;
 
     //the inventory stack [0,3[ = protons, [3,6[ = neutrons, [6,9[ = electrons
@@ -222,10 +227,25 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public void renderText() {
 
         assert world != null;
+        int i = MinecraftClient.getInstance().getWindow().getScaledWidth();
+        int j = 12;
+        int k = i / 2 - 91;
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, BARS_TEXTURE);
+        MatrixStack matrices = new MatrixStack();
 
         int nrOfProtons = getProtonCount();
         int nrOfNeutrons = getNeutronCount();
         int nrOfElectrons = getElectronCount();
+        int s = Math.max(nrOfProtons, Math.max(nrOfNeutrons, nrOfElectrons));
+        int scale;
+        if (s>40){scale=150;} else if (s>10) {scale=40;}else {scale=10;}
+        this.renderBossBar(matrices, scale, nrOfProtons, nrOfElectrons, nrOfNeutrons, k, j);
+
+
+
+
+
 
         String neutronHelp = "";
         String electronHelp = "";
@@ -269,6 +289,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         /*
          * Rendering of text:
          */
+
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, atomInfo, 10, 10, color);
         if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
             MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
@@ -276,8 +297,34 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, protonString, 10, 30, WHITE_COLOR);
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, neutronString, 10, 40, WHITE_COLOR);
         MinecraftClient.getInstance().textRenderer.draw(matrixStack, electronString, 10, 50, WHITE_COLOR);
-    }
 
+
+    }
+    public void renderBossBar(MatrixStack matrixStack, int scale, int Np, int Ne, int Nn, int x, int y){
+        drawTexture(matrixStack, x, y, 0, 0, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+        drawTexture(matrixStack, x, y+8, 0, 10, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+        drawTexture(matrixStack, x, y+16, 0, 20, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+
+        int ratio_p = Np*182/scale;
+        int ratio_e = Ne*182/scale;
+        int ratio_n = Nn*182/scale;
+
+        drawTexture(matrixStack, x, y, 0, 5, ratio_p, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+        drawTexture(matrixStack, x, y+8, 0, 15, ratio_e, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+        drawTexture(matrixStack, x, y+16, 0, 25, ratio_n, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+
+        if(scale!=150){
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            int s;
+            if(scale==10){s=45;}else{s=55;}
+            drawTexture(matrixStack, x, y, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+            drawTexture(matrixStack, x, y+8, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+            drawTexture(matrixStack, x, y+16, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+
+            RenderSystem.disableBlend();
+        }
+    }
     /**
      * Determines the help messages (for neutrons and electrons) to be shown to the player while building an atom.
      *

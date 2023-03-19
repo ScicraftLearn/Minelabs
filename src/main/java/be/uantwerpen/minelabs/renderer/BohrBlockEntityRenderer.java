@@ -73,13 +73,13 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	@Override
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
-			matrices.translate(0.5f,0f,0.5f);
-			matrices.push();
 
+			matrices.push();
+			matrices.translate(0.5f,1.75f,0.5f);
 			int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
 
 			// origin
-			if (!blockEntity.isRemoved()) {
+			/*if (!blockEntity.isRemoved()) {
 				switch (blockEntity.getWorld().getBlockState(blockEntity.getPos()).get(Properties.HORIZONTAL_FACING)) {
 					case NORTH -> matrices.translate(1f, 1.75f, 1f);
 					case EAST -> matrices.translate(0f, 1.75f, 1f);
@@ -87,6 +87,8 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 					case WEST -> matrices.translate(1f, 1.75f, 0f);
 				}
 			}
+
+			 */
 
 			matrices.scale(1.5f, 1.5f, 1.5f);
 
