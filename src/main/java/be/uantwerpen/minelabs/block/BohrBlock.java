@@ -44,43 +44,48 @@ public class BohrBlock extends BlockWithEntity {
     //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
     public static final IntProperty STATUS = MinelabsProperties.STATUS;
     //    which part of the bohrplate this bohrblock belongs to
-    public static final EnumProperty<BohrPart> BOHR_PART = MinelabsProperties.BOHR_PART;
+    //public static final EnumProperty<BohrPart> BOHR_PART = MinelabsProperties.BOHR_PART;
 
     public BohrBlock() {
         super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque().luminance(100));
         this.setDefaultState(this.stateManager.getDefaultState()
-                .with(STATUS, 0).with(BOHR_PART, BohrPart.BASE).with(FACING, Direction.NORTH));
+                .with(STATUS, 0).with(FACING, Direction.NORTH));
     }
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         //Only render the master block
-        return isMaster(state) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
+        return BlockRenderType.MODEL;
     }
 
+    /*
     public boolean isMaster(BlockState state) {
         return state.get(BOHR_PART) == BohrPart.BASE;
     }
 
+     */
+
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (world.getBlockEntity(BohrBlockEntity.getMasterPos(state, pos)) instanceof BohrBlockEntity bohrBlockEntity) {
+        if (world.getBlockEntity(pos) instanceof BohrBlockEntity bohrBlockEntity) {
             bohrBlockEntity.scatterParticles();
         }
         super.onBreak(world, pos, state, player);
         // destroy the three other parts
-        for (BlockPos blockPos : BohrBlockEntity.getBohrParts(state, pos, world)) {
+        /*for (BlockPos blockPos : BohrBlockEntity.getBohrParts(state, pos, world)) {
             if (world.getBlockState(blockPos).getBlock() == this) {
                 world.breakBlock(blockPos, false);
                 world.emitGameEvent(GameEvent.BLOCK_DESTROY, blockPos, GameEvent.Emitter.of(player, world.getBlockState(blockPos)));
             }
         }
+
+         */
         world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(player, world.getBlockState(pos)));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(STATUS).add(BOHR_PART).add(FACING);
+        builder.add(STATUS).add(FACING);
     }
 
     @Override
@@ -92,7 +97,7 @@ public class BohrBlock extends BlockWithEntity {
         if (!world.isClient()) {
             if (projectile instanceof SubatomicParticle subatomicParticle && blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
                 item = subatomicParticle.getStack().getItem();
-                bohrBlockEntity = bohrBlockEntity.getMaster(world);
+                //bohrBlockEntity = bohrBlockEntity.getMaster(world);
                 if (bohrBlockEntity == null) {
                     return;
                 }
@@ -128,7 +133,7 @@ public class BohrBlock extends BlockWithEntity {
 
         if (blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
             boolean isActionResultSuccessful = false;
-            bohrBlockEntity = bohrBlockEntity.getMaster(world);
+            //bohrBlockEntity = bohrBlockEntity.getMaster(world);
             if (bohrBlockEntity == null) return ActionResult.FAIL;
             if (item == Items.NEUTRON || item == Items.PROTON || item == Items.ELECTRON) {
                 if (bohrBlockEntity.insertParticle(item) == ActionResult.SUCCESS) {
@@ -216,7 +221,7 @@ public class BohrBlock extends BlockWithEntity {
         return Block.createCuboidShape(0, 0, 0, 16, 1, 16);
     }
 
-    @Override
+  /*  @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         //super.onPlaced(world, pos, state, placer, itemStack);
         BlockPos blockPos1, blockPos2, blockPos3;
@@ -232,11 +237,13 @@ public class BohrBlock extends BlockWithEntity {
         }
     }
 
+   */
+
     @Override
     @Nullable
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        BlockPos blockPos = ctx.getBlockPos(), blockPos1, blockPos2, blockPos3;
-        switch (ctx.getPlayerFacing().getOpposite()) {
+        BlockPos blockPos = ctx.getBlockPos();
+        /*switch (ctx.getPlayerFacing().getOpposite()) {
             case SOUTH -> {
                 blockPos1 = blockPos.offset(Direction.NORTH);
                 blockPos2 = blockPos.offset(Direction.WEST);
@@ -259,13 +266,21 @@ public class BohrBlock extends BlockWithEntity {
             }
         }
 
-        World world = ctx.getWorld();
+         */
+
+       /*
         for (BlockPos pos : List.of(blockPos, blockPos1, blockPos2, blockPos3)) {
             if (!world.getBlockState(pos).canReplace(ctx) || !world.getWorldBorder().contains(pos)) {
                 return null;
             }
         }
-        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite()).with(BOHR_PART, BohrPart.BASE);
+
+        */
+        World world = ctx.getWorld();
+        if (!world.getBlockState(blockPos).canReplace(ctx) || !world.getWorldBorder().contains(blockPos)) {
+            return null;
+        }
+        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
     }
 
     @Nullable

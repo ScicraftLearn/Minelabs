@@ -1,7 +1,5 @@
 package be.uantwerpen.minelabs.block.entity;
 
-import be.uantwerpen.minelabs.block.BohrBlock;
-import be.uantwerpen.minelabs.block.BohrPart;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
@@ -19,7 +17,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
@@ -101,15 +98,9 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         return count;
     }
 
-    /**
-     * getter for the position of the master block of the bohrplate
-     *
-     * @param state    state of a certain block of the plate
-     * @param blockPos the position of the block of the plate
-     * @return the position of the bohr plate master
-     */
+  
     @Nullable
-    public static BlockPos getMasterPos(BlockState state, BlockPos blockPos) {
+  /*  public static BlockPos getMasterPos(BlockState state, BlockPos blockPos) {
         BohrPart part = state.get(MinelabsProperties.BOHR_PART);
         Direction direction = state.get(Properties.HORIZONTAL_FACING);
         switch (part) {
@@ -131,6 +122,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         }
     }
 
+   */
+
     /**
      * takes a starting block and find the positions of the other 3 bohr-blocks
      *
@@ -139,6 +132,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      * @param world    the world of the starting block
      * @return a list of other bohr block belonging to the same bohr plate
      */
+    /*
     public static List<BlockPos> getBohrParts(BlockState state, BlockPos blockPos, World world) {
         BohrPart part = state.get(MinelabsProperties.BOHR_PART);
         Direction direction = state.get(Properties.HORIZONTAL_FACING);
@@ -173,6 +167,8 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         }
     }
 
+
+     */
     public static void tick(World world, BlockPos pos, BlockState state, BohrBlockEntity entity) {
         if (world.isClient) {
             return;
@@ -205,33 +201,26 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         world.setBlockState(pos, state.with(MinelabsProperties.STATUS, status));
         world.updateListeners(pos, state, state.with(MinelabsProperties.STATUS, status), Block.NOTIFY_LISTENERS);
     }
-
+/*
     public boolean isMaster() {
         return this.getCachedState().get(MinelabsProperties.BOHR_PART) == BohrPart.BASE;
     }
+
+ */
 
     /**
      * @return itemstacks of the plate
      */
     @Override
     public DefaultedList<ItemStack> getItems() {
-//        return items if master otherwise return the items of the master
-        BohrBlockEntity master = getMaster(world);
-        if (master == null) {
-            return DefaultedList.of();
-        }
-        return isMaster() ? items : master.items;
+        return items;
     }
 
     /**
      * renders the text of the bohrplate status
      */
     public void renderText() {
-//        if not the master, execute in the master
-        if (!isMaster()) {
-            Objects.requireNonNull(getMaster(world)).renderText();
-            return;
-        }
+
         assert world != null;
 
         int nrOfProtons = getProtonCount();
@@ -381,13 +370,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      * @return success or failure
      */
     public ActionResult insertParticle(Item item) {
-        if (!isMaster()) {
-            BohrBlockEntity master = getMaster(world);
-            if (master != null) return master.insertParticle(item);
-            else {
-                return ActionResult.FAIL;
-            }
-        }
 
         int slot, times_looped = 0;
 
@@ -433,6 +415,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      * @param world the world to search the master in
      * @return the base block of the plate
      */
+   /*
     @Nullable
     public BohrBlockEntity getMaster(World world) {
         if (this.getCachedState().getBlock() instanceof BohrBlock
@@ -453,20 +436,15 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         return this;
     }
 
+    */
+
     /**
      * Removes a particle (proton, neutron or electron depending on passed param) from the bohrblock.
      *
      * @param item : item particle to be removed.
      */
     public ActionResult removeParticle(Item item) {
-        if (!isMaster()) {
-            BohrBlockEntity master = getMaster(world);
-            if (master != null) {
-                master.removeParticle(item);
-            } else {
-                return ActionResult.FAIL;
-            }
-        }
+
         int index;
         if (List.of(Items.ANTI_PROTON, Items.ANTI_NEUTRON, Items.POSITRON).contains(item)) {
             if (item == Items.ANTI_PROTON) {
@@ -497,14 +475,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      * @param distance, nr of blocks up
      */
     public void scatterParticles(int distance) {
-        if (!isMaster()) {
-            BohrBlockEntity master = getMaster(world);
-            if (master != null) {
-                master.scatterParticles(distance);
-            } else {
-                return;
-            }
-        }
+
 //        0.5 east and 0.5 south
         ItemScatterer.spawn(Objects.requireNonNull(getWorld()), getPos().up(distance).add(0.5f, 0, 0.5f), items);
         markDirty();
@@ -518,14 +489,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      * @param pos   the position of the bohrblock
      */
     public void createAtom(World world, BlockPos pos) {
-        if (!isMaster()) {
-            BohrBlockEntity master = getMaster(world);
-            if (master != null) {
-                master.createAtom(world, pos);
-            } else {
-                return;
-            }
-        }
+
         int protons = getProtonCount();
         int neutrons = getNeutronCount();
         NucleusState nucleusState = NuclidesTable.getNuclide(protons, neutrons);

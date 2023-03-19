@@ -73,7 +73,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	@Override
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
-		if (blockEntity.isMaster()) {
+
 			matrices.push();
 
 			int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
@@ -143,7 +143,7 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 
 			matrices.pop();
-		}
+
 
 	}
 
