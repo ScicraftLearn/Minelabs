@@ -2,7 +2,6 @@
   "parent": "minelabs:block/bohr_template",
   "textures": {
     "BP": "minelabs:block/bohrcrafting/bohr_block_ready",
-    "sides": "minelabs:block/bohrcrafting/ready_side",
     "particle": "minelabs:block/bohrcrafting/bohr_block"
   }
 }
