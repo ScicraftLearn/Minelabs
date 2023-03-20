@@ -41,12 +41,12 @@ public class LaserToolDataProvider implements DataProvider {
 	@Override
 	public void run(DataWriter writer) throws IOException {
 		Path path = this.root.getOutput();
-		HashSet<Identifier> set = Sets.newHashSet();
+		Set<Identifier> set = Sets.newLinkedHashSet();
 		LaserToolDataProvider.generateMinecraftBlocksData(provider -> {
 			if (!set.add(provider.getId())) {
 				throw new IllegalStateException("Duplicate block " + provider.getId());
 			}
-			LaserToolDataProvider.saveMinecraftBlocksData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/lasertool/blocks/" + provider.getId().getPath() + ".json"));
+			LaserToolDataProvider.saveMinecraftBlocksData(writer, provider.toJson(), path.resolve("data/" + Minelabs.MOD_ID + "/loot_tables/lasertool/blocks/" + provider.getId().getPath() + ".json"));
 		}, path);
 
 		LaserToolDataProvider.generateMoleculeData(provider -> LaserToolDataProvider.saveMoleculeData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/molecules/" + provider.getId().getPath() + ".json")));
@@ -72,14 +72,14 @@ public class LaserToolDataProvider implements DataProvider {
 		}
 	}
 
-	private void saveLasertoolMineable(DataWriter cache, HashSet<Identifier> set) throws IOException {
+	private void saveLasertoolMineable(DataWriter cache, Set<Identifier> set) throws IOException {
 		Path path = this.root.getOutput();
 
 		JsonObject root = new JsonObject();
 		root.add("replace", new JsonPrimitive(false));
 		JsonArray values = new JsonArray();
 		for (Identifier id : set) {
-			values.add(new JsonPrimitive(new Identifier("minecraft", id.getPath()).toString()));
+			values.add(new JsonPrimitive(id.toString()));
 		}
 		root.add("values", values);
 		DataProvider.writeToPath(cache, root, path.resolve("data/" + Minelabs.MOD_ID + "/tags/blocks/lasertool_mineable.json"));

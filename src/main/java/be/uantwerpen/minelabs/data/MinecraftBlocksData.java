@@ -118,7 +118,7 @@ public class MinecraftBlocksData {
     }
 
     public Identifier getId() {
-        return new Identifier(Minelabs.MOD_ID, name.getPath());
+        return name;
     }
 
     public static String convertMoleculeName(String moleculeName) {
