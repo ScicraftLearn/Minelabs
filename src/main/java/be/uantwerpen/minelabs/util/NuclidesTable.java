@@ -143,8 +143,10 @@ public class NuclidesTable {
         String ionChargeString = "";
         if (nrOfProtons > nrOfElectrons) {
             ionChargeString = "+";
+        } else if (nrOfProtons < nrOfElectrons){
+            ionChargeString = "-";
         }
-        ionChargeString = ionChargeString + ionicCharge;
+        ionChargeString = Math.abs(ionicCharge) + ionChargeString;
         return ionChargeString;
     }
 

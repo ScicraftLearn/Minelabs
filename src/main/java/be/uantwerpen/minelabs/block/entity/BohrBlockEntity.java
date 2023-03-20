@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
@@ -37,9 +38,9 @@ import static net.minecraft.client.gui.DrawableHelper.drawTexture;
 public class BohrBlockEntity extends BlockEntity implements ImplementedInventory {
 
     //    Color for rendering the text
-    public static final int WHITE_COLOR = ColorHelper.Argb.getArgb(255, 255, 255, 255);
-    public static final int GREEN_COLOR = ColorHelper.Argb.getArgb(255, 0, 255, 0);
-    public static final int RED_COLOR = ColorHelper.Argb.getArgb(255, 255, 0, 0);
+    public static final int WHITE = ColorHelper.Argb.getArgb(255, 255, 255, 255);
+    public static final int YELLOW = ColorHelper.Argb.getArgb(255, 240, 225, 45);
+    public static final int RED = ColorHelper.Argb.getArgb(255,227,23,98);
 
     private static final int MAX_TIMER = 99 * 20;
     private static final Identifier BARS_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/bohr_bars.png");
@@ -239,64 +240,67 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         int nrOfElectrons = getElectronCount();
         int s = Math.max(nrOfProtons, Math.max(nrOfNeutrons, nrOfElectrons));
         int scale;
-        if (s>40){scale=150;} else if (s>10) {scale=40;}else {scale=10;}
+        if (s > 40) {
+            scale = 150;
+        } else if (s > 10) {
+            scale = 40;
+        } else {
+            scale = 10;
+        }
         this.renderBossBar(matrices, scale, nrOfProtons, nrOfElectrons, nrOfNeutrons, k, j);
 
+        if(nrOfProtons>0) {
+            NucleusState nuclideStateInfo = NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons);
+            String atomName = "";
+            String symbol = "_";
+            String ionicCharge = NuclidesTable.calculateIonicCharge(nrOfProtons, nrOfElectrons);
+
+            int Ecolor = WHITE;
+            int Zcolor = WHITE;
+            boolean doesStableNuclideExist = true;
+
+            //String neutronHelp = "";
+            //String electronHelp = "";
+
+            MatrixStack matrixStack = new MatrixStack();
 
 
-
-
-
-        String neutronHelp = "";
-        String electronHelp = "";
-
-        MatrixStack matrixStack = new MatrixStack();
-        NucleusState nuclideStateInfo = NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons);
-        String protonString = "#Protons: " + nrOfProtons;
-        String electronString = "#Electrons: " + nrOfElectrons;
-        String neutronString = "#Neutrons: " + nrOfNeutrons;
-        String atomName = "None";
-        String symbol = "None";
-        String mainDecayMode = "Unstable";
-        String ionicCharge = NuclidesTable.calculateIonicCharge(nrOfProtons, nrOfElectrons);
-        String ion = "ion: " + ionicCharge;
-        int color = RED_COLOR;
-        boolean doesStableNuclideExist = true;
-
-        if (nuclideStateInfo != null) {
-            atomName = nuclideStateInfo.getAtomName();
-            symbol = nuclideStateInfo.getSymbol();
+            if (nuclideStateInfo != null) {
+                atomName = nuclideStateInfo.getAtomName(); //translation? TODO get atomitem based on nr of protons
+                symbol = nuclideStateInfo.getSymbol(); //TODO get symbol based on nr of protons: so that symbol does not disappear
 //            mainDecayMode = nuclideStateInfo.getMainDecayMode();
+                if (nrOfProtons != nrOfElectrons) {
+                    Ecolor = YELLOW;
+                    atomName += " ION";
+                }
+                if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
+                    Ecolor = RED;
+                    drawTexture(matrixStack, k, j+8, 0, 33, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+                }
+                if (!NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons).isStable()) {
+                    Zcolor = RED;
+                    drawTexture(matrixStack, k, j+16, 0, 33, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+                }
 
+            }
+
+            /*
+             * Rendering of text:
+             */
+            TextRenderer TR = MinecraftClient.getInstance().textRenderer;
+            matrixStack.scale(2, 2, 2);
+            int width = TR.getWidth(symbol);
+            TR.draw(matrixStack, symbol, (k - 24 - width / 2) / 2, (j + 2) / 2, WHITE);
+            //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
+            //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
+            //}
+            TR.draw(matrices, Integer.toString(nrOfProtons), k - 40, j + 18, WHITE);
+            TR.draw(matrices, Integer.toString(nrOfProtons + nrOfNeutrons), k - 40, j - 6, Zcolor);
+            TR.draw(matrices, ionicCharge, k - 12, j - 6, Ecolor);
             if (NuclidesTable.isStable(nrOfProtons, nrOfNeutrons, nrOfElectrons)) {
-                color = GREEN_COLOR;
-                mainDecayMode = "Stable";
-            }
-            else {
-                doesStableNuclideExist = false;
+                TR.draw(matrices, atomName, k + 192, j + 7, Ecolor);
             }
         }
-        else {
-            doesStableNuclideExist = false;
-        }
-        if (!doesStableNuclideExist) {
-            ArrayList<String> buildHelp = getBuildHelp(nrOfProtons, nrOfNeutrons, nrOfElectrons);
-            neutronHelp = buildHelp.get(0);
-            electronHelp = buildHelp.get(1);
-        }
-        String atomInfo = mainDecayMode + "    " + atomName + "    " + symbol + "    " + ion + "    Timer: " + timer / 20;
-        String helpInfo = neutronHelp + electronHelp + " to stabilise.";
-        /*
-         * Rendering of text:
-         */
-
-        MinecraftClient.getInstance().textRenderer.draw(matrixStack, atomInfo, 10, 10, color);
-        if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
-            MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
-        }
-        MinecraftClient.getInstance().textRenderer.draw(matrixStack, protonString, 10, 30, WHITE_COLOR);
-        MinecraftClient.getInstance().textRenderer.draw(matrixStack, neutronString, 10, 40, WHITE_COLOR);
-        MinecraftClient.getInstance().textRenderer.draw(matrixStack, electronString, 10, 50, WHITE_COLOR);
 
 
     }
