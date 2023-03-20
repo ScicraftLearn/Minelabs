@@ -1,22 +1,29 @@
 package be.uantwerpen.minelabs.renderer;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
+import com.mojang.blaze3d.platform.GlConst;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3f;
 
 import java.util.ArrayList;
@@ -25,10 +32,20 @@ import java.util.List;
 import java.util.Objects;
 
 import static be.uantwerpen.minelabs.util.NuclidesTable.calculateNrOfElectrons;
+import static net.minecraft.client.gui.DrawableHelper.drawTexture;
 
 
 @Environment(EnvType.CLIENT)
 public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements BlockEntityRenderer<T> {
+
+	private static final Identifier BARS_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/bohr_bars.png");
+	private static final int BARS_TEXTURE_WIDTH = 256;
+	private static final int BARS_TEXTURE_HEIGHT = 256;
+
+	//    Color for rendering the text
+	public static final int WHITE = ColorHelper.Argb.getArgb(255, 255, 255, 255);
+	public static final int YELLOW = ColorHelper.Argb.getArgb(255, 240, 225, 45);
+	public static final int RED = ColorHelper.Argb.getArgb(255,227,23,98);
 
 	float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
 
@@ -72,81 +89,197 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
     }
 
 	@Override
+	public int getRenderDistance() {
+		return 8;
+	}
+
+
+	@Override
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
+//		Minelabs.LOGGER.info("render");
+		matrices.push();
+		matrices.translate(0.5f,1.75f,0.5f);
+		int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
 
-			matrices.push();
-			matrices.translate(0.5f,1.75f,0.5f);
-			int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
-
-			// origin
-			/*if (!blockEntity.isRemoved()) {
-				switch (blockEntity.getWorld().getBlockState(blockEntity.getPos()).get(Properties.HORIZONTAL_FACING)) {
-					case NORTH -> matrices.translate(1f, 1.75f, 1f);
-					case EAST -> matrices.translate(0f, 1.75f, 1f);
-					case SOUTH -> matrices.translate(0f, 1.75f, 0f);
-					case WEST -> matrices.translate(1f, 1.75f, 0f);
-				}
+		// origin
+		/*if (!blockEntity.isRemoved()) {
+			switch (blockEntity.getWorld().getBlockState(blockEntity.getPos()).get(Properties.HORIZONTAL_FACING)) {
+				case NORTH -> matrices.translate(1f, 1.75f, 1f);
+				case EAST -> matrices.translate(0f, 1.75f, 1f);
+				case SOUTH -> matrices.translate(0f, 1.75f, 0f);
+				case WEST -> matrices.translate(1f, 1.75f, 0f);
 			}
+		}
 
+		 */
+
+		matrices.scale(1.5f, 1.5f, 1.5f);
+
+		// for facing the player
+		PlayerEntity player = MinecraftClient.getInstance().player;
+		assert player != null;
+		Vec3f field = new Vec3f(
+				(float) player.getX() - blockEntity.getPos().getX(),
+				(float) player.getY() - blockEntity.getPos().getY(),
+				(float) player.getZ() - blockEntity.getPos().getZ()
+		);
+		if (field.equals(Vec3f.ZERO)) {
+			// default field should be north iso east.
+			// positive x is east, so we want to rotate -90 degrees along the y-axis.
+			matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
+		} else {
+			/*
+			 * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (field).
+			 * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the field.
 			 */
+			// By default, the arrow points in positive x (EAST)
+			Vec3f v = new Vec3f(1, 0, 0);
 
-			matrices.scale(1.5f, 1.5f, 1.5f);
+			// Compute theta with cosine formula.
+			double theta = Math.acos(v.dot(field) / Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2)));
 
-			// for facing the player
-			PlayerEntity player = MinecraftClient.getInstance().player;
-			assert player != null;
-			Vec3f field = new Vec3f(
-					(float) player.getX() - blockEntity.getPos().getX(),
-					(float) player.getY() - blockEntity.getPos().getY(),
-					(float) player.getZ() - blockEntity.getPos().getZ()
-			);
-			if (field.equals(Vec3f.ZERO)) {
-				// default field should be north iso east.
-				// positive x is east, so we want to rotate -90 degrees along the y-axis.
-				matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
+			if (theta == 0 || theta == Math.PI) {
+				// When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
+				// Instead, we set in to one of the infinite valid normal vectors: positive Y.
+				v = Direction.UP.getUnitVector();
 			} else {
-				/*
-				 * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (field).
-				 * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the field.
-				 */
-				// By default, the arrow points in positive x (EAST)
-				Vec3f v = new Vec3f(1, 0, 0);
-
-				// Compute theta with cosine formula.
-				double theta = Math.acos(v.dot(field) / Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2)));
-
-				if (theta == 0 || theta == Math.PI) {
-					// When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
-					// Instead, we set in to one of the infinite valid normal vectors: positive Y.
-					v = Direction.UP.getUnitVector();
-				} else {
-					v.cross(field);
-					v.normalize();
-				}
-				matrices.multiply(v.getRadialQuaternion((float) theta));
+				v.cross(field);
+				v.normalize();
 			}
-			Vec3f y_rotation = new Vec3f(0, 1, 0);
-			matrices.multiply(y_rotation.getDegreesQuaternion(-90));
+			matrices.multiply(v.getRadialQuaternion((float) theta));
+		}
+		Vec3f y_rotation = new Vec3f(0, 1, 0);
+		matrices.multiply(y_rotation.getDegreesQuaternion(-90));
 
 
-			int protonCount = blockEntity.getProtonCount();
-			int neutronCount = blockEntity.getNeutronCount();
-			int electronCount = blockEntity.getElectronCount();
+		int protonCount = blockEntity.getProtonCount();
+		int neutronCount = blockEntity.getNeutronCount();
+		int electronCount = blockEntity.getElectronCount();
 
-			/**
-			 * rendering of the nucleus:
+		/**
+		 * rendering of the nucleus:
+		 */
+		makeNucleus(protonCount, neutronCount, electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity);
+
+		/**
+		 * rendering of the electrons:
+		 */
+		makeElectrons(electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity, tickDelta);
+
+		matrices.pop();
+	}
+
+	/**
+	 * renders the text of the bohrplate status
+	 */
+	public static void renderHud(MatrixStack matrixStack, BohrBlockEntity blockEntity) {
+		int nP = blockEntity.getProtonCount();
+		int nN = blockEntity.getNeutronCount();
+		int nE = blockEntity.getElectronCount();
+
+		renderHud(matrixStack, nP, nE, nN);
+	}
+
+	public static void renderHud(MatrixStack matrixStack, int nP, int nE, int nN) {
+		int y = 12;
+		int x = MinecraftClient.getInstance().getWindow().getScaledWidth() / 2 - 91;
+
+//		Window window = MinecraftClient.getInstance().getWindow();
+//		RenderSystem.clear(GlConst.GL_DEPTH_BUFFER_BIT, MinecraftClient.IS_SYSTEM_MAC);
+//		Matrix4f matrix4f = Matrix4f.projectionMatrix(0.0f, (float)((double)window.getFramebufferWidth() / window.getScaleFactor()), 0.0f, (float)((double)window.getFramebufferHeight() / window.getScaleFactor()), 1000.0f, 3000.0f);
+//		RenderSystem.setProjectionMatrix(matrix4f);
+//		MatrixStack matrixStackView = RenderSystem.getModelViewStack();
+//		matrixStackView.loadIdentity();
+//		matrixStackView.translate(0.0, 0.0, -1500.0);
+//		RenderSystem.applyModelViewMatrix();
+//		DiffuseLighting.enableGuiDepthLighting();
+
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, BARS_TEXTURE);
+
+		MatrixStack matrices = new MatrixStack();
+
+		renderBars(matrices, nP, nE, nN, x, y);
+
+		if(nP>0) {
+			NucleusState nuclideStateInfo = NuclidesTable.getNuclide(nP, nN);
+			String atomName = "";
+			String symbol = "_";
+			String ionicCharge = NuclidesTable.calculateIonicCharge(nP, nE);
+
+			int Ecolor = WHITE;
+			int Zcolor = WHITE;
+			boolean doesStableNuclideExist = true;
+
+
+			if (nuclideStateInfo != null) {
+				atomName = nuclideStateInfo.getAtomName(); //translation? TODO get atomitem based on nr of protons
+				symbol = nuclideStateInfo.getSymbol(); //TODO get symbol based on nr of protons: so that symbol does not disappear
+//            mainDecayMode = nuclideStateInfo.getMainDecayMode();
+				if (nP != nE) {
+					Ecolor = YELLOW;
+					atomName += " ION";
+				}
+				if (Math.abs(nP - nE) > 5) {
+					Ecolor = RED;
+					drawTexture(matrixStack, x, y+8, 0, 33, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+				}
+				if (!NuclidesTable.getNuclide(nP, nN).isStable()) {
+					Zcolor = RED;
+					drawTexture(matrixStack, x, y+16, 0, 33, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+				}
+
+			}
+
+			/*
+			 * Rendering of text:
 			 */
-			makeNucleus(protonCount, neutronCount, electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity);
+			TextRenderer TR = MinecraftClient.getInstance().textRenderer;
+			matrixStack.scale(2, 2, 2);
+			int width = TR.getWidth(symbol);
+			TR.draw(matrixStack, symbol, (x - 24 - width / 2) / 2, (y + 2) / 2, WHITE);
+			//if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
+			//  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
+			//}
+			TR.draw(matrices, Integer.toString(nP), x - 40, y + 18, WHITE);
+			TR.draw(matrices, Integer.toString(nP + nN), x - 40, y - 6, Zcolor);
+			TR.draw(matrices, ionicCharge, x - 12, y - 6, Ecolor);
+			if (NuclidesTable.isStable(nP, nN, nE)) {
+				TR.draw(matrices, atomName, x + 192, y + 7, Ecolor);
+			}
+		}
 
-			/**
-			 * rendering of the electrons:
-			 */
-			makeElectrons(electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity, tickDelta);
+//		RenderSystem.clear(GlConst.GL_DEPTH_BUFFER_BIT, MinecraftClient.IS_SYSTEM_MAC);
+	}
 
+	private static void renderBars(MatrixStack matrixStack, int nP, int nE, int nN, int x, int y){
+		int n = Math.max(nP, Math.max(nE, nN));
+		int scale = n > 40 ? 150 : n > 10 ? 40 : 10;
 
-			matrices.pop();
+		drawTexture(matrixStack, x, y, 0, 0, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+		drawTexture(matrixStack, x, y+8, 0, 10, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+		drawTexture(matrixStack, x, y+16, 0, 20, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
 
+		int ratio_p = nP*182/scale;
+		int ratio_e = nE*182/scale;
+		int ratio_n = nN*182/scale;
 
+		drawTexture(matrixStack, x, y, 0, 5, ratio_p, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+		drawTexture(matrixStack, x, y+8, 0, 15, ratio_e, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+		drawTexture(matrixStack, x, y+16, 0, 25, ratio_n, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+
+		if(scale!=150){
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+			int s;
+			if(scale==10){s=45;}else{s=55;}
+			drawTexture(matrixStack, x, y, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+			drawTexture(matrixStack, x, y+8, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+			drawTexture(matrixStack, x, y+16, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_HEIGHT);
+
+			RenderSystem.disableBlend();
+		}
 	}
 
 	/**
