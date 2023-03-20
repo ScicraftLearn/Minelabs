@@ -1,7 +1,7 @@
 package be.uantwerpen.minelabs.block.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.MinelabsClient;
+import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
@@ -21,6 +21,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
@@ -44,7 +45,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 
     private static final int MAX_TIMER = 99 * 20;
     private static final Identifier BARS_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/bohr_bars.png");
-    private static final int BARS_TEXTURE_WIDTH = 256;
+    private static final int BARS_TEXTURE_SIZE = 256;
     private int timer = MAX_TIMER;
 
     //the inventory stack [0,3[ = protons, [3,6[ = neutrons, [6,9[ = electrons
@@ -253,6 +254,9 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             NucleusState nuclideStateInfo = NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons);
             String atomName = "";
             String symbol = "_";
+            Atom a = Atom.getByNumber(nrOfProtons);
+            atomName = Text.translatable(a.getItem().getTranslationKey()).getString();
+            symbol = a.getSymbol();
             String ionicCharge = NuclidesTable.calculateIonicCharge(nrOfProtons, nrOfElectrons);
 
             int Ecolor = WHITE;
@@ -266,8 +270,7 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 
 
             if (nuclideStateInfo != null) {
-                atomName = nuclideStateInfo.getAtomName(); //translation? TODO get atomitem based on nr of protons
-                symbol = nuclideStateInfo.getSymbol(); //TODO get symbol based on nr of protons: so that symbol does not disappear
+
 //            mainDecayMode = nuclideStateInfo.getMainDecayMode();
                 if (nrOfProtons != nrOfElectrons) {
                     Ecolor = YELLOW;
@@ -275,13 +278,16 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
                 }
                 if (Math.abs(nrOfProtons - nrOfElectrons) > 5) {
                     Ecolor = RED;
-                    drawTexture(matrixStack, k, j+8, 0, 33, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+                    drawTexture(matrixStack, k, j+8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
                 }
                 if (!NuclidesTable.getNuclide(nrOfProtons, nrOfNeutrons).isStable()) {
                     Zcolor = RED;
-                    drawTexture(matrixStack, k, j+16, 0, 33, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+                    drawTexture(matrixStack, k, j+16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
                 }
 
+            }else{
+                Zcolor = RED;
+                drawTexture(matrixStack, k, j+16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
             }
 
             /*
@@ -305,26 +311,26 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
 
     }
     public void renderBossBar(MatrixStack matrixStack, int scale, int Np, int Ne, int Nn, int x, int y){
-        drawTexture(matrixStack, x, y, 0, 0, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
-        drawTexture(matrixStack, x, y+8, 0, 10, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
-        drawTexture(matrixStack, x, y+16, 0, 20, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+        drawTexture(matrixStack, x, y, 0, 0, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+        drawTexture(matrixStack, x, y+8, 0, 10, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+        drawTexture(matrixStack, x, y+16, 0, 20, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
 
         int ratio_p = Np*182/scale;
         int ratio_e = Ne*182/scale;
         int ratio_n = Nn*182/scale;
 
-        drawTexture(matrixStack, x, y, 0, 5, ratio_p, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
-        drawTexture(matrixStack, x, y+8, 0, 15, ratio_e, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
-        drawTexture(matrixStack, x, y+16, 0, 25, ratio_n, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+        drawTexture(matrixStack, x, y, 0, 5, ratio_p, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+        drawTexture(matrixStack, x, y+8, 0, 15, ratio_e, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+        drawTexture(matrixStack, x, y+16, 0, 25, ratio_n, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
 
         if(scale!=150){
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             int s;
             if(scale==10){s=45;}else{s=55;}
-            drawTexture(matrixStack, x, y, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
-            drawTexture(matrixStack, x, y+8, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
-            drawTexture(matrixStack, x, y+16, 0, s, 182, 5, BARS_TEXTURE_WIDTH, BARS_TEXTURE_WIDTH);
+            drawTexture(matrixStack, x, y, 0, s, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+            drawTexture(matrixStack, x, y+8, 0, s, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+            drawTexture(matrixStack, x, y+16, 0, s, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
 
             RenderSystem.disableBlend();
         }
