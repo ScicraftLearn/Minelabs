@@ -1,5 +1,7 @@
 package be.uantwerpen.minelabs.entity;
 
+import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.AbstractDecorationEntity;
@@ -13,12 +15,12 @@ import org.jetbrains.annotations.Nullable;
 public class BohrBlueprintEntity extends AbstractDecorationEntity {
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
         super(entityType, world);
-        setFacing(Direction.UP);
+        setFacing(Direction.NORTH);
     }
 
     public BohrBlueprintEntity(World world, BlockPos pos) {
         super(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, world, pos);
-        setFacing(Direction.UP);
+        setFacing(Direction.NORTH);
     }
 
     @Override
@@ -37,8 +39,19 @@ public class BohrBlueprintEntity extends AbstractDecorationEntity {
     }
 
     @Override
-    public void onPlace() {
+    public boolean canStayAttached() {
+        return world.getBlockState(attachmentPos.down()).isOf(Blocks.BOHR_BLOCK);
+    }
 
+    @Override
+    public void onPlace() {
+        Minelabs.LOGGER.info("bohr entity added");
+    }
+
+    @Override
+    public void onRemoved() {
+        super.onRemoved();
+        Minelabs.LOGGER.info("bohr entity removed client side");
     }
 
     @Override

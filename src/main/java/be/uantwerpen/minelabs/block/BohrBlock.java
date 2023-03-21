@@ -172,7 +172,7 @@ public class BohrBlock extends BlockWithEntity {
         if (world.isClient)
             return;
 
-        BohrBlueprintEntity entity = new BohrBlueprintEntity(world, pos);
+        BohrBlueprintEntity entity = new BohrBlueprintEntity(world, pos.up());
         entity.onPlace();
         world.emitGameEvent(placer, GameEvent.ENTITY_PLACE, entity.getPos());
         world.spawnEntity(entity);
