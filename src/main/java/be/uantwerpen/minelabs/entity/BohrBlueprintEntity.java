@@ -3,66 +3,76 @@ package be.uantwerpen.minelabs.entity;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.decoration.AbstractDecorationEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
-public class BohrBlueprintEntity extends AbstractDecorationEntity {
+public class BohrBlueprintEntity extends Entity {
+
+    private int obstructionCheckCounter = 0;
+
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
         super(entityType, world);
-        setFacing(Direction.NORTH);
     }
 
     public BohrBlueprintEntity(World world, BlockPos pos) {
-        super(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, world, pos);
-        setFacing(Direction.NORTH);
+        super(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, world);
+        setPosition(Vec3d.ofCenter(pos));
     }
 
     @Override
-    public int getWidthPixels() {
-        return 16;
+    protected float getEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+        return 0.5f * dimensions.height;
     }
 
     @Override
-    public int getHeightPixels() {
-        return 16;
+    public void tick() {
+        if (this.world.isClient)
+            return;
+
+        if (this.isRemoved())
+            return;
+
+        this.attemptTickInVoid();
+        if (this.obstructionCheckCounter++ == 100) {
+            this.obstructionCheckCounter = 0;
+            if (!this.isAttachedToBlock()) {
+                this.discard();
+            }
+        }
     }
 
     @Override
-    public void onBreak(@Nullable Entity entity) {
+    protected void initDataTracker() {
 
     }
 
     @Override
-    public boolean canStayAttached() {
-        return world.getBlockState(attachmentPos.down()).isOf(Blocks.BOHR_BLOCK);
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+    }
+
+    public boolean isAttachedToBlock() {
+        return world.getBlockState(getBlockPos().down()).isOf(Blocks.BOHR_BLOCK);
     }
 
     @Override
-    public void onPlace() {
-        Minelabs.LOGGER.info("bohr entity added");
+    public void writeCustomDataToNbt(NbtCompound nbt) {
     }
 
     @Override
-    public void onRemoved() {
-        super.onRemoved();
-        Minelabs.LOGGER.info("bohr entity removed client side");
+    public void readCustomDataFromNbt(NbtCompound nbt) {
     }
 
     @Override
     public Packet<?> createSpawnPacket() {
-        return new EntitySpawnS2CPacket(this, this.facing.getId(), this.getDecorationBlockPos());
-    }
-
-    @Override
-    public void onSpawnPacket(EntitySpawnS2CPacket packet) {
-        super.onSpawnPacket(packet);
-        this.setFacing(Direction.byId(packet.getEntityData()));
+        return new EntitySpawnS2CPacket(this);
     }
 
 }

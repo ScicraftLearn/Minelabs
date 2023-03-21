@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs.block;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
+import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.SubatomicParticle;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.ItemGroups;
@@ -30,12 +31,17 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 public class BohrBlock extends BlockWithEntity {
@@ -173,9 +179,21 @@ public class BohrBlock extends BlockWithEntity {
             return;
 
         BohrBlueprintEntity entity = new BohrBlueprintEntity(world, pos.up());
-        entity.onPlace();
         world.emitGameEvent(placer, GameEvent.ENTITY_PLACE, entity.getPos());
         world.spawnEntity(entity);
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        super.onStateReplaced(state, world, pos, newState, moved);
+        if (state.isOf(newState.getBlock()))
+            return;
+
+        // block was removed, also remove entity
+        List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, Box.from(Vec3d.of(pos.up())), e -> true);
+        for (BohrBlueprintEntity bohrBlueprintEntity: entities){
+            bohrBlueprintEntity.discard();
+        }
     }
 
     @Override
