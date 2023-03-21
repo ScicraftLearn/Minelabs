@@ -69,18 +69,15 @@ public class BohrBlueprintEntityRenderer<T extends BohrBlueprintEntity> extends 
      * renders the text of the bohrplate status. Gets called from HUD render event callback.
      */
     public static void renderHud(MatrixStack matrixStack, BohrBlueprintEntity entity) {
-//        int nP = entity.getProtonCount();
-//        int nN = entity.getNeutronCount();
-//        int nE = entity.getElectronCount();
-
-        int nP = 4;
-        int nE = 4;
-        int nN = 6;
+        int nP = entity.getProtons();
+        int nN = entity.getNeutrons();
+        int nE = entity.getElectrons();
 
         renderHud(matrixStack, nP, nE, nN);
     }
 
     private static void renderHud(MatrixStack matrixStack, int nP, int nE, int nN) {
+        // TODO: fetch more things from entity instead of recomputing everything here (every frame)
         int y = 12;
         int x = MinecraftClient.getInstance().getWindow().getScaledWidth() / 2 - 91;
 
