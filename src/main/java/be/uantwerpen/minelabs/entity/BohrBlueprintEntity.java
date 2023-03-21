@@ -26,7 +26,7 @@ public class BohrBlueprintEntity extends Entity {
     //////////////////////////////////////////////////////////
     //      server side information (only stored in nbt)    //
     //////////////////////////////////////////////////////////
-    private int obstructionCheckCounter = 0;
+    private int validityCheckCounter = 0;
 
     // sorted list of items added to the entity. Should only contain protons, electrons neutrons and atoms.
     // anti particles are instead removed and can never be added if corresponding particle is not present.
@@ -72,8 +72,9 @@ public class BohrBlueprintEntity extends Entity {
             return;
 
         this.attemptTickInVoid();
-        if (this.obstructionCheckCounter++ == 100) {
-            this.obstructionCheckCounter = 0;
+        if (this.validityCheckCounter++ == 100) {
+            this.validityCheckCounter = 0;
+            // cleanup for if the entity unexpectedly got left behind after the block was removed
             if (!this.isAttachedToBlock()) {
                 this.discard();
             }
@@ -82,7 +83,9 @@ public class BohrBlueprintEntity extends Entity {
 
     @Override
     protected void initDataTracker() {
+        dataTracker.startTracking(PROTONS, 0);
         dataTracker.startTracking(ELECTRONS, 0);
+        dataTracker.startTracking(NEUTRONS, 0);
     }
 
     @Override
