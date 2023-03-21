@@ -96,22 +96,9 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 
 	@Override
 	public void render(T blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
-//		Minelabs.LOGGER.info("render");
 		matrices.push();
 		matrices.translate(0.5f,1.75f,0.5f);
 		int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
-
-		// origin
-		/*if (!blockEntity.isRemoved()) {
-			switch (blockEntity.getWorld().getBlockState(blockEntity.getPos()).get(Properties.HORIZONTAL_FACING)) {
-				case NORTH -> matrices.translate(1f, 1.75f, 1f);
-				case EAST -> matrices.translate(0f, 1.75f, 1f);
-				case SOUTH -> matrices.translate(0f, 1.75f, 0f);
-				case WEST -> matrices.translate(1f, 1.75f, 0f);
-			}
-		}
-
-		 */
 
 		matrices.scale(1.5f, 1.5f, 1.5f);
 
@@ -156,21 +143,17 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 		int neutronCount = blockEntity.getNeutronCount();
 		int electronCount = blockEntity.getElectronCount();
 
-		/**
-		 * rendering of the nucleus:
-		 */
+		// rendering of the nucleus:
 		makeNucleus(protonCount, neutronCount, electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity);
 
-		/**
-		 * rendering of the electrons:
-		 */
+		// rendering of the electrons:
 		makeElectrons(electronCount, matrices, lightAbove, vertexConsumerProvider, blockEntity, tickDelta);
 
 		matrices.pop();
 	}
 
 	/**
-	 * renders the text of the bohrplate status
+	 * renders the text of the bohrplate status. Gets called from HUD render event callback.
 	 */
 	public static void renderHud(MatrixStack matrixStack, BohrBlockEntity blockEntity) {
 		int nP = blockEntity.getProtonCount();

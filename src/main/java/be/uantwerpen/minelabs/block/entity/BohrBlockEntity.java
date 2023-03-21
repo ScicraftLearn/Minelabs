@@ -48,11 +48,11 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      */
     public int getProtonCount() {
         int count = 0;
-//        slot 0 to 2
+        // slot 0 to 2
         for (int slot = 0; slot < 3; slot++)
-//            if there is protons
+            // if there is protons
             if (getItems().get(slot).getItem() == Items.PROTON) {
-//                add to sum
+                // add to sum
                 count += getItems().get(slot).getCount();
             }
         return count;
@@ -65,11 +65,11 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      */
     public int getNeutronCount() {
         int count = 0;
-//        slot 3 to 5
+        // slot 3 to 5
         for (int slot = 3; slot < 6; slot++)
-//            if neutrons in the stack
+            // if neutrons in the stack
             if (getItems().get(slot).getItem() == Items.NEUTRON) {
-//                add them in the count
+                // add them in the count
                 count += getItems().get(slot).getCount();
             }
         return count;
@@ -82,86 +82,15 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
      */
     public int getElectronCount() {
         int count = 0;
-//        slot 6 to 8
+        // slot 6 to 8
         for (int slot = 6; slot < 9; slot++)
-//            if electron in slot
+            // if electron in slot
             if (getItems().get(slot).getItem() == Items.ELECTRON) {
                 count += getItems().get(slot).getCount();
             }
         return count;
     }
 
-
-    @Nullable
-  /*  public static BlockPos getMasterPos(BlockState state, BlockPos blockPos) {
-        BohrPart part = state.get(MinelabsProperties.BOHR_PART);
-        Direction direction = state.get(Properties.HORIZONTAL_FACING);
-        switch (part) {
-            case BASE -> {
-                return blockPos;
-            }
-            case BACK -> {
-                return blockPos.offset(direction);
-            }
-            case RIGHT -> {
-                return blockPos.offset(direction.rotateYCounterclockwise());
-            }
-            case CORNER -> {
-                return blockPos.offset(direction).offset(direction.rotateYCounterclockwise());
-            }
-            default -> {
-                return null;
-            }
-        }
-    }
-
-   */
-
-    /**
-     * takes a starting block and find the positions of the other 3 bohr-blocks
-     *
-     * @param state    the state of the starting block
-     * @param blockPos the position of the starting block
-     * @param world    the world of the starting block
-     * @return a list of other bohr block belonging to the same bohr plate
-     */
-    /*
-    public static List<BlockPos> getBohrParts(BlockState state, BlockPos blockPos, World world) {
-        BohrPart part = state.get(MinelabsProperties.BOHR_PART);
-        Direction direction = state.get(Properties.HORIZONTAL_FACING);
-        switch (part) {
-            case BASE -> {
-                return List.of(
-                        blockPos.offset(direction.rotateYClockwise()), // RIGHT
-                        blockPos.offset(direction.rotateYClockwise()).offset(direction.getOpposite()), //CORNER
-                        blockPos.offset(direction.getOpposite())); // BACK
-            }
-            case BACK -> {
-                return List.of(
-                        blockPos.offset(direction), // BASE
-                        blockPos.offset(direction.rotateYClockwise()).offset(direction), // RIGHT
-                        blockPos.offset(direction.rotateYClockwise())); //CORNER
-            }
-            case RIGHT -> {
-                return List.of(
-                        blockPos.offset(direction.getOpposite()), // CORNER
-                        blockPos.offset(direction.rotateYCounterclockwise()).offset(direction.getOpposite()), // BACK
-                        blockPos.offset(direction.rotateYCounterclockwise())); //BASE
-            }
-            case CORNER -> {
-                return List.of(
-                        blockPos.offset(direction), // RIGHT
-                        blockPos.offset(direction.rotateYCounterclockwise()).offset(direction), // BASE
-                        blockPos.offset(direction.rotateYCounterclockwise())); // BACK
-            }
-            default -> {
-                return new ArrayList<>();
-            }
-        }
-    }
-
-
-     */
     public static void tick(World world, BlockPos pos, BlockState state, BohrBlockEntity entity) {
         if (world.isClient) {
             return;
@@ -194,12 +123,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
         world.setBlockState(pos, state.with(MinelabsProperties.STATUS, status));
         world.updateListeners(pos, state, state.with(MinelabsProperties.STATUS, status), Block.NOTIFY_LISTENERS);
     }
-/*
-    public boolean isMaster() {
-        return this.getCachedState().get(MinelabsProperties.BOHR_PART) == BohrPart.BASE;
-    }
-
- */
 
     /**
      * @return itemstacks of the plate
@@ -320,16 +243,16 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
             if (times_looped == 3) return ActionResult.FAIL;
         }
         assert items.get(slot).getCount() < 64;
-//            if the inventory is empty initialize the inventory with 0 items
+        // if the inventory is empty initialize the inventory with 0 items
         if (items.get(slot).isEmpty()) {
-//                the item that the player was holding
+            // the item that the player was holding
             items.set(slot, new ItemStack(item));
-//                set the counter for the item on 0
+            // set the counter for the item on 0
             items.get(slot).setCount(0);
         }
-//            if the stack isn't full
+        // if the stack isn't full
         if (items.get(slot).getCount() < 64) {
-//                add 1 to the inventory
+            // add 1 to the inventory
             items.get(slot).setCount(items.get(slot).getCount() + 1);
         }
         markDirty();
@@ -339,35 +262,6 @@ public class BohrBlockEntity extends BlockEntity implements ImplementedInventory
     public void scatterParticles() {
         this.scatterParticles(1);
     }
-
-    /**
-     * getter for the master/base block of the plate
-     *
-     * @param world the world to search the master in
-     * @return the base block of the plate
-     */
-   /*
-    @Nullable
-    public BohrBlockEntity getMaster(World world) {
-        if (this.getCachedState().getBlock() instanceof BohrBlock
-                && this.getCachedState().get(MinelabsProperties.BOHR_PART) != BohrPart.BASE) {
-            BlockPos blockPos = getMasterPos(this.getCachedState(), pos);
-            BlockEntity blockEntity = world.getBlockEntity(blockPos);
-            BohrPart bohrPart = world.getBlockState(blockPos).get(MinelabsProperties.BOHR_PART);
-            if (blockEntity instanceof BohrBlockEntity bohrBlockEntity && bohrPart == BohrPart.BASE) {
-                return bohrBlockEntity;
-            } else {
-                world.removeBlock(pos, false);
-
-//                System.out.println("No base bohr block found");
-//                world.breakBlock(getPos(), false);
-                return null;
-            }
-        }
-        return this;
-    }
-
-    */
 
     /**
      * Removes a particle (proton, neutron or electron depending on passed param) from the bohrblock.
