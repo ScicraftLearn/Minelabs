@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
+import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.SubatomicParticle;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.ItemGroups;
@@ -13,7 +14,9 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
@@ -165,6 +168,14 @@ public class BohrBlock extends BlockWithEntity {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
+
+        if (world.isClient)
+            return;
+
+        BohrBlueprintEntity entity = new BohrBlueprintEntity(world, pos);
+        entity.onPlace();
+        world.emitGameEvent(placer, GameEvent.ENTITY_PLACE, entity.getPos());
+        world.spawnEntity(entity);
     }
 
     @Override
