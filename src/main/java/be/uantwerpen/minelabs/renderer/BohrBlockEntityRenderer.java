@@ -206,25 +206,26 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			String atomName = "";
 			String symbol = "_";
 			Atom a = Atom.getByNumber(nP);
-			atomName = Text.translatable(a.getItem().getTranslationKey()).getString();
-			symbol = a.getSymbol();
+			if (a!=null){
+				atomName = Text.translatable(a.getItem().getTranslationKey()).getString();
+				symbol = a.getSymbol();
+			}//TODO else: get information from nuclides_table
+
 			String ionicCharge = NuclidesTable.calculateIonicCharge(nP, nE);
 
 			int Ecolor = WHITE;
 			int Zcolor = WHITE;
 			boolean doesStableNuclideExist = true;
 
-
+			if (nP != nE) {
+				Ecolor = YELLOW;
+				atomName += " ION";
+			}
+			if (Math.abs(nP - nE) > 5) {
+				Ecolor = RED;
+				drawTexture(matrixStack, x, y+8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+			}
 			if (nuclideStateInfo != null) {
-
-				if (nP != nE) {
-					Ecolor = YELLOW;
-					atomName += " ION";
-				}
-				if (Math.abs(nP - nE) > 5) {
-					Ecolor = RED;
-					drawTexture(matrixStack, x, y+8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-				}
 				if (!NuclidesTable.getNuclide(nP, nN).isStable()) {
 					Zcolor = RED;
 					drawTexture(matrixStack, x, y+16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
@@ -243,14 +244,17 @@ public class BohrBlockEntityRenderer<T extends BohrBlockEntity> implements Block
 			matrixStack.push();
 			matrixStack.scale(2, 2, 2);
 			int width = TR.getWidth(symbol);
-			TR.draw(matrixStack, symbol, (x - 24 - width / 2) / 2, (y + 2) / 2, WHITE);
+			int newx = x-44;
+			int newy = y-5;
+			TR.draw(matrixStack, symbol, (newx +12 - width / 2) / 2, (newy+9)/ 2, WHITE);
 			matrixStack.pop();
 			//if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
 			//  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
 			//}
-			TR.draw(matrixStack, Integer.toString(nP), x - 40, y + 18, WHITE);
-			TR.draw(matrixStack, Integer.toString(nP + nN), x - 40, y - 6, Zcolor);
-			TR.draw(matrixStack, ionicCharge, x - 12, y - 6, Ecolor);
+			TR.draw(matrixStack, Integer.toString(nP), newx+1, newy+24, WHITE);
+			TR.draw(matrixStack, Integer.toString(nP + nN), newx+1, newy+1, Zcolor);
+			int widthe = TR.getWidth(ionicCharge);
+			TR.draw(matrixStack, ionicCharge, newx+33-widthe, newy+1, Ecolor);
 			if (NuclidesTable.isStable(nP, nN, nE)) {
 				TR.draw(matrixStack, atomName, x + 192, y + 7, Ecolor);
 			}
