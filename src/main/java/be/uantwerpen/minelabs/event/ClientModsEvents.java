@@ -1,28 +1,19 @@
 package be.uantwerpen.minelabs.event;
 
-import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
-import be.uantwerpen.minelabs.renderer.BohrBlockEntityRenderer;
 import be.uantwerpen.minelabs.renderer.BohrBlueprintEntityRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.text.Text;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 public class ClientModsEvents {
     public static void registerEvents() {
-        // render HUD of the closest by bohr blueprint
+        // render HUD of the closest bohr blueprint
         HudRenderCallback.EVENT.register(
             (matrixStack, delta) -> {
                 MinecraftClient client = MinecraftClient.getInstance();
