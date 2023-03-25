@@ -24,8 +24,7 @@ public class ServerModEvents {
                     } else {
                         return ActionResult.FAIL;
                     }
-                } else if (world.getRegistryKey() != ModDimensions.SUBATOM_KEY && (player.getStackInHand(hand).isOf(Items.BOHR_BLOCK)
-                        || player.getStackInHand(hand).isOf(Items.ATOM_FLOOR))) {
+                } else if (world.getRegistryKey() != ModDimensions.SUBATOM_KEY && player.getStackInHand(hand).isOf(Items.ATOM_FLOOR)) {
                     return ActionResult.FAIL;
                 } else {
                     return ActionResult.PASS;
