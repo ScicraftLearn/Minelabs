@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs;
 
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
+import be.uantwerpen.minelabs.client.network.ClientNetworking;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.EntityModelLayers;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
@@ -46,7 +47,6 @@ public class MinelabsClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
         ClientModsEvents.registerEvents();
-        NetworkingConstants.registerS2CPackets();
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR, RenderLayer.getTranslucent());
         //BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PORTAL_BLOCK, RenderLayer.getTranslucent());
@@ -178,6 +178,8 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyerFluid(Fluids.STILL_SiCl4, Fluids.FLOWING_SiCl4, 0xA1AFAFAF);
 
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> 0x3495eb, Blocks.LAB_SINK);
+
+        ClientNetworking.registerHandlers();
     }
 
     public void registerErlenmeyer(Item item, int color, int index) {
