@@ -2,8 +2,12 @@ package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.Blocks;
+import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.util.NucleusState;
+import be.uantwerpen.minelabs.util.NuclidesTable;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
@@ -12,14 +16,21 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Map;
 
 public class BohrBlueprintEntity extends Entity {
 
@@ -28,8 +39,9 @@ public class BohrBlueprintEntity extends Entity {
     //////////////////////////////////////////////////////////
     private int validityCheckCounter = 0;
 
-    // sorted list of items added to the entity. Should only contain protons, electrons neutrons and atoms.
-    // anti particles are instead removed and can never be added if corresponding particle is not present.
+    // Sorted list of items added to the entity. Should only contain protons, electrons neutrons and atoms.
+    // Anti particles are instead removed and can never be added if corresponding particle is not present.
+    // Atom can only be added as first entry and cannot remove parts of it.
     DefaultedList<ItemStack> inventory = DefaultedList.of();
 
     // tracked data is synced to the client automatically (still needs to be written to nbt if it needs to be persisted)
@@ -91,11 +103,119 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
+        dropContents();
+    }
+
+    public void dropContents() {
+        for (ItemStack stack : inventory) {
+            dropStack(stack);
+        }
+        inventory.clear();
     }
 
     public boolean isAttachedToBlock() {
         return world.getBlockState(getBlockPos().down()).isOf(Blocks.BOHR_BLOCK);
     }
+
+
+    private boolean canAcceptItem(Item item) {
+        return (item instanceof AtomItem && inventory.isEmpty()) || List.of(Items.PROTON, Items.NEUTRON, Items.ELECTRON).contains(item);
+    }
+
+    private static boolean isRemovalItem(Item item) {
+        return List.of(Items.ANTI_PROTON, Items.ANTI_NEUTRON, Items.POSITRON).contains(item);
+    }
+
+    @Nullable
+    private static Item getAntiItem(Item item) {
+        return Map.of(
+                Items.ANTI_PROTON, Items.PROTON,
+                Items.ANTI_NEUTRON, Items.NEUTRON,
+                Items.POSITRON, Items.ELECTRON
+        ).get(item);
+    }
+
+    public boolean addItem(Item item) {
+        if (isRemovalItem(item))
+            return removeItem(getAntiItem(item));
+
+        if (!canAcceptItem(item))
+            return false;
+
+        insertItem(item);
+        return true;
+    }
+
+    private void insertItem(Item item) {
+        // Optional can merge with last stack on list if same type
+        ItemStack stack = new ItemStack(item, 1);
+        inventory.add(stack);
+        if (stack.isOf(Items.PROTON)) incrementProtons(1);
+        else if (stack.isOf(Items.ELECTRON)) incrementElectrons(1);
+        else if (stack.isOf(Items.NEUTRON)) incrementNeutrons(1);
+    }
+
+    private boolean removeItem(Item item) {
+        // TODO: implement
+        return false;
+    }
+
+    /**
+     * Tries to craft the atom and clear inventory on success. Otherwise nothing changes and return empty stack.
+     */
+    public ItemStack craftAtom() {
+        Item item = getAtomItem();
+        if (item != null) {
+            ItemStack stack = new ItemStack(item, 1);
+            inventory.clear();
+            return stack;
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Nullable
+    private Item getAtomItem() {
+        int protons = getProtons();
+        int neutrons = getNeutrons();
+        int electrons = getElectrons();
+
+        if (protons == 0 || protons != electrons)
+            return null;
+
+        NucleusState nucleusState = NuclidesTable.getNuclide(protons, neutrons);
+        if (nucleusState == null || !nucleusState.isStable())
+            return null;
+
+        return nucleusState.getAtomItem();
+    }
+
+    // TODO refactor
+//    @Override
+//    public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
+//        super.onProjectileHit(world, state, hit, projectile);
+//        BlockEntity blockEntity = world.getBlockEntity(hit.getBlockPos());
+//        Item item;
+//        boolean changedState = false;
+//        if (!world.isClient()) {
+//            if (projectile instanceof SubatomicParticle subatomicParticle && blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
+//                item = subatomicParticle.getStack().getItem();
+//
+//                if (item == Items.ELECTRON || item == Items.NEUTRON || item == Items.PROTON) {
+//                    changedState = bohrBlockEntity.insertParticle(item) == ActionResult.SUCCESS;
+//
+//                } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
+//                    changedState = bohrBlockEntity.removeParticle(item) == ActionResult.SUCCESS;
+//                }
+//                if (changedState) {
+//
+//                    world.updateNeighbors(hit.getBlockPos(), be.uantwerpen.minelabs.block.Blocks.BOHR_BLOCK);
+//                    state.updateNeighbors(world, hit.getBlockPos(), Block.NOTIFY_ALL);
+//                    world.updateListeners(hit.getBlockPos(), state, state, Block.NOTIFY_LISTENERS);
+//
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
@@ -147,4 +267,15 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.set(NEUTRONS, value);
     }
 
+    private void incrementProtons(int value) {
+        setProtons(getProtons() + value);
+    }
+
+    private void incrementNeutrons(int value) {
+        setNeutrons(getNeutrons() + value);
+    }
+
+    private void incrementElectrons(int value) {
+        setElectrons(getElectrons() + value);
+    }
 }

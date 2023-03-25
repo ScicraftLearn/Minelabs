@@ -1,10 +1,8 @@
 package be.uantwerpen.minelabs.block;
 
-import be.uantwerpen.minelabs.block.entity.BlockEntities;
-import be.uantwerpen.minelabs.block.entity.BohrBlockEntity;
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
-import be.uantwerpen.minelabs.entity.SubatomicParticle;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
@@ -12,17 +10,12 @@ import be.uantwerpen.minelabs.util.MinelabsProperties;
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
@@ -37,14 +30,15 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
-public class BohrBlock extends BlockWithEntity {
+public class BohrBlock extends Block {
+    private static final VoxelShape OUTLINE_SHAPE = Block.createCuboidShape(0, 0, 0, 16, 5, 16);
+
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
     public static final IntProperty STATUS = MinelabsProperties.STATUS;
@@ -55,18 +49,18 @@ public class BohrBlock extends BlockWithEntity {
                 .with(STATUS, 0).with(FACING, Direction.NORTH));
     }
 
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-    @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (world.getBlockEntity(pos) instanceof BohrBlockEntity bohrBlockEntity) {
-            bohrBlockEntity.scatterParticles();
+    /**
+     * Instead of using a block entity, we have a regular entity for this block. Use this function to fetch it.
+     */
+    @Nullable
+    private BohrBlueprintEntity getEntity(World world, BlockPos pos){
+        List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, Box.from(Vec3d.of(pos.up())), e -> true);
+        if (entities.size() != 1){
+            Minelabs.LOGGER.warn("Expected one entity connected to bohr plate at " + pos + ", found: " + entities.size());
+            return null;
         }
-        super.onBreak(world, pos, state, player);
-        world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(player, world.getBlockState(pos)));
+
+        return entities.get(0);
     }
 
     @Override
@@ -75,100 +69,38 @@ public class BohrBlock extends BlockWithEntity {
     }
 
     @Override
-    public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
-        super.onProjectileHit(world, state, hit, projectile);
-        BlockEntity blockEntity = world.getBlockEntity(hit.getBlockPos());
-        Item item;
-        boolean changedState = false;
-        if (!world.isClient()) {
-            if (projectile instanceof SubatomicParticle subatomicParticle && blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
-                item = subatomicParticle.getStack().getItem();
-
-                if (item == Items.ELECTRON || item == Items.NEUTRON || item == Items.PROTON) {
-                    changedState = bohrBlockEntity.insertParticle(item) == ActionResult.SUCCESS;
-
-                } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
-                    changedState = bohrBlockEntity.removeParticle(item) == ActionResult.SUCCESS;
-                }
-                if (changedState) {
-
-                    world.updateNeighbors(hit.getBlockPos(), be.uantwerpen.minelabs.block.Blocks.BOHR_BLOCK);
-                    state.updateNeighbors(world, hit.getBlockPos(), Block.NOTIFY_ALL);
-                    world.updateListeners(hit.getBlockPos(), state, state, Block.NOTIFY_LISTENERS);
-
-                }
-            }
-        }
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new BohrBlockEntity(pos, state);
-    }
-
-    @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
+        // TODO: client/server checking
+
+        BohrBlueprintEntity entity = getEntity(world, pos);
+        if (entity == null)
+            return ActionResult.FAIL;
+
         ItemStack stack = player.getStackInHand(hand);
-        Item item = stack.getItem();
-
-        if (blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
-            if (item == Items.NEUTRON || item == Items.PROTON || item == Items.ELECTRON) {
-                if (bohrBlockEntity.insertParticle(item) == ActionResult.SUCCESS) {
-                    if (!player.getAbilities().creativeMode) {
-                        player.getStackInHand(hand).decrement(1);
-                    }
-                }
-            } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
-                if (bohrBlockEntity.removeParticle(item) == ActionResult.SUCCESS) {
-                    if (!player.getAbilities().creativeMode) {
-                        player.getStackInHand(hand).decrement(1);
-                    }
-                }
-            } else if (item.getGroup() == ItemGroups.ATOMS) {
-
-                int protonAmount = ((AtomItem) item).getAtom().getAtomNumber();
-                int neutronAmount = NuclidesTable.findNextStableAtom(protonAmount, true);
-
-                boolean isInserted = false;
-                for (int p = 0; p < protonAmount; p++) {
-                    if (bohrBlockEntity.insertParticle(Items.PROTON) == ActionResult.SUCCESS) {
-                        isInserted = true;
-                    }
-                    if (bohrBlockEntity.insertParticle(Items.ELECTRON) == ActionResult.SUCCESS) {
-                        isInserted = true;
-                    }
-                }
-                for (int n = 0; n < neutronAmount; n++) {
-                    if (bohrBlockEntity.insertParticle(Items.NEUTRON) == ActionResult.SUCCESS) {
-                        isInserted = true;
-                    }
-                }
-
-                if (isInserted) {
-                    if (!player.getAbilities().creativeMode) {
-                        player.getStackInHand(hand).decrement(1);
-                    }
-                }
-
-            } else if (stack.isEmpty()) {
-                // creating the atom
-                if (player.isSneaking()) {
-                    bohrBlockEntity.createAtom(world, pos);
-                }
-                // empty the bohrblock
-                else {
-                    bohrBlockEntity.scatterParticles();
-                }
+        if (stack.isEmpty()) {
+            if (!player.isSneaking()) {
+                entity.dropContents();
+                return ActionResult.SUCCESS;
             }
-        }
-        return ActionResult.SUCCESS;
-    }
 
-    @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return Block.createCuboidShape(0, 0, 0, 16, 5, 16);
+            // try crafting atom
+            ItemStack resultStack = entity.craftAtom();
+            if (resultStack.isEmpty()){
+                return ActionResult.FAIL;
+            }
+            player.getInventory().offerOrDrop(resultStack);
+            return ActionResult.SUCCESS;
+        }
+
+        // stack not empty
+        Item item = stack.getItem();
+        if (entity.addItem(item)){
+            if (!player.getAbilities().creativeMode)
+                stack.decrement(1);
+            return ActionResult.SUCCESS;
+        }
+
+        return ActionResult.FAIL;
     }
 
     @Override
@@ -190,10 +122,9 @@ public class BohrBlock extends BlockWithEntity {
             return;
 
         // block was removed, also remove entity
-        List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, Box.from(Vec3d.of(pos.up())), e -> true);
-        for (BohrBlueprintEntity bohrBlueprintEntity: entities){
-            bohrBlueprintEntity.discard();
-        }
+        BohrBlueprintEntity entity = getEntity(world, pos);
+        if (entity != null)
+            entity.discard();
     }
 
     @Override
@@ -207,11 +138,9 @@ public class BohrBlock extends BlockWithEntity {
         return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
     }
 
-    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient ? null : checkType(type, BlockEntities.BOHR_BLOCK_ENTITY, BohrBlockEntity::tick);
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return OUTLINE_SHAPE;
     }
-
 }
 
