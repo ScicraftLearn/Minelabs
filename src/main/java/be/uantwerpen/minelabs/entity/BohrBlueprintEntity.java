@@ -84,6 +84,11 @@ public class BohrBlueprintEntity extends Entity {
         if (this.isRemoved())
             return;
 
+        validityTick();
+        collisionTick();
+    }
+
+    private void validityTick() {
         this.attemptTickInVoid();
         if (this.validityCheckCounter++ == 100) {
             this.validityCheckCounter = 0;
@@ -91,6 +96,25 @@ public class BohrBlueprintEntity extends Entity {
             if (!this.isAttachedToBlock()) {
                 this.discard();
             }
+        }
+    }
+
+    private void collisionTick() {
+        List<Entity> entities = this.world.getOtherEntities(this, getBoundingBox());
+        entities.forEach(this::onCollision);
+    }
+
+    private void onCollision(Entity e) {
+        if ((e instanceof SubatomicParticle particle))
+            onParticleCollision(particle);
+    }
+
+    public void onParticleCollision(SubatomicParticle particle) {
+        ItemStack stack = particle.getStack();
+        Item item = stack.getItem();
+
+        if (addItem(item)) {
+            particle.discard();
         }
     }
 
@@ -115,9 +139,7 @@ public class BohrBlueprintEntity extends Entity {
         for (ItemStack stack : inventory) {
             dropStack(stack);
         }
-        inventory.clear();
-        // sets everything to zero
-        updateCountsFromContent();
+        clear();
     }
 
     private boolean canAcceptItem(Item item) {
@@ -178,6 +200,12 @@ public class BohrBlueprintEntity extends Entity {
         else if (stack.getItem() instanceof AtomItem) updateCountsFromContent();
     }
 
+    private void clear(){
+        inventory.clear();
+        // sets everything to zero
+        updateCountsFromContent();
+    }
+
     /**
      * Tries to craft the atom and clear inventory on success. Otherwise nothing changes and return empty stack.
      */
@@ -185,7 +213,7 @@ public class BohrBlueprintEntity extends Entity {
         Item item = getAtomItem();
         if (item != null) {
             ItemStack stack = new ItemStack(item, 1);
-            inventory.clear();
+            clear();
             return stack;
         }
         return ItemStack.EMPTY;
@@ -206,34 +234,6 @@ public class BohrBlueprintEntity extends Entity {
 
         return nucleusState.getAtomItem();
     }
-
-    // TODO refactor
-//    @Override
-//    public void onProjectileHit(World world, BlockState state, BlockHitResult hit, ProjectileEntity projectile) {
-//        super.onProjectileHit(world, state, hit, projectile);
-//        BlockEntity blockEntity = world.getBlockEntity(hit.getBlockPos());
-//        Item item;
-//        boolean changedState = false;
-//        if (!world.isClient()) {
-//            if (projectile instanceof SubatomicParticle subatomicParticle && blockEntity instanceof BohrBlockEntity bohrBlockEntity) {
-//                item = subatomicParticle.getStack().getItem();
-//
-//                if (item == Items.ELECTRON || item == Items.NEUTRON || item == Items.PROTON) {
-//                    changedState = bohrBlockEntity.insertParticle(item) == ActionResult.SUCCESS;
-//
-//                } else if (item == Items.ANTI_NEUTRON || item == Items.ANTI_PROTON || item == Items.POSITRON) {
-//                    changedState = bohrBlockEntity.removeParticle(item) == ActionResult.SUCCESS;
-//                }
-//                if (changedState) {
-//
-//                    world.updateNeighbors(hit.getBlockPos(), be.uantwerpen.minelabs.block.Blocks.BOHR_BLOCK);
-//                    state.updateNeighbors(world, hit.getBlockPos(), Block.NOTIFY_ALL);
-//                    world.updateListeners(hit.getBlockPos(), state, state, Block.NOTIFY_LISTENERS);
-//
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
