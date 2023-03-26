@@ -54,13 +54,12 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
 
             // Compute theta with cosine formula.
             double theta = Math.acos(v.dot(field) * MathHelper.fastInverseSqrt(field.dot(field)));
-
-            if (theta == 0 || theta == Math.PI) {
+            v.cross(field);
+            if (v.equals(Vec3f.ZERO)) {
                 // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
                 // Instead, we set in to one of the infinite valid normal vectors: positive Y.
                 v = Direction.UP.getUnitVector();
             } else {
-                v.cross(field);
                 v.normalize();
             }
 
