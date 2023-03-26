@@ -94,7 +94,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         matrices.push();
 
         // center and scale
-//        matrices.translate(0.5f, 1.75f, 0.5f);
+        matrices.translate(0, 0.5f, 0f);
         matrices.scale(1.5f, 1.5f, 1.5f);
 
         transformToFacePlayer(entity, matrices);
@@ -112,33 +112,35 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
      * Set up the matrices to render everything facing the player.
      */
     private void transformToFacePlayer(E entity, MatrixStack matrices) {
+        // TODO: fix weird rotation bug when walking full circle around the bohr plate.
+
         // for facing the player
         PlayerEntity player = MinecraftClient.getInstance().player;
-        assert player != null;
+        if (player == null) return;
 
-        Vec3f field = new Vec3f(entity.getPos().relativize(player.getPos()));
+        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0, -0.5, 0).relativize(player.getPos()));
 
-        if (field.equals(Vec3f.ZERO)) {
-            // default field should be north iso east.
+        if (entityToPlayer.equals(Vec3f.ZERO)) {
+            // default direction should be north iso east.
             // positive x is east, so we want to rotate -90 degrees along the y-axis.
             matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
         } else {
             /*
-             * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (field).
-             * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the field.
+             * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (entityToPlayer).
+             * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the entityToPlayer.
              */
             // By default, the arrow points in positive x (EAST)
             Vec3f v = new Vec3f(1, 0, 0);
 
             // Compute theta with cosine formula.
-            double theta = Math.acos(v.dot(field) / Math.sqrt(Math.pow(field.getX(), 2) + Math.pow(field.getY(), 2) + Math.pow(field.getZ(), 2)));
+            double theta = Math.acos(v.dot(entityToPlayer) / Math.sqrt(Math.pow(entityToPlayer.getX(), 2) + Math.pow(entityToPlayer.getY(), 2) + Math.pow(entityToPlayer.getZ(), 2)));
 
             if (theta == 0 || theta == Math.PI) {
                 // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
                 // Instead, we set in to one of the infinite valid normal vectors: positive Y.
                 v = Direction.UP.getUnitVector();
             } else {
-                v.cross(field);
+                v.cross(entityToPlayer);
                 v.normalize();
             }
             matrices.multiply(v.getRadialQuaternion((float) theta));
