@@ -27,13 +27,18 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
 
         matrices.push();
 
+        ItemStack arrow;
+        float reference = 0.2f;
+
+        // Center arrow in block
+        matrices.translate(0.5, 0.5, 0.5);
+
         if(field.equals(Vec3f.ZERO)) {
             // Don't display arrow if the field is zero
-            matrices.scale(0f, 0f, 0f);
+            matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
+            // arrow = gray arrow
+            arrow = new ItemStack(net.minecraft.item.Items.DARK_OAK_BUTTON);
         } else {
-            // Center arrow in block
-            matrices.translate(0.5, 0.5, 0.5);
-
             // We want the arrows to point the other direction, so we turn the field vector around.
             field.scale(-1);
 
@@ -65,24 +70,20 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
             matrices.multiply(Direction.SOUTH.getUnitVector().getDegreesQuaternion(-45));
 
             // make sure arrows are larger when near charged blocks and smaller when further away
-            float reference = (float) Math.sqrt(field.dot(field)) / max_field;
+            reference = (float) Math.sqrt(field.dot(field)) / max_field + .2f;
 
-            if (reference > .8f) {
-                matrices.scale(1f,1f,1f);
+            if (reference > .9f) {
+                reference = .9f + reference / 640f;
+                arrow = new ItemStack(net.minecraft.item.Items.SPECTRAL_ARROW);
             } else {
-                matrices.scale(
-                        Math.min(reference + 0.2f, 1f),
-                        Math.min(reference + 0.2f, 1f),
-                        Math.min(reference + 0.2f, 1f)
-                );
+                arrow = new ItemStack(net.minecraft.item.Items.ARROW);
             }
         }
 
-        ItemStack arrow = new ItemStack(net.minecraft.item.Items.ARROW);
+        matrices.scale(reference, reference, reference);
         context.getItemRenderer().renderItem(
                 arrow, ModelTransformation.Mode.GUI, light, overlay, matrices, vertexConsumers, 0
         );
-
         matrices.pop();
     }
 }
