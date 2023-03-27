@@ -23,6 +23,6 @@ public class ExplosiveReaction extends Reaction {
 
     @Override
     protected void react(World world, double x, double y, double z, EntityHitResult hitResult) {
-
+        world.createExplosion(null, x, y, z, power, flammable, Explosion.DestructionType.DESTROY);
     }
 }
