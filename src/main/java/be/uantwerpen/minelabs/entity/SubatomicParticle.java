@@ -11,6 +11,10 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
+/**
+ * Instances of this class are used for building atoms.
+ * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
+ */
 public abstract class SubatomicParticle extends ThrownItemEntity {
     private int itemAge;
 
