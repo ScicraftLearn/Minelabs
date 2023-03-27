@@ -17,10 +17,12 @@ public class ExtinguishReaction extends Reaction {
     protected void react(World world, double x, double y, double z, BlockHitResult hitResult) {
         BlockPos pos = hitResult.getBlockPos();
         BlockState blockState = world.getBlockState(pos);
+        BlockPos neighbourPos = pos.offset(hitResult.getSide());
+        BlockState neighbour = world.getBlockState(neighbourPos);
         // TODO: this is copied from PotionEntity, rewrite
         // TODO: doesnt work for normal fire, only for campfire
-        if (blockState.isIn(BlockTags.FIRE)) {
-            world.removeBlock(pos, false);
+        if (neighbour.isIn(BlockTags.FIRE)) {
+            world.removeBlock(neighbourPos, false);
         } else if (AbstractCandleBlock.isLitCandle(blockState)) {
             AbstractCandleBlock.extinguish((PlayerEntity)null, blockState, world, pos);
         } else if (CampfireBlock.isLitCampfire(blockState)) {
