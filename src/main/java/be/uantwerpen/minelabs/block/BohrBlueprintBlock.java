@@ -4,10 +4,7 @@ import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.item.AtomItem;
-import be.uantwerpen.minelabs.item.ItemGroups;
-import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
-import be.uantwerpen.minelabs.util.NuclidesTable;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
@@ -15,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
@@ -28,23 +24,27 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
-public class BohrBlock extends Block {
-    private static final VoxelShape OUTLINE_SHAPE = Block.createCuboidShape(0, 0, 0, 16, 5, 16);
+public class BohrBlueprintBlock extends Block {
+    private static final VoxelShape OUTLINE_SHAPE = VoxelShapes.union(
+            Block.createCuboidShape(0, 3, 0, 16, 5, 16),        // top
+            Block.createCuboidShape(-1, 1, -1, 17, 3, 17),      // middle
+            Block.createCuboidShape(-2, 0, -2, 18, 1, 18)       // bottom
+    );
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
     public static final IntProperty STATUS = MinelabsProperties.STATUS;
 
-    public BohrBlock() {
+    public BohrBlueprintBlock() {
         super(FabricBlockSettings.of(Material.METAL).requiresTool().strength(1f).nonOpaque().luminance(100));
         this.setDefaultState(this.stateManager.getDefaultState()
                 .with(STATUS, 0).with(FACING, Direction.NORTH));
