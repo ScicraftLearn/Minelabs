@@ -108,7 +108,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public boolean isAttachedToBlock() {
-        return world.getBlockState(getBlockPos().down()).isOf(Blocks.BOHR_BLOCK);
+        return world.getBlockState(getBlockPos().down()).isOf(Blocks.BOHR_BLUEPRINT_BLOCK);
     }
 
     @Override
