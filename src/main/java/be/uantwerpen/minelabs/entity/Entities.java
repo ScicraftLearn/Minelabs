@@ -27,6 +27,8 @@ public class Entities {
     // EntityTypes
     public static final EntityType<ElectronEntity> ELECTRON_ENTITY = register(FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "electron_entity");
+    public static final EntityType<PositronEntity> POSITRON_ENTITY = register(FabricEntityTypeBuilder.<PositronEntity>create(SpawnGroup.MISC, PositronEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "positron_entity");
     public static final EntityType<ProtonEntity> PROTON_ENTITY = register(FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "proton_entity");
     public static final EntityType<AntiProtonEntity> ANTI_PROTON_ENTITY = register(FabricEntityTypeBuilder.<AntiProtonEntity>create(SpawnGroup.MISC, AntiProtonEntity::new)
