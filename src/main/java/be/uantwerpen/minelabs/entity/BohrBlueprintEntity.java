@@ -149,7 +149,7 @@ public class BohrBlueprintEntity extends Entity {
 
         ItemStack stack = inventory.pop();
         onItemRemoved(stack);
-        dropStack(stack);   // TODO: scatter might look better?
+        dropStack(stack);
     }
 
     private boolean canAcceptItem(Item item) {
