@@ -13,7 +13,6 @@ import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
 public class PositronEntity extends SubatomicParticle {
@@ -66,10 +65,5 @@ public class PositronEntity extends SubatomicParticle {
      */
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-    }
-
-    //TODO implement custom collision for different kind of blocks
-    protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
     }
 }
