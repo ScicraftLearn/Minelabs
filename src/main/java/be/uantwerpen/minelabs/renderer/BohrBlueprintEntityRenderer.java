@@ -455,7 +455,9 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             if (a!=null){
                 atomName = Text.translatable(a.getItem().getTranslationKey()).getString();
                 symbol = a.getSymbol();
-            }//TODO else: get information from nuclides_table
+            } else if(nuclideStateInfo!=null){//TODO ideally not needed when all atoms are implemented
+                symbol = nuclideStateInfo.getSymbol();//TODO this should return symbol based on nP, regardless if it is in the nuclides file
+            }
 
             String ionicCharge = NuclidesTable.calculateIonicCharge(nP, nE);
 
@@ -469,11 +471,9 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             }
             if (Math.abs(nP - nE) > 5) {
                 Ecolor = RED;
-                drawTexture(matrixStack, x, y + 8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-            }
+                }
             if (nuclideStateInfo == null || !NuclidesTable.getNuclide(nP, nN).isStable()) {
                 Zcolor = RED;
-                drawTexture(matrixStack, x, y+16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
             }
 
             /*
@@ -534,19 +534,26 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
 
             RenderSystem.disableBlend();
 
-
-            matrixStack.push();
-            matrixStack.scale(0.5f,0.5f,0.5f);
-            TextRenderer TR = MinecraftClient.getInstance().textRenderer;
-            drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nP)), (x+ratio_p)*2, y*2+1, WHITE);
-            drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nE)), (x+ratio_e)*2, (y+8)*2+1, WHITE);
-            drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nN)), (x+ratio_n)*2, (y+16)*2+1, WHITE);
-
-            matrixStack.pop();
-
-            RenderSystem.setShaderTexture(0, BARS_TEXTURE);
-
         }
+        if (nP > 0) {
+            NucleusState nuclideStateInfo = NuclidesTable.getNuclide(nP, nN);
+            if (Math.abs(nP - nE) > 5) {
+                drawTexture(matrixStack, x, y + 8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+            }
+            if (nuclideStateInfo==null ||!NuclidesTable.getNuclide(nP, nN).isStable()) {
+                drawTexture(matrixStack, x, y + 16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+            }
+        }
+        matrixStack.push();
+        matrixStack.scale(0.5f,0.5f,0.5f);
+        TextRenderer TR = MinecraftClient.getInstance().textRenderer;
+        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nP)), (x+ratio_p)*2, y*2+1, WHITE);
+        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nE)), (x+ratio_e)*2, (y+8)*2+1, WHITE);
+        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nN)), (x+ratio_n)*2, (y+16)*2+1, WHITE);
+
+        matrixStack.pop();
+
+        RenderSystem.setShaderTexture(0, BARS_TEXTURE);
     }
 
 }
