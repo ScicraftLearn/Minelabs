@@ -22,32 +22,18 @@ public class FlammableReaction extends Reaction {
         this.pyrophoric = pyrophoric;
     }
 
-    private static boolean isBlockNearby(World world, BlockPos source, BlockState blockState, int radius) {
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    BlockState state = world.getBlockState(source.add(x, y, z));
-                    if (state == blockState) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     protected void react(World world, double x, double y, double z, BlockHitResult hitResult) {
         BlockPos neighbourPos = hitResult.getBlockPos().offset(hitResult.getSide());
         if (world.getBlockState(neighbourPos).getBlock() == Blocks.AIR)
-            if(this.pyrophoric || isBlockNearby(world, neighbourPos, Blocks.TORCH.getDefaultState(), 3))
+            if(this.pyrophoric || ReactionUtils.isBlockNearby(world, neighbourPos, Blocks.TORCH.getDefaultState(), 3))
                 world.setBlockState(neighbourPos, Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
     }
 
     @Override
     protected void react(World world, double x, double y, double z, EntityHitResult hitResult) {
         if (hitResult.getEntity() instanceof LivingEntity livingEntity)
-            if(this.pyrophoric || isBlockNearby(world, hitResult.getEntity().getBlockPos(), Blocks.TORCH.getDefaultState(), 3))
+            if(this.pyrophoric || ReactionUtils.isBlockNearby(world, hitResult.getEntity().getBlockPos(), Blocks.TORCH.getDefaultState(), 3))
                 livingEntity.setFireTicks(duration);
     }
 }
