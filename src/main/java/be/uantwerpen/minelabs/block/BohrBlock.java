@@ -30,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,37 +71,57 @@ public class BohrBlock extends Block {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        // TODO: client/server checking
-
         BohrBlueprintEntity entity = getEntity(world, pos);
         if (entity == null)
             return ActionResult.FAIL;
 
         ItemStack stack = player.getStackInHand(hand);
-        if (stack.isEmpty()) {
-            if (!player.isSneaking()) {
-                entity.dropContents();
+
+        // Stack not empty -> try to insert
+        // Only Atoms can be inserted by right-clicking. Other elements need to be thrown.
+        if (!stack.isEmpty()) {
+            Item item = stack.getItem();
+            if (item instanceof AtomItem && entity.addItem(item)) {
+                if (!player.getAbilities().creativeMode)
+                    stack.decrement(1);
                 return ActionResult.SUCCESS;
             }
-
-            // try crafting atom
-            ItemStack resultStack = entity.craftAtom();
-            if (resultStack.isEmpty()){
-                return ActionResult.FAIL;
-            }
-            player.getInventory().offerOrDrop(resultStack);
-            return ActionResult.SUCCESS;
         }
 
-        // stack not empty
-        Item item = stack.getItem();
-        if (entity.addItem(item)){
-            if (!player.getAbilities().creativeMode)
-                stack.decrement(1);
-            return ActionResult.SUCCESS;
+        // Otherwise try to craft atom
+        ItemStack resultStack = entity.craftAtom();
+        if (resultStack.isEmpty())
+            return ActionResult.CONSUME_PARTIAL; // Return FAIL will allow the item to perform an action still. For example blockitems will be placed on top which is annoying.
+
+        player.getInventory().offerOrDrop(resultStack);
+        return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
+        // While it contains content don't start breaking progress. Items are dropped in onBlockBreakStart.
+        Minelabs.LOGGER.info("block breaking delta");
+        BohrBlueprintEntity entity = getEntity(player.world, pos);
+        if (entity != null && !entity.isEmpty()){
+            return 0;
         }
 
-        return ActionResult.FAIL;
+        // Otherwise break as usual
+        return super.calcBlockBreakingDelta(state, player, world, pos);
+    }
+
+    @Override
+    public void onBlockBreakStart(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+        super.onBlockBreakStart(state, world, pos, player);
+
+        if (world.isClient)
+            return;
+
+        // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
+        BohrBlueprintEntity entity = getEntity(player.world, pos);
+        if (entity != null && !entity.isEmpty()){
+            entity.dropLastItem();
+        }
     }
 
     @Override

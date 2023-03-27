@@ -1,3 +1,4 @@
+
 package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.item.Items;
@@ -12,25 +13,24 @@ import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
-public class NeutronEntity extends SubatomicParticle {
-    public NeutronEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
+public class PositronEntity extends SubatomicParticle {
+    public PositronEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    public NeutronEntity(World world, LivingEntity owner) {
-        super(Entities.NEUTRON_ENTITY, owner, world);
+    public PositronEntity(World world, LivingEntity owner) {
+        super(Entities.POSITRON_ENTITY, owner, world);
     }
 
-    public NeutronEntity(World world, double x, double y, double z) {
-        super(Entities.NEUTRON_ENTITY, x, y, z, world);
+    public PositronEntity(World world, double x, double y, double z) {
+        super(Entities.POSITRON_ENTITY, x, y, z, world);
     }
 
     /**
-     * Change getDespawnAge() to change the time after which NeutronEntity will despawn
-     * Game normally runs at 20 ticks per second, so return 100 -> NeutronEntity despawns after 5 seconds
+     * Change getDespawnAge() to change the time after which PositronEntity will despawn
+     * Game normally runs at 20 ticks per second, so return 100 -> PositronEntity despawns after 5 seconds
      */
     protected int getDespawnAge() {
         return 100;
@@ -38,7 +38,7 @@ public class NeutronEntity extends SubatomicParticle {
 
     @Override
     protected Item getDefaultItem() {
-        return Items.NEUTRON;
+        return Items.POSITRON;
     }
 
     /**
@@ -53,7 +53,7 @@ public class NeutronEntity extends SubatomicParticle {
     }
 
     /**
-     * Updates the NeutronEntity every tick
+     * Updates the PositronEntity every tick
      */
     public void tick() {
         super.tick();

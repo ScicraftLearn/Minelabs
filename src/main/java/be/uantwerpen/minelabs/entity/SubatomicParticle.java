@@ -2,15 +2,22 @@ package be.uantwerpen.minelabs.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
+/**
+ * Instances of this class are used for building atoms.
+ * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
+ */
 public abstract class SubatomicParticle extends ThrownItemEntity {
     private int itemAge;
 
@@ -84,8 +91,18 @@ public abstract class SubatomicParticle extends ThrownItemEntity {
         }
     }
 
-    protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+        super.onEntityHit(entityHitResult);
+        // notify bohr plate of collision
+        if (entityHitResult.getEntity() instanceof BohrBlueprintEntity bohrBlueprintEntity){
+            bohrBlueprintEntity.onParticleCollision(this);
+        }
+    }
+
+    @Override
+    protected void onBlockHit(BlockHitResult blockHitResult) {
+        super.onBlockHit(blockHitResult);
         if (!this.world.isClient) {
             // Generates clientside particles
             this.world.sendEntityStatus(this, (byte) 3);
