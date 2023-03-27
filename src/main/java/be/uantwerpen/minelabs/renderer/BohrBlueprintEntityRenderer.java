@@ -118,7 +118,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         PlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
 
-        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0, -0.5, 0).relativize(player.getPos()));
+        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0, -1.0, 0).relativize(player.getPos()));
 
         if (entityToPlayer.equals(Vec3f.ZERO)) {
             // default direction should be north iso east.
@@ -485,7 +485,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             matrixStack.push();
             matrixStack.scale(2, 2, 2);
             int width = TR.getWidth(symbol);
-            TR.draw(matrixStack, symbol, (x - 31 - width / 2) / 2, (y+4) / 2, WHITE);
+            TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y+4) / 2, WHITE);
             matrixStack.pop();
             //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
             //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
