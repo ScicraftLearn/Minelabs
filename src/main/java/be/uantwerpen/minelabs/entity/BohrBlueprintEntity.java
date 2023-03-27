@@ -10,9 +10,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -82,7 +84,6 @@ public class BohrBlueprintEntity extends Entity {
             return;
 
         validityTick();
-        collisionTick();
     }
 
     private void validityTick() {
@@ -96,16 +97,7 @@ public class BohrBlueprintEntity extends Entity {
         }
     }
 
-    private void collisionTick() {
-        List<Entity> entities = this.world.getOtherEntities(this, getBoundingBox());
-        entities.forEach(this::onCollision);
-    }
-
-    private void onCollision(Entity e) {
-        if ((e instanceof SubatomicParticle particle))
-            onParticleCollision(particle);
-    }
-
+    // Called by subatomic particle when it collides with this entity.
     public void onParticleCollision(SubatomicParticle particle) {
         ItemStack stack = particle.getStack();
         Item item = stack.getItem();
@@ -243,6 +235,35 @@ public class BohrBlueprintEntity extends Entity {
             return null;
 
         return nucleusState.getAtomItem();
+    }
+
+    @Override
+    public boolean canHit() {
+        return true;
+    }
+
+    /**
+     * Returning true prevents the attack from happening.
+     */
+    @Override
+    public boolean handleAttack(Entity attacker) {
+        return isEmpty();
+    }
+
+    @Override
+    public boolean damage(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        }
+        if (!this.isRemoved() && !this.world.isClient) {
+            if (source.getAttacker() instanceof PlayerEntity)
+                onHitByPlayer();
+        }
+        return true;
+    }
+
+    private void onHitByPlayer(){
+        dropLastItem();
     }
 
     @Override
