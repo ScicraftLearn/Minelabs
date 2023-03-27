@@ -1,6 +1,8 @@
 package be.uantwerpen.minelabs.potion;
 
 import be.uantwerpen.minelabs.item.Items;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.thrown.PotionEntity;
@@ -44,7 +46,12 @@ public class GasEntity extends PotionEntity { // TODO: better to extends from Th
             // TODO: Sketchy, replace this
             BlockHitResult blockHitResult = new BlockHitResult(this.getPos(), Direction.UP, this.getBlockPos(), false);
             molecule.react(this.world, this.getPos(), blockHitResult);
-            this.kill();
+//            this.kill();
         }
     }
+
+//    @Override
+//    protected void onBlockCollision(BlockState state) {
+//        System.out.println(state.getBlock() == Blocks.WATER);
+//    }
 }
