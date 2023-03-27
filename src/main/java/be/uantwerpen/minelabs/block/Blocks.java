@@ -103,8 +103,6 @@ public class Blocks {
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE, MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "green_fire");
-    public static final Block HELIUM = register(new Block(FabricBlockSettings.of(Material.AIR)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
     public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.METAL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");

@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs;
 
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
+import be.uantwerpen.minelabs.client.network.ClientNetworking;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.EntityModelLayers;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
@@ -46,7 +47,6 @@ public class MinelabsClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
         ClientModsEvents.registerEvents();
-        NetworkingConstants.registerS2CPackets();
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR, RenderLayer.getTranslucent());
         //BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PORTAL_BLOCK, RenderLayer.getTranslucent());
@@ -86,7 +86,6 @@ public class MinelabsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MOLOGRAM_BLOCK, RenderLayer.getTranslucent());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.HELIUM, RenderLayer.getTranslucent());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ERLENMEYER_STAND, RenderLayer.getCutout());
         // Register rendering for electron entity
@@ -95,11 +94,14 @@ public class MinelabsClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.ANTI_PROTON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.ANTI_NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
+
+        EntityRendererRegistry.register(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, BohrBlueprintEntityRenderer::new);
+
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+
         EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(EntityModelLayers.BALLOON_MODEL, BalloonEntityModel::getTexturedModelData);
 
-        BlockEntityRendererRegistry.register(BlockEntities.BOHR_BLOCK_ENTITY, BohrBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
@@ -178,6 +180,8 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyerFluid(Fluids.STILL_SiCl4, Fluids.FLOWING_SiCl4, 0xA1AFAFAF);
 
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> 0x3495eb, Blocks.LAB_SINK);
+
+        ClientNetworking.registerHandlers();
     }
 
     public void registerErlenmeyer(Item item, int color, int index) {

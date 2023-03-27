@@ -10,15 +10,9 @@
     "l": [
       {
         "item": "minecraft:leather"
-      },
-      {
-        "tag": "minecraft:wool"
       }
     ],
     "h": [
-      {
-        "item": "minelabs:helium"
-      },
       {
         "item": "minelabs:erlenmeyer_he"
       }

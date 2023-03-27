@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 public class ItemGroups {
     public static final ItemGroup MINELABS = FabricItemGroupBuilder.create(
                     new Identifier(Minelabs.MOD_ID, "minelabs"))
-            .icon(() -> new ItemStack(Items.HELIUM))
+            .icon(() -> new ItemStack(Items.MOLOGRAM))
             .build();
 
     public static final ItemGroup CHEMICALS = FabricItemGroupBuilder.create(
