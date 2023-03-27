@@ -13,8 +13,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -22,7 +20,6 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -111,6 +108,10 @@ public class BohrBlueprintEntity extends Entity {
         dropContents();
     }
 
+    public boolean isEmpty(){
+        return inventory.isEmpty();
+    }
+
     public void dropContents() {
         for (ItemStack stack : inventory) {
             dropStack(stack);
@@ -118,6 +119,15 @@ public class BohrBlueprintEntity extends Entity {
         inventory.clear();
         // sets everything to zero
         updateCountsFromContent();
+    }
+
+    public void dropLastItem(){
+        if (inventory.isEmpty())
+            return;
+
+        ItemStack stack = inventory.pop();
+        onItemRemoved(stack);
+        dropStack(stack);   // TODO: scatter might look better?
     }
 
     private boolean canAcceptItem(Item item) {

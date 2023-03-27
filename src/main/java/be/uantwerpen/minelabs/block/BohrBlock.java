@@ -104,6 +104,19 @@ public class BohrBlock extends Block {
     }
 
     @Override
+    public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
+        // While it contains content, drop them one by one and don't start breaking progress.
+        BohrBlueprintEntity entity = getEntity(player.world, pos);
+        if (entity != null && !entity.isEmpty()){
+            entity.dropLastItem();
+            return 0;
+        }
+
+        // Otherwise break as usual
+        return super.calcBlockBreakingDelta(state, player, world, pos);
+    }
+
+    @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
 
