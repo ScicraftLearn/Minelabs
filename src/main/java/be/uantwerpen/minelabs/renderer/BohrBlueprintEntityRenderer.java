@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static be.uantwerpen.minelabs.util.NuclidesTable.calculateNrOfElectrons;
-import static net.minecraft.client.gui.DrawableHelper.drawTexture;
+import static net.minecraft.client.gui.DrawableHelper.*;
 
 public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends EntityRenderer<E> {
     float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
@@ -505,7 +505,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
 
     private static void renderBars(MatrixStack matrixStack, int nP, int nE, int nN, int x, int y) {
         int n = Math.max(nP, Math.max(nE, nN));
-        int scale = n > 40 ? 150 : n > 10 ? 40 : 10;
+        int scale = n > 39 ? 150 : n > 9 ? 40 : 10;
 
         drawTexture(matrixStack, x, y, 0, 0, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
         drawTexture(matrixStack, x, y + 8, 0, 10, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
@@ -533,6 +533,19 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             drawTexture(matrixStack, x, y + 16, 0, s, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
 
             RenderSystem.disableBlend();
+
+
+            matrixStack.push();
+            matrixStack.scale(0.5f,0.5f,0.5f);
+            TextRenderer TR = MinecraftClient.getInstance().textRenderer;
+            drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nP)), (x+ratio_p)*2, y*2+1, WHITE);
+            drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nE)), (x+ratio_e)*2, (y+8)*2+1, WHITE);
+            drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nN)), (x+ratio_n)*2, (y+16)*2+1, WHITE);
+
+            matrixStack.pop();
+
+            RenderSystem.setShaderTexture(0, BARS_TEXTURE);
+
         }
     }
 
