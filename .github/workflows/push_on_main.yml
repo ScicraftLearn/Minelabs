@@ -1,4 +1,4 @@
-name: Push to the relevant pranches when pushed to main
+name: Push to the relevant branches when pushed to main
 
 on:
   push:
