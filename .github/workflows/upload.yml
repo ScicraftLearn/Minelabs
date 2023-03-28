@@ -5,7 +5,7 @@ on:
     branches:
       - testserver
       - buildserver
-      -
+
 jobs:
   gradle:
     runs-on: ubuntu-latest
