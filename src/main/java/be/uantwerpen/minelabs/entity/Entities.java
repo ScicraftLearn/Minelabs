@@ -27,6 +27,8 @@ public class Entities {
     // EntityTypes
     public static final EntityType<ElectronEntity> ELECTRON_ENTITY = register(FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "electron_entity");
+    public static final EntityType<PositronEntity> POSITRON_ENTITY = register(FabricEntityTypeBuilder.<PositronEntity>create(SpawnGroup.MISC, PositronEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "positron_entity");
     public static final EntityType<ProtonEntity> PROTON_ENTITY = register(FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "proton_entity");
     public static final EntityType<AntiProtonEntity> ANTI_PROTON_ENTITY = register(FabricEntityTypeBuilder.<AntiProtonEntity>create(SpawnGroup.MISC, AntiProtonEntity::new)
@@ -35,8 +37,17 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "neutron_entity");
     public static final EntityType<AntiNeutronEntity> ANTI_NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<AntiNeutronEntity>create(SpawnGroup.MISC, AntiNeutronEntity::new)
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "anti_neutron_entity");
+    // positron?
+
+    public static final EntityType<BohrBlueprintEntity> BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE = register(FabricEntityTypeBuilder.<BohrBlueprintEntity>create(SpawnGroup.MISC, BohrBlueprintEntity::new)
+            .dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeBlocks(10).disableSummon().fireImmune().build(), "bohr_blueprint_entity");
+
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
+    public static final EntityType<BalloonEntity> BALLOON = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, BalloonEntity::new)
+            .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "balloon");
+
+
     public static final EntityType<BalloonEntity> BALLOON = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, BalloonEntity::new)
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "balloon");
 
