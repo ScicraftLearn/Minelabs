@@ -44,6 +44,9 @@ public class Entities {
 
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
+    public static final EntityType<BalloonEntity> BALLOON = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, BalloonEntity::new)
+            .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "balloon");
+
 
     public static final EntityType<BalloonEntity> BALLOON = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, BalloonEntity::new)
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "balloon");

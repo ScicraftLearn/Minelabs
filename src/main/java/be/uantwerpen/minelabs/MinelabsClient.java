@@ -99,6 +99,8 @@ public class MinelabsClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, BohrBlueprintEntityRenderer::new);
 
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(EntityModelLayers.BALLOON_MODEL, BalloonEntityModel::getTexturedModelData);
 
         EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(EntityModelLayers.BALLOON_MODEL, BalloonEntityModel::getTexturedModelData);
