@@ -1,22 +1,7 @@
 {
-  "ambientocclusion": false,
-  "texture_size": [34, 34],
+  "parent": "minelabs:block/bohr_template",
   "textures": {
     "BP": "minelabs:block/bohrcrafting/bohr_block_ready",
-    "particle": "minelabs:block/bohrcrafting/bohr_block_ready"
-  },
-  "elements": [
-    {
-      "from": [0, 0, 0],
-      "to": [32, 1, 32],
-      "faces": {
-        "north": {"uv": [0.47059, 0, 15.52941, 0.47059], "texture": "#BP"},
-        "east": {"uv": [15.52941, 0.47059, 16, 15.52941], "rotation": 90, "texture": "#BP"},
-        "south": {"uv": [0.47059, 15.52941, 15.52941, 16], "texture": "#BP"},
-        "west": {"uv": [0, 0.47059, 0.47059, 15.52941], "rotation": 270, "texture": "#BP"},
-        "up": {"uv": [0.47059, 0.47059, 15.52941, 15.52941], "texture": "#BP"},
-        "down": {"uv": [15.52941, 0.47059, 0.47059, 15.52941], "rotation": 180, "texture": "#BP"}
-      }
-    }
-  ]
+    "particle": "minelabs:block/bohrcrafting/bohr_block"
+  }
 }
