@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - push_on_main
+      - actions_push_server
 
 jobs:
   update_buildserver:
