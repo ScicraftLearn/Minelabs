@@ -28,11 +28,11 @@ public class LaserToolDataProvider implements DataProvider {
 
 	public static HashMap<String, Map<String, Integer>> moleculeNames = new HashMap<>();
 
-	private static List<String> expand = new ArrayList<>();
-	private static List<String> expandColor = new ArrayList<>();
-	private static List<String> expandWood = new ArrayList<>();
-	private static List<String> expandLeaves = new ArrayList<>();
-	private static List<String> expandCoral = new ArrayList<>();
+	private static List<Identifier> expand = new ArrayList<>();
+	private static List<Identifier> expandColor = new ArrayList<>();
+	private static List<Identifier> expandWood = new ArrayList<>();
+	private static List<Identifier> expandLeaves = new ArrayList<>();
+	private static List<Identifier> expandCoral = new ArrayList<>();
 	
 	public LaserToolDataProvider(DataGenerator root) {
 		this.root = root;
@@ -41,12 +41,12 @@ public class LaserToolDataProvider implements DataProvider {
 	@Override
 	public void run(DataWriter writer) throws IOException {
 		Path path = this.root.getOutput();
-		HashSet<Identifier> set = Sets.newHashSet();
+		Set<Identifier> set = Sets.newLinkedHashSet();
 		LaserToolDataProvider.generateMinecraftBlocksData(provider -> {
 			if (!set.add(provider.getId())) {
 				throw new IllegalStateException("Duplicate block " + provider.getId());
 			}
-			LaserToolDataProvider.saveMinecraftBlocksData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/lasertool/blocks/" + provider.getId().getPath() + ".json"));
+			LaserToolDataProvider.saveMinecraftBlocksData(writer, provider.toJson(), path.resolve("data/" + Minelabs.MOD_ID + "/loot_tables/lasertool/blocks/" + provider.getId().getPath() + ".json"));
 		}, path);
 
 		LaserToolDataProvider.generateMoleculeData(provider -> LaserToolDataProvider.saveMoleculeData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/molecules/" + provider.getId().getPath() + ".json")));
@@ -72,14 +72,14 @@ public class LaserToolDataProvider implements DataProvider {
 		}
 	}
 
-	private void saveLasertoolMineable(DataWriter cache, HashSet<Identifier> set) throws IOException {
+	private void saveLasertoolMineable(DataWriter cache, Set<Identifier> set) throws IOException {
 		Path path = this.root.getOutput();
 
 		JsonObject root = new JsonObject();
 		root.add("replace", new JsonPrimitive(false));
 		JsonArray values = new JsonArray();
 		for (Identifier id : set) {
-			values.add(new JsonPrimitive(new Identifier("minecraft", id.getPath()).toString()));
+			values.add(new JsonPrimitive(id.toString()));
 		}
 		root.add("values", values);
 		DataProvider.writeToPath(cache, root, path.resolve("data/" + Minelabs.MOD_ID + "/tags/blocks/lasertool_mineable.json"));
@@ -102,8 +102,8 @@ public class LaserToolDataProvider implements DataProvider {
 					throw new IllegalStateException("Couldn't parse molecule in " + blocks.toString() + " molecule count and distribution does not match");
 				}
 				for (JsonElement element: blocks) {
-					List<String> expandedBlocks = expandBlock(element.getAsString());
-					for (String block: expandedBlocks) {
+					List<Identifier> expandedBlocks = expandBlock(element.getAsString());
+					for (Identifier block: expandedBlocks) {
 						data.accept(new MinecraftBlocksData(block, molecules, distribution));
 					}
 				}
@@ -114,12 +114,13 @@ public class LaserToolDataProvider implements DataProvider {
 		}
 	}
 
-	public static List<String> expandBlock(String name) {
-		List<String> result = new ArrayList<>();
+	public static List<Identifier> expandBlock(String name) {
+		List<Identifier> result = new ArrayList<>();
 		// Add the standard block to the list if it exists ingame
 		boolean notABlock = false;
-		if (!Registry.BLOCK.get(new Identifier("minecraft", name)).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
-			result.add(name);
+		Identifier id = new Identifier(name);
+		if (!Registry.BLOCK.get(id).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
+			result.add(id);
 		} else {
 			notABlock = true;
 		}
@@ -127,60 +128,65 @@ public class LaserToolDataProvider implements DataProvider {
 		if (name.endsWith("_bricks") || name.endsWith("_tiles")) {
 			name = name.substring(0, name.length() - 1);
 		}
-		List<String> blocks = new ArrayList<>();
-		if (expand.contains(name)) {
+		List<Identifier> blocks = new ArrayList<>();
+		if (expand.contains(id)) {
 			for (String fix: new String[] {"_slab", "_stairs", "_wall", "_block", "_pillar"}) {
-				blocks.add(name + fix);
+				blocks.add(new Identifier(id.getNamespace(), id.getPath() + fix));
 			}
-		} else if (expandColor.contains(name)) {
+		} else if (expandColor.contains(id)) {
 			for (String fix: new String[] {"white_", "orange_", "magenta_", "light_blue_", "yellow_", "lime_", "pink_", "gray_", "light_gray_", "cyan_", "purple_", "blue_", "brown_", "green_", "red_", "black_"}) {
-				blocks.add(fix + name);
+				blocks.add(new Identifier(id.getNamespace(), fix + id.getPath()));
 			}
-		} else if (expandWood.contains(name)) {
+		} else if (expandWood.contains(id)) {
 			for (String fix: new String[] {"_log", "_planks", "_slab", "_stairs", "_wood", "_stem", "_hyphae"}) {
-				blocks.add(name + fix);
+				blocks.add(new Identifier(id.getNamespace(), id.getPath() + fix));
 			}
-			blocks.add("stripped_" + name + "_log");
-			blocks.add("stripped_" + name + "_wood");
-			blocks.add("stripped_" + name + "_stem");
-			blocks.add("stripped_" + name + "_hyphae");
-		} else if (expandLeaves.contains(name)) {
+			blocks.add(new Identifier(id.getNamespace(), "stripped_" +  id.getPath() + "_log"));
+			blocks.add(new Identifier(id.getNamespace(), "stripped_" +  id.getPath() + "_wood"));
+			blocks.add(new Identifier(id.getNamespace(), "stripped_" +  id.getPath() + "_stem"));
+			blocks.add(new Identifier(id.getNamespace(), "stripped_" +  id.getPath() + "_hyphae"));
+		} else if (expandLeaves.contains(id)) {
 			for (String fix: new String[] {"oak_", "spruce_", "birch_", "jungle_", "acacia_", "dark_oak_", "mangrove_", "azalea_", "flowering_azalea_"}) {
-				blocks.add(fix + name);
+				blocks.add(new Identifier(id.getNamespace(), fix + id.getPath()));
 			}
-		} else if (expandCoral.contains(name)) {
+		} else if (expandCoral.contains(id)) {
 			String[] expansion = new String[] {"tube_", "brain_", "bubble_", "fire_", "horn_"};
 			if (name.equals("dead_coral")) {
 				for (String fix: expansion) {
-					blocks.add("dead_" + fix + "coral");
+					blocks.add(new Identifier(id.getNamespace(), "dead_" + fix + "coral"));
 				}
 			} else {
 				for (String fix: expansion) {
-					blocks.add(fix + name);
+					blocks.add(new Identifier(id.getNamespace(), fix + id.getPath()));
 				}
 			}
 		} else if (notABlock) {
 			LOGGER.error("Block {} in lasertool.json is not an ingame block", name);
 		}
-		for (String block: blocks) {
-			if (!Registry.BLOCK.get(new Identifier("minecraft", block)).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
+		for (Identifier block: blocks) {
+			if (!Registry.BLOCK.get(block).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
 				result.add(block);
 			}
 		}
 		return result;
 	}
 
-	public static boolean isExpandable(String block) {
+	public static boolean isExpandable(Identifier block) {
 		return expand.contains(block) || expandColor.contains(block) || expandWood.contains(block) || expandLeaves.contains(block) || expandCoral.contains(block);
 	}
 
-	private static void readExpandArrays(JsonObject json) {
+	private static List<Identifier> readListOfIds(JsonElement json){
 		Type listType = new TypeToken<List<String>>() {}.getType();
-		expand = GSON.fromJson(json.get("expand"), listType);
-		expandColor = GSON.fromJson(json.get("expand_color"), listType);
-		expandWood = GSON.fromJson(json.get("expand_wood"), listType);
-		expandLeaves = GSON.fromJson(json.get("expand_leaves"), listType);
-		expandCoral = GSON.fromJson(json.get("expand_coral"), listType);
+		List<String> strings = GSON.fromJson(json, listType);
+		return strings.stream().map(Identifier::new).toList();
+	}
+
+	private static void readExpandArrays(JsonObject json) {
+		expand = readListOfIds(json.get("expand"));
+		expandColor = readListOfIds(json.get("expand_color"));
+		expandWood = readListOfIds(json.get("expand_wood"));
+		expandLeaves = readListOfIds(json.get("expand_leaves"));
+		expandCoral = readListOfIds(json.get("expand_coral"));
 	}
 
 	private static void generateMoleculeData(Consumer<MoleculeData> data) {
