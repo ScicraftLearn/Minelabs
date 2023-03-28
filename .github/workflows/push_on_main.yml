@@ -9,8 +9,9 @@ jobs:
   update_buildserver:
     runs-on: ubuntu-latest
     environment: minelabs_upload
-    matrix:
-      branch: [testserver, buildserver]
+    strategy:
+      matrix:
+        branch: [testserver, buildserver]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
