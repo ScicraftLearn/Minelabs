@@ -32,8 +32,6 @@ public class BlockEntities {
 
     public static BlockEntityType<TimeFreezeBlockEntity> TIME_FREEZE_BLOCK_ENTITY;
 
-    public static BlockEntityType<BohrBlockEntity> BOHR_BLOCK_ENTITY;
-
     public static BlockEntityType<QuantumFieldBlockEntity> QUANTUM_FIELD_BLOCK_ENTITY;
 
     public static BlockEntityType<LabChestBlockEntity> LAB_CHEST_BLOCK_ENTITY;
@@ -95,10 +93,6 @@ public class BlockEntities {
         CHARGED_PLACEHOLDER_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
                 "charged_placeholder_block_entity");
-
-        BOHR_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "bohr_block"),
-                FabricBlockEntityTypeBuilder.create(BohrBlockEntity::new,
-                        Blocks.BOHR_BLOCK).build(null));
 
 
         IONIC_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "ionic_block"),

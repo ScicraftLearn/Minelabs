@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "title": "I AM THE CHAOS",
+    "description": "Ignite an entropy creeper",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/meet_entropy_creeper",
+  "criteria": {
+    "ignite_entropy_creeper": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:flint_and_steel",
+            "minecraft:fire_charge"
+          ]
+        },
+        "entity": {
+          "type": "minelabs:entropy_creeper"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ignite_entropy_creeper"
+    ]
+  ]
+}

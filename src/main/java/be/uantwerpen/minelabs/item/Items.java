@@ -256,7 +256,7 @@ public class Items {
     public static final Item GLUON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "gluon");
 
     public static final Item ELECTRON = register(new ElectronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "electron");
-    public static final Item POSITRON = register(new BlockItem(Blocks.POSITRON, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "positron");
+    public static final Item POSITRON = register(new PositronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "positron");
     public static final Item PHOTON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "photon");
 
     public static final Item NEUTRINO = register(new BlockItem(Blocks.NEUTRINO, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "neutrino");
@@ -275,11 +275,11 @@ public class Items {
 
     public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings().group(ItemGroups.MINELABS)), "electric_field_sensor");
 
-    // helium gas
-    public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.CHEMICALS)), "helium");
     public static final Item MOLOGRAM = register(new BlockItem(Blocks.MOLOGRAM_BLOCK, new FabricItemSettings().group(ItemGroups.MINELABS)), "mologram");
 
-    public static final Item BOHR_BLOCK = register(new BlockItem(Blocks.BOHR_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "bohr_block");
+    public static final Item BALLOON = register(new BalloonItem(new Item.Settings().group(ItemGroups.MINELABS).maxCount(1)), "balloon");
+
+    public static final Item BOHR_BLUEPRINT = register(new BlockItem(Blocks.BOHR_BLUEPRINT, new Item.Settings().group(ItemGroups.MINELABS)), "bohr_block");
 
     public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "lewis_block");
     public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "ionic_block");
@@ -349,25 +349,25 @@ public class Items {
 
     */
     public static final Item ERLENMEYER_HNO3 = register(new ErlenmeyerItem(
-            Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HNO3"), "erlenmeyer_hno3");
+            Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HNO3"), "erlenmeyer_hno3");
     public static final Item ERLENMEYER_H2O = register(new ErlenmeyerItem(
-            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "H2O"), "erlenmeyer_h2o");
+            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "H2O"), "erlenmeyer_h2o");
     public static final Item ERLENMEYER_NCL3 = register(new ErlenmeyerItem(
-            Fluids.STILL_NCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "NCl3"), "erlenmeyer_ncl3");
+            Fluids.STILL_NCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "NCl3"), "erlenmeyer_ncl3");
     public static final Item ERLENMEYER_CS2 = register(new ErlenmeyerItem(
-            Fluids.STILL_CS2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CS2"), "erlenmeyer_cs2");
+            Fluids.STILL_CS2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CS2"), "erlenmeyer_cs2");
     public static final Item ERLENMEYER_CCL4 = register(new ErlenmeyerItem(
-            Fluids.STILL_CCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CCl4"), "erlenmeyer_ccl4");
+            Fluids.STILL_CCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CCl4"), "erlenmeyer_ccl4");
     public static final Item ERLENMEYER_PCl3 = register(new ErlenmeyerItem(
-            Fluids.STILL_PCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "PCl3"), "erlenmeyer_pcl3");
+            Fluids.STILL_PCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "PCl3"), "erlenmeyer_pcl3");
     public static final Item ERLENMEYER_SCl2 = register(new ErlenmeyerItem(
-            Fluids.STILL_SCl2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SCl2"), "erlenmeyer_scl2");
+            Fluids.STILL_SCl2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SCl2"), "erlenmeyer_scl2");
     public static final Item ERLENMEYER_HCN = register(new ErlenmeyerItem(
-            Fluids.STILL_HCN, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "HCN"), "erlenmeyer_hcn");
+            Fluids.STILL_HCN, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HCN"), "erlenmeyer_hcn");
     public static final Item ERLENMEYER_CH4O = register(new ErlenmeyerItem(
-            Fluids.STILL_CH4O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "CH4O"), "erlenmeyer_ch4o");
+            Fluids.STILL_CH4O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CH4O"), "erlenmeyer_ch4o");
     public static final Item ERLENMEYER_SICL4 = register(new ErlenmeyerItem(
-            Fluids.STILL_SiCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(1), "SiCl4"), "erlenmeyer_sicl4");
+            Fluids.STILL_SiCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SiCl4"), "erlenmeyer_sicl4");
 
 
     static {

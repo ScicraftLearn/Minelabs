@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:boric_acid"
+    },
+    "title": "Smarter than the teacher",
+    "description": "Form a molecule that is not craftable",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/make_single_covalent_bond",
+  "criteria": {
+    "make_single_bond": {
+      "trigger": "minelabs:lct",
+      "conditions": {
+        "type": "UNKNOWN_MOLECULE"
+      }
+    }
+  }
+}

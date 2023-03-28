@@ -1,0 +1,28 @@
+name: Push to the relevant pranches when pushed to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_buildserver:
+    runs-on: ubuntu-latest
+    environment: minelabs_upload
+    matrix:
+      branch: [testserver, buildserver]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+      - name: Update Git branch $${{ matrix.branch }}
+        run: |
+          git config user.name "Update branch $${{ matrix.branch }}"
+          git config user.email github-actions@github.com
+          git checkout $${{ matrix.branch }}
+          git merge main --no-edit -m "Merged main branch on $(date +%F)"
+      - name: Push the updated branch $${{ matrix.branch }}
+        run: |
+          git push origin $${{ matrix.branch }}

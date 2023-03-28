@@ -1,0 +1,245 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:gluon"
+    },
+    "title": "Gotta catch em all",
+    "description": "Obtain all elementary particles",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minelabs:textures/block/advancements_bg.png"
+  },
+  "parent": "minelabs:basic/obtain_a_quark",
+  "criteria": {
+    "obtain_upquark_red": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:upquark_red"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_upquark_green": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:upquark_green"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_upquark_blue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:upquark_blue"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_anti_upquark_red": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:anti_upquark_red"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_anti_upquark_green": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:anti_upquark_green"
+            ]
+          }
+        ]
+      }
+    },"obtain_anti_upquark_blue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:anti_upquark_blue"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_downquark_red": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:downquark_red"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_downquark_green": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:downquark_green"
+            ]
+          }
+        ]
+      }
+    },"obtain_downquark_blue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:downquark_blue"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_anti_downquark_red": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:anti_downquark_red"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_anti_downquark_green": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:anti_downquark_green"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_anti_downquark_blue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:anti_downquark_blue"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_gluon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:gluon"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_electron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:electron"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_positron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:positron"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_photon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:photon"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_neutrino": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:neutrino"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_antineutrino": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:antineutrino"
+            ]
+          }
+        ]
+      }
+    },
+    "obtain_weak_boson": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:weak_boson"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+
+  ]
+}

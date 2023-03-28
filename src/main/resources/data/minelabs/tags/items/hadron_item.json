@@ -1,0 +1,12 @@
+{
+    "replace": false,
+    "values": [
+        "minelabs:proton",
+        "minelabs:neutron",
+        "minelabs:anti_proton",
+        "minelabs:anti_neutron",
+        "minelabs:pion_nul",
+        "minelabs:pion_minus",
+        "minelabs:pion_plus"
+    ]
+}

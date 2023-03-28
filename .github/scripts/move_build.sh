@@ -14,4 +14,4 @@ if ! cp "../build/libs/$mod_file" . ; then
 fi
 
 cd ..
-echo "Moved mod to output.."
+echo "Moved mod to output .."

@@ -14,7 +14,7 @@ public class AtomicFloor extends AbstractGlassBlock {
     public final static int AtomicFloorLayer = 64;
 
     public AtomicFloor() {
-        super(Settings.of(Material.AMETHYST).hardness(-1f).strength(3600000.0F).nonOpaque().ticksRandomly());
+        super(Settings.of(Material.AMETHYST).strength(-1f, 3600000.0F).nonOpaque().ticksRandomly());
     }
 
     @Override
@@ -33,7 +33,7 @@ public class AtomicFloor extends AbstractGlassBlock {
 
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return context.isHolding(Items.ATOM_FLOOR) || context.isHolding(Items.BOHR_BLOCK) ?
+        return context.isHolding(Items.ATOM_FLOOR) || context.isHolding(Items.BOHR_BLUEPRINT) ?
                 VoxelShapes.fullCube() : VoxelShapes.empty();
     }
 
