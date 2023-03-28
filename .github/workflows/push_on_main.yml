@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - push_on_main
 
 jobs:
   update_buildserver:
