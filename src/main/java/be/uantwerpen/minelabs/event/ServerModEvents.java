@@ -16,7 +16,7 @@ public class ServerModEvents {
                 ItemStack stack = player.getStackInHand(hand);
                 //Allowed items should be added within this if statement, itemgroups or specific blocks
                 if (world.getRegistryKey() == ModDimensions.SUBATOM_KEY) {
-                    if (stack.getItem().getGroup() == ItemGroups.ATOMS || stack.isOf(Items.BOHR_BLOCK)
+                    if (stack.getItem().getGroup() == ItemGroups.ATOMS || stack.isOf(Items.BOHR_BLUEPRINT)
                             || stack.isOf(Items.ATOM_FLOOR) || stack.isEmpty()
                             || stack.getItem().getGroup() == ItemGroups.ELEMENTARY_PARTICLES || stack.getItem().getGroup() == ItemGroups.QUANTUM_FIELDS) {
 

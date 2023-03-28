@@ -30,7 +30,7 @@ public class ItemGroups {
                 stack.add(new ItemStack(Items.ELECTRIC_FIELD_SENSOR));
                 stack.add(new ItemStack(Items.MOLOGRAM));
                 stack.add(new ItemStack(Items.BALLOON));
-                stack.add(new ItemStack(Items.BOHR_BLOCK));
+                stack.add(new ItemStack(Items.BOHR_BLUEPRINT));
                 stack.add(new ItemStack(Items.LEWIS_BLOCK_ITEM));
                 stack.add(new ItemStack(Items.IONIC_BLOCK_ITEM));
                 stack.add(new ItemStack(Items.LASERTOOL_IRON));
