@@ -24,7 +24,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout ${{ matrix.branch }}
-          git merge main --no-edit -m "Merged main branch on $(date +%F)"
+          git merge origin/main --no-edit -m "Merged main branch on $(date +%F)"
       - name: Push the updated branch ${{ matrix.branch }}
         run: |
           git push origin ${{ matrix.branch }}
