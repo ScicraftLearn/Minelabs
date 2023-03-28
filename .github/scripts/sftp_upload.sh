@@ -76,5 +76,5 @@ if ! (($(cat random_key)==-2*$(cat random_key_local))) ; then
     exit -1
   fi
 else
-  echo "Upload complete. "
+  echo "Upload complete."
 fi
