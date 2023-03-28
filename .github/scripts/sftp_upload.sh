@@ -4,7 +4,9 @@ mkdir mods
 cd mods
 echo "stop stop" > restart
 echo $RANDOM>random_key
+
 sftp -o "StrictHostKeyChecking no" -P $SFTP_PORT minelabs@minelabs.be<< EOF
+
 cd config
 put restart
 put random_key
@@ -34,6 +36,7 @@ cd mods
 cp "../output/$mod_file" .
 
 sftp -o "StrictHostKeyChecking no" -P $SFTP_PORT  minelabs@minelabs.be<< EOF
+
 cd minecraft-data/mods
 rm *
 put *
@@ -44,7 +47,9 @@ bye
 EOF
 
 sleep 6
+
 sftp -o "StrictHostKeyChecking no" -P $SFTP_PORT  minelabs@minelabs.be<< EOF
+
 cd config
 get restart.log
 get random_key
@@ -76,5 +81,6 @@ if ! (($(cat random_key)==-2*$(cat random_key_local))) ; then
     exit -1
   fi
 else
+
   echo "Upload complete."
 fi
