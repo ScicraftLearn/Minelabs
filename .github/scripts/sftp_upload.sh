@@ -19,7 +19,6 @@ rm -f $(ls | grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
 mv random_key random_key_local
 cd ..
 
-
 mod_file=$(ls output| grep -E "^(minelabs-)([0-9]+)(.)([0-9]+)(.)([0-9]+)(.jar)")
 echo $mod_file
 . <(grep archives_base_name gradle.properties)
