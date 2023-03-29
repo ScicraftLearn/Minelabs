@@ -84,7 +84,6 @@ jobs:
   gradle_from_branch:
     runs-on: ubuntu-latest
     environment: minelabs_upload
-    needs: update_server
     if: (github.ref == 'refs/heads/testserver') || (github.ref == 'refs/heads/buildserver')
     steps:
       - uses: actions/checkout@v3
