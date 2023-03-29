@@ -1,4 +1,4 @@
-name: Push to the relevant branch when pushed to main
+name: push_on_main
 
 on:
   push:

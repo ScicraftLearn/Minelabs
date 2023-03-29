@@ -1,4 +1,4 @@
-name: Check pull request on main branch
+name: pull_request_main
 
 on:
   pull_request:
