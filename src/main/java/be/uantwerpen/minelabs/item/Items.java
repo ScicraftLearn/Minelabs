@@ -256,7 +256,7 @@ public class Items {
     public static final Item GLUON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "gluon");
 
     public static final Item ELECTRON = register(new ElectronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "electron");
-    public static final Item POSITRON = register(new BlockItem(Blocks.POSITRON, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "positron");
+    public static final Item POSITRON = register(new PositronItem(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "positron");
     public static final Item PHOTON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "photon");
 
     public static final Item NEUTRINO = register(new BlockItem(Blocks.NEUTRINO, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "neutrino");
@@ -276,13 +276,11 @@ public class Items {
     public static final Item CHARGED_POINT = register(new BlockItem(Blocks.CHARGED_POINT_BLOCK, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "charged_point");
     public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings().group(ItemGroups.MINELABS)), "electric_field_sensor");
 
-    // helium gas
-    public static final Item HELIUM = register(new BlockItem(Blocks.HELIUM, new FabricItemSettings().group(ItemGroups.CHEMICALS)), "helium");
     public static final Item MOLOGRAM = register(new BlockItem(Blocks.MOLOGRAM_BLOCK, new FabricItemSettings().group(ItemGroups.MINELABS)), "mologram");
 
     public static final Item BALLOON = register(new BalloonItem(new Item.Settings().group(ItemGroups.MINELABS).maxCount(1)), "balloon");
 
-    public static final Item BOHR_BLOCK = register(new BlockItem(Blocks.BOHR_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "bohr_block");
+    public static final Item BOHR_BLUEPRINT = register(new BlockItem(Blocks.BOHR_BLUEPRINT, new Item.Settings().group(ItemGroups.MINELABS)), "bohr_block");
 
     public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "lewis_block");
     public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings().group(ItemGroups.MINELABS)), "ionic_block");

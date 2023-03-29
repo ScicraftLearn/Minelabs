@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "minelabs",
   "version": "${version}",
-  "name": "MineLabs",
+  "name": "Minelabs",
   "description": "Mod Description: TODO",
   "authors": [
     "Joey De Pauw",

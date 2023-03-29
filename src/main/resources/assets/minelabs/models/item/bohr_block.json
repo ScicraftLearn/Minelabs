@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minelabs:block/bohrcrafting/bohr_block"
+    "layer0": "minelabs:item/bohr_block"
   }
 }

@@ -66,9 +66,4 @@ public class ProtonEntity extends SubatomicParticle {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
     }
-
-    //TODO implement custom collision for different kind of blocks
-    protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
-    }
 }

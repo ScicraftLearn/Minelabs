@@ -1,0 +1,29 @@
+name: Push to the relevant branch when pushed to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_buildserver:
+    runs-on: ubuntu-latest
+    environment: minelabs_upload
+    strategy:
+      matrix:
+        branch: ["testserver", "buildserver"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          repository: ScicraftLearn/Minelabs
+      - name: Update branch ${{ matrix.branch }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout ${{ matrix.branch }}
+          git merge origin/main --no-edit -m "Merged main branch on $(date +%F)"
+      - name: Push the updated branch ${{ matrix.branch }}
+        run: |
+          git push origin ${{ matrix.branch }}
