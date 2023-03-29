@@ -1,7 +1,10 @@
-name: Run Gradle and upload to build- or testserver on push
+name: upload
 
 on:
-  push:
+  workflow_run:
+    workflows: ["push_on_main"]
+    types:
+      - completed
     branches:
       - testserver
       - buildserver
