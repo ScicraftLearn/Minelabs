@@ -62,14 +62,14 @@ jobs:
         shell: bash
 
       - name: Upload to minelabs.be
-        if: ${{ matrix.branch }} == "buildserver"
+        if: matrix.branch == "buildserver"
         run: ./.github/scripts/sftp_upload.sh
         shell: bash
         env:
           SFTP_PORT: 2233
 
       - name: Upload to testserver.minelabs.be
-        if: ${{ matrix.branch }} == "testserver"
+        if: matrix.branch == "testserver"
         run: ./.github/scripts/sftp_upload.sh
         shell: bash
         env:
@@ -84,7 +84,6 @@ jobs:
   gradle_from_branch:
     runs-on: ubuntu-latest
     environment: minelabs_upload
-    needs: update_server
     if: (github.ref == 'refs/heads/testserver') || (github.ref == 'refs/heads/buildserver')
     steps:
       - uses: actions/checkout@v3
