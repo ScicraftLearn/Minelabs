@@ -26,6 +26,8 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_NUL_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedPointBlockEntity> CHARGED_POINT_BLOCK_ENTITY;
+
     public static BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY;
     public static BlockEntityType<IonicBlockEntity> IONIC_BLOCK_ENTITY;
     public static BlockEntityType<ElectricFieldSensorBlockEntity> ELECTRIC_FIELD_SENSOR;
