@@ -17,7 +17,7 @@ import net.minecraft.util.registry.Registry;
  */
 public class Tags {
     public static class Blocks {
-
+        public static final TagKey<Block> QUANTUMFIELDS = createTag("quantumfields");
         public static final TagKey<Block> LASERTOOL_MINEABLE = createTag("lasertool_mineable");
         public static final TagKey<Block> COPPER_BLOCKS = createTag("copper_blocks");
         public static final TagKey<Block> CHARGED_BLOCKS = createTag("charged_blocks");

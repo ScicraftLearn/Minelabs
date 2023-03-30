@@ -130,6 +130,11 @@ public enum Atom {
             if (atom.getSymbol().equals(symbol)) return atom;
         return null;
     }
+    public static Atom getByNumber(int atomNumber) {
+        for (Atom atom : values())
+            if (atom.getAtomNumber()==atomNumber) return atom;
+        return null;
+    }
 
     @Override
     public String toString() {

@@ -7,12 +7,21 @@ import be.uantwerpen.minelabs.crafting.molecules.BondManager;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;
 import be.uantwerpen.minelabs.crafting.molecules.ValenceElectrons;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Either;
+import io.netty.util.internal.StringUtil;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -21,10 +30,13 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.RegistryKey;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler.GRIDSIZE;
 
@@ -108,17 +120,42 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
          */
         DefaultedList<Ingredient> ingredients = handler.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
+
             ItemStack atom = ingredients.get(i).getMatchingStacks()[0];
-            if(!this.handler.hasRecipe() || atom.isEmpty()) {
+            if (!this.handler.hasRecipe() || atom.isEmpty()) {
                 break;
             }
+            String atom_item_name = atom.getItem().toString();
+            SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "item/"+StringUtils.removeEnd(atom_item_name,"_atom")));
+
+            RenderSystem.setShaderColor(0.2F, 0.2F, 0.2F, 0.8F);
+            RenderSystem.enableBlend();
+            matrices.push();
+            matrices.scale(0.5f, 0.5f, 0.5f);
+            drawSprite(matrices, 2*(x + 8 + 18*i), 2*(133+y-20), 1, 32, 32, SPRITE_ID.getSprite());
+            //MinecraftClient.getInstance().textRenderer.draw(matrices, Integer.toString(handler.getDensity()), 2*(x + 8 + 18*i)+24, (int) 2*(133+y-20)+24, 5592405);
+            matrices.pop();
+
             if (handler.getIoInventory().getStack(i).getCount() < handler.getDensity()) {
-                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
+                //this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
             } else {
-                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18*i, 133+y-20);
+                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
             }
-            this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
+            //this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
+            RenderSystem.disableBlend();
         }
+        matrices.push();
+        matrices.scale(0.5f, 0.5f, 0.5f);
+        for (int i = 0; i < ingredients.size(); i++) { //yes, separate loop... the drawtext somehow changes things to the rendering and does not reset after
+            ItemStack atom = ingredients.get(i).getMatchingStacks()[0];
+            if (!this.handler.hasRecipe() || atom.isEmpty()) {
+                break;
+            }
+            if (handler.getIoInventory().getStack(i).getCount() == 0) {
+                MinecraftClient.getInstance().textRenderer.draw(matrices, Integer.toString(handler.getDensity()), 2 * (x + 8 + 18 * i) + 25, (int) 2 * (133 + y - 20) + 23, 5592405);
+            }
+        }
+        matrices.pop();
     }
 
 

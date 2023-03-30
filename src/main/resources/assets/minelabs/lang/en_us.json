@@ -1,5 +1,5 @@
 {
-  "itemGroup.minelabs.minelabs": "MineLabs",
+  "itemGroup.minelabs.minelabs": "Minelabs",
   "itemGroup.minelabs.quantum_fields": "Quantum Fields",
   "itemGroup.minelabs.chemicals": "Chemicals",
   "itemGroup.minelabs.elementary_particles": "Elementary Particles",
@@ -33,7 +33,6 @@
   "block.minelabs.weak_boson": "Weak Boson",
   "block.minelabs.neutrino": "Neutrino",
   "block.minelabs.antineutrino": "Antineutrino",
-  "block.minelabs.helium": "Helium Gas",
 
   "block.minelabs.gluon_quantumfield": "Gluon Quantumfield",
   "block.minelabs.photon_quantumfield": "Photon Quantumfield",

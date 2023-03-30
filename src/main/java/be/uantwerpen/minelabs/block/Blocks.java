@@ -106,8 +106,6 @@ public class Blocks {
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE, MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "green_fire");
-    public static final Block HELIUM = register(new Block(FabricBlockSettings.of(Material.AIR)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque()), "helium");
 
     public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.METAL)
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
@@ -123,7 +121,7 @@ public class Blocks {
     public static final Block HCN = register(new FluidBlock(Fluids.STILL_HCN, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "hcn");
     public static final Block CH4O = register(new FluidBlock(Fluids.STILL_CH4O, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ch4o");
     public static final Block SICL4 = register(new FluidBlock(Fluids.STILL_SiCl4, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "sicl4");
-    public static final Block BOHR_BLOCK = register(new BohrBlock(), "bohr_block");
+    public static final Block BOHR_BLUEPRINT = register(new BohrBlueprintBlock(), "bohr_block");
 
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
             FabricBlockSettings.of(Material.METAL).strength(4.0f)), "erlenmeyer_stand");

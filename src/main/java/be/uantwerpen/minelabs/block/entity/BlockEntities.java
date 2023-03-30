@@ -27,13 +27,12 @@ public class BlockEntities {
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPointBlockEntity> CHARGED_POINT_BLOCK_ENTITY;
+
     public static BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY;
     public static BlockEntityType<IonicBlockEntity> IONIC_BLOCK_ENTITY;
     public static BlockEntityType<ElectricFieldSensorBlockEntity> ELECTRIC_FIELD_SENSOR;
 
     public static BlockEntityType<TimeFreezeBlockEntity> TIME_FREEZE_BLOCK_ENTITY;
-
-    public static BlockEntityType<BohrBlockEntity> BOHR_BLOCK_ENTITY;
 
     public static BlockEntityType<QuantumFieldBlockEntity> QUANTUM_FIELD_BLOCK_ENTITY;
 
@@ -100,11 +99,6 @@ public class BlockEntities {
         CHARGED_POINT_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedPointBlockEntity(p, s, 0, null, 0, null, null), Blocks.CHARGED_POINT_BLOCK).build(null),
                 "charged_point_block_entity");
-
-        BOHR_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "bohr_block"),
-                FabricBlockEntityTypeBuilder.create(BohrBlockEntity::new,
-                        Blocks.BOHR_BLOCK).build(null));
-
 
         IONIC_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "ionic_block"),
                 FabricBlockEntityTypeBuilder.create(IonicBlockEntity::new,
