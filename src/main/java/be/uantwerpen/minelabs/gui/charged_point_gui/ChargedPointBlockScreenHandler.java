@@ -24,7 +24,7 @@ public class ChargedPointBlockScreenHandler extends ScreenHandler {
         super(ScreenHandlers.CHARGED_POINT_SCREEN_HANDLER, syncId);
         checkSize(inventory, 1);
         this.inventory = inventory;
-        inventory.onOpen(playerInventory.player);
+        this.inventory.onOpen(playerInventory.player);
 
         this.addSlot(new FilteredSlot(inventory, 0, 44, 27, s -> s.isIn(Tags.Items.CHARGE)));
 
