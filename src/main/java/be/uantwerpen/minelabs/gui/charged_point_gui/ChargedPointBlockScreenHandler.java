@@ -26,7 +26,6 @@ public class ChargedPointBlockScreenHandler extends ScreenHandler {
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
 
-        //TODO CORRECT COORDS SLOT
         this.addSlot(new FilteredSlot(inventory, 0, 44, 27, s -> s.isIn(Tags.Items.CHARGE)));
 
         addPlayerInventory(playerInventory);
