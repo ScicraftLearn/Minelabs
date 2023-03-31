@@ -6,6 +6,7 @@ import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
@@ -235,6 +236,11 @@ public class BohrBlueprintEntity extends Entity {
             return null;
 
         return nucleusState.getAtomItem();
+    }
+
+    @Override
+    public PistonBehavior getPistonBehavior() {
+        return PistonBehavior.IGNORE;
     }
 
     @Override
