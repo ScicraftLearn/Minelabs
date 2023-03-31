@@ -26,7 +26,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class ChargedBlockEntity extends BlockEntity{
-    private double charge;
+    protected double charge;
+    public static final int e_radius = 12;
     private Vec3f field;
     private boolean update_next_tick = false;
     private static final double e_move = 0.1; //if force is larger, then particles can move
@@ -39,13 +40,13 @@ public class ChargedBlockEntity extends BlockEntity{
                               BlockPos pos,
                               BlockState state,
                               double charge,
-                              Block anit_block,
+                              Block anti_block,
                               double decay_time,
                               ArrayList<ItemStack> decay_drop,
                               Block decay_replace) {
         super(type, pos, state);
         this.charge = charge;
-        this.anti_block = anit_block;
+        this.anti_block = anti_block;
         this.decay_time = decay_time;
         this.decay_drop = decay_drop;
         this.decay_replace = decay_replace;
@@ -103,9 +104,14 @@ public class ChargedBlockEntity extends BlockEntity{
         this.update_next_tick = b;
     }
 
+    public void updateField(World world, BlockPos pos) {
+        this.removeField(world, pos);
+        this.makeField(world, pos, false);
+        markDirty();
+    }
+
     //First time field
     public void makeField(World world, BlockPos pos, boolean afterTimeFreeze) {
-        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
         field = new Vec3f(0f, 0f, 0f);
@@ -137,10 +143,13 @@ public class ChargedBlockEntity extends BlockEntity{
             // therefore they must not be recalculated after the time freeze stops
             if(!afterTimeFreeze) {
                 if (world.getBlockEntity(pos_block) instanceof ElectricFieldSensorBlockEntity sensor && !pos.equals(pos_block) ){
-                    Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
-                    float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                    vec_pos.scale(d_E);
-                    sensor.getField().subtract(vec_pos);
+                    sensor.calculateField(world, pos_block, null);
+
+                    // Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                    // float d_E = (float) ((getCharge() * 1 * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
+                    // vec_pos.scale(d_E);
+                    // sensor.getField().subtract(vec_pos);
+
                     sensor.markDirty();
                     sensor.sync();
                 }
@@ -150,7 +159,6 @@ public class ChargedBlockEntity extends BlockEntity{
     }
 
     public void removeField(World world, BlockPos pos) {
-        int e_radius = 12;
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
 
@@ -247,6 +255,10 @@ public class ChargedBlockEntity extends BlockEntity{
         return dir;
     }
 
+    public ItemStack getInventory() {
+        return ItemStack.EMPTY;
+    }
+
     public static void tick(World world, BlockPos pos, BlockState state, ChargedBlockEntity be) {
         be.tick(world, pos, state);
     }
@@ -302,6 +314,7 @@ public class ChargedBlockEntity extends BlockEntity{
                                 if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity animation1) {
                                     animation1.movement_direction = movement;
                                     animation1.render_state = getCachedState();
+                                    animation1.setInventory(getInventory());
                                 }
                             }
                             markDirty();

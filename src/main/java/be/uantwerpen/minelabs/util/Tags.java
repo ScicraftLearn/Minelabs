@@ -50,6 +50,10 @@ public class Tags {
         public static final TagKey<Item> LASERTOOLS = createTag("lasertools");
         public static final TagKey<Item> FIRE_CHANGER = createCommonTag("fire_changer");
 
+        public static final TagKey<Item> CHARGE = createTag("charge");
+        public static final TagKey<Item> NEGATIVE_CHARGE = createTag("negative_charge");
+        public static final TagKey<Item> POSITIVE_CHARGE = createTag("positive_charge");
+
         /**
          * Create an Item tag (tag is only used inside this mod)
          * Don't forget the json file (data/minelabs/tags/items)

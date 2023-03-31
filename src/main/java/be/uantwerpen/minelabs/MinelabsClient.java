@@ -8,6 +8,7 @@ import be.uantwerpen.minelabs.entity.EntityModelLayers;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
+import be.uantwerpen.minelabs.gui.charged_point_gui.ChargedPointScreen;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreen;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisScreen;
@@ -82,12 +83,14 @@ public class MinelabsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MEDIUM_SALT_CRYSTAL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.SMALL_SALT_CRYSTAL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.SALT_WIRE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MOLOGRAM_BLOCK, RenderLayer.getTranslucent());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ERLENMEYER_STAND, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.CHARGED_POINT_BLOCK, RenderLayer.getCutout());
         // Register rendering for electron entity
         EntityRendererRegistry.register(Entities.ELECTRON_ENTITY, FlyingItemEntityRenderer::new);
         EntityRendererRegistry.register(Entities.POSITRON_ENTITY, FlyingItemEntityRenderer::new);
@@ -113,6 +116,7 @@ public class MinelabsClient implements ClientModInitializer {
         HandledScreens.register(ScreenHandlers.LEWIS_SCREEN_HANDLER, LewisScreen::new);
         HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
         HandledScreens.register(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, LabChestScreen::new);
+        HandledScreens.register(ScreenHandlers.CHARGED_POINT_SCREEN_HANDLER, ChargedPointScreen::new);
 
         ScreenEvents.BEFORE_INIT.register((a, screen, b, c) -> {
             if (screen instanceof LewisScreen)
