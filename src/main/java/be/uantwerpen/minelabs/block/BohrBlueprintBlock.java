@@ -75,6 +75,13 @@ public class BohrBlueprintBlock extends Block {
         if (entity == null)
             return ActionResult.FAIL;
 
+        Minelabs.LOGGER.info("enter");
+
+        // We don't know whether the action is successful on the client because it doesn't know the inventory of the entity.
+        // Just return a success state for everything so the hand swing is performed, even if it didn't do anything, it will at least indicate that the block can be interacted with.
+        if (world.isClient)
+            return ActionResult.CONSUME_PARTIAL;
+
         ItemStack stack = player.getStackInHand(hand);
 
         // Stack not empty -> try to insert
@@ -90,11 +97,14 @@ public class BohrBlueprintBlock extends Block {
 
         // Otherwise try to craft atom
         ItemStack resultStack = entity.craftAtom();
-        if (resultStack.isEmpty())
-            return ActionResult.CONSUME_PARTIAL; // Return FAIL will allow the item to perform an action still. For example blockitems will be placed on top which is annoying.
+        if (!resultStack.isEmpty()){
+            player.getInventory().offerOrDrop(resultStack);
+            return ActionResult.SUCCESS;
+        }
 
-        player.getInventory().offerOrDrop(resultStack);
-        return ActionResult.SUCCESS;
+        // We didn't do anything but still want the hand swing and prevent other actions from happening.
+        // Returning FAIL will allow the item to perform an action still. For example blockitems will be placed on top which is annoying.
+        return ActionResult.CONSUME_PARTIAL;
     }
 
     @Override
