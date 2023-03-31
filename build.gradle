@@ -24,6 +24,12 @@ repositories {
 	maven {
 		url = "https://maven.kyrptonaught.dev"
 	}
+	// info: https://github.com/Wyn-Price/CurseMaven
+	maven {url = 'https://www.cursemaven.com'
+		content {
+			includeGroup "curse.maven"
+		}
+	}
 }
 
 dependencies {
@@ -43,6 +49,7 @@ dependencies {
 
 	// debug dependency -> only used while running mod, not included or needed when released
 	modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
+	modRuntimeOnly "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 }
 
 processResources {
