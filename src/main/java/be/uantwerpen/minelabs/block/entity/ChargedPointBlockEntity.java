@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class ChargedPointBlockEntity extends ChargedBlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
 
-    private final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
 
     public ChargedPointBlockEntity(BlockPos pos, BlockState state,
                                    double charge,
@@ -37,18 +37,18 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
     @Override
     public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
-        Inventories.writeNbt(tag, INVENTORY);
+        Inventories.writeNbt(tag, inventory);
     }
 
     @Override
     public void readNbt(NbtCompound tag) {
-        Inventories.readNbt(tag, INVENTORY);
+        Inventories.readNbt(tag, inventory);
         super.readNbt(tag);
     }
 
     @Override
     public DefaultedList<ItemStack> getItems() {
-        return INVENTORY;
+        return inventory;
     }
 
     //BLOCK HOPPER
@@ -75,21 +75,21 @@ public class ChargedPointBlockEntity extends ChargedBlockEntity implements Imple
     }
 
     public void setInventory(ItemStack inventoryIn) {
-        INVENTORY.set(0, inventoryIn);
+        inventory.set(0, inventoryIn);
         inventoryChanged();
     }
 
     @Override
     public ItemStack getInventory() {
-        return INVENTORY.get(0);
+        return inventory.get(0);
     }
 
     private void inventoryChanged() {
-        if (!INVENTORY.get(0).isEmpty()) {
-            int count = INVENTORY.get(0).getCount();
-            if (INVENTORY.get(0).isIn(Tags.Items.POSITIVE_CHARGE)) {
+        if (!inventory.get(0).isEmpty()) {
+            int count = inventory.get(0).getCount();
+            if (inventory.get(0).isIn(Tags.Items.POSITIVE_CHARGE)) {
                 this.charge = count;
-            } else if (INVENTORY.get(0).isIn(Tags.Items.NEGATIVE_CHARGE)) {
+            } else if (inventory.get(0).isIn(Tags.Items.NEGATIVE_CHARGE)) {
                 this.charge = -count;
             } else {
                 this.charge = 0;
