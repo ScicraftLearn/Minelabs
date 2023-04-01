@@ -32,20 +32,10 @@ public class Items {
     public static final Item LASERTOOL_DIAMOND = register(new LaserTool(2.5f, -2.4f, ToolMaterials.DIAMOND, new Item.Settings().group(ItemGroup.TOOLS)), "lasertool_diamond");
 
     public static final Item SALT = register(new FireReactionBlockItem(Blocks.SALT_WIRE,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), 4, "NaCl") {
-        @Override
-        public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-            tooltip.add(Text.literal("NaCl"));
-        }
-    }, "salt");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), 4, "NaCl"), "salt");
 
     public static final Item SALT_SHARD = register(new Item(
-            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)) {
-        @Override
-        public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-            tooltip.add(Text.literal("NaCl"));
-        }
-    }, "salt_shard");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_shard");
 
     public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE,
             new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_ore");
@@ -54,12 +44,7 @@ public class Items {
             new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "deepslate_salt_ore");
 
     public static final Item SALT_BLOCK = register(new BlockItem(Blocks.SALT_BLOCK,
-            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)) {
-        @Override
-        public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-            tooltip.add(Text.literal("4x NaCl"));
-        }
-    }, "salt_block");
+            new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_block");
 
     public static final Item SALT_CRYSTAL = register(new BlockItem(Blocks.SALT_CRYSTAL,
             new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS)), "salt_crystal");
