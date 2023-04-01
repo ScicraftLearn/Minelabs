@@ -98,7 +98,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     // Called by subatomic particle when it collides with this entity.
-    public void onParticleCollision(SubatomicParticle particle) {
+    public void onParticleCollision(SubatomicParticleBase particle) {
         ItemStack stack = particle.getStack();
         Item item = stack.getItem();
 

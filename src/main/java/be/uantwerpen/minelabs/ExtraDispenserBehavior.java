@@ -1,10 +1,6 @@
 package be.uantwerpen.minelabs;
 
-import be.uantwerpen.minelabs.entity.ElectronEntity;
-import be.uantwerpen.minelabs.entity.NeutronEntity;
-import be.uantwerpen.minelabs.entity.ProtonEntity;
-import be.uantwerpen.minelabs.entity.AntiProtonEntity;
-import be.uantwerpen.minelabs.entity.AntiNeutronEntity;
+import be.uantwerpen.minelabs.entity.*;
 import be.uantwerpen.minelabs.item.Items;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -37,7 +33,7 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(Items.ELECTRON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return Util.make(new ElectronEntity(world, position.getX(), position.getY(), position.getZ()), (electronEntity) -> electronEntity.setItem(stack));
+                return new SubatomicParticleBase(Entities.ELECTRON_ENTITY, position.getX(), position.getY(), position.getZ(), world, stack);
             }
         });
 
@@ -51,16 +47,14 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(Items.PROTON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return Util.make(new ProtonEntity(world, position.getX(), position.getY(), position.getZ()), (protonEntity) -> protonEntity.setItem(stack));
+                return new SubatomicParticleBase(Entities.PROTON_ENTITY, position.getX(), position.getY(), position.getZ(), world, stack);
             }
         });
 
         DispenserBlock.registerBehavior(Items.ANTI_PROTON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return Util.make(new AntiProtonEntity(world, position.getX(), position.getY(), position.getZ()), (AntiprotonEntity) -> {
-                    AntiprotonEntity.setItem(stack);
-                });
+                return new SubatomicParticleBase(Entities.ANTI_PROTON_ENTITY, position.getX(), position.getY(), position.getZ(), world, stack);
             }
         });
 
@@ -74,16 +68,14 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(Items.NEUTRON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return Util.make(new NeutronEntity(world, position.getX(), position.getY(), position.getZ()), (neutronEntity) -> neutronEntity.setItem(stack));
+                return new SubatomicParticleBase(Entities.NEUTRON_ENTITY, position.getX(), position.getY(), position.getZ(), world, stack);
             }
         });
 
         DispenserBlock.registerBehavior(Items.ANTI_NEUTRON, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return Util.make(new AntiNeutronEntity(world, position.getX(), position.getY(), position.getZ()), (antiNeutronEntity) -> {
-                    antiNeutronEntity.setItem(stack);
-                });
+                return new SubatomicParticleBase(Entities.ANTI_NEUTRON_ENTITY, position.getX(), position.getY(), position.getZ(), world, stack);
             }
         });
 

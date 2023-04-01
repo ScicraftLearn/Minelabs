@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -14,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
@@ -25,17 +27,17 @@ import java.util.function.Predicate;
 
 public class Entities {
     // EntityTypes
-    public static final EntityType<ElectronEntity> ELECTRON_ENTITY = register(FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
+    public static final EntityType<SubatomicParticleBase> ELECTRON_ENTITY = register(FabricEntityTypeBuilder.<SubatomicParticleBase>create(SpawnGroup.MISC, (entityType, world) -> new SubatomicParticleBase(entityType, world, new ItemStack(Items.ELECTRON)))
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "electron_entity");
-    public static final EntityType<PositronEntity> POSITRON_ENTITY = register(FabricEntityTypeBuilder.<PositronEntity>create(SpawnGroup.MISC, PositronEntity::new)
+    public static final EntityType<SubatomicParticleBase> POSITRON_ENTITY = register(FabricEntityTypeBuilder.<SubatomicParticleBase>create(SpawnGroup.MISC, (entityType, world) -> new SubatomicParticleBase(entityType, world, new ItemStack(Items.POSITRON)))
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "positron_entity");
-    public static final EntityType<ProtonEntity> PROTON_ENTITY = register(FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
+    public static final EntityType<SubatomicParticleBase> PROTON_ENTITY = register(FabricEntityTypeBuilder.<SubatomicParticleBase>create(SpawnGroup.MISC, (entityType, world) -> new SubatomicParticleBase(entityType, world, new ItemStack(Items.PROTON)))
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "proton_entity");
-    public static final EntityType<AntiProtonEntity> ANTI_PROTON_ENTITY = register(FabricEntityTypeBuilder.<AntiProtonEntity>create(SpawnGroup.MISC, AntiProtonEntity::new)
+    public static final EntityType<SubatomicParticleBase> ANTI_PROTON_ENTITY = register(FabricEntityTypeBuilder.<SubatomicParticleBase>create(SpawnGroup.MISC, (entityType, world) -> new SubatomicParticleBase(entityType, world, new ItemStack(Items.ANTI_PROTON)))
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "anti_proton_entity");
-    public static final EntityType<NeutronEntity> NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
+    public static final EntityType<SubatomicParticleBase> NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<SubatomicParticleBase>create(SpawnGroup.MISC, (entityType, world) -> new SubatomicParticleBase(entityType, world, new ItemStack(Items.NEUTRON)))
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "neutron_entity");
-    public static final EntityType<AntiNeutronEntity> ANTI_NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<AntiNeutronEntity>create(SpawnGroup.MISC, AntiNeutronEntity::new)
+    public static final EntityType<SubatomicParticleBase> ANTI_NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<SubatomicParticleBase>create(SpawnGroup.MISC, (entityType, world) -> new SubatomicParticleBase(entityType, world, new ItemStack(Items.ANTI_NEUTRON)))
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "anti_neutron_entity");
     // positron?
 

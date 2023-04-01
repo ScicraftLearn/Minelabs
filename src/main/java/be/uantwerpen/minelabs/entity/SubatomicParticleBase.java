@@ -1,38 +1,51 @@
 package be.uantwerpen.minelabs.entity;
 
+import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
+import java.util.function.Supplier;
+
 /**
  * Instances of this class are used for building atoms.
  * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
  */
-public abstract class SubatomicParticle extends ThrownItemEntity {
+public class SubatomicParticleBase extends ThrownItemEntity {
     private int itemAge;
+    private final Item item;
 
-    public SubatomicParticle(EntityType<? extends ThrownItemEntity> entityType, World world) {
+    public SubatomicParticleBase(EntityType<? extends ThrownItemEntity> entityType, World world, ItemStack itemStack) {
         super(entityType, world);
+        item = itemStack.getItem();
+        setItem(itemStack);
         setNoGravity(true);
     }
 
-    public SubatomicParticle(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world) {
+    public SubatomicParticleBase(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world, ItemStack itemStack) {
         super(entityType, d, e, f, world);
+        item = itemStack.getItem();
+        setItem(itemStack);
         setNoGravity(true);
     }
 
-    public SubatomicParticle(EntityType<? extends ThrownItemEntity> entityType, LivingEntity livingEntity, World world) {
-        super(entityType, livingEntity, world);
+    public SubatomicParticleBase(EntityType<? extends ThrownItemEntity> entityType, LivingEntity owner, World world, ItemStack itemStack) {
+        super(entityType, owner, world);
+        item = itemStack.getItem();
+        setItem(itemStack);
         setNoGravity(true);
     }
 
@@ -41,10 +54,24 @@ public abstract class SubatomicParticle extends ThrownItemEntity {
         return 1f;
     }
 
-    protected abstract int getDespawnAge();
+    /**
+     * Change getDespawnAge() to change the time after which ProtonEntity will despawn
+     * Game normally runs at 20 ticks per second, so return 100 -> ProtonEntity despawns after 5 seconds
+     */
+    protected int getDespawnAge() {
+        return 100;
+    }
 
-    @Environment(EnvType.CLIENT) // Needed for particles on collision with the world
-    protected abstract ParticleEffect getParticleParameters();
+    /**
+     * TODO change ths snowball particle effect to custom particle effect?
+     *
+     * @return ParticleEffect used on collision
+     */
+    @Environment(EnvType.CLIENT)
+    protected ParticleEffect getParticleParameters() { // Needed for particles on collision with the world
+        ItemStack itemStack = this.getItem();
+        return itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack);
+    }
 
     /**
      * Handle status 3 -> generate particles onCollision
@@ -91,6 +118,10 @@ public abstract class SubatomicParticle extends ThrownItemEntity {
         }
     }
 
+    /**
+     * TODO custom EntityHit
+     * implement custom behaviour for hitting entities like other electrons, protons, neutrons, ...
+     */
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
@@ -109,5 +140,10 @@ public abstract class SubatomicParticle extends ThrownItemEntity {
             // Remove Entity from the server
             this.kill();
         }
+    }
+
+    @Override
+    protected Item getDefaultItem() {
+        return item;
     }
 }
