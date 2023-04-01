@@ -4,13 +4,6 @@ pluginManagement {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
-        maven {
-            name = "WTHIT"
-            url = "https://maven.bai.lol"
-        }
-        maven {
-            url = "https://maven.kyrptonaught.dev"
-        }
         mavenCentral()
         gradlePluginPortal()
     }
