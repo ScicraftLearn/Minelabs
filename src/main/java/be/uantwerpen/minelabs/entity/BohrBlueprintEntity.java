@@ -46,6 +46,10 @@ public class BohrBlueprintEntity extends Entity {
     // Atom can only be added as first entry and cannot remove parts of it.
     Stack<ItemStack> inventory = new Stack<>();
 
+    private static final int MAX_PROTONS = 118;
+    private static final int MAX_ELECTRONS = MAX_PROTONS;
+    private static final int MAX_NEUTRONS = 176;
+
     // tracked data is synced to the client automatically (still needs to be written to nbt if it needs to be persisted)
     protected static final TrackedData<Integer> PROTONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
     protected static final TrackedData<Integer> ELECTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -101,6 +105,9 @@ public class BohrBlueprintEntity extends Entity {
 
     // Called by subatomic particle when it collides with this entity.
     public void onParticleCollision(SubatomicParticle particle) {
+        if (world.isClient)
+            return;
+
         ItemStack stack = particle.getStack();
         Item item = stack.getItem();
 
@@ -135,7 +142,8 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public boolean isEmpty(){
-        return inventory.isEmpty();
+        // inventory is not synced to client, so need to check counts.
+        return getProtons() == 0 && getNeutrons() == 0 && getElectrons() == 0;
     }
 
     public void dropContents() {
@@ -155,7 +163,19 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     private boolean canAcceptItem(Item item) {
-        return (item instanceof AtomItem && inventory.isEmpty()) || List.of(Items.PROTON, Items.NEUTRON, Items.ELECTRON).contains(item);
+        // Atom can only be first item inserted
+        if (item instanceof AtomItem && inventory.isEmpty())
+            return true;
+
+        // Subatomic particles have max capacity
+        if (item.equals(Items.PROTON))
+            return getProtons() < MAX_PROTONS;
+        if (item.equals(Items.NEUTRON))
+            return getNeutrons() < MAX_NEUTRONS;
+        if (item.equals(Items.ELECTRON))
+            return getElectrons() < MAX_ELECTRONS;
+
+        return false;
     }
 
     private static boolean isRemovalItem(Item item) {
@@ -172,13 +192,16 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public boolean addItem(Item item) {
+        // we don't want the client to modify inventory. Always return false because we can't check inventory for remove.
+        if (world.isClient)
+            return false;
+
         if (isRemovalItem(item))
             return removeItem(getAntiItem(item));
 
         if (!canAcceptItem(item))
             return false;
 
-        // Optional can merge with last stack on list if same type
         ItemStack stack = new ItemStack(item, 1);
         inventory.add(stack);
         onItemAdded(stack);
@@ -186,6 +209,10 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     private boolean removeItem(Item item) {
+        // we don't want the client to modify inventory
+        if (world.isClient)
+            return false;
+
         // iterate in reverse order
         for (ListIterator<ItemStack> iterator = inventory.listIterator(inventory.size()); iterator.hasPrevious(); ) {
             ItemStack stack = iterator.previous();

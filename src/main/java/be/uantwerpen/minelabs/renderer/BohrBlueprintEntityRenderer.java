@@ -508,7 +508,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
 
     private static void renderBars(MatrixStack matrixStack, int nP, int nE, int nN, int x, int y) {
         int n = Math.max(nP, Math.max(nE, nN));
-        int scale = n > 39 ? 150 : n > 9 ? 40 : 10;
+        int scale = n > 39 ? 176 : n > 9 ? 40 : 10;
 
         drawTexture(matrixStack, x, y, 0, 0, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
         drawTexture(matrixStack, x, y + 8, 0, 10, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
@@ -522,7 +522,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         drawTexture(matrixStack, x, y + 8, 0, 15, ratio_e, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
         drawTexture(matrixStack, x, y + 16, 0, 25, ratio_n, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
 
-        if (scale != 150) {
+        if (scale != 176) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             int s;

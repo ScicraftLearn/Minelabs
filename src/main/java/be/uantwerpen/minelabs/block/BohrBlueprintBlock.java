@@ -112,7 +112,6 @@ public class BohrBlueprintBlock extends Block {
     @Override
     public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
         // While it contains content don't start breaking progress. Items are dropped in onBlockBreakStart.
-        Minelabs.LOGGER.info("block breaking delta");
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
             return 0;
