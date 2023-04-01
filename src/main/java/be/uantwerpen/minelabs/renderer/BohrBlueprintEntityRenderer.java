@@ -7,6 +7,8 @@ import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.GameRenderer;
@@ -31,6 +33,7 @@ import java.util.List;
 import static be.uantwerpen.minelabs.util.NuclidesTable.calculateNrOfElectrons;
 import static net.minecraft.client.gui.DrawableHelper.*;
 
+@Environment(EnvType.CLIENT)
 public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends EntityRenderer<E> {
     float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
 
