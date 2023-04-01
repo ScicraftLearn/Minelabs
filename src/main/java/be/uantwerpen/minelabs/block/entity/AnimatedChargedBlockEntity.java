@@ -29,7 +29,7 @@ import java.util.List;
 
 public class AnimatedChargedBlockEntity extends BlockEntity {
     public long time = 0;
-    public Direction movement_direction;
+    public Direction movement_direction = Direction.NORTH;
     public final static int time_move_ticks = 4;
     public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
     public boolean annihilation = false;
