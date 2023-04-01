@@ -6,6 +6,7 @@ import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -108,8 +109,12 @@ public class BohrBlueprintEntity extends Entity {
         }
     }
 
+    public BlockPos getBohrBlueprintPos(){
+        return getBlockPos().down();
+    }
+
     public boolean isAttachedToBlock() {
-        return world.getBlockState(getBlockPos().down()).isOf(Blocks.BOHR_BLUEPRINT);
+        return world.getBlockState(getBohrBlueprintPos()).isOf(Blocks.BOHR_BLUEPRINT);
     }
 
     @Override
@@ -122,7 +127,11 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
+        // cleanup after entity is removed
         dropContents();
+        BlockState state = world.getBlockState(getBohrBlueprintPos());
+        if (state.isOf(Blocks.BOHR_BLUEPRINT))
+            world.removeBlock(getBohrBlueprintPos(), false);
     }
 
     public boolean isEmpty(){

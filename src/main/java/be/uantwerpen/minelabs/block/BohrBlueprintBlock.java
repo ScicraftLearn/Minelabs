@@ -57,7 +57,9 @@ public class BohrBlueprintBlock extends Block {
     private BohrBlueprintEntity getEntity(World world, BlockPos pos){
         List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, Box.from(Vec3d.of(pos.up())), e -> true);
         if (entities.size() != 1){
-            Minelabs.LOGGER.warn("Expected one entity connected to bohr plate at " + pos + ", found: " + entities.size());
+            Minelabs.LOGGER.warn("Expected one entity connected to bohr blueprint at " + pos + ", found: " + entities.size());
+            Minelabs.LOGGER.warn("Removing the bohr blueprint");
+            world.removeBlock(pos, false);
             return null;
         }
 
