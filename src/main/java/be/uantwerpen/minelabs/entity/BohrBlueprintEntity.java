@@ -8,10 +8,7 @@ import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -24,6 +21,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -295,6 +293,7 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         // load inventory
+        inventory.clear();
         NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         for (int i = 0; i < nbtList.size(); i++) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
