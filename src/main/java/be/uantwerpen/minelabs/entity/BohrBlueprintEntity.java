@@ -304,10 +304,12 @@ public class BohrBlueprintEntity extends Entity {
             return false;
         }
         if (!this.isRemoved() && !this.world.isClient) {
-            if (source.getAttacker() instanceof PlayerEntity)
+            if (source.getAttacker() instanceof PlayerEntity){
                 onHitByPlayer();
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 
     private void onHitByPlayer(){
