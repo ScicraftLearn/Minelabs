@@ -230,7 +230,9 @@ public class BohrBlueprintEntity extends Entity {
         }
         return ItemStack.EMPTY;
     }
-
+    public Item whichAtom(){
+        return Items.HELIUM_ATOM;
+    }
     @Nullable
     private Item getAtomItem() {
         int protons = getProtons();

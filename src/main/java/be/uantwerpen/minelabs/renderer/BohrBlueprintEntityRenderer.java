@@ -20,6 +20,7 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
@@ -94,6 +95,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         float shakeFactor = getShakingFactor(nP, nN, nE);
         boolean stable = NuclidesTable.isStable(nP, nN, nE);
 
+        renderResultingAtom(matrices, entity, light, vertexConsumers);
         matrices.push();
 
         // center and scale
@@ -559,4 +561,15 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         RenderSystem.setShaderTexture(0, BARS_TEXTURE);
     }
 
+    private void renderResultingAtom(MatrixStack matrixStack, BohrBlueprintEntity entity, int light, VertexConsumerProvider vertexConsumers){
+        matrixStack.push();
+        Item atom = entity.whichAtom();
+        if(atom==null) return;
+        matrixStack.translate(0, 5f/16- 1.5, 0.25);
+        matrixStack.scale(2,0.5f,2);
+        matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+
+        MinecraftClient.getInstance().getItemRenderer().renderItem(atom.getDefaultStack(), ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumers, 0);
+        matrixStack.pop();
+    }
 }
