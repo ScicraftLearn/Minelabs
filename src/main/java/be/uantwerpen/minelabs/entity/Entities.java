@@ -1,19 +1,20 @@
 package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
@@ -25,19 +26,8 @@ import java.util.function.Predicate;
 
 public class Entities {
     // EntityTypes
-    public static final EntityType<ElectronEntity> ELECTRON_ENTITY = register(FabricEntityTypeBuilder.<ElectronEntity>create(SpawnGroup.MISC, ElectronEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "electron_entity");
-    public static final EntityType<PositronEntity> POSITRON_ENTITY = register(FabricEntityTypeBuilder.<PositronEntity>create(SpawnGroup.MISC, PositronEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "positron_entity");
-    public static final EntityType<ProtonEntity> PROTON_ENTITY = register(FabricEntityTypeBuilder.<ProtonEntity>create(SpawnGroup.MISC, ProtonEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "proton_entity");
-    public static final EntityType<AntiProtonEntity> ANTI_PROTON_ENTITY = register(FabricEntityTypeBuilder.<AntiProtonEntity>create(SpawnGroup.MISC, AntiProtonEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "anti_proton_entity");
-    public static final EntityType<NeutronEntity> NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<NeutronEntity>create(SpawnGroup.MISC, NeutronEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "neutron_entity");
-    public static final EntityType<AntiNeutronEntity> ANTI_NEUTRON_ENTITY = register(FabricEntityTypeBuilder.<AntiNeutronEntity>create(SpawnGroup.MISC, AntiNeutronEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "anti_neutron_entity");
-    // positron?
+    public static final EntityType<SubatomicParticleEntity> SUBATOMIC_PARTICLE_ENTITY_TYPE = register(FabricEntityTypeBuilder.<SubatomicParticleEntity>create(SpawnGroup.MISC, SubatomicParticleEntity::new)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "subatomic_particle_entity");
 
     public static final EntityType<BohrBlueprintEntity> BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE = register(FabricEntityTypeBuilder.<BohrBlueprintEntity>create(SpawnGroup.MISC, BohrBlueprintEntity::new)
             .dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeBlocks(10).disableSummon().fireImmune().build(), "bohr_blueprint_entity");
