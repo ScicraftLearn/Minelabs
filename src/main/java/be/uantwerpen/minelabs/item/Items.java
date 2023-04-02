@@ -241,18 +241,18 @@ public class Items {
 
     public static final Item GLUON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "gluon");
 
-    public static final Item ELECTRON = register(new SubatomicParticleItem(Blocks.ELECTRON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64), Entities.ELECTRON_ENTITY), "electron");
-    public static final Item POSITRON = register(new SubatomicParticleItem(Blocks.POSITRON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64), Entities.POSITRON_ENTITY), "positron");
+    public static final Item ELECTRON = register(new SubatomicParticleItem(Blocks.ELECTRON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "electron");
+    public static final Item POSITRON = register(new SubatomicParticleItem(Blocks.POSITRON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "positron");
     public static final Item PHOTON = register(new Item(new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "photon");
 
     public static final Item NEUTRINO = register(new BlockItem(Blocks.NEUTRINO, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "neutrino");
     public static final Item ANTINEUTRINO = register(new BlockItem(Blocks.ANTINEUTRINO, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "antineutrino");
     public static final Item WEAK_BOSON = register(new BlockItem(Blocks.WEAK_BOSON, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "weak_boson");
 
-    public static final Item PROTON = register(new SubatomicParticleItem(Blocks.PROTON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64), Entities.PROTON_ENTITY), "proton");
-    public static final Item ANTI_PROTON = register(new SubatomicParticleItem(Blocks.ANTI_PROTON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64), Entities.ANTI_PROTON_ENTITY), "anti_proton");
-    public static final Item NEUTRON = register(new SubatomicParticleItem(Blocks.NEUTRON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64), Entities.NEUTRON_ENTITY), "neutron");
-    public static final Item ANTI_NEUTRON = register(new SubatomicParticleItem(Blocks.ANTI_NEUTRON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64), Entities.ANTI_NEUTRON_ENTITY), "anti_neutron");
+    public static final Item PROTON = register(new SubatomicParticleItem(Blocks.PROTON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "proton");
+    public static final Item ANTI_PROTON = register(new SubatomicParticleItem(Blocks.ANTI_PROTON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_proton");
+    public static final Item NEUTRON = register(new SubatomicParticleItem(Blocks.NEUTRON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "neutron");
+    public static final Item ANTI_NEUTRON = register(new SubatomicParticleItem(Blocks.ANTI_NEUTRON, new Item.Settings().group(ItemGroups.ELEMENTARY_PARTICLES).maxCount(64)), "anti_neutron");
     public static final Item PION_NUL = register(new BlockItem(Blocks.PION_NUL, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_nul");
     public static final Item PION_MINUS = register(new BlockItem(Blocks.PION_MINUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_minus");
     public static final Item PION_PLUS = register(new BlockItem(Blocks.PION_PLUS, new FabricItemSettings().group(ItemGroups.ELEMENTARY_PARTICLES)), "pion_plus");

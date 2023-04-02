@@ -30,12 +30,12 @@ public class ExtraDispenserBehavior {
          * The entity is shot up slight as defined in dispenseSilently in ProjectileDispenserBehavior:
          * direction.getOffsetY() + 0.1F
          */
-        registerSubatomicParticle(Items.ELECTRON, Entities.ELECTRON_ENTITY);
-        registerSubatomicParticle(Items.POSITRON, Entities.POSITRON_ENTITY);
-        registerSubatomicParticle(Items.NEUTRON, Entities.NEUTRON_ENTITY);
-        registerSubatomicParticle(Items.ANTI_NEUTRON, Entities.ANTI_NEUTRON_ENTITY);
-        registerSubatomicParticle(Items.PROTON, Entities.PROTON_ENTITY);
-        registerSubatomicParticle(Items.ANTI_PROTON, Entities.ANTI_PROTON_ENTITY);
+        registerSubatomicParticle(Items.ELECTRON);
+        registerSubatomicParticle(Items.PROTON);
+        registerSubatomicParticle(Items.NEUTRON);
+        registerSubatomicParticle(Items.POSITRON);
+        registerSubatomicParticle(Items.ANTI_PROTON);
+        registerSubatomicParticle(Items.ANTI_NEUTRON);
 
         /**
          * Register dispenser behavior for using Entropy Creeper Spawn Egg
@@ -65,13 +65,12 @@ public class ExtraDispenserBehavior {
      * Register a single SubatomicParticle for the dispenser
      *
      * @param item   : Item that should be used
-     * @param entity : Entity that should spawn
      **/
-    private static void registerSubatomicParticle(Item item, EntityType<SubatomicParticleEntity> entity) {
+    private static void registerSubatomicParticle(Item item) {
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return new SubatomicParticleEntity(entity, position.getX(), position.getY(), position.getZ(), world, stack);
+                return new SubatomicParticleEntity(position.getX(), position.getY(), position.getZ(), world, stack);
             }
         });
     }

@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.entity;
 
+import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
@@ -15,6 +16,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Instances of this class are used for building atoms.
@@ -22,30 +24,27 @@ import net.minecraft.world.World;
  */
 public class SubatomicParticleEntity extends ThrownItemEntity {
     private int itemAge;
-    private final Item item;
 
-    public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, World world, ItemStack itemStack) {
+    public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
-        item = itemStack.getItem();
+        setNoGravity(true);
+    }
+
+    public SubatomicParticleEntity(double d, double e, double f, World world, ItemStack itemStack) {
+        super(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, d, e, f, world);
         setItem(itemStack);
         setNoGravity(true);
     }
 
-    public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world, ItemStack itemStack) {
-        super(entityType, d, e, f, world);
-        item = itemStack.getItem();
+    public SubatomicParticleEntity(LivingEntity owner, World world, ItemStack itemStack) {
+        super(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, owner, world);
         setItem(itemStack);
         setNoGravity(true);
     }
 
-    public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, LivingEntity owner, World world, ItemStack itemStack) {
-        super(entityType, owner, world);
-        item = itemStack.getItem();
-        setItem(itemStack);
-        setNoGravity(true);
-    }
-
-    // Prevent slowdown over time from SubatomicParticle
+    /**
+     * Prevent slowdown over time from SubatomicParticle. Defined in {@link be.uantwerpen.minelabs.mixins.ThrownEntityMixin}.
+     */
     public float getSlowdownFactor() {
         return 1f;
     }
@@ -58,29 +57,25 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
         return 100;
     }
 
-    /**
-     * TODO change ths snowball particle effect to custom particle effect?
-     *
-     * @return ParticleEffect used on collision
-     */
     @Environment(EnvType.CLIENT)
+    @Nullable
     protected ParticleEffect getParticleParameters() { // Needed for particles on collision with the world
         ItemStack itemStack = this.getStack();
-        return itemStack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack);
+        return itemStack.isEmpty() ? null : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack);
     }
 
-    /**
-     * Handle status 3 -> generate particles onCollision
-     *
-     * @param status byte with status to handle
-     */
     @Environment(EnvType.CLIENT)
-    public void handleStatus(byte status) { // Needed for particles on collision with the world
+    public void handleStatus(byte status) {
+        // status 3 -> generate particles onCollision
         if (status == 3) {
             ParticleEffect particleEffect = this.getParticleParameters();
+            if (particleEffect == null) return;
 
             for (int i = 0; i < 8; ++i) {
-                this.world.addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+                double velocityX = (Math.random() * 2.0 - 1.0) * (double)0.3f;
+                double velocityY = (Math.random() * 2.0 - 1.0) * (double)0.3f;
+                double velocityZ = (Math.random() * 2.0 - 1.0) * (double)0.3f;
+                this.world.addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), velocityX, velocityY, velocityZ);
             }
         }
     }
@@ -114,10 +109,6 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
         }
     }
 
-    /**
-     * TODO custom EntityHit
-     * implement custom behaviour for hitting entities like other electrons, protons, neutrons, ...
-     */
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
@@ -140,6 +131,6 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
 
     @Override
     protected Item getDefaultItem() {
-        return item;
+        return Items.ELECTRON;
     }
 }

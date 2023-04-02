@@ -92,12 +92,7 @@ public class MinelabsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ERLENMEYER_STAND, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.CHARGED_POINT_BLOCK, RenderLayer.getCutout());
         // Register rendering for electron entity
-        EntityRendererRegistry.register(Entities.ELECTRON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.POSITRON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.ANTI_PROTON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.ANTI_NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, FlyingItemEntityRenderer::new);
 
         EntityRendererRegistry.register(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, BohrBlueprintEntityRenderer::new);
 
