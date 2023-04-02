@@ -61,7 +61,8 @@ public class BohrBlueprintEntity extends Entity {
 
     public BohrBlueprintEntity(World world, BlockPos pos) {
         this(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, world);
-        setPosition(Vec3d.ofCenter(pos));
+        // entity position is center of bottom, the -0.5 offset aligns it back to the block grid
+        setPosition(Vec3d.ofCenter(pos).add(0, -0.5, 0));
     }
 
     public int getProtons() {

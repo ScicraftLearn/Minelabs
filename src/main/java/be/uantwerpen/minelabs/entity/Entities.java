@@ -40,7 +40,7 @@ public class Entities {
     // positron?
 
     public static final EntityType<BohrBlueprintEntity> BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE = register(FabricEntityTypeBuilder.<BohrBlueprintEntity>create(SpawnGroup.MISC, BohrBlueprintEntity::new)
-            .dimensions(EntityDimensions.fixed(1F, 1F)).trackRangeBlocks(10).disableSummon().fireImmune().build(), "bohr_blueprint_entity");
+            .dimensions(EntityDimensions.fixed(1.5F, 1.5F)).trackRangeChunks(1).disableSummon().fireImmune().build(), "bohr_blueprint_entity");
 
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");

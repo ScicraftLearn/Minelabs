@@ -97,7 +97,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         matrices.push();
 
         // center and scale
-        matrices.translate(0, 0.5f, 0f);
+        matrices.translate(0, 0.75f, 0f);
         matrices.scale(1.5f, 1.5f, 1.5f);
 
         transformToFacePlayer(entity, matrices);
