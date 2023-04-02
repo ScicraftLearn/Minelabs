@@ -55,7 +55,7 @@ public class BohrBlueprintEntity extends Entity {
     protected static final TrackedData<Integer> ELECTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
     protected static final TrackedData<Integer> NEUTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
-    // ItemStack is used to track the currently built atom. Empty stack means not a valid atom at the moment, null means needs to be recomputed.
+    // ItemStack is used to track the currently built atom.
     protected static final TrackedData<ItemStack> RESULT_ATOM = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 
 
@@ -134,6 +134,7 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.startTracking(PROTONS, 0);
         dataTracker.startTracking(ELECTRONS, 0);
         dataTracker.startTracking(NEUTRONS, 0);
+        dataTracker.startTracking(RESULT_ATOM, ItemStack.EMPTY);
     }
 
     @Override
@@ -251,7 +252,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     /**
-     * Tries to craft the atom and clear inventory on success. Otherwise nothing changes and return empty stack.
+     * Tries to craft the atom and clear inventory on success. Otherwise, nothing changes and return empty stack.
      */
     public ItemStack craftAtom() {
         Item item = getAtomItem();
@@ -266,11 +267,11 @@ public class BohrBlueprintEntity extends Entity {
     @Nullable
     public Item getAtomItem(){
         ItemStack stack = dataTracker.get(RESULT_ATOM);
-        if(stack == null){
-            Item item = computeAtomItem();  // it's ok if this is null. The itemstack will be the empty stack.
-            stack = new ItemStack(item, 1);
-            dataTracker.set(RESULT_ATOM, stack);
-        }
+//        if(stack == null){
+        Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
+        stack = new ItemStack(item, 1);
+        dataTracker.set(RESULT_ATOM, stack);
+//        }
 
         if (!stack.isEmpty())
             return stack.getItem();
@@ -386,24 +387,28 @@ public class BohrBlueprintEntity extends Entity {
         setNeutrons(neutrons);
     }
 
+    @Override
+    public void onTrackedDataSet(TrackedData<?> data) {
+        super.onTrackedDataSet(data);
+        if(data == PROTONS || data == ELECTRONS || data == NEUTRONS)
+            compositionChanged();
+    }
+
     private void compositionChanged(){
         // invalidate cache
-        dataTracker.set(RESULT_ATOM, null);
+        dataTracker.set(RESULT_ATOM, ItemStack.EMPTY);
     }
 
     private void setProtons(int value) {
         dataTracker.set(PROTONS, value);
-        compositionChanged();
     }
 
     private void setElectrons(int value) {
         dataTracker.set(ELECTRONS, value);
-        compositionChanged();
     }
 
     private void setNeutrons(int value) {
         dataTracker.set(NEUTRONS, value);
-        compositionChanged();
     }
 
     private void incrementProtons(int value) {
