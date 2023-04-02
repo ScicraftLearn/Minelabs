@@ -24,6 +24,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -79,9 +80,12 @@ public class BohrBlueprintEntity extends Entity {
 
     @Override
     public void tick() {
-        if (this.world.isClient)
+        if (this.world.isClient){
+            if(getProtons()==0 && getNeutrons()==0) {
+                this.world.addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX(), this.getY() + 0.5f * getHeight(), this.getZ(), 0, 0, 0);
+            }
             return;
-
+        }
         if (this.isRemoved())
             return;
 
