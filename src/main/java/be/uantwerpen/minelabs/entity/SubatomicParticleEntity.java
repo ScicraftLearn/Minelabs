@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.entity;
 
-import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
@@ -15,34 +14,31 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
-
-import java.util.function.Supplier;
 
 /**
  * Instances of this class are used for building atoms.
  * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
  */
-public class SubatomicParticleBase extends ThrownItemEntity {
+public class SubatomicParticleEntity extends ThrownItemEntity {
     private int itemAge;
     private final Item item;
 
-    public SubatomicParticleBase(EntityType<? extends ThrownItemEntity> entityType, World world, ItemStack itemStack) {
+    public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, World world, ItemStack itemStack) {
         super(entityType, world);
         item = itemStack.getItem();
         setItem(itemStack);
         setNoGravity(true);
     }
 
-    public SubatomicParticleBase(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world, ItemStack itemStack) {
+    public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world, ItemStack itemStack) {
         super(entityType, d, e, f, world);
         item = itemStack.getItem();
         setItem(itemStack);
         setNoGravity(true);
     }
 
-    public SubatomicParticleBase(EntityType<? extends ThrownItemEntity> entityType, LivingEntity owner, World world, ItemStack itemStack) {
+    public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, LivingEntity owner, World world, ItemStack itemStack) {
         super(entityType, owner, world);
         item = itemStack.getItem();
         setItem(itemStack);

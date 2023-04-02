@@ -1,6 +1,6 @@
 package be.uantwerpen.minelabs.item;
 
-import be.uantwerpen.minelabs.entity.SubatomicParticleBase;
+import be.uantwerpen.minelabs.entity.SubatomicParticleEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,7 +44,7 @@ public class SubatomicParticleItem extends BlockItem {
          */
         if (!world.isClient) {
             // Spawns the subatomicParticle entity with correct initial velocity (velocity has the same direction as the players looking direction)
-            SubatomicParticleBase subPart = new SubatomicParticleBase(entityType, user, world, itemStack);
+            SubatomicParticleEntity subPart = new SubatomicParticleEntity(entityType, user, world, itemStack);
             subPart.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 1.5F, 0F);
             world.spawnEntity(subPart);
         }

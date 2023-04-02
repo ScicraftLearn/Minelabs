@@ -11,7 +11,6 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
@@ -68,11 +67,11 @@ public class ExtraDispenserBehavior {
      * @param item   : Item that should be used
      * @param entity : Entity that should spawn
      **/
-    private static void registerSubatomicParticle(Item item, EntityType<SubatomicParticleBase> entity) {
+    private static void registerSubatomicParticle(Item item, EntityType<SubatomicParticleEntity> entity) {
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return new SubatomicParticleBase(entity, position.getX(), position.getY(), position.getZ(), world, stack);
+                return new SubatomicParticleEntity(entity, position.getX(), position.getY(), position.getZ(), world, stack);
             }
         });
     }
