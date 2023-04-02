@@ -55,6 +55,10 @@ public class BohrBlueprintEntity extends Entity {
     protected static final TrackedData<Integer> ELECTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
     protected static final TrackedData<Integer> NEUTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
+    // ItemStack is used to track the currently built atom. Empty stack means not a valid atom at the moment, null means needs to be recomputed.
+    protected static final TrackedData<ItemStack> RESULT_ATOM = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
+
+
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -260,7 +264,22 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     @Nullable
-    private Item getAtomItem() {
+    public Item getAtomItem(){
+        ItemStack stack = dataTracker.get(RESULT_ATOM);
+        if(stack == null){
+            Item item = computeAtomItem();  // it's ok if this is null. The itemstack will be the empty stack.
+            stack = new ItemStack(item, 1);
+            dataTracker.set(RESULT_ATOM, stack);
+        }
+
+        if (!stack.isEmpty())
+            return stack.getItem();
+
+        return null;
+    }
+
+    @Nullable
+    private Item computeAtomItem() {
         int protons = getProtons();
         int neutrons = getNeutrons();
         int electrons = getElectrons();
@@ -282,7 +301,7 @@ public class BohrBlueprintEntity extends Entity {
 
     @Override
     public boolean canAvoidTraps() {
-        // so it ignores tripwires and pressure plates.
+        // so it ignores tripwires and pressure plates
         return true;
     }
 
@@ -367,16 +386,24 @@ public class BohrBlueprintEntity extends Entity {
         setNeutrons(neutrons);
     }
 
+    private void compositionChanged(){
+        // invalidate cache
+        dataTracker.set(RESULT_ATOM, null);
+    }
+
     private void setProtons(int value) {
         dataTracker.set(PROTONS, value);
+        compositionChanged();
     }
 
     private void setElectrons(int value) {
         dataTracker.set(ELECTRONS, value);
+        compositionChanged();
     }
 
     private void setNeutrons(int value) {
         dataTracker.set(NEUTRONS, value);
+        compositionChanged();
     }
 
     private void incrementProtons(int value) {
