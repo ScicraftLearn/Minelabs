@@ -69,18 +69,6 @@ public class BohrBlueprintEntity extends Entity {
         setPosition(Vec3d.ofCenter(pos).add(0, -0.5, 0));
     }
 
-    public int getProtons() {
-        return dataTracker.get(PROTONS);
-    }
-
-    public int getElectrons() {
-        return dataTracker.get(ELECTRONS);
-    }
-
-    public int getNeutrons() {
-        return dataTracker.get(NEUTRONS);
-    }
-
     @Override
     protected float getEyeHeight(EntityPose pose, EntityDimensions dimensions) {
         return 0.5f * dimensions.height;
@@ -264,21 +252,6 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     @Nullable
-    public Item getAtomItem() {
-        ItemStack stack = dataTracker.get(RESULT_ATOM);
-//        if(stack == null){
-        Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
-        stack = new ItemStack(item, 1);
-        dataTracker.set(RESULT_ATOM, stack);
-//        }
-
-        if (!stack.isEmpty())
-            return stack.getItem();
-
-        return null;
-    }
-
-    @Nullable
     private Item computeAtomItem() {
         int protons = getProtons();
         int neutrons = getNeutrons();
@@ -393,9 +366,37 @@ public class BohrBlueprintEntity extends Entity {
             compositionChanged();
     }
 
+    /**
+     * Update atom and stability info only once.
+     */
     private void compositionChanged() {
-        // invalidate cache
-        dataTracker.set(RESULT_ATOM, ItemStack.EMPTY);
+        if (world.isClient) return;
+
+        Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
+        ItemStack stack = new ItemStack(item, 1);
+        dataTracker.set(RESULT_ATOM, stack);
+    }
+
+    @Nullable
+    public Item getAtomItem() {
+        ItemStack stack = dataTracker.get(RESULT_ATOM);
+
+        if (!stack.isEmpty())
+            return stack.getItem();
+
+        return null;
+    }
+
+    public int getProtons() {
+        return dataTracker.get(PROTONS);
+    }
+
+    public int getElectrons() {
+        return dataTracker.get(ELECTRONS);
+    }
+
+    public int getNeutrons() {
+        return dataTracker.get(NEUTRONS);
     }
 
     private void setProtons(int value) {
