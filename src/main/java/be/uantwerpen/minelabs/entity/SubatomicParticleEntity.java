@@ -1,63 +1,81 @@
 package be.uantwerpen.minelabs.entity;
 
+import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Instances of this class are used for building atoms.
  * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
  */
-public abstract class SubatomicParticle extends ThrownItemEntity {
+public class SubatomicParticleEntity extends ThrownItemEntity {
     private int itemAge;
 
-    public SubatomicParticle(EntityType<? extends ThrownItemEntity> entityType, World world) {
+    public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
         setNoGravity(true);
     }
 
-    public SubatomicParticle(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world) {
-        super(entityType, d, e, f, world);
+    public SubatomicParticleEntity(double d, double e, double f, World world, ItemStack itemStack) {
+        super(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, d, e, f, world);
+        setItem(itemStack);
         setNoGravity(true);
     }
 
-    public SubatomicParticle(EntityType<? extends ThrownItemEntity> entityType, LivingEntity livingEntity, World world) {
-        super(entityType, livingEntity, world);
+    public SubatomicParticleEntity(LivingEntity owner, World world, ItemStack itemStack) {
+        super(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, owner, world);
+        setItem(itemStack);
         setNoGravity(true);
     }
 
-    // Prevent slowdown over time from SubatomicParticle
+    /**
+     * Prevent slowdown over time from SubatomicParticle. Defined in {@link be.uantwerpen.minelabs.mixins.ThrownEntityMixin}.
+     */
     public float getSlowdownFactor() {
         return 1f;
     }
 
-    protected abstract int getDespawnAge();
-
-    @Environment(EnvType.CLIENT) // Needed for particles on collision with the world
-    protected abstract ParticleEffect getParticleParameters();
-
     /**
-     * Handle status 3 -> generate particles onCollision
-     *
-     * @param status byte with status to handle
+     * Change getDespawnAge() to change the time after which ProtonEntity will despawn
+     * Game normally runs at 20 ticks per second, so return 100 -> ProtonEntity despawns after 5 seconds
      */
+    protected int getDespawnAge() {
+        return 100;
+    }
+
     @Environment(EnvType.CLIENT)
-    public void handleStatus(byte status) { // Needed for particles on collision with the world
+    @Nullable
+    protected ParticleEffect getParticleParameters() { // Needed for particles on collision with the world
+        ItemStack itemStack = this.getStack();
+        return itemStack.isEmpty() ? null : new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void handleStatus(byte status) {
+        // status 3 -> generate particles onCollision
         if (status == 3) {
             ParticleEffect particleEffect = this.getParticleParameters();
+            if (particleEffect == null) return;
 
             for (int i = 0; i < 8; ++i) {
-                this.world.addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+                double velocityX = (Math.random() * 2.0 - 1.0) * (double)0.3f;
+                double velocityY = (Math.random() * 2.0 - 1.0) * (double)0.3f;
+                double velocityZ = (Math.random() * 2.0 - 1.0) * (double)0.3f;
+                this.world.addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), velocityX, velocityY, velocityZ);
             }
         }
     }
@@ -109,5 +127,10 @@ public abstract class SubatomicParticle extends ThrownItemEntity {
             // Remove Entity from the server
             this.kill();
         }
+    }
+
+    @Override
+    protected Item getDefaultItem() {
+        return Items.ELECTRON;
     }
 }
