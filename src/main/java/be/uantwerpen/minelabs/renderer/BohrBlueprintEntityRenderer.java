@@ -443,7 +443,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             String atomName = "";
             String symbol = "_";
             Atom a = Atom.getByNumber(nP);
-            if (a!=null){
+            if (a != null) {
                 atomName = Text.translatable(a.getItem().getTranslationKey()).getString();
                 symbol = a.getSymbol();
             } else {
@@ -463,7 +463,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             }
             if (Math.abs(nP - nE) > 5) {
                 Ecolor = RED;
-                }
+            }
             if (!nucleusState.isStable()) {
                 Zcolor = RED;
             }
@@ -471,23 +471,23 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             /*
              * Rendering of text:
              */
-            drawTexture(matrixStack, x-45, y-6, 0, 63, 34, 34, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+            drawTexture(matrixStack, x - 45, y - 6, 0, 63, 34, 34, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
 
             TextRenderer TR = MinecraftClient.getInstance().textRenderer;
             matrixStack.push();
             matrixStack.scale(2, 2, 2);
             int width = TR.getWidth(symbol);
-            TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y+4) / 2, WHITE);
-            TR.draw(matrixStack, (int)integrity + "%", (x - 96) / 2, (y+4) / 2, WHITE);
+            TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y + 4) / 2, WHITE);
+            TR.draw(matrixStack, (int) integrity + "%", (x - 96) / 2, (y + 4) / 2, WHITE);
             matrixStack.pop();
             //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
             //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
             //}
-            TR.draw(matrixStack, Integer.toString(nP), x - 43, y +19, WHITE);
+            TR.draw(matrixStack, Integer.toString(nP), x - 43, y + 19, WHITE);
             TR.draw(matrixStack, Integer.toString(nP + nN), x - 43, y - 4, Zcolor);
-            if(!ionicCharge.equals("0")) {
+            if (!ionicCharge.equals("0")) {
                 int width_e = TR.getWidth(ionicCharge);
-                TR.draw(matrixStack, ionicCharge, x-11 - width_e, y-4, Ecolor);
+                TR.draw(matrixStack, ionicCharge, x - 11 - width_e, y - 4, Ecolor);
             }
             if (nucleusState.isStable() && Math.abs(nP - nE) <= 5) {
                 TR.draw(matrixStack, atomName, x + 192, y + 7, Ecolor);
@@ -532,31 +532,32 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             if (Math.abs(nP - nE) > 5) {
                 drawTexture(matrixStack, x, y + 8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
             }
-            if (nucleusState==null) {
+            if (nucleusState == null) {
                 drawTexture(matrixStack, x, y + 16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
             }
         }
         matrixStack.push();
-        matrixStack.scale(0.5f,0.5f,0.5f);
+        matrixStack.scale(0.5f, 0.5f, 0.5f);
         TextRenderer TR = MinecraftClient.getInstance().textRenderer;
-        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nP)), (x+ratio_p)*2, y*2+1, WHITE);
-        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nE)), (x+ratio_e)*2, (y+8)*2+1, WHITE);
-        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nN)), (x+ratio_n)*2, (y+16)*2+1, WHITE);
+        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nP)), (x + ratio_p) * 2, y * 2 + 1, WHITE);
+        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nE)), (x + ratio_e) * 2, (y + 8) * 2 + 1, WHITE);
+        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nN)), (x + ratio_n) * 2, (y + 16) * 2 + 1, WHITE);
 
         matrixStack.pop();
 
         RenderSystem.setShaderTexture(0, BARS_TEXTURE);
     }
 
-    private void renderResultingAtom(MatrixStack matrixStack, BohrBlueprintEntity entity, int light, VertexConsumerProvider vertexConsumers){
+    private void renderResultingAtom(MatrixStack matrixStack, E entity, int light, VertexConsumerProvider vertexConsumers) {
+        Item atom = entity.getAtomItem();
+        if (atom == null) return;
+
         matrixStack.push();
-        Item atom = entity.whichAtom();
-        if(atom==null) return;
-        matrixStack.translate(0, 5f/16- 1.5, 0.25);
-        matrixStack.scale(2,0.5f,2);
+        matrixStack.translate(0, 5f / 16 - 1, 0.25);
+        matrixStack.scale(2, 0.5f, 2);
         matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
 
-        MinecraftClient.getInstance().getItemRenderer().renderItem(atom.getDefaultStack(), ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumers, 0);
+        itemRenderer.renderItem(atom.getDefaultStack(), ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumers, 0);
         matrixStack.pop();
     }
 }
