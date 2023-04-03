@@ -109,10 +109,9 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     // Called by subatomic particle when it collides with this entity.
-    public void onParticleCollision(SubatomicParticle particle) {
+    public void onParticleCollision(SubatomicParticleEntity particle) {
         if (world.isClient)
             return;
-
         ItemStack stack = particle.getStack();
         Item item = stack.getItem();
 
@@ -121,7 +120,7 @@ public class BohrBlueprintEntity extends Entity {
         }
     }
 
-    public BlockPos getBohrBlueprintPos(){
+    public BlockPos getBohrBlueprintPos() {
         return getBlockPos().down();
     }
 
@@ -147,7 +146,7 @@ public class BohrBlueprintEntity extends Entity {
             world.removeBlock(getBohrBlueprintPos(), false);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         // inventory is not synced to client, so need to check counts.
         return getProtons() == 0 && getNeutrons() == 0 && getElectrons() == 0;
     }
@@ -159,7 +158,7 @@ public class BohrBlueprintEntity extends Entity {
         clear();
     }
 
-    public void dropLastItem(){
+    public void dropLastItem() {
         if (inventory.isEmpty())
             return;
 
@@ -245,7 +244,7 @@ public class BohrBlueprintEntity extends Entity {
         else if (stack.getItem() instanceof AtomItem) updateCountsFromContent();
     }
 
-    private void clear(){
+    private void clear() {
         inventory.clear();
         // sets everything to zero
         updateCountsFromContent();
@@ -265,7 +264,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     @Nullable
-    public Item getAtomItem(){
+    public Item getAtomItem() {
         ItemStack stack = dataTracker.get(RESULT_ATOM);
 //        if(stack == null){
         Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
@@ -325,7 +324,7 @@ public class BohrBlueprintEntity extends Entity {
             return false;
         }
         if (!this.isRemoved() && !this.world.isClient) {
-            if (source.getAttacker() instanceof PlayerEntity){
+            if (source.getAttacker() instanceof PlayerEntity) {
                 onHitByPlayer();
                 return true;
             }
@@ -333,7 +332,7 @@ public class BohrBlueprintEntity extends Entity {
         return false;
     }
 
-    private void onHitByPlayer(){
+    private void onHitByPlayer() {
         dropLastItem();
     }
 
@@ -390,11 +389,11 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     public void onTrackedDataSet(TrackedData<?> data) {
         super.onTrackedDataSet(data);
-        if(data == PROTONS || data == ELECTRONS || data == NEUTRONS)
+        if (data == PROTONS || data == ELECTRONS || data == NEUTRONS)
             compositionChanged();
     }
 
-    private void compositionChanged(){
+    private void compositionChanged() {
         // invalidate cache
         dataTracker.set(RESULT_ATOM, ItemStack.EMPTY);
     }
