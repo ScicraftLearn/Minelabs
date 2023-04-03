@@ -91,7 +91,6 @@ public class BohrBlueprintEntity extends Entity {
             return;
         }
 
-        this.attemptTickInVoid();
         logicalTick();
     }
 
@@ -105,12 +104,20 @@ public class BohrBlueprintEntity extends Entity {
      * Runs on logical server (can either be in physical client or in physical server).
      */
     private void logicalTick() {
+        this.attemptTickInVoid();
+
+        // check if stil attached to bohr plate, otherwise clean up
         if (this.validityCheckCounter++ == 100) {
             this.validityCheckCounter = 0;
             // cleanup for if the entity unexpectedly got left behind after the block was removed
             if (!this.isAttachedToBlock()) {
                 this.discard();
             }
+        }
+
+        // stability and integrity update
+        if (!isStable()){
+            decrementIntegrity(getInstability() / 20f);
         }
     }
 
@@ -271,22 +278,6 @@ public class BohrBlueprintEntity extends Entity {
         return ItemStack.EMPTY;
     }
 
-    @Nullable
-    private Item computeAtomItem() {
-        int protons = getProtons();
-        int neutrons = getNeutrons();
-        int electrons = getElectrons();
-
-        if (protons == 0 || protons != electrons)
-            return null;
-
-        NucleusState nucleusState = NuclidesTable.getNuclide(protons, neutrons);
-        if (nucleusState == null || !nucleusState.isStable())
-            return null;
-
-        return nucleusState.getAtomItem();
-    }
-
     @Override
     public PistonBehavior getPistonBehavior() {
         return PistonBehavior.IGNORE;
@@ -357,6 +348,22 @@ public class BohrBlueprintEntity extends Entity {
         return new EntitySpawnS2CPacket(this);
     }
 
+    @Nullable
+    private Item computeAtomItem() {
+        int protons = getProtons();
+        int neutrons = getNeutrons();
+        int electrons = getElectrons();
+
+        if (protons == 0 || protons != electrons)
+            return null;
+
+        NucleusState nucleusState = NuclidesTable.getNuclide(protons, neutrons);
+        if (nucleusState == null || !nucleusState.isStable())
+            return null;
+
+        return nucleusState.getAtomItem();
+    }
+
     /**
      * Sets the amount of protons, electrons and neutrons based on the inventory.
      */
@@ -397,7 +404,8 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.set(RESULT_ATOM, stack);
 
         // TODO: compute instability with nuclides
-        float instability = 0;
+        float instability = stack.isEmpty() ? 1f : 0f;
+        setInstability(instability);
         if (instability == 0){
             setIntegrity(MAX_INTEGRITY);
         }
@@ -415,10 +423,6 @@ public class BohrBlueprintEntity extends Entity {
 
     public float getIntegrity(){
         return dataTracker.get(INTEGRITY);
-    }
-
-    public boolean isStable(){
-        return dataTracker.get(INSTABILITY) == 0;
     }
 
     public int getProtons() {
@@ -439,6 +443,14 @@ public class BohrBlueprintEntity extends Entity {
 
     private void decrementIntegrity(float value){
         setIntegrity(getIntegrity() - value);
+    }
+
+    private float getInstability(){
+        return dataTracker.get(INSTABILITY);
+    }
+
+    public boolean isStable(){
+        return getInstability() == 0;
     }
 
     private void setInstability(float value){

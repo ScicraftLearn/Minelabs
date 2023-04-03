@@ -103,7 +103,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
 
         // TODO: move to entity
 //        float shakeFactor = getShakingFactor(nP, nN, nE);
-        float shakeFactor = stable ? 0f : 0.03f;
+        float shakeFactor = stable ? 0f : 0.02f;
 
         matrices.push();
 
@@ -444,10 +444,11 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         int nN = entity.getNeutrons();
         int nE = entity.getElectrons();
 
-        renderHud(matrixStack, nP, nE, nN);
+        float integrity = entity.getIntegrity();
+        renderHud(matrixStack, nP, nE, nN, integrity);
     }
 
-    private static void renderHud(MatrixStack matrixStack, int nP, int nE, int nN) {
+    private static void renderHud(MatrixStack matrixStack, int nP, int nE, int nN, float integrity) {
         // TODO: fetch more things from entity instead of recomputing everything here (every frame)
         int y = 12;
         int x = MinecraftClient.getInstance().getWindow().getScaledWidth() / 2 - 91;
@@ -455,7 +456,6 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, BARS_TEXTURE);
-
 
         renderBars(matrixStack, nP, nE, nN, x, y);
 
@@ -498,6 +498,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             matrixStack.scale(2, 2, 2);
             int width = TR.getWidth(symbol);
             TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y+4) / 2, WHITE);
+            TR.draw(matrixStack, (int)integrity + "%", (x - 96) / 2, (y+4) / 2, WHITE);
             matrixStack.pop();
             //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
             //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
