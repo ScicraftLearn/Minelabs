@@ -6,6 +6,8 @@ import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
@@ -54,7 +56,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public BohrBlueprintEntity(World world, BlockPos pos) {
-        super(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, world);
+        this(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, world);
         setPosition(Vec3d.ofCenter(pos));
     }
 
@@ -107,8 +109,12 @@ public class BohrBlueprintEntity extends Entity {
         }
     }
 
+    public BlockPos getBohrBlueprintPos(){
+        return getBlockPos().down();
+    }
+
     public boolean isAttachedToBlock() {
-        return world.getBlockState(getBlockPos().down()).isOf(Blocks.BOHR_BLUEPRINT);
+        return world.getBlockState(getBohrBlueprintPos()).isOf(Blocks.BOHR_BLUEPRINT);
     }
 
     @Override
@@ -121,7 +127,11 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
+        // cleanup after entity is removed
         dropContents();
+        BlockState state = world.getBlockState(getBohrBlueprintPos());
+        if (state.isOf(Blocks.BOHR_BLUEPRINT))
+            world.removeBlock(getBohrBlueprintPos(), false);
     }
 
     public boolean isEmpty(){
@@ -238,6 +248,17 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     @Override
+    public PistonBehavior getPistonBehavior() {
+        return PistonBehavior.IGNORE;
+    }
+
+    @Override
+    public boolean canAvoidTraps() {
+        // so it ignores tripwires and pressure plates.
+        return true;
+    }
+
+    @Override
     public boolean canHit() {
         return true;
     }
@@ -280,6 +301,7 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         // load inventory
+        inventory.clear();
         NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         for (int i = 0; i < nbtList.size(); i++) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
