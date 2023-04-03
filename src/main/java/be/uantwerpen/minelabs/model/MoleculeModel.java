@@ -58,8 +58,10 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
     Map<String, Pair<Atom, Vec3f>> positions;
     Map<Pair<String, String>, Bond> bonds;
 
-    private final float RADIUS = 0.10f;
-    private final float MARGIN = 0.04f;
+    private final float RADIUS_S = 0.08f;
+    private final float RADIUS_M = 0.10f;
+    private final float RADIUS_L = 0.12f;
+    private final float MARGIN = 0.06f;
 
     public MoleculeModel(Map<String, Pair<Atom, Vec3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
         this.positions = positions;
@@ -121,6 +123,15 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         return ModelOverrideList.EMPTY;
     }
 
+    private float getAtomSize(Atom atom) {
+        return switch (atom) {
+            case HYDROGEN, HELIUM, FLUORINE, LITHIUM, SODIUM -> RADIUS_S; // Small Atoms
+            case ARGON, POTASSIUM, CALCIUM, TITANIUM, MANGANESE, IRON, COPPER, ZINC, BROMINE, STRONTIUM, SILVER,
+                    CADMIUM, TIN, IODINE, TUNGSTEN, GOLD, MERCURY, LEAD, URANIUM -> RADIUS_L; // Large Atoms (PLACEHOLDERS)
+            default -> RADIUS_M; // All others are Medium Atoms
+        };
+    }
+
     @Override
     public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         SPRITE = textureGetter.apply(SPRITE_ID);
@@ -135,7 +146,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         QuadEmitter emitter = builder.getEmitter();
 
         //makeSphere(emitter, center, radius);
-        positions.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), RADIUS, atomVec3fPair.getFirst().getColor())); //RGB color in hex
+        positions.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), getAtomSize(atomVec3fPair.getFirst()), atomVec3fPair.getFirst().getColor())); //RGB color in hex
         bonds.forEach((s, bond) -> makeBond(emitter, positions.get(s.getFirst()).getSecond(),
                 positions.get(s.getSecond()).getSecond(),
                 positions.get(s.getFirst()).getFirst().getColor(),
@@ -248,7 +259,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
      */
     public List<Vec3f[]> getUnitBeam(float len, float b){
         float a = b/2;
-        len -= 2 * RADIUS - 2 * MARGIN;
+        len -= 2 * RADIUS_S - 2 * MARGIN;
         List<Vec3f[]> quads = new ArrayList<>();
         quads.add(new Vec3f[]{//links
                 new Vec3f(0, -a, -a),
@@ -274,7 +285,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
                 new Vec3f(len, a, a),
                 new Vec3f(len, a, -a),
         });
-        ModelUtil.transformQuads(quads, v -> v.add(RADIUS - MARGIN, 0, 0));
+        ModelUtil.transformQuads(quads, v -> v.add(RADIUS_S - MARGIN, 0, 0));
         return quads;
     }
 
