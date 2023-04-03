@@ -55,7 +55,9 @@ public class BohrBlueprintBlock extends Block {
      */
     @Nullable
     private BohrBlueprintEntity getEntity(World world, BlockPos pos){
-        List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, Box.from(Vec3d.of(pos.up())), e -> true);
+        // position of entity is center of bottom. It is placed one block above the bohr plate
+        Box box = Box.from(Vec3d.of(pos)).contract(0.4, 0.4, 0.4).offset(0, 0.5, 0);
+        List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, box, e -> true);
         if (entities.size() != 1){
             Minelabs.LOGGER.warn("Expected one entity connected to bohr blueprint at " + pos + ", found: " + entities.size());
             Minelabs.LOGGER.warn("Removing the bohr blueprint");
@@ -112,7 +114,6 @@ public class BohrBlueprintBlock extends Block {
     @Override
     public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
         // While it contains content don't start breaking progress. Items are dropped in onBlockBreakStart.
-        Minelabs.LOGGER.info("block breaking delta");
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
             return 0;

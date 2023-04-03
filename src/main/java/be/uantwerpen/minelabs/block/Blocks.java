@@ -81,11 +81,13 @@ public class Blocks {
     public static final ChargedBlock NEUTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.NEUTRON_BLOCK_ENTITY), "neutron");
 
+    public static final ChargedBlock ANTI_NEUTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANTI_NEUTRON_BLOCK_ENTITY), "anti_neutron");
+
+
     public static final ChargedBlock CHARGED_POINT_BLOCK = register(new ChargedPointBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f), () -> BlockEntities.CHARGED_POINT_BLOCK_ENTITY), "charged_point");
 
-    public static final Block ANTI_NEUTRON = register(new Block(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision()), "anti_neutron");
 
     public static final Block CHARGED_PLACEHOLDER = register(new ChargedPlaceholderBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque(), () -> BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY), "charged_placeholder");
