@@ -67,11 +67,6 @@ public class BohrBlueprintEntity extends Entity {
     // Slowly decreases based on instability index.
     protected static final TrackedData<Float> INTEGRITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
-    public BohrBlueprintEntity(World world, BlockPos pos) {
-        this(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, world);
-        setPosition(Vec3d.ofCenter(pos));
-    }
-
     private NucleusState nucleusState = null;
 
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
@@ -284,17 +279,6 @@ public class BohrBlueprintEntity extends Entity {
             return stack;
         }
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    public PistonBehavior getPistonBehavior() {
-        return PistonBehavior.IGNORE;
-    }
-
-    @Override
-    public boolean canAvoidTraps() {
-        // so it ignores tripwires and pressure plates
-        return true;
     }
 
     @Override
