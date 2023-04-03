@@ -35,6 +35,11 @@ import java.util.Map;
 import java.util.Stack;
 
 public class BohrBlueprintEntity extends Entity {
+    // Constants
+    private static final int MAX_PROTONS = 118;
+    private static final int MAX_ELECTRONS = MAX_PROTONS;
+    private static final int MAX_NEUTRONS = 176;
+    private static final float MAX_INTEGRITY = 100;
 
     // Transient data (not persisted or tracked)
     private int validityCheckCounter = 0;
@@ -46,10 +51,6 @@ public class BohrBlueprintEntity extends Entity {
     // Atom can only be added as first entry and cannot remove parts of it.
     Stack<ItemStack> inventory = new Stack<>();
 
-    private static final int MAX_PROTONS = 118;
-    private static final int MAX_ELECTRONS = MAX_PROTONS;
-    private static final int MAX_NEUTRONS = 176;
-
     // tracked data is synced to the client automatically (still needs to be written to nbt if it needs to be persisted)
     protected static final TrackedData<Integer> PROTONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
     protected static final TrackedData<Integer> ELECTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -57,7 +58,13 @@ public class BohrBlueprintEntity extends Entity {
 
     // ItemStack is used to track the currently built atom.
     protected static final TrackedData<ItemStack> RESULT_ATOM = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
+    // Stability index of the currently formed configuration (whether it exists or not).
+    // Instability of 0 means stable, higher values indicate how unstable and how fast integrity decays.
+    protected static final TrackedData<Float> INSTABILITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
+    // Integrity ranges from MAX_INTEGRITY to 0 where at 0 the configuration decomposes because it is too unstable.
+    // Slowly decreases based on instability index.
+    protected static final TrackedData<Float> INTEGRITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
         super(entityType, world);
@@ -76,17 +83,28 @@ public class BohrBlueprintEntity extends Entity {
 
     @Override
     public void tick() {
-        if (this.world.isClient)
-            return;
-
         if (this.isRemoved())
             return;
 
-        validityTick();
+        if (this.world.isClient){
+            clientTick();
+            return;
+        }
+
+        this.attemptTickInVoid();
+        logicalTick();
     }
 
-    private void validityTick() {
-        this.attemptTickInVoid();
+    /**
+     * Only runs on version of entity used for rendering.
+     */
+    private void clientTick(){
+    }
+
+    /**
+     * Runs on logical server (can either be in physical client or in physical server).
+     */
+    private void logicalTick() {
         if (this.validityCheckCounter++ == 100) {
             this.validityCheckCounter = 0;
             // cleanup for if the entity unexpectedly got left behind after the block was removed
@@ -122,6 +140,8 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.startTracking(ELECTRONS, 0);
         dataTracker.startTracking(NEUTRONS, 0);
         dataTracker.startTracking(RESULT_ATOM, ItemStack.EMPTY);
+        dataTracker.startTracking(INSTABILITY, 0f);
+        dataTracker.startTracking(INTEGRITY, MAX_INTEGRITY);
     }
 
     @Override
@@ -375,6 +395,12 @@ public class BohrBlueprintEntity extends Entity {
         Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
         ItemStack stack = new ItemStack(item, 1);
         dataTracker.set(RESULT_ATOM, stack);
+
+        // TODO: compute instability with nuclides
+        float instability = 0;
+        if (instability == 0){
+            setIntegrity(MAX_INTEGRITY);
+        }
     }
 
     @Nullable
@@ -387,6 +413,14 @@ public class BohrBlueprintEntity extends Entity {
         return null;
     }
 
+    public float getIntegrity(){
+        return dataTracker.get(INTEGRITY);
+    }
+
+    public boolean isStable(){
+        return dataTracker.get(INSTABILITY) == 0;
+    }
+
     public int getProtons() {
         return dataTracker.get(PROTONS);
     }
@@ -397,6 +431,18 @@ public class BohrBlueprintEntity extends Entity {
 
     public int getNeutrons() {
         return dataTracker.get(NEUTRONS);
+    }
+
+    private void setIntegrity(float value){
+        dataTracker.set(INTEGRITY, value);
+    }
+
+    private void decrementIntegrity(float value){
+        setIntegrity(getIntegrity() - value);
+    }
+
+    private void setInstability(float value){
+        dataTracker.set(INSTABILITY, value);
     }
 
     private void setProtons(int value) {

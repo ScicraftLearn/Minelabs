@@ -35,17 +35,26 @@ import static net.minecraft.client.gui.DrawableHelper.*;
 
 @Environment(EnvType.CLIENT)
 public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends EntityRenderer<E> {
-    float startingOffsetScale = 15f; // the scaling offset we start with, for our icosahedron figure.
 
-    private boolean shakeSwitch = true; // (shaking of atom)
-    private int switchCounter = 0; // (shaking of atom) used to know when to 'shake'
-    int switchCounterModulo = 5; // (shaking of atom) determines how fast the particles move back and forth (minimum 5)
+    // Atom rendering
+    private static final ItemStack PROTON = new ItemStack(Items.PROTON, 1);
+    private static final ItemStack NEUTRON = new ItemStack(Items.NEUTRON, 1);
+    private static final ItemStack ELECTRON = new ItemStack(Items.ELECTRON, 1);
 
-    private static final ItemStack protonStack = new ItemStack(Items.PROTON, 1);
-    private static final ItemStack neutronStack = new ItemStack(Items.NEUTRON, 1);
-    private static final ItemStack electronStack = new ItemStack(Items.ELECTRON, 1);
+    private static final List<Vec3f> NUCLEUS_COORDINATES = createIcosahedron();
 
-    private static final List<Vec3f> nucleusCoordinates = createIcosahedron();
+    // (shaking of atom) determines how fast the particles move back and forth (minimum 5)
+    private static final int SWITCH_COUNTER_MODULO = 5;
+
+    // the scaling offset we start with, for our icosahedron figure.
+    private float startingOffsetScale = 15f;
+
+    // shaking of atom
+    private boolean shakeSwitch = true;
+    // (shaking of atom) used to know when to 'shake'
+    private int switchCounter = 0;
+
+    private final ItemRenderer itemRenderer;
 
     private static List<Vec3f> createIcosahedron() {
         float c = 2f * (float) Math.PI / 5f;
@@ -60,19 +69,17 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         return icosahedron;
     }
 
+    // HUD rendering
     // range in blocks from where the HUD is rendered
     public static final int HUD_RENDER_RADIUS = 9;
 
     private static final Identifier BARS_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/bohr_bars.png");
     private static final int BARS_TEXTURE_SIZE = 256;
 
-
-    //    Color for rendering the text
+    // Color for rendering the text
     private static final int WHITE = ColorHelper.Argb.getArgb(255, 255, 255, 255);
     private static final int YELLOW = ColorHelper.Argb.getArgb(255, 240, 225, 45);
     private static final int RED = ColorHelper.Argb.getArgb(255, 227, 23, 98);
-
-    private final ItemRenderer itemRenderer;
 
     public BohrBlueprintEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
@@ -90,9 +97,13 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         int nN = entity.getNeutrons();
         int nE = entity.getElectrons();
 
+        float time = entity.age + tickDelta;
+
+        boolean stable = entity.isStable();
+
         // TODO: move to entity
-        float shakeFactor = getShakingFactor(nP, nN, nE);
-        boolean stable = NuclidesTable.isStable(nP, nN, nE);
+//        float shakeFactor = getShakingFactor(nP, nN, nE);
+        float shakeFactor = stable ? 0f : 0.03f;
 
         matrices.push();
 
@@ -102,7 +113,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
 
         transformToFacePlayer(entity, matrices);
         makeNucleus(nP, nN, stable, shakeFactor, matrices, light, vertexConsumers);
-        makeElectrons(nE, matrices, light, vertexConsumers, entity, tickDelta);
+        makeElectrons(nE, matrices, light, vertexConsumers, time);
 
         matrices.pop();
     }
@@ -214,9 +225,9 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
 
             // calculating the x,y,z offsets to place the protons/neutrons on the icosahedron outer points.
             float totalScale = startingOffsetScale - scaleOffset + scaleOffset / scaleFactor;
-            float offset_x = nucleusCoordinates.get(i - dec_index).getX() / totalScale;
-            float offset_y = nucleusCoordinates.get(i - dec_index).getY() / totalScale;
-            float offset_z = nucleusCoordinates.get(i - dec_index).getZ() / totalScale;
+            float offset_x = NUCLEUS_COORDINATES.get(i - dec_index).getX() / totalScale;
+            float offset_y = NUCLEUS_COORDINATES.get(i - dec_index).getY() / totalScale;
+            float offset_z = NUCLEUS_COORDINATES.get(i - dec_index).getZ() / totalScale;
 
             if (dec_index > 12) {
                 float rotateXAngle = (float) Math.PI * (0.125f * ((dec_index / 12) % 4));
@@ -229,21 +240,21 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             matrices.scale(0.2f, 0.2f, 0.2f);
 
             if (nrOfprotonsLeft == 0) {
-                itemRenderer.renderItem(neutronStack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+                itemRenderer.renderItem(NEUTRON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
                 nrOfneutronsLeft -= 1;
                 isProtonAndNeutronLeft = false;
             } else if (nrOfneutronsLeft == 0) {
-                itemRenderer.renderItem(protonStack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+                itemRenderer.renderItem(PROTON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
                 nrOfprotonsLeft -= 1;
                 isProtonAndNeutronLeft = false;
             }
             if (isProtonAndNeutronLeft) {
                 if (isProtonNext) {
-                    itemRenderer.renderItem(protonStack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+                    itemRenderer.renderItem(PROTON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
                     isProtonNext = false;
                     nrOfprotonsLeft -= 1;
                 } else {
-                    itemRenderer.renderItem(neutronStack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+                    itemRenderer.renderItem(NEUTRON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
                     isProtonNext = true;
                     nrOfneutronsLeft -= 1;
                 }
@@ -279,10 +290,9 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
      * @param matrices               : matrices
      * @param lightAbove             : used in renderItem function to avoid all blackness in the rendering above the block.
      * @param vertexConsumerProvider : vertexConsumerProvider
-     * @param blockEntity            : blockEntity
-     * @param tickDelta              : tickDelta
+     * @param time                   :
      */
-    public void makeElectrons(int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, E blockEntity, float tickDelta) {
+    public void makeElectrons(int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, float time) {
 
         // for the electron-shell distribution, check the NuclidesTable class static declaration/definition.
 
@@ -299,7 +309,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             // evenly distribution of electrons around core. Used for the electron point calculation.
             int electronsOnCurShell = calcPlaceableElectronsOnShell(electronCount, currentShell, currentNrOfElectrons);
 
-            ArrayList<Float> point = calculateElectronPoint(currentShell, blockEntity, tickDelta, electronsOnCurShell, electronCounter);
+            ArrayList<Float> point = calculateElectronPoint(currentShell, time, electronsOnCurShell, electronCounter);
             float x = point.get(0);
             float y = point.get(1);
             float z = point.get(2);
@@ -307,7 +317,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             matrices.translate(x, y, z);
             matrices.scale(0.1f, 0.1f, 0.1f);
 
-            itemRenderer.renderItem(electronStack, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
+            itemRenderer.renderItem(ELECTRON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 
             matrices.scale(10, 10, 10);
             matrices.translate(-x, -y, -z);
@@ -316,30 +326,30 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         }
     }
 
-    /**
-     * Calculates how much the nucleus should shake based on the stability deviation (from the black line) (this depends on halflife now)
-     *
-     * @param protonCount   : amount of protons in the core
-     * @param neutronCount  : amount of neutrons in the core
-     * @param electronCount : amount of electrons around the core
-     * @return : (float) shake factor (range = [0.01, 0.04])
-     */
-    public float getShakingFactor(int protonCount, int neutronCount, int electronCount) {
-        float shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount);
-        float shake = 0f;
-        boolean isStable = NuclidesTable.isStable(protonCount, neutronCount, electronCount);
-        if (shakeMultiplier == -1) { // if the amount of protons and amount of neutrons don't represent an atom.
-            shakeMultiplier = 0.04f; // we set it to the hardest shaking
-        }
-        if (!isStable) {
-            if (switchCounter % switchCounterModulo == 0) {
-                shake = 0.01f + (float) Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
-            }
-        } else {
-            switchCounter = 0;
-        }
-        return shake;
-    }
+//    /**
+//     * Calculates how much the nucleus should shake based on the stability deviation (from the black line) (this depends on halflife now)
+//     *
+//     * @param protonCount   : amount of protons in the core
+//     * @param neutronCount  : amount of neutrons in the core
+//     * @param electronCount : amount of electrons around the core
+//     * @return : (float) shake factor (range = [0.01, 0.04])
+//     */
+//    public float getShakingFactor(int protonCount, int neutronCount, int electronCount) {
+//        float shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount);
+//        float shake = 0f;
+//        boolean isStable = NuclidesTable.isStable(protonCount, neutronCount, electronCount);
+//        if (shakeMultiplier == -1) { // if the amount of protons and amount of neutrons don't represent an atom.
+//            shakeMultiplier = 0.04f; // we set it to the hardest shaking
+//        }
+//        if (!isStable) {
+//            if (switchCounter % SWITCH_COUNTER_MODULO == 0) {
+//                shake = 0.01f + (float) Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
+//            }
+//        } else {
+//            switchCounter = 0;
+//        }
+//        return shake;
+//    }
 
     /**
      * rotates y and z around x-axis
@@ -389,13 +399,12 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
      * Calculates the x,y and z coordinate for the electron
      *
      * @param currentShell        : integer value for which shell we are on (starts with 1)
-     * @param blockEntity         : blockEntity
-     * @param tickDelta           : tickDelta
+     * @param time                :
      * @param electronsOnCurShell : amount of electrons on the current shell
      * @param electronCounter     : electron counter
      * @return : array of three elements [x, y, z] for our point
      */
-    public ArrayList<Float> calculateElectronPoint(int currentShell, E blockEntity, float tickDelta, int electronsOnCurShell, int electronCounter) {
+    public ArrayList<Float> calculateElectronPoint(int currentShell, float time, int electronsOnCurShell, int electronCounter) {
 
         // multiplier for how fast the electrons will spin around, the greater this value, the slower it will be.
         float speedMultiplier = 40 + 20 * (currentShell - 1);
@@ -403,7 +412,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
 
         float speed = (float) (2 * Math.PI) / speedMultiplier; // how fast the electrons rotate
         float radius = 0.4f + radiusMultiplier; // distance from core, used to calculate the points
-        float angle = speed * (blockEntity.getWorld().getTime() + tickDelta) + (float) ((2 * Math.PI / (electronsOnCurShell))) * (electronCounter);
+        float angle = speed * time + (float) ((2 * Math.PI / (electronsOnCurShell))) * (electronCounter);
 
         float x = (float) Math.cos(angle) * radius;
         float y = (float) Math.sin(angle) * radius;
