@@ -63,6 +63,7 @@ public class BohrBlueprintEntity extends Entity {
     // Instability of 0 means stable, higher values indicate how unstable and how fast integrity decays.
     protected static final TrackedData<Float> INSTABILITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
+
     // Integrity ranges from MAX_INTEGRITY to 0 where at 0 the configuration decomposes because it is too unstable.
     // Slowly decreases based on instability index.
     protected static final TrackedData<Float> INTEGRITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -291,7 +292,7 @@ public class BohrBlueprintEntity extends Entity {
 
     @Override
     public boolean canAvoidTraps() {
-        // so it ignores tripwires and pressure plates
+        // so it ignores tripwires and pressure plates.
         return true;
     }
 

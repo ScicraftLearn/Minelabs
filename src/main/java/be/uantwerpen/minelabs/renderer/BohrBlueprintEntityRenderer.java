@@ -532,7 +532,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             if (Math.abs(nP - nE) > 5) {
                 drawTexture(matrixStack, x, y + 8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
             }
-            if (nucleusState == null) {
+            if (nucleusState==null|| !nucleusState.isStable()) {
                 drawTexture(matrixStack, x, y + 16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
             }
         }
