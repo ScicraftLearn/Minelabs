@@ -7,6 +7,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,7 +64,13 @@ public class ItemModels {
      */
     private static void registerAtom(Item item) {
         ModelPredicateProviderRegistry.register(item, new Identifier("lct"),
-                (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("MinelabsItemInLCT") ? 1.0F : 0.0F);
+                (stack, world, entity, seed) -> {
+                    NbtCompound nbt = stack.getNbt();
+                    if (nbt != null && nbt.contains("MinelabsItemInLCT")){
+                        return nbt.getBoolean("MinelabsItemInLCT") ? 1.0F : 0.0F;
+                    }
+                    return 0.0f;
+                });
     }
 
     /**
