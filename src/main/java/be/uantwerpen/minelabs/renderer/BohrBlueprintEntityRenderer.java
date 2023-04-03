@@ -24,14 +24,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static be.uantwerpen.minelabs.util.NuclidesTable.calculateNrOfElectrons;
-import static net.minecraft.client.gui.DrawableHelper.*;
+import static net.minecraft.client.gui.DrawableHelper.drawCenteredText;
+import static net.minecraft.client.gui.DrawableHelper.drawTexture;
 
 @Environment(EnvType.CLIENT)
 public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends EntityRenderer<E> {
@@ -42,9 +46,6 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
     private static final ItemStack ELECTRON = new ItemStack(Items.ELECTRON, 1);
 
     private static final List<Vec3f> NUCLEUS_COORDINATES = createIcosahedron();
-
-    // (shaking of atom) determines how fast the particles move back and forth (minimum 5)
-    private static final int SWITCH_COUNTER_MODULO = 5;
 
     // the scaling offset we start with, for our icosahedron figure.
     private float startingOffsetScale = 15f;
@@ -102,7 +103,6 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         boolean stable = entity.isStable();
 
         // TODO: move to entity
-//        float shakeFactor = getShakingFactor(nP, nN, nE);
         float shakeFactor = stable ? 0f : 0.02f;
 
         matrices.push();
@@ -326,31 +326,6 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         }
     }
 
-//    /**
-//     * Calculates how much the nucleus should shake based on the stability deviation (from the black line) (this depends on halflife now)
-//     *
-//     * @param protonCount   : amount of protons in the core
-//     * @param neutronCount  : amount of neutrons in the core
-//     * @param electronCount : amount of electrons around the core
-//     * @return : (float) shake factor (range = [0.01, 0.04])
-//     */
-//    public float getShakingFactor(int protonCount, int neutronCount, int electronCount) {
-//        float shakeMultiplier = NuclidesTable.getStabilityDeviation(protonCount, neutronCount, electronCount);
-//        float shake = 0f;
-//        boolean isStable = NuclidesTable.isStable(protonCount, neutronCount, electronCount);
-//        if (shakeMultiplier == -1) { // if the amount of protons and amount of neutrons don't represent an atom.
-//            shakeMultiplier = 0.04f; // we set it to the hardest shaking
-//        }
-//        if (!isStable) {
-//            if (switchCounter % SWITCH_COUNTER_MODULO == 0) {
-//                shake = 0.01f + (float) Math.min(shakeMultiplier, 0.05); // [0.01 ; 0.05]
-//            }
-//        } else {
-//            switchCounter = 0;
-//        }
-//        return shake;
-//    }
-
     /**
      * rotates y and z around x-axis
      *
@@ -445,11 +420,11 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         int nE = entity.getElectrons();
 
         float integrity = entity.getIntegrity();
-        renderHud(matrixStack, nP, nE, nN, integrity);
+        NucleusState nucleusState = entity.getNucleusState();
+        renderHud(matrixStack, nP, nE, nN, integrity, nucleusState);
     }
 
-    private static void renderHud(MatrixStack matrixStack, int nP, int nE, int nN, float integrity) {
-        // TODO: fetch more things from entity instead of recomputing everything here (every frame)
+    private static void renderHud(MatrixStack matrixStack, int nP, int nE, int nN, float integrity, @Nullable NucleusState nucleusState) {
         int y = 12;
         int x = MinecraftClient.getInstance().getWindow().getScaledWidth() / 2 - 91;
 
@@ -457,25 +432,28 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, BARS_TEXTURE);
 
-        renderBars(matrixStack, nP, nE, nN, x, y);
+        renderBars(matrixStack, nP, nE, nN, x, y, nucleusState);
+
+        if (nucleusState == null)
+            return;
 
         if (nP > 0) {
-            NucleusState nuclideStateInfo = NuclidesTable.getNuclide(nP, nN);
             String atomName = "";
             String symbol = "_";
             Atom a = Atom.getByNumber(nP);
             if (a!=null){
                 atomName = Text.translatable(a.getItem().getTranslationKey()).getString();
                 symbol = a.getSymbol();
-            } else if(nuclideStateInfo!=null){//TODO ideally not needed when all atoms are implemented
-                symbol = nuclideStateInfo.getSymbol();//TODO this should return symbol based on nP, regardless if it is in the nuclides file
+            } else {
+                // TODO ideally not needed when all atoms are implemented
+                // This should return symbol based on nP, regardless if it is in the nuclides file
+                symbol = nucleusState.getSymbol();
             }
 
             String ionicCharge = NuclidesTable.calculateIonicCharge(nP, nE);
 
             int Ecolor = WHITE;
             int Zcolor = WHITE;
-            boolean doesStableNuclideExist = true;
 
             if (nP != nE) {
                 Ecolor = YELLOW;
@@ -484,7 +462,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             if (Math.abs(nP - nE) > 5) {
                 Ecolor = RED;
                 }
-            if (nuclideStateInfo == null || !NuclidesTable.getNuclide(nP, nN).isStable()) {
+            if (!nucleusState.isStable()) {
                 Zcolor = RED;
             }
 
@@ -509,14 +487,14 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
                 int width_e = TR.getWidth(ionicCharge);
                 TR.draw(matrixStack, ionicCharge, x-11 - width_e, y-4, Ecolor);
             }
-            if (NuclidesTable.isStable(nP, nN, nE)) {
+            if (nucleusState.isStable() && Math.abs(nP - nE) <= 5) {
                 TR.draw(matrixStack, atomName, x + 192, y + 7, Ecolor);
             }
         }
     }
 
 
-    private static void renderBars(MatrixStack matrixStack, int nP, int nE, int nN, int x, int y) {
+    private static void renderBars(MatrixStack matrixStack, int nP, int nE, int nN, int x, int y, NucleusState nucleusState) {
         int n = Math.max(nP, Math.max(nE, nN));
         int scale = n > 39 ? 176 : n > 9 ? 40 : 10;
 
@@ -549,11 +527,10 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
 
         }
         if (nP > 0) {
-            NucleusState nuclideStateInfo = NuclidesTable.getNuclide(nP, nN);
             if (Math.abs(nP - nE) > 5) {
                 drawTexture(matrixStack, x, y + 8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
             }
-            if (nuclideStateInfo==null ||!NuclidesTable.getNuclide(nP, nN).isStable()) {
+            if (nucleusState==null) {
                 drawTexture(matrixStack, x, y + 16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
             }
         }

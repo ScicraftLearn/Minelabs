@@ -117,17 +117,9 @@ public class NuclidesTable {
 
     /**
      * Calculates the number of electrons given the shell number (shell number range = [1,9]).
-     *
-     * @param shell : shell number
-     * @return : (integer) amount of electrons
      */
     public static int calculateNrOfElectrons(int shell) {
-        for (Map.Entry<Integer, Integer> entry : shells.entrySet()) {
-            if (shell == entry.getKey()) {
-                return entry.getValue();
-            }
-        }
-        return 0;
+        return shells.getOrDefault(shell, 0);
     }
 
     /**

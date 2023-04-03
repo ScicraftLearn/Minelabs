@@ -66,6 +66,8 @@ public class BohrBlueprintEntity extends Entity {
     // Slowly decreases based on instability index.
     protected static final TrackedData<Float> INTEGRITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
+    private NucleusState nucleusState = null;
+
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -397,6 +399,9 @@ public class BohrBlueprintEntity extends Entity {
      * Update atom and stability info only once.
      */
     private void compositionChanged() {
+        nucleusState = NuclidesTable.getNuclide(getProtons(), getNeutrons());
+
+        // server only from here
         if (world.isClient) return;
 
         Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
@@ -409,6 +414,10 @@ public class BohrBlueprintEntity extends Entity {
         if (instability == 0){
             setIntegrity(MAX_INTEGRITY);
         }
+    }
+
+    public NucleusState getNucleusState(){
+        return nucleusState;
     }
 
     @Nullable
