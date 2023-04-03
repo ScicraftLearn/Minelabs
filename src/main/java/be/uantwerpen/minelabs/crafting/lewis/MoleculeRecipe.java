@@ -37,6 +37,14 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 //        Minelabs.LOGGER.info(molecule.getStructure().toCanonical());
     }
 
+    /*
+     * Disables Recipe Book error
+     */
+    @Override
+    public boolean isIgnoredInRecipeBook() {
+        return true;
+    }
+
     public Integer getDensity() {return density;}
 
     public Molecule getMolecule(){
