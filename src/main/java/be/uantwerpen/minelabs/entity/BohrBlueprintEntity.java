@@ -393,12 +393,8 @@ public class BohrBlueprintEntity extends Entity {
     public void onTrackedDataSet(TrackedData<?> data) {
         super.onTrackedDataSet(data);
 
-        // on singleplayer world sometimes this gets called on server as well.
-        if (!world.isClient) return;
-
-        // nucleusState is not synced from server to client. We compute it in the client ourselves.
-        if(data == PROTONS || data == NEUTRONS){
-            nucleusState = NuclidesTable.getNuclide(getProtons(), getNeutrons());
+        if(PROTONS.equals(data) || NEUTRONS.equals(data) || ELECTRONS.equals(data)){
+            compositionChanged();
         }
     }
 
@@ -406,14 +402,24 @@ public class BohrBlueprintEntity extends Entity {
      * Update atom and stability info only once.
      */
     private void compositionChanged() {
+        // nucleusState is not synced from server to client. We compute it in the client ourselves.
+        nucleusState = NuclidesTable.getNuclide(getProtons(), getNeutrons());
+
+        // server only from here on
         if (world.isClient) return;
+
         Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
         ItemStack stack = new ItemStack(item, 1);
         dataTracker.set(RESULT_ATOM, stack);
 
         // TODO: compute instability with nuclides
-        nucleusState = NuclidesTable.getNuclide(getProtons(), getNeutrons());
-        float instability = nucleusState.isStable() && getProtons() == getElectrons() ? 0f : 1f;
+        float instability = 0f;
+        if (nucleusState != null && !nucleusState.isStable()) {
+            instability = 1f;
+        }
+        if (getProtons() != getElectrons()){
+            instability = 1f;
+        }
         setInstability(instability);
         if (instability == 0){
             setIntegrity(MAX_INTEGRITY);
@@ -472,17 +478,14 @@ public class BohrBlueprintEntity extends Entity {
 
     private void setProtons(int value) {
         dataTracker.set(PROTONS, value);
-        compositionChanged();
     }
 
     private void setElectrons(int value) {
         dataTracker.set(ELECTRONS, value);
-        compositionChanged();
     }
 
     private void setNeutrons(int value) {
         dataTracker.set(NEUTRONS, value);
-        compositionChanged();
     }
 
     private void incrementProtons(int value) {
