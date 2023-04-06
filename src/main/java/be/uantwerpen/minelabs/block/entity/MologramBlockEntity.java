@@ -46,6 +46,9 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
         } else {
             //CLIENT
             entity.rotation = (entity.rotation + 3.6f) % 360f;
+            if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {
+                entity.setStack(0, ItemStack.EMPTY);
+            }
         }
     }
 
