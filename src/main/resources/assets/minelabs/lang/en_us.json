@@ -19,6 +19,7 @@
   "block.minelabs.medium_salt_crystal": "Medium Salt Crystal",
   "block.minelabs.small_salt_crystal": "Small Salt Crystal",
 
+  "block.minelabs.charged_point": "Point Charge",
   "block.minelabs.proton": "Proton",
   "block.minelabs.anti_proton": "AntiProton",
   "block.minelabs.electron": "Electron",
@@ -32,7 +33,6 @@
   "block.minelabs.weak_boson": "Weak Boson",
   "block.minelabs.neutrino": "Neutrino",
   "block.minelabs.antineutrino": "Antineutrino",
-  "block.minelabs.helium": "Helium Gas",
 
   "block.minelabs.gluon_quantumfield": "Gluon Quantumfield",
   "block.minelabs.photon_quantumfield": "Photon Quantumfield",

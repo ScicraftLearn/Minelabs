@@ -53,6 +53,14 @@ public class IonicRecipe implements Recipe<IonicInventory> {
         this.ingredients.addAll(rightingredients);
     }
 
+    /*
+     * Disables Recipe Book error
+     */
+    @Override
+    public boolean isIgnoredInRecipeBook() {
+        return true;
+    }
+
     @Override
     public boolean matches(IonicInventory inventory, World world) {
         boolean left = inventory.getLeftGrid().getPartialMolecule().getStructure().isIsomorphicTo(leftMolecule.getStructure());

@@ -19,6 +19,7 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> POSTIRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PROTON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> NEUTRON_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedBlockEntity> ANTI_NEUTRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> WEAK_BOSON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> ANTI_PROTON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PION_MINUS_BLOCK_ENTITY;
@@ -26,13 +27,13 @@ public class BlockEntities {
     public static BlockEntityType<ChargedBlockEntity> PION_NUL_BLOCK_ENTITY;
     public static BlockEntityType<AnimatedChargedBlockEntity> ANIMATED_CHARGED_BLOCK_ENTITY;
     public static BlockEntityType<ChargedPlaceholderBlockEntity> CHARGED_PLACEHOLDER_BLOCK_ENTITY;
+    public static BlockEntityType<ChargedPointBlockEntity> CHARGED_POINT_BLOCK_ENTITY;
+
     public static BlockEntityType<LewisBlockEntity> LEWIS_BLOCK_ENTITY;
     public static BlockEntityType<IonicBlockEntity> IONIC_BLOCK_ENTITY;
     public static BlockEntityType<ElectricFieldSensorBlockEntity> ELECTRIC_FIELD_SENSOR;
 
     public static BlockEntityType<TimeFreezeBlockEntity> TIME_FREEZE_BLOCK_ENTITY;
-
-    public static BlockEntityType<BohrBlockEntity> BOHR_BLOCK_ENTITY;
 
     public static BlockEntityType<QuantumFieldBlockEntity> QUANTUM_FIELD_BLOCK_ENTITY;
 
@@ -61,7 +62,7 @@ public class BlockEntities {
                 "pion_plus_block_entity");
 
         PION_NUL_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(PION_NUL_BLOCK_ENTITY, p, s, 1, Blocks.PION_NUL, 44, photons_drop, null), Blocks.PION_NUL).build(null),
+                FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedBlockEntity(PION_NUL_BLOCK_ENTITY, p, s, 0, Blocks.PION_NUL, 44, photons_drop, null), Blocks.PION_NUL).build(null),
                 "pion_nul_block_entity");
 
     	ELECTRON_BLOCK_ENTITY = register(
@@ -81,25 +82,28 @@ public class BlockEntities {
                 "anti_proton_block_entity");
 
         NEUTRON_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(NEUTRON_BLOCK_ENTITY, p, s, 0, null, 361, weak_boson_drop, Blocks.PROTON), Blocks.NEUTRON).build(null),
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(NEUTRON_BLOCK_ENTITY, p, s, 0, Blocks.ANTI_NEUTRON, 361, weak_boson_drop, Blocks.PROTON), Blocks.NEUTRON).build(null),
                 "neutron_block_entity");
+
+        ANTI_NEUTRON_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(ANTI_NEUTRON_BLOCK_ENTITY, p, s, 0, Blocks.NEUTRON, 361, weak_boson_drop, Blocks.ANTI_PROTON), Blocks.ANTI_NEUTRON).build(null),
+                "anti_neutron_block_entity");
 
         WEAK_BOSON_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedBlockEntity(WEAK_BOSON_BLOCK_ENTITY, p, s, 0, null, 15, electron_drop, null), Blocks.WEAK_BOSON).build(null),
                 "weak_boson_block_entity");
 
         ANIMATED_CHARGED_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new AnimatedChargedBlockEntity(ANIMATED_CHARGED_BLOCK_ENTITY, p, s), Blocks.ANIMATED_CHARGED).build(null),
+                FabricBlockEntityTypeBuilder.create((p, s) -> new AnimatedChargedBlockEntity(ANIMATED_CHARGED_BLOCK_ENTITY, p, s), Blocks.ANIMATED_CHARGED).build(null),
                 "animated_charged_block_entity");
 
         CHARGED_PLACEHOLDER_BLOCK_ENTITY = register(
-                FabricBlockEntityTypeBuilder.create((p,s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
+                FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedPlaceholderBlockEntity(CHARGED_PLACEHOLDER_BLOCK_ENTITY, p, s), Blocks.CHARGED_PLACEHOLDER).build(null),
                 "charged_placeholder_block_entity");
 
-        BOHR_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "bohr_block"),
-                FabricBlockEntityTypeBuilder.create(BohrBlockEntity::new,
-                        Blocks.BOHR_BLOCK).build(null));
-
+        CHARGED_POINT_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedPointBlockEntity(p, s, 0, null, 0, null, null), Blocks.CHARGED_POINT_BLOCK).build(null),
+                "charged_point_block_entity");
 
         IONIC_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "ionic_block"),
                 FabricBlockEntityTypeBuilder.create(IonicBlockEntity::new,

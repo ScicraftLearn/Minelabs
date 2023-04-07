@@ -24,6 +24,12 @@ repositories {
 	maven {
 		url = "https://maven.kyrptonaught.dev"
 	}
+	// info: https://github.com/Wyn-Price/CurseMaven
+	maven {url = 'https://www.cursemaven.com'
+		content {
+			includeGroup "curse.maven"
+		}
+	}
 	maven {
 		url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
 	}
@@ -34,19 +40,20 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
-	modRuntimeOnly "lol.bai:badpackets:fabric-0.1.2"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
 
+	// hard dependency -> actually includes it in our jar
 	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
 
+	// depend on source -> it needs to be installed alongside our mod or also be a hard dependency
+	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
 	modImplementation "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
 
-	// WTHIT mod (TODO: if it's only for development, do we need this here?)
-	modCompileOnly "mcp.mobius.waila:wthit-api:fabric-${project.wthit_version}"
+	// debug dependency -> only used while running mod, not included or needed when released
+	modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
+	modRuntimeOnly "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 }
 
 processResources {

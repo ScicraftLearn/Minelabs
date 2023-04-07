@@ -1,9 +1,4 @@
 {
-  "entity.entropy_creeper.death": {
-    "sounds": [
-      "minelabs:entity_entropy_creeper_death"
-    ]
-  },
   "entity.entropy_creeper.hurt": {
     "sounds": [
       "minelabs:entity_entropy_creeper_hurt1",

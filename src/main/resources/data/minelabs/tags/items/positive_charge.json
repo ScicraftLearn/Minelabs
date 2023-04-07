@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minelabs:positron",
+    "minelabs:proton",
+    "minelabs:pion_plus"
+  ]
+}

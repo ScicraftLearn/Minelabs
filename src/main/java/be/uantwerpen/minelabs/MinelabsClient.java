@@ -2,12 +2,14 @@ package be.uantwerpen.minelabs;
 
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
+import be.uantwerpen.minelabs.client.network.ClientNetworking;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.EntityModelLayers;
 import be.uantwerpen.minelabs.entity.LabCoat2Renderer;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
+import be.uantwerpen.minelabs.gui.charged_point_gui.ChargedPointScreen;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicScreen;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreen;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisScreen;
@@ -15,8 +17,6 @@ import be.uantwerpen.minelabs.item.ItemModels;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.model.BalloonEntityModel;
 import be.uantwerpen.minelabs.model.ModelProvider;
-import be.uantwerpen.minelabs.network.IonicDataPacket;
-import be.uantwerpen.minelabs.network.LewisDataPacket;
 import be.uantwerpen.minelabs.network.NetworkingConstants;
 import be.uantwerpen.minelabs.renderer.*;
 import net.fabricmc.api.ClientModInitializer;
@@ -24,7 +24,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
@@ -86,26 +85,25 @@ public class MinelabsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MEDIUM_SALT_CRYSTAL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.SMALL_SALT_CRYSTAL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.SALT_WIRE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MOLOGRAM_BLOCK, RenderLayer.getTranslucent());
-        BlockEntityRendererRegistry.register(BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntityRenderer::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.HELIUM, RenderLayer.getTranslucent());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ERLENMEYER_STAND, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.CHARGED_POINT_BLOCK, RenderLayer.getCutout());
         // Register rendering for electron entity
-        EntityRendererRegistry.register(Entities.ELECTRON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.PROTON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.ANTI_PROTON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
-        EntityRendererRegistry.register(Entities.ANTI_NEUTRON_ENTITY, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, FlyingItemEntityRenderer::new);
+
+        EntityRendererRegistry.register(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, BohrBlueprintEntityRenderer::new);
+
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
+
         EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(EntityModelLayers.BALLOON_MODEL, BalloonEntityModel::getTexturedModelData);
 
-        BlockEntityRendererRegistry.register(BlockEntities.BOHR_BLOCK_ENTITY, BohrBlockEntityRenderer::new);
-
+        BlockEntityRendererRegistry.register(BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntities.ELECTRIC_FIELD_SENSOR, ElectricFieldSensorRenderer::new);
@@ -113,22 +111,18 @@ public class MinelabsClient implements ClientModInitializer {
 
         // Register rendering lewis crafting table inventory
         HandledScreens.register(ScreenHandlers.LEWIS_SCREEN_HANDLER, LewisScreen::new);
+        HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
+        HandledScreens.register(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, LabChestScreen::new);
+        HandledScreens.register(ScreenHandlers.CHARGED_POINT_SCREEN_HANDLER, ChargedPointScreen::new);
 
         ScreenEvents.BEFORE_INIT.register((a, screen, b, c) -> {
             if (screen instanceof LewisScreen)
                 ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
         });
 
-
-        //Register rendering ionic block inventory
-        HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
-        HandledScreens.register(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, LabChestScreen::new);
-
         GeoArmorRenderer.registerArmorRenderer(new LabCoat2Renderer(),Items.LAB_COAT2);
 
-//        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LEWIS_BLOCK, RenderLayer.getTranslucent());
-
-        // Gas
+         // Gas
 
         // TODO - toevoegen van 02, N2, ... als extra texture voor kleurloze gassen.
         // TODO - enchantment visuals voor zeldzame stoffen
@@ -189,11 +183,9 @@ public class MinelabsClient implements ClientModInitializer {
         registerErlenmeyerFluid(Fluids.STILL_CH4O, Fluids.FLOWING_CH4O, 0xA1AFAFAF);
         registerErlenmeyerFluid(Fluids.STILL_SiCl4, Fluids.FLOWING_SiCl4, 0xA1AFAFAF);
 
-        //Lewis Data Sync
-        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.LEWISDATASYNC, (c, h, b, s) -> LewisDataPacket.receive(c.world, b, s));
-        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.IONICDATASYNC, (c, h, b, s) -> IonicDataPacket.receive(c.world, b, s));
-        NetworkingConstants.registerC2SPackets();
         ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> 0x3495eb, Blocks.LAB_SINK);
+
+        ClientNetworking.registerHandlers();
     }
 
     public void registerErlenmeyer(Item item, int color, int index) {
