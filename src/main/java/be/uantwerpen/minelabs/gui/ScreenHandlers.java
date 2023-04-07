@@ -1,14 +1,13 @@
 package be.uantwerpen.minelabs.gui;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.gui.charged_point_gui.ChargedPointBlockScreenHandler;
 import be.uantwerpen.minelabs.gui.ionic_gui.IonicBlockScreenHandler;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -17,6 +16,7 @@ public class ScreenHandlers {
     public static final ExtendedScreenHandlerType<LewisBlockScreenHandler> LEWIS_SCREEN_HANDLER = register(LewisBlockScreenHandler::new, "lewis_block");
     public static final ExtendedScreenHandlerType<IonicBlockScreenHandler> IONIC_SCREEN_HANDLER = register(IonicBlockScreenHandler::new, "ionic_block");
     public static final ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER = registerSimple(LabChestScreenHandler::new, "lab_chest");
+    public static final ScreenHandlerType<ChargedPointBlockScreenHandler> CHARGED_POINT_SCREEN_HANDLER = registerSimple(ChargedPointBlockScreenHandler::new, "charged_point");
 
     /**
      * Register a Screen

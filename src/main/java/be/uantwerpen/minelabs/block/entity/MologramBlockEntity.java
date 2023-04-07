@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.block.entity;
 
 import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import be.uantwerpen.minelabs.item.IMoleculeItem;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
@@ -10,6 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -29,14 +31,24 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
     public static void tick(World world, BlockPos blockPos, BlockState state, MologramBlockEntity entity) {
         if (!world.isClient) {
             // SERVER
+            ServerWorld serverWorld = (ServerWorld) world;
             if (state.get(Properties.LIT) && entity.getStack(0).isEmpty()) { // hopper extracted
                 world.setBlockState(blockPos, state.with(Properties.LIT, false));
+                serverWorld.getChunkManager().markForUpdate(blockPos);
+                world.updateListeners(blockPos, state,
+                        state.with(Properties.LIT, false), Block.NOTIFY_LISTENERS);
             } else if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {// hopper inserted
                 world.setBlockState(blockPos, state.with(Properties.LIT, true));
+                serverWorld.getChunkManager().markForUpdate(blockPos);
+                world.updateListeners(blockPos, state,
+                        state.with(Properties.LIT, true), Block.NOTIFY_LISTENERS);
             }
         } else {
             //CLIENT
             entity.rotation = (entity.rotation + 3.6f) % 360f;
+            if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {
+                entity.setStack(0, ItemStack.EMPTY);
+            }
         }
     }
 

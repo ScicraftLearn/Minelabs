@@ -2,8 +2,8 @@
   "structure":
   {
     "atoms": [
-      {"key": "H1", "atom": "H", "position": [ 0.00, 0.00, 0.10]},
-      {"key": "F1", "atom": "F", "position": [ 0.00, 0.00, -0.10]}
+      {"key": "H1", "atom": "H", "position": [ 0.00, 0.00, 0.46]},
+      {"key": "F1", "atom": "F", "position": [ 0.00, 0.00, -0.46]}
     ],
     "bonds": [
       {"from": "H1", "to": "F1", "bondOrder": 1}
