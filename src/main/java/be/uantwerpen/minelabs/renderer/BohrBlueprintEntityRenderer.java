@@ -124,45 +124,15 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
      * Set up the matrices to render everything facing the player.
      */
     private void transformToFacePlayer(E entity, MatrixStack matrices) {
-//        matrices.multiply(this.dispatcher.getRotation());
-//        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180.0f));
-
-//
-//        // TODO: fix weird rotation bug when walking full circle around the bohr plate.
-//
-//        // for facing the player
-//        PlayerEntity player = MinecraftClient.getInstance().player;
-//        if (player == null) return;
-//
-//        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0, -1.0, 0).relativize(player.getPos()));
-//
-//        if (entityToPlayer.equals(Vec3f.ZERO)) {
-//            // default direction should be north iso east.
-//            // positive x is east, so we want to rotate -90 degrees along the y-axis.
-//            matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
-//        } else {
-//            /*
-//             * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (entityToPlayer).
-//             * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the entityToPlayer.
-//             */
-//            // By default, the arrow points in positive x (EAST)
-//            Vec3f v = new Vec3f(1, 0, 0);
-//
-//            // Compute theta with cosine formula.
-//            double theta = Math.acos(v.dot(entityToPlayer) / Math.sqrt(Math.pow(entityToPlayer.getX(), 2) + Math.pow(entityToPlayer.getY(), 2) + Math.pow(entityToPlayer.getZ(), 2)));
-//
-//            if (theta == 0 || theta == Math.PI) {
-//                // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
-//                // Instead, we set in to one of the infinite valid normal vectors: positive Y.
-//                v = Direction.UP.getUnitVector();
-//            } else {
-//                v.cross(entityToPlayer);
-//                v.normalize();
-//            }
-//            matrices.multiply(v.getRadialQuaternion((float) theta));
-//        }
-//        Vec3f y_rotation = new Vec3f(0, 1, 0);
-//        matrices.multiply(y_rotation.getDegreesQuaternion(-90));
+        Vec3d pos = this.dispatcher.camera.getPos();
+        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0,0.75,0).relativize(pos));
+        entityToPlayer.normalize();
+        double pitch = Math.asin(-entityToPlayer.getY());
+        double yaw = Math.atan2(entityToPlayer.getX(), entityToPlayer.getZ());
+        entityToPlayer.cross(Vec3f.POSITIVE_Y);
+        entityToPlayer.normalize();
+        matrices.multiply(entityToPlayer.getRadialQuaternion((float)-pitch));
+        matrices.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) yaw));
     }
 
     /**
