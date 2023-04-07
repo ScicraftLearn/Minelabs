@@ -104,6 +104,7 @@ public class BurnerBlock extends Block {
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        //TODO CHANGE TO EVERY TICK ?
         double x = (double) pos.getX() + 0.5;
         double y = (double) pos.getY() + 0.6;
         double z = (double) pos.getZ() + 0.5;
