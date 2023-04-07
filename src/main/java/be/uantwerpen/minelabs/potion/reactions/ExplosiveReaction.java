@@ -1,10 +1,7 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
@@ -19,15 +16,10 @@ public class ExplosiveReaction extends Reaction {
         this.flammable = flammable;
         this.pyrophoric = pyrophoric;
     }
-    @Override
-    protected void react(World world, double x, double y, double z, BlockHitResult hitResult) {
-        if(this.pyrophoric || ReactionUtils.isBlockNearby(world, hitResult.getBlockPos(), Blocks.TORCH.getDefaultState(), 3))
-            world.createExplosion(null, x, y, z, power, flammable, Explosion.DestructionType.DESTROY);
-    }
 
     @Override
-    protected void react(World world, double x, double y, double z, EntityHitResult hitResult) {
-        if(this.pyrophoric || ReactionUtils.isBlockNearby(world, hitResult.getEntity().getBlockPos(), Blocks.TORCH.getDefaultState(), 3))
-            world.createExplosion(null, x, y, z, power, flammable, Explosion.DestructionType.DESTROY);
+    protected void react(World world, Vec3d pos, BlockPos blockPos) {
+        if (this.pyrophoric || Utils.isFlameNearby(world, blockPos, power))
+            world.createExplosion(null, pos.x, pos.y, pos.z, power, flammable, Explosion.DestructionType.DESTROY);
     }
 }
