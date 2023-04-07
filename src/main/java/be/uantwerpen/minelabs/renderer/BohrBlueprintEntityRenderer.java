@@ -24,9 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -108,12 +106,12 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
         matrices.push();
 
         // center and scale
-        matrices.translate(0, 0.75f, 0f);
+        matrices.translate(0, entity.getHeight() / 2f, 0f);
         matrices.scale(1.5f, 1.5f, 1.5f);
 
         transformToFacePlayer(entity, matrices);
         makeNucleus(nP, nN, stable, shakeFactor, matrices, light, vertexConsumers);
-        makeElectrons(nE, matrices, light, vertexConsumers, time);
+        makeElectrons(nE, matrices, light, vertexConsumers, time, entity);
 
         matrices.pop();
     }
@@ -126,41 +124,45 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
      * Set up the matrices to render everything facing the player.
      */
     private void transformToFacePlayer(E entity, MatrixStack matrices) {
-        // TODO: fix weird rotation bug when walking full circle around the bohr plate.
+//        matrices.multiply(this.dispatcher.getRotation());
+//        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180.0f));
 
-        // for facing the player
-        PlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null) return;
-
-        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0, -1.0, 0).relativize(player.getPos()));
-
-        if (entityToPlayer.equals(Vec3f.ZERO)) {
-            // default direction should be north iso east.
-            // positive x is east, so we want to rotate -90 degrees along the y-axis.
-            matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
-        } else {
-            /*
-             * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (entityToPlayer).
-             * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the entityToPlayer.
-             */
-            // By default, the arrow points in positive x (EAST)
-            Vec3f v = new Vec3f(1, 0, 0);
-
-            // Compute theta with cosine formula.
-            double theta = Math.acos(v.dot(entityToPlayer) / Math.sqrt(Math.pow(entityToPlayer.getX(), 2) + Math.pow(entityToPlayer.getY(), 2) + Math.pow(entityToPlayer.getZ(), 2)));
-
-            if (theta == 0 || theta == Math.PI) {
-                // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
-                // Instead, we set in to one of the infinite valid normal vectors: positive Y.
-                v = Direction.UP.getUnitVector();
-            } else {
-                v.cross(entityToPlayer);
-                v.normalize();
-            }
-            matrices.multiply(v.getRadialQuaternion((float) theta));
-        }
-        Vec3f y_rotation = new Vec3f(0, 1, 0);
-        matrices.multiply(y_rotation.getDegreesQuaternion(-90));
+//
+//        // TODO: fix weird rotation bug when walking full circle around the bohr plate.
+//
+//        // for facing the player
+//        PlayerEntity player = MinecraftClient.getInstance().player;
+//        if (player == null) return;
+//
+//        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0, -1.0, 0).relativize(player.getPos()));
+//
+//        if (entityToPlayer.equals(Vec3f.ZERO)) {
+//            // default direction should be north iso east.
+//            // positive x is east, so we want to rotate -90 degrees along the y-axis.
+//            matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
+//        } else {
+//            /*
+//             * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (entityToPlayer).
+//             * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the entityToPlayer.
+//             */
+//            // By default, the arrow points in positive x (EAST)
+//            Vec3f v = new Vec3f(1, 0, 0);
+//
+//            // Compute theta with cosine formula.
+//            double theta = Math.acos(v.dot(entityToPlayer) / Math.sqrt(Math.pow(entityToPlayer.getX(), 2) + Math.pow(entityToPlayer.getY(), 2) + Math.pow(entityToPlayer.getZ(), 2)));
+//
+//            if (theta == 0 || theta == Math.PI) {
+//                // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
+//                // Instead, we set in to one of the infinite valid normal vectors: positive Y.
+//                v = Direction.UP.getUnitVector();
+//            } else {
+//                v.cross(entityToPlayer);
+//                v.normalize();
+//            }
+//            matrices.multiply(v.getRadialQuaternion((float) theta));
+//        }
+//        Vec3f y_rotation = new Vec3f(0, 1, 0);
+//        matrices.multiply(y_rotation.getDegreesQuaternion(-90));
     }
 
     /**
@@ -292,7 +294,7 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
      * @param vertexConsumerProvider : vertexConsumerProvider
      * @param time                   :
      */
-    public void makeElectrons(int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, float time) {
+    public void makeElectrons(int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, float time, E entity) {
 
         // for the electron-shell distribution, check the NuclidesTable class static declaration/definition.
 
@@ -314,13 +316,27 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
             float y = point.get(1);
             float z = point.get(2);
 
+//            Vec3f position = new Vec3f(x, y, z);
+            Vec3f position = new Vec3f(dispatcher.camera.getPos().subtract(entity.getPos().add(0, 0.75, 0)));
+            position.normalize();
+            Vec3f facing = new Vec3f(0, 0, 1);
+            float angle = (float)Math.acos(position.dot(facing));
+//            Minelabs.LOGGER.info("angle" + angle);
+
+            //double theta = Math.acos(v.dot(entityToPlayer) / Math.sqrt(Math.pow(entityToPlayer.getX(), 2) + Math.pow(entityToPlayer.getY(), 2) + Math.pow(entityToPlayer.getZ(), 2)));
+            facing.cross(position); // facing is rotation axis
+
+            matrices.push();
             matrices.translate(x, y, z);
-            matrices.scale(0.1f, 0.1f, 0.1f);
+            matrices.scale(0.2f, 0.2f, 0.2f);
+            matrices.multiply(facing.getRadialQuaternion(angle));
 
             itemRenderer.renderItem(ELECTRON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
 
-            matrices.scale(10, 10, 10);
-            matrices.translate(-x, -y, -z);
+            matrices.pop();
+
+//            matrices.scale(10, 10, 10);
+//            matrices.translate(-x, -y, -z);
 
             electronCounter++;
         }
