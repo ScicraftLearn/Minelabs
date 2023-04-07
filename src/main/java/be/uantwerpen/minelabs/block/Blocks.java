@@ -6,6 +6,7 @@ import be.uantwerpen.minelabs.fluid.Fluids;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
@@ -132,8 +133,8 @@ public class Blocks {
     public static final Block TUBERACK = register(new TubeRackBlock(
             FabricBlockSettings.of(Material.METAL).strength(4.0f)), "tuberack");
 
-    public static final Block BURNER = register(new BurnerBlock(
-            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "burner");
+    public static final Block BURNER = register(new BurnerBlock(FabricBlockSettings.of(Material.METAL)
+            .strength(4.0f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "burner");
 
     /**
      * Register a Block

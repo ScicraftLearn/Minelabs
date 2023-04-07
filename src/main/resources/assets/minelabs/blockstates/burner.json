@@ -1,184 +1,184 @@
 {
   "variants": {
     "facing=north,counter=0,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack"
+      "model": "minelabs:block/burner",
+      "y": 180
     },
     "facing=east,counter=0,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack",
-      "y": 90
+      "model": "minelabs:block/burner",
+      "y": 270
     },
     "facing=south,counter=0,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack",
-      "y": 180
+      "model": "minelabs:block/burner"
     },
     "facing=west,counter=0,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack",
-      "y": 270
+      "model": "minelabs:block/burner",
+      "y": 90
     },
     "facing=north,counter=1,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter1"
+      "model": "minelabs:block/burner_counter1",
+      "y": 180
     },
     "facing=east,counter=1,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 90
+      "model": "minelabs:block/burner_counter1",
+      "y": 270
     },
     "facing=south,counter=1,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 180
+      "model": "minelabs:block/burner_counter1"
     },
     "facing=west,counter=1,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 270
+      "model": "minelabs:block/burner_counter1",
+      "y": 90
     },
     "facing=north,counter=2,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter2"
+      "model": "minelabs:block/burner_counter2",
+      "y": 180
     },
     "facing=east,counter=2,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 90
+      "model": "minelabs:block/burner_counter2",
+      "y": 270
     },
     "facing=south,counter=2,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 180
+      "model": "minelabs:block/burner_counter2"
     },
     "facing=west,counter=2,lit=false,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 270
+      "model": "minelabs:block/burner_counter2",
+      "y": 90
     },
     "facing=north,counter=0,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack"
+      "model": "minelabs:block/burner",
+      "y": 180
     },
     "facing=east,counter=0,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack",
-      "y": 90
+      "model": "minelabs:block/burner",
+      "y": 270
     },
     "facing=south,counter=0,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack",
-      "y": 180
+      "model": "minelabs:block/burner"
     },
     "facing=west,counter=0,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack",
-      "y": 270
+      "model": "minelabs:block/burner",
+      "y": 90
     },
     "facing=north,counter=1,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter1"
+      "model": "minelabs:block/burner_counter1",
+      "y": 180
     },
     "facing=east,counter=1,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 90
+      "model": "minelabs:block/burner_counter1",
+      "y": 270
     },
     "facing=south,counter=1,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 180
+      "model": "minelabs:block/burner_counter1"
     },
     "facing=west,counter=1,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 270
+      "model": "minelabs:block/burner_counter1",
+      "y": 90
     },
     "facing=north,counter=2,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter2"
+      "model": "minelabs:block/burner_counter2",
+      "y": 180
     },
     "facing=east,counter=2,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 90
+      "model": "minelabs:block/burner_counter2",
+      "y": 270
     },
     "facing=south,counter=2,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 180
+      "model": "minelabs:block/burner_counter2"
     },
     "facing=west,counter=2,lit=true,oxygenated=false": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 270
+      "model": "minelabs:block/burner_counter2",
+      "y": 90
     },
     "facing=north,counter=0,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack"
+      "model": "minelabs:block/burner",
+      "y": 180
     },
     "facing=east,counter=0,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack",
-      "y": 90
+      "model": "minelabs:block/burner",
+      "y": 270
     },
     "facing=south,counter=0,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack",
-      "y": 180
+      "model": "minelabs:block/burner"
     },
     "facing=west,counter=0,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack",
-      "y": 270
+      "model": "minelabs:block/burner",
+      "y": 90
     },
     "facing=north,counter=1,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter1"
+      "model": "minelabs:block/burner_counter1",
+      "y": 180
     },
     "facing=east,counter=1,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 90
+      "model": "minelabs:block/burner_counter1",
+      "y": 270
     },
     "facing=south,counter=1,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 180
+      "model": "minelabs:block/burner_counter1"
     },
     "facing=west,counter=1,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 270
+      "model": "minelabs:block/burner_counter1",
+      "y": 90
     },
     "facing=north,counter=2,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter2"
+      "model": "minelabs:block/burner_counter2",
+      "y": 180
     },
     "facing=east,counter=2,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 90
+      "model": "minelabs:block/burner_counter2",
+      "y": 270
     },
     "facing=south,counter=2,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 180
+      "model": "minelabs:block/burner_counter2"
     },
     "facing=west,counter=2,lit=false,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter2",
-      "y": 270
+      "model": "minelabs:block/burner_counter2",
+      "y": 90
     },
     "facing=north,counter=0,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack"
+      "model": "minelabs:block/burner",
+      "y": 180
     },
     "facing=east,counter=0,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack",
-      "y": 90
+      "model": "minelabs:block/burner",
+      "y": 270
     },
     "facing=south,counter=0,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack",
-      "y": 180
+      "model": "minelabs:block/burner"
     },
     "facing=west,counter=0,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack",
-      "y": 270
+      "model": "minelabs:block/burner",
+      "y": 90
     },
     "facing=north,counter=1,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter1"
+      "model": "minelabs:block/burner_counter1",
+      "y": 180
     },
     "facing=east,counter=1,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 90
+      "model": "minelabs:block/burner_counter1",
+      "y": 270
     },
     "facing=south,counter=1,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 180
+      "model": "minelabs:block/burner_counter1"
     },
     "facing=west,counter=1,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter1",
-      "y": 270
-    },
-    "facing=north,counter=2,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter2"
-    },
-    "facing=east,counter=2,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter2",
+      "model": "minelabs:block/burner_counter1",
       "y": 90
     },
-    "facing=south,counter=2,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter2",
+    "facing=north,counter=2,lit=true,oxygenated=true": {
+      "model": "minelabs:block/burner_counter2",
       "y": 180
     },
-    "facing=west,counter=2,lit=true,oxygenated=true": {
-      "model": "minelabs:block/tuberack_counter2",
+    "facing=east,counter=2,lit=true,oxygenated=true": {
+      "model": "minelabs:block/burner_counter2",
       "y": 270
+    },
+    "facing=south,counter=2,lit=true,oxygenated=true": {
+      "model": "minelabs:block/burner_counter2"
+    },
+    "facing=west,counter=2,lit=true,oxygenated=true": {
+      "model": "minelabs:block/burner_counter2",
+      "y": 90
     }
   }
 }
