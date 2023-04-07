@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
 import net.minecraft.block.AbstractCandleBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.tag.BlockTags;
@@ -8,11 +9,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ExtinguishReaction extends Reaction {
 
     private final int radius;
 
     public ExtinguishReaction(int radius) {
+        this.radius = radius;
+    }
+
+    public ExtinguishReaction(int radius, List<Block> whiteList, List<Block> blackList) {
+        super(whiteList, blackList);
         this.radius = radius;
     }
 

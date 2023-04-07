@@ -1,10 +1,13 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class FlammableReaction extends Reaction {
 
@@ -13,6 +16,13 @@ public class FlammableReaction extends Reaction {
     private final boolean pyrophoric;
 
     public FlammableReaction(int duration, int radius, boolean pyrophoric) {
+        this.duration = duration;
+        this.radius = radius;
+        this.pyrophoric = pyrophoric;
+    }
+
+    public FlammableReaction(int duration, int radius, boolean pyrophoric, List<Block> whiteList, List<Block> blackList) {
+        super(whiteList, blackList);
         this.duration = duration;
         this.radius = radius;
         this.pyrophoric = pyrophoric;

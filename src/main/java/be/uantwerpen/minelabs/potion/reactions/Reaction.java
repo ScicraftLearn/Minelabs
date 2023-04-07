@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -12,12 +13,31 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 public abstract class Reaction {
+
+    private final List<Block> whiteList;
+    private final List<Block> blackList;
+
+    protected Reaction() {
+        this.whiteList = List.of();
+        this.blackList = List.of();
+    }
+
+    protected Reaction(List<Block> whiteList, List<Block> blackList) {
+        this.whiteList = whiteList == null ? List.of() : whiteList;
+        this.blackList = blackList == null ? List.of() : blackList;
+    }
+
+    protected boolean canReact(Block block) {
+        Objects.requireNonNull(block);
+        return (whiteList.isEmpty() || whiteList.contains(block)) && !blackList.contains(block);
+    }
 
     public void react(World world, Vec3d position, HitResult hitResult) {
         Objects.requireNonNull(world);

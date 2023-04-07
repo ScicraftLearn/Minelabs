@@ -5,7 +5,10 @@ import be.uantwerpen.minelabs.advancement.criterion.ErlenmeyerCriterion;
 import be.uantwerpen.minelabs.item.IMoleculeItem;
 import be.uantwerpen.minelabs.item.Items;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.LingeringPotionItem;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -52,7 +55,7 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
         }
 
         // Advancement
-        if(user instanceof ServerPlayerEntity serverPlayer) {
+        if (user instanceof ServerPlayerEntity serverPlayer) {
             Criteria.ERLENMEYER_CRITERION.trigger(serverPlayer, ErlenmeyerCriterion.Type.THROW);
         }
 
