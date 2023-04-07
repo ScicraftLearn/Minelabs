@@ -1,12 +1,16 @@
 package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.util.MinelabsProperties;
+import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -59,10 +63,22 @@ public class BurnerBlock extends Block {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient) {
-
+        if (player.getStackInHand(hand).isEmpty()) {
+            world.setBlockState(pos, state.cycle(OXYGENATED));
+            return ActionResult.SUCCESS;
+        } else {
+            if (player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL && !state.get(LIT)) {
+                world.setBlockState(pos, state.cycle(LIT));
+                return ActionResult.SUCCESS;
+            }
+            if (player.getStackInHand(hand).isIn(Tags.Items.FIRE_EXTINGUISH) && state.get(LIT)) {
+                //TODO BETTER SOLUTION ?
+                world.setBlockState(pos, state.cycle(LIT));
+                world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                return ActionResult.SUCCESS;
+            }
+            return ActionResult.FAIL;
         }
-        return super.onUse(state, world, pos, player, hand, hit);
     }
 
     @Override

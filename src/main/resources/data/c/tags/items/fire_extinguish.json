@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minelabs:erlenmeyer_h2o",
+    "minecraft:water"
+  ]
+}
