@@ -33,7 +33,7 @@ public class AtomicFloor extends AbstractGlassBlock {
 
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return context.isHolding(Items.ATOM_FLOOR) || context.isHolding(Items.BOHR_BLOCK) ?
+        return context.isHolding(Items.ATOM_FLOOR) || context.isHolding(Items.BOHR_BLUEPRINT) ?
                 VoxelShapes.fullCube() : VoxelShapes.empty();
     }
 

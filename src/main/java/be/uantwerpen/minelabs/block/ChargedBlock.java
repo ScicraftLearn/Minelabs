@@ -9,6 +9,8 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -39,6 +41,9 @@ public class ChargedBlock extends BlockWithEntity{
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ChargedBlockEntity charged && !newState.isOf(Blocks.ANIMATED_CHARGED)) {
 			charged.removeField(world, pos);
+			if (charged.getInventory() != ItemStack.EMPTY) {
+				world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), charged.getInventory()));
+			}
 		}
 		super.onStateReplaced(state, world, pos, newState, moved);
 	}
@@ -48,7 +53,7 @@ public class ChargedBlock extends BlockWithEntity{
 
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ChargedBlockEntity charged) {
-			int e_radius = 8;
+			int e_radius = TimeFreezeBlock.e_radius;
 			BlockPos c_pos = charged.getPos();
 			Iterable<BlockPos> blocks_in_radius_of_charged = BlockPos.iterate(c_pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), c_pos.mutableCopy().add(e_radius, e_radius, e_radius));
 			boolean update = true;
@@ -60,10 +65,8 @@ public class ChargedBlock extends BlockWithEntity{
 				}
 			}
 			// if there are no other time freeze blocks around them, you can play their animation (if there is one)
-			if(update) {
-				charged.needsUpdate(true);
-				//System.out.println("UPDATE NOW");
-			}
+			charged.needsUpdate(update);
+			//System.out.println("UPDATE NOW");
 		}
 
 		super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);

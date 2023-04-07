@@ -15,6 +15,7 @@ import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.network.NetworkingConstants;
 import be.uantwerpen.minelabs.paintings.Paintings;
+import be.uantwerpen.minelabs.particle.Particles;
 import be.uantwerpen.minelabs.sound.SoundEvents;
 import be.uantwerpen.minelabs.world.gen.OreGenerations;
 import net.fabricmc.api.ModInitializer;
@@ -54,6 +55,7 @@ public class Minelabs implements ModInitializer {
         Paintings.registerPaintings();
         OreGenerations.generateOres();
         Effects.registerStatusEffects();
+        Particles.registerParticles();
 
         CraftingRecipes.register();
 
@@ -62,7 +64,6 @@ public class Minelabs implements ModInitializer {
         ScientificVillager.registerVillagers();
         ScientificVillager.registerTrades();
         ServerModEvents.registerEvents();
-        NetworkingConstants.registerS2CPackets();
 
         Criteria.registerCriteria();
     }
