@@ -25,6 +25,7 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
+import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -43,6 +44,14 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
     private static final List<Vec3f> NUCLEUS_COORDINATES = createIcosahedron();
 
+    private static final int[] ELECTRON_SHELL_CAPACITIES = {2, 8, 18, 32, 32, 18, 8};
+    private static final float ELECTRON_SCALE = 0.2f;
+    // radius of first shell
+    private static final float ELECTRON_SHELL_RADIUS = 0.5f;
+    // distance between two shells
+    private static final float ELECTRON_SHELL_RADIUS_OFFSET = (1 - ELECTRON_SHELL_RADIUS) / (ELECTRON_SHELL_CAPACITIES.length - 1);
+    // rotation period in ticks
+    private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
 
     private final ItemRenderer itemRenderer;
 
@@ -59,6 +68,21 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         return icosahedron;
     }
 
+    private List<Integer> getElectronShellConfiguration(int nE){
+        MinecraftClient.getInstance().getProfiler().push("shell config");
+        // TODO: placeholder that fills until max. Should use energy based filling of shells.
+        // TODO: if too slow, place cache over this function
+        List<Integer> result = new ArrayList<>(7);
+        for (int c : ELECTRON_SHELL_CAPACITIES) {
+            if (nE <= 0) break;
+            int amount = Math.min(c, nE);
+            result.add(amount);
+            nE -= amount;
+        }
+        MinecraftClient.getInstance().getProfiler().pop();
+        return result;
+    }
+
     public BohrBlueprintEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
         this.itemRenderer = context.getItemRenderer();
@@ -70,25 +94,87 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     }
 
     @Override
+    public Vec3d getPositionOffset(BohrBlueprintEntity entity, float tickDelta) {
+        return new Vec3d(0, entity.getHeight() / 2, 0);
+    }
+
+    @Override
+    protected int getBlockLight(BohrBlueprintEntity entity, BlockPos pos) {
+        return 15;      // render as if always fully lit
+    }
+
+    @Override
+    protected int getSkyLight(BohrBlueprintEntity entity, BlockPos pos) {
+        return 15;      // render as if always fully lit
+    }
+
+    @Override
     public void render(BohrBlueprintEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        int nP = entity.getProtons();
-        int nN = entity.getNeutrons();
-        int nE = entity.getElectrons();
+        // Should someone use data set to go above the limit of the entity, this will ensure the rendering does not crash.
+        int nP = Math.min(entity.getProtons(), BohrBlueprintEntity.MAX_PROTONS);
+        int nN = Math.min(entity.getNeutrons(), BohrBlueprintEntity.MAX_NEUTRONS);
+        int nE = Math.min(entity.getElectrons(), BohrBlueprintEntity.MAX_ELECTRONS);
 
         float time = entity.age + tickDelta;
-        boolean stable = entity.isStable();
 
+        MinecraftClient.getInstance().getProfiler().push("bohr");
         matrices.push();
-        matrices.translate(0, entity.getHeight() / 2f, 0f);
 
+        MinecraftClient.getInstance().getProfiler().push("protons");
         renderNucleus(nP, nN, time, matrices, vertexConsumers, light);
+        MinecraftClient.getInstance().getProfiler().swap("electrons");
         renderElectrons(nE, time, matrices, vertexConsumers, light);
+        MinecraftClient.getInstance().getProfiler().pop();
+
+        matrices.pop();
+        MinecraftClient.getInstance().getProfiler().pop();
+    }
+
+    private void renderElectrons(int nE, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        // Electrons are rendered in at most 7 different shells with chosen yaw, pitch and roll.
+        // Within an orbit the electrons are equally spaced from each other.
+
+        List<Integer> electronShellConfiguration = getElectronShellConfiguration(nE);
+
+        float radius = ELECTRON_SHELL_RADIUS;
+        matrices.push();
+        for (int electronsInShell : electronShellConfiguration){
+            // TODO: rotate
+            renderElectronShell(electronsInShell, radius, time, matrices, vertexConsumers, light);
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
+            radius += ELECTRON_SHELL_RADIUS_OFFSET;
+        }
+        matrices.pop();
+    }
+
+    /**
+     * Render an electron shell in the XY-plane with specified radius and number of electrons.
+     */
+    private void renderElectronShell(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light){
+        matrices.push();
+        // rotation animation of electrons on shell
+        float angle = (time % ELECTRON_ROTATION_PERIOD) / ELECTRON_ROTATION_PERIOD * 360;
+        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angle));
+
+        // render electron at top of orbit then rotate and repeat
+        float angleBetweenElectrons = 360f / nE;
+        for(int e = 0; e < nE; e++){
+            matrices.push();
+            matrices.translate(0, radius, 0);
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+            matrices.scale(ELECTRON_SCALE, ELECTRON_SCALE, ELECTRON_SCALE);
+            renderElectron(matrices, vertexConsumers, light);
+            matrices.pop();
+            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenElectrons));
+        }
 
         matrices.pop();
     }
 
-    private void renderElectrons(int nE, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-
+    private void renderElectron(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light){
+        MinecraftClient.getInstance().getProfiler().push("item renderer");
+        itemRenderer.renderItem(ELECTRON, ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
+        MinecraftClient.getInstance().getProfiler().pop();
     }
 
     private void renderNucleus(int nP, int nN, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
