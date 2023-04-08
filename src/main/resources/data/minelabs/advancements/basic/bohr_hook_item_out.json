@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "minelabs:bohr_block"
+    },
+    "title": "Are you hooked yet?",
+    "description": "Hook an item out of the Bohr blueprint using a fishing rod",
+    "background": "minelabs:textures/block/advancements_bg.png",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "minelabs:basic/use_bohr_blueprint",
+  "criteria": {
+    "bohr_hook_item_out": {
+      "trigger": "minecraft:fishing_rod_hooked",
+      "conditions": {
+        "entity": {
+          "type": "minelabs:bohr_blueprint_entity"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bohr_hook_item_out"
+    ]
+  ]
+}
