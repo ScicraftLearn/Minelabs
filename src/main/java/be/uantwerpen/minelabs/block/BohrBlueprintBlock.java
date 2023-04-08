@@ -102,10 +102,12 @@ public class BohrBlueprintBlock extends Block {
         }
 
         // Otherwise try to craft atom
+        Item original = entity.getOriginalAtom();
         ItemStack resultStack = entity.craftAtom();
         if (!resultStack.isEmpty()){
+            if (!resultStack.getItem().equals(original))
+                Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.CRAFT_ATOM);
             player.getInventory().offerOrDrop(resultStack);
-            Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.CRAFT_ATOM);
             return ActionResult.SUCCESS;
         }
 

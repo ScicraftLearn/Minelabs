@@ -168,6 +168,10 @@ public class BohrBlueprintEntity extends Entity {
             world.removeBlock(getBohrBlueprintPos(), false);
     }
 
+    public Item getOriginalAtom() {
+        return inventory.get(0).getItem();
+    }
+
     public boolean isEmpty() {
         // inventory is not synced to client, so need to check counts.
         return getProtons() == 0 && getNeutrons() == 0 && getElectrons() == 0;
