@@ -1,6 +1,8 @@
 package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.item.AtomItem;
@@ -12,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
@@ -93,6 +96,7 @@ public class BohrBlueprintBlock extends Block {
             if (item instanceof AtomItem && entity.addItem(item)) {
                 if (!player.getAbilities().creativeMode)
                     stack.decrement(1);
+                Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.ADD_ATOM);
                 return ActionResult.SUCCESS;
             }
         }
@@ -101,6 +105,7 @@ public class BohrBlueprintBlock extends Block {
         ItemStack resultStack = entity.craftAtom();
         if (!resultStack.isEmpty()){
             player.getInventory().offerOrDrop(resultStack);
+            Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.CRAFT_ATOM);
             return ActionResult.SUCCESS;
         }
 
@@ -131,7 +136,7 @@ public class BohrBlueprintBlock extends Block {
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
-            entity.dropLastItem();
+            entity.dropLastItem((ServerPlayerEntity) player);
         }
     }
 
