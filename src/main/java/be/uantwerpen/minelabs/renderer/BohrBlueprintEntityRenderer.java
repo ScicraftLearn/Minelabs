@@ -11,9 +11,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -52,6 +50,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final float ELECTRON_SHELL_RADIUS_OFFSET = (1 - ELECTRON_SHELL_RADIUS) / (ELECTRON_SHELL_CAPACITIES.length - 1);
     // rotation period in ticks
     private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
+    // amount of points to use for the electron shell orbit line
+    private static final int ELECTRON_LINE_NUMPOINTS = 32;
 
     private final ItemRenderer itemRenderer;
 
@@ -142,6 +142,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             // TODO: rotate
             renderElectronShell(electronsInShell, radius, time, matrices, vertexConsumers, light);
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(30));
+            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(15));
             radius += ELECTRON_SHELL_RADIUS_OFFSET;
         }
         matrices.pop();
@@ -151,6 +153,11 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
      * Render an electron shell in the XY-plane with specified radius and number of electrons.
      */
     private void renderElectronShell(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light){
+        renderElectronShellLine(radius, matrices, vertexConsumers);
+        renderElectronShellElectrons(nE, radius, time, matrices, vertexConsumers, light);
+    }
+
+    private void renderElectronShellElectrons(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light){
         matrices.push();
         // rotation animation of electrons on shell
         float angle = (time % ELECTRON_ROTATION_PERIOD) / ELECTRON_ROTATION_PERIOD * 360;
@@ -164,8 +171,29 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
             matrices.scale(ELECTRON_SCALE, ELECTRON_SCALE, ELECTRON_SCALE);
             renderElectron(matrices, vertexConsumers, light);
+
             matrices.pop();
             matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenElectrons));
+        }
+        matrices.pop();
+    }
+
+    private void renderElectronShellLine(float radius, MatrixStack matrices, VertexConsumerProvider vertexConsumers){
+        matrices.push();
+
+        VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLineStrip());
+        // lines
+        float angleBetweenLinePoints = 360f / ELECTRON_LINE_NUMPOINTS;
+        for(int e = 0; e <= ELECTRON_LINE_NUMPOINTS; e++){
+            matrices.push();
+            matrices.translate(0, radius, 0);
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+
+            MatrixStack.Entry matrixEntry = matrices.peek();
+            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, 0, 0).color(0, 0, 0, 255).normal(matrixEntry.getNormalMatrix(), 1, 0, 0).next();
+
+            matrices.pop();
+            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints));
         }
 
         matrices.pop();
@@ -173,7 +201,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
     private void renderElectron(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light){
         MinecraftClient.getInstance().getProfiler().push("item renderer");
-        itemRenderer.renderItem(ELECTRON, ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
+        itemRenderer.renderItem(ELECTRON, ModelTransformation.Mode.NONE, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
         MinecraftClient.getInstance().getProfiler().pop();
     }
 
