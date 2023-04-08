@@ -83,13 +83,7 @@ public class CosmeticBlock extends Block {
     }
 
     protected int getBase(@NotNull World world, BlockPos pos){
-        int base = 0;
-        if (world.getBlockState(pos).getBlock() instanceof LabBlock) {
-            base = 2;
-        } else if (world.getBlockState(pos).getBlock() instanceof LabCenterBlock) {
-            base = 1;
-        }
-        return base;
+        return getBase(world.getBlockState(pos).getBlock());
     }
 
     private int getBase(Block block){

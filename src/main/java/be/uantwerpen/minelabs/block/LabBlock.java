@@ -65,6 +65,7 @@ public class LabBlock extends BlockWithEntity {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
+        // TODO TRIGGER NEIGHBOR UPDATE
         return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
     }
 
@@ -86,11 +87,13 @@ public class LabBlock extends BlockWithEntity {
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        //TODO ?
         return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        //TODO ?
         super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
     }
 }

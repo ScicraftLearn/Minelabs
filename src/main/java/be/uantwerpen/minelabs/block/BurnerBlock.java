@@ -60,6 +60,7 @@ public class BurnerBlock extends CosmeticBlock {
         } else {
             if ((player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL
                     || player.getStackInHand(hand).getItem() == Items.FIRE_CHARGE) && !state.get(LIT)) {
+                // TODO PLAY SOUND
                 world.setBlockState(pos, state.cycle(LIT));
                 return ActionResult.SUCCESS;
             }
