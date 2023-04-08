@@ -15,61 +15,41 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.*;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class BurnerBlock extends Block {
+public class BurnerBlock extends CosmeticBlock {
 
     private static final BooleanProperty LIT = Properties.LIT;
     private static final BooleanProperty OXYGENATED = MinelabsProperties.OXYGENATED;
-    private static final IntProperty COUNTER = MinelabsProperties.COUNTER;
-    private static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     private static final ParticleEffect RED_FIRE = ParticleTypes.FLAME;
     private static final ParticleEffect BLUE_FIRE = ParticleTypes.SOUL_FIRE_FLAME;
 
     public BurnerBlock(Settings settings) {
         super(settings);
+        setDefaultState(getDefaultState().with(LIT, false).with(OXYGENATED, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-        builder.add(COUNTER);
+        super.appendProperties(builder);
         builder.add(OXYGENATED);
         builder.add(LIT);
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        int base = 0;
-        if (ctx.getWorld().getBlockState(ctx.getBlockPos().down()).getBlock() instanceof LabBlock) {
-            base = 2;
-        } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().down()).getBlock() instanceof LabCenterBlock) {
-            base = 1;
-        }
-        return this.getDefaultState()
-                .with(FACING, ctx.getPlayerFacing().getOpposite())
-                .with(COUNTER, base)
-                .with(LIT, false)
-                .with(OXYGENATED, false);
+        return super.getPlacementState(ctx).with(LIT, false).with(OXYGENATED, false);
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ctx) {
-        return switch (state.get(COUNTER)) {
-            case 0 -> VoxelShapes.cuboid(0.250f, 0f, 0.250f, 0.75f, 0.625f, 0.75f);
-            case 1 -> VoxelShapes.cuboid(0.250f, -0.0625f, 0.250f, 0.75f, 0.5625f, 0.75f);
-            case 2 -> VoxelShapes.cuboid(0.250f, -0.125f, 0.250f, 0.75f, 0.5f, 0.75f);
-            default -> VoxelShapes.fullCube();
-        };
+        return VoxelShapes.cuboid(0.250f, 0f-getYOffset(state), 0.250f, 0.75f, 0.625f-getYOffset(state), 0.75f);
     }
 
     @Override
@@ -93,20 +73,10 @@ public class BurnerBlock extends Block {
     }
 
     @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
-    }
-
-    @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         //TODO CHANGE TO EVERY TICK ?
         double x = (double) pos.getX() + 0.5;
-        double y = (double) pos.getY() + 0.6;
+        double y = (double) pos.getY() + 0.7 - getYOffset(state);
         double z = (double) pos.getZ() + 0.5;
 
         if (state.get(LIT)) {
