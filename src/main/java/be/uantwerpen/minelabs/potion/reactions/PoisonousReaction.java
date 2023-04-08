@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.math.BlockPos;
@@ -28,6 +29,11 @@ public class PoisonousReaction extends Reaction {
 
     @Override
     protected void react(World world, Vec3d position, BlockPos blockPos) {
-        Utils.applyRadius(world, position, radius, e -> e.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, duration, amplifier)));
+        Utils.applyRadius(world, position, radius, this::react);
+    }
+
+    @Override
+    public void react(LivingEntity entity) {
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, duration, amplifier));
     }
 }

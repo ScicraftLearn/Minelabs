@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -31,5 +32,10 @@ public class ExplosiveReaction extends Reaction {
     protected void react(World world, Vec3d pos, BlockPos blockPos) {
         if (this.canReact(world.getBlockState(blockPos).getBlock()) && (this.pyrophoric || Utils.isFlameNearby(world, blockPos, power)))
             world.createExplosion(null, pos.x, pos.y, pos.z, power, flammable, Explosion.DestructionType.DESTROY);
+    }
+
+    @Override
+    public void react(LivingEntity entity) {
+
     }
 }

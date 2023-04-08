@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.potion.reactions;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -23,5 +24,10 @@ public class DissolveReaction extends Reaction {
             MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.CLOUD,
                     pos.x, pos.y, pos.z, 0, 0, 0);
         }
+    }
+
+    @Override
+    public void react(LivingEntity entity) {
+
     }
 }

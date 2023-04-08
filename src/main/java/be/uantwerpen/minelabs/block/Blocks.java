@@ -3,12 +3,21 @@ package be.uantwerpen.minelabs.block;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.fluid.Fluids;
+import be.uantwerpen.minelabs.potion.Molecule;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 
 public class Blocks {
 
@@ -113,7 +122,11 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "lewis_block");
     public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
-    public static final Block HNO3 = register(new FluidBlock(Fluids.STILL_HNO3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "hno3");
+    public static final Block HNO3 = register(Fluids.STILL_HNO3, Molecule.HNO3, "hno3");
+//    public static final Block HNO3 = register(new FluidBlock(Fluids.STILL_HNO3, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)) {
+//
+//
+//    }, "hno3");
     public static final Block H2O = register(new FluidBlock(Fluids.STILL_H2O, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "h2o");
     public static final Block CS2 = register(new FluidBlock(Fluids.STILL_CS2, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "cs2");
     public static final Block CCl4 = register(new FluidBlock(Fluids.STILL_CCl4, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)), "ccl4");
@@ -142,6 +155,19 @@ public class Blocks {
      */
     private static <T extends Block> T register(T block, String identifier) {
         return Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, identifier), block);
+    }
+
+    private static FluidBlock register(FlowableFluid fluid, Molecule molecule, String identifier) {
+        return Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, identifier),
+                new FluidBlock(fluid, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)) {
+                    @Override
+                    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+                        if (entity instanceof LivingEntity livingEntity) {
+                            molecule.react(livingEntity);
+                        }
+                        super.onEntityCollision(state, world, pos, entity);
+                    }
+                });
     }
 
     /**

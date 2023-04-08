@@ -51,6 +51,8 @@ public abstract class Reaction {
 
     protected abstract void react(World world, Vec3d position, BlockPos blockPos);
 
+    public abstract void react(LivingEntity entity);
+
     protected class Utils {
 
         final static List<BlockState> FLAMMABLE_BLOCKS = Arrays.asList(
@@ -60,20 +62,6 @@ public abstract class Reaction {
                 Blocks.FIRE.getDefaultState(),
                 Blocks.LAVA.getDefaultState()
         );
-
-        public static boolean isBlockNearby(World world, BlockPos source, BlockState blockState, int radius) {
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -radius; y <= radius; y++) {
-                    for (int z = -radius; z <= radius; z++) {
-                        BlockState state = world.getBlockState(source.add(x, y, z));
-                        if (state == blockState) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
 
         public static void applyRadius(BlockPos centerPos, int radius, Consumer<BlockPos> blockFunction) {
             for (int x = -radius; x <= radius; x++) {

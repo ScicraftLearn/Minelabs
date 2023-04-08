@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs.potion.reactions;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -37,8 +38,13 @@ public class FlammableReaction extends Reaction {
             }
         });
         Utils.applyRadius(world, pos, radius, e -> {
-            if (this.pyrophoric || Utils.isFlameNearby(world, e.getBlockPos(), 3))
-                e.setFireTicks(duration);
+
         });
+    }
+
+    @Override
+    public void react(LivingEntity entity) {
+        if (this.pyrophoric || Utils.isFlameNearby(entity.getWorld(), entity.getBlockPos(), 3))
+            entity.setFireTicks(duration);
     }
 }

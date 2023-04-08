@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.potion;
 
 import be.uantwerpen.minelabs.potion.reactions.*;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -11,8 +12,8 @@ import java.util.List;
 import java.util.Objects;
 
 public enum Molecule {
-    // TODO: add lore with "reacts with stone, is toxic, is poisonous, ..."
 
+    // Gasses
     O2("O2", 0xAFAFAF, List.of()),
     N2("N2", 0xAFAFAF, List.of()),
     CH4("CH4", 0xAFAFAF, List.of(new FlammableReaction(20 * 3, 4, false))),
@@ -43,6 +44,9 @@ public enum Molecule {
     SO2("SO2", 0xFFFFFF, List.of()),
     CLF("ClF", 0xFFFFFF, List.of()),
     F2("F2", 0xFFFFFF, List.of()),
+
+    // Fluids
+    HNO3("HNO3", 0xFFCC33, Arrays.asList(new PoisonousReaction(4, 100, 1)))
     ;
 
 
@@ -63,6 +67,11 @@ public enum Molecule {
         Objects.requireNonNull(position);
         Objects.requireNonNull(hitResult);
         reactions.forEach(reaction -> reaction.react(world, position, hitResult));
+    }
+
+    public void react(LivingEntity entity) {
+        Objects.requireNonNull(entity);
+        reactions.forEach(reaction -> reaction.react(entity));
     }
 
     public int getColor() {

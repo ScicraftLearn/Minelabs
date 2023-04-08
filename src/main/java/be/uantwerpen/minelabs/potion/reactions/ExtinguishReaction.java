@@ -4,6 +4,7 @@ import net.minecraft.block.AbstractCandleBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -39,6 +40,11 @@ public class ExtinguishReaction extends Reaction {
             }
         });
 
-        Utils.applyRadius(world, position, this.radius, e -> e.setFireTicks(0));
+        Utils.applyRadius(world, position, this.radius, this::react);
+    }
+
+    @Override
+    public void react(LivingEntity entity) {
+        entity.setFireTicks(0);
     }
 }

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.ParticleTypes;
@@ -37,8 +38,11 @@ public class CorrosiveReaction extends Reaction {
                 if(canReact(world.getBlockState(block).getBlock()))
                     world.setBlockState(block, Blocks.AIR.getDefaultState());
         });
-        Utils.applyRadius(world, pos, radius, livingEntity -> {
-            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_DAMAGE, 1, 1));
-        });
+        Utils.applyRadius(world, pos, radius, this::react);
+    }
+
+    @Override
+    public void react(LivingEntity entity) {
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_DAMAGE, 1, 1));
     }
 }
