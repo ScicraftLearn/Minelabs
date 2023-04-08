@@ -1,11 +1,16 @@
 package be.uantwerpen.minelabs.event;
 
 import be.uantwerpen.minelabs.dimension.ModDimensions;
+import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.TypedActionResult;
 
 
 public class ServerModEvents {
@@ -31,6 +36,13 @@ public class ServerModEvents {
                 }
             }
             return ActionResult.PASS;
+        });
+
+        UseItemCallback.EVENT.register((player, world, hand) -> {
+            FishingBobberEntity fishHook = player.fishHook;
+            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity)
+                entity.damage(DamageSource.player(player), 0);
+            return TypedActionResult.pass(player.getStackInHand(hand));
         });
     }
 }
