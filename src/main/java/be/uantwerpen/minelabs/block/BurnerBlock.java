@@ -58,7 +58,8 @@ public class BurnerBlock extends CosmeticBlock {
             world.setBlockState(pos, state.cycle(OXYGENATED));
             return ActionResult.SUCCESS;
         } else {
-            if (player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL && !state.get(LIT)) {
+            if ((player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL
+                    || player.getStackInHand(hand).getItem() == Items.FIRE_CHARGE) && !state.get(LIT)) {
                 world.setBlockState(pos, state.cycle(LIT));
                 return ActionResult.SUCCESS;
             }
