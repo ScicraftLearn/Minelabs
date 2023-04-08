@@ -8,6 +8,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -50,11 +51,6 @@ public class EntropyCreeperEntity extends CreeperEntity {
 
     public EntropyCreeperEntity(EntityType<? extends CreeperEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_ENTROPY_CREEPER_DEATH;
     }
 
     @Override
