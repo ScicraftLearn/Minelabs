@@ -127,7 +127,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     // Called by subatomic particle when it collides with this entity.
-    public void onParticleCollision(SubatomicParticleEntity particle, ServerPlayerEntity thrower) {
+    public void onParticleCollision(SubatomicParticleEntity particle) {
         if (world.isClient)
             return;
         ItemStack stack = particle.getStack();
@@ -135,7 +135,7 @@ public class BohrBlueprintEntity extends Entity {
 
         if (addItem(item)) {
             particle.discard();
-            if (thrower != null) Criteria.BOHR_CRITERION.trigger(thrower, BohrCriterion.Type.ADD_PARTICLE);
+            Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) particle.getOwner(), BohrCriterion.Type.ADD_PARTICLE);
         }
     }
 
@@ -168,6 +168,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public Item getOriginalAtom() {
+        if (inventory.isEmpty()) return null;
         return inventory.get(0).getItem();
     }
 
@@ -183,20 +184,22 @@ public class BohrBlueprintEntity extends Entity {
         clear();
     }
 
-    public void dropLastItem(ServerPlayerEntity player) {
-        dropLastItem(player, false);
+    public void onPlayerRemovedItem(ItemStack stack, ServerPlayerEntity player, boolean withHook) {
+        if (stack == null) return;
+        if (stack.getItem() instanceof AtomItem)
+            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_ATOM, withHook);
+        else
+            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE, withHook);
     }
-    public void dropLastItem(ServerPlayerEntity player, boolean usingHook) {
+
+    public ItemStack dropLastItem() {
         if (inventory.isEmpty())
-            return;
+            return null;
 
         ItemStack stack = inventory.pop();
         onItemRemoved(stack);
         dropStack(stack);
-        if (stack.getItem() instanceof AtomItem)
-            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_ATOM, usingHook);
-        else
-            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE, usingHook);
+        return stack;
     }
 
     private boolean canAcceptItem(Item item) {
@@ -334,11 +337,13 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     private void onHitByPlayer(ServerPlayerEntity player) {
-        dropLastItem(player);
+        ItemStack stack = dropLastItem();
+        onPlayerRemovedItem(stack, player, false);
     }
 
     public void extractByRod(ServerPlayerEntity player) {
-        dropLastItem(player, true);
+        ItemStack stack = dropLastItem();
+        onPlayerRemovedItem(stack, player, true);
     }
 
     @Override

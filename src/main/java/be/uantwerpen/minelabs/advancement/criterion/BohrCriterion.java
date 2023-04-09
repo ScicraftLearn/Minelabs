@@ -71,6 +71,7 @@ public class BohrCriterion extends AbstractCriterion<BohrCriterion.Condition> {
         public JsonObject toJson(AdvancementEntityPredicateSerializer predicateSerializer) {
             JsonObject jsonObject = super.toJson(predicateSerializer);
             jsonObject.add("type", new JsonPrimitive(type.toString()));
+            jsonObject.add("hook", new JsonPrimitive(hook));
             return jsonObject;
         }
     }

@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
@@ -128,8 +127,7 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
         super.onEntityHit(entityHitResult);
         // notify bohr plate of collision
         if (entityHitResult.getEntity() instanceof BohrBlueprintEntity bohrBlueprintEntity) {
-            bohrBlueprintEntity.onParticleCollision(this,
-                    this.getOwner() instanceof ServerPlayerEntity owner ? owner : null);
+            bohrBlueprintEntity.onParticleCollision(this);
         }
     }
 

@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
+@SuppressWarnings("deprecation")
 public class BohrBlueprintBlock extends Block {
     private static final VoxelShape OUTLINE_SHAPE = VoxelShapes.union(
             Block.createCuboidShape(0, 3, 0, 16, 5, 16),        // top
@@ -138,7 +139,8 @@ public class BohrBlueprintBlock extends Block {
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
-            entity.dropLastItem((ServerPlayerEntity) player);
+            ItemStack stack = entity.dropLastItem();
+            entity.onPlayerRemovedItem(stack, (ServerPlayerEntity) player, false);
         }
     }
 
