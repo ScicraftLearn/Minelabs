@@ -1,38 +1,27 @@
 package be.uantwerpen.minelabs.renderer;
 
-import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.util.NucleusState;
-import be.uantwerpen.minelabs.util.NuclidesTable;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
-import net.minecraft.util.profiler.Profiler;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
-
-import static be.uantwerpen.minelabs.util.NuclidesTable.calculateNrOfElectrons;
-import static net.minecraft.client.gui.DrawableHelper.drawCenteredText;
-import static net.minecraft.client.gui.DrawableHelper.drawTexture;
 
 @Environment(EnvType.CLIENT)
 public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEntity> {
@@ -40,18 +29,28 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final ItemStack NEUTRON = new ItemStack(Items.NEUTRON, 1);
     private static final ItemStack ELECTRON = new ItemStack(Items.ELECTRON, 1);
 
-    private static final List<Vec3f> NUCLEUS_COORDINATES = createIcosahedron();
-
+    private static final float MAX_RENDER_RADIUS = 0.75f + 11f / 16f - 0.1f;
     private static final int[] ELECTRON_SHELL_CAPACITIES = {2, 8, 18, 32, 32, 18, 8};
-    private static final float ELECTRON_SCALE = 0.2f;
-    // radius of first shell
-    private static final float ELECTRON_SHELL_RADIUS = 0.5f;
+    private static final float ELECTRON_SCALE = 0.15f;
+    private static final float ELECTRON_FIRST_SHELL_RADIUS = 0.5f;
     // distance between two shells
-    private static final float ELECTRON_SHELL_RADIUS_OFFSET = (1 - ELECTRON_SHELL_RADIUS) / (ELECTRON_SHELL_CAPACITIES.length - 1);
+    private static final float ELECTRON_SHELL_RADIUS_OFFSET = (MAX_RENDER_RADIUS - ELECTRON_FIRST_SHELL_RADIUS) / (ELECTRON_SHELL_CAPACITIES.length - 1);
     // rotation period in ticks
     private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
     // amount of points to use for the electron shell orbit line
     private static final int ELECTRON_LINE_NUMPOINTS = 32;
+
+    private static final int MAX_NUCLEUS_ITEMS_RENDERED = 36;
+
+    // size of individual particle items
+    private static final float NUCLEUS_SCALE = 0.15f;
+
+    // how big the core should be
+    private static final float NUCLEUS_RADIUS_MULTIPLIER = 0.1f;
+    // distance between layers of nucleus
+    private static final float NUCLEUS_RADIUS_OFFSET = 0.15f;
+    private static final List<Vec3f> NUCLEUS_COORDINATES = createIcosahedron();
+
 
     private final ItemRenderer itemRenderer;
 
@@ -65,10 +64,11 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             icosahedron.add(new Vec3f((float) Math.cos((Math.PI / 5) + i * c), (float) Math.sin((Math.PI / 5) + i * c), -0.5f));
         icosahedron.add(new Vec3f(0, 0, (float) -Math.sqrt(5) / 2));
 
+        icosahedron.forEach(v -> v.scale(NUCLEUS_RADIUS_MULTIPLIER));
         return icosahedron;
     }
 
-    private List<Integer> getElectronShellConfiguration(int nE){
+    private List<Integer> getElectronShellConfiguration(int nE) {
         MinecraftClient.getInstance().getProfiler().push("shell config");
         // TODO: placeholder that fills until max. Should use energy based filling of shells.
         // TODO: if too slow, place cache over this function
@@ -136,14 +136,16 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
         List<Integer> electronShellConfiguration = getElectronShellConfiguration(nE);
 
-        float radius = ELECTRON_SHELL_RADIUS;
+        float radius = ELECTRON_FIRST_SHELL_RADIUS;
         matrices.push();
-        for (int electronsInShell : electronShellConfiguration){
-            // TODO: rotate
+        for (int electronsInShell : electronShellConfiguration) {
             renderElectronShell(electronsInShell, radius, time, matrices, vertexConsumers, light);
-            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
-            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(30));
-            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(15));
+
+            // don't update normals
+            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_X.getDegreesQuaternion(45)));
+            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Y.getDegreesQuaternion(30)));
+            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(15)));
+
             radius += ELECTRON_SHELL_RADIUS_OFFSET;
         }
         matrices.pop();
@@ -152,20 +154,22 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     /**
      * Render an electron shell in the XY-plane with specified radius and number of electrons.
      */
-    private void renderElectronShell(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light){
+    private void renderElectronShell(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         renderElectronShellLine(radius, matrices, vertexConsumers);
         renderElectronShellElectrons(nE, radius, time, matrices, vertexConsumers, light);
     }
 
-    private void renderElectronShellElectrons(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light){
+    private void renderElectronShellElectrons(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
         // rotation animation of electrons on shell
         float angle = (time % ELECTRON_ROTATION_PERIOD) / ELECTRON_ROTATION_PERIOD * 360;
-        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angle));
+
+        // don't update normals. This allows the lighting to be computed as if the outside is always lit
+        matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angle)));
 
         // render electron at top of orbit then rotate and repeat
         float angleBetweenElectrons = 360f / nE;
-        for(int e = 0; e < nE; e++){
+        for (int e = 0; e < nE; e++) {
             matrices.push();
             matrices.translate(0, radius, 0);
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
@@ -173,24 +177,30 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             renderElectron(matrices, vertexConsumers, light);
 
             matrices.pop();
-            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenElectrons));
+            // don't update normals
+            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenElectrons)));
+
         }
         matrices.pop();
     }
 
-    private void renderElectronShellLine(float radius, MatrixStack matrices, VertexConsumerProvider vertexConsumers){
+    private void renderElectron(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        renderItem(ELECTRON, matrices, vertexConsumers, light);
+    }
+
+    private void renderElectronShellLine(float radius, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
         matrices.push();
 
         VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLineStrip());
         // lines
         float angleBetweenLinePoints = 360f / ELECTRON_LINE_NUMPOINTS;
-        for(int e = 0; e <= ELECTRON_LINE_NUMPOINTS; e++){
+        for (int e = 0; e <= ELECTRON_LINE_NUMPOINTS; e++) {
             matrices.push();
             matrices.translate(0, radius, 0);
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
 
             MatrixStack.Entry matrixEntry = matrices.peek();
-            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, 0, 0).color(0, 0, 0, 255).normal(matrixEntry.getNormalMatrix(), 1, 0, 0).next();
+            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, 0, 0).color(0, 0, 0, 150).normal(matrixEntry.getNormalMatrix(), 1, 0, 0).next();
 
             matrices.pop();
             matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints));
@@ -199,29 +209,67 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.pop();
     }
 
-    private void renderElectron(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light){
+    private void renderNucleus(int nP, int nN, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        // nothing to render (prevent division by zero)
+        if (nP + nN == 0)
+            return;
+
+        // place nucleus particles in predetermined coordinates
+        Iterator<Vec3f> posIterator = NUCLEUS_COORDINATES.iterator();
+
+        // when we run out of coordinates, start new iteration with increased radius
+        float radiusMultiplier = 1f;
+
+        // we keep ratio of protons rendered as close to requested as possible
+        float pRatio = (float) nP / (float) (nP + nN);
+        float pRatioRendered = nP > nN ? 0 : 1;     // initializer determines which to render first
+
+        // special case to handle zero.
+        if (nP == 0)
+            pRatio = -1;
+        else if (nN == 0)
+            pRatio = 2;
+
+        int nPRendered = 0;
+        int nNRendered = 0;
+        int amountToRender = Math.min(MAX_NUCLEUS_ITEMS_RENDERED, nP + nN);
+
+        matrices.push();
+        while (nPRendered + nNRendered < amountToRender) {
+            if (!posIterator.hasNext()) {
+                radiusMultiplier += NUCLEUS_RADIUS_OFFSET;
+                posIterator = NUCLEUS_COORDINATES.iterator();
+            }
+            Vec3f pos = posIterator.next().copy();
+            pos.scale(radiusMultiplier);
+
+            ItemStack type = pRatio > pRatioRendered ? PROTON : NEUTRON;
+            if (type == PROTON)
+                nPRendered += 1;
+            else
+                nNRendered += 1;
+
+            renderNucleusParticle(type, pos, time, matrices, vertexConsumers, light);
+            pRatioRendered = (float) nPRendered / (float) (nPRendered + nNRendered);
+        }
+        matrices.pop();
+    }
+
+    private void renderNucleusParticle(ItemStack type, Vec3f pos, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        matrices.push();
+        matrices.translate(pos.getX(), pos.getY(), pos.getZ());
+        matrices.scale(NUCLEUS_SCALE, NUCLEUS_SCALE, NUCLEUS_SCALE);
+
+        // have everything facing the camera orientation
+        matrices.multiply(dispatcher.getRotation());
+
+        renderItem(type, matrices, vertexConsumers, light);
+        matrices.pop();
+    }
+
+    private void renderItem(ItemStack stack, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         MinecraftClient.getInstance().getProfiler().push("item renderer");
-        itemRenderer.renderItem(ELECTRON, ModelTransformation.Mode.NONE, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
+        itemRenderer.renderItem(stack, ModelTransformation.Mode.NONE, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
         MinecraftClient.getInstance().getProfiler().pop();
     }
-
-    private void renderNucleus(int nP, int nN, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-
-    }
-
-//    /**
-//     * Set up the matrices to render everything facing the player.
-//     */
-//    private void transformToFacePlayer(BohrBlueprintEntity entity, MatrixStack matrices) {
-//        Vec3d pos = this.dispatcher.camera.getPos();
-//        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0,0.75,0).relativize(pos));
-//        entityToPlayer.normalize();
-//        double pitch = Math.asin(-entityToPlayer.getY());
-//        double yaw = Math.atan2(entityToPlayer.getX(), entityToPlayer.getZ());
-//        entityToPlayer.cross(Vec3f.POSITIVE_Y);
-//        entityToPlayer.normalize();
-//        matrices.multiply(entityToPlayer.getRadialQuaternion((float)-pitch));
-//        matrices.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) yaw));
-//    }
-
 }
