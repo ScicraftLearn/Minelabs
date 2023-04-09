@@ -46,7 +46,16 @@ public enum Molecule {
     F2("F2", 0xFFFFFF, List.of()),
 
     // Fluids
-    HNO3("HNO3", 0xFFCC33, Arrays.asList(new PoisonousReaction(4, 100, 1)))
+    HNO3("HNO3", 0xFFCC33, Arrays.asList(new PoisonousReaction(4, 100, 1))),
+    H2O("H2O", 0x3495eb, Arrays.asList(new ExtinguishReaction(5))),
+    NCL3("NCl3", 0xe8dc5a, Arrays.asList(new FlammableReaction(100, 5, true))),
+    CS2("CS2", 0xAFAFAF, Arrays.asList()),
+    CCL4("CCl4", 0xAFAFAF, Arrays.asList()),
+    PCL3("PCl3", 0xAFAFAF, Arrays.asList()),
+    SCL2("SCl2", 0xAFAFAF, Arrays.asList()),
+    HCN("HCN", 0xCCCCFF, Arrays.asList()),
+    CH4O("CH4O", 0xAFAFAF, Arrays.asList()),
+    SICL4("SiCl4", 0xAFAFAF, Arrays.asList()),
     ;
 
 
