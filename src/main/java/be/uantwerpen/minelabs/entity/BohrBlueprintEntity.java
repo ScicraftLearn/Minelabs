@@ -1,6 +1,8 @@
 package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
@@ -24,6 +26,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -125,7 +128,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     // Called by subatomic particle when it collides with this entity.
-    public void onParticleCollision(SubatomicParticleEntity particle) {
+    public void onParticleCollision(SubatomicParticleEntity particle, ServerPlayerEntity thrower) {
         if (world.isClient)
             return;
         ItemStack stack = particle.getStack();
@@ -133,6 +136,7 @@ public class BohrBlueprintEntity extends Entity {
 
         if (addItem(item)) {
             particle.discard();
+            Criteria.BOHR_CRITERION.trigger(thrower, BohrCriterion.Type.ADD_PARTICLE);
         }
     }
 
@@ -164,6 +168,10 @@ public class BohrBlueprintEntity extends Entity {
             world.removeBlock(getBohrBlueprintPos(), false);
     }
 
+    public Item getOriginalAtom() {
+        return inventory.get(0).getItem();
+    }
+
     public boolean isEmpty() {
         // inventory is not synced to client, so need to check counts.
         return getProtons() == 0 && getNeutrons() == 0 && getElectrons() == 0;
@@ -176,13 +184,16 @@ public class BohrBlueprintEntity extends Entity {
         clear();
     }
 
-    public void dropLastItem() {
+    public void dropLastItem(ServerPlayerEntity player) {
         if (inventory.isEmpty())
             return;
 
         ItemStack stack = inventory.pop();
         onItemRemoved(stack);
         dropStack(stack);
+        if (stack.getItem() instanceof AtomItem)
+            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_ATOM);
+        else Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE);
     }
 
     private boolean canAcceptItem(Item item) {
@@ -311,16 +322,16 @@ public class BohrBlueprintEntity extends Entity {
             return false;
         }
         if (!this.isRemoved() && !this.world.isClient) {
-            if (source.getAttacker() instanceof PlayerEntity) {
-                onHitByPlayer();
+            if (source.getAttacker() instanceof ServerPlayerEntity player) {
+                onHitByPlayer(player);
                 return true;
             }
         }
         return false;
     }
 
-    private void onHitByPlayer() {
-        dropLastItem();
+    private void onHitByPlayer(ServerPlayerEntity player) {
+        dropLastItem(player);
     }
 
     @Override
