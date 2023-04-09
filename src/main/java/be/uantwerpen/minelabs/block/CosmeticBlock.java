@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CosmeticBlock extends Block {
 
@@ -43,7 +42,8 @@ public class CosmeticBlock extends Block {
 
     @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        return world.getBlockState(pos.down()).getBlock() != Blocks.LAB_SINK && world.getBlockState(pos.down()).getBlock() != net.minecraft.block.Blocks.CAULDRON;
+        return world.getBlockState(pos.down()).getBlock() != Blocks.LAB_SINK
+                && world.getBlockState(pos.down()).getBlock() != net.minecraft.block.Blocks.CAULDRON;
     }
 
     @Override
@@ -58,17 +58,16 @@ public class CosmeticBlock extends Block {
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        //TODO
-        if (sourcePos.up() == pos){
-            world.setBlockState(pos, state.with(COUNTER, getBase(world, sourcePos)));
+        if (pos.equals(sourcePos.down())){
+            world.setBlockState(pos, state.with(COUNTER, getBase(world, sourcePos)), Block.NOTIFY_NEIGHBORS);
         }
         super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
     }
+
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        if (neighborPos.up() == pos){
-            // BASE CHANGED
-            return state.with(COUNTER, getBase(world.getBlockState(pos).getBlock()));
+        if (direction == Direction.DOWN){
+            return state.with(COUNTER, getBase(neighborState.getBlock()));
         }
         return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
