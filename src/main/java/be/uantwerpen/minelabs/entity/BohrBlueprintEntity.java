@@ -36,9 +36,9 @@ import java.util.Stack;
 
 public class BohrBlueprintEntity extends Entity {
     // Constants
-    private static final int MAX_PROTONS = 118;
-    private static final int MAX_ELECTRONS = MAX_PROTONS;
-    private static final int MAX_NEUTRONS = 176;
+    public static final int MAX_PROTONS = 118;
+    public static final int MAX_ELECTRONS = MAX_PROTONS;
+    public static final int MAX_NEUTRONS = 176;
     private static final float MAX_INTEGRITY = 100;
 
     // Transient data (not persisted or tracked)
