@@ -58,17 +58,26 @@ public class BurnerBlock extends CosmeticBlock {
             world.setBlockState(pos, state.cycle(OXYGENATED));
             return ActionResult.SUCCESS;
         } else {
-            if ((player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL
-                    || player.getStackInHand(hand).getItem() == Items.FIRE_CHARGE) && !state.get(LIT)) {
-                // TODO PLAY SOUND
-                world.setBlockState(pos, state.cycle(LIT));
-                return ActionResult.SUCCESS;
-            }
-            if (player.getStackInHand(hand).isIn(Tags.Items.FIRE_EXTINGUISH) && state.get(LIT)) {
-                //TODO BETTER SOLUTION ?
-                world.setBlockState(pos, state.cycle(LIT));
-                world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                return ActionResult.SUCCESS;
+            boolean lit = false;
+            if (!state.get(LIT)){
+                if (player.getStackInHand(hand).getItem() == Items.FLINT_AND_STEEL){
+                    lit = true;
+                    player.getStackInHand(hand).damage(1, player, p -> p.sendToolBreakStatus(hand));
+                } else if (player.getStackInHand(hand).getItem() == Items.FIRE_CHARGE) {
+                    lit = true;
+                    player.getStackInHand(hand).decrement(1);
+                }
+                if (lit){
+                    world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0f, world.getRandom().nextFloat() * 0.4f + 0.8f);
+                    world.setBlockState(pos, state.cycle(LIT));
+                    return ActionResult.success(world.isClient);
+                }
+            } else {
+                if (player.getStackInHand(hand).isIn(Tags.Items.FIRE_EXTINGUISH)){
+                    world.setBlockState(pos, state.cycle(LIT));
+                    world.playSound(player, pos, SoundEvents.BLOCK_CANDLE_EXTINGUISH, SoundCategory.BLOCKS, 2.0f, 1.0f);
+                    return ActionResult.success(world.isClient);
+                }
             }
             return ActionResult.FAIL;
         }
