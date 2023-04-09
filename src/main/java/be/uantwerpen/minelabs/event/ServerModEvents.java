@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 
@@ -40,8 +41,8 @@ public class ServerModEvents {
 
         UseItemCallback.EVENT.register((player, world, hand) -> {
             FishingBobberEntity fishHook = player.fishHook;
-            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity)
-                entity.damage(DamageSource.player(player), 0);
+            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity && !world.isClient)
+                entity.extractByRod((ServerPlayerEntity) player);
             return TypedActionResult.pass(player.getStackInHand(hand));
         });
     }

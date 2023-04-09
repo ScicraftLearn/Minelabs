@@ -128,7 +128,8 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
         super.onEntityHit(entityHitResult);
         // notify bohr plate of collision
         if (entityHitResult.getEntity() instanceof BohrBlueprintEntity bohrBlueprintEntity) {
-            bohrBlueprintEntity.onParticleCollision(this, (ServerPlayerEntity) getOwner());
+            bohrBlueprintEntity.onParticleCollision(this,
+                    this.getOwner() instanceof ServerPlayerEntity owner ? owner : null);
         }
     }
 

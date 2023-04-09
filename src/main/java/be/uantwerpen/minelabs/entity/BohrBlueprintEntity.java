@@ -18,7 +18,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -136,7 +135,7 @@ public class BohrBlueprintEntity extends Entity {
 
         if (addItem(item)) {
             particle.discard();
-            Criteria.BOHR_CRITERION.trigger(thrower, BohrCriterion.Type.ADD_PARTICLE);
+            if (thrower != null) Criteria.BOHR_CRITERION.trigger(thrower, BohrCriterion.Type.ADD_PARTICLE);
         }
     }
 
@@ -185,6 +184,9 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public void dropLastItem(ServerPlayerEntity player) {
+        dropLastItem(player, false);
+    }
+    public void dropLastItem(ServerPlayerEntity player, boolean usingHook) {
         if (inventory.isEmpty())
             return;
 
@@ -192,8 +194,9 @@ public class BohrBlueprintEntity extends Entity {
         onItemRemoved(stack);
         dropStack(stack);
         if (stack.getItem() instanceof AtomItem)
-            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_ATOM);
-        else Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE);
+            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_ATOM, usingHook);
+        else
+            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE, usingHook);
     }
 
     private boolean canAcceptItem(Item item) {
@@ -332,6 +335,10 @@ public class BohrBlueprintEntity extends Entity {
 
     private void onHitByPlayer(ServerPlayerEntity player) {
         dropLastItem(player);
+    }
+
+    public void extractByRod(ServerPlayerEntity player) {
+        dropLastItem(player, true);
     }
 
     @Override

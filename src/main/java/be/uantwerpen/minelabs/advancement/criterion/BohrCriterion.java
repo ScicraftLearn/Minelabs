@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier;
 public class BohrCriterion extends AbstractCriterion<BohrCriterion.Condition> {
 
     public enum Type {
+        ANY,
         ADD_ATOM,
         ADD_PARTICLE,
         REMOVE_PARTICLE,
@@ -27,13 +28,13 @@ public class BohrCriterion extends AbstractCriterion<BohrCriterion.Condition> {
     @Override
     protected BohrCriterion.Condition conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
         JsonPrimitive typeJson = obj.getAsJsonPrimitive("type");
-        if (typeJson == null)
-            throw new JsonParseException("Missing type for BohrCriterion");
-        String typeStr = typeJson.getAsString().toUpperCase();
+        String typeStr = typeJson == null ? "ANY" : typeJson.getAsString().toUpperCase();
+        JsonPrimitive hookJson = obj.getAsJsonPrimitive("hook");
+        boolean hookBool = hookJson != null && hookJson.getAsBoolean();
 
         try {
-            BohrCriterion.Type type = BohrCriterion.Type.valueOf(typeStr);
-            return new BohrCriterion.Condition(playerPredicate, type);
+            Type type = Type.valueOf(typeStr);
+            return new BohrCriterion.Condition(playerPredicate, type, hookBool);
         } catch (IllegalArgumentException e) {
             throw new JsonParseException("Invalid type found: " + typeStr);
         }
@@ -45,20 +46,25 @@ public class BohrCriterion extends AbstractCriterion<BohrCriterion.Condition> {
     }
 
     public void trigger(ServerPlayerEntity player, Type type) {
-        trigger(player, condition -> condition.test(type));
+        trigger(player, condition -> condition.test(type, false));
+    }
+    public void trigger(ServerPlayerEntity player, Type type, boolean hook) {
+        trigger(player, condition -> condition.test(type, hook));
     }
 
     public static class Condition extends AbstractCriterionConditions {
 
         private final Type type;
+        private final boolean hook;
 
-        public Condition(EntityPredicate.Extended playerPredicate, Type type) {
+        public Condition(EntityPredicate.Extended playerPredicate, Type type, boolean isHook) {
             super(IDENTIFIER, playerPredicate);
             this.type = type;
+            this.hook = isHook;
         }
 
-        public boolean test(Type type) {
-            return this.type == type;
+        public boolean test(Type type, boolean hook) {
+            return (!this.hook || hook) && (this.type == Type.ANY || this.type == type);
         }
 
         @Override
