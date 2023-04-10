@@ -30,8 +30,11 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     @Override
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         Potion potion = new Potion("Test");
-        if (this.isIn(group))
-            stacks.add(PotionUtil.setPotion(new ItemStack(this), potion));
+        if (this.isIn(group)) {
+            ItemStack item = PotionUtil.setPotion(new ItemStack(this), potion);
+            item.setNbt(null);
+            stacks.add(item);
+        }
     }
 
     @Override
