@@ -37,9 +37,9 @@ import java.util.Stack;
 
 public class BohrBlueprintEntity extends Entity {
     // Constants
-    private static final int MAX_PROTONS = 118;
-    private static final int MAX_ELECTRONS = MAX_PROTONS;
-    private static final int MAX_NEUTRONS = 176;
+    public static final int MAX_PROTONS = 118;
+    public static final int MAX_ELECTRONS = MAX_PROTONS;
+    public static final int MAX_NEUTRONS = 176;
     private static final float MAX_INTEGRITY = 100;
 
     // Transient data (not persisted or tracked)
@@ -396,17 +396,20 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     public void onTrackedDataSet(TrackedData<?> data) {
         super.onTrackedDataSet(data);
-        if (data == PROTONS || data == ELECTRONS || data == NEUTRONS)
+
+        if(PROTONS.equals(data) || NEUTRONS.equals(data) || ELECTRONS.equals(data)){
             compositionChanged();
+        }
     }
 
     /**
      * Update atom and stability info only once.
      */
     private void compositionChanged() {
+        // nucleusState is not synced from server to client. We compute it in the client ourselves.
         nucleusState = NuclidesTable.getNuclide(getProtons(), getNeutrons());
 
-        // server only from here
+        // server only from here on
         if (world.isClient) return;
 
         Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
@@ -414,7 +417,13 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.set(RESULT_ATOM, stack);
 
         // TODO: compute instability with nuclides
-        float instability = stack.isEmpty() ? 1f : 0f;
+        float instability = 0f;
+        if (nucleusState != null && !nucleusState.isStable()) {
+            instability = 1f;
+        }
+        if (getProtons() != getElectrons()){
+            instability = 1f;
+        }
         setInstability(instability);
         if (instability == 0) {
             setIntegrity(MAX_INTEGRITY);
