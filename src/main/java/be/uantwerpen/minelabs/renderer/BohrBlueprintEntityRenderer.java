@@ -5,10 +5,7 @@ import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -29,6 +26,11 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final ItemStack NEUTRON = new ItemStack(Items.NEUTRON, 1);
     private static final ItemStack ELECTRON = new ItemStack(Items.ELECTRON, 1);
 
+    // Multiplier for distance to reduce radius at which entity is rendered. In default settings 64 allows rendering it from 16 blocks.
+    // Higher multiplier means smaller render radius.
+    private static final float RENDER_DISTANCE_MULTIPLIER = 64;
+
+    // radius usable for atom rendering
     private static final float MAX_RENDER_RADIUS = 0.75f + 11f / 16f - 0.1f;
     private static final int[] ELECTRON_SHELL_CAPACITIES = {2, 8, 18, 32, 32, 18, 8};
     private static final float ELECTRON_SCALE = 0.15f;
@@ -106,6 +108,12 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     @Override
     protected int getSkyLight(BohrBlueprintEntity entity, BlockPos pos) {
         return 15;      // render as if always fully lit
+    }
+
+    @Override
+    public boolean shouldRender(BohrBlueprintEntity entity, Frustum frustum, double x, double y, double z) {
+        // act like it is further away to reduce rendering range and still take renderDistanceMultiplier setting into account.
+        return super.shouldRender(entity, frustum, x, y, z) && entity.shouldRender(entity.getPos().squaredDistanceTo(x, y, z) * RENDER_DISTANCE_MULTIPLIER);
     }
 
     @Override
