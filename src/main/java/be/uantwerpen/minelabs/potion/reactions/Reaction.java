@@ -1,8 +1,6 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.hit.BlockHitResult;
@@ -58,7 +56,7 @@ public abstract class Reaction {
         final static List<BlockState> FLAMMABLE_BLOCKS = Arrays.asList(
                 Blocks.TORCH.getDefaultState(),
                 Blocks.CAMPFIRE.getDefaultState(),
-                Blocks.CANDLE.getDefaultState(),
+                Blocks.CANDLE.getDefaultState().with(CandleBlock.LIT, true),
                 Blocks.FIRE.getDefaultState(),
                 Blocks.LAVA.getDefaultState()
         );
