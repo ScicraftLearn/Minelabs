@@ -20,13 +20,6 @@ public class PoisonousReaction extends Reaction {
         this.amplifier = amplifier;
     }
 
-    public PoisonousReaction(int radius, int duration, int amplifier, List<Block> whiteList, List<Block> blackList) {
-        super(whiteList, blackList);
-        this.radius = radius;
-        this.duration = duration;
-        this.amplifier = amplifier;
-    }
-
     @Override
     protected void react(World world, Vec3d position, BlockPos blockPos) {
         Utils.applyRadius(world, position, radius, this::react);

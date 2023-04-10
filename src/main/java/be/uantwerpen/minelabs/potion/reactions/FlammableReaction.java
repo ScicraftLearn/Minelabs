@@ -22,13 +22,6 @@ public class FlammableReaction extends Reaction {
         this.pyrophoric = pyrophoric;
     }
 
-    public FlammableReaction(int duration, int radius, boolean pyrophoric, List<Block> whiteList, List<Block> blackList) {
-        super(whiteList, blackList);
-        this.duration = duration;
-        this.radius = radius;
-        this.pyrophoric = pyrophoric;
-    }
-
     @Override
     protected void react(World world, Vec3d pos, BlockPos blockPos) {
         Utils.applyRadius(blockPos, radius, block -> {

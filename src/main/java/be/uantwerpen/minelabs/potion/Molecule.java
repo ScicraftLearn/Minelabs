@@ -36,7 +36,7 @@ public enum Molecule {
     BH3("BH3", 0xFFFFFF, Arrays.asList(new FlammableReaction(20 * 3, 4, true), new PoisonousReaction(4, 400, 1))),
     HF("HF", 0xFFFFFF, List.of(new PoisonousReaction(4, 400, 1))),
     SIH4("SiH4", 0xFFFFFF, List.of(new FlammableReaction(20 * 3, 4, true))),
-    PH3("PH3", 0xFFFFFF, Arrays.asList(new FlammableReaction(20 * 3, 4, false), new PoisonousReaction(5, 800, 2), new CorrosiveReaction(4, null, Arrays.asList(Blocks.BEDROCK)))),
+    PH3("PH3", 0xFFFFFF, Arrays.asList(new FlammableReaction(20 * 3, 4, false), new PoisonousReaction(5, 800, 2), new CorrosiveReaction(4))),
     H2S("H2S", 0xFFFFFF, Arrays.asList(new ExplosiveReaction(1, true, false), new PoisonousReaction(4, 400, 1))),
     CF4("CF4", 0xFFFFFF, List.of()),
     BF3("BF3", 0xFFFFFF, List.of()),

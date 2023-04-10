@@ -22,11 +22,6 @@ public class CorrosiveReaction extends Reaction {
         this.radius = radius;
     }
 
-    public CorrosiveReaction(int radius, List<Block> whiteList, List<Block> blackList) {
-        super(whiteList, blackList);
-        this.radius = radius;
-    }
-
     @Override
     protected void react(World world, Vec3d pos, BlockPos blockPos) {
         Utils.applyRadius(blockPos, this.radius, block -> {
@@ -35,7 +30,7 @@ public class CorrosiveReaction extends Reaction {
                 MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.CLOUD,
                         pos.x, pos.y, pos.z, 0, 0, 0);
             else
-                if(canReact(world.getBlockState(block).getBlock()))
+                if(canReact(world.getBlockState(block)))
                     world.setBlockState(block, Blocks.AIR.getDefaultState());
         });
         Utils.applyRadius(world, pos, radius, this::react);

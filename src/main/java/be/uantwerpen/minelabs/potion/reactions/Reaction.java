@@ -1,8 +1,10 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
+import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -11,30 +13,28 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class Reaction {
 
-    private final List<Block> whiteList;
-    private final List<Block> blackList;
+    private final List<TagKey> whiteList = new ArrayList<>();
+    private final List<TagKey> blackList = List.of(Tags.Blocks.REACTION_DEFAULT_BLACKLIST);
 
-    protected Reaction() {
-        this.whiteList = List.of();
-        this.blackList = List.of();
+    public Reaction addToBlackList(TagKey key) {
+        blackList.add(key);
+        return this;
     }
 
-    protected Reaction(List<Block> whiteList, List<Block> blackList) {
-        this.whiteList = whiteList == null ? List.of() : whiteList;
-        this.blackList = blackList == null ? List.of() : blackList;
+    public Reaction addToWhiteList(TagKey key) {
+        whiteList.add(key);
+        return this;
     }
 
-    protected boolean canReact(Block block) {
-        Objects.requireNonNull(block);
-        return (whiteList.isEmpty() || whiteList.contains(block)) && !blackList.contains(block);
+    protected boolean canReact(BlockState state) {
+        Objects.requireNonNull(state);
+        return whiteList.stream().allMatch(tag -> state.isIn(tag)) &&
+                blackList.stream().noneMatch(tag -> state.isIn(tag));
     }
 
     public void react(World world, Vec3d position, HitResult hitResult) {

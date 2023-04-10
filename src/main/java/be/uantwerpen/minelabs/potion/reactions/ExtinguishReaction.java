@@ -10,18 +10,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class ExtinguishReaction extends Reaction {
 
     private final int radius;
 
     public ExtinguishReaction(int radius) {
-        this.radius = radius;
-    }
-
-    public ExtinguishReaction(int radius, List<Block> whiteList, List<Block> blackList) {
-        super(whiteList, blackList);
         this.radius = radius;
     }
 

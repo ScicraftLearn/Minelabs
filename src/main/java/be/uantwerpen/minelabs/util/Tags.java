@@ -22,6 +22,7 @@ public class Tags {
         public static final TagKey<Block> COPPER_BLOCKS = createTag("copper_blocks");
         public static final TagKey<Block> CHARGED_BLOCKS = createTag("charged_blocks");
         public static final TagKey<Block> ENTROPY_IMMUNE = createTag("entropy_immune");
+        public static final TagKey<Block> REACTION_DEFAULT_BLACKLIST = createTag("reaction_default_blacklist");
 
         /**
          * Create a Block tag (tag is only used inside this mod)

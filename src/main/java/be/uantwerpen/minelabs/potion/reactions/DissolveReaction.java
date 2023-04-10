@@ -12,12 +12,6 @@ import java.util.List;
 
 public class DissolveReaction extends Reaction {
 
-    public DissolveReaction() {}
-
-    public DissolveReaction(List<Block> whiteList, List<Block> blackList) {
-        super(whiteList, blackList);
-    }
-
     @Override
     protected void react(World world, Vec3d pos, BlockPos blockPos) {
         for (int i = 0; i < 10; i++) {
