@@ -41,6 +41,12 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
     // amount of points to use for the electron shell orbit line
     private static final int ELECTRON_LINE_NUMPOINTS = 32;
+    private static final int ELECTRON_SHELL_LINE_MAX_ALPHA = 150;
+    // until this range the lines are fully visible (no fading)
+    private static final double ELECTRON_SHELL_LINE_MIN_RENDER_RANGE = 4f;
+    // line fades out until alpha zero at this distance
+    private static final double ELECTRON_SHELL_LINE_MAX_RENDER_RANGE = 8f;
+
 
     private static final int MAX_NUCLEUS_ITEMS_RENDERED = 36;
 
@@ -124,6 +130,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         int nE = Math.min(entity.getElectrons(), BohrBlueprintEntity.MAX_ELECTRONS);
 
         float time = entity.age + tickDelta;
+        double dToCamera = Math.sqrt(dispatcher.getSquaredDistanceToCamera(entity));
 
         MinecraftClient.getInstance().getProfiler().push("bohr");
         matrices.push();
@@ -131,14 +138,14 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         MinecraftClient.getInstance().getProfiler().push("protons");
         renderNucleus(nP, nN, time, matrices, vertexConsumers, light);
         MinecraftClient.getInstance().getProfiler().swap("electrons");
-        renderElectrons(nE, time, matrices, vertexConsumers, light);
+        renderElectrons(nE, dToCamera, time, matrices, vertexConsumers, light);
         MinecraftClient.getInstance().getProfiler().pop();
 
         matrices.pop();
         MinecraftClient.getInstance().getProfiler().pop();
     }
 
-    private void renderElectrons(int nE, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderElectrons(int nE, double dToCamera, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         // Electrons are rendered in at most 7 different shells with chosen yaw, pitch and roll.
         // Within an orbit the electrons are equally spaced from each other.
 
@@ -147,7 +154,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         float radius = ELECTRON_FIRST_SHELL_RADIUS;
         matrices.push();
         for (int electronsInShell : electronShellConfiguration) {
-            renderElectronShell(electronsInShell, radius, time, matrices, vertexConsumers, light);
+            renderElectronShell(electronsInShell, radius, dToCamera, time, matrices, vertexConsumers, light);
 
             // don't update normals
             matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_X.getDegreesQuaternion(45)));
@@ -162,8 +169,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     /**
      * Render an electron shell in the XY-plane with specified radius and number of electrons.
      */
-    private void renderElectronShell(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        renderElectronShellLine(radius, matrices, vertexConsumers);
+    private void renderElectronShell(int nE, float radius, double dToCamera, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        renderElectronShellLine(radius, dToCamera, matrices, vertexConsumers);
         renderElectronShellElectrons(nE, radius, time, matrices, vertexConsumers, light);
     }
 
@@ -196,11 +203,16 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         renderItem(ELECTRON, matrices, vertexConsumers, light);
     }
 
-    private void renderElectronShellLine(float radius, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
-        matrices.push();
+    private void renderElectronShellLine(float radius, double dToCamera, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
+        if (dToCamera > ELECTRON_SHELL_LINE_MAX_RENDER_RANGE)
+            return;
 
-        VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLineStrip());
+        double delta = (dToCamera - ELECTRON_SHELL_LINE_MIN_RENDER_RANGE) / (ELECTRON_SHELL_LINE_MAX_RENDER_RANGE - ELECTRON_SHELL_LINE_MIN_RENDER_RANGE);
+        int alpha = (int) Math.floor(MathHelper.clampedLerp( ELECTRON_SHELL_LINE_MAX_ALPHA, 0, delta));
+
         // lines
+        VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLineStrip());
+        matrices.push();
         float angleBetweenLinePoints = 360f / ELECTRON_LINE_NUMPOINTS;
         for (int e = 0; e <= ELECTRON_LINE_NUMPOINTS; e++) {
             matrices.push();
@@ -208,7 +220,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
 
             MatrixStack.Entry matrixEntry = matrices.peek();
-            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, 0, 0).color(0, 0, 0, 150).normal(matrixEntry.getNormalMatrix(), 1, 0, 0).next();
+            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, 0, 0).color(0, 0, 0, alpha).normal(matrixEntry.getNormalMatrix(), 1, 0, 0).next();
 
             matrices.pop();
             matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints));
