@@ -7,11 +7,22 @@ import net.minecraft.util.Identifier;
 public class VillageAdditions {
 
     public static void registerVillageStructures(){
-        //TODO OTHER (BIOME) HOUSES
-        // add LEWIS BLOCK to structure
+        //TODO OTHER (BIOME: DESERT & TAIGA) HOUSES
         FabricStructurePoolRegistry.registerSimple(
                 new Identifier("minecraft:village/plains/houses"),
-                new Identifier(Minelabs.MOD_ID, "plains_scientist_1"),
+                new Identifier(Minelabs.MOD_ID, "village/plains_scientist_1"),
                 2); // SAME AS WEAPON SMITH
+        FabricStructurePoolRegistry.registerSimple(
+                new Identifier("minecraft:village/savanna/houses"),
+                new Identifier(Minelabs.MOD_ID, "village/savanna_scientist_1"),
+                2);
+        FabricStructurePoolRegistry.registerSimple(
+                new Identifier("minecraft:village/snowy/houses"),
+                new Identifier(Minelabs.MOD_ID, "village/snowy_scientist_1"),
+                2);
+        FabricStructurePoolRegistry.registerSimple(
+                new Identifier("minecraft:village/snowy/houses"),
+                new Identifier(Minelabs.MOD_ID, "village/snowy_scientist_2"),
+                2);
     }
 }
