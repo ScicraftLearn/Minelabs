@@ -57,14 +57,6 @@ public class CosmeticBlock extends Block {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        if (pos.equals(sourcePos.up())){
-            world.setBlockState(pos, state.with(COUNTER, getBase(world, sourcePos)), Block.NOTIFY_NEIGHBORS);
-        }
-        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
-    }
-
-    @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (direction == Direction.DOWN){
             return state.with(COUNTER, getBase(neighborState.getBlock()));
