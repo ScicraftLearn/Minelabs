@@ -17,7 +17,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.NotNull;
 
-public class CosmeticBlock extends Block {
+public abstract class CosmeticBlock extends Block {
 
     protected static final IntProperty COUNTER = MinelabsProperties.COUNTER;
     protected static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
