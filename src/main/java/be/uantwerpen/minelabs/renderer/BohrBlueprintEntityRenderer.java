@@ -14,6 +14,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
@@ -118,6 +119,9 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         float time = entity.age + tickDelta;
 
         MinecraftClient.getInstance().getProfiler().push("bohr");
+
+//        renderResultingAtom(tickDelta, matrices, entity, light, vertexConsumers);
+
         matrices.push();
 
         MinecraftClient.getInstance().getProfiler().push("protons");
@@ -272,4 +276,18 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         itemRenderer.renderItem(stack, ModelTransformation.Mode.NONE, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
         MinecraftClient.getInstance().getProfiler().pop();
     }
+
+    private void renderResultingAtom(float tickDelta, MatrixStack matrixStack, BohrBlueprintEntity entity, int light, VertexConsumerProvider vertexConsumers) {
+        Item atom = entity.getAtomItem();
+        if (atom == null) return;
+
+        matrixStack.push();
+        matrixStack.translate(0, 5f / 16 - 1 - getPositionOffset(entity, tickDelta).getY(), 0.25);
+        matrixStack.scale(2, 0.5f, 2);
+        matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+
+        itemRenderer.renderItem(atom.getDefaultStack(), ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumers, 0);
+        matrixStack.pop();
+    }
+
 }
