@@ -58,7 +58,7 @@ public class CosmeticBlock extends Block {
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        if (pos.equals(sourcePos.down())){
+        if (pos.equals(sourcePos.up())){
             world.setBlockState(pos, state.with(COUNTER, getBase(world, sourcePos)), Block.NOTIFY_NEIGHBORS);
         }
         super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
