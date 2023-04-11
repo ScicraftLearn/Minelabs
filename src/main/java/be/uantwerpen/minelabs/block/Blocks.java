@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
+import be.uantwerpen.minelabs.block.entity.ChemicalFluidBlock;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.potion.Molecule;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -119,16 +120,16 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "lewis_block");
     public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
-    public static final Block HNO3 = register(Fluids.STILL_HNO3, Molecule.HNO3, "hno3");
-    public static final Block H2O = register(Fluids.STILL_H2O, Molecule.H2O, "h2o");
-    public static final Block CS2 = register(Fluids.STILL_CS2, Molecule.CS2, "cs2");
-    public static final Block CCL4 = register(Fluids.STILL_CCl4, Molecule.CCL4, "ccl4");
-    public static final Block PCL3 = register(Fluids.STILL_PCl3, Molecule.PCL3, "pcl3");
-    public static final Block SCL2 = register(Fluids.STILL_SCl2, Molecule.SCL2, "scl2");
-    public static final Block NCL3 = register(Fluids.STILL_NCl3, Molecule.NCL3, "ncl3");
-    public static final Block HCN = register(Fluids.STILL_HCN, Molecule.HCN, "hcn");
-    public static final Block CH4O = register(Fluids.STILL_CH4O, Molecule.CH4O, "ch4o");
-    public static final Block SICL4 = register(Fluids.STILL_SiCl4, Molecule.SICL4, "sicl4");
+    public static final Block HNO3 = register(new ChemicalFluidBlock(Fluids.STILL_HNO3, Molecule.HNO3), "hno3");
+    public static final Block H2O = register(new ChemicalFluidBlock(Fluids.STILL_H2O, Molecule.H2O), "h2o");
+    public static final Block CS2 = register(new ChemicalFluidBlock(Fluids.STILL_CS2, Molecule.CS2), "cs2");
+    public static final Block CCL4 = register(new ChemicalFluidBlock(Fluids.STILL_CCl4, Molecule.CCL4), "ccl4");
+    public static final Block PCL3 = register(new ChemicalFluidBlock(Fluids.STILL_PCl3, Molecule.PCL3), "pcl3");
+    public static final Block SCL2 = register(new ChemicalFluidBlock(Fluids.STILL_SCl2, Molecule.SCL2), "scl2");
+    public static final Block NCL3 = register(new ChemicalFluidBlock(Fluids.STILL_NCl3, Molecule.NCL3), "ncl3");
+    public static final Block HCN = register(new ChemicalFluidBlock(Fluids.STILL_HCN, Molecule.HCN), "hcn");
+    public static final Block CH4O = register(new ChemicalFluidBlock(Fluids.STILL_CH4O, Molecule.CH4O), "ch4o");
+    public static final Block SICL4 = register(new ChemicalFluidBlock(Fluids.STILL_SiCl4, Molecule.SICL4), "sicl4");
     public static final Block BOHR_BLUEPRINT = register(new BohrBlueprintBlock(), "bohr_block");
 
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
@@ -148,19 +149,6 @@ public class Blocks {
      */
     private static <T extends Block> T register(T block, String identifier) {
         return Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, identifier), block);
-    }
-
-    private static FluidBlock register(FlowableFluid fluid, Molecule molecule, String identifier) {
-        return Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, identifier),
-                new FluidBlock(fluid, FabricBlockSettings.copy(net.minecraft.block.Blocks.WATER)) {
-                    @Override
-                    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-                        if (entity instanceof LivingEntity livingEntity) {
-                            molecule.react(livingEntity);
-                        }
-                        super.onEntityCollision(state, world, pos, entity);
-                    }
-                });
     }
 
     /**
