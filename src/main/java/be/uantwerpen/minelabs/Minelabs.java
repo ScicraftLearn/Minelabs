@@ -18,6 +18,7 @@ import be.uantwerpen.minelabs.paintings.Paintings;
 import be.uantwerpen.minelabs.particle.Particles;
 import be.uantwerpen.minelabs.sound.SoundEvents;
 import be.uantwerpen.minelabs.world.gen.OreGenerations;
+import be.uantwerpen.minelabs.world.village.VillageAdditions;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.util.Identifier;
@@ -54,6 +55,7 @@ public class Minelabs implements ModInitializer {
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();
         OreGenerations.generateOres();
+        VillageAdditions.registerVillageStructures();
         Effects.registerStatusEffects();
         Particles.registerParticles();
 
