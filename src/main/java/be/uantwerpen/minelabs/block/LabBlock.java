@@ -15,7 +15,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
-public class LabBlock extends BlockWithEntity {
+public abstract class LabBlock extends BlockWithEntity {
 
     protected static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
 

@@ -20,7 +20,7 @@ public class LabCornerBlock extends LabBlock {
 
     public LabCornerBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(CONNECT, CornerShape.STRAIGHT));
+        this.setDefaultState(getDefaultState().with(CONNECT, CornerShape.STRAIGHT));
     }
 
     @Override
