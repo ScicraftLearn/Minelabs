@@ -95,6 +95,8 @@ public class Items {
     public static final Item BIG_LENS = register(new Item(
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "big_lens");
 
+    public static final Item BURNER = register(new BlockItem(Blocks.BURNER,
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "burner");
 
     public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), 1, "LiCl"), "lithium_chloride_dust");

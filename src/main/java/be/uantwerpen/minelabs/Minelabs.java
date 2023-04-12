@@ -6,23 +6,18 @@ import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.crafting.CraftingRecipes;
 import be.uantwerpen.minelabs.dimension.ModDimensions;
 import be.uantwerpen.minelabs.effect.Effects;
-import be.uantwerpen.minelabs.effect.HeliumFlight;
 import be.uantwerpen.minelabs.entity.Entities;
-import be.uantwerpen.minelabs.entity.ScientificVillager;
+import be.uantwerpen.minelabs.entity.Villagers;
 import be.uantwerpen.minelabs.event.ServerModEvents;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.network.NetworkingConstants;
 import be.uantwerpen.minelabs.paintings.Paintings;
 import be.uantwerpen.minelabs.particle.Particles;
 import be.uantwerpen.minelabs.sound.SoundEvents;
 import be.uantwerpen.minelabs.world.gen.OreGenerations;
 import be.uantwerpen.minelabs.world.village.VillageAdditions;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,8 +58,7 @@ public class Minelabs implements ModInitializer {
 
         ModDimensions.register();
 
-        ScientificVillager.registerVillagers();
-        ScientificVillager.registerTrades();
+        Villagers.registerVillagers();
         ServerModEvents.registerEvents();
 
         Criteria.registerCriteria();
