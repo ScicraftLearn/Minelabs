@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 
 public class MologramBlockEntityRenderer implements BlockEntityRenderer<MologramBlockEntity> {
-    static float ROTATION_SPEED = 0.2f;
+    private final static float ROTATION_SPEED = 0.2f;
     public MologramBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
     }
 
