@@ -23,6 +23,7 @@ public class ItemGroups {
                 stack.add(new ItemStack(Items.LAB_CENTER));
                 stack.add(new ItemStack(Items.LAB_CORNER));
                 stack.add(new ItemStack(Items.MICROSCOPE));
+                stack.add(new ItemStack(Items.BURNER));
                 stack.add(new ItemStack(Items.TUBERACK));
                 stack.add(new ItemStack(Items.LENS));
                 stack.add(new ItemStack(Items.BIG_LENS));

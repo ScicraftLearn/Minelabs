@@ -1,6 +1,8 @@
 package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
@@ -16,7 +18,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -24,6 +25,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -36,9 +39,9 @@ import java.util.Stack;
 
 public class BohrBlueprintEntity extends Entity {
     // Constants
-    private static final int MAX_PROTONS = 118;
-    private static final int MAX_ELECTRONS = MAX_PROTONS;
-    private static final int MAX_NEUTRONS = 176;
+    public static final int MAX_PROTONS = 118;
+    public static final int MAX_ELECTRONS = MAX_PROTONS;
+    public static final int MAX_NEUTRONS = 176;
     private static final float MAX_INTEGRITY = 100;
 
     // Transient data (not persisted or tracked)
@@ -89,7 +92,7 @@ public class BohrBlueprintEntity extends Entity {
         if (this.isRemoved())
             return;
 
-        if (this.world.isClient){
+        if (this.world.isClient) {
             clientTick();
             return;
         }
@@ -100,7 +103,10 @@ public class BohrBlueprintEntity extends Entity {
     /**
      * Only runs on version of entity used for rendering.
      */
-    private void clientTick(){
+    private void clientTick() {
+        if (getProtons() == 0 && getNeutrons() == 0) {
+            this.world.addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX(), this.getY() + 0.5f * getHeight(), this.getZ(), 0, 0, 0);
+        }
     }
 
     /**
@@ -119,7 +125,7 @@ public class BohrBlueprintEntity extends Entity {
         }
 
         // stability and integrity update
-        if (!isStable()){
+        if (!isStable()) {
             decrementIntegrity(getInstability() / 20f);
         }
     }
@@ -133,6 +139,7 @@ public class BohrBlueprintEntity extends Entity {
 
         if (addItem(item)) {
             particle.discard();
+            Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) particle.getOwner(), BohrCriterion.Type.ADD_PARTICLE);
         }
     }
 
@@ -164,6 +171,11 @@ public class BohrBlueprintEntity extends Entity {
             world.removeBlock(getBohrBlueprintPos(), false);
     }
 
+    public Item getOriginalAtom() {
+        if (inventory.isEmpty()) return null;
+        return inventory.get(0).getItem();
+    }
+
     public boolean isEmpty() {
         // inventory is not synced to client, so need to check counts.
         return getProtons() == 0 && getNeutrons() == 0 && getElectrons() == 0;
@@ -176,13 +188,22 @@ public class BohrBlueprintEntity extends Entity {
         clear();
     }
 
-    public void dropLastItem() {
+    public void onPlayerRemovedItem(ItemStack stack, ServerPlayerEntity player, boolean withHook) {
+        if (stack == null) return;
+        if (stack.getItem() instanceof AtomItem)
+            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_ATOM, withHook);
+        else
+            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE, withHook);
+    }
+
+    public ItemStack dropLastItem() {
         if (inventory.isEmpty())
-            return;
+            return null;
 
         ItemStack stack = inventory.pop();
         onItemRemoved(stack);
         dropStack(stack);
+        return stack;
     }
 
     private boolean canAcceptItem(Item item) {
@@ -311,16 +332,22 @@ public class BohrBlueprintEntity extends Entity {
             return false;
         }
         if (!this.isRemoved() && !this.world.isClient) {
-            if (source.getAttacker() instanceof PlayerEntity) {
-                onHitByPlayer();
+            if (source.getAttacker() instanceof ServerPlayerEntity player) {
+                onHitByPlayer(player);
                 return true;
             }
         }
         return false;
     }
 
-    private void onHitByPlayer() {
-        dropLastItem();
+    private void onHitByPlayer(ServerPlayerEntity player) {
+        ItemStack stack = dropLastItem();
+        onPlayerRemovedItem(stack, player, false);
+    }
+
+    public void extractByRod(ServerPlayerEntity player) {
+        ItemStack stack = dropLastItem();
+        onPlayerRemovedItem(stack, player, true);
     }
 
     @Override
@@ -421,12 +448,12 @@ public class BohrBlueprintEntity extends Entity {
             instability = 1f;
         }
         setInstability(instability);
-        if (instability == 0){
+        if (instability == 0) {
             setIntegrity(MAX_INTEGRITY);
         }
     }
 
-    public NucleusState getNucleusState(){
+    public NucleusState getNucleusState() {
         return nucleusState;
     }
 
@@ -440,7 +467,7 @@ public class BohrBlueprintEntity extends Entity {
         return null;
     }
 
-    public float getIntegrity(){
+    public float getIntegrity() {
         return dataTracker.get(INTEGRITY);
     }
 
@@ -456,23 +483,23 @@ public class BohrBlueprintEntity extends Entity {
         return dataTracker.get(NEUTRONS);
     }
 
-    private void setIntegrity(float value){
+    private void setIntegrity(float value) {
         dataTracker.set(INTEGRITY, value);
     }
 
-    private void decrementIntegrity(float value){
+    private void decrementIntegrity(float value) {
         setIntegrity(getIntegrity() - value);
     }
 
-    private float getInstability(){
+    private float getInstability() {
         return dataTracker.get(INSTABILITY);
     }
 
-    public boolean isStable(){
+    public boolean isStable() {
         return getInstability() == 0;
     }
 
-    private void setInstability(float value){
+    private void setInstability(float value) {
         dataTracker.set(INSTABILITY, value);
     }
 

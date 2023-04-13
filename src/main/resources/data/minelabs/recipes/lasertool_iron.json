@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " t ",
+    "geg",
+    "ct "
+  ],
+  "key": {
+    "t": {
+      "item": "minecraft:iron_ingot"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    },
+    "c": {
+      "item": "minecraft:copper_ingot"
+    },
+    "e": {
+      "item": "minelabs:erlenmeyer_he"
+    }
+  },
+  "result": {
+    "item": "minelabs:lasertool_iron"
+  }
+}

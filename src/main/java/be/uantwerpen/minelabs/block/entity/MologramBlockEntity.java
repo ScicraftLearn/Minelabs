@@ -41,6 +41,11 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
                 world.updateListeners(blockPos, state,
                         state.with(Properties.LIT, true), Block.NOTIFY_LISTENERS);
             }
+        } else {
+            //CLIENT
+            if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {
+                entity.setStack(0, ItemStack.EMPTY);
+            }
         }
     }
 
