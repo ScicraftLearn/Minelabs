@@ -21,11 +21,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class MologramBlockEntity extends BlockEntity implements ImplementedInventory {
     private final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(1, ItemStack.EMPTY);
-    private float rotation;
 
     public MologramBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.MOLOGRAM_BLOCK_ENTITY, pos, state);
-        rotation = 0.0f;
     }
 
     public static void tick(World world, BlockPos blockPos, BlockState state, MologramBlockEntity entity) {
@@ -45,7 +43,6 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
             }
         } else {
             //CLIENT
-            entity.rotation = (entity.rotation + 3.6f) % 360f;
             if (!state.get(Properties.LIT) && !entity.getStack(0).isEmpty()) {
                 entity.setStack(0, ItemStack.EMPTY);
             }
@@ -56,7 +53,6 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
     @Override
     public void writeNbt(NbtCompound tag) {
         Inventories.writeNbt(tag, INVENTORY);
-        tag.putFloat("rotation", rotation);
         super.writeNbt(tag);
     }
     // Deserialize the BlockEntity
@@ -64,7 +60,6 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
     public void readNbt(NbtCompound tag) {
         super.readNbt(tag);
         Inventories.readNbt(tag, INVENTORY);
-        rotation = tag.getFloat("rotation");
     }
     //sync data server client:
     //Warning: Need to call world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS); to trigger the update. //
@@ -126,7 +121,4 @@ public class MologramBlockEntity extends BlockEntity implements ImplementedInven
         return side == Direction.DOWN;
     }
 
-    public float getRotation() {
-        return rotation;
-    }
 }
