@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 public class VillageAdditions {
 
     public static void registerVillageStructures(){
-        //TODO OTHER (BIOME: TAIGA) HOUSES
+        //TODO
         // CHECK HOUSE/PROFESSION POOL
         FabricStructurePoolRegistry.registerSimple(
                 new Identifier("minecraft:village/plains/houses"),
@@ -28,6 +28,14 @@ public class VillageAdditions {
         FabricStructurePoolRegistry.registerSimple(
                 new Identifier("minecraft:village/desert/houses"),
                 new Identifier(Minelabs.MOD_ID, "village/desert_scientist_1"),
+                2);
+        FabricStructurePoolRegistry.registerSimple(
+                new Identifier("minecraft:village/taiga/houses"),
+                new Identifier(Minelabs.MOD_ID, "village/taiga_scientist_1"),
+                2);
+        FabricStructurePoolRegistry.registerSimple(
+                new Identifier("minecraft:village/taiga/houses"),
+                new Identifier(Minelabs.MOD_ID, "village/taiga_scientist_2"),
                 2);
     }
 }
