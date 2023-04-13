@@ -93,7 +93,7 @@ public class BohrBlueprintHUDRenderer {
             TextRenderer TR = MinecraftClient.getInstance().textRenderer;
             matrixStack.push();
             matrixStack.scale(2, 2, 2);
-            int width = TR.getWidth(symbol);
+            int width = TR.getWidth(symbol)-1;
             TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y+4) / 2, WHITE);
             TR.draw(matrixStack, (int)integrity + "%", (x - 96) / 2, (y+4) / 2, WHITE);
             matrixStack.pop();
