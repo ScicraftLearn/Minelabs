@@ -37,6 +37,7 @@ public class ItemGroups {
                 stack.add(new ItemStack(Items.LASERTOOL_IRON));
                 stack.add(new ItemStack(Items.LASERTOOL_GOLD));
                 stack.add(new ItemStack(Items.LASERTOOL_DIAMOND));
+                stack.add(new ItemStack(Items.ENTROPY_CREEPER_SPAWN_EGG));
             })
             .build();
 
