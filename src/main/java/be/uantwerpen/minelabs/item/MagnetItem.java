@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.item;
 
-import be.uantwerpen.minelabs.Minelabs;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ExperienceOrbEntity;
@@ -15,7 +14,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +36,6 @@ public class MagnetItem extends Item {
         if (enabled) {
             if (entity instanceof PlayerEntity player) {
                 if (world.isClient) return;
-                //world.getEntitiesByType(TypeFilter.instanceOf(ItemEntity.class), BOUNDS,  this::isMagnetable);
                 List<Entity> toMove = player.getWorld().getOtherEntities(player,
                         new Box(player.getX() - RANGE, player.getY() - RANGE, player.getZ() - RANGE,
                                 player.getX() + RANGE, player.getY() + RANGE, player.getZ() + RANGE),
@@ -49,26 +46,17 @@ public class MagnetItem extends Item {
                     double y = player.getY() + player.getEyeY() * .75f - movable_entity.getY();
                     double z = player.getZ() - movable_entity.getZ();
                     double distanceSq = x * x + y * y + z * z;
+                    double adjustedSpeed = SPEED / distanceSq;
 
                     if (distanceSq < 1.5625) {
                         movable_entity.onPlayerCollision(player);
                     } else {
-                        double adjustedSpeed = SPEED_4 / distanceSq;
-                        Direction mov = movable_entity.getMovementDirection();
+                        Direction mov = player.getHorizontalFacing().getOpposite();
 
                         double deltaX = mov.getOffsetX() + x * adjustedSpeed;
                         double deltaZ = mov.getOffsetZ() + z * adjustedSpeed;
-                        double deltaY;
-                        if (y > 0) {
-                            //if items are below, raise them to player level at a fixed rate
-                            deltaY = 0.12;
-                        } else {
-                            //Scaling y speed based on distance works poorly due to 'gravity' so use fixed speed
-                            deltaY = mov.getOffsetY() + y * SPEED;
-                        }
-                        Minelabs.LOGGER.info(new Vec3d(deltaX, deltaY, deltaZ));
-                        //movable_entity.move(MovementType.SELF, new Vec3d(deltaX, deltaY, deltaZ));
-                        //movable_entity.setVelocityClient(deltaX, deltaY, deltaZ);
+                        double deltaY = y>0 ? 0.12 : mov.getOffsetY() + y * SPEED;
+
                         movable_entity.setVelocity(deltaX, deltaY, deltaZ);
                     }
                 }
@@ -102,6 +90,7 @@ public class MagnetItem extends Item {
     }
 
     private boolean isMagnetable(Entity entity) {
+        // COULD ADD TAGS IF NEEDED
         return entity instanceof ExperienceOrbEntity || entity instanceof ItemEntity;
     }
 
