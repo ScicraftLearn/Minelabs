@@ -16,7 +16,7 @@ import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class LabBlock extends BlockWithEntity {
+public abstract class LabBlock extends Block {
 
     protected static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
 
@@ -71,16 +71,5 @@ public abstract class LabBlock extends BlockWithEntity {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING);
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return null;
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
     }
 }
