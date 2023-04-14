@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 
 public class MologramBlockEntityRenderer implements BlockEntityRenderer<MologramBlockEntity> {
-
+    private final static float ROTATION_SPEED = 0.2f;
     public MologramBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
     }
 
@@ -62,10 +62,17 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
 
         matrices.push();
         matrices.translate(0.5, 0, 0.5);
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(entity.getRotation()));
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRotation(world)));
         matrices.translate(-0.5, 13/16f, -0.5);
         MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create(), 0, overlay);
         matrices.pop();
+    }
+
+    private int getRotation(World world) {
+        long t = world.getTime();
+        int x = (int) (1/ROTATION_SPEED*20);
+        int l = (int) t % x;
+        return  l*360/x;
     }
 
     @Override
