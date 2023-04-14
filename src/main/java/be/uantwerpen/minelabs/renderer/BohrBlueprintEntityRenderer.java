@@ -17,9 +17,7 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEntity> {
@@ -33,6 +31,129 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
     // radius usable for atom rendering
     private static final float MAX_RENDER_RADIUS = 0.75f + 11f / 16f - 0.1f;
+
+    // maps the number of electrons to the correct shell configuration
+    private static final Map<Integer, int[]> ELECTRON_SHELL_MAPPINGS = new HashMap<Integer, int[]>() {{
+        put(0, new int[] {0});
+        put(1, new int[] {1});
+        put(2, new int[] {2});
+        put(3, new int[] {2,1});
+        put(4, new int[] {2,2});
+        put(5, new int[] {2,3});
+        put(6, new int[] {2,4});
+        put(7, new int[] {2,5});
+        put(8, new int[] {2,6});
+        put(9, new int[] {2,7});
+        put(10, new int[] {2,8});
+        put(11, new int[] {2,8,1});
+        put(12, new int[] {2,8,2});
+        put(13, new int[] {2,8,3});
+        put(14, new int[] {2,8,4});
+        put(15, new int[] {2,8,5});
+        put(16, new int[] {2,8,6});
+        put(17, new int[] {2,8,7});
+        put(18, new int[] {2,8,8});
+        put(19, new int[] {2,8,8,1});
+        put(20, new int[] {2,8,8,2});
+        put(21, new int[] {2,8,9,2});
+        put(22, new int[] {2,8,10,2});
+        put(23, new int[] {2,8,11,2});
+        put(24, new int[] {2,8,13,1});
+        put(25, new int[] {2,8,13,2});
+        put(26, new int[] {2,8,14,2});
+        put(27, new int[] {2,8,15,2});
+        put(28, new int[] {2,8,16,2});
+        put(29, new int[] {2,8,18,1});
+        put(30, new int[] {2,8,18,2});
+        put(31, new int[] {2,8,18,3});
+        put(32, new int[] {2,8,18,4});
+        put(33, new int[] {2,8,18,5});
+        put(34, new int[] {2,8,18,6});
+        put(35, new int[] {2,8,18,7});
+        put(36, new int[] {2,8,18,8});
+        put(37, new int[] {2,8,18,8,1});
+        put(38, new int[] {2,8,18,8,2});
+        put(39, new int[] {2,8,18,9,2});
+        put(40, new int[] {2,8,18,10,2});
+        put(41, new int[] {2,8,18,12,1});
+        put(42, new int[] {2,8,18,13,1});
+        put(43, new int[] {2,8,18,13,2});
+        put(44, new int[] {2,8,18,15,1});
+        put(45, new int[] {2,8,18,16,1});
+        put(46, new int[] {2,8,18,18});
+        put(47, new int[] {2,8,18,18,1});
+        put(48, new int[] {2,8,18,18,2});
+        put(49, new int[] {2,8,18,18,3});
+        put(50, new int[] {2,8,18,18,4});
+        put(51, new int[] {2,8,18,18,5});
+        put(52, new int[] {2,8,18,18,6});
+        put(53, new int[] {2,8,18,18,7});
+        put(54, new int[] {2,8,18,18,8});
+        put(55, new int[] {2,8,18,18,8,1});
+        put(56, new int[] {2,8,18,18,8,2});
+        put(57, new int[] {2,8,18,18,9,2});
+        put(58, new int[] {2,8,18,19,9,2});
+        put(59, new int[] {2,8,18,21,8,2});
+        put(60, new int[] {2,8,18,22,8,2});
+        put(61, new int[] {2,8,18,23,8,2});
+        put(62, new int[] {2,8,18,24,8,2});
+        put(63, new int[] {2,8,18,25,8,2});
+        put(64, new int[] {2,8,18,25,9,2});
+        put(65, new int[] {2,8,18,27,8,2});
+        put(66, new int[] {2,8,18,28,8,2});
+        put(67, new int[] {2,8,18,29,8,2});
+        put(68, new int[] {2,8,18,30,8,2});
+        put(69, new int[] {2,8,18,31,8,2});
+        put(70, new int[] {2,8,18,32,8,2});
+        put(71, new int[] {2,8,18,32,9,2});
+        put(72, new int[] {2,8,18,32,10,2});
+        put(73, new int[] {2,8,18,32,11,2});
+        put(74, new int[] {2,8,18,32,12,2});
+        put(75, new int[] {2,8,18,32,13,2});
+        put(76, new int[] {2,8,18,32,14,2});
+        put(77, new int[] {2,8,18,32,15,2});
+        put(78, new int[] {2,8,18,32,17,1});
+        put(79, new int[] {2,8,18,32,18,1});
+        put(80, new int[] {2,8,18,32,18,2});
+        put(81, new int[] {2,8,18,32,18,3});
+        put(82, new int[] {2,8,18,32,18,4});
+        put(83, new int[] {2,8,18,32,18,5});
+        put(84, new int[] {2,8,18,32,18,6});
+        put(85, new int[] {2,8,18,32,18,7});
+        put(86, new int[] {2,8,18,32,18,8});
+        put(87, new int[] {2,8,18,32,18,8,1});
+        put(88, new int[] {2,8,18,32,18,8,2});
+        put(89, new int[] {2,8,18,32,18,9,2});
+        put(90, new int[] {2,8,18,32,18,10,2});
+        put(91, new int[] {2,8,18,32,20,9,2});
+        put(92, new int[] {2,8,18,32,21,9,2});
+        put(93, new int[] {2,8,18,32,22,9,2});
+        put(94, new int[] {2,8,18,32,24,8,2});
+        put(95, new int[] {2,8,18,32,25,8,2});
+        put(96, new int[] {2,8,18,32,25,9,2});
+        put(97, new int[] {2,8,18,32,27,8,2});
+        put(98, new int[] {2,8,18,32,28,8,2});
+        put(99, new int[] {2,8,18,32,29,8,2});
+        put(100, new int[] {2,8,18,32,30,8,2});
+        put(101, new int[] {2,8,18,32,31,8,2});
+        put(102, new int[] {2,8,18,32,32,8,2});
+        put(103, new int[] {2,8,18,32,32,8,3});
+        put(104, new int[] {2,8,18,32,32,10,2});
+        put(105, new int[] {2,8,18,32,32,11,2});
+        put(106, new int[] {2,8,18,32,32,12,2});
+        put(107, new int[] {2,8,18,32,32,13,2});
+        put(108, new int[] {2,8,18,32,32,14,2});
+        put(109, new int[] {2,8,18,32,32,15,2});
+        put(110, new int[] {2,8,18,32,32,16,2});
+        put(111, new int[] {2,8,18,32,32,17,2});
+        put(112, new int[] {2,8,18,32,32,18,2});
+        put(113, new int[] {2,8,18,32,32,18,3});
+        put(114, new int[] {2,8,18,32,32,18,4});
+        put(115, new int[] {2,8,18,32,32,18,5});
+        put(116, new int[] {2,8,18,32,32,18,6});
+        put(117, new int[] {2,8,18,32,32,18,7});
+        put(118, new int[] {2,8,18,32,32,18,8});
+    }};
     private static final int[] ELECTRON_SHELL_CAPACITIES = {2, 8, 18, 32, 32, 18, 8};
     private static final float ELECTRON_SCALE = 0.15f;
     private static final float ELECTRON_FIRST_SHELL_RADIUS = 0.5f;
@@ -82,7 +203,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         // TODO: placeholder that fills until max. Should use energy based filling of shells.
         // TODO: if too slow, place cache over this function
         List<Integer> result = new ArrayList<>(7);
-        for (int c : ELECTRON_SHELL_CAPACITIES) {
+        for (int c : ELECTRON_SHELL_MAPPINGS.get(nE)) {
             if (nE <= 0) break;
             int amount = Math.min(c, nE);
             result.add(amount);
