@@ -2,7 +2,7 @@ package be.uantwerpen.minelabs.event;
 
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
-import be.uantwerpen.minelabs.renderer.BohrBlueprintEntityRenderer;
+import be.uantwerpen.minelabs.renderer.BohrBlueprintHUDRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.Box;
@@ -21,12 +21,12 @@ public class ClientModsEvents {
                 if (client.world == null || client.player == null)
                     return;
 
-                int diameter = BohrBlueprintEntityRenderer.HUD_RENDER_RADIUS * 2;
+                int diameter = BohrBlueprintHUDRenderer.HUD_RENDER_RADIUS * 2;
                 Box box = Box.of(client.player.getPos(), diameter, diameter, diameter);
-                // TODO: frustrum?
-                List<BohrBlueprintEntity> entities = client.world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, box, e -> e.isInRange(client.player, BohrBlueprintEntityRenderer.HUD_RENDER_RADIUS));
+                // TODO: frustum?
+                List<BohrBlueprintEntity> entities = client.world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, box, e -> e.isInRange(client.player, BohrBlueprintHUDRenderer.HUD_RENDER_RADIUS));
                 Optional<BohrBlueprintEntity> closestBohrBlockEntity = entities.stream().min(Comparator.comparing(e -> e.distanceTo(client.player)));
-                closestBohrBlockEntity.ifPresent(bohrBlueprintEntity -> BohrBlueprintEntityRenderer.renderHud(matrixStack, bohrBlueprintEntity));
+                closestBohrBlockEntity.ifPresent(bohrBlueprintEntity -> BohrBlueprintHUDRenderer.renderHud(matrixStack, bohrBlueprintEntity));
             }
         );
     }

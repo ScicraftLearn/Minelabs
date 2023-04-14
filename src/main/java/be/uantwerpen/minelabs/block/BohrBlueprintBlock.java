@@ -1,6 +1,8 @@
 package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.item.AtomItem;
@@ -12,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
@@ -33,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
+@SuppressWarnings("deprecation")
 public class BohrBlueprintBlock extends Block {
     private static final VoxelShape OUTLINE_SHAPE = VoxelShapes.union(
             Block.createCuboidShape(0, 3, 0, 16, 5, 16),        // top
@@ -93,13 +97,17 @@ public class BohrBlueprintBlock extends Block {
             if (item instanceof AtomItem && entity.addItem(item)) {
                 if (!player.getAbilities().creativeMode)
                     stack.decrement(1);
+                Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.ADD_ATOM);
                 return ActionResult.SUCCESS;
             }
         }
 
         // Otherwise try to craft atom
+        Item original = entity.getOriginalAtom();
         ItemStack resultStack = entity.craftAtom();
         if (!resultStack.isEmpty()){
+            if (!resultStack.getItem().equals(original))
+                Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.CRAFT_ATOM);
             player.getInventory().offerOrDrop(resultStack);
             return ActionResult.SUCCESS;
         }
@@ -131,7 +139,8 @@ public class BohrBlueprintBlock extends Block {
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
-            entity.dropLastItem();
+            ItemStack stack = entity.dropLastItem();
+            entity.onPlayerRemovedItem(stack, (ServerPlayerEntity) player, false);
         }
     }
 

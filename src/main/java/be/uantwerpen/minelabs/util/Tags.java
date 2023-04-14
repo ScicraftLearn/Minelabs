@@ -52,6 +52,7 @@ public class Tags {
     public static class Items {
         public static final TagKey<Item> LASERTOOLS = createTag("lasertools");
         public static final TagKey<Item> FIRE_CHANGER = createCommonTag("fire_changer");
+        public static final TagKey<Item> FIRE_EXTINGUISH = createTag("fire_extinguish");
 
         public static final TagKey<Item> CHARGE = createTag("charge");
         public static final TagKey<Item> NEGATIVE_CHARGE = createTag("negative_charge");

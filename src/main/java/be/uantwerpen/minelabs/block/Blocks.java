@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -138,6 +139,9 @@ public class Blocks {
             FabricBlockSettings.of(Material.METAL).strength(4.0f).luminance(6)), "microscope");
     public static final Block TUBERACK = register(new TubeRackBlock(
             FabricBlockSettings.of(Material.METAL).strength(4.0f)), "tuberack");
+
+    public static final Block BURNER = register(new BurnerBlock(FabricBlockSettings.of(Material.METAL)
+            .strength(4.0f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "burner");
 
     /**
      * Register a Block

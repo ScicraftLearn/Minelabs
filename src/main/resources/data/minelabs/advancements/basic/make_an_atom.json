@@ -13,13 +13,9 @@
   "parent": "minelabs:basic/use_bohr_blueprint",
   "criteria": {
     "make_an_atom": {
-      "trigger": "minecraft:inventory_changed",
+      "trigger": "minelabs:bohr_blueprint",
       "conditions": {
-        "items": [
-          {
-            "tag": "minelabs:atom_item"
-          }
-        ]
+        "type": "CRAFT_ATOM"
       }
     }
   },
