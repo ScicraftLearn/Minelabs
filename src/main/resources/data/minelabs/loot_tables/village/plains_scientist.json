@@ -1,1 +1,52 @@
-{}
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1,
+        "max": 4
+      },
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "weight": 2,
+          "name": "minelabs:village/erlenmeyer_scientist"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "minelabs:salt",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:lasertool_iron"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:safety_glasses"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:lab_coat"
+        }
+      ]
+    }
+  ]
+}
