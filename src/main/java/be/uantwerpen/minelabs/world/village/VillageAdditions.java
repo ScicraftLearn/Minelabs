@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 public class VillageAdditions {
 
     public static void registerVillageStructures(){
-        int weight = 1; // Profession houses are 2
+        int weight = 2; // Profession houses are 2
         FabricStructurePoolRegistry.registerSimple(
                 new Identifier("minecraft:village/plains/houses"),
                 new Identifier(Minelabs.MOD_ID, "village/plains_scientist_1"),
