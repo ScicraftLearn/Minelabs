@@ -4,19 +4,14 @@
     {
       "rolls": {
         "type": "minecraft:uniform",
-        "min": 1,
-        "max": 4
+        "min": 2,
+        "max": 5
       },
       "bonus_rolls": 0,
       "entries": [
         {
-          "type": "minecraft:loot_table",
-          "weight": 2,
-          "name": "minelabs:village/erlenmeyer_scientist"
-        },
-        {
           "type": "minecraft:item",
-          "weight": 4,
+          "weight": 25,
           "name": "minelabs:salt",
           "functions": [
             {
@@ -32,19 +27,54 @@
         },
         {
           "type": "minecraft:item",
+          "name": "minelabs:erlenmeyer",
+          "weight": 15,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 8
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
           "name": "minelabs:lasertool_iron"
         },
         {
           "type": "minecraft:item",
+          "weight": 10,
           "name": "minecraft:emerald"
         },
         {
           "type": "minecraft:item",
+          "weight": 15,
           "name": "minelabs:safety_glasses"
         },
         {
           "type": "minecraft:item",
+          "weight": 15,
           "name": "minelabs:lab_coat"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "minelabs:balloon"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minelabs:erlenmeyer_h2o"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minelabs:erlenmeyer_he"
         }
       ]
     }
