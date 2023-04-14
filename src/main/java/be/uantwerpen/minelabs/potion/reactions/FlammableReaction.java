@@ -23,8 +23,8 @@ public class FlammableReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d pos, BlockPos blockPos) {
-        Utils.applyRadius(blockPos, radius, block -> {
+    protected void react(World world, BlockPos pos) {
+        Utils.applyRadius(pos, radius, block -> {
             if (world.getBlockState(block).getBlock() == Blocks.AIR) {
                 if (this.pyrophoric || Utils.isFlameNearby(world, block, 3))
                     world.setBlockState(block, Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));

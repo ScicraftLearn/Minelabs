@@ -21,8 +21,8 @@ public class PoisonousReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d position, BlockPos blockPos) {
-        Utils.applyRadius(world, position, radius, this::react);
+    protected void react(World world, BlockPos pos) {
+        Utils.applyRadius(world, pos, radius, this::react);
     }
 
     @Override

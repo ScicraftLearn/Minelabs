@@ -19,8 +19,8 @@ public class ExtinguishReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d position, BlockPos blockPos) {
-        Utils.applyRadius(blockPos, this.radius, blockPosition -> {
+    protected void react(World world, BlockPos pos) {
+        Utils.applyRadius(pos, this.radius, blockPosition -> {
             BlockState block = world.getBlockState(blockPosition);
             if (block.isIn(BlockTags.FIRE)) {
                 world.removeBlock(blockPosition, false);
@@ -33,7 +33,7 @@ public class ExtinguishReaction extends Reaction {
             }
         });
 
-        Utils.applyRadius(world, position, this.radius, this::react);
+        Utils.applyRadius(world, pos, this.radius, this::react);
     }
 
     @Override

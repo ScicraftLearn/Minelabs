@@ -4,6 +4,7 @@ import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.state.property.Properties;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -11,6 +12,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -19,7 +21,7 @@ import java.util.function.Consumer;
 public abstract class Reaction {
 
     private final List<TagKey> whiteList = new ArrayList<>();
-    private final List<TagKey> blackList = List.of(Tags.Blocks.REACTION_DEFAULT_BLACKLIST);
+    private final List<TagKey> blackList = new ArrayList<>(List.of(Tags.Blocks.REACTION_DEFAULT_BLACKLIST));
 
     public Reaction addToBlackList(TagKey key) {
         blackList.add(key);
@@ -42,12 +44,12 @@ public abstract class Reaction {
         Objects.requireNonNull(position);
         Objects.requireNonNull(hitResult);
         if (hitResult instanceof BlockHitResult blockHitResult)
-            react(world, position, blockHitResult.getBlockPos());
+            react(world, blockHitResult.getBlockPos());
         else if (hitResult instanceof EntityHitResult entityHitResult)
-            react(world, position, entityHitResult.getEntity().getBlockPos());
+            react(world, entityHitResult.getEntity().getBlockPos());
     }
 
-    protected abstract void react(World world, Vec3d position, BlockPos blockPos);
+    protected abstract void react(World world, BlockPos position);
 
     public abstract void react(LivingEntity entity);
 
@@ -57,8 +59,9 @@ public abstract class Reaction {
                 Blocks.TORCH.getDefaultState(),
                 Blocks.CAMPFIRE.getDefaultState(),
                 Blocks.CANDLE.getDefaultState().with(CandleBlock.LIT, true),
-                Blocks.FIRE.getDefaultState(),
-                Blocks.LAVA.getDefaultState()
+                Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1),
+                Blocks.LAVA.getDefaultState(),
+                be.uantwerpen.minelabs.block.Blocks.BURNER.getDefaultState().with(Properties.LIT, true)
         );
 
         public static void applyRadius(BlockPos centerPos, int radius, Consumer<BlockPos> blockFunction) {
@@ -74,8 +77,8 @@ public abstract class Reaction {
             }
         }
 
-        public static void applyRadius(World world, Vec3d position, int radius, Consumer<LivingEntity> entityFunction) {
-            double x = position.x, y = position.y, z = position.z;
+        public static void applyRadius(World world, BlockPos position, int radius, Consumer<LivingEntity> entityFunction) {
+            double x = position.getX(), y = position.getY(), z = position.getZ();
             for (Entity entity : world.getOtherEntities(null, new Box(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius)))
                 if (entity instanceof LivingEntity livingEntity)
                     entityFunction.accept(livingEntity);

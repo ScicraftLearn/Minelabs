@@ -13,10 +13,10 @@ import java.util.List;
 public class DissolveReaction extends Reaction {
 
     @Override
-    protected void react(World world, Vec3d pos, BlockPos blockPos) {
+    protected void react(World world, BlockPos pos) {
         for (int i = 0; i < 10; i++) {
             MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.CLOUD,
-                    pos.x, pos.y, pos.z, 0, 0, 0);
+                    pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
         }
     }
 

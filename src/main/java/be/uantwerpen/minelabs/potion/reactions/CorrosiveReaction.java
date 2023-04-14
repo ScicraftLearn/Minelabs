@@ -23,12 +23,12 @@ public class CorrosiveReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d pos, BlockPos blockPos) {
-        Utils.applyRadius(blockPos, this.radius, block -> {
-            BlockState blockState = world.getBlockState(blockPos);
+    protected void react(World world, BlockPos pos) {
+        Utils.applyRadius(pos, this.radius, block -> {
+            BlockState blockState = world.getBlockState(pos);
             if (blockState.getBlock() == net.minecraft.block.Blocks.WATER)
                 MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.CLOUD,
-                        pos.x, pos.y, pos.z, 0, 0, 0);
+                        pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
             else
                 if(canReact(world.getBlockState(block)))
                     world.setBlockState(block, Blocks.AIR.getDefaultState());

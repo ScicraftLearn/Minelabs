@@ -20,9 +20,9 @@ public class ExplosiveReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d pos, BlockPos blockPos) {
-        if (this.pyrophoric || Utils.isFlameNearby(world, blockPos, power))
-            world.createExplosion(null, pos.x, pos.y, pos.z, power, flammable, Explosion.DestructionType.DESTROY);
+    protected void react(World world, BlockPos pos) {
+        if (this.pyrophoric || Utils.isFlameNearby(world, pos, power))
+            world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), power, flammable, Explosion.DestructionType.DESTROY);
     }
 
     @Override
