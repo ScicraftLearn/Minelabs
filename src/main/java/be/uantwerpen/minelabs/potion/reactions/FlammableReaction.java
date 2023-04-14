@@ -37,7 +37,7 @@ public class FlammableReaction extends Reaction {
 
     @Override
     public void react(LivingEntity entity) {
-        if (this.pyrophoric || Utils.isFlameNearby(entity.getWorld(), entity.getBlockPos(), 3))
-            entity.setFireTicks(duration);
+//        if (this.pyrophoric || Utils.isFlameNearby(entity.getWorld(), entity.getBlockPos(), 3))
+//            entity.setFireTicks(duration);
     }
 }
