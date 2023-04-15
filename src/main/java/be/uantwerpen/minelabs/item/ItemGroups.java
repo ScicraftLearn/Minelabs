@@ -64,7 +64,6 @@ public class ItemGroups {
                 stack.add(new ItemStack(Items.COPPER_SULFATE_DUST));
                 stack.add(new ItemStack(Items.BORIC_ACID));
                 stack.add(new ItemStack(Items.COPPER_CHLORIDE_DUST));
-                stack.add(new ItemStack(Items.POTASSIUM_SULFATE_DUST));
                 stack.add(new ItemStack(Items.POTASSIUM_NITRATE_DUST));
                 stack.add(new ItemStack(Items.POTASSIUM_CHLORIDE_DUST));
                 stack.add(new ItemStack(Items.POTASSIUM_SULFATE_DUST));
@@ -147,9 +146,9 @@ public class ItemGroups {
                 stack.add(new ItemStack(Items.CHLORINE_ATOM));
                 stack.add(new ItemStack(Items.ARGON_ATOM));
                 stack.add(new ItemStack(Items.POTASSIUM_ATOM));
-                stack.add(new ItemStack(Items.CADMIUM_ATOM));
+                stack.add(new ItemStack(Items.CALCIUM_ATOM));
                 stack.add(new ItemStack(Items.TITANIUM_ATOM));
-                stack.add(new ItemStack(Items.MAGNESIUM_ATOM));
+                stack.add(new ItemStack(Items.MANGANESE_ATOM));
                 stack.add(new ItemStack(Items.IRON_ATOM));
                 stack.add(new ItemStack(Items.COPPER_ATOM));
                 stack.add(new ItemStack(Items.ZINC_ATOM));
@@ -206,13 +205,6 @@ public class ItemGroups {
                     new Identifier(Minelabs.MOD_ID, "quantum_fields"))
             .icon(() -> new ItemStack(Items.GLUON_QUANTUMFIELD))
             .appendItems(stack ->{
-                stack.add(new ItemStack(Items.UPQUARK_QUANTUMFIELD));
-                stack.add(new ItemStack(Items.DOWNQUARK_QUANTUMFIELD));
-                stack.add(new ItemStack(Items.GLUON_QUANTUMFIELD));
-                stack.add(new ItemStack(Items.ELECTRON_QUANTUMFIELD));
-                stack.add(new ItemStack(Items.PHOTON_QUANTUMFIELD));
-                stack.add(new ItemStack(Items.NEUTRINO_QUANTUMFIELD));
-                stack.add(new ItemStack(Items.WEAK_BOSON_QUANTUMFIELD));
                 stack.add(new ItemStack(Items.UPQUARK_QUANTUMFIELD));
                 stack.add(new ItemStack(Items.DOWNQUARK_QUANTUMFIELD));
                 stack.add(new ItemStack(Items.GLUON_QUANTUMFIELD));
