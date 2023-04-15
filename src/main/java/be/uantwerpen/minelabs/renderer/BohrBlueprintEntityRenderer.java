@@ -32,7 +32,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     // radius usable for atom rendering
     private static final float MAX_RENDER_RADIUS = 0.75f + 11f / 16f - 0.1f;
 
-    // maps the number of electrons to the correct shell configuration
+    // maps the number of electrons to the correct shell configuration by index
     private static final int[][] ELECTRON_SHELL_CAPACITIES = {
         {},
         {1},
@@ -274,7 +274,6 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         float radius = ELECTRON_FIRST_SHELL_RADIUS;
         matrices.push();
         for (int electronsInShell : electronShellConfiguration) {
-            System.out.println(electronsInShell);
             renderElectronShell(electronsInShell, radius, dToCamera, time, matrices, vertexConsumers, light);
 
             // don't update normals
