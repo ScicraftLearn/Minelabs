@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.util;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class AtomConfiguration {
@@ -27,6 +28,12 @@ public class AtomConfiguration {
             return null;
 
         return nucleusState.getAtomItem();
+    }
+
+    public ItemStack getAtomStack(){
+        // it's ok if this is null. The ItemStack will be the empty stack.
+        Item atomItem = getAtomItem();
+        return new ItemStack(atomItem, 1);
     }
 
     public int getProtons() {
