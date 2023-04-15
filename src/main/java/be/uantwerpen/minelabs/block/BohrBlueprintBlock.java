@@ -94,20 +94,16 @@ public class BohrBlueprintBlock extends Block {
         // Only Atoms can be inserted by right-clicking. Other elements need to be thrown.
         if (!stack.isEmpty()) {
             Item item = stack.getItem();
-            if (item instanceof AtomItem && entity.addItem(item)) {
+            if (item instanceof AtomItem && entity.addItem(item, (ServerPlayerEntity) player)) {
                 if (!player.getAbilities().creativeMode)
                     stack.decrement(1);
-                Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.ADD_ATOM);
                 return ActionResult.SUCCESS;
             }
         }
 
         // Otherwise try to craft atom
-        Item original = entity.getOriginalAtom();
-        ItemStack resultStack = entity.craftAtom();
+        ItemStack resultStack = entity.craftAtom((ServerPlayerEntity) player);
         if (!resultStack.isEmpty()){
-            if (!resultStack.getItem().equals(original))
-                Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.CRAFT_ATOM);
             player.getInventory().offerOrDrop(resultStack);
             return ActionResult.SUCCESS;
         }
@@ -139,8 +135,7 @@ public class BohrBlueprintBlock extends Block {
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
-            ItemStack stack = entity.dropLastItem();
-            entity.onPlayerRemovedItem(stack, (ServerPlayerEntity) player, false);
+            ItemStack stack = entity.dropLastItem((ServerPlayerEntity) player);
         }
     }
 

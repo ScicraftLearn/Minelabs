@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs.renderer;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
+import be.uantwerpen.minelabs.util.AtomConfiguration;
 import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -34,12 +35,13 @@ public class BohrBlueprintHUDRenderer {
      * renders the text of the bohrplate status. Gets called from HUD render event callback.
      */
     public static void renderHud(MatrixStack matrixStack, BohrBlueprintEntity entity) {
-        int nP = entity.getProtons();
-        int nN = entity.getNeutrons();
-        int nE = entity.getElectrons();
+        AtomConfiguration atomConfig = entity.getAtomConfig();
+        int nP = atomConfig.getProtons();
+        int nN = atomConfig.getNeutrons();
+        int nE = atomConfig.getElectrons();
 
         float integrity = entity.getIntegrity();
-        NucleusState nucleusState = entity.getNucleusState();
+        NucleusState nucleusState = atomConfig.getNucleusState();
         renderHud(matrixStack, nP, nE, nN, integrity, nucleusState);
     }
 
