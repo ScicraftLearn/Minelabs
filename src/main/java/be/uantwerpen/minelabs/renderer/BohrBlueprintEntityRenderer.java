@@ -34,7 +34,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
     // maps the number of electrons to the correct shell configuration
     private static final int[][] ELECTRON_SHELL_CAPACITIES = {
-        {0},
+        {},
         {1},
         {2},
         {2,1},
