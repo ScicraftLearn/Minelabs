@@ -23,7 +23,6 @@ public class MagnetItem extends Item {
 
     private static final double SPEED = 0.035;
     private static final double SPEED_4 = SPEED * 4;
-    private final int RANGE = 5;
     private boolean enabled;
 
     public MagnetItem(Settings settings) {
@@ -33,6 +32,7 @@ public class MagnetItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        int RANGE = 5;
         if (enabled) {
             if (entity instanceof PlayerEntity player) {
                 if (world.isClient) return;
@@ -42,22 +42,28 @@ public class MagnetItem extends Item {
                         this::isMagnetable);
                 for (Entity movable_entity : toMove) {
                     double x = player.getX() - movable_entity.getX();
+
+                    //TODO FIX Y: ATM LAUNCHES ITEM INTO SKY
+
                     //for y value, make attraction point a little bellow eye level for best visual effect
-                    double y = player.getY() + player.getEyeY() * .75f - movable_entity.getY();
+                    //double y = player.getY() + player.getEyeY() * .75f - movable_entity.getY();
+                    double y = player.getY() - movable_entity.getY();
+
                     double z = player.getZ() - movable_entity.getZ();
-                    double distanceSq = x * x + y * y + z * z;
-                    double adjustedSpeed = SPEED / distanceSq;
+                    double distanceSq = Math.sqrt(x * x + y * y + z * z);
+                    double adjustedSpeed = SPEED_4 / distanceSq;
 
                     if (distanceSq < 1.5625) {
                         movable_entity.onPlayerCollision(player);
                     } else {
                         Direction mov = player.getHorizontalFacing().getOpposite();
 
-                        double deltaX = mov.getOffsetX() + x * adjustedSpeed;
-                        double deltaZ = mov.getOffsetZ() + z * adjustedSpeed;
-                        double deltaY = y>0 ? 0.12 : mov.getOffsetY() + y * SPEED;
+                        double deltaX = movable_entity.getX() + x * adjustedSpeed;
+                        double deltaZ = movable_entity.getZ()+ z * adjustedSpeed;
+                        double deltaY = y>0 ? 0.12 : movable_entity.getY() + y * SPEED;
 
-                        movable_entity.setVelocity(deltaX, deltaY, deltaZ);
+                        movable_entity.setPos(deltaX, deltaY, deltaZ);
+                        //movable_entity.setVelocity(deltaX, deltaY, deltaZ);
                     }
                 }
             }
@@ -80,7 +86,7 @@ public class MagnetItem extends Item {
         if (user.isSneaking()) {
             if (!world.isClient) {
                 ItemStack stack = user.getStackInHand(hand);
-                enabled = !isEnabled();
+                enabled = !enabled;
                 user.sendMessage(Text.of("TOGGLE MAGNET: " + enabled));
             }
             user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
