@@ -44,8 +44,9 @@ public class AtomConfiguration {
     }
 
     public Optional<String> getSymbol(){
-        if (nucleusState == null) return Optional.empty();
-        return Optional.of(nucleusState.getSymbol());
+        if (atom != null) return Optional.of(atom.getSymbol());
+        if (nucleusState != null) Optional.of(nucleusState.getSymbol());
+        return Optional.empty();
     }
 
     public Optional<String> getName(){
