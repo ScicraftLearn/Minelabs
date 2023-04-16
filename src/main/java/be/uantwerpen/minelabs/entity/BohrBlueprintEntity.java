@@ -467,7 +467,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public ItemStack getCraftableAtom() {
-        return atomConfig.getAtomStack();
+        return atomConfig.isStable() ? atomConfig.getAtomStack() : ItemStack.EMPTY;
     }
 
     public float getIntegrity() {

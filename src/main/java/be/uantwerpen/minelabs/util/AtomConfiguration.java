@@ -1,8 +1,11 @@
 package be.uantwerpen.minelabs.util;
 
+import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class AtomConfiguration {
 
@@ -13,24 +16,24 @@ public class AtomConfiguration {
     private final int electrons;
 
     private final NucleusState nucleusState;
+    // the atom based on protons
+    @Nullable
+    private final Atom atom;
 
     public AtomConfiguration(int protons, int neutrons, int electrons) {
         this.protons = protons;
         this.neutrons = neutrons;
         this.electrons = electrons;
 
+        // TODO: make it so nucleusState cannot be null
         nucleusState = NuclidesTable.getNuclide(protons, neutrons);
+        atom = Atom.getByNumber(protons);
     }
 
     @Nullable
     public Item getAtomItem() {
-        if (protons == 0 || protons != electrons)
-            return null;
-
-        if (nucleusState == null || !nucleusState.isStable())
-            return null;
-
-        return nucleusState.getAtomItem();
+        if (atom == null) return null;
+        return atom.getItem();
     }
 
     public ItemStack getAtomStack() {
@@ -39,17 +42,37 @@ public class AtomConfiguration {
         return new ItemStack(atomItem, 1);
     }
 
+    public Optional<String> getSymbol(){
+        if (nucleusState == null) return Optional.empty();
+        return Optional.of(nucleusState.getSymbol());
+    }
+
+    public Optional<String> getName(){
+        if (nucleusState == null) return Optional.empty();
+        return Optional.of(nucleusState.getAtomName());
+    }
+
+
     public boolean isNucleusDecomposing() {
         // TODO: implement
         return false;
     }
 
+    public boolean isStable(){
+        return isNucleusStable() && isElectronStable();
+    }
+
     public boolean isNucleusStable() {
+        if (nucleusState == null) return false;
         return nucleusState.isStable();
     }
 
     public boolean isElectronStable() {
-        return electrons < protons + MAX_ELECTRONS_ABOVE_PROTONS;
+        return electrons == protons;
+    }
+
+    public @Nullable Atom getAtom(){
+        return atom;
     }
 
     public int getProtons() {
@@ -62,11 +85,6 @@ public class AtomConfiguration {
 
     public int getElectrons() {
         return electrons;
-    }
-
-    // TODO: remove and wrap functionality
-    public NucleusState getNucleusState() {
-        return nucleusState;
     }
 
 

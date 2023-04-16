@@ -104,6 +104,8 @@ public class NuclidesTable {
      * @return : array of three values [atomName, symbol, mainDecayMode] (to see what these are, check the addNuclidesTableEntry function parameters)
      */
     public static NucleusState getNuclide(int nrOfProtons, int nrOfNeutrons) {
+        // TODO: make it so nucleusState cannot be null
+
         String compositeAtomKey = nrOfProtons + ":" + nrOfNeutrons;
         NucleusState value = nuclidesTable.get(compositeAtomKey);
         if (value != null) {
