@@ -17,9 +17,7 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEntity> {
@@ -33,11 +31,135 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
     // radius usable for atom rendering
     private static final float MAX_RENDER_RADIUS = 0.75f + 11f / 16f - 0.1f;
-    private static final int[] ELECTRON_SHELL_CAPACITIES = {2, 8, 18, 32, 32, 18, 8};
+
+    // maps the number of electrons to the correct shell configuration by index
+    private static final int[][] ELECTRON_SHELL_CAPACITIES = {
+        {},
+        {1},
+        {2},
+        {2,1},
+        {2,2},
+        {2,3},
+        {2,4},
+        {2,5},
+        {2,6},
+        {2,7},
+        {2,8},
+        {2,8,1},
+        {2,8,2},
+        {2,8,3},
+        {2,8,4},
+        {2,8,5},
+        {2,8,6},
+        {2,8,7},
+        {2,8,8},
+        {2,8,8,1},
+        {2,8,8,2},
+        {2,8,9,2},
+        {2,8,10,2},
+        {2,8,11,2},
+        {2,8,13,1},
+        {2,8,13,2},
+        {2,8,14,2},
+        {2,8,15,2},
+        {2,8,16,2},
+        {2,8,18,1},
+        {2,8,18,2},
+        {2,8,18,3},
+        {2,8,18,4},
+        {2,8,18,5},
+        {2,8,18,6},
+        {2,8,18,7},
+        {2,8,18,8},
+        {2,8,18,8,1},
+        {2,8,18,8,2},
+        {2,8,18,9,2},
+        {2,8,18,10,2},
+        {2,8,18,12,1},
+        {2,8,18,13,1},
+        {2,8,18,13,2},
+        {2,8,18,15,1},
+        {2,8,18,16,1},
+        {2,8,18,18},
+        {2,8,18,18,1},
+        {2,8,18,18,2},
+        {2,8,18,18,3},
+        {2,8,18,18,4},
+        {2,8,18,18,5},
+        {2,8,18,18,6},
+        {2,8,18,18,7},
+        {2,8,18,18,8},
+        {2,8,18,18,8,1},
+        {2,8,18,18,8,2},
+        {2,8,18,18,9,2},
+        {2,8,18,19,9,2},
+        {2,8,18,21,8,2},
+        {2,8,18,22,8,2},
+        {2,8,18,23,8,2},
+        {2,8,18,24,8,2},
+        {2,8,18,25,8,2},
+        {2,8,18,25,9,2},
+        {2,8,18,27,8,2},
+        {2,8,18,28,8,2},
+        {2,8,18,29,8,2},
+        {2,8,18,30,8,2},
+        {2,8,18,31,8,2},
+        {2,8,18,32,8,2},
+        {2,8,18,32,9,2},
+        {2,8,18,32,10,2},
+        {2,8,18,32,11,2},
+        {2,8,18,32,12,2},
+        {2,8,18,32,13,2},
+        {2,8,18,32,14,2},
+        {2,8,18,32,15,2},
+        {2,8,18,32,17,1},
+        {2,8,18,32,18,1},
+        {2,8,18,32,18,2},
+        {2,8,18,32,18,3},
+        {2,8,18,32,18,4},
+        {2,8,18,32,18,5},
+        {2,8,18,32,18,6},
+        {2,8,18,32,18,7},
+        {2,8,18,32,18,8},
+        {2,8,18,32,18,8,1},
+        {2,8,18,32,18,8,2},
+        {2,8,18,32,18,9,2},
+        {2,8,18,32,18,10,2},
+        {2,8,18,32,20,9,2},
+        {2,8,18,32,21,9,2},
+        {2,8,18,32,22,9,2},
+        {2,8,18,32,24,8,2},
+        {2,8,18,32,25,8,2},
+        {2,8,18,32,25,9,2},
+        {2,8,18,32,27,8,2},
+        {2,8,18,32,28,8,2},
+        {2,8,18,32,29,8,2},
+        {2,8,18,32,30,8,2},
+        {2,8,18,32,31,8,2},
+        {2,8,18,32,32,8,2},
+        {2,8,18,32,32,8,3},
+        {2,8,18,32,32,10,2},
+        {2,8,18,32,32,11,2},
+        {2,8,18,32,32,12,2},
+        {2,8,18,32,32,13,2},
+        {2,8,18,32,32,14,2},
+        {2,8,18,32,32,15,2},
+        {2,8,18,32,32,16,2},
+        {2,8,18,32,32,17,2},
+        {2,8,18,32,32,18,2},
+        {2,8,18,32,32,18,3},
+        {2,8,18,32,32,18,4},
+        {2,8,18,32,32,18,5},
+        {2,8,18,32,32,18,6},
+        {2,8,18,32,32,18,7},
+        {2,8,18,32,32,18,8}
+    };
+
     private static final float ELECTRON_SCALE = 0.15f;
     private static final float ELECTRON_FIRST_SHELL_RADIUS = 0.5f;
+    private static final int ELECTRON_SHELLS_AMOUNT = 7;
     // distance between two shells
-    private static final float ELECTRON_SHELL_RADIUS_OFFSET = (MAX_RENDER_RADIUS - ELECTRON_FIRST_SHELL_RADIUS) / (ELECTRON_SHELL_CAPACITIES.length - 1);
+    private static final float ELECTRON_SHELL_RADIUS_OFFSET = (MAX_RENDER_RADIUS - ELECTRON_FIRST_SHELL_RADIUS) / (ELECTRON_SHELLS_AMOUNT - 1);
     // rotation period in ticks
     private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
     // amount of points to use for the electron shell orbit line
@@ -77,19 +199,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         return icosahedron;
     }
 
-    private List<Integer> getElectronShellConfiguration(int nE) {
-        MinecraftClient.getInstance().getProfiler().push("shell config");
-        // TODO: placeholder that fills until max. Should use energy based filling of shells.
-        // TODO: if too slow, place cache over this function
-        List<Integer> result = new ArrayList<>(7);
-        for (int c : ELECTRON_SHELL_CAPACITIES) {
-            if (nE <= 0) break;
-            int amount = Math.min(c, nE);
-            result.add(amount);
-            nE -= amount;
-        }
-        MinecraftClient.getInstance().getProfiler().pop();
-        return result;
+    private int[] getElectronShellConfiguration(int nE) {
+        return ELECTRON_SHELL_CAPACITIES[nE];
     }
 
     public BohrBlueprintEntityRenderer(EntityRendererFactory.Context context) {
@@ -153,7 +264,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         // Electrons are rendered in at most 7 different shells with chosen yaw, pitch and roll.
         // Within an orbit the electrons are equally spaced from each other.
 
-        List<Integer> electronShellConfiguration = getElectronShellConfiguration(nE);
+        int[] electronShellConfiguration = getElectronShellConfiguration(nE);
 
         float radius = ELECTRON_FIRST_SHELL_RADIUS;
         matrices.push();
