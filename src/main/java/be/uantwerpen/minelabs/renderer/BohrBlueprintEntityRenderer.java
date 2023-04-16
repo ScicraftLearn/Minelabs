@@ -200,12 +200,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     }
 
     private int[] getElectronShellConfiguration(int nE) {
-        MinecraftClient.getInstance().getProfiler().push("shell config");
-        // TODO: placeholder that fills until max. Should use energy based filling of shells.
-        // TODO: if too slow, place cache over this function
-        int[] result = ELECTRON_SHELL_CAPACITIES[nE];
-        MinecraftClient.getInstance().getProfiler().pop();
-        return result;
+        return ELECTRON_SHELL_CAPACITIES[nE];
     }
 
     public BohrBlueprintEntityRenderer(EntityRendererFactory.Context context) {
