@@ -22,7 +22,6 @@ import java.util.List;
 public class MagnetItem extends Item {
 
     private static final double SPEED = 0.035;
-    private static final double SPEED_4 = SPEED * 4;
     private boolean enabled;
 
     public MagnetItem(Settings settings) {
@@ -41,29 +40,22 @@ public class MagnetItem extends Item {
                                 player.getX() + RANGE, player.getY() + RANGE, player.getZ() + RANGE),
                         this::isMagnetable);
                 for (Entity movable_entity : toMove) {
+                    //TODO change to velocity instead of pos
                     double x = player.getX() - movable_entity.getX();
-
-                    //TODO FIX Y: ATM LAUNCHES ITEM INTO SKY
-
-                    //for y value, make attraction point a little bellow eye level for best visual effect
-                    //double y = player.getY() + player.getEyeY() * .75f - movable_entity.getY();
                     double y = player.getY() - movable_entity.getY();
-
                     double z = player.getZ() - movable_entity.getZ();
                     double distanceSq = Math.sqrt(x * x + y * y + z * z);
-                    double adjustedSpeed = SPEED_4 / distanceSq;
+                    double adjustedSpeed = SPEED*3 / distanceSq;
 
                     if (distanceSq < 1.5625) {
                         movable_entity.onPlayerCollision(player);
                     } else {
-                        Direction mov = player.getHorizontalFacing().getOpposite();
-
                         double deltaX = movable_entity.getX() + x * adjustedSpeed;
                         double deltaZ = movable_entity.getZ()+ z * adjustedSpeed;
-                        double deltaY = y>0 ? 0.12 : movable_entity.getY() + y * SPEED;
+                        double deltaY = y>0 ? movable_entity.getY() + 0.12 : movable_entity.getY() + y * SPEED;
 
-                        movable_entity.setPos(deltaX, deltaY, deltaZ);
-                        //movable_entity.setVelocity(deltaX, deltaY, deltaZ);
+                        //movable_entity.setPos(deltaX, deltaY, deltaZ);
+                        movable_entity.setVelocity(deltaX, deltaY, deltaZ);
                     }
                 }
             }
