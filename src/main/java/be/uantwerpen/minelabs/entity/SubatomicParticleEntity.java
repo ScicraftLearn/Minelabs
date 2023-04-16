@@ -23,6 +23,9 @@ import org.jetbrains.annotations.Nullable;
  * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
  */
 public class SubatomicParticleEntity extends ThrownItemEntity {
+
+    public static final float DEFAULT_SPEED = 1.5f;
+
     private int itemAge;
 
     public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {

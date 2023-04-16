@@ -7,7 +7,6 @@ import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
-import be.uantwerpen.minelabs.util.NucleusState;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
@@ -42,7 +41,7 @@ public class BohrBlueprintEntity extends Entity {
     public static final int MAX_PROTONS = 118;
     public static final int MAX_ELECTRONS = MAX_PROTONS;
     public static final int MAX_NEUTRONS = 176;
-    private static final float MAX_INTEGRITY = 100;
+    private static final float MAX_INTEGRITY = 10 * 20;
 
     // Transient data (not persisted or tracked)
     private int validityCheckCounter = 0;
@@ -59,16 +58,11 @@ public class BohrBlueprintEntity extends Entity {
     protected static final TrackedData<Integer> ELECTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
     protected static final TrackedData<Integer> NEUTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
-    // Stability index of the currently formed configuration (whether it exists or not).
-    // Instability of 0 means stable, higher values indicate how unstable and how fast integrity decays.
-    protected static final TrackedData<Float> INSTABILITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
-
-
     // Integrity ranges from MAX_INTEGRITY to 0 where at 0 the configuration decomposes because it is too unstable.
-    // Slowly decreases based on instability index.
+    // Decreases by one per tick if unstable.
     protected static final TrackedData<Float> INTEGRITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
-    private AtomConfiguration atomConfig;
+    private AtomConfiguration atomConfig = new AtomConfiguration(0, 0, 0);
 
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
         super(entityType, world);
@@ -122,10 +116,14 @@ public class BohrBlueprintEntity extends Entity {
             }
         }
 
-        // stability and integrity update
-        if (!isStable()) {
-            decrementIntegrity(getInstability() / 20f);
+        if (atomConfig.isNucleusDecomposing()) {
+            decrementIntegrity(1);
         }
+
+        // DEBUG
+//        if (getElectrons() > 8) {
+//            ejectItem(Items.ELECTRON);
+//        }
     }
 
     // Called by subatomic particle when it collides with this entity.
@@ -153,7 +151,6 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.startTracking(PROTONS, 0);
         dataTracker.startTracking(ELECTRONS, 0);
         dataTracker.startTracking(NEUTRONS, 0);
-        dataTracker.startTracking(INSTABILITY, 0f);
         dataTracker.startTracking(INTEGRITY, MAX_INTEGRITY);
     }
 
@@ -245,6 +242,10 @@ public class BohrBlueprintEntity extends Entity {
         return true;
     }
 
+    private boolean removeItem(Item item){
+        return removeItem(item, null);
+    }
+
     private boolean removeItem(Item item, @Nullable ServerPlayerEntity source) {
         // we don't want the client to modify inventory
         if (world.isClient)
@@ -290,6 +291,30 @@ public class BohrBlueprintEntity extends Entity {
             else
                 Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.REMOVE_PARTICLE);
         }
+    }
+
+    /**
+     * Removes an item if it is present in the inventory and launches it in a random direction.
+     * Only works for subatomic particles.
+     */
+    private boolean ejectItem(Item item){
+        if (!removeItem(item))
+            return false;
+
+        // launch particle
+        ItemStack stack = item.getDefaultStack();
+        SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack);
+        // velocity chosen such that it launches up and around, but not too much at the ground
+        Vec3d velocity = new Vec3d(0, 0.2, 0)
+                .add(
+                        this.random.nextTriangular(0, 1d) * 2,
+                        this.random.nextTriangular(0, 1d) * 1,
+                        this.random.nextTriangular(0, 1d) * 2
+                ).normalize().multiply(SubatomicParticleEntity.DEFAULT_SPEED);
+        entity.setVelocity(velocity);
+        world.spawnEntity(entity);
+
+        return true;
     }
 
     private void clear() {
@@ -432,17 +457,7 @@ public class BohrBlueprintEntity extends Entity {
         // server only from here on
         if (world.isClient) return;
 
-        // TODO: compute instability with nuclides
-        float instability = 0f;
-        NucleusState nucleusState = atomConfig.getNucleusState();
-        if (nucleusState != null && !nucleusState.isStable()) {
-            instability = 1f;
-        }
-        if (getProtons() != getElectrons()) {
-            instability = 1f;
-        }
-        setInstability(instability);
-        if (instability == 0) {
+        if (!atomConfig.isNucleusDecomposing()){
             setIntegrity(MAX_INTEGRITY);
         }
     }
@@ -477,18 +492,6 @@ public class BohrBlueprintEntity extends Entity {
 
     private void decrementIntegrity(float value) {
         setIntegrity(getIntegrity() - value);
-    }
-
-    private float getInstability() {
-        return dataTracker.get(INSTABILITY);
-    }
-
-    public boolean isStable() {
-        return getInstability() == 0;
-    }
-
-    private void setInstability(float value) {
-        dataTracker.set(INSTABILITY, value);
     }
 
     private void setProtons(int value) {

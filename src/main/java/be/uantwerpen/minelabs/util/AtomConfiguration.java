@@ -5,13 +5,16 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class AtomConfiguration {
+
+    private static final int MAX_ELECTRONS_ABOVE_PROTONS = 8;
+
     private final int protons;
     private final int neutrons;
     private final int electrons;
 
     private final NucleusState nucleusState;
 
-    public AtomConfiguration(int protons, int neutrons, int electrons){
+    public AtomConfiguration(int protons, int neutrons, int electrons) {
         this.protons = protons;
         this.neutrons = neutrons;
         this.electrons = electrons;
@@ -30,10 +33,23 @@ public class AtomConfiguration {
         return nucleusState.getAtomItem();
     }
 
-    public ItemStack getAtomStack(){
+    public ItemStack getAtomStack() {
         // it's ok if this is null. The ItemStack will be the empty stack.
         Item atomItem = getAtomItem();
         return new ItemStack(atomItem, 1);
+    }
+
+    public boolean isNucleusDecomposing() {
+        // TODO: implement
+        return false;
+    }
+
+    public boolean isNucleusStable() {
+        return nucleusState.isStable();
+    }
+
+    public boolean isElectronStable() {
+        return electrons < protons + MAX_ELECTRONS_ABOVE_PROTONS;
     }
 
     public int getProtons() {
@@ -49,7 +65,7 @@ public class AtomConfiguration {
     }
 
     // TODO: remove and wrap functionality
-    public NucleusState getNucleusState(){
+    public NucleusState getNucleusState() {
         return nucleusState;
     }
 
