@@ -13,6 +13,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 
 import static net.minecraft.client.gui.DrawableHelper.drawCenteredText;
@@ -115,7 +116,8 @@ public class BohrBlueprintHUDRenderer {
     private static void renderIntegrity(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity){
         if (!atomConfig.isNucleusDecomposing()) return;
 
-        int p = (int) ((1-integrity) * 9);
+        int p = (int) MathHelper.clampedLerp(0, 10, 1 - integrity);
+        if (p >= 10) p = 9;
 
         Identifier crumblingTexture = ModelLoader.BLOCK_DESTRUCTION_STAGE_TEXTURES.get(p);
         RenderSystem.setShaderColor(1, 1, 1, 0.5f);
@@ -125,26 +127,6 @@ public class BohrBlueprintHUDRenderer {
         RenderSystem.defaultBlendFunc();
 
         drawTexture(matrixStack, 0, 0, 0, 0, 16, 16, 16, 16);
-
-
-//        MatrixStack.Entry matrixEntry = matrixStack.peek();
-//        Matrix4f pm = matrixEntry.getPositionMatrix();
-//
-//        RenderLayer renderLayer = ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(p);
-//        BufferBuilder emitter = new BufferBuilder(256);
-////        OverlayVertexConsumer vertexConsumer = new OverlayVertexConsumer(emitter, matrixEntry.getPositionMatrix(), matrixEntry.getNormalMatrix());
-//
-//        emitter.begin(renderLayer.getDrawMode(), renderLayer.getVertexFormat());
-//        emitter.vertex(pm, x, y, 0).color(1f, 1f, 1f, 1f).texture(0, 0).light(0, 0).normal(0, 0, 1).next();
-//        emitter.vertex(pm, x, y+16, 0).color(1f, 1f, 1f, 1f).texture(0, 1).light(0, 1).normal(0, 0, 1).next();
-//        emitter.vertex(pm, x+16, y+16, 0).color(1f, 1f, 1f, 1f).texture(1, 1).light(1, 1).normal(0, 0, 1).next();
-//        emitter.vertex(pm, x+16, y, 0).color(1f, 1f, 1f, 1f).texture(1, 0).light(1, 0).normal(0, 0, 1).next();
-//        BufferBuilder.BuiltBuffer buffer = emitter.end();
-//
-//        renderLayer.startDrawing();
-//        RenderSystem.setShader(GameRenderer::getRenderTypeCrumblingShader);
-//        BufferRenderer.drawWithShader(buffer);
-//        renderLayer.endDrawing();
     }
 
 
