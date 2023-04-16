@@ -57,60 +57,59 @@ public class BohrBlueprintHUDRenderer {
 //        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 //        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
-        if (atomConfig.getProtons() > 0) {
-            String atomName = atomConfig.getName().orElse("");
-            String symbol = atomConfig.getSymbol().orElse("_");
+        String atomName = atomConfig.getName().orElse("");
+        String symbol = atomConfig.getSymbol().orElse("_");
 
-            String ionicCharge = NuclidesTable.calculateIonicCharge(atomConfig.getProtons(), atomConfig.getElectrons());
+        String ionicCharge = NuclidesTable.calculateIonicCharge(atomConfig.getProtons(), atomConfig.getElectrons());
 
-            int Ecolor = WHITE;
-            int Zcolor = WHITE;
+        int Ecolor = WHITE;
+        int Zcolor = WHITE;
 
-            if (atomConfig.getProtons() != atomConfig.getElectrons()) {
-                Ecolor = YELLOW;
-                atomName += " ION";
-            }
-            if (Math.abs(atomConfig.getProtons() - atomConfig.getElectrons()) > 5) {
-                Ecolor = RED;
-            }
-            if (!atomConfig.isNucleusStable()) {
-                Zcolor = RED;
-            }
-
-            /*
-             * Rendering of text:
-             */
-            int boxSize = 34;
-            matrixStack.push();
-            matrixStack.translate(x-45, y-6, 0);
-            drawTexture(matrixStack, 0, 0, 0, 63, boxSize, boxSize, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-
-            float scale = boxSize / 16f;
-            matrixStack.scale(scale, scale, scale);
-            renderIntegrity(matrixStack, atomConfig, integrity);
-            matrixStack.pop();
-
-
-            TextRenderer TR = MinecraftClient.getInstance().textRenderer;
-            matrixStack.push();
-            matrixStack.scale(2, 2, 2);
-            int width = TR.getWidth(symbol) - 1;
-            TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y + 4) / 2, WHITE);
-            TR.draw(matrixStack, (int) (integrity * 100) + "%", (x - 96) / 2, (y + 4) / 2, WHITE);
-            matrixStack.pop();
-            //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
-            //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
-            //}
-            TR.draw(matrixStack, Integer.toString(atomConfig.getProtons()), x - 43, y + 19, WHITE);
-            TR.draw(matrixStack, Integer.toString(atomConfig.getProtons() + atomConfig.getNeutrons()), x - 43, y - 4, Zcolor);
-            if (!ionicCharge.equals("0")) {
-                int width_e = TR.getWidth(ionicCharge);
-                TR.draw(matrixStack, ionicCharge, x - 11 - width_e, y - 4, Ecolor);
-            }
-            if (atomConfig.isNucleusStable() && Math.abs(atomConfig.getProtons() - atomConfig.getElectrons()) <= 5) {
-                TR.draw(matrixStack, atomName, x + 192, y + 7, Ecolor);
-            }
+        if (atomConfig.getProtons() != atomConfig.getElectrons()) {
+            Ecolor = YELLOW;
+            atomName += " ION";
         }
+        if (Math.abs(atomConfig.getProtons() - atomConfig.getElectrons()) > 5) {
+            Ecolor = RED;
+        }
+        if (!atomConfig.isNucleusStable()) {
+            Zcolor = RED;
+        }
+
+        /*
+         * Rendering of text:
+         */
+        matrixStack.push();
+        matrixStack.translate(x-45, y-6, 0);
+        drawTexture(matrixStack, 0, 0, 0, 63, 34, 34, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+        matrixStack.pop();
+
+
+        TextRenderer TR = MinecraftClient.getInstance().textRenderer;
+        matrixStack.push();
+        matrixStack.scale(2, 2, 2);
+        int width = TR.getWidth(symbol) - 1;
+        TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y + 4) / 2, WHITE);
+        TR.draw(matrixStack, (int) (integrity * 100) + "%", (x - 96) / 2, (y + 4) / 2, WHITE);
+        matrixStack.pop();
+        //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
+        //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
+        //}
+        TR.draw(matrixStack, Integer.toString(atomConfig.getProtons()), x - 43, y + 19, WHITE);
+        TR.draw(matrixStack, Integer.toString(atomConfig.getProtons() + atomConfig.getNeutrons()), x - 43, y - 4, Zcolor);
+        if (!ionicCharge.equals("0")) {
+            int width_e = TR.getWidth(ionicCharge);
+            TR.draw(matrixStack, ionicCharge, x - 11 - width_e, y - 4, Ecolor);
+        }
+        if (atomConfig.isNucleusStable() && Math.abs(atomConfig.getProtons() - atomConfig.getElectrons()) <= 5) {
+            TR.draw(matrixStack, atomName, x + 192, y + 7, Ecolor);
+        }
+
+        matrixStack.push();
+        matrixStack.translate(x-44, y-5, 0);
+        matrixStack.scale(2, 2, 2);
+        renderIntegrity(matrixStack, atomConfig, integrity);
+        matrixStack.pop();
     }
 
     private static void renderIntegrity(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity){
@@ -119,7 +118,7 @@ public class BohrBlueprintHUDRenderer {
         int p = (int) ((1-integrity) * 9);
 
         Identifier crumblingTexture = ModelLoader.BLOCK_DESTRUCTION_STAGE_TEXTURES.get(p);
-        RenderSystem.setShaderColor(1, 1, 1, 1);
+        RenderSystem.setShaderColor(1, 1, 1, 0.5f);
         RenderSystem.setShaderTexture(0, crumblingTexture);
 
         RenderSystem.enableBlend();
