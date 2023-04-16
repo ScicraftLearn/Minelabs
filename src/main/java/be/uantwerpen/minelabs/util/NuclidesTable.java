@@ -32,22 +32,6 @@ public class NuclidesTable {
 
     private static final LinkedHashMap<Float, ArrayList<Float>> halflifeRanges = makeHalflifeRanges(); // map with key=halflife and value=[multiplier,timer]
     private static final Map<String, NucleusState> nuclidesTable = readCSV(); // map with key=nrOfProtons:nrOfNeutrons and value=nucleus_state_object
-    private static final Map<Integer, Integer> shells = new HashMap<>(); // map with key=amount_of_shells and value=amount_of_electrons (corresponding)
-
-    static { // see https://www.nndc.bnl.gov/nudat3/ for the nuclides table
-
-        // define electron shells map (source: wikipedia)
-        shells.put(1, 2);
-        shells.put(2, 8);
-        shells.put(3, 18);
-        shells.put(4, 32);
-        shells.put(5, 50);
-        shells.put(6, 72);
-        shells.put(7, 98);
-        shells.put(8, 128);
-        shells.put(9, 162);
-
-    }
 
     /**
      * Reads CSV file containing nuclides table data
@@ -115,13 +99,6 @@ public class NuclidesTable {
             return null;
         }
 
-    }
-
-    /**
-     * Calculates the number of electrons given the shell number (shell number range = [1,9]).
-     */
-    public static int calculateNrOfElectrons(int shell) {
-        return shells.getOrDefault(shell, 0);
     }
 
     /**
@@ -367,41 +344,6 @@ public class NuclidesTable {
             Minelabs.LOGGER.info("NullPointerException");
         }
     }
-
-    /**
-     * finds the next stable atom, given the amount of protons.
-     *
-     * @param protonAmount : amount of protons
-     * @param isUnstableAllowed : set to true if the return of an unstable atom is allowed (if there is no stable version). Set to false otherwise.
-     * @return : (int) amount of neutrons or -1 if there is no stable atom with the amount of protons and isUnstableAllowed parameter is set to false
-     */
-    public static int findNextStableAtom(int protonAmount, boolean isUnstableAllowed) {
-        int _neutronAmount = 0;
-        int tempNeutronAmount = 0;
-        float maxHalflife = 0;
-        for (Map.Entry<String, NucleusState> entry : NuclidesTable.getNuclidesTable().entrySet()) {
-            NucleusState nucleusValue = entry.getValue();
-            int protons = nucleusValue.getNrOfProtons();
-            if (protons == protonAmount) { // we have found the right amount of protons
-                if (nucleusValue.isStable()) {
-                    _neutronAmount = nucleusValue.getNrOfNeutrons();
-                    break;
-                }
-                else if (nucleusValue.getHalflife() > maxHalflife) {
-                    maxHalflife = nucleusValue.getHalflife();
-                    tempNeutronAmount = nucleusValue.getNrOfNeutrons();
-                }
-            }
-        }
-        if (_neutronAmount == 0) { // no stable (black) square found
-            _neutronAmount = tempNeutronAmount;
-            if (!isUnstableAllowed) {
-                _neutronAmount = -1;
-            }
-        }
-        return _neutronAmount;
-    }
-
 }
 
 

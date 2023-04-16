@@ -37,11 +37,14 @@ import java.util.Map;
 import java.util.Stack;
 
 public class BohrBlueprintEntity extends Entity {
-    // Constants
+    // Public constants
     public static final int MAX_PROTONS = 118;
     public static final int MAX_ELECTRONS = MAX_PROTONS;
     public static final int MAX_NEUTRONS = 176;
-    private static final float MAX_INTEGRITY = 10 * 20;
+
+    // Private constants
+    // how much integrity decreases each tick
+    private static final float INTEGRITY_DECAY_STEP = 1f / (10f * 20);
 
     // Transient data (not persisted or tracked)
     private int validityCheckCounter = 0;
@@ -116,14 +119,18 @@ public class BohrBlueprintEntity extends Entity {
             }
         }
 
-        if (atomConfig.isNucleusDecomposing()) {
-            decrementIntegrity(1);
+        if (getIntegrity() <= 0){
+            decomposeAtom();
         }
 
-        // DEBUG
-//        if (getElectrons() > 8) {
-//            ejectItem(Items.ELECTRON);
-//        }
+        if (atomConfig.isNucleusDecomposing()) {
+            decrementIntegrity();
+        }
+
+        // TODO: eject after delay instead
+        if (atomConfig.isElectronDecomposing()) {
+            ejectItem(Items.ELECTRON);
+        }
     }
 
     // Called by subatomic particle when it collides with this entity.
@@ -151,7 +158,7 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.startTracking(PROTONS, 0);
         dataTracker.startTracking(ELECTRONS, 0);
         dataTracker.startTracking(NEUTRONS, 0);
-        dataTracker.startTracking(INTEGRITY, MAX_INTEGRITY);
+        dataTracker.startTracking(INTEGRITY, 1f);
     }
 
     @Override
@@ -317,6 +324,14 @@ public class BohrBlueprintEntity extends Entity {
         return true;
     }
 
+    private void decomposeAtom(){
+        for (int p = 0; p < getProtons(); p++) ejectItem(Items.PROTON);
+        for (int n = 0; n < getNeutrons(); n++) ejectItem(Items.NEUTRON);
+        for (int e = 0; e < getElectrons(); e++) ejectItem(Items.ELECTRON);
+
+        clear();
+    }
+
     private void clear() {
         inventory.clear();
         // sets everything to zero
@@ -458,7 +473,7 @@ public class BohrBlueprintEntity extends Entity {
         if (world.isClient) return;
 
         if (!atomConfig.isNucleusDecomposing()){
-            setIntegrity(MAX_INTEGRITY);
+            setIntegrity(1f);
         }
     }
 
@@ -489,6 +504,8 @@ public class BohrBlueprintEntity extends Entity {
     private void setIntegrity(float value) {
         dataTracker.set(INTEGRITY, value);
     }
+
+    private void decrementIntegrity(){decrementIntegrity(INTEGRITY_DECAY_STEP);}
 
     private void decrementIntegrity(float value) {
         setIntegrity(getIntegrity() - value);

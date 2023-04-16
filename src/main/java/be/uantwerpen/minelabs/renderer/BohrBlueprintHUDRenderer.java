@@ -33,11 +33,8 @@ public class BohrBlueprintHUDRenderer {
      */
     public static void renderHud(MatrixStack matrixStack, BohrBlueprintEntity entity) {
         AtomConfiguration atomConfig = entity.getAtomConfig();
-        int nP = atomConfig.getProtons();
-        int nN = atomConfig.getNeutrons();
-        int nE = atomConfig.getElectrons();
-
         float integrity = entity.getIntegrity();
+
         renderHud(matrixStack, atomConfig, integrity);
     }
 
@@ -84,7 +81,7 @@ public class BohrBlueprintHUDRenderer {
             matrixStack.scale(2, 2, 2);
             int width = TR.getWidth(symbol) - 1;
             TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y + 4) / 2, WHITE);
-            TR.draw(matrixStack, (int) integrity + "%", (x - 96) / 2, (y + 4) / 2, WHITE);
+            TR.draw(matrixStack, (int) (integrity * 100) + "%", (x - 96) / 2, (y + 4) / 2, WHITE);
             matrixStack.pop();
             //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
             //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);

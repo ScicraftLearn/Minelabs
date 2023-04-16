@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs.util;
 import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -52,12 +53,6 @@ public class AtomConfiguration {
         return Optional.of(nucleusState.getAtomName());
     }
 
-
-    public boolean isNucleusDecomposing() {
-        // TODO: implement
-        return false;
-    }
-
     public boolean isStable(){
         return isNucleusStable() && isElectronStable();
     }
@@ -67,8 +62,35 @@ public class AtomConfiguration {
         return nucleusState.isStable();
     }
 
+    public boolean isNucleusDecomposing() {
+        if (nucleusState == null) return true;
+        // TODO: refactor
+        return nucleusState.getUnstability() == 0.04f;
+    }
+
+    public float getNucleusInstability(){
+        if (isNucleusStable()) return 0f;
+        if (isNucleusDecomposing()) return 1f;
+
+        // TODO: refactor
+        return nucleusState.getUnstability() / 0.04f;
+    }
+
     public boolean isElectronStable() {
         return electrons == protons;
+    }
+
+    public boolean isElectronDecomposing(){
+        return electrons > protons + MAX_ELECTRONS_ABOVE_PROTONS;
+    }
+
+    public float getElectronInstability(){
+        // these are not needed as they are included in the computation below
+//        if (electrons <= protons) return 0f;
+//        if (isElectronDecomposing()) return 1f;
+
+        float delta = (float) (electrons - protons) / (float) MAX_ELECTRONS_ABOVE_PROTONS;
+        return MathHelper.clampedLerp(0f, 1f, delta);
     }
 
     public @Nullable Atom getAtom(){
