@@ -13,7 +13,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class MagnetItem extends Item {
 
-    private static final double SPEED = 0.035;
+    private static final float SPEED = 0.35F;
     private boolean enabled;
 
     public MagnetItem(Settings settings) {
@@ -41,9 +41,14 @@ public class MagnetItem extends Item {
                         this::isMagnetable);
                 for (Entity movable_entity : toMove) {
                     //TODO change to velocity instead of pos
-                    double x = player.getX() - movable_entity.getX();
-                    double y = player.getY() - movable_entity.getY();
-                    double z = player.getZ() - movable_entity.getZ();
+                    double x = player.getX();
+                    double y = player.getY() + 0.75; // Mid-body / eye height
+                    double z = player.getZ();
+
+                    Vec3d vec = new Vec3d(x, y, z);
+                    setEntityMotionFromVector(movable_entity, vec, SPEED);
+                    /*
+
                     double distanceSq = Math.sqrt(x * x + y * y + z * z);
                     double adjustedSpeed = SPEED*3 / distanceSq;
 
@@ -56,11 +61,25 @@ public class MagnetItem extends Item {
 
                         //movable_entity.setPos(deltaX, deltaY, deltaZ);
                         movable_entity.setVelocity(deltaX, deltaY, deltaZ);
-                    }
+                    }*/
                 }
             }
         }
+    }
 
+    public void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector, float speed) {
+        // https://github.com/VazkiiMods/Botania/blob/1.19.x/Xplat/src/main/java/vazkii/botania/common/item/equipment/bauble/RingOfMagnetizationItem.java
+        // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/MathHelper.java#L30
+        // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/VecHelper.java
+        Vec3d entityVector = new Vec3d(entity.getX(), entity.getY() + entity.getEyeY() / 2, entity.getZ());
+        Vec3d finalVector = originalPosVector.subtract(entityVector);
+
+        if (finalVector.length() > 1) {
+            finalVector = finalVector.normalize();
+        }
+
+        //entity.setDeltaMovement(finalVector.scale(modifier));
+        entity.setVelocity(finalVector.multiply(speed));
     }
 
     @Override
