@@ -12,7 +12,6 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
@@ -49,19 +48,20 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final double ELECTRON_SHELL_LINE_MAX_RENDER_RANGE = 8f;
 
     // instability animation
-    private static final double MIN_ELECTRON_INSTABILITY_PERIOD = 0.8d * 20;
-    private static final double MAX_ELECTRON_INSTABILITY_PERIOD = 0.3d * 20;
+    private static final double ELECTRON_INSTABILITY_MIN_PERIOD = 0.8d * 20;
+    private static final double ELECTRON_INSTABILITY_MAX_PERIOD = 0.3d * 20;
     private static final float ELECTRON_INSTABILITY_MAX_OFFSET = ELECTRON_SHELL_RADIUS_OFFSET * 1.2f;
 
-    private static final int MAX_NUCLEUS_ITEMS_RENDERED = 36;
+    private static final int NUCLEUS_MAX_ITEMS_RENDERED = 36;
 
     // size of individual particle items
     private static final float NUCLEUS_SCALE = 0.15f;
 
-    // how big the core should be
-    private static final float NUCLEUS_RADIUS_MULTIPLIER = 0.1f;
+    // for scaling nucleus radius depending on amount of particles
+    private static final float NUCLEUS_MIN_RADIUS = 0.05f;
+    private static final float NUCLEUS_MAX_RADIUS = 0.15f;
     // distance between layers of nucleus
-    private static final float NUCLEUS_RADIUS_OFFSET = 0.15f;
+//    private static final float NUCLEUS_RADIUS_OFFSET = 0.15f;
     private static final List<Vec3f> NUCLEUS_COORDINATES = createIcosahedron();
 
 
@@ -77,7 +77,10 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             icosahedron.add(new Vec3f((float) Math.cos((Math.PI / 5) + i * c), (float) Math.sin((Math.PI / 5) + i * c), -0.5f));
         icosahedron.add(new Vec3f(0, 0, (float) -Math.sqrt(5) / 2));
 
-        icosahedron.forEach(v -> v.scale(NUCLEUS_RADIUS_MULTIPLIER));
+        // have all points be roughly distance 1 from center;
+        float length = (float) Math.sqrt(icosahedron.get(0).dot(icosahedron.get(0)));
+        icosahedron.forEach(v -> v.scale(length));
+        Collections.shuffle(icosahedron, new Random(42));
         return icosahedron;
     }
 
@@ -215,7 +218,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         // if you don't want all electrons to be in sync
 //        time = time + percentOfOrbit * ELECTRON_ROTATION_PERIOD;
 
-        double period = MathHelper.lerp(instability, MIN_ELECTRON_INSTABILITY_PERIOD, MAX_ELECTRON_INSTABILITY_PERIOD);
+        double period = MathHelper.lerp(instability, ELECTRON_INSTABILITY_MIN_PERIOD, ELECTRON_INSTABILITY_MAX_PERIOD);
         float offset = instability * ELECTRON_INSTABILITY_MAX_OFFSET;
         float yOffset = (float) (Math.sin(Math.toRadians(time / period * 360)) + 1) / 2 * offset;
         return new Vec3f(0, yOffset, 0);
@@ -258,7 +261,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         Iterator<Vec3f> posIterator = NUCLEUS_COORDINATES.iterator();
 
         // when we run out of coordinates, start new iteration with increased radius
-        float radiusMultiplier = 1f;
+//        float radiusMultiplier = 1f;
 
         // we keep ratio of protons rendered as close to requested as possible
         float pRatio = (float) nP / (float) (nP + nN);
@@ -272,16 +275,19 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
         int nPRendered = 0;
         int nNRendered = 0;
-        int amountToRender = Math.min(MAX_NUCLEUS_ITEMS_RENDERED, nP + nN);
+        int amountToRender = Math.min(NUCLEUS_MAX_ITEMS_RENDERED, nP + nN);
+        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, (float)(nP + nN) / NUCLEUS_MAX_ITEMS_RENDERED);
 
         matrices.push();
         while (nPRendered + nNRendered < amountToRender) {
             if (!posIterator.hasNext()) {
-                radiusMultiplier += NUCLEUS_RADIUS_OFFSET;
+                nucleusRadius /= 2;
+//                radiusMultiplier += NUCLEUS_RADIUS_OFFSET;
                 posIterator = NUCLEUS_COORDINATES.iterator();
             }
             Vec3f pos = posIterator.next().copy();
-            pos.scale(radiusMultiplier);
+            pos.scale(nucleusRadius);
+//            pos.scale(radiusMultiplier);
 
             ItemStack type = pRatio > pRatioRendered ? PROTON : NEUTRON;
             if (type == PROTON)
