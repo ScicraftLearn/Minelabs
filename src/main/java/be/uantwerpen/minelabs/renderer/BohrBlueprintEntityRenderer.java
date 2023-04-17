@@ -156,9 +156,11 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         int[] electronShellConfiguration = getElectronShellConfiguration(nE);
 
         float radius = ELECTRON_FIRST_SHELL_RADIUS;
+
+        // TODO: both for loops can be combined with new orthogonal orbits by using matrix push and pop rather than continuing from last orientation.
         matrices.push();
         for (int electronsInShell : electronShellConfiguration) {
-            renderElectronShell(electronsInShell, radius, instability, dToCamera, time, matrices, vertexConsumers, light);
+            renderElectronShellElectrons(electronsInShell, radius, instability, time, matrices, vertexConsumers, light);
 
             // don't update normals
             matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_X.getDegreesQuaternion(45)));
@@ -168,16 +170,25 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             radius += ELECTRON_SHELL_RADIUS_OFFSET;
         }
         matrices.pop();
+
+        radius = ELECTRON_FIRST_SHELL_RADIUS;
+        matrices.push();
+        for (int i = 0; i < electronShellConfiguration.length; i++) {
+            renderElectronShellLine(radius, dToCamera, matrices, vertexConsumers);
+
+            // for the normals of the lines the normal matrix does need to be multiplied
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(30));
+            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(15));
+
+            radius += ELECTRON_SHELL_RADIUS_OFFSET;
+        }
+        matrices.pop();
     }
 
     /**
      * Render an electron shell in the XY-plane with specified radius and number of electrons.
      */
-    private void renderElectronShell(int nE, float radius, float instability, double dToCamera, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        renderElectronShellLine(radius, dToCamera, matrices, vertexConsumers);
-        renderElectronShellElectrons(nE, radius, instability, time, matrices, vertexConsumers, light);
-    }
-
     private void renderElectronShellElectrons(int nE, float radius, float instability, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         // rotation animation of electrons on shell
         float angle = (time % ELECTRON_ROTATION_PERIOD) / ELECTRON_ROTATION_PERIOD * 360;
@@ -214,7 +225,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.pop();
     }
 
-    private Vec3f getElectronInstabilityOffset(float instability, float percentOfOrbit, float time){
+    private Vec3f getElectronInstabilityOffset(float instability, float percentOfOrbit, float time) {
         // if you don't want all electrons to be in sync
 //        time = time + percentOfOrbit * ELECTRON_ROTATION_PERIOD;
 
@@ -229,24 +240,18 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             return;
 
         double delta = (dToCamera - ELECTRON_SHELL_LINE_MIN_RENDER_RANGE) / (ELECTRON_SHELL_LINE_MAX_RENDER_RANGE - ELECTRON_SHELL_LINE_MIN_RENDER_RANGE);
-        int alpha = (int) Math.floor(MathHelper.clampedLerp( ELECTRON_SHELL_LINE_MAX_ALPHA, 0, delta));
+        int alpha = (int) Math.floor(MathHelper.clampedLerp(ELECTRON_SHELL_LINE_MAX_ALPHA, 0, delta));
 
         // lines
         VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLineStrip());
         matrices.push();
         float angleBetweenLinePoints = 360f / ELECTRON_LINE_NUMPOINTS;
         for (int e = 0; e <= ELECTRON_LINE_NUMPOINTS; e++) {
-            matrices.push();
-            matrices.translate(0, radius, 0);
-
-            // TODO: remove
-            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
-
             MatrixStack.Entry matrixEntry = matrices.peek();
-            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, 0, 0).color(0, 0, 0, alpha).normal(matrixEntry.getNormalMatrix(), 1, 0, 0).next();
+            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0).color(0, 0, 0, alpha).normal(matrixEntry.getNormalMatrix(), 1f, 0f, 0).next();
 
-            matrices.pop();
             matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints));
+//            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints)));
         }
 
         matrices.pop();
@@ -276,7 +281,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         int nPRendered = 0;
         int nNRendered = 0;
         int amountToRender = Math.min(NUCLEUS_MAX_ITEMS_RENDERED, nP + nN);
-        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, (float)(nP + nN) / NUCLEUS_MAX_ITEMS_RENDERED);
+        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, (float) (nP + nN) / NUCLEUS_MAX_ITEMS_RENDERED);
 
         matrices.push();
         while (nPRendered + nNRendered < amountToRender) {
@@ -339,122 +344,122 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             {},
             {1},
             {2},
-            {2,1},
-            {2,2},
-            {2,3},
-            {2,4},
-            {2,5},
-            {2,6},
-            {2,7},
-            {2,8},
-            {2,8,1},
-            {2,8,2},
-            {2,8,3},
-            {2,8,4},
-            {2,8,5},
-            {2,8,6},
-            {2,8,7},
-            {2,8,8},
-            {2,8,8,1},
-            {2,8,8,2},
-            {2,8,9,2},
-            {2,8,10,2},
-            {2,8,11,2},
-            {2,8,13,1},
-            {2,8,13,2},
-            {2,8,14,2},
-            {2,8,15,2},
-            {2,8,16,2},
-            {2,8,18,1},
-            {2,8,18,2},
-            {2,8,18,3},
-            {2,8,18,4},
-            {2,8,18,5},
-            {2,8,18,6},
-            {2,8,18,7},
-            {2,8,18,8},
-            {2,8,18,8,1},
-            {2,8,18,8,2},
-            {2,8,18,9,2},
-            {2,8,18,10,2},
-            {2,8,18,12,1},
-            {2,8,18,13,1},
-            {2,8,18,13,2},
-            {2,8,18,15,1},
-            {2,8,18,16,1},
-            {2,8,18,18},
-            {2,8,18,18,1},
-            {2,8,18,18,2},
-            {2,8,18,18,3},
-            {2,8,18,18,4},
-            {2,8,18,18,5},
-            {2,8,18,18,6},
-            {2,8,18,18,7},
-            {2,8,18,18,8},
-            {2,8,18,18,8,1},
-            {2,8,18,18,8,2},
-            {2,8,18,18,9,2},
-            {2,8,18,19,9,2},
-            {2,8,18,21,8,2},
-            {2,8,18,22,8,2},
-            {2,8,18,23,8,2},
-            {2,8,18,24,8,2},
-            {2,8,18,25,8,2},
-            {2,8,18,25,9,2},
-            {2,8,18,27,8,2},
-            {2,8,18,28,8,2},
-            {2,8,18,29,8,2},
-            {2,8,18,30,8,2},
-            {2,8,18,31,8,2},
-            {2,8,18,32,8,2},
-            {2,8,18,32,9,2},
-            {2,8,18,32,10,2},
-            {2,8,18,32,11,2},
-            {2,8,18,32,12,2},
-            {2,8,18,32,13,2},
-            {2,8,18,32,14,2},
-            {2,8,18,32,15,2},
-            {2,8,18,32,17,1},
-            {2,8,18,32,18,1},
-            {2,8,18,32,18,2},
-            {2,8,18,32,18,3},
-            {2,8,18,32,18,4},
-            {2,8,18,32,18,5},
-            {2,8,18,32,18,6},
-            {2,8,18,32,18,7},
-            {2,8,18,32,18,8},
-            {2,8,18,32,18,8,1},
-            {2,8,18,32,18,8,2},
-            {2,8,18,32,18,9,2},
-            {2,8,18,32,18,10,2},
-            {2,8,18,32,20,9,2},
-            {2,8,18,32,21,9,2},
-            {2,8,18,32,22,9,2},
-            {2,8,18,32,24,8,2},
-            {2,8,18,32,25,8,2},
-            {2,8,18,32,25,9,2},
-            {2,8,18,32,27,8,2},
-            {2,8,18,32,28,8,2},
-            {2,8,18,32,29,8,2},
-            {2,8,18,32,30,8,2},
-            {2,8,18,32,31,8,2},
-            {2,8,18,32,32,8,2},
-            {2,8,18,32,32,8,3},
-            {2,8,18,32,32,10,2},
-            {2,8,18,32,32,11,2},
-            {2,8,18,32,32,12,2},
-            {2,8,18,32,32,13,2},
-            {2,8,18,32,32,14,2},
-            {2,8,18,32,32,15,2},
-            {2,8,18,32,32,16,2},
-            {2,8,18,32,32,17,2},
-            {2,8,18,32,32,18,2},
-            {2,8,18,32,32,18,3},
-            {2,8,18,32,32,18,4},
-            {2,8,18,32,32,18,5},
-            {2,8,18,32,32,18,6},
-            {2,8,18,32,32,18,7},
-            {2,8,18,32,32,18,8}
+            {2, 1},
+            {2, 2},
+            {2, 3},
+            {2, 4},
+            {2, 5},
+            {2, 6},
+            {2, 7},
+            {2, 8},
+            {2, 8, 1},
+            {2, 8, 2},
+            {2, 8, 3},
+            {2, 8, 4},
+            {2, 8, 5},
+            {2, 8, 6},
+            {2, 8, 7},
+            {2, 8, 8},
+            {2, 8, 8, 1},
+            {2, 8, 8, 2},
+            {2, 8, 9, 2},
+            {2, 8, 10, 2},
+            {2, 8, 11, 2},
+            {2, 8, 13, 1},
+            {2, 8, 13, 2},
+            {2, 8, 14, 2},
+            {2, 8, 15, 2},
+            {2, 8, 16, 2},
+            {2, 8, 18, 1},
+            {2, 8, 18, 2},
+            {2, 8, 18, 3},
+            {2, 8, 18, 4},
+            {2, 8, 18, 5},
+            {2, 8, 18, 6},
+            {2, 8, 18, 7},
+            {2, 8, 18, 8},
+            {2, 8, 18, 8, 1},
+            {2, 8, 18, 8, 2},
+            {2, 8, 18, 9, 2},
+            {2, 8, 18, 10, 2},
+            {2, 8, 18, 12, 1},
+            {2, 8, 18, 13, 1},
+            {2, 8, 18, 13, 2},
+            {2, 8, 18, 15, 1},
+            {2, 8, 18, 16, 1},
+            {2, 8, 18, 18},
+            {2, 8, 18, 18, 1},
+            {2, 8, 18, 18, 2},
+            {2, 8, 18, 18, 3},
+            {2, 8, 18, 18, 4},
+            {2, 8, 18, 18, 5},
+            {2, 8, 18, 18, 6},
+            {2, 8, 18, 18, 7},
+            {2, 8, 18, 18, 8},
+            {2, 8, 18, 18, 8, 1},
+            {2, 8, 18, 18, 8, 2},
+            {2, 8, 18, 18, 9, 2},
+            {2, 8, 18, 19, 9, 2},
+            {2, 8, 18, 21, 8, 2},
+            {2, 8, 18, 22, 8, 2},
+            {2, 8, 18, 23, 8, 2},
+            {2, 8, 18, 24, 8, 2},
+            {2, 8, 18, 25, 8, 2},
+            {2, 8, 18, 25, 9, 2},
+            {2, 8, 18, 27, 8, 2},
+            {2, 8, 18, 28, 8, 2},
+            {2, 8, 18, 29, 8, 2},
+            {2, 8, 18, 30, 8, 2},
+            {2, 8, 18, 31, 8, 2},
+            {2, 8, 18, 32, 8, 2},
+            {2, 8, 18, 32, 9, 2},
+            {2, 8, 18, 32, 10, 2},
+            {2, 8, 18, 32, 11, 2},
+            {2, 8, 18, 32, 12, 2},
+            {2, 8, 18, 32, 13, 2},
+            {2, 8, 18, 32, 14, 2},
+            {2, 8, 18, 32, 15, 2},
+            {2, 8, 18, 32, 17, 1},
+            {2, 8, 18, 32, 18, 1},
+            {2, 8, 18, 32, 18, 2},
+            {2, 8, 18, 32, 18, 3},
+            {2, 8, 18, 32, 18, 4},
+            {2, 8, 18, 32, 18, 5},
+            {2, 8, 18, 32, 18, 6},
+            {2, 8, 18, 32, 18, 7},
+            {2, 8, 18, 32, 18, 8},
+            {2, 8, 18, 32, 18, 8, 1},
+            {2, 8, 18, 32, 18, 8, 2},
+            {2, 8, 18, 32, 18, 9, 2},
+            {2, 8, 18, 32, 18, 10, 2},
+            {2, 8, 18, 32, 20, 9, 2},
+            {2, 8, 18, 32, 21, 9, 2},
+            {2, 8, 18, 32, 22, 9, 2},
+            {2, 8, 18, 32, 24, 8, 2},
+            {2, 8, 18, 32, 25, 8, 2},
+            {2, 8, 18, 32, 25, 9, 2},
+            {2, 8, 18, 32, 27, 8, 2},
+            {2, 8, 18, 32, 28, 8, 2},
+            {2, 8, 18, 32, 29, 8, 2},
+            {2, 8, 18, 32, 30, 8, 2},
+            {2, 8, 18, 32, 31, 8, 2},
+            {2, 8, 18, 32, 32, 8, 2},
+            {2, 8, 18, 32, 32, 8, 3},
+            {2, 8, 18, 32, 32, 10, 2},
+            {2, 8, 18, 32, 32, 11, 2},
+            {2, 8, 18, 32, 32, 12, 2},
+            {2, 8, 18, 32, 32, 13, 2},
+            {2, 8, 18, 32, 32, 14, 2},
+            {2, 8, 18, 32, 32, 15, 2},
+            {2, 8, 18, 32, 32, 16, 2},
+            {2, 8, 18, 32, 32, 17, 2},
+            {2, 8, 18, 32, 32, 18, 2},
+            {2, 8, 18, 32, 32, 18, 3},
+            {2, 8, 18, 32, 32, 18, 4},
+            {2, 8, 18, 32, 32, 18, 5},
+            {2, 8, 18, 32, 32, 18, 6},
+            {2, 8, 18, 32, 32, 18, 7},
+            {2, 8, 18, 32, 32, 18, 8}
     };
 
 }
