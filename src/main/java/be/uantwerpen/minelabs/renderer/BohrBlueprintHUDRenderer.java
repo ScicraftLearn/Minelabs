@@ -31,6 +31,10 @@ public class BohrBlueprintHUDRenderer {
     private static final int YELLOW = ColorHelper.Argb.getArgb(255, 240, 225, 45);
     private static final int RED = ColorHelper.Argb.getArgb(255, 227, 23, 98);
 
+    // for block breaking effect on atom square
+    private static final int DESTRUCTION_STAGES = ModelLoader.BLOCK_DESTRUCTION_STAGE_TEXTURES.size();
+
+
     /**
      * renders the text of the bohrplate status. Gets called from HUD render event callback.
      */
@@ -113,20 +117,30 @@ public class BohrBlueprintHUDRenderer {
         matrixStack.pop();
     }
 
+    private static int getDestructionStage(float integrity){
+        int p = (int) MathHelper.clampedLerp(0, DESTRUCTION_STAGES, 1 - integrity);
+        if (p >= DESTRUCTION_STAGES) p = DESTRUCTION_STAGES - 1;
+        return p;
+    }
+
     private static void renderIntegrity(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity){
         if (!atomConfig.isNucleusDecomposing()) return;
 
-        int p = (int) MathHelper.clampedLerp(0, 10, 1 - integrity);
-        if (p >= 10) p = 9;
+        int stage = getDestructionStage(integrity);
+        Identifier crumblingTexture = ModelLoader.BLOCK_DESTRUCTION_STAGE_TEXTURES.get(stage);
+        RenderLayer blockBreakingLayer = RenderLayer.getBlockBreaking(crumblingTexture);
 
-        Identifier crumblingTexture = ModelLoader.BLOCK_DESTRUCTION_STAGE_TEXTURES.get(p);
+        blockBreakingLayer.startDrawing();
+
+        // override these settings to make it work on GUI rather than on blocks
         RenderSystem.setShaderColor(1, 1, 1, 0.5f);
-        RenderSystem.setShaderTexture(0, crumblingTexture);
-
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        drawTexture(matrixStack, 0, 0, 0, 0, 16, 16, 16, 16);
+        // z=1 makes sure it renders above other text
+        drawTexture(matrixStack, 0, 0, 1, 0, 0, 16, 16, 16, 16);
+
+        blockBreakingLayer.endDrawing();
     }
 
 
