@@ -31,7 +31,10 @@ public class MagnetItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        int RANGE = 5;
+        // https://github.com/VazkiiMods/Botania/blob/1.19.x/Xplat/src/main/java/vazkii/botania/common/item/equipment/bauble/RingOfMagnetizationItem.java
+        // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/MathHelper.java#L30
+        // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/VecHelper.java
+        int RANGE = 8;
         if (enabled) {
             if (entity instanceof PlayerEntity player) {
                 if (world.isClient) return;
@@ -40,13 +43,21 @@ public class MagnetItem extends Item {
                                 player.getX() + RANGE, player.getY() + RANGE, player.getZ() + RANGE),
                         this::isMagnetable);
                 for (Entity movable_entity : toMove) {
-                    //TODO change to velocity instead of pos
                     double x = player.getX();
                     double y = player.getY() + 0.75; // Mid-body / eye height
                     double z = player.getZ();
 
                     Vec3d vec = new Vec3d(x, y, z);
-                    setEntityMotionFromVector(movable_entity, vec, SPEED);
+
+                    Vec3d entityVector = new Vec3d(movable_entity.getX(), movable_entity.getY(), movable_entity.getZ());
+                    Vec3d finalVector = vec.subtract(entityVector);
+
+                    if (finalVector.length() > 1) {
+                        finalVector = finalVector.normalize();
+                    }
+
+                    //entity.setDeltaMovement(finalVector.scale(modifier));
+                    movable_entity.setVelocity(finalVector.multiply(SPEED));
                     /*
 
                     double distanceSq = Math.sqrt(x * x + y * y + z * z);
@@ -65,21 +76,6 @@ public class MagnetItem extends Item {
                 }
             }
         }
-    }
-
-    public void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector, float speed) {
-        // https://github.com/VazkiiMods/Botania/blob/1.19.x/Xplat/src/main/java/vazkii/botania/common/item/equipment/bauble/RingOfMagnetizationItem.java
-        // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/MathHelper.java#L30
-        // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/VecHelper.java
-        Vec3d entityVector = new Vec3d(entity.getX(), entity.getY() + entity.getEyeY() / 2, entity.getZ());
-        Vec3d finalVector = originalPosVector.subtract(entityVector);
-
-        if (finalVector.length() > 1) {
-            finalVector = finalVector.normalize();
-        }
-
-        //entity.setDeltaMovement(finalVector.scale(modifier));
-        entity.setVelocity(finalVector.multiply(speed));
     }
 
     @Override
