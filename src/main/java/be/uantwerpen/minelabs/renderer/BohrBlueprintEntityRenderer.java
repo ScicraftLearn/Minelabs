@@ -33,129 +33,6 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     // radius usable for atom rendering
     private static final float MAX_RENDER_RADIUS = 0.75f + 11f / 16f - 0.1f;
 
-    // maps the number of electrons to the correct shell configuration by index
-    private static final int[][] ELECTRON_SHELL_CAPACITIES = {
-        {},
-        {1},
-        {2},
-        {2,1},
-        {2,2},
-        {2,3},
-        {2,4},
-        {2,5},
-        {2,6},
-        {2,7},
-        {2,8},
-        {2,8,1},
-        {2,8,2},
-        {2,8,3},
-        {2,8,4},
-        {2,8,5},
-        {2,8,6},
-        {2,8,7},
-        {2,8,8},
-        {2,8,8,1},
-        {2,8,8,2},
-        {2,8,9,2},
-        {2,8,10,2},
-        {2,8,11,2},
-        {2,8,13,1},
-        {2,8,13,2},
-        {2,8,14,2},
-        {2,8,15,2},
-        {2,8,16,2},
-        {2,8,18,1},
-        {2,8,18,2},
-        {2,8,18,3},
-        {2,8,18,4},
-        {2,8,18,5},
-        {2,8,18,6},
-        {2,8,18,7},
-        {2,8,18,8},
-        {2,8,18,8,1},
-        {2,8,18,8,2},
-        {2,8,18,9,2},
-        {2,8,18,10,2},
-        {2,8,18,12,1},
-        {2,8,18,13,1},
-        {2,8,18,13,2},
-        {2,8,18,15,1},
-        {2,8,18,16,1},
-        {2,8,18,18},
-        {2,8,18,18,1},
-        {2,8,18,18,2},
-        {2,8,18,18,3},
-        {2,8,18,18,4},
-        {2,8,18,18,5},
-        {2,8,18,18,6},
-        {2,8,18,18,7},
-        {2,8,18,18,8},
-        {2,8,18,18,8,1},
-        {2,8,18,18,8,2},
-        {2,8,18,18,9,2},
-        {2,8,18,19,9,2},
-        {2,8,18,21,8,2},
-        {2,8,18,22,8,2},
-        {2,8,18,23,8,2},
-        {2,8,18,24,8,2},
-        {2,8,18,25,8,2},
-        {2,8,18,25,9,2},
-        {2,8,18,27,8,2},
-        {2,8,18,28,8,2},
-        {2,8,18,29,8,2},
-        {2,8,18,30,8,2},
-        {2,8,18,31,8,2},
-        {2,8,18,32,8,2},
-        {2,8,18,32,9,2},
-        {2,8,18,32,10,2},
-        {2,8,18,32,11,2},
-        {2,8,18,32,12,2},
-        {2,8,18,32,13,2},
-        {2,8,18,32,14,2},
-        {2,8,18,32,15,2},
-        {2,8,18,32,17,1},
-        {2,8,18,32,18,1},
-        {2,8,18,32,18,2},
-        {2,8,18,32,18,3},
-        {2,8,18,32,18,4},
-        {2,8,18,32,18,5},
-        {2,8,18,32,18,6},
-        {2,8,18,32,18,7},
-        {2,8,18,32,18,8},
-        {2,8,18,32,18,8,1},
-        {2,8,18,32,18,8,2},
-        {2,8,18,32,18,9,2},
-        {2,8,18,32,18,10,2},
-        {2,8,18,32,20,9,2},
-        {2,8,18,32,21,9,2},
-        {2,8,18,32,22,9,2},
-        {2,8,18,32,24,8,2},
-        {2,8,18,32,25,8,2},
-        {2,8,18,32,25,9,2},
-        {2,8,18,32,27,8,2},
-        {2,8,18,32,28,8,2},
-        {2,8,18,32,29,8,2},
-        {2,8,18,32,30,8,2},
-        {2,8,18,32,31,8,2},
-        {2,8,18,32,32,8,2},
-        {2,8,18,32,32,8,3},
-        {2,8,18,32,32,10,2},
-        {2,8,18,32,32,11,2},
-        {2,8,18,32,32,12,2},
-        {2,8,18,32,32,13,2},
-        {2,8,18,32,32,14,2},
-        {2,8,18,32,32,15,2},
-        {2,8,18,32,32,16,2},
-        {2,8,18,32,32,17,2},
-        {2,8,18,32,32,18,2},
-        {2,8,18,32,32,18,3},
-        {2,8,18,32,32,18,4},
-        {2,8,18,32,32,18,5},
-        {2,8,18,32,32,18,6},
-        {2,8,18,32,32,18,7},
-        {2,8,18,32,32,18,8}
-    };
-
     private static final float ELECTRON_SCALE = 0.15f;
     private static final float ELECTRON_FIRST_SHELL_RADIUS = 0.5f;
     private static final int ELECTRON_SHELLS_AMOUNT = 7;
@@ -171,6 +48,10 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     // line fades out until alpha zero at this distance
     private static final double ELECTRON_SHELL_LINE_MAX_RENDER_RANGE = 8f;
 
+    // instability animation
+    private static final double MIN_ELECTRON_INSTABILITY_PERIOD = 0.8d * 20;
+    private static final double MAX_ELECTRON_INSTABILITY_PERIOD = 0.3d * 20;
+    private static final float ELECTRON_INSTABILITY_MAX_OFFSET = ELECTRON_SHELL_RADIUS_OFFSET * 1.2f;
 
     private static final int MAX_NUCLEUS_ITEMS_RENDERED = 36;
 
@@ -243,6 +124,9 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         int nN = Math.min(atomConfig.getNeutrons(), BohrBlueprintEntity.MAX_NEUTRONS);
         int nE = Math.min(atomConfig.getElectrons(), BohrBlueprintEntity.MAX_ELECTRONS);
 
+        float electronInstability = atomConfig.getElectronInstability();
+        float nucleusInstability = atomConfig.getNucleusInstability();
+
         float time = entity.age + tickDelta;
         double dToCamera = Math.sqrt(dispatcher.getSquaredDistanceToCamera(entity));
 
@@ -252,17 +136,17 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
         matrices.push();
 
-        MinecraftClient.getInstance().getProfiler().push("protons");
-        renderNucleus(nP, nN, time, matrices, vertexConsumers, light);
+        MinecraftClient.getInstance().getProfiler().push("nucleus");
+        renderNucleus(nP, nN, nucleusInstability, time, matrices, vertexConsumers, light);
         MinecraftClient.getInstance().getProfiler().swap("electrons");
-        renderElectrons(nE, dToCamera, time, matrices, vertexConsumers, light);
+        renderElectrons(nE, electronInstability, dToCamera, time, matrices, vertexConsumers, light);
         MinecraftClient.getInstance().getProfiler().pop();
 
         matrices.pop();
         MinecraftClient.getInstance().getProfiler().pop();
     }
 
-    private void renderElectrons(int nE, double dToCamera, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderElectrons(int nE, float instability, double dToCamera, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         // Electrons are rendered in at most 7 different shells with chosen yaw, pitch and roll.
         // Within an orbit the electrons are equally spaced from each other.
 
@@ -271,7 +155,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         float radius = ELECTRON_FIRST_SHELL_RADIUS;
         matrices.push();
         for (int electronsInShell : electronShellConfiguration) {
-            renderElectronShell(electronsInShell, radius, dToCamera, time, matrices, vertexConsumers, light);
+            renderElectronShell(electronsInShell, radius, instability, dToCamera, time, matrices, vertexConsumers, light);
 
             // don't update normals
             matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_X.getDegreesQuaternion(45)));
@@ -286,29 +170,26 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     /**
      * Render an electron shell in the XY-plane with specified radius and number of electrons.
      */
-    private void renderElectronShell(int nE, float radius, double dToCamera, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderElectronShell(int nE, float radius, float instability, double dToCamera, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         renderElectronShellLine(radius, dToCamera, matrices, vertexConsumers);
-        renderElectronShellElectrons(nE, radius, time, matrices, vertexConsumers, light);
+        renderElectronShellElectrons(nE, radius, instability, time, matrices, vertexConsumers, light);
     }
 
-    private void renderElectronShellElectrons(int nE, float radius, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        matrices.push();
+    private void renderElectronShellElectrons(int nE, float radius, float instability, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         // rotation animation of electrons on shell
         float angle = (time % ELECTRON_ROTATION_PERIOD) / ELECTRON_ROTATION_PERIOD * 360;
 
+        matrices.push();
         // don't update normals. This allows the lighting to be computed as if the outside is always lit
         matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angle)));
 
         // render electron at top of orbit then rotate and repeat
         float angleBetweenElectrons = 360f / nE;
         for (int e = 0; e < nE; e++) {
-            matrices.push();
-            matrices.translate(0, radius, 0);
-            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
-            matrices.scale(ELECTRON_SCALE, ELECTRON_SCALE, ELECTRON_SCALE);
-            renderElectron(matrices, vertexConsumers, light);
+            Vec3f pos = new Vec3f(0, radius, 0);
+            float percentOfOrbit = (float) e / nE;
+            renderElectron(matrices, pos, instability, percentOfOrbit, time, vertexConsumers, light);
 
-            matrices.pop();
             // don't update normals
             matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenElectrons)));
 
@@ -316,8 +197,28 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.pop();
     }
 
-    private void renderElectron(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderElectron(MatrixStack matrices, Vec3f pos, float instability, float percentOfOrbit, float time, VertexConsumerProvider vertexConsumers, int light) {
+        matrices.push();
+
+        if (instability > 0)
+            pos.add(getElectronInstabilityOffset(instability, percentOfOrbit, time));
+
+        matrices.translate(pos.getX(), pos.getY(), pos.getZ());
+        // because we use rotation and the offset is always in the y direction, this faces them outwards
+        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+        matrices.scale(ELECTRON_SCALE, ELECTRON_SCALE, ELECTRON_SCALE);
         renderItem(ELECTRON, matrices, vertexConsumers, light);
+        matrices.pop();
+    }
+
+    private Vec3f getElectronInstabilityOffset(float instability, float percentOfOrbit, float time){
+        // if you don't want all electrons to be in sync
+//        time = time + percentOfOrbit * ELECTRON_ROTATION_PERIOD;
+
+        double period = MathHelper.lerp(instability, MIN_ELECTRON_INSTABILITY_PERIOD, MAX_ELECTRON_INSTABILITY_PERIOD);
+        float offset = instability * ELECTRON_INSTABILITY_MAX_OFFSET;
+        float yOffset = (float) (Math.sin(Math.toRadians(time / period * 360)) + 1) / 2 * offset;
+        return new Vec3f(0, yOffset, 0);
     }
 
     private void renderElectronShellLine(float radius, double dToCamera, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
@@ -334,6 +235,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         for (int e = 0; e <= ELECTRON_LINE_NUMPOINTS; e++) {
             matrices.push();
             matrices.translate(0, radius, 0);
+
+            // TODO: remove
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
 
             MatrixStack.Entry matrixEntry = matrices.peek();
@@ -346,7 +249,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.pop();
     }
 
-    private void renderNucleus(int nP, int nN, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderNucleus(int nP, int nN, float instability, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         // nothing to render (prevent division by zero)
         if (nP + nN == 0)
             return;
@@ -386,13 +289,13 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             else
                 nNRendered += 1;
 
-            renderNucleusParticle(type, pos, time, matrices, vertexConsumers, light);
+            renderNucleusParticle(type, pos, instability, time, matrices, vertexConsumers, light);
             pRatioRendered = (float) nPRendered / (float) (nPRendered + nNRendered);
         }
         matrices.pop();
     }
 
-    private void renderNucleusParticle(ItemStack type, Vec3f pos, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderNucleusParticle(ItemStack type, Vec3f pos, float instability, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
         matrices.scale(NUCLEUS_SCALE, NUCLEUS_SCALE, NUCLEUS_SCALE);
@@ -422,5 +325,130 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         itemRenderer.renderItem(atomStack, ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumers, 0);
         matrixStack.pop();
     }
+
+
+    // Maps the number of electrons to the correct shell configuration by index.
+    // Placed at the end of the file for better readability.
+    private static final int[][] ELECTRON_SHELL_CAPACITIES = {
+            {},
+            {1},
+            {2},
+            {2,1},
+            {2,2},
+            {2,3},
+            {2,4},
+            {2,5},
+            {2,6},
+            {2,7},
+            {2,8},
+            {2,8,1},
+            {2,8,2},
+            {2,8,3},
+            {2,8,4},
+            {2,8,5},
+            {2,8,6},
+            {2,8,7},
+            {2,8,8},
+            {2,8,8,1},
+            {2,8,8,2},
+            {2,8,9,2},
+            {2,8,10,2},
+            {2,8,11,2},
+            {2,8,13,1},
+            {2,8,13,2},
+            {2,8,14,2},
+            {2,8,15,2},
+            {2,8,16,2},
+            {2,8,18,1},
+            {2,8,18,2},
+            {2,8,18,3},
+            {2,8,18,4},
+            {2,8,18,5},
+            {2,8,18,6},
+            {2,8,18,7},
+            {2,8,18,8},
+            {2,8,18,8,1},
+            {2,8,18,8,2},
+            {2,8,18,9,2},
+            {2,8,18,10,2},
+            {2,8,18,12,1},
+            {2,8,18,13,1},
+            {2,8,18,13,2},
+            {2,8,18,15,1},
+            {2,8,18,16,1},
+            {2,8,18,18},
+            {2,8,18,18,1},
+            {2,8,18,18,2},
+            {2,8,18,18,3},
+            {2,8,18,18,4},
+            {2,8,18,18,5},
+            {2,8,18,18,6},
+            {2,8,18,18,7},
+            {2,8,18,18,8},
+            {2,8,18,18,8,1},
+            {2,8,18,18,8,2},
+            {2,8,18,18,9,2},
+            {2,8,18,19,9,2},
+            {2,8,18,21,8,2},
+            {2,8,18,22,8,2},
+            {2,8,18,23,8,2},
+            {2,8,18,24,8,2},
+            {2,8,18,25,8,2},
+            {2,8,18,25,9,2},
+            {2,8,18,27,8,2},
+            {2,8,18,28,8,2},
+            {2,8,18,29,8,2},
+            {2,8,18,30,8,2},
+            {2,8,18,31,8,2},
+            {2,8,18,32,8,2},
+            {2,8,18,32,9,2},
+            {2,8,18,32,10,2},
+            {2,8,18,32,11,2},
+            {2,8,18,32,12,2},
+            {2,8,18,32,13,2},
+            {2,8,18,32,14,2},
+            {2,8,18,32,15,2},
+            {2,8,18,32,17,1},
+            {2,8,18,32,18,1},
+            {2,8,18,32,18,2},
+            {2,8,18,32,18,3},
+            {2,8,18,32,18,4},
+            {2,8,18,32,18,5},
+            {2,8,18,32,18,6},
+            {2,8,18,32,18,7},
+            {2,8,18,32,18,8},
+            {2,8,18,32,18,8,1},
+            {2,8,18,32,18,8,2},
+            {2,8,18,32,18,9,2},
+            {2,8,18,32,18,10,2},
+            {2,8,18,32,20,9,2},
+            {2,8,18,32,21,9,2},
+            {2,8,18,32,22,9,2},
+            {2,8,18,32,24,8,2},
+            {2,8,18,32,25,8,2},
+            {2,8,18,32,25,9,2},
+            {2,8,18,32,27,8,2},
+            {2,8,18,32,28,8,2},
+            {2,8,18,32,29,8,2},
+            {2,8,18,32,30,8,2},
+            {2,8,18,32,31,8,2},
+            {2,8,18,32,32,8,2},
+            {2,8,18,32,32,8,3},
+            {2,8,18,32,32,10,2},
+            {2,8,18,32,32,11,2},
+            {2,8,18,32,32,12,2},
+            {2,8,18,32,32,13,2},
+            {2,8,18,32,32,14,2},
+            {2,8,18,32,32,15,2},
+            {2,8,18,32,32,16,2},
+            {2,8,18,32,32,17,2},
+            {2,8,18,32,32,18,2},
+            {2,8,18,32,32,18,3},
+            {2,8,18,32,32,18,4},
+            {2,8,18,32,32,18,5},
+            {2,8,18,32,32,18,6},
+            {2,8,18,32,32,18,7},
+            {2,8,18,32,32,18,8}
+    };
 
 }

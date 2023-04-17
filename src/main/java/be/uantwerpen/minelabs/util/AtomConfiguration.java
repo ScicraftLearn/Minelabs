@@ -45,7 +45,7 @@ public class AtomConfiguration {
 
     public Optional<String> getSymbol(){
         if (atom != null) return Optional.of(atom.getSymbol());
-        if (nucleusState != null) Optional.of(nucleusState.getSymbol());
+        if (nucleusState != null) return Optional.of(nucleusState.getSymbol());
         return Optional.empty();
     }
 
@@ -86,10 +86,6 @@ public class AtomConfiguration {
     }
 
     public float getElectronInstability(){
-        // these are not needed as they are included in the computation below
-//        if (electrons <= protons) return 0f;
-//        if (isElectronDecomposing()) return 1f;
-
         float delta = (float) (electrons - protons) / (float) MAX_ELECTRONS_ABOVE_PROTONS;
         return MathHelper.clampedLerp(0f, 1f, delta);
     }
