@@ -267,8 +267,6 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         // place nucleus particles in predetermined coordinates
         Iterator<Vec3f> posIterator = NUCLEUS_COORDINATES.iterator();
 
-        // when we run out of coordinates, start new iteration with increased radius
-//        float radiusMultiplier = 1f;
 
         // we keep ratio of protons rendered as close to requested as possible
         float pRatio = (float) nP / (float) (nP + nN);
@@ -288,21 +286,20 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.push();
         while (nPRendered + nNRendered < amountToRender) {
             if (!posIterator.hasNext()) {
+                // when we run out of coordinates, start new iteration with decreased radius
                 nucleusRadius /= 2;
-//                radiusMultiplier += NUCLEUS_RADIUS_OFFSET;
                 posIterator = NUCLEUS_COORDINATES.iterator();
             }
             Vec3f pos = posIterator.next().copy();
             pos.scale(nucleusRadius);
-//            pos.scale(radiusMultiplier);
 
             ItemStack type = pRatio > pRatioRendered ? PROTON : NEUTRON;
+            renderNucleusParticle(type, pos, instability, nNRendered + nPRendered, time, matrices, vertexConsumers, light);
+
             if (type == PROTON)
                 nPRendered += 1;
             else
                 nNRendered += 1;
-
-            renderNucleusParticle(type, pos, instability, time, matrices, vertexConsumers, light);
             pRatioRendered = (float) nPRendered / (float) (nPRendered + nNRendered);
         }
         matrices.pop();
@@ -331,25 +328,51 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.pop();
     }
 
-    private float getNuclideInstabilityScale(float instability, float time) {
-        // TODO: change
+    /**
+     * Evaluate pulse function with long tail in progress [0, 1].
+     * pulsePercent is percent of function that is pulse. Rest is tail.
+     */
+    private float getPulseWithTail(float progress, float pulsePercent) {
+        if (progress <= pulsePercent) {
+            // local progress to simulate pulse
+            progress = progress / pulsePercent;
+            return (1 + (float) Math.cos(progress * 2 * Math.PI + Math.PI)) / 2;
+        } else {
+            return 0f;
+        }
+    }
 
+    private float getNuclideInstabilityScale(float instability, int index, float time) {
         float NUCLEUS_INSTABILITY_MAX_SCALE = 1.5f;
-        double NUCLEUS_INSTABILITY_MIN_PERIOD = 0.8d * 20;
-        double NUCLEUS_INSTABILITY_MAX_PERIOD = 0.3d * 20;
+        float NUCLEUS_INSTABILITY_PULSE_PERIOD = 1 * 20;
 
-        double period = MathHelper.lerp(instability, NUCLEUS_INSTABILITY_MIN_PERIOD, NUCLEUS_INSTABILITY_MAX_PERIOD);
+        float NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT = 1f / 1.5f;
+        float NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT = 1f / 4f;
+
+        int NUCLEUS_INSTABILITY_GROUPS = 10;
+
+
+        float pulsePercent = MathHelper.lerp(instability, NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT, NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT);
+
+        // This keeps width of pulse the same (independent of instability)
+        float period = NUCLEUS_INSTABILITY_PULSE_PERIOD / pulsePercent;
+        float progress = (time % period) / period;
+
+        // group specific progress
+        float groupOffset = (float) (index % NUCLEUS_INSTABILITY_GROUPS) / NUCLEUS_INSTABILITY_GROUPS;
+        progress = (progress + groupOffset) % 1;
+
         float minScale = 1;
         float maxScale = minScale + instability * NUCLEUS_INSTABILITY_MAX_SCALE;
-        float progress = (float) (Math.sin(Math.toRadians(time / period * 360)) + 1) / 2;
-        float scale = MathHelper.lerp(progress, minScale, maxScale);
-//        float scale = minScale + * (maxScale - minScale);
+        float value = getPulseWithTail(progress, pulsePercent);
+        float scale = MathHelper.lerp(value, minScale, maxScale);
+
         return scale;
     }
 
-    private void renderNucleusParticle(ItemStack type, Vec3f pos, float instability, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderNucleusParticle(ItemStack type, Vec3f pos, float instability, int index, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         if (instability > 0)
-            pos.scale(getNuclideInstabilityScale(instability, time));
+            pos.scale(getNuclideInstabilityScale(instability, index, time));
 
         matrices.push();
         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
