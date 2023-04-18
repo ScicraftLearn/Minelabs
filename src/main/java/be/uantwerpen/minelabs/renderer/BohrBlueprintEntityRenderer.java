@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.renderer;
 
-import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
@@ -53,41 +52,54 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final double ELECTRON_INSTABILITY_MAX_PERIOD = 0.3d * 20;
     private static final float ELECTRON_INSTABILITY_MAX_OFFSET = ELECTRON_SHELL_RADIUS_OFFSET * 1.2f;
 
-    private static final int NUCLEUS_MAX_ITEMS_RENDERED = 36;
-
     // size of individual particle items
     private static final float NUCLEUS_SCALE = 0.15f;
 
     // for scaling nucleus radius depending on amount of particles
     private static final float NUCLEUS_MIN_RADIUS = 0.05f;
-    private static final float NUCLEUS_MAX_RADIUS = 0.15f;
+    private static final float NUCLEUS_MAX_RADIUS = 0.2f;
     // distance between layers of nucleus
 //    private static final float NUCLEUS_RADIUS_OFFSET = 0.15f;
-    private static final List<Vec3f> NUCLEUS_COORDINATES = createIcosahedron();
 
+    // how many subdivisions are made for the nucleus coordinates. Amount of points is square this number.
+    private static final int NUCLEUS_COORDINATES_STEPS = 8;
+    private static final List<Vec3f> NUCLEUS_COORDINATES = uniformSphericalCoordinates(NUCLEUS_COORDINATES_STEPS);
 
-    private final ItemRenderer itemRenderer;
+    private static final int NUCLEUS_MAX_ITEMS_RENDERED = 2 * NUCLEUS_COORDINATES.size();
+    // radius of nucleus gets bigger until this capacity.
+    private static final int NUCLEUS_MAX_CONTENT_FOR_RADIUS = BohrBlueprintEntity.MAX_PROTONS + BohrBlueprintEntity.MAX_NEUTRONS;
 
-    private static List<Vec3f> createIcosahedron() {
-        float c = 2f * (float) Math.PI / 5f;
-        List<Vec3f> icosahedron = new ArrayList<>();
-        icosahedron.add(new Vec3f(0, 0, (float) Math.sqrt(5) / 2));
-        for (int i = 0; i < 5; i++)
-            icosahedron.add(new Vec3f((float) Math.cos((i) * c), (float) Math.sin((i) * c), 0.5f));
-        for (int i = 0; i < 5; i++)
-            icosahedron.add(new Vec3f((float) Math.cos((Math.PI / 5) + i * c), (float) Math.sin((Math.PI / 5) + i * c), -0.5f));
-        icosahedron.add(new Vec3f(0, 0, (float) -Math.sqrt(5) / 2));
+    /**
+     * Computes uniformly spread out points on a unit sphere by iterating polar coordinates.
+     * Steps define in how many pieces each angle is divided so amount of points is `steps ** 2`.
+     */
+    private static List<Vec3f> uniformSphericalCoordinates(int steps) {
+        List<Vec3f> points = new ArrayList<>();
 
-        // have all points be roughly distance 1 from center;
-        float length = (float) Math.sqrt(icosahedron.get(0).dot(icosahedron.get(0)));
-        icosahedron.forEach(v -> v.scale(length));
-        Collections.shuffle(icosahedron, new Random(42));
-        return icosahedron;
+        float pi2 = (float) (2 * Math.PI);
+        float angle = pi2 / steps;
+        for (float i = 0; i < steps; i++) {
+            float alpha = i * angle;
+            for (float j = 0; j < steps; j++) {
+                float beta = j * angle;
+
+                float x = (float) (Math.sin(alpha) * Math.cos(beta));
+                float y = (float) (Math.sin(alpha) * Math.sin(beta));
+                float z = (float) Math.cos(alpha);
+                points.add(new Vec3f(x, y, z));
+            }
+        }
+
+        Collections.shuffle(points, new Random(42));
+        return points;
     }
 
     private int[] getElectronShellConfiguration(int nE) {
         return ELECTRON_SHELL_CAPACITIES[nE];
     }
+
+
+    private final ItemRenderer itemRenderer;
 
     public BohrBlueprintEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
@@ -248,8 +260,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         // compute normal of line which should point towards next point
         // other angle of triangle formed by origin and line
         double beta = Math.toRadians(180 - angleBetweenLinePoints) / 2f;
-        float normalX = (float) - Math.sin(beta);
-        float normalY = (float) - Math.cos(beta);
+        float normalX = (float) -Math.sin(beta);
+        float normalY = (float) -Math.cos(beta);
 
         VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLines());
         matrices.push();
@@ -295,7 +307,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         int nPRendered = 0;
         int nNRendered = 0;
         int amountToRender = Math.min(NUCLEUS_MAX_ITEMS_RENDERED, nP + nN);
-        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, (float) (nP + nN) / NUCLEUS_MAX_ITEMS_RENDERED);
+        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, (float) (nP + nN) / NUCLEUS_MAX_CONTENT_FOR_RADIUS);
 
         matrices.push();
         while (nPRendered + nNRendered < amountToRender) {
