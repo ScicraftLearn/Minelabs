@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.renderer;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
@@ -242,16 +243,29 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         double delta = (dToCamera - ELECTRON_SHELL_LINE_MIN_RENDER_RANGE) / (ELECTRON_SHELL_LINE_MAX_RENDER_RANGE - ELECTRON_SHELL_LINE_MIN_RENDER_RANGE);
         int alpha = (int) Math.floor(MathHelper.clampedLerp(ELECTRON_SHELL_LINE_MAX_ALPHA, 0, delta));
 
-        // lines
-        VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLineStrip());
-        matrices.push();
         float angleBetweenLinePoints = 360f / ELECTRON_LINE_NUMPOINTS;
-        for (int e = 0; e <= ELECTRON_LINE_NUMPOINTS; e++) {
-            MatrixStack.Entry matrixEntry = matrices.peek();
-            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0).color(0, 0, 0, alpha).normal(matrixEntry.getNormalMatrix(), 1f, 0f, 0).next();
+
+        // compute normal of line which should point towards next point
+        // other angle of triangle formed by origin and line
+        double beta = Math.toRadians(180 - angleBetweenLinePoints) / 2f;
+        float normalX = (float) - Math.sin(beta);
+        float normalY = (float) - Math.cos(beta);
+
+        VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLines());
+        matrices.push();
+        MatrixStack.Entry matrixEntry = matrices.peek();
+        for (int e = 0; e < ELECTRON_LINE_NUMPOINTS; e++) {
+            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0)
+                    .color(0, 0, 0, alpha)
+                    .normal(matrixEntry.getNormalMatrix(), normalX, normalY, 0)
+                    .next();
 
             matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints));
-//            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints)));
+
+            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0)
+                    .color(0, 0, 0, alpha)
+                    .normal(matrixEntry.getNormalMatrix(), -normalX, normalY, 0)
+                    .next();
         }
 
         matrices.pop();
