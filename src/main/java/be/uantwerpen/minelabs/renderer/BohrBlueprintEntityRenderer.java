@@ -224,30 +224,6 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.pop();
     }
 
-    private void renderElectron(MatrixStack matrices, Vec3f pos, float instability, float percentOfOrbit, float time, VertexConsumerProvider vertexConsumers, int light) {
-        matrices.push();
-
-        if (instability > 0)
-            pos.add(getElectronInstabilityOffset(instability, percentOfOrbit, time));
-
-        matrices.translate(pos.getX(), pos.getY(), pos.getZ());
-        // because we use rotation and the offset is always in the y direction, this faces them outwards
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
-        matrices.scale(ELECTRON_SCALE, ELECTRON_SCALE, ELECTRON_SCALE);
-        renderItem(ELECTRON, matrices, vertexConsumers, light);
-        matrices.pop();
-    }
-
-    private Vec3f getElectronInstabilityOffset(float instability, float percentOfOrbit, float time) {
-        // if you don't want all electrons to be in sync
-//        time = time + percentOfOrbit * ELECTRON_ROTATION_PERIOD;
-
-        double period = MathHelper.lerp(instability, ELECTRON_INSTABILITY_MIN_PERIOD, ELECTRON_INSTABILITY_MAX_PERIOD);
-        float offset = instability * ELECTRON_INSTABILITY_MAX_OFFSET;
-        float yOffset = (float) (Math.sin(Math.toRadians(time / period * 360)) + 1) / 2 * offset;
-        return new Vec3f(0, yOffset, 0);
-    }
-
     private void renderElectronShellLine(float radius, double dToCamera, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
         if (dToCamera > ELECTRON_SHELL_LINE_MAX_RENDER_RANGE)
             return;
@@ -332,7 +308,49 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.pop();
     }
 
+    private Vec3f getElectronInstabilityOffset(float instability, float percentOfOrbit, float time) {
+        // if you don't want all electrons to be in sync
+//        time = time + percentOfOrbit * ELECTRON_ROTATION_PERIOD;
+
+        double period = MathHelper.lerp(instability, ELECTRON_INSTABILITY_MIN_PERIOD, ELECTRON_INSTABILITY_MAX_PERIOD);
+        float offset = instability * ELECTRON_INSTABILITY_MAX_OFFSET;
+        float yOffset = (float) (Math.sin(Math.toRadians(time / period * 360)) + 1) / 2 * offset;
+        return new Vec3f(0, yOffset, 0);
+    }
+
+    private void renderElectron(MatrixStack matrices, Vec3f pos, float instability, float percentOfOrbit, float time, VertexConsumerProvider vertexConsumers, int light) {
+        if (instability > 0)
+            pos.add(getElectronInstabilityOffset(instability, percentOfOrbit, time));
+
+        matrices.push();
+        matrices.translate(pos.getX(), pos.getY(), pos.getZ());
+        // because we use rotation and the offset is always in the y direction, this faces them outwards
+        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+        matrices.scale(ELECTRON_SCALE, ELECTRON_SCALE, ELECTRON_SCALE);
+        renderItem(ELECTRON, matrices, vertexConsumers, light);
+        matrices.pop();
+    }
+
+    private float getNuclideInstabilityScale(float instability, float time) {
+        // TODO: change
+
+        float NUCLEUS_INSTABILITY_MAX_SCALE = 1.5f;
+        double NUCLEUS_INSTABILITY_MIN_PERIOD = 0.8d * 20;
+        double NUCLEUS_INSTABILITY_MAX_PERIOD = 0.3d * 20;
+
+        double period = MathHelper.lerp(instability, NUCLEUS_INSTABILITY_MIN_PERIOD, NUCLEUS_INSTABILITY_MAX_PERIOD);
+        float minScale = 1;
+        float maxScale = minScale + instability * NUCLEUS_INSTABILITY_MAX_SCALE;
+        float progress = (float) (Math.sin(Math.toRadians(time / period * 360)) + 1) / 2;
+        float scale = MathHelper.lerp(progress, minScale, maxScale);
+//        float scale = minScale + * (maxScale - minScale);
+        return scale;
+    }
+
     private void renderNucleusParticle(ItemStack type, Vec3f pos, float instability, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        if (instability > 0)
+            pos.scale(getNuclideInstabilityScale(instability, time));
+
         matrices.push();
         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
         matrices.scale(NUCLEUS_SCALE, NUCLEUS_SCALE, NUCLEUS_SCALE);
