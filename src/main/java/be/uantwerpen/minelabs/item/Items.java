@@ -69,7 +69,7 @@ public class Items {
 
     //TODO ADD PANTS? AND BOOTS ?
 
-    public static final Item LAB_COUNTER = register(new BlockItem(Blocks.LAB_CABIN,
+    public static final Item LAB_CABIN = register(new BlockItem(Blocks.LAB_CABIN,
             new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_cabin");
 
     public static final Item LAB_DRAWER = register(new BlockItem(Blocks.LAB_DRAWER,
