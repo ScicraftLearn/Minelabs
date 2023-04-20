@@ -294,7 +294,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             pos.scale(nucleusRadius);
 
             ItemStack type = pRatio > pRatioRendered ? PROTON : NEUTRON;
-            renderNucleusParticle(type, pos, instability, nNRendered + nPRendered, time, matrices, vertexConsumers, light);
+            renderNucleusParticle(type, pos, instability, nNRendered + nPRendered, amountToRender, time, matrices, vertexConsumers, light);
 
             if (type == PROTON)
                 nPRendered += 1;
@@ -342,24 +342,25 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         }
     }
 
-    private float getNuclideInstabilityScale(float instability, int index, float time) {
+    private float getNuclideInstabilityScale(float instability, int index, int total, float time) {
         float NUCLEUS_INSTABILITY_MAX_SCALE = 1.5f;
-        float NUCLEUS_INSTABILITY_PULSE_PERIOD = 1 * 20;
+        float NUCLEUS_INSTABILITY_PULSE_PERIOD = 1f * 20;
 
         float NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT = 1f / 1.5f;
         float NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT = 1f / 4f;
 
-        int NUCLEUS_INSTABILITY_GROUPS = 10;
+        int NUCLEUS_INSTABILITY_GROUPS = 50;
 
 
-        float pulsePercent = MathHelper.lerp(instability, NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT, NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT);
+        float pulsePercent = MathHelper.lerp(instability, NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT, NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT);
 
         // This keeps width of pulse the same (independent of instability)
         float period = NUCLEUS_INSTABILITY_PULSE_PERIOD / pulsePercent;
         float progress = (time % period) / period;
 
         // group specific progress
-        float groupOffset = (float) (index % NUCLEUS_INSTABILITY_GROUPS) / NUCLEUS_INSTABILITY_GROUPS;
+        int groups = Math.min(total, NUCLEUS_INSTABILITY_GROUPS);
+        float groupOffset = (float) (index % groups) / groups;
         progress = (progress + groupOffset) % 1;
 
         float minScale = 1;
@@ -370,9 +371,9 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         return scale;
     }
 
-    private void renderNucleusParticle(ItemStack type, Vec3f pos, float instability, int index, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderNucleusParticle(ItemStack type, Vec3f pos, float instability, int index, int total, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         if (instability > 0)
-            pos.scale(getNuclideInstabilityScale(instability, index, time));
+            pos.scale(getNuclideInstabilityScale(instability, index, total, time));
 
         matrices.push();
         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
