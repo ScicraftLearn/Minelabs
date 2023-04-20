@@ -16,7 +16,7 @@ public class AtomConfiguration {
     private final int neutrons;
     private final int electrons;
 
-    private final NucleusState nucleusState;
+    private final NucleusStabilityInfo nucleusStability;
     // the atom based on protons
     @Nullable
     private final Atom atom;
@@ -26,8 +26,7 @@ public class AtomConfiguration {
         this.neutrons = neutrons;
         this.electrons = electrons;
 
-        // TODO: make it so nucleusState cannot be null
-        nucleusState = NuclidesTable.getNuclide(protons, neutrons);
+        nucleusStability = NuclidesTable.getStabilityInfo(protons, neutrons);
         atom = Atom.getByNumber(protons);
     }
 
@@ -45,13 +44,12 @@ public class AtomConfiguration {
 
     public Optional<String> getSymbol(){
         if (atom != null) return Optional.of(atom.getSymbol());
-        if (nucleusState != null) return Optional.of(nucleusState.getSymbol());
         return Optional.empty();
     }
 
     public Optional<String> getName(){
-        if (nucleusState == null) return Optional.empty();
-        return Optional.of(nucleusState.getAtomName());
+        if (atom != null) return Optional.of(atom.getName());
+        return Optional.empty();
     }
 
     public boolean isStable(){
@@ -59,22 +57,20 @@ public class AtomConfiguration {
     }
 
     public boolean isNucleusStable() {
-        if (nucleusState == null) return false;
-        return nucleusState.isStable();
+        if (nucleusStability == null) return false;
+        return nucleusStability.isStable();
     }
 
     public boolean isNucleusDecomposing() {
-        if (nucleusState == null) return true;
-        // TODO: refactor
-        return nucleusState.getUnstability() == 0.04f;
+        if (nucleusStability == null) return true;
+        return nucleusStability.getInstability() > 0.99f;
     }
 
     public float getNucleusInstability(){
         if (isNucleusStable()) return 0f;
         if (isNucleusDecomposing()) return 1f;
 
-        // TODO: refactor
-        return nucleusState.getUnstability() / 0.04f;
+        return nucleusStability.getInstability();
     }
 
     public boolean isElectronStable() {

@@ -87,7 +87,7 @@ public class NuclidesTable {
      * @param nrOfNeutrons : amount of neutrons
      * @return : array of three values [atomName, symbol, mainDecayMode] (to see what these are, check the addNuclidesTableEntry function parameters)
      */
-    public static NucleusState getNuclide(int nrOfProtons, int nrOfNeutrons) {
+    public static NucleusStabilityInfo getStabilityInfo(int nrOfProtons, int nrOfNeutrons) {
         // TODO: make it so nucleusState cannot be null
 
         String compositeAtomKey = nrOfProtons + ":" + nrOfNeutrons;
@@ -122,7 +122,7 @@ public class NuclidesTable {
     }
 
     public static boolean isStable(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons) {
-        NucleusState nucleusState = getNuclide(nrOfProtons,nrOfNeutrons);
+        NucleusState nucleusState = getNucleusStability(nrOfProtons,nrOfNeutrons);
         return nucleusState != null && Math.abs(nrOfProtons - nrOfElectrons) <= 5 && nucleusState.isStable();
     }
 
@@ -135,7 +135,7 @@ public class NuclidesTable {
      * @return : positive integer (0 included (=stable)) representing how far from the black line (nuclides table) the atom is.
      */
     public static float getStabilityDeviation(int nrOfProtons, int nrOfNeutrons, int nrOfElectrons){
-        NucleusState nucleusState = getNuclide(nrOfProtons,nrOfNeutrons);
+        NucleusState nucleusState = getNucleusStability(nrOfProtons,nrOfNeutrons);
         if (nucleusState != null) {
             return nucleusState.getUnstability();
         }
@@ -316,7 +316,7 @@ public class NuclidesTable {
         // possible decays: bn it, it, p, ep, sf, ec, b- it, bn, a, b-, it le, it ap, ec, n,
         NucleusState nucleus = null;
         if (getNuclidesTable() != null) { // for first atom
-            nucleus = getNuclide(z, n);
+            nucleus = getNucleusStability(z, n);
         }
         try {
             if (nucleus != null) { // nucleus already in table (need this since CSV contains duplicate [proton,neutron] entries)
