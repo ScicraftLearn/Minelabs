@@ -26,7 +26,7 @@ public class AtomConfiguration {
         this.neutrons = neutrons;
         this.electrons = electrons;
 
-        nucleusStability = NuclidesTable.getStabilityInfo(protons, neutrons);
+        nucleusStability = OldNuclidesTable.getStabilityInfo(protons, neutrons);
         atom = Atom.getByNumber(protons);
     }
 
@@ -58,7 +58,7 @@ public class AtomConfiguration {
 
     public boolean isNucleusStable() {
         if (nucleusStability == null) return false;
-        return nucleusStability.isStable();
+        return nucleusStability.getInstability() < 0.01f;
     }
 
     public boolean isNucleusDecomposing() {

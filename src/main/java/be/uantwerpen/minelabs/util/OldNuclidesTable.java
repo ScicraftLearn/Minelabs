@@ -28,7 +28,7 @@ import java.util.*;
  * getting the mainDecayMode variable (it is already declared inside the function and assigned (a unique decay mode if it is present in the CSV))
  * and pass it to a parse method of your making, before you add it to the nucleus in question.
  */
-public class NuclidesTable {
+public class OldNuclidesTable {
 
     private static final LinkedHashMap<Float, ArrayList<Float>> halflifeRanges = makeHalflifeRanges(); // map with key=halflife and value=[multiplier,timer]
     private static final Map<String, NucleusState> nuclidesTable = readCSV(); // map with key=nrOfProtons:nrOfNeutrons and value=nucleus_state_object

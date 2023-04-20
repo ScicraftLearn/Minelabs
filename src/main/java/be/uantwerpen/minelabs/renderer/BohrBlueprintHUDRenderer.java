@@ -3,7 +3,7 @@ package be.uantwerpen.minelabs.renderer;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
-import be.uantwerpen.minelabs.util.NuclidesTable;
+import be.uantwerpen.minelabs.util.OldNuclidesTable;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -14,7 +14,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
 
 import static net.minecraft.client.gui.DrawableHelper.drawCenteredText;
 import static net.minecraft.client.gui.DrawableHelper.drawTexture;
@@ -65,7 +64,7 @@ public class BohrBlueprintHUDRenderer {
         String atomName = atomConfig.getName().orElse("");
         String symbol = atomConfig.getSymbol().orElse("_");
 
-        String ionicCharge = NuclidesTable.calculateIonicCharge(atomConfig.getProtons(), atomConfig.getElectrons());
+        String ionicCharge = OldNuclidesTable.calculateIonicCharge(atomConfig.getProtons(), atomConfig.getElectrons());
 
         int Ecolor = WHITE;
         int Zcolor = WHITE;

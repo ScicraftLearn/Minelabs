@@ -17,6 +17,8 @@ import be.uantwerpen.minelabs.particle.Particles;
 import be.uantwerpen.minelabs.sound.SoundEvents;
 import be.uantwerpen.minelabs.world.gen.OreGenerations;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.resource.ResourceType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +40,9 @@ public class Minelabs implements ModInitializer {
         //Gasses.registerPotions(); // Must be before Items/Blocks
 
         csvFile = getClass().getResourceAsStream("/data/minelabs/nuclides_table/nndc_nudat_data_export.csv");
-        
+
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(OldNuclidesTable);
+
         Items.registerItems();
         Blocks.registerBlocks();
         BlockEntities.registerBlockEntities();

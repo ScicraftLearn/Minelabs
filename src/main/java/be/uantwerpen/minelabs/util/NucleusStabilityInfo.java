@@ -36,10 +36,6 @@ public class NucleusStabilityInfo {
         return halflife;
     }
 
-    public boolean isStable(){
-        return stability < 1f;
-    }
-
     public float getStability() {
         return stability;
     }
