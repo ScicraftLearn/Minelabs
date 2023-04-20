@@ -24,6 +24,7 @@ public class MagnetItem extends Item {
     private static final float SPEED = 0.35F;
     private boolean enabled;
 
+    // TODO CHANGE TO ITEMSTACK NBT (ALL MAGNETS ACTIVATE AND DE-ACTIVATE)
     public MagnetItem(Settings settings) {
         super(settings);
         enabled = false;
