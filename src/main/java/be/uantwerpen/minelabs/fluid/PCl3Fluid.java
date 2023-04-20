@@ -26,7 +26,7 @@ public abstract class PCl3Fluid extends AbstractFluid {
     @Override
     protected BlockState toBlockState(FluidState fluidState) {
         // getBlockStateLevel converts the LEVEL_1_8 of the fluid state to the LEVEL_15 the fluid block uses
-        return Blocks.PCl3.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
+        return Blocks.PCL3.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
     }
 
     public static class Flowing extends PCl3Fluid {
