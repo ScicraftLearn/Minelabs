@@ -16,6 +16,7 @@ import be.uantwerpen.minelabs.paintings.Paintings;
 import be.uantwerpen.minelabs.particle.Particles;
 import be.uantwerpen.minelabs.sound.SoundEvents;
 import be.uantwerpen.minelabs.world.gen.OreGenerations;
+import be.uantwerpen.minelabs.world.village.VillageAdditions;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,6 +50,7 @@ public class Minelabs implements ModInitializer {
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();
         OreGenerations.generateOres();
+        VillageAdditions.registerVillageStructures();
         Effects.registerStatusEffects();
         Particles.registerParticles();
 
