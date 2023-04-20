@@ -15,6 +15,11 @@
     "use_lab_cabin": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
+        "player": {
+          "flags": {
+            "is_sneaking": false
+          }
+        },
         "location": {
           "block": {
             "blocks": [
@@ -27,6 +32,11 @@
     "use_lab_drawers": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
+        "player": {
+          "flags": {
+            "is_sneaking": false
+          }
+        },
         "location": {
           "block": {
             "blocks": [
