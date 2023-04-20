@@ -9,6 +9,7 @@ import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -139,7 +140,8 @@ public class BohrBlueprintBlock extends Block {
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
-            ItemStack stack = entity.dropLastItem();
+            ItemEntity itemEntity = entity.dropLastItem();
+            ItemStack stack = itemEntity.getStack();
             entity.onPlayerRemovedItem(stack, (ServerPlayerEntity) player, false);
         }
     }

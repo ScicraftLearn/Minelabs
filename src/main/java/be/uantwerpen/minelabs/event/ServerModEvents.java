@@ -4,8 +4,10 @@ import be.uantwerpen.minelabs.dimension.ModDimensions;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
@@ -40,9 +42,14 @@ public class ServerModEvents {
         });
 
         UseItemCallback.EVENT.register((player, world, hand) -> {
+            // TODO: check whether fishing rod is used
             FishingBobberEntity fishHook = player.fishHook;
-            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity && !world.isClient)
-                entity.extractByRod((ServerPlayerEntity) player);
+            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity && !world.isClient){
+                ItemEntity itemEntity = entity.extractByRod((ServerPlayerEntity) player);
+                itemEntity.resetPickupDelay();
+                ((FishingBobberEntityAccessor)fishHook).invokeUpdateHookedEntityId(itemEntity);
+                return TypedActionResult.consume(player.getStackInHand(hand));
+            }
             return TypedActionResult.pass(player.getStackInHand(hand));
         });
     }

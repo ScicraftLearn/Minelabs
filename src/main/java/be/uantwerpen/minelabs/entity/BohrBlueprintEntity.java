@@ -10,10 +10,7 @@ import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -196,14 +193,14 @@ public class BohrBlueprintEntity extends Entity {
             Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE, withHook);
     }
 
-    public ItemStack dropLastItem() {
+    public ItemEntity dropLastItem() {
         if (inventory.isEmpty())
             return null;
 
         ItemStack stack = inventory.pop();
         onItemRemoved(stack);
-        dropStack(stack);
-        return stack;
+        ItemEntity itemEntity = dropStack(stack);
+        return itemEntity;
     }
 
     private boolean canAcceptItem(Item item) {
@@ -344,13 +341,16 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     private void onHitByPlayer(ServerPlayerEntity player) {
-        ItemStack stack = dropLastItem();
+        ItemEntity itemEntity = dropLastItem();
+        ItemStack stack = itemEntity.getStack();
         onPlayerRemovedItem(stack, player, false);
     }
 
-    public void extractByRod(ServerPlayerEntity player) {
-        ItemStack stack = dropLastItem();
+    public ItemEntity extractByRod(ServerPlayerEntity player) {
+        ItemEntity itemEntity = dropLastItem();
+        ItemStack stack = itemEntity.getStack();
         onPlayerRemovedItem(stack, player, true);
+        return itemEntity;
     }
 
     @Override
