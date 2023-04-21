@@ -343,7 +343,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     }
 
     private float getNuclideInstabilityScale(float instability, int index, int total, float time) {
-        float NUCLEUS_INSTABILITY_MAX_SCALE = 1.5f;
+        float NUCLEUS_INSTABILITY_MAX_SCALE = 2f;
         float NUCLEUS_INSTABILITY_PULSE_PERIOD = 1f * 20;
 
         float NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT = 1f / 1.5f;
@@ -364,7 +364,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         progress = (progress + groupOffset) % 1;
 
         float minScale = 1;
-        float maxScale = minScale + instability * NUCLEUS_INSTABILITY_MAX_SCALE;
+        float maxScale = instability * NUCLEUS_INSTABILITY_MAX_SCALE;
         float value = getPulseWithTail(progress, pulsePercent);
         float scale = MathHelper.lerp(value, minScale, maxScale);
 
