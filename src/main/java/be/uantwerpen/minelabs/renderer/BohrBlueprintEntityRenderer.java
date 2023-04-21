@@ -69,6 +69,14 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     // radius of nucleus gets bigger until this capacity.
     private static final int NUCLEUS_MAX_CONTENT_FOR_RADIUS = BohrBlueprintEntity.MAX_PROTONS + BohrBlueprintEntity.MAX_NEUTRONS;
 
+    private static final float NUCLEUS_INSTABILITY_MAX_SCALE = 2f;
+    private static final float NUCLEUS_INSTABILITY_PULSE_PERIOD = 1f * 20;
+
+    private static final float NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT = 1f / 1.5f;
+    private static final float NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT = 1f / 4f;
+
+    private static final int NUCLEUS_INSTABILITY_GROUPS = 50;
+
     /**
      * Computes uniformly spread out points on a unit sphere by iterating polar coordinates.
      * Steps define in how many pieces each angle is divided so amount of points is `steps ** 2`.
@@ -343,15 +351,6 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     }
 
     private float getNuclideInstabilityScale(float instability, int index, int total, float time) {
-        float NUCLEUS_INSTABILITY_MAX_SCALE = 2f;
-        float NUCLEUS_INSTABILITY_PULSE_PERIOD = 1f * 20;
-
-        float NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT = 1f / 1.5f;
-        float NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT = 1f / 4f;
-
-        int NUCLEUS_INSTABILITY_GROUPS = 50;
-
-
         float pulsePercent = MathHelper.lerp(instability, NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT, NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT);
 
         // This keeps width of pulse the same (independent of instability)
