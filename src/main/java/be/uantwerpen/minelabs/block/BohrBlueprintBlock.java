@@ -140,8 +140,7 @@ public class BohrBlueprintBlock extends Block {
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
-            ItemEntity itemEntity = entity.dropLastItem();
-            ItemStack stack = itemEntity.getStack();
+            ItemStack stack = entity.dropLastItem();
             entity.onPlayerRemovedItem(stack, (ServerPlayerEntity) player, false);
         }
     }

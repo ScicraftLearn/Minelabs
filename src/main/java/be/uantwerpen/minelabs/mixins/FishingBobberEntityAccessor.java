@@ -9,6 +9,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(FishingBobberEntity.class)
 public interface FishingBobberEntityAccessor {
 
-    @Invoker("updateHookedEntityId")
-    void invokeUpdateHookedEntityId(@Nullable Entity entity);
+    @Invoker("pullHookedEntity")
+    void invokePullHookedEntity(@Nullable Entity entity);
 }

@@ -6,15 +6,18 @@ import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
 import be.uantwerpen.minelabs.util.NucleusState;
 import be.uantwerpen.minelabs.util.NuclidesTable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -186,21 +189,11 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public void onPlayerRemovedItem(ItemStack stack, ServerPlayerEntity player, boolean withHook) {
-        if (stack == null) return;
+        if (stack.isEmpty()) return;
         if (stack.getItem() instanceof AtomItem)
             Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_ATOM, withHook);
         else
             Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE, withHook);
-    }
-
-    public ItemEntity dropLastItem() {
-        if (inventory.isEmpty())
-            return null;
-
-        ItemStack stack = inventory.pop();
-        onItemRemoved(stack);
-        ItemEntity itemEntity = dropStack(stack);
-        return itemEntity;
     }
 
     private boolean canAcceptItem(Item item) {
@@ -264,6 +257,21 @@ public class BohrBlueprintEntity extends Entity {
             }
         }
         return false;
+    }
+
+    public ItemStack removeLastItem() {
+        if (inventory.isEmpty())
+            return ItemStack.EMPTY;
+
+        ItemStack stack = inventory.pop();
+        onItemRemoved(stack);
+        return stack;
+    }
+
+    public ItemStack dropLastItem() {
+        ItemStack stack = removeLastItem();
+        dropStack(stack);
+        return stack;
     }
 
     private void onItemAdded(ItemStack stack) {
@@ -341,16 +349,24 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     private void onHitByPlayer(ServerPlayerEntity player) {
-        ItemEntity itemEntity = dropLastItem();
-        ItemStack stack = itemEntity.getStack();
+        ItemStack stack = dropLastItem();
         onPlayerRemovedItem(stack, player, false);
     }
 
-    public ItemEntity extractByRod(ServerPlayerEntity player) {
-        ItemEntity itemEntity = dropLastItem();
-        ItemStack stack = itemEntity.getStack();
+    public ItemStack extractByRod(ServerPlayerEntity player, FishingBobberEntity bobber) {
+        ItemStack stack = removeLastItem();
+
+        if (stack.isEmpty() || world.isClient)
+            return stack;
+
+        // custom drop logic based on dropStack of entity.
+        // We immediately add fishing hook pulling logic before entity is spawned so the info is synced with the client.
+        ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), stack);
+        ((FishingBobberEntityAccessor) bobber).invokePullHookedEntity(itemEntity);
+        this.world.spawnEntity(itemEntity);
+
         onPlayerRemovedItem(stack, player, true);
-        return itemEntity;
+        return stack;
     }
 
     @Override
@@ -423,7 +439,7 @@ public class BohrBlueprintEntity extends Entity {
     public void onTrackedDataSet(TrackedData<?> data) {
         super.onTrackedDataSet(data);
 
-        if(PROTONS.equals(data) || NEUTRONS.equals(data) || ELECTRONS.equals(data)){
+        if (PROTONS.equals(data) || NEUTRONS.equals(data) || ELECTRONS.equals(data)) {
             compositionChanged();
         }
     }
@@ -447,7 +463,7 @@ public class BohrBlueprintEntity extends Entity {
         if (nucleusState != null && !nucleusState.isStable()) {
             instability = 1f;
         }
-        if (getProtons() != getElectrons()){
+        if (getProtons() != getElectrons()) {
             instability = 1f;
         }
         setInstability(instability);

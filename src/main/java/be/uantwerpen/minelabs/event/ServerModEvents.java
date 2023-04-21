@@ -42,13 +42,12 @@ public class ServerModEvents {
         });
 
         UseItemCallback.EVENT.register((player, world, hand) -> {
-            // TODO: check whether fishing rod is used
+            if (!player.getStackInHand(hand).isOf(net.minecraft.item.Items.FISHING_ROD))
+                return TypedActionResult.pass(player.getStackInHand(hand));
+
             FishingBobberEntity fishHook = player.fishHook;
             if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity && !world.isClient){
-                ItemEntity itemEntity = entity.extractByRod((ServerPlayerEntity) player);
-                itemEntity.resetPickupDelay();
-                ((FishingBobberEntityAccessor)fishHook).invokeUpdateHookedEntityId(itemEntity);
-                return TypedActionResult.consume(player.getStackInHand(hand));
+                entity.extractByRod((ServerPlayerEntity) player, fishHook);
             }
             return TypedActionResult.pass(player.getStackInHand(hand));
         });
