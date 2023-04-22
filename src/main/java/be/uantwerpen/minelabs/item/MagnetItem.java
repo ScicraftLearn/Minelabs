@@ -22,12 +22,9 @@ import java.util.List;
 public class MagnetItem extends Item {
 
     private static final float SPEED = 0.35F;
-    private boolean enabled;
-
-    // TODO CHANGE TO ITEMSTACK NBT (ALL MAGNETS ACTIVATE AND DE-ACTIVATE)
+    private static final String ENABLED_KEY = "minelabs.enabled";
     public MagnetItem(Settings settings) {
         super(settings);
-        enabled = false;
     }
 
     @Override
@@ -36,7 +33,7 @@ public class MagnetItem extends Item {
         // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/MathHelper.java#L30
         // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/VecHelper.java
         int RANGE = 8;
-        if (enabled) {
+        if (getState(stack)) {
             if (entity instanceof PlayerEntity player) {
                 if (world.isClient) return;
                 List<Entity> toMove = player.getWorld().getOtherEntities(player,
@@ -81,7 +78,7 @@ public class MagnetItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (enabled) {
+        if (getState(stack)) {
             tooltip.add(Text.translatable("text.minelabs.active"));
         } else {
             tooltip.add(Text.translatable("text.minelabs.inactive"));
@@ -93,9 +90,8 @@ public class MagnetItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (user.isSneaking()) {
             if (!world.isClient) {
-                ItemStack stack = user.getStackInHand(hand);
-                enabled = !enabled;
-                user.sendMessage(Text.of("TOGGLE MAGNET: " + enabled));
+                this.toggleMagnet(user.getStackInHand(hand));
+                user.sendMessage(Text.of("TOGGLE MAGNET: " + getState(user.getStackInHand(hand))));
             }
             user.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         }
@@ -103,27 +99,25 @@ public class MagnetItem extends Item {
         return super.use(world, user, hand);
     }
 
+    private void toggleMagnet(ItemStack stack){
+        NbtCompound nbt = stack.getOrCreateNbt();
+        nbt.putBoolean(ENABLED_KEY, !nbt.getBoolean(ENABLED_KEY));
+    }
+
+    private void setState(ItemStack stack, boolean state){
+        stack.getOrCreateNbt().putBoolean(ENABLED_KEY, state);
+    }
+
+    private boolean getState(ItemStack stack){
+        return stack.getOrCreateNbt().getBoolean(ENABLED_KEY);
+    }
+
     private boolean isMagnetable(Entity entity) {
         // COULD ADD TAGS IF NEEDED
         return entity instanceof ExperienceOrbEntity || entity instanceof ItemEntity;
     }
-
-    private boolean isEnabled() {
-        return enabled;
-    }
-
-    private NbtCompound serialize() {
-        NbtCompound tag = new NbtCompound();
-        tag.putBoolean("minelabs.enabled", enabled);
-        return tag;
-    }
-
-    private void deserialize(NbtCompound nbt) {
-        this.enabled = nbt.getBoolean("minelabs.enabled");
-    }
-
     @Override
     public boolean hasGlint(ItemStack stack) {
-        return enabled;
+        return getState(stack);
     }
 }
