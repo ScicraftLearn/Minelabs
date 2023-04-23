@@ -126,9 +126,10 @@ public class BohrBlueprintEntity extends Entity {
             decrementIntegrity();
         }
 
-        // TODO: eject after delay instead
         if (atomConfig.isElectronDecomposing()) {
-            ejectItem(Items.ELECTRON);
+            // TODO: eject after delay instead
+            if(removeItem(Items.ELECTRON))
+                launchParticle(Items.ELECTRON);
         }
     }
 
@@ -304,13 +305,10 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     /**
-     * Removes an item if it is present in the inventory and launches it in a random direction.
-     * Only works for subatomic particles.
+     * Launches a subatomic particle in a random direction (as entity not as item).
+     * Should only be used for subatomic particles, not atoms.
      */
-    private boolean ejectItem(Item item) {
-        if (!removeItem(item))
-            return false;
-
+    private void launchParticle(Item item) {
         // launch particle
         ItemStack stack = item.getDefaultStack();
         SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack);
@@ -323,14 +321,12 @@ public class BohrBlueprintEntity extends Entity {
                 ).normalize().multiply(SubatomicParticleEntity.DEFAULT_SPEED);
         entity.setVelocity(velocity);
         world.spawnEntity(entity);
-
-        return true;
     }
 
     private void decomposeAtom() {
-        for (int p = 0; p < getProtons(); p++) ejectItem(Items.PROTON);
-        for (int n = 0; n < getNeutrons(); n++) ejectItem(Items.NEUTRON);
-        for (int e = 0; e < getElectrons(); e++) ejectItem(Items.ELECTRON);
+        for (int p = 0; p < getProtons(); p++) launchParticle(Items.PROTON);
+        for (int n = 0; n < getNeutrons(); n++) launchParticle(Items.NEUTRON);
+        for (int e = 0; e < getElectrons(); e++) launchParticle(Items.ELECTRON);
 
         clear();
     }
