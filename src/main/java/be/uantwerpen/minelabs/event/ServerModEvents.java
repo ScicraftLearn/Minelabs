@@ -1,7 +1,10 @@
 package be.uantwerpen.minelabs.event;
 
+import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.dimension.ModDimensions;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
+import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -41,8 +44,17 @@ public class ServerModEvents {
 
         UseItemCallback.EVENT.register((player, world, hand) -> {
             FishingBobberEntity fishHook = player.fishHook;
-            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity && !world.isClient)
-                entity.extractByRod((ServerPlayerEntity) player);
+            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity && !world.isClient){
+                ItemStack stack = entity.dropLastItem((ServerPlayerEntity) player);
+
+                if(!stack.isEmpty()){
+                    // advancement
+                    if (stack.getItem() instanceof AtomItem)
+                        Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.REMOVE_ATOM, true);
+                    else
+                        Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.REMOVE_PARTICLE, true);
+                }
+            }
             return TypedActionResult.pass(player.getStackInHand(hand));
         });
     }
