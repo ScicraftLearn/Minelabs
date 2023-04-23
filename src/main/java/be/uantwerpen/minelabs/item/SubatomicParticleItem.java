@@ -1,5 +1,7 @@
 package be.uantwerpen.minelabs.item;
 
+import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
+import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.SubatomicParticleEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,7 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 public class SubatomicParticleItem extends BlockItem {
 
@@ -43,6 +51,12 @@ public class SubatomicParticleItem extends BlockItem {
             SubatomicParticleEntity subPart = new SubatomicParticleEntity(user, world, itemStack);
             subPart.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), SubatomicParticleEntity.DEFAULT_SPEED, 0F);
             world.spawnEntity(subPart);
+
+            List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE,
+                    Box.of(subPart.getPos(), 1, 1, 1), bohrE -> bohrE.isInRange(subPart, 2.0));
+            Optional<BohrBlueprintEntity> closest = entities.stream().min(Comparator.comparing(e -> e.distanceTo(user)));
+            closest.ifPresent(bohrBlueprintEntity -> subPart.onEntityHit(new EntityHitResult(bohrBlueprintEntity)));
+
         }
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));

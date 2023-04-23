@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.entity;
 
+import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,6 +16,7 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -113,7 +115,7 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
+    public void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
         // notify bohr plate of collision
         if (entityHitResult.getEntity() instanceof BohrBlueprintEntity bohrBlueprintEntity) {
