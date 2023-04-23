@@ -4,17 +4,20 @@ import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MagnetItem extends AbstractMagnet {
+public class StarItem extends AbstractMagnet {
     // COULD HAVE A DIFFERENT SPEED;
 
-    public MagnetItem(Settings settings) {
+    public StarItem(Settings settings) {
         super(settings);
     }
 
@@ -27,7 +30,7 @@ public class MagnetItem extends AbstractMagnet {
     @Override
     protected boolean isAttractable(Entity entity) {
         if (entity instanceof ItemEntity itemEntity){
-            return itemEntity.getStack().isIn(Tags.Items.MAGNET_WHITELIST);
+            return itemEntity.getStack().isIn(Tags.Items.STAR_WHITELIST);
         }
         return super.isAttractable(entity);
     }
