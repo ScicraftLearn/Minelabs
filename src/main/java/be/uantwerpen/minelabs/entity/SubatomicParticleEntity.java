@@ -23,6 +23,9 @@ import org.jetbrains.annotations.Nullable;
  * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
  */
 public class SubatomicParticleEntity extends ThrownItemEntity {
+
+    public static final float DEFAULT_SPEED = 1.5f;
+
     private int itemAge;
 
     public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
@@ -108,19 +111,6 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
             }
         }
     }
-
-//    /**
-//     * If we set {@link BohrBlueprintEntity#canHit} to false, with this function we can still hit with particles.
-//     * Override checking `canHit` of bohrBlueprintEntity so we can set it to false.
-//     * `canHit` is used both for projectiles and targetting and we only want one of the two.
-//     */
-//    protected boolean canHit(Entity entity) {
-//        if (entity instanceof BohrBlueprintEntity) {
-//            // Note: did not copy over owner and vehicle check as these situations shouldn't occur.
-//            return !entity.isSpectator() && entity.isAlive();
-//        }
-//        return super.canHit(entity);
-//    }
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
