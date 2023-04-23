@@ -1,5 +1,9 @@
 {
   "replace": false,
   "values": [
+    "minecraft:iron_ingot",
+    "minecraft:iron_nugget",
+    "minecraft:iron_block",
+    "minecraft:iron_door"
   ]
 }
