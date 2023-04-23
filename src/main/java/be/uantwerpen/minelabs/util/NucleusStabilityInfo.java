@@ -1,7 +1,6 @@
 package be.uantwerpen.minelabs.util;
 
 import be.uantwerpen.minelabs.Minelabs;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
@@ -26,23 +25,32 @@ public class NucleusStabilityInfo {
     // Stability expressed as percent in [0-1]
     private final float stability;
 
-    protected NucleusStabilityInfo(Duration halflife){
+    protected NucleusStabilityInfo(Duration halflife) {
         this(halflife, new ArrayList<>());
     }
 
-    protected NucleusStabilityInfo(Duration halflife, @Nullable String decayMode){
+    protected NucleusStabilityInfo(Duration halflife, @Nullable String decayMode) {
         this(halflife, decayMode == null ? List.of() : List.of(decayMode));
     }
 
-    protected NucleusStabilityInfo(Duration halflife, List<String> decayModes){
+    protected NucleusStabilityInfo(Duration halflife, List<String> decayModes) {
         this.halflife = halflife;
         this.decayModes = decayModes;
 
-        // TODO: compute
-        stability = 0f;
+        stability = computeStability(halflife);
     }
 
-    protected static NucleusStabilityInfo merge(NucleusStabilityInfo first, NucleusStabilityInfo second){
+    private static float computeStability(Duration halflife) {
+        // above max halflife: fully stable
+        if (halflife.compareTo(MAX_HALFLIFE) >= 0)
+            return 1;
+
+        // delta between 0 and 1
+        double delta = (float) halflife.toSeconds() / (float) MAX_HALFLIFE.toSeconds();
+        return (float) Math.pow(delta, 1d / 10d);
+    }
+
+    protected static NucleusStabilityInfo merge(NucleusStabilityInfo first, NucleusStabilityInfo second) {
         if (first.getHalflife() != second.getHalflife())
             Minelabs.LOGGER.warn("Merging two NucleusStabilityInfos with different duration");
 
@@ -56,7 +64,7 @@ public class NucleusStabilityInfo {
         return decayModes;
     }
 
-    public Duration getHalflife(){
+    public Duration getHalflife() {
         return halflife;
     }
 
@@ -64,7 +72,7 @@ public class NucleusStabilityInfo {
         return stability;
     }
 
-    public float getInstability(){
+    public float getInstability() {
         return 1 - stability;
     }
 }

@@ -56,7 +56,7 @@ public class BohrBlueprintHUDRenderer {
             renderText(matrixStack, atomConfig, integrity, x, y);
     }
 
-    private static void renderText(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity, int x, int y){
+    private static void renderText(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity, int x, int y) {
 //        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 //        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
@@ -84,7 +84,7 @@ public class BohrBlueprintHUDRenderer {
          * Rendering of text:
          */
         matrixStack.push();
-        matrixStack.translate(x-45, y-6, 0);
+        matrixStack.translate(x - 45, y - 6, 0);
         drawTexture(matrixStack, 0, 0, 0, 63, 34, 34, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
         matrixStack.pop();
 
@@ -94,7 +94,7 @@ public class BohrBlueprintHUDRenderer {
         matrixStack.scale(2, 2, 2);
         int width = TR.getWidth(symbol) - 1;
         TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y + 4) / 2, WHITE);
-        TR.draw(matrixStack, (int) (integrity * 100) + "%", (x - 96) / 2, (y + 4) / 2, WHITE);
+        TR.draw(matrixStack, (int) ((1f - atomConfig.getNucleusInstability()) * 100) + "%", (x - 96) / 2, (y + 4) / 2, WHITE);
         matrixStack.pop();
         //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
         //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
@@ -110,19 +110,19 @@ public class BohrBlueprintHUDRenderer {
         }
 
         matrixStack.push();
-        matrixStack.translate(x-44, y-5, 0);
+        matrixStack.translate(x - 44, y - 5, 0);
         matrixStack.scale(2, 2, 2);
         renderIntegrity(matrixStack, atomConfig, integrity);
         matrixStack.pop();
     }
 
-    private static int getDestructionStage(float integrity){
+    private static int getDestructionStage(float integrity) {
         int p = (int) MathHelper.clampedLerp(0, DESTRUCTION_STAGES, 1 - integrity);
         if (p >= DESTRUCTION_STAGES) p = DESTRUCTION_STAGES - 1;
         return p;
     }
 
-    private static void renderIntegrity(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity){
+    private static void renderIntegrity(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity) {
         if (!atomConfig.isNucleusDecomposing()) return;
 
         int stage = getDestructionStage(integrity);

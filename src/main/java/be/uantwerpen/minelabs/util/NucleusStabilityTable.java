@@ -2,12 +2,12 @@ package be.uantwerpen.minelabs.util;
 
 import be.uantwerpen.minelabs.Minelabs;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.SinglePreparationResourceReloader;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,7 +48,7 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
     // Map from (protons, neutrons) to stabilityInfo
     private static Map<Pair<Integer, Integer>, NucleusStabilityInfo> data;
 
-    public static NucleusStabilityInfo getStabilityInfo(int protons, int neutrons){
+    public static NucleusStabilityInfo getStabilityInfo(int protons, int neutrons) {
         if (protons == 0 && neutrons == 0)
             return NucleusStabilityInfo.STABLE;
         return data.getOrDefault(new Pair<>(protons, neutrons), NucleusStabilityInfo.UNSTABLE);
@@ -60,8 +59,8 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
         return reader.lines()
                 .map(this::parseLine)
                 .collect(Collectors.toMap(
-                        Pair::getLeft,
-                        Pair::getRight,
+                        Pair::getFirst,
+                        Pair::getSecond,
                         NucleusStabilityInfo::merge)
                 );
     }
@@ -70,7 +69,7 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
         return parseLine(line.split(CSV_DELIMITER, -1));
     }
 
-    private Pair<Pair<Integer, Integer>, NucleusStabilityInfo> parseLine(String[] values){
+    private Pair<Pair<Integer, Integer>, NucleusStabilityInfo> parseLine(String[] values) {
         // header: z,n,name,levelEnergy(MeV),halflife,decayModes
         int p = Integer.parseInt(values[0]);
         int n = Integer.parseInt(values[1]);
@@ -82,14 +81,14 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
         return parseLine(p, n, name, 0, halfLife, decayMode);
     }
 
-    private Pair<Pair<Integer, Integer>, NucleusStabilityInfo> parseLine(int p, int n, String name, float energy, Duration halfLife, @Nullable String decayMode){
+    private Pair<Pair<Integer, Integer>, NucleusStabilityInfo> parseLine(int p, int n, String name, float energy, Duration halfLife, @Nullable String decayMode) {
         return new Pair<>(
                 new Pair<>(p, n),
                 new NucleusStabilityInfo(halfLife, decayMode)
         );
     }
 
-    private Duration parseDuration(@Nullable String text){
+    private Duration parseDuration(@Nullable String text) {
         if (text == null)
             return Duration.ZERO;
         if (text.equals("STABLE"))
@@ -110,7 +109,7 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
             return Duration.ZERO;
 
         // likely third funky format
-        if (parts.length > 3){
+        if (parts.length > 3) {
             // only keep last two entries
             parts[0] = parts[parts.length - 2];
             parts[1] = parts[parts.length - 1];
@@ -118,15 +117,15 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
 
         // when parsing fails, it's likely due to the second format -> shift everything by one
         float value;
-        try{
+        try {
             value = Float.parseFloat(parts[0]);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             value = Float.parseFloat(parts[1]);
             parts[1] = parts[2];
         }
 
         TemporalUnit unit = unitMap.get(parts[1]);
-        if (unit == null){
+        if (unit == null) {
             Minelabs.LOGGER.warn("When parsing nucleus stability table, encountered invalid unit: " + parts[1]);
             Minelabs.LOGGER.info("string: " + text);
             return Duration.ZERO;
@@ -155,12 +154,12 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
 
         // Multiple datapacks might have this resource.
         // By processing all of them we can allow these values to be overridden.
-        for (Resource resource: manager.getAllResources(TABLE_CSV_FILE_ID)){
+        for (Resource resource : manager.getAllResources(TABLE_CSV_FILE_ID)) {
             // TODO: in the future the resource itself will be closeable it seems. Refactor
-            try(BufferedReader reader = resource.getReader()) {
+            try (BufferedReader reader = resource.getReader()) {
                 Map<Pair<Integer, Integer>, NucleusStabilityInfo> fileData = parseTable(reader);
                 allData.putAll(fileData);
-            } catch(IOException e) {
+            } catch (IOException e) {
                 Minelabs.LOGGER.error("Error occurred while loading resource '" + TABLE_CSV_FILE_ID + "' from pack '" + resource.getResourcePackName() + "'", e);
             }
         }
