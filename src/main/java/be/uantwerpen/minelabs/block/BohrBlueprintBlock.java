@@ -49,7 +49,7 @@ public class BohrBlueprintBlock extends Block {
     public static final IntProperty STATUS = MinelabsProperties.STATUS;
 
     public BohrBlueprintBlock() {
-        super(FabricBlockSettings.of(new Material.Builder(MapColor.LAPIS_BLUE).blocksPistons().build()).requiresTool().strength(1f).nonOpaque().luminance(100));
+        super(FabricBlockSettings.of(new Material.Builder(MapColor.LAPIS_BLUE).blocksPistons().build()).requiresTool().strength(1f).nonOpaque());
         this.setDefaultState(this.stateManager.getDefaultState()
                 .with(STATUS, 0).with(FACING, Direction.NORTH));
     }
