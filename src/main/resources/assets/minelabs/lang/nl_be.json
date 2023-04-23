@@ -217,5 +217,7 @@
 
   "item.minelabs.lasertool_iron": "Ijzeren Laser Tool",
   "item.minelabs.lasertool_gold": "Gouden Laser Tool",
-  "item.minelabs.lasertool_diamond": "Diamanten Laser Tool"
+  "item.minelabs.lasertool_diamond": "Diamanten Laser Tool",
+  "item.minelabs.magnet": "Magneet",
+  "item.minelabs.star": "Ster"
 }
