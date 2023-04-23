@@ -125,8 +125,9 @@ public class BlockEntities {
                         Blocks.PHOTON_QUANTUMFIELD, Blocks.WEAK_BOSON_QUANTUMFIELD,
                         Blocks.UPQUARK_QUANTUMFIELD).build(null), "quantum_field_entity");
 
-        LAB_CHEST_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder
-                .create(LabChestBlockEntity::new, Blocks.LAB_CABIN, Blocks.LAB_DRAWER).build(null), "lab_chest_block_entity");
+        LAB_CHEST_BLOCK_ENTITY = register(
+                FabricBlockEntityTypeBuilder.create(LabChestBlockEntity::new,
+                        Blocks.LAB_CABIN, Blocks.LAB_DRAWER).build(null), "lab_chest_block_entity");
 
         MOLOGRAM_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(MologramBlockEntity::new,
                 Blocks.MOLOGRAM_BLOCK).build(null), "mologram_block_entity");

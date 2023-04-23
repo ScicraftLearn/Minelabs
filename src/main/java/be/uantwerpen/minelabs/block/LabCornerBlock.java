@@ -4,6 +4,8 @@ import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.enums.StairShape;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
@@ -12,6 +14,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import org.jetbrains.annotations.NotNull;
 
 public class LabCornerBlock extends LabBlock {
 
@@ -20,7 +25,7 @@ public class LabCornerBlock extends LabBlock {
 
     public LabCornerBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(CONNECT, CornerShape.STRAIGHT));
+        this.setDefaultState(getDefaultState().with(CONNECT, CornerShape.STRAIGHT));
     }
 
     @Override
@@ -62,28 +67,30 @@ public class LabCornerBlock extends LabBlock {
         }
     }
 
+    @NotNull
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState state = super.getPlacementState(ctx);
-        assert state != null;
+        World world = ctx.getWorld();
+        Direction playerF = ctx.getPlayerFacing();
         if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() != Blocks.LAB_CENTER) {
             boolean invert = ctx.getPlayerFacing().getDirection() == Direction.AxisDirection.NEGATIVE;
             if (ctx.getPlayerFacing().getAxis() == Direction.Axis.X) {
                 if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() instanceof LabBlock) {
                     if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, 1)).getBlock() instanceof LabBlock) {
                         return state.with(CONNECT, invert ? CornerShape.LEFT : CornerShape.RIGHT);
-                    } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, -1)).getBlock() instanceof LabBlock) {
+                    } else if (world.getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, -1)).getBlock() instanceof LabBlock) {
                         return state.with(CONNECT, invert ? CornerShape.RIGHT : CornerShape.LEFT);
                     }
                     return state.with(CONNECT, CornerShape.STRAIGHT);
                 }
                 return state.with(CONNECT, CornerShape.STRAIGHT);
 
-            } else if (ctx.getPlayerFacing().getAxis() == Direction.Axis.Z) {
-                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() instanceof LabBlock) {
-                    if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.X, 1)).getBlock() instanceof LabBlock) {
+            } else if (playerF.getAxis() == Direction.Axis.Z) {
+                if (world.getBlockState(ctx.getBlockPos().offset(playerF)).getBlock() instanceof LabBlock) {
+                    if (world.getBlockState(ctx.getBlockPos().offset(Direction.Axis.X, 1)).getBlock() instanceof LabBlock) {
                         return state.with(CONNECT, invert ? CornerShape.RIGHT : CornerShape.LEFT);
-                    } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.X, -1)).getBlock() instanceof LabBlock) {
+                    } else if (world.getBlockState(ctx.getBlockPos().offset(Direction.Axis.X, -1)).getBlock() instanceof LabBlock) {
                         return state.with(CONNECT, invert ? CornerShape.LEFT : CornerShape.RIGHT);
                     }
                     return state.with(CONNECT, CornerShape.STRAIGHT);
@@ -92,5 +99,11 @@ public class LabCornerBlock extends LabBlock {
             }
         }
         return state.with(CONNECT, CornerShape.STRAIGHT);
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        //TODO
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 }

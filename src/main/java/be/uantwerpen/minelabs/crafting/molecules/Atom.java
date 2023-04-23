@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs.crafting.molecules;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.item.Items;
 import net.minecraft.item.Item;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
@@ -86,6 +87,8 @@ public enum Atom {
     public String getSymbol() {
         return symbol;
     }
+
+    public String getName(){return Text.translatable(getItem().getTranslationKey()).getString();}
 
     public double getElectronegativity() {
         return electronegativity;
