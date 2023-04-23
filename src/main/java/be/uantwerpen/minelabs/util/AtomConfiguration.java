@@ -26,7 +26,7 @@ public class AtomConfiguration {
         this.neutrons = neutrons;
         this.electrons = electrons;
 
-        nucleusStability = OldNuclidesTable.getStabilityInfo(protons, neutrons);
+        nucleusStability = NucleusStabilityTable.getStabilityInfo(protons, neutrons);
         atom = Atom.getByNumber(protons);
     }
 
