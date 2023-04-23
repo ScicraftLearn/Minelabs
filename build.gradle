@@ -52,6 +52,7 @@ dependencies {
 	// hard dependency -> actually includes it in our jar
 	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
 	include("maven.modrinth:Wd844r7Q:${project.structure_api_verion}")
+	include "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 
 	// depend on source -> it needs to be installed alongside our mod or also be a hard dependency
 	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
@@ -59,7 +60,6 @@ dependencies {
 
 	// debug dependency -> only used while running mod, not included or needed when released
 	modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
-	modRuntimeOnly "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 }
 
 processResources {
