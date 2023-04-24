@@ -6,17 +6,16 @@ import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -119,7 +118,7 @@ public class BohrBlueprintEntity extends Entity {
             }
         }
 
-        if (getIntegrity() <= 0){
+        if (getIntegrity() <= 0) {
             decomposeAtom();
         }
 
@@ -127,9 +126,10 @@ public class BohrBlueprintEntity extends Entity {
             decrementIntegrity();
         }
 
-        // TODO: eject after delay instead
         if (atomConfig.isElectronDecomposing()) {
-            ejectItem(Items.ELECTRON);
+            // TODO: eject after delay instead
+            if(removeItem(Items.ELECTRON))
+                launchParticle(Items.ELECTRON);
         }
     }
 
@@ -183,21 +183,6 @@ public class BohrBlueprintEntity extends Entity {
         clear();
     }
 
-    public ItemStack dropLastItem() {
-        return dropLastItem(null);
-    }
-
-    public ItemStack dropLastItem(@Nullable ServerPlayerEntity player) {
-        if (inventory.isEmpty())
-            return ItemStack.EMPTY;
-
-        ItemStack stack = inventory.pop();
-        onItemRemoved(stack, player);
-        dropStack(stack);
-
-        return stack;
-    }
-
     private boolean canAcceptItem(Item item) {
         // Atom can only be first item inserted
         if (item instanceof AtomItem && inventory.isEmpty())
@@ -249,7 +234,7 @@ public class BohrBlueprintEntity extends Entity {
         return true;
     }
 
-    private boolean removeItem(Item item){
+    private boolean removeItem(Item item) {
         return removeItem(item, null);
     }
 
@@ -270,6 +255,25 @@ public class BohrBlueprintEntity extends Entity {
         return false;
     }
 
+    public ItemStack removeLastItem(@Nullable ServerPlayerEntity source) {
+        if (inventory.isEmpty())
+            return ItemStack.EMPTY;
+
+        ItemStack stack = inventory.pop();
+        onItemRemoved(stack, source);
+        return stack;
+    }
+
+    public ItemStack dropLastItem() {
+        return dropLastItem(null);
+    }
+
+    public ItemStack dropLastItem(@Nullable ServerPlayerEntity source) {
+        ItemStack stack = removeLastItem(source);
+        dropStack(stack);
+        return stack;
+    }
+
     private void onItemAdded(ItemStack stack, @Nullable ServerPlayerEntity source) {
         if (stack.isOf(Items.PROTON)) incrementProtons(1);
         else if (stack.isOf(Items.ELECTRON)) incrementElectrons(1);
@@ -277,8 +281,8 @@ public class BohrBlueprintEntity extends Entity {
         else if (stack.getItem() instanceof AtomItem) updateCountsFromContent();
 
         // advancements
-        if (source != null){
-            if(stack.getItem() instanceof AtomItem)
+        if (source != null) {
+            if (stack.getItem() instanceof AtomItem)
                 Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.ADD_ATOM);
             else
                 Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.ADD_PARTICLE);
@@ -292,8 +296,8 @@ public class BohrBlueprintEntity extends Entity {
         else if (stack.getItem() instanceof AtomItem) updateCountsFromContent();
 
         // advancements
-        if (source != null){
-            if(stack.getItem() instanceof AtomItem)
+        if (source != null) {
+            if (stack.getItem() instanceof AtomItem)
                 Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.REMOVE_ATOM);
             else
                 Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.REMOVE_PARTICLE);
@@ -301,13 +305,10 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     /**
-     * Removes an item if it is present in the inventory and launches it in a random direction.
-     * Only works for subatomic particles.
+     * Launches a subatomic particle in a random direction (as entity not as item).
+     * Should only be used for subatomic particles, not atoms.
      */
-    private boolean ejectItem(Item item){
-        if (!removeItem(item))
-            return false;
-
+    private void launchParticle(Item item) {
         // launch particle
         ItemStack stack = item.getDefaultStack();
         SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack);
@@ -320,14 +321,12 @@ public class BohrBlueprintEntity extends Entity {
                 ).normalize().multiply(SubatomicParticleEntity.DEFAULT_SPEED);
         entity.setVelocity(velocity);
         world.spawnEntity(entity);
-
-        return true;
     }
 
-    private void decomposeAtom(){
-        for (int p = 0; p < getProtons(); p++) ejectItem(Items.PROTON);
-        for (int n = 0; n < getNeutrons(); n++) ejectItem(Items.NEUTRON);
-        for (int e = 0; e < getElectrons(); e++) ejectItem(Items.ELECTRON);
+    private void decomposeAtom() {
+        for (int p = 0; p < getProtons(); p++) launchParticle(Items.PROTON);
+        for (int n = 0; n < getNeutrons(); n++) launchParticle(Items.NEUTRON);
+        for (int e = 0; e < getElectrons(); e++) launchParticle(Items.ELECTRON);
 
         clear();
     }
@@ -403,6 +402,21 @@ public class BohrBlueprintEntity extends Entity {
         dropLastItem(player);
     }
 
+    public ItemStack extractByRod(ServerPlayerEntity player, FishingBobberEntity bobber) {
+        ItemStack stack = removeLastItem(player);
+
+        if (stack.isEmpty() || world.isClient)
+            return stack;
+
+        // custom drop logic based on dropStack of entity.
+        // We immediately add fishing hook pulling logic before entity is spawned so the info is synced with the client.
+        ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), stack);
+        ((FishingBobberEntityAccessor) bobber).invokePullHookedEntity(itemEntity);
+        this.world.spawnEntity(itemEntity);
+
+        return stack;
+    }
+
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         // save inventory
@@ -472,7 +486,7 @@ public class BohrBlueprintEntity extends Entity {
         // server only from here on
         if (world.isClient) return;
 
-        if (!atomConfig.isNucleusDecomposing()){
+        if (!atomConfig.isNucleusDecomposing()) {
             setIntegrity(1f);
         }
     }
@@ -505,7 +519,9 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.set(INTEGRITY, value);
     }
 
-    private void decrementIntegrity(){decrementIntegrity(INTEGRITY_DECAY_STEP);}
+    private void decrementIntegrity() {
+        decrementIntegrity(INTEGRITY_DECAY_STEP);
+    }
 
     private void decrementIntegrity(float value) {
         setIntegrity(getIntegrity() - value);
