@@ -59,8 +59,9 @@ dependencies {
 	modImplementation "maven.modrinth:Wd844r7Q:${project.structure_api_verion}"
 
 	// debug dependency -> only used while running mod, not included or needed when released
+	// Mods (none API's) that are actually running, also need to be included.
 	modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
-	modLocalRuntime "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
+	modRuntimeOnly "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 }
 
 processResources {
