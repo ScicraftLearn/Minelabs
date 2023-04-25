@@ -18,6 +18,9 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Instances of this class are used for building atoms.
  * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
@@ -61,7 +64,8 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
         if (checkCollision) {
             // on server check for collision with other entities upon spawning
             // when inside of entity from start this is not checked by the default collision logic
-            for (Entity entity : world.getOtherEntities(this, getBoundingBox().expand(0.2f), Entity::canHit)) {
+            List<Entity> entities = world.getOtherEntities(this, getBoundingBox().expand(0.2f), Entity::canHit);
+            for (Entity entity : entities.stream().sorted(Comparator.comparing(this::distanceTo)).toList()) {
                 onEntityHit(new EntityHitResult(entity));
                 if (isRemoved()) break;
             }
