@@ -18,6 +18,9 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Instances of this class are used for building atoms.
  * They include: Proton, Neutron, Electron, Anti-proton, Anti-neutron and positron.
@@ -30,19 +33,44 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
 
     public SubatomicParticleEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
-        setNoGravity(true);
+        onCreated(true);
     }
 
     public SubatomicParticleEntity(double d, double e, double f, World world, ItemStack itemStack) {
+        this(d, e, f, world, itemStack, true);
+    }
+
+    public SubatomicParticleEntity(double d, double e, double f, World world, ItemStack itemStack, boolean checkCollisionOnSpawn) {
         super(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, d, e, f, world);
         setItem(itemStack);
-        setNoGravity(true);
+        onCreated(checkCollisionOnSpawn);
     }
 
     public SubatomicParticleEntity(LivingEntity owner, World world, ItemStack itemStack) {
         super(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, owner, world);
         setItem(itemStack);
+        onCreated(true);
+    }
+
+    /**
+     * Called when the entity is created (from any constructor)
+     */
+    public void onCreated(boolean checkCollision) {
         setNoGravity(true);
+
+        if (world.isClient)
+            return;
+
+        if (checkCollision) {
+            // on server check for collision with other entities upon spawning
+            // when inside of entity from start this is not checked by the default collision logic
+            List<Entity> entities = world.getOtherEntities(this, getBoundingBox().expand(0.2f), Entity::canHit);
+            for (Entity entity : entities.stream().sorted(Comparator.comparing(this::distanceTo)).toList()) {
+                onEntityHit(new EntityHitResult(entity));
+                if (isRemoved()) break;
+            }
+        }
+
     }
 
     /**
@@ -75,9 +103,9 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
             if (particleEffect == null) return;
 
             for (int i = 0; i < 8; ++i) {
-                double velocityX = (Math.random() * 2.0 - 1.0) * (double)0.3f;
-                double velocityY = (Math.random() * 2.0 - 1.0) * (double)0.3f;
-                double velocityZ = (Math.random() * 2.0 - 1.0) * (double)0.3f;
+                double velocityX = (Math.random() * 2.0 - 1.0) * (double) 0.3f;
+                double velocityY = (Math.random() * 2.0 - 1.0) * (double) 0.3f;
+                double velocityZ = (Math.random() * 2.0 - 1.0) * (double) 0.3f;
                 this.world.addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), velocityX, velocityY, velocityZ);
             }
         }
