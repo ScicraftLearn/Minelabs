@@ -37,9 +37,9 @@ import java.util.Stack;
 
 public class BohrBlueprintEntity extends Entity {
     // Public constants
-    public static final int MAX_PROTONS = 118;
+    public static final int MAX_PROTONS = 200;
     public static final int MAX_ELECTRONS = MAX_PROTONS;
-    public static final int MAX_NEUTRONS = 176;
+    public static final int MAX_NEUTRONS = 200;
 
     // Private constants
     // how much integrity decreases each tick
@@ -311,7 +311,7 @@ public class BohrBlueprintEntity extends Entity {
     private void launchParticle(Item item) {
         // launch particle
         ItemStack stack = item.getDefaultStack();
-        SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack);
+        SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack, false);
         // velocity chosen such that it launches up and around, but not too much at the ground
         Vec3d velocity = new Vec3d(0, 0.2, 0)
                 .add(
