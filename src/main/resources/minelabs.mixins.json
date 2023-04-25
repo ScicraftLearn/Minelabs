@@ -7,13 +7,14 @@
   },
   "mixins": [
     "AbstractBlockMixin",
-    "BlockMixin",
     "BlockAccessorMixin",
+    "BlockMixin",
     "CampfireBlockEntityMixin",
     "CampfireBlockMixin",
     "CreeperEntityMixin",
     "ExplosionAccessor",
     "FireMixin",
+    "FishingBobberEntityAccessor",
     "IceBlockMixin",
     "LivingEntityMixin",
     "ThrownEntityMixin"

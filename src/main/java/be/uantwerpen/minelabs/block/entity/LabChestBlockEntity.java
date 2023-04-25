@@ -1,10 +1,8 @@
 package be.uantwerpen.minelabs.block.entity;
 
-import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
-import be.uantwerpen.minelabs.inventory.ImplementedInventory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.ViewerCountManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -12,19 +10,15 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 
-public class LabChestBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
-
-    private boolean open = false;
+public class LabChestBlockEntity extends LootableContainerBlockEntity {
+    private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(21, ItemStack.EMPTY);
 
     private final ViewerCountManager stateManager = new ViewerCountManager() {
 
@@ -40,7 +34,6 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
 
         @Override
         protected void onViewerCountUpdate(World world, BlockPos pos, BlockState state, int oldViewerCount, int newViewerCount) {
-            LabChestBlockEntity.this.onInvOpenOrClose(world, pos, state, oldViewerCount, newViewerCount);
         }
 
         @Override
@@ -58,52 +51,49 @@ public class LabChestBlockEntity extends BlockEntity implements ImplementedInven
     }
 
     @Override
-    public boolean onSyncedBlockEvent(int type, int data) {
-        Minelabs.LOGGER.info("viewcount: " + Integer.toString(data));
-        if (type == 1) {
-            this.open = (data > 0);
-            return true;
-        }
-        return super.onSyncedBlockEvent(type, data);
-    }
-
-    @Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
-        Inventories.writeNbt(nbt, inventory);
-        nbt.putBoolean("minelabs.open", open);
+        if (!this.serializeLootTable(nbt)) {
+            Inventories.writeNbt(nbt, this.inventory);
+        }
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
-        open = nbt.getBoolean("minelabs.open");
-        Inventories.readNbt(nbt, inventory);
+        this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
+        if (!this.deserializeLootTable(nbt)) {
+            Inventories.readNbt(nbt, this.inventory);
+        }
         super.readNbt(nbt);
     }
 
-    @Override
     public DefaultedList<ItemStack> getItems() {
         return this.inventory;
     }
 
     @Override
-    public Text getDisplayName() {
+    protected Text getContainerName() {
         return Text.translatable(getCachedState().getBlock().getTranslationKey());
     }
 
-    @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new LabChestScreenHandler(syncId, inv, this);
+    protected DefaultedList<ItemStack> getInvStackList() {
+        return inventory;
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state) {
-
+    @Override
+    protected void setInvStackList(DefaultedList<ItemStack> list) {
+        this.inventory = list;
     }
 
-    protected void onInvOpenOrClose(World world, BlockPos pos, BlockState state, int oldViewerCount, int newViewerCount) {
-        //Block block = state.getBlock();
-        //world.addSyncedBlockEvent(pos, block, 1, newViewerCount);
+    @Override
+    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
+        return new LabChestScreenHandler(syncId, playerInventory, this);
+    }
+
+    @Override
+    public int size() {
+        return 21;
     }
 
     @Override

@@ -9,7 +9,6 @@ import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -43,9 +42,12 @@ public class ServerModEvents {
         });
 
         UseItemCallback.EVENT.register((player, world, hand) -> {
+            if (world.isClient || !player.getStackInHand(hand).isOf(net.minecraft.item.Items.FISHING_ROD))
+                return TypedActionResult.pass(player.getStackInHand(hand));
+
             FishingBobberEntity fishHook = player.fishHook;
-            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity && !world.isClient){
-                ItemStack stack = entity.dropLastItem((ServerPlayerEntity) player);
+            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity){
+                ItemStack stack = entity.extractByRod((ServerPlayerEntity) player, fishHook);
 
                 if(!stack.isEmpty()){
                     // advancement
