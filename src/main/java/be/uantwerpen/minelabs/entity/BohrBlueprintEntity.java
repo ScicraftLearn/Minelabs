@@ -6,18 +6,16 @@ import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.util.NucleusState;
-import be.uantwerpen.minelabs.util.NuclidesTable;
+import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
+import be.uantwerpen.minelabs.util.AtomConfiguration;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -38,11 +36,14 @@ import java.util.Map;
 import java.util.Stack;
 
 public class BohrBlueprintEntity extends Entity {
-    // Constants
-    public static final int MAX_PROTONS = 118;
+    // Public constants
+    public static final int MAX_PROTONS = 200;
     public static final int MAX_ELECTRONS = MAX_PROTONS;
-    public static final int MAX_NEUTRONS = 176;
-    private static final float MAX_INTEGRITY = 100;
+    public static final int MAX_NEUTRONS = 200;
+
+    // Private constants
+    // how much integrity decreases each tick
+    private static final float INTEGRITY_DECAY_STEP = 1f / (10f * 20);
 
     // Transient data (not persisted or tracked)
     private int validityCheckCounter = 0;
@@ -59,18 +60,11 @@ public class BohrBlueprintEntity extends Entity {
     protected static final TrackedData<Integer> ELECTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
     protected static final TrackedData<Integer> NEUTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
-    // ItemStack is used to track the currently built atom.
-    protected static final TrackedData<ItemStack> RESULT_ATOM = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
-    // Stability index of the currently formed configuration (whether it exists or not).
-    // Instability of 0 means stable, higher values indicate how unstable and how fast integrity decays.
-    protected static final TrackedData<Float> INSTABILITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
-
-
     // Integrity ranges from MAX_INTEGRITY to 0 where at 0 the configuration decomposes because it is too unstable.
-    // Slowly decreases based on instability index.
+    // Decreases by one per tick if unstable.
     protected static final TrackedData<Float> INTEGRITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
-    private NucleusState nucleusState = null;
+    private AtomConfiguration atomConfig = new AtomConfiguration(0, 0, 0);
 
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
         super(entityType, world);
@@ -115,7 +109,7 @@ public class BohrBlueprintEntity extends Entity {
     private void logicalTick() {
         this.attemptTickInVoid();
 
-        // check if stil attached to bohr plate, otherwise clean up
+        // check if still attached to bohr plate, otherwise clean up
         if (this.validityCheckCounter++ == 100) {
             this.validityCheckCounter = 0;
             // cleanup for if the entity unexpectedly got left behind after the block was removed
@@ -124,9 +118,18 @@ public class BohrBlueprintEntity extends Entity {
             }
         }
 
-        // stability and integrity update
-        if (!isStable()) {
-            decrementIntegrity(getInstability() / 20f);
+        if (getIntegrity() <= 0) {
+            decomposeAtom();
+        }
+
+        if (atomConfig.isNucleusDecomposing()) {
+            decrementIntegrity();
+        }
+
+        if (atomConfig.isElectronDecomposing()) {
+            // TODO: eject after delay instead
+            if(removeItem(Items.ELECTRON))
+                launchParticle(Items.ELECTRON);
         }
     }
 
@@ -137,9 +140,8 @@ public class BohrBlueprintEntity extends Entity {
         ItemStack stack = particle.getStack();
         Item item = stack.getItem();
 
-        if (addItem(item)) {
+        if (addItem(item, (ServerPlayerEntity) particle.getOwner())) {
             particle.discard();
-            Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) particle.getOwner(), BohrCriterion.Type.ADD_PARTICLE);
         }
     }
 
@@ -156,9 +158,7 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.startTracking(PROTONS, 0);
         dataTracker.startTracking(ELECTRONS, 0);
         dataTracker.startTracking(NEUTRONS, 0);
-        dataTracker.startTracking(RESULT_ATOM, ItemStack.EMPTY);
-        dataTracker.startTracking(INSTABILITY, 0f);
-        dataTracker.startTracking(INTEGRITY, MAX_INTEGRITY);
+        dataTracker.startTracking(INTEGRITY, 1f);
     }
 
     @Override
@@ -171,11 +171,6 @@ public class BohrBlueprintEntity extends Entity {
             world.removeBlock(getBohrBlueprintPos(), false);
     }
 
-    public Item getOriginalAtom() {
-        if (inventory.isEmpty()) return null;
-        return inventory.get(0).getItem();
-    }
-
     public boolean isEmpty() {
         // inventory is not synced to client, so need to check counts.
         return getProtons() == 0 && getNeutrons() == 0 && getElectrons() == 0;
@@ -186,24 +181,6 @@ public class BohrBlueprintEntity extends Entity {
             dropStack(stack);
         }
         clear();
-    }
-
-    public void onPlayerRemovedItem(ItemStack stack, ServerPlayerEntity player, boolean withHook) {
-        if (stack == null) return;
-        if (stack.getItem() instanceof AtomItem)
-            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_ATOM, withHook);
-        else
-            Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.REMOVE_PARTICLE, withHook);
-    }
-
-    public ItemStack dropLastItem() {
-        if (inventory.isEmpty())
-            return null;
-
-        ItemStack stack = inventory.pop();
-        onItemRemoved(stack);
-        dropStack(stack);
-        return stack;
     }
 
     private boolean canAcceptItem(Item item) {
@@ -236,23 +213,32 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public boolean addItem(Item item) {
+        return addItem(item, null);
+    }
+
+    public boolean addItem(Item item, @Nullable ServerPlayerEntity source) {
         // we don't want the client to modify inventory. Always return false because we can't check inventory for remove.
         if (world.isClient)
             return false;
 
         if (isRemovalItem(item))
-            return removeItem(getAntiItem(item));
+            return removeItem(getAntiItem(item), source);
 
         if (!canAcceptItem(item))
             return false;
 
         ItemStack stack = new ItemStack(item, 1);
         inventory.add(stack);
-        onItemAdded(stack);
+        onItemAdded(stack, source);
+
         return true;
     }
 
     private boolean removeItem(Item item) {
+        return removeItem(item, null);
+    }
+
+    private boolean removeItem(Item item, @Nullable ServerPlayerEntity source) {
         // we don't want the client to modify inventory
         if (world.isClient)
             return false;
@@ -262,25 +248,87 @@ public class BohrBlueprintEntity extends Entity {
             ItemStack stack = iterator.previous();
             if (stack.isOf(item)) {
                 iterator.remove();
-                onItemRemoved(stack);
+                onItemRemoved(stack, source);
                 return true;
             }
         }
         return false;
     }
 
-    private void onItemAdded(ItemStack stack) {
+    public ItemStack removeLastItem(@Nullable ServerPlayerEntity source) {
+        if (inventory.isEmpty())
+            return ItemStack.EMPTY;
+
+        ItemStack stack = inventory.pop();
+        onItemRemoved(stack, source);
+        return stack;
+    }
+
+    public ItemStack dropLastItem() {
+        return dropLastItem(null);
+    }
+
+    public ItemStack dropLastItem(@Nullable ServerPlayerEntity source) {
+        ItemStack stack = removeLastItem(source);
+        dropStack(stack);
+        return stack;
+    }
+
+    private void onItemAdded(ItemStack stack, @Nullable ServerPlayerEntity source) {
         if (stack.isOf(Items.PROTON)) incrementProtons(1);
         else if (stack.isOf(Items.ELECTRON)) incrementElectrons(1);
         else if (stack.isOf(Items.NEUTRON)) incrementNeutrons(1);
         else if (stack.getItem() instanceof AtomItem) updateCountsFromContent();
+
+        // advancements
+        if (source != null) {
+            if (stack.getItem() instanceof AtomItem)
+                Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.ADD_ATOM);
+            else
+                Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.ADD_PARTICLE);
+        }
     }
 
-    private void onItemRemoved(ItemStack stack) {
+    private void onItemRemoved(ItemStack stack, @Nullable ServerPlayerEntity source) {
         if (stack.isOf(Items.PROTON)) incrementProtons(-1);
         else if (stack.isOf(Items.ELECTRON)) incrementElectrons(-1);
         else if (stack.isOf(Items.NEUTRON)) incrementNeutrons(-1);
         else if (stack.getItem() instanceof AtomItem) updateCountsFromContent();
+
+        // advancements
+        if (source != null) {
+            if (stack.getItem() instanceof AtomItem)
+                Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.REMOVE_ATOM);
+            else
+                Criteria.BOHR_CRITERION.trigger(source, BohrCriterion.Type.REMOVE_PARTICLE);
+        }
+    }
+
+    /**
+     * Launches a subatomic particle in a random direction (as entity not as item).
+     * Should only be used for subatomic particles, not atoms.
+     */
+    private void launchParticle(Item item) {
+        // launch particle
+        ItemStack stack = item.getDefaultStack();
+        SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack, false);
+        // velocity chosen such that it launches up and around, but not too much at the ground
+        Vec3d velocity = new Vec3d(0, 0.2, 0)
+                .add(
+                        this.random.nextTriangular(0, 1d) * 2,
+                        this.random.nextTriangular(0, 1d) * 1,
+                        this.random.nextTriangular(0, 1d) * 2
+                ).normalize().multiply(SubatomicParticleEntity.DEFAULT_SPEED);
+        entity.setVelocity(velocity);
+        world.spawnEntity(entity);
+    }
+
+    private void decomposeAtom() {
+        for (int p = 0; p < getProtons(); p++) launchParticle(Items.PROTON);
+        for (int n = 0; n < getNeutrons(); n++) launchParticle(Items.NEUTRON);
+        for (int e = 0; e < getElectrons(); e++) launchParticle(Items.ELECTRON);
+
+        clear();
     }
 
     private void clear() {
@@ -289,13 +337,20 @@ public class BohrBlueprintEntity extends Entity {
         updateCountsFromContent();
     }
 
+    public ItemStack craftAtom() {
+        return craftAtom(null);
+    }
+
     /**
      * Tries to craft the atom and clear inventory on success. Otherwise, nothing changes and return empty stack.
      */
-    public ItemStack craftAtom() {
-        Item item = getAtomItem();
-        if (item != null) {
-            ItemStack stack = new ItemStack(item, 1);
+    public ItemStack craftAtom(@Nullable ServerPlayerEntity player) {
+        ItemStack stack = getCraftableAtom();
+        if (!stack.isEmpty()) {
+            // Advancement: when atom actually crafted and not just inserted and extracted again
+            if (player != null && inventory.size() > 1)
+                Criteria.BOHR_CRITERION.trigger(player, BohrCriterion.Type.CRAFT_ATOM);
+
             clear();
             return stack;
         }
@@ -344,13 +399,22 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     private void onHitByPlayer(ServerPlayerEntity player) {
-        ItemStack stack = dropLastItem();
-        onPlayerRemovedItem(stack, player, false);
+        dropLastItem(player);
     }
 
-    public void extractByRod(ServerPlayerEntity player) {
-        ItemStack stack = dropLastItem();
-        onPlayerRemovedItem(stack, player, true);
+    public ItemStack extractByRod(ServerPlayerEntity player, FishingBobberEntity bobber) {
+        ItemStack stack = removeLastItem(player);
+
+        if (stack.isEmpty() || world.isClient)
+            return stack;
+
+        // custom drop logic based on dropStack of entity.
+        // We immediately add fishing hook pulling logic before entity is spawned so the info is synced with the client.
+        ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), stack);
+        ((FishingBobberEntityAccessor) bobber).invokePullHookedEntity(itemEntity);
+        this.world.spawnEntity(itemEntity);
+
+        return stack;
     }
 
     @Override
@@ -381,22 +445,6 @@ public class BohrBlueprintEntity extends Entity {
         return new EntitySpawnS2CPacket(this);
     }
 
-    @Nullable
-    private Item computeAtomItem() {
-        int protons = getProtons();
-        int neutrons = getNeutrons();
-        int electrons = getElectrons();
-
-        if (protons == 0 || protons != electrons)
-            return null;
-
-        NucleusState nucleusState = NuclidesTable.getNuclide(protons, neutrons);
-        if (nucleusState == null || !nucleusState.isStable())
-            return null;
-
-        return nucleusState.getAtomItem();
-    }
-
     /**
      * Sets the amount of protons, electrons and neutrons based on the inventory.
      */
@@ -423,7 +471,7 @@ public class BohrBlueprintEntity extends Entity {
     public void onTrackedDataSet(TrackedData<?> data) {
         super.onTrackedDataSet(data);
 
-        if(PROTONS.equals(data) || NEUTRONS.equals(data) || ELECTRONS.equals(data)){
+        if (PROTONS.equals(data) || NEUTRONS.equals(data) || ELECTRONS.equals(data)) {
             compositionChanged();
         }
     }
@@ -432,57 +480,38 @@ public class BohrBlueprintEntity extends Entity {
      * Update atom and stability info only once.
      */
     private void compositionChanged() {
-        // nucleusState is not synced from server to client. We compute it in the client ourselves.
-        nucleusState = NuclidesTable.getNuclide(getProtons(), getNeutrons());
+        // atomConfig is not synced from server to client. We compute it in the client ourselves.
+        atomConfig = new AtomConfiguration(getProtons(), getNeutrons(), getElectrons());
 
         // server only from here on
         if (world.isClient) return;
 
-        Item item = computeAtomItem();  // it's ok if this is null. The ItemStack will be the empty stack.
-        ItemStack stack = new ItemStack(item, 1);
-        dataTracker.set(RESULT_ATOM, stack);
-
-        // TODO: compute instability with nuclides
-        float instability = 0f;
-        if (nucleusState != null && !nucleusState.isStable()) {
-            instability = 1f;
-        }
-        if (getProtons() != getElectrons()){
-            instability = 1f;
-        }
-        setInstability(instability);
-        if (instability == 0) {
-            setIntegrity(MAX_INTEGRITY);
+        if (!atomConfig.isNucleusDecomposing()) {
+            setIntegrity(1f);
         }
     }
 
-    public NucleusState getNucleusState() {
-        return nucleusState;
+    public AtomConfiguration getAtomConfig() {
+        return atomConfig;
     }
 
-    @Nullable
-    public Item getAtomItem() {
-        ItemStack stack = dataTracker.get(RESULT_ATOM);
-
-        if (!stack.isEmpty())
-            return stack.getItem();
-
-        return null;
+    public ItemStack getCraftableAtom() {
+        return atomConfig.isStable() ? atomConfig.getAtomStack() : ItemStack.EMPTY;
     }
 
     public float getIntegrity() {
         return dataTracker.get(INTEGRITY);
     }
 
-    public int getProtons() {
+    protected int getProtons() {
         return dataTracker.get(PROTONS);
     }
 
-    public int getElectrons() {
+    protected int getElectrons() {
         return dataTracker.get(ELECTRONS);
     }
 
-    public int getNeutrons() {
+    protected int getNeutrons() {
         return dataTracker.get(NEUTRONS);
     }
 
@@ -490,20 +519,12 @@ public class BohrBlueprintEntity extends Entity {
         dataTracker.set(INTEGRITY, value);
     }
 
+    private void decrementIntegrity() {
+        decrementIntegrity(INTEGRITY_DECAY_STEP);
+    }
+
     private void decrementIntegrity(float value) {
         setIntegrity(getIntegrity() - value);
-    }
-
-    private float getInstability() {
-        return dataTracker.get(INSTABILITY);
-    }
-
-    public boolean isStable() {
-        return getInstability() == 0;
-    }
-
-    private void setInstability(float value) {
-        dataTracker.set(INSTABILITY, value);
     }
 
     private void setProtons(int value) {
