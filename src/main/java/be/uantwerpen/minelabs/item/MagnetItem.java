@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class MagnetItem extends AbstractMagnet {
-    // COULD HAVE A DIFFERENT SPEED;
+    // COULD HAVE A DIFFERENT SPEED / RANGE
 
     public MagnetItem(Settings settings) {
         super(settings);

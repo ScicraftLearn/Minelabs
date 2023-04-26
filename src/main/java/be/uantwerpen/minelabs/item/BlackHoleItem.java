@@ -4,20 +4,17 @@ import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class StarItem extends AbstractMagnet {
-    // COULD HAVE A DIFFERENT SPEED;
+public class BlackHoleItem extends AbstractMagnet {
+    // COULD HAVE A DIFFERENT SPEED / RANGE
 
-    public StarItem(Settings settings) {
+    public BlackHoleItem(Settings settings) {
         super(settings);
     }
 
@@ -30,7 +27,7 @@ public class StarItem extends AbstractMagnet {
     @Override
     protected boolean isAttractable(Entity entity) {
         if (entity instanceof ItemEntity itemEntity){
-            return itemEntity.getStack().isIn(Tags.Items.STAR_WHITELIST);
+            return itemEntity.getStack().isIn(Tags.Items.BLACK_HOLE_WHITELIST);
         }
         return super.isAttractable(entity);
     }

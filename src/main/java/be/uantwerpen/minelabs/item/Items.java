@@ -95,7 +95,7 @@ public class Items {
     public static final Item MAGNET = register(new MagnetItem(
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "magnet");
 
-    public static final Item POCKET_HOLE = register(new StarItem(
+    public static final Item POCKET_HOLE = register(new BlackHoleItem(
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "pocket_hole");
 
     public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()

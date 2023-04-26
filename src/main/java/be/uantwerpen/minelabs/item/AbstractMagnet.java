@@ -21,7 +21,8 @@ import java.util.List;
 
 public abstract class AbstractMagnet extends Item {
 
-    protected static final float SPEED = 0.35F;
+    protected static float SPEED = 0.03F;
+    protected static int RANGE = 8;
     private static final String ENABLED_KEY = "minelabs.enabled";
 
     public AbstractMagnet(Settings settings) {
@@ -33,7 +34,6 @@ public abstract class AbstractMagnet extends Item {
         // https://github.com/VazkiiMods/Botania/blob/1.19.x/Xplat/src/main/java/vazkii/botania/common/item/equipment/bauble/RingOfMagnetizationItem.java
         // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/MathHelper.java#L30
         // https://github.com/VazkiiMods/Botania/blob/9c94927a7289b8a1212ba38d1c3901bb16cc7ece/Xplat/src/main/java/vazkii/botania/common/helper/VecHelper.java
-        int RANGE = 8;
         if (getState(stack)) {
             if (entity instanceof PlayerEntity player) {
                 if (world.isClient) return;
@@ -54,9 +54,11 @@ public abstract class AbstractMagnet extends Item {
                     if (finalVector.length() > 1) {
                         finalVector = finalVector.normalize();
                     }
+                    finalVector.multiply(SPEED);
 
                     //entity.setDeltaMovement(finalVector.scale(modifier));
-                    movable_entity.setVelocity(finalVector.multiply(SPEED));
+                    movable_entity.addVelocity(finalVector.x, finalVector.y, finalVector.z);
+                    //movable_entity.setVelocity(finalVector);
                     /*
 
                     double distanceSq = Math.sqrt(x * x + y * y + z * z);

@@ -58,7 +58,7 @@ public class Tags {
         public static final TagKey<Item> NEGATIVE_CHARGE = createTag("negative_charge");
         public static final TagKey<Item> POSITIVE_CHARGE = createTag("positive_charge");
 
-        public static final TagKey<Item> STAR_WHITELIST = createTag("star_whitelist");
+        public static final TagKey<Item> BLACK_HOLE_WHITELIST = createTag("black_hole_whitelist");
         public static final TagKey<Item> MAGNET_WHITELIST = createTag("magnet_whitelist");
 
         /**
