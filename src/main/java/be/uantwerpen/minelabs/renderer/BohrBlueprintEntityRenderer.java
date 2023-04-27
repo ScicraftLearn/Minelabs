@@ -37,6 +37,15 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final int ELECTRON_SHELLS_AMOUNT = 7;
     // distance between two shells
     private static final float ELECTRON_SHELL_RADIUS_OFFSET = (MAX_RENDER_RADIUS - ELECTRON_FIRST_SHELL_RADIUS) / (ELECTRON_SHELLS_AMOUNT - 1);
+    private static final Quaternion[] ELECTRON_SHELL_ROTATIONS = {
+            Vec3f.POSITIVE_X.getDegreesQuaternion(0),
+            Vec3f.POSITIVE_Y.getDegreesQuaternion(90),
+            Vec3f.POSITIVE_X.getDegreesQuaternion(90),
+            Vec3f.POSITIVE_Y.getDegreesQuaternion(45),
+            Vec3f.POSITIVE_X.getDegreesQuaternion(45),
+            Vec3f.POSITIVE_Y.getDegreesQuaternion(135),
+            Vec3f.POSITIVE_X.getDegreesQuaternion(135)
+    };
     // rotation period in ticks
     private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
     // amount of points to use for the electron shell orbit line
@@ -178,33 +187,24 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
         float radius = ELECTRON_FIRST_SHELL_RADIUS;
 
-        // TODO: both for loops can be combined with new orthogonal orbits by using matrix push and pop rather than continuing from last orientation.
-        matrices.push();
-        for (int electronsInShell : electronShellConfiguration) {
-            renderElectronShellElectrons(electronsInShell, radius, instability, time, matrices, vertexConsumers, light);
-
-            // don't update normals
-            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_X.getDegreesQuaternion(45)));
-            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Y.getDegreesQuaternion(30)));
-            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(15)));
-
-            radius += ELECTRON_SHELL_RADIUS_OFFSET;
-        }
-        matrices.pop();
-
-        radius = ELECTRON_FIRST_SHELL_RADIUS;
-        matrices.push();
         for (int i = 0; i < electronShellConfiguration.length; i++) {
-            renderElectronShellLine(radius, dToCamera, matrices, vertexConsumers);
+            int electronsInShell = electronShellConfiguration[i];
+            Quaternion rotation = ELECTRON_SHELL_ROTATIONS[i];
 
-            // for the normals of the lines the normal matrix does need to be multiplied
-            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(45));
-            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(30));
-            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(15));
+            // don't update normals for rendering electron items (lighting effect)
+            matrices.push();
+            matrices.multiplyPositionMatrix(new Matrix4f(rotation));
+            renderElectronShellElectrons(electronsInShell, radius, instability, time, matrices, vertexConsumers, light);
+            matrices.pop();
+
+            // do updated normals for rendering line
+            matrices.push();
+            matrices.multiply(rotation);
+            renderElectronShellLine(radius, dToCamera, matrices, vertexConsumers);
+            matrices.pop();
 
             radius += ELECTRON_SHELL_RADIUS_OFFSET;
         }
-        matrices.pop();
     }
 
     /**
