@@ -83,21 +83,40 @@ public abstract class AbstractMagnet extends Item {
         return super.use(world, user, hand);
     }
 
+    /**
+     * Toggle the Magnet.
+     * Will change the nbt of the stack
+     *
+     * @param stack: ItemStack of this type
+     */
     protected void toggleMagnet(ItemStack stack){
         NbtCompound nbt = stack.getOrCreateNbt();
         nbt.putBoolean(ENABLED_KEY, !nbt.getBoolean(ENABLED_KEY));
     }
 
+    /**
+     * Set the Magnet's state (active/inactive)
+     *
+     * @param stack : ItemStack of this type
+     * @param state : true/false, should magnet be enabled
+     */
     protected void setState(ItemStack stack, boolean state){
         stack.getOrCreateNbt().putBoolean(ENABLED_KEY, state);
     }
 
+    /**
+     * Get the Magnet's state (active/inactive)
+     *
+     * @param stack : ItemStack of this type
+     * @return boolean: true/false
+     */
     protected boolean getState(ItemStack stack){
         return stack.getOrCreateNbt().getBoolean(ENABLED_KEY);
     }
 
     /**
      * Only attracts Experience Orbs by default
+     *
      * @param entity   : Entity to attract
      * @return boolean : true/false
      */
