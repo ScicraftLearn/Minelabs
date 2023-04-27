@@ -10,7 +10,7 @@
   "text.minelabs.multiple_molecules": "Too many molecules",
   "text.minelabs.active": "Active",
   "text.minelabs.inactive": "Inactive",
-  "text.minelabs.toggle_instruction": "Shift Right click to toggle",
+  "text.minelabs.toggle_instruction": "Shift + Right click to toggle",
 
   "block.minelabs.salt_ore": "Salt Ore",
   "block.minelabs.deepslate_salt_ore": "Deepslate Salt Ore",
