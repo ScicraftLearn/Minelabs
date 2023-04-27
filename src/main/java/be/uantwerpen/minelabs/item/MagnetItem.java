@@ -26,6 +26,12 @@ public class MagnetItem extends AbstractMagnet {
 
     @Override
     protected boolean isAttractable(Entity entity) {
+        Iterable<ItemStack> armor = entity.getArmorItems();
+        for (ItemStack stack: armor) {
+            if (stack.isIn(Tags.Items.MAGNET_WHITELIST)){
+                return true;
+            }
+        }
         if (entity instanceof ItemEntity itemEntity){
             return itemEntity.getStack().isIn(Tags.Items.MAGNET_WHITELIST);
         }
