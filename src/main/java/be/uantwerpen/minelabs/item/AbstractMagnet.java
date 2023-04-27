@@ -56,24 +56,7 @@ public abstract class AbstractMagnet extends Item {
                     }
                     finalVector.multiply(SPEED);
 
-                    //entity.setDeltaMovement(finalVector.scale(modifier));
                     movable_entity.addVelocity(finalVector.x, finalVector.y, finalVector.z);
-                    //movable_entity.setVelocity(finalVector);
-                    /*
-
-                    double distanceSq = Math.sqrt(x * x + y * y + z * z);
-                    double adjustedSpeed = SPEED*3 / distanceSq;
-
-                    if (distanceSq < 1.5625) {
-                        movable_entity.onPlayerCollision(player);
-                    } else {
-                        double deltaX = movable_entity.getX() + x * adjustedSpeed;
-                        double deltaZ = movable_entity.getZ()+ z * adjustedSpeed;
-                        double deltaY = y>0 ? movable_entity.getY() + 0.12 : movable_entity.getY() + y * SPEED;
-
-                        //movable_entity.setPos(deltaX, deltaY, deltaZ);
-                        movable_entity.setVelocity(deltaX, deltaY, deltaZ);
-                    }*/
                 }
             }
         }
