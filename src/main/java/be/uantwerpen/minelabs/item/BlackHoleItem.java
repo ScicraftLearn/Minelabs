@@ -27,7 +27,7 @@ public class BlackHoleItem extends AbstractMagnet {
     @Override
     protected boolean isAttractable(Entity entity) {
         if (entity instanceof ItemEntity itemEntity){
-            return itemEntity.getStack().isIn(Tags.Items.BLACK_HOLE_WHITELIST);
+            return !itemEntity.getStack().isIn(Tags.Items.BLACK_HOLE_BLACKLIST);
         }
         return super.isAttractable(entity);
     }
