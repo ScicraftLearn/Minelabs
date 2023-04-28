@@ -65,8 +65,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final float NUCLEUS_SCALE = 0.15f;
 
     // for scaling nucleus radius depending on amount of particles
-    private static final float NUCLEUS_MIN_RADIUS = 0.05f;
-    private static final float NUCLEUS_MAX_RADIUS = 0.2f;
+    private static final float NUCLEUS_MIN_RADIUS = 0.02f;
+    private static final float NUCLEUS_MAX_RADIUS = 0.3f;
     // distance between layers of nucleus
 //    private static final float NUCLEUS_RADIUS_OFFSET = 0.15f;
 
@@ -289,7 +289,9 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         int nPRendered = 0;
         int nNRendered = 0;
         int amountToRender = Math.min(NUCLEUS_MAX_ITEMS_RENDERED, nP + nN);
-        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, (float) (nP + nN) / NUCLEUS_MAX_CONTENT_FOR_RADIUS);
+        float volumePercent = (float) (nP + nN) / NUCLEUS_MAX_CONTENT_FOR_RADIUS;
+        float radiusPercent = (float) Math.pow(3 * volumePercent / (4 * Math.PI), 1f/3);    // based on volume of sphere
+        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, radiusPercent);
 
         matrices.push();
         while (nPRendered + nNRendered < amountToRender) {
@@ -378,8 +380,11 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
         matrices.scale(NUCLEUS_SCALE, NUCLEUS_SCALE, NUCLEUS_SCALE);
 
+        // have normals face sky
+        matrices.peek().getNormalMatrix().multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+
         // have everything facing the camera orientation
-        matrices.multiply(dispatcher.getRotation());
+        matrices.multiplyPositionMatrix(new Matrix4f(dispatcher.getRotation()));
 
         renderItem(type, matrices, vertexConsumers, light);
         matrices.pop();
