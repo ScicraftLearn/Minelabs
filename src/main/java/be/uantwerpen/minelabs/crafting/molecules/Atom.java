@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public enum Atom {
-    HYDROGEN(1, "H", 2.1, AtomType.NON_METAL, 1, 0, 0xFFFFFF),
+    HYDROGEN(1, "H", 2.1, AtomType.NON_METAL, 1, 0, Color.WHITE),
     HELIUM(2, "He", 0, AtomType.NOBLE_GAS, 2, 2, Atom.Color.CYAN),
     LITHIUM(3, "Li", 1.0, AtomType.ALKALI_METAL, 1, 4, Color.VIOLET),
     BERYLLIUM(4, "Be", 1.5, AtomType.ALKALINE_EARTH_METAL, 2, 5, Color.DARK_GREEN),
@@ -130,8 +130,8 @@ public enum Atom {
     TENNESSINE(117, "Ts", 1.3, AtomType.UNKNOWN, 17, 294, Color.GRAY),
     OGANESSON(118, "Og", 1.3, AtomType.UNKNOWN, 18, 294, Color.GRAY);
 
-
     private static class Color{
+        public static final int WHITE = 0xFFFFFF;
         public static final int BLACK = 0x121215;
         public static final int CYAN = 0x0091D4;
         public static final int VIOLET = 0x5700A3;
