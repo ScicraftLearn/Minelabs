@@ -56,20 +56,11 @@ public abstract class Reaction {
 
     protected class Utils {
 
+        private static final List<Block> FLAMMABLE_BLOCKS = List.of(Blocks.TORCH, Blocks.LAVA, Blocks.FIRE);
+
         final static boolean isFlammable(BlockState state) {
-            if(state == Blocks.TORCH.getDefaultState())
-                return true;
-            if(state == Blocks.LAVA.getDefaultState())
-                return true;
-            if(state.getBlock() == Blocks.FIRE)
-                return true;
-            if(state.getBlock() == Blocks.CAMPFIRE && state.get(CampfireBlock.LIT))
-                return true;
-            if(state.getBlock() == Blocks.CANDLE && state.get(CandleBlock.LIT))
-                return true;
-            if(state.getBlock() == be.uantwerpen.minelabs.block.Blocks.BURNER && state.get(Properties.LIT))
-                return true;
-            return false;
+            return FLAMMABLE_BLOCKS.contains(state.getBlock())
+                    || (state.getProperties().contains(Properties.LIT) && state.get(Properties.LIT));
         }
 
         public static void applyRadius(BlockPos centerPos, int radius, Consumer<BlockPos> blockFunction) {
