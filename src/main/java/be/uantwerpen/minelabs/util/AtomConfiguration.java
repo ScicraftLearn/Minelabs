@@ -87,6 +87,10 @@ public class AtomConfiguration {
         return MathHelper.clampedLerp(0f, 1f, delta);
     }
 
+    public int getDecomposingElectronCount(){
+        return Math.max(0, electrons - protons - MAX_ELECTRONS_ABOVE_PROTONS);
+    }
+
     public @Nullable Atom getAtom() {
         return atom;
     }
