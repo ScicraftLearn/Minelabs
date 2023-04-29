@@ -41,7 +41,7 @@ public class SubatomicParticleItem extends BlockItem {
         if (!world.isClient) {
             // Spawns the subatomicParticle entity with correct initial velocity (velocity has the same direction as the players looking direction)
             SubatomicParticleEntity subPart = new SubatomicParticleEntity(user, world, itemStack);
-            subPart.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 1.5F, 0F);
+            subPart.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), SubatomicParticleEntity.DEFAULT_SPEED, 0F);
             world.spawnEntity(subPart);
         }
 

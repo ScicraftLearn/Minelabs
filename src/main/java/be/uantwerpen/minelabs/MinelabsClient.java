@@ -90,6 +90,14 @@ public class MinelabsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ERLENMEYER_STAND, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.BURNER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MICROSCOPE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.TUBERACK, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LAB_CABIN, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LAB_DRAWER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LAB_SINK, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LAB_CORNER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.LAB_CENTER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.CHARGED_POINT_BLOCK, RenderLayer.getCutout());
         // Register rendering for electron entity
         EntityRendererRegistry.register(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, FlyingItemEntityRenderer::new);

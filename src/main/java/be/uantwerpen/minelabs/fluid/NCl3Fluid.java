@@ -26,7 +26,7 @@ public abstract class NCl3Fluid extends AbstractFluid {
     @Override
     protected BlockState toBlockState(FluidState fluidState) {
         // getBlockStateLevel converts the LEVEL_1_8 of the fluid state to the LEVEL_15 the fluid block uses
-        return Blocks.NCl3.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
+        return Blocks.NCL3.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
     }
 
     public static class Flowing extends NCl3Fluid {
