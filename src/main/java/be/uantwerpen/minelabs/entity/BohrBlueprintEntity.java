@@ -4,6 +4,7 @@ import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
+import be.uantwerpen.minelabs.block.BohrBlueprintBlock;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
@@ -499,6 +500,17 @@ public class BohrBlueprintEntity extends Entity {
         // reset progress
         if (!atomConfig.isElectronDecomposing())
             electronEjectProgress = 1f;
+
+        // Calc & set block status
+        // 0=default 1=ready 2=unstable
+        int status; // No item in BBP -> default
+        if (inventory.isEmpty()) status = 0;
+        else if (!getCraftableAtom().isEmpty()) status = 1; // Item can be crafted -> ready
+//        else if (!atomConfig.isNucleusStable()) status = 2;
+//        else if (!atomConfig.isElectronStable()) status = 3; // Add yellow state for ION?
+        else status = 2; // atom is unstable -> unstable
+        BlockState newState = world.getBlockState(getBohrBlueprintPos()).with(BohrBlueprintBlock.STATUS, status);
+        world.setBlockState(getBohrBlueprintPos(), newState);
     }
 
     public AtomConfiguration getAtomConfig() {
