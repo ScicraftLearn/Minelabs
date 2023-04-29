@@ -9,11 +9,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
@@ -30,6 +28,8 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
     private static final int WHITE = ColorHelper.Argb.getArgb(255, 255, 255, 255);
     private static final int YELLOW = ColorHelper.Argb.getArgb(255, 240, 225, 45);
     private static final int RED = ColorHelper.Argb.getArgb(255, 227, 23, 98);
+
+    private static final int SHADOW_COLOR = ColorHelper.Argb.getArgb(255, 62, 62, 62);
 
     // for block breaking effect on atom square
     private static final int DESTRUCTION_STAGES = ModelLoader.BLOCK_DESTRUCTION_STAGE_TEXTURES.size();
@@ -145,23 +145,48 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
     }
 
     /**
-     * Draw outline of a rectangle of width and height (including edges) and corners empty
+     * drawRectangle with shadow=true
      */
     private static void drawRectangle(MatrixStack matrixStack, int width, int height, int color) {
-        fill(matrixStack, 1, 0, width - 1, 1, color);         // top
-        fill(matrixStack, 1, height - 1, width - 1, height, color);       // bottom
-        fill(matrixStack, 0, 1, 1, height - 1, color);              // left
-        fill(matrixStack, width - 1, 1, width, height - 1, color);        // right
+        fill(matrixStack, 1, 0, width - 1, 1, color);           // top
+        fill(matrixStack, 1, height - 1, width - 1, height, color);         // bottom
+        fill(matrixStack, 0, 1, 1, height - 1, color);          // left
+        fill(matrixStack, width - 1, 1, width, height - 1, color);          // right
+    }
+
+    /**
+     * Draw outline of a rectangle of width and height (including edges) and corners empty/
+     * Shadow is not included in size.
+     */
+    private static void drawRectangle(MatrixStack matrixStack, int width, int height, int color, boolean shadow) {
+        if (shadow) {
+            int SHADOW_COLOR = ColorHelper.Argb.getArgb(255, 62, 62, 62);
+
+            // alternative: all edges have shadow (if used: give functions x and y params please)
+//            matrixStack.push();
+//            matrixStack.translate(1, 1, 0);
+//            drawRectangle(matrixStack, width, height, SHADOW_COLOR);
+//            matrixStack.pop();
+
+            fill(matrixStack, 2, height, width, height + 1, SHADOW_COLOR);         // bottom
+            fill(matrixStack, width, 2, width + 1, height, SHADOW_COLOR);          // right
+        }
+
+        drawRectangle(matrixStack, width, height, color);
+    }
+
+    /**
+     * drawSquare with shadow.
+     */
+    private static void drawSquare(MatrixStack matrixStack, int size, int color) {
+        drawSquare(matrixStack, size, color, true);
     }
 
     /**
      * Draw outline of a square with given size (including edges) and corners empty
      */
-    private static void drawSquare(MatrixStack matrixStack, int size, int color) {
-        drawRectangle(matrixStack, size, size, color);
-        // no longer needed
-//        RenderSystem.setShaderTexture(0, BARS_TEXTURE);
-//        drawTexture(matrixStack, 0, 0, 0, 63, ELEMENT_SQUARE_SIZE, ELEMENT_SQUARE_SIZE, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+    private static void drawSquare(MatrixStack matrixStack, int size, int color, boolean shadow) {
+        drawRectangle(matrixStack, size, size, color, shadow);
     }
 
     private static void renderElementName(MatrixStack matrixStack, AtomConfiguration atomConfig) {

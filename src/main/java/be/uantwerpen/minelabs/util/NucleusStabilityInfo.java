@@ -51,11 +51,12 @@ public class NucleusStabilityInfo {
     }
 
     protected static NucleusStabilityInfo merge(NucleusStabilityInfo first, NucleusStabilityInfo second) {
-        if (first.getHalflife() != second.getHalflife())
-            Minelabs.LOGGER.warn("Merging two NucleusStabilityInfos with different duration");
+        // This happens quite often and we don't know why.
+//        if (!first.getHalflife().equals(second.getHalflife()))
+//            Minelabs.LOGGER.warn("Merging two NucleusStabilityInfos with different duration " + first.getHalflife() + " and " + second.getHalflife());
 
         return new NucleusStabilityInfo(
-                first.getHalflife(),
+                first.getHalflife().compareTo(second.getHalflife()) > 0 ? first.getHalflife() : second.getHalflife(),
                 Stream.concat(first.getDecayModes().stream(), second.getDecayModes().stream()).toList()
         );
     }

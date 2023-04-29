@@ -44,11 +44,15 @@ public class BohrBlueprintEntity extends Entity {
     // Private constants
     // how much integrity decreases each tick
     private static final float INTEGRITY_DECAY_STEP = 1f / (10f * 20);
+    // per tick this value times the amount of extra electrons is subtracted from the timer.
+    private static final float electronEjectProgressPerTick = 1f / (2 * 20);
 
     // Transient data (not persisted or tracked)
     private int validityCheckCounter = 0;
 
     // server side information (only stored in nbt)
+    // timer for when to eject an electron when too unstable. Starts from 1 and when 0 launches an electron.
+    private float electronEjectProgress = 1f;
 
     // Ordered list of items added to the entity. Should only contain protons, electrons neutrons and atoms.
     // Anti particles are instead removed and can never be added if corresponding particle is not present.
@@ -127,9 +131,13 @@ public class BohrBlueprintEntity extends Entity {
         }
 
         if (atomConfig.isElectronDecomposing()) {
-            // TODO: eject after delay instead
-            if(removeItem(Items.ELECTRON))
-                launchParticle(Items.ELECTRON);
+            electronEjectProgress -= electronEjectProgressPerTick * atomConfig.getDecomposingElectronCount();
+
+            if (electronEjectProgress <= 0f){
+                if(removeItem(Items.ELECTRON))
+                    launchParticle(Items.ELECTRON);
+                electronEjectProgress = 1f;
+            }
         }
     }
 
@@ -426,6 +434,7 @@ public class BohrBlueprintEntity extends Entity {
             nbtList.add(stack.writeNbt(new NbtCompound()));
         }
         nbt.put("Items", nbtList);
+        nbt.putFloat("electronEjectProgress", electronEjectProgress);
     }
 
     @Override
@@ -437,6 +446,7 @@ public class BohrBlueprintEntity extends Entity {
             NbtCompound nbtCompound = nbtList.getCompound(i);
             inventory.add(ItemStack.fromNbt(nbtCompound));
         }
+        electronEjectProgress = nbt.getFloat("electronEjectProgress");
         updateCountsFromContent();
     }
 
@@ -486,9 +496,12 @@ public class BohrBlueprintEntity extends Entity {
         // server only from here on
         if (world.isClient) return;
 
-        if (!atomConfig.isNucleusDecomposing()) {
+        if (!atomConfig.isNucleusDecomposing())
             setIntegrity(1f);
-        }
+
+        // reset progress
+        if (!atomConfig.isElectronDecomposing())
+            electronEjectProgress = 1f;
     }
 
     public AtomConfiguration getAtomConfig() {
