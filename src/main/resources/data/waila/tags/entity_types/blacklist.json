@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minelabs:bohr_blueprint_entity",
+    "minelabs:subatomic_particle_entity"
+  ]
+}
