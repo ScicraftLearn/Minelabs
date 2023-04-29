@@ -378,10 +378,7 @@ public class BohrBlueprintEntity extends Entity {
 
     @Override
     public boolean canHit() {
-        // on server this function is used for collision checks
-        if (!world.isClient) return true;
-        // on the client it is used for mining interaction
-        return !isEmpty();
+        return true;
     }
 
     /**
