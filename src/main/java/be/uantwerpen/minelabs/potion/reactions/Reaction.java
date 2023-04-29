@@ -1,5 +1,6 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
+import be.uantwerpen.minelabs.block.BurnerBlock;
 import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
@@ -55,14 +56,21 @@ public abstract class Reaction {
 
     protected class Utils {
 
-        final static List<BlockState> FLAMMABLE_BLOCKS = Arrays.asList(
-                Blocks.TORCH.getDefaultState(),
-                Blocks.CAMPFIRE.getDefaultState(),
-                Blocks.CANDLE.getDefaultState().with(CandleBlock.LIT, true),
-                Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1),
-                Blocks.LAVA.getDefaultState(),
-                be.uantwerpen.minelabs.block.Blocks.BURNER.getDefaultState().with(Properties.LIT, true)
-        );
+        final static boolean isFlammable(BlockState state) {
+            if(state == Blocks.TORCH.getDefaultState())
+                return true;
+            if(state == Blocks.LAVA.getDefaultState())
+                return true;
+            if(state.getBlock() == Blocks.FIRE)
+                return true;
+            if(state.getBlock() == Blocks.CAMPFIRE && state.get(CampfireBlock.LIT))
+                return true;
+            if(state.getBlock() == Blocks.CANDLE && state.get(CandleBlock.LIT))
+                return true;
+            if(state.getBlock() == be.uantwerpen.minelabs.block.Blocks.BURNER && state.get(Properties.LIT))
+                return true;
+            return false;
+        }
 
         public static void applyRadius(BlockPos centerPos, int radius, Consumer<BlockPos> blockFunction) {
             for (int x = -radius; x <= radius; x++) {
@@ -89,7 +97,7 @@ public abstract class Reaction {
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
                     for (int z = -radius; z <= radius; z++) {
-                        if (FLAMMABLE_BLOCKS.contains(world.getBlockState(source.add(x, y, z)))) {
+                        if (isFlammable(world.getBlockState(source.add(x, y, z)))) {
                             return true;
                         }
                     }
