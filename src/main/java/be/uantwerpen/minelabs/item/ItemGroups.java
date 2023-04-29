@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.item;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -125,45 +126,8 @@ public class ItemGroups {
 
     public static final ItemGroup ATOMS = FabricItemGroupBuilder.create(
                     new Identifier(Minelabs.MOD_ID, "atoms"))
-            .icon(() -> new ItemStack(Items.HYDROGEN_ATOM))
-            .appendItems(stack ->{
-                stack.add(new ItemStack(Items.HYDROGEN_ATOM));
-                stack.add(new ItemStack(Items.HELIUM_ATOM));
-                stack.add(new ItemStack(Items.LITHIUM_ATOM));
-                stack.add(new ItemStack(Items.BERYLLIUM_ATOM));
-                stack.add(new ItemStack(Items.BORON_ATOM));
-                stack.add(new ItemStack(Items.CARBON_ATOM));
-                stack.add(new ItemStack(Items.NITROGEN_ATOM));
-                stack.add(new ItemStack(Items.OXYGEN_ATOM));
-                stack.add(new ItemStack(Items.FLUORINE_ATOM));
-                stack.add(new ItemStack(Items.NEON_ATOM));
-                stack.add(new ItemStack(Items.SODIUM_ATOM));
-                stack.add(new ItemStack(Items.MAGNESIUM_ATOM));
-                stack.add(new ItemStack(Items.ALUMINIUM_ATOM));
-                stack.add(new ItemStack(Items.SILICON_ATOM));
-                stack.add(new ItemStack(Items.PHOSPHORUS_ATOM));
-                stack.add(new ItemStack(Items.SULFUR_ATOM));
-                stack.add(new ItemStack(Items.CHLORINE_ATOM));
-                stack.add(new ItemStack(Items.ARGON_ATOM));
-                stack.add(new ItemStack(Items.POTASSIUM_ATOM));
-                stack.add(new ItemStack(Items.CALCIUM_ATOM));
-                stack.add(new ItemStack(Items.TITANIUM_ATOM));
-                stack.add(new ItemStack(Items.MANGANESE_ATOM));
-                stack.add(new ItemStack(Items.IRON_ATOM));
-                stack.add(new ItemStack(Items.COPPER_ATOM));
-                stack.add(new ItemStack(Items.ZINC_ATOM));
-                stack.add(new ItemStack(Items.BROMINE_ATOM));
-                stack.add(new ItemStack(Items.STRONTIUM_ATOM));
-                stack.add(new ItemStack(Items.SILVER_ATOM));
-                stack.add(new ItemStack(Items.CADMIUM_ATOM));
-                stack.add(new ItemStack(Items.TIN_ATOM));
-                stack.add(new ItemStack(Items.IODINE_ATOM));
-                stack.add(new ItemStack(Items.TUNGSTEN_ATOM));
-                stack.add(new ItemStack(Items.GOLD_ATOM));
-                stack.add(new ItemStack(Items.MERCURY_ATOM));
-                stack.add(new ItemStack(Items.LEAD_ATOM));
-                stack.add(new ItemStack(Items.URANIUM_ATOM));
-            })
+            .icon(() -> new ItemStack(Atom.HYDROGEN.getItem()))
+            .appendItems(c -> c.addAll(Items.ATOMS.stream().map(ItemStack::new).toList()))
             .build();
 
     public static final ItemGroup ELEMENTARY_PARTICLES = FabricItemGroupBuilder.create(
