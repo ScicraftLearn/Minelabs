@@ -102,6 +102,7 @@ public class Blocks {
     public static final Block ANIMATED_CHARGED = register(new AnimatedChargedBlock(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY), "animated_charged");
 
+    public static final Block SCHRODINGERS_BOX_BLOCK = register(new SchrodingersBoxBlock(FabricBlockSettings.of(Material.WOOD).strength(2.5f).sounds(BlockSoundGroup.WOOD), () -> BlockEntities.SCHRODINGERS_BOX_BLOCK_ENTITY), "schrodingers_box");
     // Quantumfields
     public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(), "gluon_quantumfield");
     public static final Block PHOTON_QUANTUMFIELD = register(new QuantumfieldBlock(), "photon_quantumfield");

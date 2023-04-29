@@ -40,6 +40,7 @@ public class BlockEntities {
     public static BlockEntityType<LabChestBlockEntity> LAB_CHEST_BLOCK_ENTITY;
 
     public static BlockEntityType<MologramBlockEntity> MOLOGRAM_BLOCK_ENTITY;
+    public static BlockEntityType<SchrodingersBoxBlockEntity> SCHRODINGERS_BOX_BLOCK_ENTITY;
 
 
     static {
@@ -131,6 +132,9 @@ public class BlockEntities {
 
         MOLOGRAM_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(MologramBlockEntity::new,
                 Blocks.MOLOGRAM_BLOCK).build(null), "mologram_block_entity");
+
+        SCHRODINGERS_BOX_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(SchrodingersBoxBlockEntity::new,
+                Blocks.SCHRODINGERS_BOX_BLOCK).build(null), "schrodingers_box");
     }
 
     /**
