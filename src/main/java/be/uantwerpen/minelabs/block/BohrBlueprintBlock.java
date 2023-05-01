@@ -48,7 +48,7 @@ public class BohrBlueprintBlock extends Block {
     );
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
-    //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
+
     public enum Status implements StringIdentifiable {
         EMPTY,
         CRAFTABLE,
@@ -92,6 +92,7 @@ public class BohrBlueprintBlock extends Block {
     }
 
     public static void updateStatus(World world, BlockPos pos, Status status){
+        if (!world.getBlockState(pos).isOf(Blocks.BOHR_BLUEPRINT)) return;
         BlockState newState = world.getBlockState(pos).with(BohrBlueprintBlock.STATUS, status);
         world.setBlockState(pos, newState);
     }

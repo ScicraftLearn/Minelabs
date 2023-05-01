@@ -492,9 +492,6 @@ public class BohrBlueprintEntity extends Entity {
      * Update atom and stability info only once.
      */
     private void compositionChanged() {
-        // atomConfig is not synced from server to client. We compute it in the client ourselves.
-//        atomConfig = new AtomConfiguration(getProtons(), getNeutrons(), getElectrons());
-
         // server only from here on
         if (world.isClient) return;
 
