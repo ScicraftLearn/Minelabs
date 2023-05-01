@@ -21,8 +21,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map<Pair<Integer, Integer>, NucleusStabilityInfo>> implements IdentifiableResourceReloadListener {
-    private static final Identifier TABLE_CSV_FILE_ID = new Identifier(Minelabs.MOD_ID, "nuclides_table/nndc_nudat_data_export.csv");
+    public static final NucleusStabilityTable INSTANCE = new NucleusStabilityTable();
 
+    private static final Identifier TABLE_CSV_FILE_ID = new Identifier(Minelabs.MOD_ID, "nuclides_table/nndc_nudat_data_export.csv");
     private static final String CSV_DELIMITER = ",";
 
     // Converstion between units in csv file and java temporal units.
@@ -46,12 +47,16 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
             .build();
 
     // Map from (protons, neutrons) to stabilityInfo
-    private static Map<Pair<Integer, Integer>, NucleusStabilityInfo> data;
+    private Map<Pair<Integer, Integer>, NucleusStabilityInfo> data = new HashMap<>();
 
-    public static NucleusStabilityInfo getStabilityInfo(int protons, int neutrons) {
+    public NucleusStabilityInfo getStabilityInfo(int protons, int neutrons) {
         if (protons == 0 && neutrons == 0)
             return NucleusStabilityInfo.STABLE;
         return data.getOrDefault(new Pair<>(protons, neutrons), NucleusStabilityInfo.UNSTABLE);
+    }
+
+    private NucleusStabilityTable(){
+
     }
 
     private Map<Pair<Integer, Integer>, NucleusStabilityInfo> parseTable(BufferedReader reader) throws IOException {
@@ -149,7 +154,6 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
     @Override
     protected Map<Pair<Integer, Integer>, NucleusStabilityInfo> prepare(ResourceManager manager, Profiler profiler) {
         profiler.startTick();
-
         Map<Pair<Integer, Integer>, NucleusStabilityInfo> allData = new HashMap<>();
 
         // Multiple datapacks might have this resource.
@@ -170,7 +174,7 @@ public class NucleusStabilityTable extends SinglePreparationResourceReloader<Map
     @Override
     protected void apply(Map<Pair<Integer, Integer>, NucleusStabilityInfo> prepared, ResourceManager manager, Profiler profiler) {
         profiler.startTick();
-        NucleusStabilityTable.data = prepared;
+        data = prepared;
         profiler.endTick();
     }
 
