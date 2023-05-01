@@ -1,15 +1,16 @@
 package be.uantwerpen.minelabs.util;
 
-import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.crafting.molecules.Atom;
+import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class AtomConfiguration {
+public class AtomConfiguration{
 
     private static final int MAX_ELECTRONS_ABOVE_PROTONS = 8;
 
@@ -23,11 +24,15 @@ public class AtomConfiguration {
     private final Atom atom;
 
     public AtomConfiguration(int protons, int neutrons, int electrons) {
+        this(protons, neutrons, electrons, NucleusStabilityTable.INSTANCE.getStabilityInfo(protons, neutrons));
+    }
+
+    private AtomConfiguration(int protons, int neutrons, int electrons, NucleusStabilityInfo nucleusStability) {
         this.protons = protons;
         this.neutrons = neutrons;
         this.electrons = electrons;
+        this.nucleusStability = nucleusStability;
 
-        nucleusStability = NucleusStabilityTable.getStabilityInfo(protons, neutrons);
         atom = Atom.getByNumber(protons);
     }
 
@@ -107,5 +112,27 @@ public class AtomConfiguration {
         return electrons;
     }
 
+    public static final DataHandler DATA_HANDLER = new DataHandler();
 
+    public static class DataHandler implements TrackedDataHandler.ImmutableHandler<AtomConfiguration> {
+        private DataHandler(){}
+
+        @Override
+        public void write(PacketByteBuf buf, AtomConfiguration atomConfig) {
+            buf.writeInt(atomConfig.protons);
+            buf.writeInt(atomConfig.neutrons);
+            buf.writeInt(atomConfig.electrons);
+            atomConfig.nucleusStability.write(buf);
+        }
+
+        @Override
+        public AtomConfiguration read(PacketByteBuf buf) {
+            int protons = buf.readInt();
+            int neutrons = buf.readInt();
+            int electrons = buf.readInt();
+            NucleusStabilityInfo nucleusStability = NucleusStabilityInfo.read(buf);
+
+            return new AtomConfiguration(protons, neutrons, electrons, nucleusStability);
+        }
+    }
 }

@@ -58,6 +58,9 @@ public class Tags {
         public static final TagKey<Item> NEGATIVE_CHARGE = createTag("negative_charge");
         public static final TagKey<Item> POSITIVE_CHARGE = createTag("positive_charge");
 
+        public static final TagKey<Item> BLACK_HOLE_BLACKLIST = createTag("black_hole_blacklist");
+        public static final TagKey<Item> MAGNET_WHITELIST = createTag("magnet_whitelist");
+
         /**
          * Create an Item tag (tag is only used inside this mod)
          * Don't forget the json file (data/minelabs/tags/items)
