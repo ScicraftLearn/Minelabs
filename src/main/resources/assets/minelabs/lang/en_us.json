@@ -8,6 +8,9 @@
   "text.minelabs.invalid": "Incomplete Molecule",
   "text.minelabs.not_implemented": "Molecule is not implemented",
   "text.minelabs.multiple_molecules": "Too many molecules",
+  "text.minelabs.active": "Active",
+  "text.minelabs.inactive": "Inactive",
+  "text.minelabs.toggle_instruction": "Shift + Right click to toggle",
 
   "block.minelabs.salt_ore": "Salt Ore",
   "block.minelabs.deepslate_salt_ore": "Deepslate Salt Ore",
@@ -207,12 +210,13 @@
   "item.minelabs.erlenmeyer_ncl3": "Nitrogen Trichloride (NCl\u2083)",
   "item.minelabs.magnesium_oxide_dust": "Magnesium Oxide (MgO)",
   "item.minelabs.sulfur_trioxide_dust": "Sulfur Trioxide (SO\u2083)",
-  "item.minelabs.erlenmeyer_cs2" : "Carbon Disulfide (CS\u2082)",
-  "item.minelabs.erlenmeyer_ccl4" : "Carbon Tetrachloride (CCl\u2084)",
-  "item.minelabs.erlenmeyer_pcl3" : "Phosphorus Trichloride (PCl\u2083)",
-  "item.minelabs.erlenmeyer_scl2" : "Sulfur Dichloride (SCl\u2082)",
-
+  "item.minelabs.erlenmeyer_cs2": "Carbon Disulfide (CS\u2082)",
+  "item.minelabs.erlenmeyer_ccl4": "Carbon Tetrachloride (CCl\u2084)",
+  "item.minelabs.erlenmeyer_pcl3": "Phosphorus Trichloride (PCl\u2083)",
+  "item.minelabs.erlenmeyer_scl2": "Sulfur Dichloride (SCl\u2082)",
   "item.minelabs.lasertool_iron": "Iron Laser Tool",
   "item.minelabs.lasertool_gold": "Gold Laser Tool",
-  "item.minelabs.lasertool_diamond": "Diamond Laser Tool"
+  "item.minelabs.lasertool_diamond": "Diamond Laser Tool",
+  "item.minelabs.magnet": "Magnet",
+  "item.minelabs.pocket_hole": "Pocket Black Hole"
 }
