@@ -501,16 +501,11 @@ public class BohrBlueprintEntity extends Entity {
         if (!atomConfig.isElectronDecomposing())
             electronEjectProgress = 1f;
 
-        // Calc & set block status
-        // 0=default 1=ready 2=unstable
-        int status; // No item in BBP -> default
-        if (inventory.isEmpty()) status = 0;
-        else if (!getCraftableAtom().isEmpty()) status = 1; // Item can be crafted -> ready
-//        else if (!atomConfig.isNucleusStable()) status = 2;
-//        else if (!atomConfig.isElectronStable()) status = 3; // Add yellow state for ION?
-        else status = 2; // atom is unstable -> unstable
-        BlockState newState = world.getBlockState(getBohrBlueprintPos()).with(BohrBlueprintBlock.STATUS, status);
-        world.setBlockState(getBohrBlueprintPos(), newState);
+        // set block state
+        BohrBlueprintBlock.Status status = BohrBlueprintBlock.Status.EMPTY;
+        if (!getCraftableAtom().isEmpty()) status = BohrBlueprintBlock.Status.CRAFTABLE;
+        else status = BohrBlueprintBlock.Status.UNSTABLE;
+        BohrBlueprintBlock.updateStatus(world, getBohrBlueprintPos(), status);
     }
 
     public AtomConfiguration getAtomConfig() {

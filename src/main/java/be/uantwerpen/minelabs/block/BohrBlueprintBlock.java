@@ -18,10 +18,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -47,12 +49,23 @@ public class BohrBlueprintBlock extends Block {
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
-    public static final IntProperty STATUS = MinelabsProperties.STATUS;
+    public enum Status implements StringIdentifiable {
+        EMPTY,
+        CRAFTABLE,
+        UNSTABLE;
+
+        @Override
+        public String asString() {
+            return toString().toLowerCase();
+        }
+    }
+
+    public static final EnumProperty<Status> STATUS = EnumProperty.of("status", Status.class);
 
     public BohrBlueprintBlock() {
         super(FabricBlockSettings.of(new Material.Builder(MapColor.LAPIS_BLUE).blocksPistons().build()).requiresTool().strength(1f).nonOpaque());
         this.setDefaultState(this.stateManager.getDefaultState()
-                .with(STATUS, 0).with(FACING, Direction.NORTH));
+                .with(STATUS, Status.EMPTY).with(FACING, Direction.NORTH));
     }
 
     /**
@@ -76,6 +89,11 @@ public class BohrBlueprintBlock extends Block {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(STATUS).add(FACING);
+    }
+
+    public static void updateStatus(World world, BlockPos pos, Status status){
+        BlockState newState = world.getBlockState(pos).with(BohrBlueprintBlock.STATUS, status);
+        world.setBlockState(pos, newState);
     }
 
     @Override
