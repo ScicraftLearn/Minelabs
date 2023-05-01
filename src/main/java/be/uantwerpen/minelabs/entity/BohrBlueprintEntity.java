@@ -4,6 +4,7 @@ import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
+import be.uantwerpen.minelabs.block.BohrBlueprintBlock;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
@@ -491,9 +492,6 @@ public class BohrBlueprintEntity extends Entity {
      * Update atom and stability info only once.
      */
     private void compositionChanged() {
-        // atomConfig is not synced from server to client. We compute it in the client ourselves.
-//        atomConfig = new AtomConfiguration(getProtons(), getNeutrons(), getElectrons());
-
         // server only from here on
         if (world.isClient) return;
 
@@ -503,6 +501,12 @@ public class BohrBlueprintEntity extends Entity {
         // reset progress
         if (!getAtomConfig().isElectronDecomposing())
             electronEjectProgress = 1f;
+
+        // set block state
+        BohrBlueprintBlock.Status status = BohrBlueprintBlock.Status.EMPTY;
+        if (!getCraftableAtom().isEmpty()) status = BohrBlueprintBlock.Status.CRAFTABLE;
+        else status = BohrBlueprintBlock.Status.UNSTABLE;
+        BohrBlueprintBlock.updateStatus(world, getBohrBlueprintPos(), status);
     }
 
     public AtomConfiguration getAtomConfig() {
