@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.util.AtomConfiguration;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -13,13 +14,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
 
 import java.util.function.Predicate;
-
-//import static be.uantwerpen.minelabs.block.Blocks.LEWIS_BLOCK;
 
 
 public class Entities {
@@ -86,5 +86,8 @@ public class Entities {
         registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld().or(BiomeSelectors.foundInTheNether()),
                 new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 0, 1));
         FabricDefaultAttributeRegistry.register(BALLOON, BalloonEntity.createMobAttributes());
+
+        // Register tracked data handlers for entities
+        TrackedDataHandlerRegistry.register(AtomConfiguration.DATA_HANDLER);
     }
 }

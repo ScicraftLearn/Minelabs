@@ -8,12 +8,14 @@ import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
+import be.uantwerpen.minelabs.util.NucleusStabilityInfo;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Item;
@@ -22,6 +24,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,11 +47,15 @@ public class BohrBlueprintEntity extends Entity {
     // Private constants
     // how much integrity decreases each tick
     private static final float INTEGRITY_DECAY_STEP = 1f / (10f * 20);
+    // per tick this value times the amount of extra electrons is subtracted from the timer.
+    private static final float electronEjectProgressPerTick = 1f / (2 * 20);
 
     // Transient data (not persisted or tracked)
     private int validityCheckCounter = 0;
 
     // server side information (only stored in nbt)
+    // timer for when to eject an electron when too unstable. Starts from 1 and when 0 launches an electron.
+    private float electronEjectProgress = 1f;
 
     // Ordered list of items added to the entity. Should only contain protons, electrons neutrons and atoms.
     // Anti particles are instead removed and can never be added if corresponding particle is not present.
@@ -56,15 +63,11 @@ public class BohrBlueprintEntity extends Entity {
     Stack<ItemStack> inventory = new Stack<>();
 
     // tracked data is synced to the client automatically (still needs to be written to nbt if it needs to be persisted)
-    protected static final TrackedData<Integer> PROTONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    protected static final TrackedData<Integer> ELECTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    protected static final TrackedData<Integer> NEUTRONS = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    protected static final TrackedData<AtomConfiguration> ATOM_CONFIGURATION = DataTracker.registerData(BohrBlueprintEntity.class, AtomConfiguration.DATA_HANDLER);
 
     // Integrity ranges from MAX_INTEGRITY to 0 where at 0 the configuration decomposes because it is too unstable.
     // Decreases by one per tick if unstable.
     protected static final TrackedData<Float> INTEGRITY = DataTracker.registerData(BohrBlueprintEntity.class, TrackedDataHandlerRegistry.FLOAT);
-
-    private AtomConfiguration atomConfig = new AtomConfiguration(0, 0, 0);
 
     public BohrBlueprintEntity(EntityType<? extends BohrBlueprintEntity> entityType, World world) {
         super(entityType, world);
@@ -122,14 +125,18 @@ public class BohrBlueprintEntity extends Entity {
             decomposeAtom();
         }
 
-        if (atomConfig.isNucleusDecomposing()) {
+        if (getAtomConfig().isNucleusDecomposing()) {
             decrementIntegrity();
         }
 
-        if (atomConfig.isElectronDecomposing()) {
-            // TODO: eject after delay instead
-            if(removeItem(Items.ELECTRON))
-                launchParticle(Items.ELECTRON);
+        if (getAtomConfig().isElectronDecomposing()) {
+            electronEjectProgress -= electronEjectProgressPerTick * getAtomConfig().getDecomposingElectronCount();
+
+            if (electronEjectProgress <= 0f){
+                if(removeItem(Items.ELECTRON))
+                    launchParticle(Items.ELECTRON);
+                electronEjectProgress = 1f;
+            }
         }
     }
 
@@ -155,10 +162,9 @@ public class BohrBlueprintEntity extends Entity {
 
     @Override
     protected void initDataTracker() {
-        dataTracker.startTracking(PROTONS, 0);
-        dataTracker.startTracking(ELECTRONS, 0);
-        dataTracker.startTracking(NEUTRONS, 0);
         dataTracker.startTracking(INTEGRITY, 1f);
+        dataTracker.startTracking(ATOM_CONFIGURATION, new AtomConfiguration(0, 0, 0));
+
     }
 
     @Override
@@ -426,18 +432,25 @@ public class BohrBlueprintEntity extends Entity {
             nbtList.add(stack.writeNbt(new NbtCompound()));
         }
         nbt.put("Items", nbtList);
+        nbt.putFloat("electronEjectProgress", electronEjectProgress);
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
-        // load inventory
         inventory.clear();
-        NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
-        for (int i = 0; i < nbtList.size(); i++) {
-            NbtCompound nbtCompound = nbtList.getCompound(i);
-            inventory.add(ItemStack.fromNbt(nbtCompound));
+
+        if (nbt.contains("Items")){
+            // load inventory
+            NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
+            for (int i = 0; i < nbtList.size(); i++) {
+                NbtCompound nbtCompound = nbtList.getCompound(i);
+                inventory.add(ItemStack.fromNbt(nbtCompound));
+            }
+            updateCountsFromContent();
         }
-        updateCountsFromContent();
+
+        if (nbt.contains("electronEjectProgress"))
+            electronEjectProgress = nbt.getFloat("electronEjectProgress");
     }
 
     @Override
@@ -462,16 +475,14 @@ public class BohrBlueprintEntity extends Entity {
                 Minelabs.LOGGER.warn("Incompatible item found in bohr plate: " + stack);
             }
         }
-        setProtons(protons);
-        setElectrons(electrons);
-        setNeutrons(neutrons);
+        setAtomConfiguration(protons, neutrons, electrons);
     }
 
     @Override
     public void onTrackedDataSet(TrackedData<?> data) {
         super.onTrackedDataSet(data);
 
-        if (PROTONS.equals(data) || NEUTRONS.equals(data) || ELECTRONS.equals(data)) {
+        if (ATOM_CONFIGURATION.equals(data)) {
             compositionChanged();
         }
     }
@@ -481,22 +492,33 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void compositionChanged() {
         // atomConfig is not synced from server to client. We compute it in the client ourselves.
-        atomConfig = new AtomConfiguration(getProtons(), getNeutrons(), getElectrons());
+//        atomConfig = new AtomConfiguration(getProtons(), getNeutrons(), getElectrons());
 
         // server only from here on
         if (world.isClient) return;
 
-        if (!atomConfig.isNucleusDecomposing()) {
+        if (!getAtomConfig().isNucleusDecomposing())
             setIntegrity(1f);
-        }
+
+        // reset progress
+        if (!getAtomConfig().isElectronDecomposing())
+            electronEjectProgress = 1f;
     }
 
     public AtomConfiguration getAtomConfig() {
-        return atomConfig;
+        return dataTracker.get(ATOM_CONFIGURATION);
+    }
+
+    protected void setAtomConfiguration(int protons, int neutrons, int electrons){
+        setAtomConfiguration(new AtomConfiguration(protons, neutrons, electrons));
+    }
+
+    protected void setAtomConfiguration(AtomConfiguration atomConfig){
+        dataTracker.set(ATOM_CONFIGURATION, atomConfig);
     }
 
     public ItemStack getCraftableAtom() {
-        return atomConfig.isStable() ? atomConfig.getAtomStack() : ItemStack.EMPTY;
+        return getAtomConfig().isStable() ? getAtomConfig().getAtomStack() : ItemStack.EMPTY;
     }
 
     public float getIntegrity() {
@@ -504,15 +526,15 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     protected int getProtons() {
-        return dataTracker.get(PROTONS);
+        return getAtomConfig().getProtons();
     }
 
     protected int getElectrons() {
-        return dataTracker.get(ELECTRONS);
+        return getAtomConfig().getElectrons();
     }
 
     protected int getNeutrons() {
-        return dataTracker.get(NEUTRONS);
+        return getAtomConfig().getNeutrons();
     }
 
     private void setIntegrity(float value) {
@@ -528,15 +550,15 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     private void setProtons(int value) {
-        dataTracker.set(PROTONS, value);
-    }
-
-    private void setElectrons(int value) {
-        dataTracker.set(ELECTRONS, value);
+        setAtomConfiguration(value, getNeutrons(), getElectrons());
     }
 
     private void setNeutrons(int value) {
-        dataTracker.set(NEUTRONS, value);
+        setAtomConfiguration(getProtons(), value, getElectrons());
+    }
+
+    private void setElectrons(int value) {
+        setAtomConfiguration(getProtons(), getNeutrons(), value);
     }
 
     private void incrementProtons(int value) {
