@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.util;
 
 import be.uantwerpen.minelabs.Minelabs;
+import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
@@ -61,6 +62,8 @@ public class NucleusStabilityInfo {
         );
     }
 
+
+
     public List<String> getDecayModes() {
         return decayModes;
     }
@@ -76,24 +79,15 @@ public class NucleusStabilityInfo {
     public float getInstability() {
         return 1 - stability;
     }
-}
 
-
-/*
-    public static LinkedHashMap<Float, ArrayList<Float>> makeHalflifeRanges() {
-
-        // ranges:
-        // [0sec - 1sec], ]1sec - 1uur], ]1uur - 1dag], ]1dag-1maand],
-        // ]1maand-1jaar],]1jaar - 10jaar], ]10jaar - 10000jaar], ]10000jaar-oneindig[
-
-        LinkedHashMap<Float, ArrayList<Float>> _halflifeRanges = new LinkedHashMap<>();
-        _halflifeRanges.put(1f, new ArrayList<>(Arrays.asList(0.04f, 10f))); // 1 second
-        _halflifeRanges.put(3600f, new ArrayList<>(Arrays.asList(0.035f, 20f))); // 1 hour
-        _halflifeRanges.put(86400f, new ArrayList<>(Arrays.asList(0.03f, 30f))); // 1 day
-        _halflifeRanges.put(2629743.83f, new ArrayList<>(Arrays.asList(0.025f, 40f))); // 1 month
-        _halflifeRanges.put(31556926f, new ArrayList<>(Arrays.asList(0.02f, 55f))); // 1 year
-        _halflifeRanges.put(315569260f, new ArrayList<>(Arrays.asList(0.015f, 75f))); // 10 years
-        _halflifeRanges.put(315569260000f, new ArrayList<>(Arrays.asList(0.01f, 90f))); // 10000 years
-        return  _halflifeRanges;
+    public void write(PacketByteBuf buf) {
+        // TODO: decay modes not synced because they are not used yet.
+        buf.writeLong(halflife.toSeconds());
     }
- */
+
+    public static NucleusStabilityInfo read(PacketByteBuf buf) {
+        // TODO: decay modes not synced because they are not used yet.
+        Duration halflife = Duration.ofSeconds(buf.readLong());
+        return new NucleusStabilityInfo(halflife);
+    }
+}
