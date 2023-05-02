@@ -47,7 +47,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             Vec3f.POSITIVE_X.getDegreesQuaternion(135)
     };
     // rotation period in ticks
-    private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
+    private static final float ELECTRON_ROTATION_PERIOD = 4 * 20;
     // amount of points to use for the electron shell orbit line
     private static final int ELECTRON_LINE_NUMPOINTS = 32;
     // from 0 to 255
