@@ -20,6 +20,8 @@ import net.minecraft.util.math.MathHelper;
 public class BohrBlueprintHUDRenderer extends DrawableHelper {
     // range in blocks from where the HUD is rendered
     public static final int HUD_RENDER_RADIUS = 9;
+    // maximal angle in radians between player camera and entity where HUD is still rendered
+    public static final double MAX_RENDER_ANGLE = Math.PI / 2;
 
     private static final Identifier BARS_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/bohr_bars.png");
     private static final int BARS_TEXTURE_SIZE = 256;
