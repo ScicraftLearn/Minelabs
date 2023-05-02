@@ -86,6 +86,8 @@ public class Tags {
 
     public static class Fluids {
 
+        public static final TagKey<Fluid> NEWTON_FLUID = createTag("newton_fluid");
+
         /**
          * Create a Fluid tag (tag is only used inside this mod)
          * Don't forget the json file (data/minelabs/tags/fluids)
