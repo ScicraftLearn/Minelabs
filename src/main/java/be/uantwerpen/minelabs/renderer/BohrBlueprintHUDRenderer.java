@@ -87,9 +87,9 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
         }
         MinecraftClient.getInstance().getProfiler().pop();
 
-        // DEBUG
-        String stability = (int) ((1f - atomConfig.getNucleusInstability()) * 100) + "%";
-        drawCenteredText(matrixStack, MinecraftClient.getInstance().textRenderer, stability, -80, 8, WHITE);
+        // DEBUG: render stability as percent left of element square
+//        String stability = (int) ((1f - atomConfig.getNucleusInstability()) * 100) + "%";
+//        drawCenteredText(matrixStack, MinecraftClient.getInstance().textRenderer, stability, -80, 8, WHITE);
 
         matrixStack.pop();
         MinecraftClient.getInstance().getProfiler().pop();
@@ -160,8 +160,6 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
      */
     private static void drawRectangle(MatrixStack matrixStack, int width, int height, int color, boolean shadow) {
         if (shadow) {
-            int SHADOW_COLOR = ColorHelper.Argb.getArgb(255, 62, 62, 62);
-
             // alternative: all edges have shadow (if used: give functions x and y params please)
 //            matrixStack.push();
 //            matrixStack.translate(1, 1, 0);
