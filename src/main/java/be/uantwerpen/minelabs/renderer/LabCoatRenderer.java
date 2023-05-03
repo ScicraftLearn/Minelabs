@@ -1,12 +1,12 @@
-package be.uantwerpen.minelabs.entity;
+package be.uantwerpen.minelabs.renderer;
 
-import be.uantwerpen.minelabs.item.LabCoatArmorItem2;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import be.uantwerpen.minelabs.item.LabCoatArmorItem;
+import be.uantwerpen.minelabs.model.LabCoatModel;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
-public class LabCoat2Renderer extends GeoArmorRenderer<LabCoatArmorItem2> {
-    public LabCoat2Renderer() {
-        super(new LabCoat2Model());
+public class LabCoatRenderer extends GeoArmorRenderer<LabCoatArmorItem> {
+    public LabCoatRenderer() {
+        super(new LabCoatModel());
 
         this.headBone = "armorHead";
         this.bodyBone = "armorBody";

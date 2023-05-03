@@ -61,11 +61,11 @@ public class Items {
     public static final Item SAFETY_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.HEAD,
             new FabricItemSettings().group(ItemGroups.MINELABS)), "safety_glasses");
 
-    public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
-            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_coat");
+   /* public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_coat");*/
 
-    public static final Item LAB_COAT2 = register(new LabCoatArmorItem2(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
-            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_coat2");
+    public static final Item LAB_COAT = register(new LabCoatArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_coat");
 
     //TODO ADD PANTS? AND BOOTS ?
 

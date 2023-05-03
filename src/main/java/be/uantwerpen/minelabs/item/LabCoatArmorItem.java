@@ -6,7 +6,6 @@ import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
-import software.bernie.example.registry.ItemRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -19,9 +18,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LabCoatArmorItem2 extends ArmorItem implements IAnimatable {
+public class LabCoatArmorItem extends ArmorItem implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
-    public LabCoatArmorItem2(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+    public LabCoatArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
         super(material, slot, settings);
     }
 
@@ -54,8 +53,7 @@ public class LabCoatArmorItem2 extends ArmorItem implements IAnimatable {
 
         // Make sure the player is wearing all the armor. If they are, continue playing
         // the animation, otherwise stop
-        boolean isWearingAll = armorList.containsAll(Arrays.asList(Items.LAB_COAT2));
-        return isWearingAll ? PlayState.CONTINUE : PlayState.STOP;
+        return armorList.contains(Items.LAB_COAT) ? PlayState.CONTINUE : PlayState.STOP;
     }
 
     // All you need to do here is add your animation controllers to the
