@@ -8,6 +8,9 @@
   "text.minelabs.invalid": "Onvolledige Molecule",
   "text.minelabs.not_implemented": "Molecule zit niet in het spel",
   "text.minelabs.multiple_molecules": "Te veel moleculen",
+  "text.minelabs.active": "Actief",
+  "text.minelabs.inactive": "Inactief",
+  "text.minelabs.toggle_instruction": "Shift Klik met de rechtermuisknop om te wisselen",
 
   "block.minelabs.salt_ore": "Zouterts",
   "block.minelabs.deepslate_salt_ore": "Deepslate Zouterts",
@@ -50,6 +53,7 @@
   "block.minelabs.lab_center": "Labotafel (Midden)",
   "block.minelabs.lab_corner": "Labotafel (Hoek)",
   "block.minelabs.microscope": "Microscoop",
+  "block.minelabs.burner": "Bunsen Brander",
   "block.minelabs.tuberack": "Proefbuisrekje",
   "block.minelabs.erlenmeyer_stand": "Erlenmeyer Stand",
 
@@ -212,5 +216,7 @@
 
   "item.minelabs.lasertool_iron": "Ijzeren Laser Tool",
   "item.minelabs.lasertool_gold": "Gouden Laser Tool",
-  "item.minelabs.lasertool_diamond": "Diamanten Laser Tool"
+  "item.minelabs.lasertool_diamond": "Diamanten Laser Tool",
+  "item.minelabs.magnet": "Magneet",
+  "item.minelabs.pocket_hole": "Miniatuur Zwart Gat"
 }

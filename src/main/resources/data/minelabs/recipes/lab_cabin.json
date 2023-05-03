@@ -1,0 +1,28 @@
+{
+  "group": "scicraft",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ggg",
+    "whw",
+    "www"
+  ],
+  "key": {
+    "g": [
+      {
+        "item": "minecraft:light_blue_terracotta"
+      }
+    ],
+    "h": [
+      {
+        "item": "minecraft:chest"
+      }
+    ],
+    "w": {
+      "item": "minecraft:white_concrete"
+    }
+  },
+  "result": {
+    "item": "minelabs:lab_cabin",
+    "count": 1
+  }
+}

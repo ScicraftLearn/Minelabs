@@ -1,11 +1,19 @@
 package be.uantwerpen.minelabs.event;
 
+import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.dimension.ModDimensions;
+import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
+import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.TypedActionResult;
 
 
 public class ServerModEvents {
@@ -31,6 +39,25 @@ public class ServerModEvents {
                 }
             }
             return ActionResult.PASS;
+        });
+
+        UseItemCallback.EVENT.register((player, world, hand) -> {
+            if (world.isClient || !player.getStackInHand(hand).isOf(net.minecraft.item.Items.FISHING_ROD))
+                return TypedActionResult.pass(player.getStackInHand(hand));
+
+            FishingBobberEntity fishHook = player.fishHook;
+            if (fishHook != null && fishHook.getHookedEntity() instanceof BohrBlueprintEntity entity){
+                ItemStack stack = entity.extractByRod((ServerPlayerEntity) player, fishHook);
+
+                if(!stack.isEmpty()){
+                    // advancement
+                    if (stack.getItem() instanceof AtomItem)
+                        Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.REMOVE_ATOM, true);
+                    else
+                        Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.REMOVE_PARTICLE, true);
+                }
+            }
+            return TypedActionResult.pass(player.getStackInHand(hand));
         });
     }
 }

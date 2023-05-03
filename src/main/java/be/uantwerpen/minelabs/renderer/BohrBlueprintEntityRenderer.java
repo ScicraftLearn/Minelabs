@@ -1,86 +1,122 @@
 package be.uantwerpen.minelabs.renderer;
 
-import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.item.Items;
-import be.uantwerpen.minelabs.util.NucleusState;
-import be.uantwerpen.minelabs.util.NuclidesTable;
-import com.mojang.blaze3d.systems.RenderSystem;
+import be.uantwerpen.minelabs.util.AtomConfiguration;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.math.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static be.uantwerpen.minelabs.util.NuclidesTable.calculateNrOfElectrons;
-import static net.minecraft.client.gui.DrawableHelper.drawCenteredText;
-import static net.minecraft.client.gui.DrawableHelper.drawTexture;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
-public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends EntityRenderer<E> {
-
-    // Atom rendering
+public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEntity> {
     private static final ItemStack PROTON = new ItemStack(Items.PROTON, 1);
     private static final ItemStack NEUTRON = new ItemStack(Items.NEUTRON, 1);
     private static final ItemStack ELECTRON = new ItemStack(Items.ELECTRON, 1);
 
-    private static final List<Vec3f> NUCLEUS_COORDINATES = createIcosahedron();
+    // Multiplier for distance to reduce radius at which entity is rendered. In default settings 64 allows rendering it from 16 blocks.
+    // Higher multiplier means smaller render radius.
+    private static final float RENDER_DISTANCE_MULTIPLIER = 64;
 
-    // the scaling offset we start with, for our icosahedron figure.
-    private float startingOffsetScale = 15f;
+    // radius usable for atom rendering
+    private static final float MAX_RENDER_RADIUS = 0.75f + 11f / 16f - 0.1f;
 
-    // shaking of atom
-    private boolean shakeSwitch = true;
-    // (shaking of atom) used to know when to 'shake'
-    private int switchCounter = 0;
+    private static final float ELECTRON_SCALE = 0.15f;
+    private static final float ELECTRON_FIRST_SHELL_RADIUS = 0.5f;
+    private static final int ELECTRON_SHELLS_AMOUNT = 7;
+    // distance between two shells
+    private static final float ELECTRON_SHELL_RADIUS_OFFSET = (MAX_RENDER_RADIUS - ELECTRON_FIRST_SHELL_RADIUS) / (ELECTRON_SHELLS_AMOUNT - 1);
+    private static final Quaternion[] ELECTRON_SHELL_ROTATIONS = {
+            Vec3f.POSITIVE_X.getDegreesQuaternion(0),
+            Vec3f.POSITIVE_Y.getDegreesQuaternion(90),
+            Vec3f.POSITIVE_X.getDegreesQuaternion(90),
+            Vec3f.POSITIVE_Y.getDegreesQuaternion(45),
+            Vec3f.POSITIVE_X.getDegreesQuaternion(45),
+            Vec3f.POSITIVE_Y.getDegreesQuaternion(135),
+            Vec3f.POSITIVE_X.getDegreesQuaternion(135)
+    };
+    // rotation period in ticks
+    private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
+    // amount of points to use for the electron shell orbit line
+    private static final int ELECTRON_LINE_NUMPOINTS = 32;
+    private static final int ELECTRON_SHELL_LINE_MAX_ALPHA = 150;
+    // until this range the lines are fully visible (no fading)
+    private static final double ELECTRON_SHELL_LINE_MIN_RENDER_RANGE = 4f;
+    // line fades out until alpha zero at this distance
+    private static final double ELECTRON_SHELL_LINE_MAX_RENDER_RANGE = 8f;
 
-    private final ItemRenderer itemRenderer;
+    // instability animation
+    private static final double ELECTRON_INSTABILITY_MIN_PERIOD = 0.8d * 20;
+    private static final double ELECTRON_INSTABILITY_MAX_PERIOD = 0.3d * 20;
+    private static final float ELECTRON_INSTABILITY_MAX_OFFSET = ELECTRON_SHELL_RADIUS_OFFSET * 1.2f;
 
-    private static List<Vec3f> createIcosahedron() {
-        float c = 2f * (float) Math.PI / 5f;
-        List<Vec3f> icosahedron = new ArrayList<>();
-        icosahedron.add(new Vec3f(0, 0, (float) Math.sqrt(5) / 2));
-        for (int i = 0; i < 5; i++)
-            icosahedron.add(new Vec3f((float) Math.cos((i) * c), (float) Math.sin((i) * c), 0.5f));
-        for (int i = 0; i < 5; i++)
-            icosahedron.add(new Vec3f((float) Math.cos((Math.PI / 5) + i * c), (float) Math.sin((Math.PI / 5) + i * c), -0.5f));
-        icosahedron.add(new Vec3f(0, 0, (float) -Math.sqrt(5) / 2));
+    // size of individual particle items
+    private static final float NUCLEUS_SCALE = 0.15f;
 
-        return icosahedron;
+    // for scaling nucleus radius depending on amount of particles
+    private static final float NUCLEUS_MIN_RADIUS = 0.02f;
+    private static final float NUCLEUS_MAX_RADIUS = 0.3f;
+    // distance between layers of nucleus
+//    private static final float NUCLEUS_RADIUS_OFFSET = 0.15f;
+
+    // how many subdivisions are made for the nucleus coordinates. Amount of points is square this number.
+    private static final int NUCLEUS_COORDINATES_STEPS = 8;
+    private static final List<Vec3f> NUCLEUS_COORDINATES = uniformSphericalCoordinates(NUCLEUS_COORDINATES_STEPS);
+
+    private static final int NUCLEUS_MAX_ITEMS_RENDERED = 2 * NUCLEUS_COORDINATES.size();
+    // radius of nucleus gets bigger until this capacity.
+    private static final int NUCLEUS_MAX_CONTENT_FOR_RADIUS = BohrBlueprintEntity.MAX_PROTONS + BohrBlueprintEntity.MAX_NEUTRONS;
+
+    private static final float NUCLEUS_INSTABILITY_MAX_SCALE = 2f;
+    private static final float NUCLEUS_INSTABILITY_PULSE_PERIOD = 1f * 20;
+
+    private static final float NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT = 1f / 1.5f;
+    private static final float NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT = 1f / 4f;
+
+    private static final int NUCLEUS_INSTABILITY_GROUPS = 50;
+
+    /**
+     * Computes uniformly spread out points on a unit sphere by iterating polar coordinates.
+     * Steps define in how many pieces each angle is divided so amount of points is `steps ** 2`.
+     */
+    private static List<Vec3f> uniformSphericalCoordinates(int steps) {
+        List<Vec3f> points = new ArrayList<>();
+
+        float pi2 = (float) (2 * Math.PI);
+        float angle = pi2 / steps;
+        for (float i = 0; i < steps; i++) {
+            float alpha = i * angle;
+            for (float j = 0; j < steps; j++) {
+                float beta = j * angle;
+
+                float x = (float) (Math.sin(alpha) * Math.cos(beta));
+                float y = (float) (Math.sin(alpha) * Math.sin(beta));
+                float z = (float) Math.cos(alpha);
+                points.add(new Vec3f(x, y, z));
+            }
+        }
+
+        Collections.shuffle(points, new Random(42));
+        return points;
     }
 
-    // HUD rendering
-    // range in blocks from where the HUD is rendered
-    public static final int HUD_RENDER_RADIUS = 9;
+    private int[] getElectronShellConfiguration(int nE) {
+        return ELECTRON_SHELL_CAPACITIES[nE];
+    }
 
-    private static final Identifier BARS_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/bohr_bars.png");
-    private static final int BARS_TEXTURE_SIZE = 256;
 
-    // Color for rendering the text
-    private static final int WHITE = ColorHelper.Argb.getArgb(255, 255, 255, 255);
-    private static final int YELLOW = ColorHelper.Argb.getArgb(255, 240, 225, 45);
-    private static final int RED = ColorHelper.Argb.getArgb(255, 227, 23, 98);
+    private final ItemRenderer itemRenderer;
 
     public BohrBlueprintEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
@@ -88,462 +124,414 @@ public class BohrBlueprintEntityRenderer<E extends BohrBlueprintEntity> extends 
     }
 
     @Override
-    public Identifier getTexture(E entity) {
+    public Identifier getTexture(BohrBlueprintEntity entity) {
         return PlayerScreenHandler.BLOCK_ATLAS_TEXTURE;
     }
 
     @Override
-    public void render(E entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        int nP = entity.getProtons();
-        int nN = entity.getNeutrons();
-        int nE = entity.getElectrons();
+    public Vec3d getPositionOffset(BohrBlueprintEntity entity, float tickDelta) {
+        return new Vec3d(0, entity.getHeight() / 2, 0);
+    }
+
+    @Override
+    protected int getBlockLight(BohrBlueprintEntity entity, BlockPos pos) {
+        return 15;      // render as if always fully lit
+    }
+
+    @Override
+    protected int getSkyLight(BohrBlueprintEntity entity, BlockPos pos) {
+        return 15;      // render as if always fully lit
+    }
+
+    @Override
+    public boolean shouldRender(BohrBlueprintEntity entity, Frustum frustum, double x, double y, double z) {
+        // act like it is further away to reduce rendering range and still take renderDistanceMultiplier setting into account.
+        return super.shouldRender(entity, frustum, x, y, z) && entity.shouldRender(entity.getPos().squaredDistanceTo(x, y, z) * RENDER_DISTANCE_MULTIPLIER);
+    }
+
+    @Override
+    public void render(BohrBlueprintEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        // Should someone use data set to go above the limit of the entity, this will ensure the rendering does not crash.
+        AtomConfiguration atomConfig = entity.getAtomConfig();
+        int nP = Math.min(atomConfig.getProtons(), BohrBlueprintEntity.MAX_PROTONS);
+        int nN = Math.min(atomConfig.getNeutrons(), BohrBlueprintEntity.MAX_NEUTRONS);
+        int nE = Math.min(atomConfig.getElectrons(), BohrBlueprintEntity.MAX_ELECTRONS);
+
+        float electronInstability = atomConfig.getElectronInstability();
+        float nucleusInstability = atomConfig.getNucleusInstability();
 
         float time = entity.age + tickDelta;
+        double dToCamera = Math.sqrt(dispatcher.getSquaredDistanceToCamera(entity));
 
-        boolean stable = entity.isStable();
+        MinecraftClient.getInstance().getProfiler().push("bohr");
 
-        // TODO: move to entity
-        float shakeFactor = stable ? 0f : 0.02f;
+//        renderResultingAtom(tickDelta, matrices, entity, light, vertexConsumers);
 
         matrices.push();
 
-        // center and scale
-        matrices.translate(0, 0.75f, 0f);
-        matrices.scale(1.5f, 1.5f, 1.5f);
+        MinecraftClient.getInstance().getProfiler().push("nucleus");
+        renderNucleus(nP, nN, nucleusInstability, time, matrices, vertexConsumers, light);
+        MinecraftClient.getInstance().getProfiler().swap("electrons");
+        renderElectrons(nE, electronInstability, dToCamera, time, matrices, vertexConsumers, light);
+        MinecraftClient.getInstance().getProfiler().pop();
 
-        transformToFacePlayer(entity, matrices);
-        makeNucleus(nP, nN, stable, shakeFactor, matrices, light, vertexConsumers);
-        makeElectrons(nE, matrices, light, vertexConsumers, time);
+        matrices.pop();
+        MinecraftClient.getInstance().getProfiler().pop();
+    }
+
+    private void renderElectrons(int nE, float instability, double dToCamera, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        // Electrons are rendered in at most 7 different shells with chosen yaw, pitch and roll.
+        // Within an orbit the electrons are equally spaced from each other.
+
+        int[] electronShellConfiguration = getElectronShellConfiguration(nE);
+
+        float radius = ELECTRON_FIRST_SHELL_RADIUS;
+
+        for (int i = 0; i < electronShellConfiguration.length; i++) {
+            int electronsInShell = electronShellConfiguration[i];
+            Quaternion rotation = ELECTRON_SHELL_ROTATIONS[i];
+
+            // don't update normals for rendering electron items (lighting effect)
+            matrices.push();
+            matrices.multiplyPositionMatrix(new Matrix4f(rotation));
+            renderElectronShellElectrons(electronsInShell, radius, instability, time, matrices, vertexConsumers, light);
+            matrices.pop();
+
+            // do updated normals for rendering line
+            matrices.push();
+            matrices.multiply(rotation);
+            renderElectronShellLine(radius, dToCamera, matrices, vertexConsumers);
+            matrices.pop();
+
+            radius += ELECTRON_SHELL_RADIUS_OFFSET;
+        }
+    }
+
+    /**
+     * Render an electron shell in the XY-plane with specified radius and number of electrons.
+     */
+    private void renderElectronShellElectrons(int nE, float radius, float instability, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        // rotation animation of electrons on shell
+        float angle = (time % ELECTRON_ROTATION_PERIOD) / ELECTRON_ROTATION_PERIOD * 360;
+
+        matrices.push();
+        // don't update normals. This allows the lighting to be computed as if the outside is always lit
+        matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angle)));
+
+        // render electron at top of orbit then rotate and repeat
+        float angleBetweenElectrons = 360f / nE;
+        for (int e = 0; e < nE; e++) {
+            Vec3f pos = new Vec3f(0, radius, 0);
+            float percentOfOrbit = (float) e / nE;
+            renderElectron(matrices, pos, instability, percentOfOrbit, time, vertexConsumers, light);
+
+            // don't update normals
+            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenElectrons)));
+
+        }
+        matrices.pop();
+    }
+
+    private void renderElectronShellLine(float radius, double dToCamera, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
+        if (dToCamera > ELECTRON_SHELL_LINE_MAX_RENDER_RANGE)
+            return;
+
+        double delta = (dToCamera - ELECTRON_SHELL_LINE_MIN_RENDER_RANGE) / (ELECTRON_SHELL_LINE_MAX_RENDER_RANGE - ELECTRON_SHELL_LINE_MIN_RENDER_RANGE);
+        int alpha = (int) Math.floor(MathHelper.clampedLerp(ELECTRON_SHELL_LINE_MAX_ALPHA, 0, delta));
+
+        float angleBetweenLinePoints = 360f / ELECTRON_LINE_NUMPOINTS;
+
+        // compute normal of line which should point towards next point
+        // other angle of triangle formed by origin and line
+        double beta = Math.toRadians(180 - angleBetweenLinePoints) / 2f;
+        float normalX = (float) -Math.sin(beta);
+        float normalY = (float) -Math.cos(beta);
+
+        VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLines());
+        matrices.push();
+        MatrixStack.Entry matrixEntry = matrices.peek();
+        for (int e = 0; e < ELECTRON_LINE_NUMPOINTS; e++) {
+            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0)
+                    .color(0, 0, 0, alpha)
+                    .normal(matrixEntry.getNormalMatrix(), normalX, normalY, 0)
+                    .next();
+
+            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints));
+
+            lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0)
+                    .color(0, 0, 0, alpha)
+                    .normal(matrixEntry.getNormalMatrix(), -normalX, normalY, 0)
+                    .next();
+        }
 
         matrices.pop();
     }
 
-    // ################################
-    // #    Nucleus and Electrons     #
-    // ################################
-
-    /**
-     * Set up the matrices to render everything facing the player.
-     */
-    private void transformToFacePlayer(E entity, MatrixStack matrices) {
-        // TODO: fix weird rotation bug when walking full circle around the bohr plate.
-
-        // for facing the player
-        PlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null) return;
-
-        Vec3f entityToPlayer = new Vec3f(entity.getPos().add(0, -1.0, 0).relativize(player.getPos()));
-
-        if (entityToPlayer.equals(Vec3f.ZERO)) {
-            // default direction should be north iso east.
-            // positive x is east, so we want to rotate -90 degrees along the y-axis.
-            matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
-        } else {
-            /*
-             * This algorithm determines the normal vector of the plane described by the original orientation of the arrow (v) and the target direction (entityToPlayer).
-             * It then rotates around this vector with the angle theta between the two vectors to point the arrow in the direction of the entityToPlayer.
-             */
-            // By default, the arrow points in positive x (EAST)
-            Vec3f v = new Vec3f(1, 0, 0);
-
-            // Compute theta with cosine formula.
-            double theta = Math.acos(v.dot(entityToPlayer) / Math.sqrt(Math.pow(entityToPlayer.getX(), 2) + Math.pow(entityToPlayer.getY(), 2) + Math.pow(entityToPlayer.getZ(), 2)));
-
-            if (theta == 0 || theta == Math.PI) {
-                // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
-                // Instead, we set in to one of the infinite valid normal vectors: positive Y.
-                v = Direction.UP.getUnitVector();
-            } else {
-                v.cross(entityToPlayer);
-                v.normalize();
-            }
-            matrices.multiply(v.getRadialQuaternion((float) theta));
-        }
-        Vec3f y_rotation = new Vec3f(0, 1, 0);
-        matrices.multiply(y_rotation.getDegreesQuaternion(-90));
-    }
-
-    /**
-     * Handles the scaling and placement for the nucleus (protons and neutrons).
-     * Data members used: startingOffsetScale, shakeSwitch, icosahedron, neutron_stack, proton_stack, switchCounter, switchCounterModulo
-     */
-    public void makeNucleus(int protonCount, int neutronCount, boolean stable, float shake, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider) {
-        int mass = protonCount + neutronCount;
-
-        if (mass >= 12) {
-            startingOffsetScale = 11f;
-        }
-        if (mass >= 120) {
-            startingOffsetScale = 12f;
-        }
-        if (mass >= 180) {
-            startingOffsetScale = 13f;
-        }
-        if (mass >= 240) {
-            startingOffsetScale = 15f;
-        }
-
-        // variables for placing the particles (they get decreased)
-        int nrOfprotonsLeft = protonCount;
-        int nrOfneutronsLeft = neutronCount;
-
-        boolean isProtonNext = true; // true if a proton entity needs to be placed in the core next, false = neutron next.
-        boolean isProtonAndNeutronLeft = true; // true if both protons and neutrons still need to be placed
-        int particlesCounter = 0; // used to count to 12 to restart (increase) the icosahedron scaleOffset.
-
-        // each time we reach a multiple of 12, this value gets increased and used
-        // in the function to calculate the total scale factor for our current icosahedron figure.
-        float scaleOffset = 0f;
-        int dec_index = 0; // variable to stay inside the list indexes of the icosahedron points.
-
-        if (!stable) {
-            if (shakeSwitch) {
-                shakeSwitch = false;
-                shake = -shake;
-            } else {
-                shakeSwitch = true;
-            }
-            switchCounter++;
-        }
-
-        for (int i = 0; i < mass; i++) {
-
-            float scaleFactor = 2.5f; // lower value => closer to core origin
-
-            if (mass > 50) {
-                scaleFactor = 1.75f;
-            }
-            if (particlesCounter == 12) {
-                particlesCounter = 0; // gets increased with one at end of for loop.
-                if (mass < 36) {
-                    scaleOffset += 2.5f;
-                } else {
-                    scaleOffset += 0.75f;
-                }
-                dec_index += 12;
-            }
-
-            // calculating the x,y,z offsets to place the protons/neutrons on the icosahedron outer points.
-            float totalScale = startingOffsetScale - scaleOffset + scaleOffset / scaleFactor;
-            float offset_x = NUCLEUS_COORDINATES.get(i - dec_index).getX() / totalScale;
-            float offset_y = NUCLEUS_COORDINATES.get(i - dec_index).getY() / totalScale;
-            float offset_z = NUCLEUS_COORDINATES.get(i - dec_index).getZ() / totalScale;
-
-            if (dec_index > 12) {
-                float rotateXAngle = (float) Math.PI * (0.125f * ((dec_index / 12) % 4));
-                ArrayList<Float> new_y_z = rotateAroundXAxis(offset_y, offset_z, rotateXAngle);
-                offset_y = new_y_z.get(0);
-                offset_z = new_y_z.get(1);
-            }
-
-            matrices.translate(offset_x, offset_y + shake, offset_z);
-            matrices.scale(0.2f, 0.2f, 0.2f);
-
-            if (nrOfprotonsLeft == 0) {
-                itemRenderer.renderItem(NEUTRON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-                nrOfneutronsLeft -= 1;
-                isProtonAndNeutronLeft = false;
-            } else if (nrOfneutronsLeft == 0) {
-                itemRenderer.renderItem(PROTON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-                nrOfprotonsLeft -= 1;
-                isProtonAndNeutronLeft = false;
-            }
-            if (isProtonAndNeutronLeft) {
-                if (isProtonNext) {
-                    itemRenderer.renderItem(PROTON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-                    isProtonNext = false;
-                    nrOfprotonsLeft -= 1;
-                } else {
-                    itemRenderer.renderItem(NEUTRON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-                    isProtonNext = true;
-                    nrOfneutronsLeft -= 1;
-                }
-            }
-
-            matrices.scale(5, 5, 5);
-            matrices.translate(-offset_x, -offset_y - shake, -offset_z);
-
-            particlesCounter++;
-        }
-        if (switchCounter >= 100) {
-            switchCounter = 0;
-        }
-        switchCounter++;
-
-
-//		if (isImploding) {
-//			implodeCounter++;
-//		}
-    }
-
-    /**
-     * Handles the "rendering" of the electrons shells themselves.
-     */
-    public void makeElectronshells() {
-        // may be implemented and used, but it looks fine with how it is now.
-    }
-
-    /**
-     * Handles the scaling and spinning of the electrons.
-     *
-     * @param electronCount          : amount of electrons in the borhblock
-     * @param matrices               : matrices
-     * @param lightAbove             : used in renderItem function to avoid all blackness in the rendering above the block.
-     * @param vertexConsumerProvider : vertexConsumerProvider
-     * @param time                   :
-     */
-    public void makeElectrons(int electronCount, MatrixStack matrices, int lightAbove, VertexConsumerProvider vertexConsumerProvider, float time) {
-
-        // for the electron-shell distribution, check the NuclidesTable class static declaration/definition.
-
-        int currentShell = 1;
-        int electronCounter = 0;
-        for (int el = 0; el < electronCount; el++) {
-
-            int currentNrOfElectrons = calculateNrOfElectrons(currentShell);
-            if (electronCounter == currentNrOfElectrons) {
-                currentShell++;
-                electronCounter = 0;
-            }
-
-            // evenly distribution of electrons around core. Used for the electron point calculation.
-            int electronsOnCurShell = calcPlaceableElectronsOnShell(electronCount, currentShell, currentNrOfElectrons);
-
-            ArrayList<Float> point = calculateElectronPoint(currentShell, time, electronsOnCurShell, electronCounter);
-            float x = point.get(0);
-            float y = point.get(1);
-            float z = point.get(2);
-
-            matrices.translate(x, y, z);
-            matrices.scale(0.1f, 0.1f, 0.1f);
-
-            itemRenderer.renderItem(ELECTRON, ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, 0);
-
-            matrices.scale(10, 10, 10);
-            matrices.translate(-x, -y, -z);
-
-            electronCounter++;
-        }
-    }
-
-    /**
-     * rotates y and z around x-axis
-     *
-     * @param y     : y-coordinate
-     * @param z     : z-coordinate
-     * @param angle : rotate angle
-     * @return : array of two elements: new y and z
-     */
-    public ArrayList<Float> rotateAroundXAxis(float y, float z, float angle) {
-        y = y * (float) Math.cos(angle) - z * (float) Math.sin(angle);
-        z = z * (float) Math.cos(angle) + y * (float) Math.sin(angle);
-        return new ArrayList<>(Arrays.asList(y, z));
-    }
-
-    /**
-     * rotates x and z around x-axis
-     *
-     * @param x     : x-coordinate
-     * @param z     : z-coordinate
-     * @param angle : rotate angle
-     * @return : array of two elements: new x and z
-     */
-    public ArrayList<Float> rotateAroundYAxis(float x, float z, float angle) {
-        x = x * (float) Math.cos(angle) - z * (float) Math.sin(angle);
-        z = z * (float) Math.cos(angle) + x * (float) Math.sin(angle);
-        return new ArrayList<>(Arrays.asList(x, z));
-    }
-
-    /**
-     * Calculates current total amount of electrons to be placed (outermost shell)
-     *
-     * @param electronCount        : electron counter
-     * @param currentShell         : integer value for which shell we are on (starts with 1)
-     * @param currentNrOfElectrons : amount of electrons on the current shell
-     * @return :
-     */
-    public int calcPlaceableElectronsOnShell(int electronCount, int currentShell, int currentNrOfElectrons) {
-        int cur_e = electronCount;
-        for (int i = 1; i < currentShell; i++) {
-            cur_e -= calculateNrOfElectrons(i);
-        }
-        return Math.min(cur_e, currentNrOfElectrons);
-    }
-
-    /**
-     * Calculates the x,y and z coordinate for the electron
-     *
-     * @param currentShell        : integer value for which shell we are on (starts with 1)
-     * @param time                :
-     * @param electronsOnCurShell : amount of electrons on the current shell
-     * @param electronCounter     : electron counter
-     * @return : array of three elements [x, y, z] for our point
-     */
-    public ArrayList<Float> calculateElectronPoint(int currentShell, float time, int electronsOnCurShell, int electronCounter) {
-
-        // multiplier for how fast the electrons will spin around, the greater this value, the slower it will be.
-        float speedMultiplier = 40 + 20 * (currentShell - 1);
-        float radiusMultiplier = 0.1f * (currentShell - 1); // multiplier for how much further each new shell is from the nucleus
-
-        float speed = (float) (2 * Math.PI) / speedMultiplier; // how fast the electrons rotate
-        float radius = 0.4f + radiusMultiplier; // distance from core, used to calculate the points
-        float angle = speed * time + (float) ((2 * Math.PI / (electronsOnCurShell))) * (electronCounter);
-
-        float x = (float) Math.cos(angle) * radius;
-        float y = (float) Math.sin(angle) * radius;
-        float z = (float) Math.sin(angle) * radius * Math.min(currentShell - 1, 1); // 0 on first shell, z on every other shell.
-
-        if (currentShell != 1) {
-            float rotateAngle = (float) Math.PI / (2f * (currentShell - 1));
-            if (currentShell > 5) {
-                rotateAngle = (float) Math.PI / (8f * (currentShell - 1));
-            }
-            ArrayList<Float> new_y_z = rotateAroundXAxis(y, z, rotateAngle);
-            y = new_y_z.get(0);
-            z = new_y_z.get(1);
-        }
-
-        return new ArrayList<>(Arrays.asList(x, y, z));
-    }
-
-
-    // ##############
-    // #    HUD     #
-    // ##############
-
-    /**
-     * renders the text of the bohrplate status. Gets called from HUD render event callback.
-     */
-    public static void renderHud(MatrixStack matrixStack, BohrBlueprintEntity entity) {
-        int nP = entity.getProtons();
-        int nN = entity.getNeutrons();
-        int nE = entity.getElectrons();
-
-        float integrity = entity.getIntegrity();
-        NucleusState nucleusState = entity.getNucleusState();
-        renderHud(matrixStack, nP, nE, nN, integrity, nucleusState);
-    }
-
-    private static void renderHud(MatrixStack matrixStack, int nP, int nE, int nN, float integrity, @Nullable NucleusState nucleusState) {
-        int y = 12;
-        int x = MinecraftClient.getInstance().getWindow().getScaledWidth() / 2 - 91;
-
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, BARS_TEXTURE);
-
-        renderBars(matrixStack, nP, nE, nN, x, y, nucleusState);
-
-        if (nucleusState == null)
+    private void renderNucleus(int nP, int nN, float instability, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        // nothing to render (prevent division by zero)
+        if (nP + nN == 0)
             return;
 
-        if (nP > 0) {
-            String atomName = "";
-            String symbol = "_";
-            Atom a = Atom.getByNumber(nP);
-            if (a!=null){
-                atomName = Text.translatable(a.getItem().getTranslationKey()).getString();
-                symbol = a.getSymbol();
-            } else {
-                // TODO ideally not needed when all atoms are implemented
-                // This should return symbol based on nP, regardless if it is in the nuclides file
-                symbol = nucleusState.getSymbol();
-            }
+        // place nucleus particles in predetermined coordinates
+        Iterator<Vec3f> posIterator = NUCLEUS_COORDINATES.iterator();
 
-            String ionicCharge = NuclidesTable.calculateIonicCharge(nP, nE);
 
-            int Ecolor = WHITE;
-            int Zcolor = WHITE;
+        // we keep ratio of protons rendered as close to requested as possible
+        float pRatio = (float) nP / (float) (nP + nN);
+        float pRatioRendered = nP > nN ? 0 : 1;     // initializer determines which to render first
 
-            if (nP != nE) {
-                Ecolor = YELLOW;
-                atomName += " ION";
-            }
-            if (Math.abs(nP - nE) > 5) {
-                Ecolor = RED;
-                }
-            if (!nucleusState.isStable()) {
-                Zcolor = RED;
-            }
+        // special case to handle zero.
+        if (nP == 0)
+            pRatio = -1;
+        else if (nN == 0)
+            pRatio = 2;
 
-            /*
-             * Rendering of text:
-             */
-            drawTexture(matrixStack, x-45, y-6, 0, 63, 34, 34, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+        int nPRendered = 0;
+        int nNRendered = 0;
+        int amountToRender = Math.min(NUCLEUS_MAX_ITEMS_RENDERED, nP + nN);
+        float volumePercent = (float) (nP + nN) / NUCLEUS_MAX_CONTENT_FOR_RADIUS;
+        float radiusPercent = (float) Math.pow(3 * volumePercent / (4 * Math.PI), 1f/3);    // based on volume of sphere
+        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, radiusPercent);
 
-            TextRenderer TR = MinecraftClient.getInstance().textRenderer;
-            matrixStack.push();
-            matrixStack.scale(2, 2, 2);
-            int width = TR.getWidth(symbol);
-            TR.draw(matrixStack, symbol, (x - 32 - width / 2) / 2, (y+4) / 2, WHITE);
-            TR.draw(matrixStack, (int)integrity + "%", (x - 96) / 2, (y+4) / 2, WHITE);
-            matrixStack.pop();
-            //if (!neutronHelp.isEmpty() || !electronHelp.isEmpty()) {
-            //  MinecraftClient.getInstance().textRenderer.draw(matrixStack, helpInfo, 10, 20, RED_COLOR);
-            //}
-            TR.draw(matrixStack, Integer.toString(nP), x - 43, y +19, WHITE);
-            TR.draw(matrixStack, Integer.toString(nP + nN), x - 43, y - 4, Zcolor);
-            if(!ionicCharge.equals("0")) {
-                int width_e = TR.getWidth(ionicCharge);
-                TR.draw(matrixStack, ionicCharge, x-11 - width_e, y-4, Ecolor);
+        matrices.push();
+        while (nPRendered + nNRendered < amountToRender) {
+            if (!posIterator.hasNext()) {
+                // when we run out of coordinates, start new iteration with decreased radius
+                nucleusRadius /= 2;
+                posIterator = NUCLEUS_COORDINATES.iterator();
             }
-            if (nucleusState.isStable() && Math.abs(nP - nE) <= 5) {
-                TR.draw(matrixStack, atomName, x + 192, y + 7, Ecolor);
-            }
+            Vec3f pos = posIterator.next().copy();
+            pos.scale(nucleusRadius);
+
+            ItemStack type = pRatio > pRatioRendered ? PROTON : NEUTRON;
+            renderNucleusParticle(type, pos, instability, nNRendered + nPRendered, amountToRender, time, matrices, vertexConsumers, light);
+
+            if (type == PROTON)
+                nPRendered += 1;
+            else
+                nNRendered += 1;
+            pRatioRendered = (float) nPRendered / (float) (nPRendered + nNRendered);
+        }
+        matrices.pop();
+    }
+
+    private Vec3f getElectronInstabilityOffset(float instability, float percentOfOrbit, float time) {
+        // if you don't want all electrons to be in sync
+//        time = time + percentOfOrbit * ELECTRON_ROTATION_PERIOD;
+
+        double period = MathHelper.lerp(instability, ELECTRON_INSTABILITY_MIN_PERIOD, ELECTRON_INSTABILITY_MAX_PERIOD);
+        float offset = instability * ELECTRON_INSTABILITY_MAX_OFFSET;
+        float yOffset = (float) (Math.sin(Math.toRadians(time / period * 360)) + 1) / 2 * offset;
+        return new Vec3f(0, yOffset, 0);
+    }
+
+    private void renderElectron(MatrixStack matrices, Vec3f pos, float instability, float percentOfOrbit, float time, VertexConsumerProvider vertexConsumers, int light) {
+        if (instability > 0)
+            pos.add(getElectronInstabilityOffset(instability, percentOfOrbit, time));
+
+        matrices.push();
+        matrices.translate(pos.getX(), pos.getY(), pos.getZ());
+        // because we use rotation and the offset is always in the y direction, this faces them outwards
+        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+        matrices.scale(ELECTRON_SCALE, ELECTRON_SCALE, ELECTRON_SCALE);
+        renderItem(ELECTRON, matrices, vertexConsumers, light);
+        matrices.pop();
+    }
+
+    /**
+     * Evaluate pulse function with long tail in progress [0, 1].
+     * pulsePercent is percent of function that is pulse. Rest is tail.
+     */
+    private float getPulseWithTail(float progress, float pulsePercent) {
+        if (progress <= pulsePercent) {
+            // local progress to simulate pulse
+            progress = progress / pulsePercent;
+            return (1 + (float) Math.cos(progress * 2 * Math.PI + Math.PI)) / 2;
+        } else {
+            return 0f;
         }
     }
 
+    private float getNuclideInstabilityScale(float instability, int index, int total, float time) {
+        float pulsePercent = MathHelper.lerp(instability, NUCLEUS_INSTABILITY_MAX_PULSE_PERCENT, NUCLEUS_INSTABILITY_MIN_PULSE_PERCENT);
 
-    private static void renderBars(MatrixStack matrixStack, int nP, int nE, int nN, int x, int y, NucleusState nucleusState) {
-        int n = Math.max(nP, Math.max(nE, nN));
-        int scale = n > 39 ? 176 : n > 9 ? 40 : 10;
+        // This keeps width of pulse the same (independent of instability)
+        float period = NUCLEUS_INSTABILITY_PULSE_PERIOD / pulsePercent;
+        float progress = (time % period) / period;
 
-        drawTexture(matrixStack, x, y, 0, 0, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-        drawTexture(matrixStack, x, y + 8, 0, 10, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-        drawTexture(matrixStack, x, y + 16, 0, 20, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+        // group specific progress
+        int groups = Math.min(total, NUCLEUS_INSTABILITY_GROUPS);
+        float groupOffset = (float) (index % groups) / groups;
+        progress = (progress + groupOffset) % 1;
 
-        int ratio_p = nP * 182 / scale;
-        int ratio_e = nE * 182 / scale;
-        int ratio_n = nN * 182 / scale;
+        float minScale = 1;
+        float maxScale = instability * NUCLEUS_INSTABILITY_MAX_SCALE;
+        float value = getPulseWithTail(progress, pulsePercent);
+        float scale = MathHelper.lerp(value, minScale, maxScale);
 
-        drawTexture(matrixStack, x, y, 0, 5, ratio_p, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-        drawTexture(matrixStack, x, y + 8, 0, 15, ratio_e, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-        drawTexture(matrixStack, x, y + 16, 0, 25, ratio_n, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+        return scale;
+    }
 
-        if (scale != 176) {
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            int s;
-            if (scale == 10) {
-                s = 45;
-            } else {
-                s = 55;
-            }
-            drawTexture(matrixStack, x, y, 0, s, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-            drawTexture(matrixStack, x, y + 8, 0, s, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-            drawTexture(matrixStack, x, y + 16, 0, s, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+    private void renderNucleusParticle(ItemStack type, Vec3f pos, float instability, int index, int total, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        if (instability > 0)
+            pos.scale(getNuclideInstabilityScale(instability, index, total, time));
 
-            RenderSystem.disableBlend();
+        matrices.push();
+        matrices.translate(pos.getX(), pos.getY(), pos.getZ());
+        matrices.scale(NUCLEUS_SCALE, NUCLEUS_SCALE, NUCLEUS_SCALE);
 
-        }
-        if (nP > 0) {
-            if (Math.abs(nP - nE) > 5) {
-                drawTexture(matrixStack, x, y + 8, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-            }
-            if (nucleusState==null|| !nucleusState.isStable()) {
-                drawTexture(matrixStack, x, y + 16, 0, 33, 182, 5, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
-            }
-        }
+        // have normals face sky
+        matrices.peek().getNormalMatrix().multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+
+        // have everything facing the camera orientation
+        matrices.multiplyPositionMatrix(new Matrix4f(dispatcher.getRotation()));
+
+        renderItem(type, matrices, vertexConsumers, light);
+        matrices.pop();
+    }
+
+    private void renderItem(ItemStack stack, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+        MinecraftClient.getInstance().getProfiler().push("item renderer");
+        itemRenderer.renderItem(stack, ModelTransformation.Mode.NONE, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
+        MinecraftClient.getInstance().getProfiler().pop();
+    }
+
+    private void renderResultingAtom(float tickDelta, MatrixStack matrixStack, BohrBlueprintEntity entity, int light, VertexConsumerProvider vertexConsumers) {
+        ItemStack atomStack = entity.getCraftableAtom();
+        if (atomStack.isEmpty()) return;
+
         matrixStack.push();
-        matrixStack.scale(0.5f,0.5f,0.5f);
-        TextRenderer TR = MinecraftClient.getInstance().textRenderer;
-        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nP)), (x+ratio_p)*2, y*2+1, WHITE);
-        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nE)), (x+ratio_e)*2, (y+8)*2+1, WHITE);
-        drawCenteredText(matrixStack, TR, Text.of(Integer.toString(nN)), (x+ratio_n)*2, (y+16)*2+1, WHITE);
+        matrixStack.translate(0, 5f / 16 - 1 - getPositionOffset(entity, tickDelta).getY(), 0.25);
+        matrixStack.scale(2, 0.5f, 2);
+        matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
 
+        itemRenderer.renderItem(atomStack, ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumers, 0);
         matrixStack.pop();
-
-        RenderSystem.setShaderTexture(0, BARS_TEXTURE);
     }
+
+
+    // Maps the number of electrons to the correct shell configuration by index.
+    // Placed at the end of the file for better readability.
+    private static final int[][] ELECTRON_SHELL_CAPACITIES = {
+            {},
+            {1},
+            {2},
+            {2, 1},
+            {2, 2},
+            {2, 3},
+            {2, 4},
+            {2, 5},
+            {2, 6},
+            {2, 7},
+            {2, 8},
+            {2, 8, 1},
+            {2, 8, 2},
+            {2, 8, 3},
+            {2, 8, 4},
+            {2, 8, 5},
+            {2, 8, 6},
+            {2, 8, 7},
+            {2, 8, 8},
+            {2, 8, 8, 1},
+            {2, 8, 8, 2},
+            {2, 8, 9, 2},
+            {2, 8, 10, 2},
+            {2, 8, 11, 2},
+            {2, 8, 13, 1},
+            {2, 8, 13, 2},
+            {2, 8, 14, 2},
+            {2, 8, 15, 2},
+            {2, 8, 16, 2},
+            {2, 8, 18, 1},
+            {2, 8, 18, 2},
+            {2, 8, 18, 3},
+            {2, 8, 18, 4},
+            {2, 8, 18, 5},
+            {2, 8, 18, 6},
+            {2, 8, 18, 7},
+            {2, 8, 18, 8},
+            {2, 8, 18, 8, 1},
+            {2, 8, 18, 8, 2},
+            {2, 8, 18, 9, 2},
+            {2, 8, 18, 10, 2},
+            {2, 8, 18, 12, 1},
+            {2, 8, 18, 13, 1},
+            {2, 8, 18, 13, 2},
+            {2, 8, 18, 15, 1},
+            {2, 8, 18, 16, 1},
+            {2, 8, 18, 18},
+            {2, 8, 18, 18, 1},
+            {2, 8, 18, 18, 2},
+            {2, 8, 18, 18, 3},
+            {2, 8, 18, 18, 4},
+            {2, 8, 18, 18, 5},
+            {2, 8, 18, 18, 6},
+            {2, 8, 18, 18, 7},
+            {2, 8, 18, 18, 8},
+            {2, 8, 18, 18, 8, 1},
+            {2, 8, 18, 18, 8, 2},
+            {2, 8, 18, 18, 9, 2},
+            {2, 8, 18, 19, 9, 2},
+            {2, 8, 18, 21, 8, 2},
+            {2, 8, 18, 22, 8, 2},
+            {2, 8, 18, 23, 8, 2},
+            {2, 8, 18, 24, 8, 2},
+            {2, 8, 18, 25, 8, 2},
+            {2, 8, 18, 25, 9, 2},
+            {2, 8, 18, 27, 8, 2},
+            {2, 8, 18, 28, 8, 2},
+            {2, 8, 18, 29, 8, 2},
+            {2, 8, 18, 30, 8, 2},
+            {2, 8, 18, 31, 8, 2},
+            {2, 8, 18, 32, 8, 2},
+            {2, 8, 18, 32, 9, 2},
+            {2, 8, 18, 32, 10, 2},
+            {2, 8, 18, 32, 11, 2},
+            {2, 8, 18, 32, 12, 2},
+            {2, 8, 18, 32, 13, 2},
+            {2, 8, 18, 32, 14, 2},
+            {2, 8, 18, 32, 15, 2},
+            {2, 8, 18, 32, 17, 1},
+            {2, 8, 18, 32, 18, 1},
+            {2, 8, 18, 32, 18, 2},
+            {2, 8, 18, 32, 18, 3},
+            {2, 8, 18, 32, 18, 4},
+            {2, 8, 18, 32, 18, 5},
+            {2, 8, 18, 32, 18, 6},
+            {2, 8, 18, 32, 18, 7},
+            {2, 8, 18, 32, 18, 8},
+            {2, 8, 18, 32, 18, 8, 1},
+            {2, 8, 18, 32, 18, 8, 2},
+            {2, 8, 18, 32, 18, 9, 2},
+            {2, 8, 18, 32, 18, 10, 2},
+            {2, 8, 18, 32, 20, 9, 2},
+            {2, 8, 18, 32, 21, 9, 2},
+            {2, 8, 18, 32, 22, 9, 2},
+            {2, 8, 18, 32, 24, 8, 2},
+            {2, 8, 18, 32, 25, 8, 2},
+            {2, 8, 18, 32, 25, 9, 2},
+            {2, 8, 18, 32, 27, 8, 2},
+            {2, 8, 18, 32, 28, 8, 2},
+            {2, 8, 18, 32, 29, 8, 2},
+            {2, 8, 18, 32, 30, 8, 2},
+            {2, 8, 18, 32, 31, 8, 2},
+            {2, 8, 18, 32, 32, 8, 2},
+            {2, 8, 18, 32, 32, 8, 3},
+            {2, 8, 18, 32, 32, 10, 2},
+            {2, 8, 18, 32, 32, 11, 2},
+            {2, 8, 18, 32, 32, 12, 2},
+            {2, 8, 18, 32, 32, 13, 2},
+            {2, 8, 18, 32, 32, 14, 2},
+            {2, 8, 18, 32, 32, 15, 2},
+            {2, 8, 18, 32, 32, 16, 2},
+            {2, 8, 18, 32, 32, 17, 2},
+            {2, 8, 18, 32, 32, 18, 2},
+            {2, 8, 18, 32, 32, 18, 3},
+            {2, 8, 18, 32, 32, 18, 4},
+            {2, 8, 18, 32, 32, 18, 5},
+            {2, 8, 18, 32, 32, 18, 6},
+            {2, 8, 18, 32, 32, 18, 7},
+            {2, 8, 18, 32, 32, 18, 8}
+    };
 
 }

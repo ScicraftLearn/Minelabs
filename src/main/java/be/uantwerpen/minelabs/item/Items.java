@@ -8,15 +8,12 @@ import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.potion.GasPotion;
 import be.uantwerpen.minelabs.potion.Molecule;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Items {
@@ -73,19 +70,19 @@ public class Items {
     //TODO ADD PANTS? AND BOOTS ?
 
     public static final Item LAB_COUNTER = register(new BlockItem(Blocks.LAB_CABIN,
-            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_cabin");
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_cabin");
 
     public static final Item LAB_DRAWER = register(new BlockItem(Blocks.LAB_DRAWER,
-            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_drawer");
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_drawer");
 
     public static final Item LAB_SINK = register(new BlockItem(Blocks.LAB_SINK,
-            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_sink");
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_sink");
 
     public static final Item LAB_CENTER = register(new BlockItem(Blocks.LAB_CENTER,
-            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_center");
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_center");
 
     public static final Item LAB_CORNER = register(new BlockItem(Blocks.LAB_CORNER,
-            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(64)), "lab_corner");
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "lab_corner");
 
     public static final Item MICROSCOPE = register(new BlockItem(Blocks.MICROSCOPE,
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "microscope");
@@ -98,6 +95,14 @@ public class Items {
     public static final Item BIG_LENS = register(new Item(
             new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "big_lens");
 
+    public static final Item BURNER = register(new BlockItem(Blocks.BURNER,
+            new FabricItemSettings().group(ItemGroups.MINELABS)), "burner");
+
+    public static final Item MAGNET = register(new MagnetItem(
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "magnet");
+
+    public static final Item POCKET_HOLE = register(new BlackHoleItem(
+            new FabricItemSettings().group(ItemGroups.MINELABS).maxCount(1)), "pocket_hole");
 
     public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), 1, "LiCl"), "lithium_chloride_dust");
@@ -167,53 +172,13 @@ public class Items {
 
     public static final Item DUST_SO3 = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64).group(ItemGroups.CHEMICALS), "SO3"), "sulfur_trioxide_dust");
+
     // Items > Atoms
-    public static Item HYDROGEN_ATOM;
-    public static Item HELIUM_ATOM;
-
-    public static Item LITHIUM_ATOM;
-    public static Item BERYLLIUM_ATOM;
-    public static Item BORON_ATOM;
-    public static Item CARBON_ATOM;
-    public static Item NITROGEN_ATOM;
-    public static Item OXYGEN_ATOM;
-    public static Item FLUORINE_ATOM;
-    public static Item NEON_ATOM;
-
-    public static Item SODIUM_ATOM;
-    public static Item MAGNESIUM_ATOM;
-    public static Item ALUMINIUM_ATOM;
-    public static Item SILICON_ATOM;
-    public static Item PHOSPHORUS_ATOM;
-    public static Item SULFUR_ATOM;
-    public static Item CHLORINE_ATOM;
-    public static Item ARGON_ATOM;
-
-
-    public static Item POTASSIUM_ATOM;
-    public static Item CALCIUM_ATOM;
-    public static Item TITANIUM_ATOM;
-    public static Item MANGANESE_ATOM;
-    public static Item IRON_ATOM;
-    public static Item COPPER_ATOM;
-    public static Item ZINC_ATOM;
-    public static Item BROMINE_ATOM;
-    public static Item STRONTIUM_ATOM;
-
-    public static Item SILVER_ATOM;
-    public static Item CADMIUM_ATOM;
-    public static Item TIN_ATOM;
-    public static Item IODINE_ATOM;
-
-    public static Item TUNGSTEN_ATOM;
-    public static Item GOLD_ATOM;
-    public static Item MERCURY_ATOM;
-    public static Item LEAD_ATOM;
-    public static Item URANIUM_ATOM;
+    public static final List<AtomItem> ATOMS = Arrays.stream(Atom.values()).map(Items::registerAtom).toList();
 
     // Items > Bond to display in LCT (internal)
-    public static Item BOND;
-    public static Item VALENCEE;
+    public static final Item BOND = register(new Item(new Item.Settings()), "bond");
+    public static final Item VALENCEE = register(new Item(new Item.Settings()), "valence_electrons");
 
     // Items > Quantum fields
     public static final Item UPQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.UPQUARK_QUANTUMFIELD, new FabricItemSettings().group(ItemGroups.QUANTUM_FIELDS)), "upquark_quantumfield");
@@ -278,119 +243,106 @@ public class Items {
     public static final Item ERLENMEYER_STAND = register(new BlockItem(Blocks.ERLENMEYER_STAND,
             new FabricItemSettings().group(ItemGroups.CHEMICALS)), "erlenmeyer_stand");
     public static final Item ERLENMEYER = register(new ErlenmeyerItem(net.minecraft.fluid.Fluids.EMPTY,
-            new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), ""), "erlenmeyer");
+            new Item.Settings().group(ItemGroups.CHEMICALS), ""), "erlenmeyer");
 
-    public static final Item ERLENMEYER_O2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.O2), "erlenmeyer_o2");
-    public static final Item ERLENMEYER_N2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.N2), "erlenmeyer_n2");
-    public static final Item ERLENMEYER_CH4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CH4), "erlenmeyer_ch4");
-    public static final Item ERLENMEYER_H2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.H2), "erlenmeyer_h2");
-    public static final Item ERLENMEYER_NO = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.NO), "erlenmeyer_no");
-    public static final Item ERLENMEYER_NO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.NO2), "erlenmeyer_no2");
-    public static final Item ERLENMEYER_Cl2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CL2), "erlenmeyer_cl2");
-    public static final Item ERLENMEYER_CO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CO2), "erlenmeyer_co2");
-    public static final Item ERLENMEYER_CO = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CO), "erlenmeyer_co");
-    public static final Item ERLENMEYER_NH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.NH3), "erlenmeyer_nh3");
-    public static final Item ERLENMEYER_N2O = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.N2O), "erlenmeyer_n2o");
-    public static final Item ERLENMEYER_HCl = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.HCL), "erlenmeyer_hcl");
-    public static final Item ERLENMEYER_He = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.HE), "erlenmeyer_he");
-    public static final Item ERLENMEYER_Ne = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.NE), "erlenmeyer_ne");
-    public static final Item ERLENMEYER_Ar = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.AR), "erlenmeyer_ar");
-    public static final Item ERLENMEYER_CL2O = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CL2O), "erlenmeyer_cl2o");
-    public static final Item ERLENMEYER_CH4S = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), Molecule.CH4S), "erlenmeyer_methanethiol");
-    public static final Item ERLENMEYER_CH2O = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), Molecule.CH2O), "erlenmeyer_formaldehyde");
-    public static final Item ERLENMEYER_H2CO3 = register(new GasPotion(new FabricItemSettings().maxCount(64).group(ItemGroups.CHEMICALS), Molecule.H2CO3), "erlenmeyer_carbonic_acid");
-    public static final Item ERLENMEYER_BH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.BH3), "erlenmeyer_bh3");
-    public static final Item ERLENMEYER_HF = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.HF), "erlenmeyer_hf");
-    public static final Item ERLENMEYER_SIH4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.SIH4), "erlenmeyer_sih4");
-    public static final Item ERLENMEYER_PH3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.PH3), "erlenmeyer_ph3");
-    public static final Item ERLENMEYER_H2S = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.H2S), "erlenmeyer_h2s");
-    public static final Item ERLENMEYER_CF4 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CF4), "erlenmeyer_cf4");
-    public static final Item ERLENMEYER_BF3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.BF3), "erlenmeyer_bf3");
-    public static final Item ERLENMEYER_BCL3 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.BCL3), "erlenmeyer_bcl3");
-    public static final Item ERLENMEYER_SO2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.SO2), "erlenmeyer_so2");
-    public static final Item ERLENMEYER_CLF = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.CLF), "erlenmeyer_clf");
-    public static final Item ERLENMEYER_F2 = register(new GasPotion(new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), Molecule.F2), "erlenmeyer_f2");
+    public static final Item ERLENMEYER_O2 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.O2), "erlenmeyer_o2");
+    public static final Item ERLENMEYER_N2 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.N2), "erlenmeyer_n2");
+    public static final Item ERLENMEYER_CH4 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CH4), "erlenmeyer_ch4");
+    public static final Item ERLENMEYER_H2 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.H2), "erlenmeyer_h2");
+    public static final Item ERLENMEYER_NO = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.NO), "erlenmeyer_no");
+    public static final Item ERLENMEYER_NO2 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.NO2), "erlenmeyer_no2");
+    public static final Item ERLENMEYER_Cl2 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CL2), "erlenmeyer_cl2");
+    public static final Item ERLENMEYER_CO2 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CO2), "erlenmeyer_co2");
+    public static final Item ERLENMEYER_CO = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CO), "erlenmeyer_co");
+    public static final Item ERLENMEYER_NH3 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.NH3), "erlenmeyer_nh3");
+    public static final Item ERLENMEYER_N2O = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.N2O), "erlenmeyer_n2o");
+    public static final Item ERLENMEYER_HCl = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.HCL), "erlenmeyer_hcl");
+    public static final Item ERLENMEYER_He = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.HE), "erlenmeyer_he");
+    public static final Item ERLENMEYER_Ne = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.NE), "erlenmeyer_ne");
+    public static final Item ERLENMEYER_Ar = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.AR), "erlenmeyer_ar");
+    public static final Item ERLENMEYER_CL2O = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CL2O), "erlenmeyer_cl2o");
+    public static final Item ERLENMEYER_CH4S = register(new GasPotion(
+            new FabricItemSettings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CH4S), "erlenmeyer_methanethiol");
+    public static final Item ERLENMEYER_CH2O = register(new GasPotion(
+            new FabricItemSettings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CH2O), "erlenmeyer_formaldehyde");
+    public static final Item ERLENMEYER_H2CO3 = register(new GasPotion(
+            new FabricItemSettings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.H2CO3), "erlenmeyer_carbonic_acid");
+    public static final Item ERLENMEYER_BH3 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.BH3), "erlenmeyer_bh3");
+    public static final Item ERLENMEYER_HF = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.HF), "erlenmeyer_hf");
+    public static final Item ERLENMEYER_SIH4 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.SIH4), "erlenmeyer_sih4");
+    public static final Item ERLENMEYER_PH3 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.PH3), "erlenmeyer_ph3");
+    public static final Item ERLENMEYER_H2S = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.H2S), "erlenmeyer_h2s");
+    public static final Item ERLENMEYER_CF4 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CF4), "erlenmeyer_cf4");
+    public static final Item ERLENMEYER_BF3 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.BF3), "erlenmeyer_bf3");
+    public static final Item ERLENMEYER_BCL3 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.BCL3), "erlenmeyer_bcl3");
+    public static final Item ERLENMEYER_SO2 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.SO2), "erlenmeyer_so2");
+    public static final Item ERLENMEYER_CLF = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.CLF), "erlenmeyer_clf");
+    public static final Item ERLENMEYER_F2 = register(new GasPotion(
+            new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), Molecule.F2), "erlenmeyer_f2");
 
     public static final Item ERLENMEYER_HNO3 = register(new ErlenmeyerItem(
-            Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HNO3"), "erlenmeyer_hno3");
+            Fluids.STILL_HNO3, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "HNO3"), "erlenmeyer_hno3");
     public static final Item ERLENMEYER_H2O = register(new ErlenmeyerItem(
-            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "H2O"), "erlenmeyer_h2o");
+            Fluids.STILL_H2O, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "H2O"), "erlenmeyer_h2o");
     public static final Item ERLENMEYER_NCL3 = register(new ErlenmeyerItem(
-            Fluids.STILL_NCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "NCl3"), "erlenmeyer_ncl3");
+            Fluids.STILL_NCl3, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "NCl3"), "erlenmeyer_ncl3");
     public static final Item ERLENMEYER_CS2 = register(new ErlenmeyerItem(
-            Fluids.STILL_CS2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CS2"), "erlenmeyer_cs2");
+            Fluids.STILL_CS2, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "CS2"), "erlenmeyer_cs2");
     public static final Item ERLENMEYER_CCL4 = register(new ErlenmeyerItem(
-            Fluids.STILL_CCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CCl4"), "erlenmeyer_ccl4");
+            Fluids.STILL_CCl4, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "CCl4"), "erlenmeyer_ccl4");
     public static final Item ERLENMEYER_PCl3 = register(new ErlenmeyerItem(
-            Fluids.STILL_PCl3, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "PCl3"), "erlenmeyer_pcl3");
+            Fluids.STILL_PCl3, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "PCl3"), "erlenmeyer_pcl3");
     public static final Item ERLENMEYER_SCl2 = register(new ErlenmeyerItem(
-            Fluids.STILL_SCl2, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SCl2"), "erlenmeyer_scl2");
+            Fluids.STILL_SCl2, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "SCl2"), "erlenmeyer_scl2");
     public static final Item ERLENMEYER_HCN = register(new ErlenmeyerItem(
-            Fluids.STILL_HCN, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "HCN"), "erlenmeyer_hcn");
+            Fluids.STILL_HCN, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "HCN"), "erlenmeyer_hcn");
     public static final Item ERLENMEYER_CH4O = register(new ErlenmeyerItem(
-            Fluids.STILL_CH4O, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "CH4O"), "erlenmeyer_ch4o");
+            Fluids.STILL_CH4O, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "CH4O"), "erlenmeyer_ch4o");
     public static final Item ERLENMEYER_SICL4 = register(new ErlenmeyerItem(
-            Fluids.STILL_SiCl4, new Item.Settings().group(ItemGroups.CHEMICALS).maxCount(64), "SiCl4"), "erlenmeyer_sicl4");
+            Fluids.STILL_SiCl4, new Item.Settings().group(ItemGroups.CHEMICALS).recipeRemainder(ERLENMEYER), "SiCl4"), "erlenmeyer_sicl4");
 
-
-    static {
-        // Items > Atoms
-        HYDROGEN_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.HYDROGEN), "hydrogen_atom");
-        HELIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.HELIUM), "helium_atom");
-
-        LITHIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.LITHIUM), "lithium_atom");
-        BERYLLIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.BERYLLIUM), "beryllium_atom");
-        BORON_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.BORON), "boron_atom");
-        CARBON_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CARBON), "carbon_atom");
-        NITROGEN_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.NITROGEN), "nitrogen_atom");
-        OXYGEN_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.OXYGEN), "oxygen_atom");
-        FLUORINE_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.FLUORINE), "fluorine_atom");
-        NEON_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.NEON), "neon_atom");
-
-        SODIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SODIUM), "sodium_atom");
-        MAGNESIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.MAGNESIUM), "magnesium_atom");
-        ALUMINIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.ALUMINIUM), "aluminium_atom");
-        SILICON_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SILICON), "silicon_atom");
-        PHOSPHORUS_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.PHOSPHORUS), "phosphorus_atom");
-        SULFUR_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SULFUR), "sulfur_atom");
-        CHLORINE_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CHLORINE), "chlorine_atom");
-        ARGON_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.ARGON), "argon_atom");
-
-        POTASSIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.POTASSIUM), "potassium_atom");
-        CALCIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CALCIUM), "calcium_atom");
-        TITANIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.TITANIUM), "titanium_atom");
-        MANGANESE_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.MANGANESE), "manganese_atom");
-        IRON_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.IRON), "iron_atom");
-        COPPER_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.COPPER), "copper_atom");
-        ZINC_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.ZINC), "zinc_atom");
-        BROMINE_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.BROMINE), "bromine_atom");
-        STRONTIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.STRONTIUM), "strontium_atom");
-
-        SILVER_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.SILVER), "silver_atom");
-        CADMIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.CADMIUM), "cadmium_atom");
-        TIN_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.TIN), "tin_atom");
-        IODINE_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.IODINE), "iodine_atom");
-
-        TUNGSTEN_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.TUNGSTEN), "tungsten_atom");
-        GOLD_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.GOLD), "gold_atom");
-        MERCURY_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.MERCURY), "mercury_atom");
-        LEAD_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.LEAD), "lead_atom");
-        URANIUM_ATOM = register(new LewisCraftingItem(new Item.Settings().group(ItemGroups.ATOMS), Atom.URANIUM), "uranium_atom");
-
-        // Items > Bindings (internal)
-        BOND = register(new Item(new Item.Settings()), "bond");
-        VALENCEE = register(new Item(new Item.Settings()), "valence_electrons");
-    }
 
     /**
      * Register an Item
-     *
-     * @param item:       Item Object to register
-     * @param identifier: String name of the Item
-     * @return {@link Item}
      */
-    private static Item register(Item item, String identifier) {
-        return Registry.register(Registry.ITEM, new Identifier(Minelabs.MOD_ID, identifier), item);
+    private static <T extends Item> T register(T item, String identifier) {
+        return register(item, new Identifier(Minelabs.MOD_ID, identifier));
+    }
+
+    private static <T extends Item> T register(T item, Identifier identifier) {
+        return Registry.register(Registry.ITEM, identifier, item);
+    }
+
+    private static AtomItem registerAtom(Atom atom){
+        AtomItem item = register(new AtomItem(new Item.Settings().group(ItemGroups.ATOMS), atom), atom.getItemId());
+        atom.setItem(item);
+        return item;
     }
 
     /**

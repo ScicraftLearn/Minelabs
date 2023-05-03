@@ -15,6 +15,33 @@
     "use_lab_cabin": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
+        "player": {
+          "flags": {
+            "is_sneaking": false
+          }
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "minelabs:lab_cabin"
+            ]
+          }
+        }
+      }
+    },
+    "use_lab_cabin_sneaking": {
+      "trigger": "minecraft:item_used_on_block",
+      "conditions": {
+        "player": {
+          "flags": {
+            "is_sneaking": true
+          },
+          "equipment": {
+            "mainhand": {
+              "count": 0
+            }
+          }
+        },
         "location": {
           "block": {
             "blocks": [
@@ -27,6 +54,33 @@
     "use_lab_drawers": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
+        "player": {
+          "flags": {
+            "is_sneaking": false
+          }
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "minelabs:lab_drawer"
+            ]
+          }
+        }
+      }
+    },
+    "use_lab_drawers_sneaking": {
+      "trigger": "minecraft:item_used_on_block",
+      "conditions": {
+        "player": {
+          "flags": {
+            "is_sneaking": true
+          },
+          "equipment": {
+            "mainhand": {
+              "count": 0
+            }
+          }
+        },
         "location": {
           "block": {
             "blocks": [
@@ -38,6 +92,7 @@
     }
   },
   "requirements": [
-
+    ["use_lab_cabin", "use_lab_cabin_sneaking"],
+    ["use_lab_drawers", "use_lab_drawers_sneaking"]
   ]
 }

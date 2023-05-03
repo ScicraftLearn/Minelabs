@@ -1,23 +1,29 @@
 package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
+import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -33,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
+@SuppressWarnings("deprecation")
 public class BohrBlueprintBlock extends Block {
     private static final VoxelShape OUTLINE_SHAPE = VoxelShapes.union(
             Block.createCuboidShape(0, 3, 0, 16, 5, 16),        // top
@@ -41,13 +48,24 @@ public class BohrBlueprintBlock extends Block {
     );
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
-    //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
-    public static final IntProperty STATUS = MinelabsProperties.STATUS;
+
+    public enum Status implements StringIdentifiable {
+        EMPTY,
+        CRAFTABLE,
+        UNSTABLE;
+
+        @Override
+        public String asString() {
+            return toString().toLowerCase();
+        }
+    }
+
+    public static final EnumProperty<Status> STATUS = EnumProperty.of("status", Status.class);
 
     public BohrBlueprintBlock() {
-        super(FabricBlockSettings.of(new Material.Builder(MapColor.LAPIS_BLUE).blocksPistons().build()).requiresTool().strength(1f).nonOpaque().luminance(100));
+        super(FabricBlockSettings.of(new Material.Builder(MapColor.LAPIS_BLUE).blocksPistons().build()).requiresTool().strength(1f).nonOpaque());
         this.setDefaultState(this.stateManager.getDefaultState()
-                .with(STATUS, 0).with(FACING, Direction.NORTH));
+                .with(STATUS, Status.EMPTY).with(FACING, Direction.NORTH));
     }
 
     /**
@@ -73,6 +91,12 @@ public class BohrBlueprintBlock extends Block {
         builder.add(STATUS).add(FACING);
     }
 
+    public static void updateStatus(World world, BlockPos pos, Status status){
+        if (!world.getBlockState(pos).isOf(Blocks.BOHR_BLUEPRINT)) return;
+        BlockState newState = world.getBlockState(pos).with(BohrBlueprintBlock.STATUS, status);
+        world.setBlockState(pos, newState);
+    }
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BohrBlueprintEntity entity = getEntity(world, pos);
@@ -90,7 +114,7 @@ public class BohrBlueprintBlock extends Block {
         // Only Atoms can be inserted by right-clicking. Other elements need to be thrown.
         if (!stack.isEmpty()) {
             Item item = stack.getItem();
-            if (item instanceof AtomItem && entity.addItem(item)) {
+            if (item instanceof AtomItem && entity.addItem(item, (ServerPlayerEntity) player)) {
                 if (!player.getAbilities().creativeMode)
                     stack.decrement(1);
                 return ActionResult.SUCCESS;
@@ -98,7 +122,7 @@ public class BohrBlueprintBlock extends Block {
         }
 
         // Otherwise try to craft atom
-        ItemStack resultStack = entity.craftAtom();
+        ItemStack resultStack = entity.craftAtom((ServerPlayerEntity) player);
         if (!resultStack.isEmpty()){
             player.getInventory().offerOrDrop(resultStack);
             return ActionResult.SUCCESS;
@@ -131,7 +155,7 @@ public class BohrBlueprintBlock extends Block {
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
-            entity.dropLastItem();
+            ItemStack stack = entity.dropLastItem((ServerPlayerEntity) player);
         }
     }
 

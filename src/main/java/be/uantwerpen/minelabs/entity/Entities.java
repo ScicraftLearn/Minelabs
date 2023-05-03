@@ -1,7 +1,7 @@
 package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.item.Items;
+import be.uantwerpen.minelabs.util.AtomConfiguration;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -14,14 +14,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
 
 import java.util.function.Predicate;
-
-//import static be.uantwerpen.minelabs.block.Blocks.LEWIS_BLOCK;
 
 
 public class Entities {
@@ -30,7 +28,7 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "subatomic_particle_entity");
 
     public static final EntityType<BohrBlueprintEntity> BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE = register(FabricEntityTypeBuilder.<BohrBlueprintEntity>create(SpawnGroup.MISC, BohrBlueprintEntity::new)
-            .dimensions(EntityDimensions.fixed(1.5F, 1.5F)).trackRangeChunks(1).disableSummon().fireImmune().build(), "bohr_blueprint_entity");
+            .dimensions(EntityDimensions.fixed(1.5F, 1.5F)).trackRangeChunks(3).disableSummon().fireImmune().build(), "bohr_blueprint_entity");
 
     public static final EntityType<EntropyCreeperEntity> ENTROPY_CREEPER = register(FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, EntropyCreeperEntity::new)
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
@@ -88,5 +86,8 @@ public class Entities {
         registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld().or(BiomeSelectors.foundInTheNether()),
                 new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 0, 1));
         FabricDefaultAttributeRegistry.register(BALLOON, BalloonEntity.createMobAttributes());
+
+        // Register tracked data handlers for entities
+        TrackedDataHandlerRegistry.register(AtomConfiguration.DATA_HANDLER);
     }
 }

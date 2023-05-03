@@ -8,7 +8,6 @@ import net.minecraft.state.property.IntProperty;
 public class MinelabsProperties {
     //public static final EnumProperty<BohrPart> BOHR_PART = EnumProperty.of("part", BohrPart.class);
     public static final BooleanProperty MASTER = BooleanProperty.of("master");
-    public static final IntProperty STATUS = IntProperty.of("status", 0, 2);
     public static final IntProperty FIRE_COLOR = IntProperty.of("fire_color", 0, 10);
 
     public static final BooleanProperty ZOOMED = BooleanProperty.of("zoom");
@@ -20,5 +19,6 @@ public class MinelabsProperties {
     public static final IntProperty COUNTER = IntProperty.of("counter", 0, 2);
 
     public static final BooleanProperty FILLED = BooleanProperty.of("filled");
+    public static final BooleanProperty OXYGENATED = BooleanProperty.of("oxygenated");
     public static final EnumProperty<CornerShape> CONNECT = EnumProperty.of("connect", CornerShape.class);
 }
