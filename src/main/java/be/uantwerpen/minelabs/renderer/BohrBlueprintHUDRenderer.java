@@ -20,6 +20,8 @@ import net.minecraft.util.math.MathHelper;
 public class BohrBlueprintHUDRenderer extends DrawableHelper {
     // range in blocks from where the HUD is rendered
     public static final int HUD_RENDER_RADIUS = 9;
+    // maximal angle in radians between player camera and entity where HUD is still rendered
+    public static final double MAX_RENDER_ANGLE = Math.PI / 2;
 
     private static final Identifier BARS_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/bohr_bars.png");
     private static final int BARS_TEXTURE_SIZE = 256;
@@ -87,9 +89,9 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
         }
         MinecraftClient.getInstance().getProfiler().pop();
 
-        // DEBUG
-        String stability = (int) ((1f - atomConfig.getNucleusInstability()) * 100) + "%";
-        drawCenteredText(matrixStack, MinecraftClient.getInstance().textRenderer, stability, -80, 8, WHITE);
+        // DEBUG: render stability as percent left of element square
+//        String stability = (int) ((1f - atomConfig.getNucleusInstability()) * 100) + "%";
+//        drawCenteredText(matrixStack, MinecraftClient.getInstance().textRenderer, stability, -80, 8, WHITE);
 
         matrixStack.pop();
         MinecraftClient.getInstance().getProfiler().pop();
@@ -160,8 +162,6 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
      */
     private static void drawRectangle(MatrixStack matrixStack, int width, int height, int color, boolean shadow) {
         if (shadow) {
-            int SHADOW_COLOR = ColorHelper.Argb.getArgb(255, 62, 62, 62);
-
             // alternative: all edges have shadow (if used: give functions x and y params please)
 //            matrixStack.push();
 //            matrixStack.translate(1, 1, 0);

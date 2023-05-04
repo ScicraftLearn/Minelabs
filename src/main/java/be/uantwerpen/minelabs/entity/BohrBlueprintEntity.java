@@ -505,7 +505,7 @@ public class BohrBlueprintEntity extends Entity {
         // set block state
         BohrBlueprintBlock.Status status = BohrBlueprintBlock.Status.EMPTY;
         if (!getCraftableAtom().isEmpty()) status = BohrBlueprintBlock.Status.CRAFTABLE;
-        else status = BohrBlueprintBlock.Status.UNSTABLE;
+        else if(!getAtomConfig().isStable()) status = BohrBlueprintBlock.Status.UNSTABLE;
         BohrBlueprintBlock.updateStatus(world, getBohrBlueprintPos(), status);
     }
 
