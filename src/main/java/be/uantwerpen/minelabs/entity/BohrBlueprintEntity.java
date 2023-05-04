@@ -5,12 +5,14 @@ import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.BohrBlueprintBlock;
+import be.uantwerpen.minelabs.block.entity.BohrBlueprintBlockEntity;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
 import be.uantwerpen.minelabs.util.NucleusStabilityInfo;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -34,10 +36,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class BohrBlueprintEntity extends Entity {
     // Public constants
@@ -61,7 +60,7 @@ public class BohrBlueprintEntity extends Entity {
     // Ordered list of items added to the entity. Should only contain protons, electrons neutrons and atoms.
     // Anti particles are instead removed and can never be added if corresponding particle is not present.
     // Atom can only be added as first entry and cannot remove parts of it.
-    Stack<ItemStack> inventory = new Stack<>();
+    private final Stack<ItemStack> inventory = new Stack<>();
 
     // tracked data is synced to the client automatically (still needs to be written to nbt if it needs to be persisted)
     protected static final TrackedData<AtomConfiguration> ATOM_CONFIGURATION = DataTracker.registerData(BohrBlueprintEntity.class, AtomConfiguration.DATA_HANDLER);
@@ -96,6 +95,13 @@ public class BohrBlueprintEntity extends Entity {
         }
 
         logicalTick();
+    }
+
+    private Optional<BohrBlueprintBlockEntity> getBlockEntity(){
+        BlockEntity be = world.getBlockEntity(getBohrBlueprintPos());
+        if (be instanceof BohrBlueprintBlockEntity bohrBlueprintBlockEntity)
+            return Optional.of(bohrBlueprintBlockEntity);
+        return Optional.empty();
     }
 
     /**
@@ -424,8 +430,12 @@ public class BohrBlueprintEntity extends Entity {
         return stack;
     }
 
+    /**
+     * Inventory is saved on block entity. Less important (and more frequently changing info) is kept in the entity.
+     * See `BohrBlueprintBlockEntity`
+     */
     @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
+    protected void writeCustomDataToNbt(NbtCompound nbt) {
         // save inventory
         NbtList nbtList = new NbtList();
         for (ItemStack stack : inventory) {
@@ -433,11 +443,13 @@ public class BohrBlueprintEntity extends Entity {
             nbtList.add(stack.writeNbt(new NbtCompound()));
         }
         nbt.put("Items", nbtList);
+
         nbt.putFloat("electronEjectProgress", electronEjectProgress);
+        nbt.putFloat("integrity", getIntegrity());
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
+    protected void readCustomDataFromNbt(NbtCompound nbt) {
         inventory.clear();
 
         if (nbt.contains("Items")){
@@ -447,11 +459,13 @@ public class BohrBlueprintEntity extends Entity {
                 NbtCompound nbtCompound = nbtList.getCompound(i);
                 inventory.add(ItemStack.fromNbt(nbtCompound));
             }
-            updateCountsFromContent();
         }
 
         if (nbt.contains("electronEjectProgress"))
             electronEjectProgress = nbt.getFloat("electronEjectProgress");
+
+        if (nbt.contains("integrity"))
+            setIntegrity(nbt.getFloat("integrity"));
     }
 
     @Override

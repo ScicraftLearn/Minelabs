@@ -3,12 +3,14 @@ package be.uantwerpen.minelabs.block;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
+import be.uantwerpen.minelabs.block.entity.BohrBlueprintBlockEntity;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -34,13 +37,14 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.event.listener.GameEventListener;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
 @SuppressWarnings("deprecation")
-public class BohrBlueprintBlock extends Block {
+public class BohrBlueprintBlock extends BlockWithEntity {
     private static final VoxelShape OUTLINE_SHAPE = VoxelShapes.union(
             Block.createCuboidShape(0, 3, 0, 16, 5, 16),        // top
             Block.createCuboidShape(-1, 1, -1, 17, 3, 17),      // middle
@@ -48,6 +52,12 @@ public class BohrBlueprintBlock extends Block {
     );
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new BohrBlueprintBlockEntity(pos, state);
+    }
 
     public enum Status implements StringIdentifiable {
         EMPTY,
@@ -68,18 +78,33 @@ public class BohrBlueprintBlock extends Block {
                 .with(STATUS, Status.EMPTY).with(FACING, Direction.NORTH));
     }
 
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
+    }
+
     /**
      * Instead of using a block entity, we have a regular entity for this block. Use this function to fetch it.
      */
     @Nullable
-    private BohrBlueprintEntity getEntity(World world, BlockPos pos){
+    public BohrBlueprintEntity getEntity(World world, BlockPos pos){
+        return getEntity(world, pos, true);
+    }
+
+    /**
+     * Also checks whether exactly one entity is found. If not removes the block.
+     */
+    @Nullable
+    public BohrBlueprintEntity getEntity(World world, BlockPos pos, boolean removeBlock){
         // position of entity is center of bottom. It is placed one block above the bohr plate
         Box box = Box.from(Vec3d.of(pos)).contract(0.4, 0.4, 0.4).offset(0, 0.5, 0);
         List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, box, e -> true);
         if (entities.size() != 1){
-            Minelabs.LOGGER.warn("Expected one entity connected to bohr blueprint at " + pos + ", found: " + entities.size());
-            Minelabs.LOGGER.warn("Removing the bohr blueprint");
-            world.removeBlock(pos, false);
+            if (removeBlock) {
+                Minelabs.LOGGER.warn("Expected one entity connected to bohr blueprint at " + pos + ", found: " + entities.size());
+                Minelabs.LOGGER.warn("Removing the bohr blueprint");
+                world.removeBlock(pos, false);
+            }
             return null;
         }
 
@@ -160,20 +185,25 @@ public class BohrBlueprintBlock extends Block {
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
+    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+        super.onBlockAdded(state, world, pos, oldState, notify);
 
         if (world.isClient)
             return;
 
-        BohrBlueprintEntity entity = new BohrBlueprintEntity(world, pos.up());
-        world.emitGameEvent(placer, GameEvent.ENTITY_PLACE, entity.getPos());
-        world.spawnEntity(entity);
+        if (oldState.isOf(state.getBlock()))
+            return;
+
+        if (getEntity(world, pos, false) == null){
+            BohrBlueprintEntity entity = new BohrBlueprintEntity(world, pos.up());
+            world.spawnEntity(entity);
+        }
     }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         super.onStateReplaced(state, world, pos, newState, moved);
+
         if (state.isOf(newState.getBlock()))
             return;
 
