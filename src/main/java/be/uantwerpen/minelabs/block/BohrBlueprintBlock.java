@@ -1,28 +1,19 @@
 package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
-import be.uantwerpen.minelabs.advancement.criterion.Criteria;
-import be.uantwerpen.minelabs.block.entity.BohrBlueprintBlockEntity;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.item.AtomItem;
-import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -36,15 +27,13 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.event.listener.GameEventListener;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
 @SuppressWarnings("deprecation")
-public class BohrBlueprintBlock extends BlockWithEntity {
+public class BohrBlueprintBlock extends Block {
     private static final VoxelShape OUTLINE_SHAPE = VoxelShapes.union(
             Block.createCuboidShape(0, 3, 0, 16, 5, 16),        // top
             Block.createCuboidShape(-1, 1, -1, 17, 3, 17),      // middle
@@ -52,12 +41,6 @@ public class BohrBlueprintBlock extends BlockWithEntity {
     );
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
-
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new BohrBlueprintBlockEntity(pos, state);
-    }
 
     public enum Status implements StringIdentifiable {
         EMPTY,

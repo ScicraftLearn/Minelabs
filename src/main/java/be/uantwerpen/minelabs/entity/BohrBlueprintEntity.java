@@ -5,12 +5,10 @@ import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.BohrBlueprintBlock;
-import be.uantwerpen.minelabs.block.entity.BohrBlueprintBlockEntity;
 import be.uantwerpen.minelabs.item.AtomItem;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
-import be.uantwerpen.minelabs.util.NucleusStabilityInfo;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
@@ -18,7 +16,6 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Item;
@@ -27,7 +24,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -97,13 +93,6 @@ public class BohrBlueprintEntity extends Entity {
         logicalTick();
     }
 
-    private Optional<BohrBlueprintBlockEntity> getBlockEntity(){
-        BlockEntity be = world.getBlockEntity(getBohrBlueprintPos());
-        if (be instanceof BohrBlueprintBlockEntity bohrBlueprintBlockEntity)
-            return Optional.of(bohrBlueprintBlockEntity);
-        return Optional.empty();
-    }
-
     /**
      * Only runs on version of entity used for rendering.
      */
@@ -171,17 +160,18 @@ public class BohrBlueprintEntity extends Entity {
     protected void initDataTracker() {
         dataTracker.startTracking(INTEGRITY, 1f);
         dataTracker.startTracking(ATOM_CONFIGURATION, new AtomConfiguration(0, 0, 0));
-
     }
 
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
         // cleanup after entity is removed
-        dropContents();
-        BlockState state = world.getBlockState(getBohrBlueprintPos());
-        if (state.isOf(Blocks.BOHR_BLUEPRINT))
-            world.removeBlock(getBohrBlueprintPos(), false);
+        if (reason.shouldDestroy()){
+            dropContents();
+            BlockState state = world.getBlockState(getBohrBlueprintPos());
+            if (state.isOf(Blocks.BOHR_BLUEPRINT))
+                world.removeBlock(getBohrBlueprintPos(), false);
+        }
     }
 
     public boolean isEmpty() {
@@ -430,6 +420,22 @@ public class BohrBlueprintEntity extends Entity {
         return stack;
     }
 
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+
+        // Remove other bohr blueprint entities already present.
+        // We put this check here because the position needs to be known and it is loaded from nbt, for example when copied by structure block
+        if (!world.isClient){
+            List<Entity> entities = world.getOtherEntities(this, getBoundingBox(), e -> e instanceof BohrBlueprintEntity);
+            for (Entity entity: entities){
+                // move below map first so the bohr plate below won't be found and it doesn't destroy it.
+                entity.setPosition(getX(), world.getBottomY()-1, getZ());
+                entity.discard();
+            }
+        }
+    }
+
     /**
      * Inventory is saved on block entity. Less important (and more frequently changing info) is kept in the entity.
      * See `BohrBlueprintBlockEntity`
@@ -451,7 +457,6 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         inventory.clear();
-
         if (nbt.contains("Items")){
             // load inventory
             NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
@@ -459,6 +464,7 @@ public class BohrBlueprintEntity extends Entity {
                 NbtCompound nbtCompound = nbtList.getCompound(i);
                 inventory.add(ItemStack.fromNbt(nbtCompound));
             }
+            updateCountsFromContent();
         }
 
         if (nbt.contains("electronEjectProgress"))
