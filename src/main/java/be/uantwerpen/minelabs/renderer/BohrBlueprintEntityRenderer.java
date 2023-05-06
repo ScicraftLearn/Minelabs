@@ -32,7 +32,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     // radius usable for atom rendering
     private static final float MAX_RENDER_RADIUS = 0.75f + 11f / 16f - 0.1f;
 
-    private static final float ELECTRON_SCALE = 0.15f;
+    private static final float ELECTRON_SCALE = 0.1f;
     private static final float ELECTRON_FIRST_SHELL_RADIUS = 0.5f;
     private static final int ELECTRON_SHELLS_AMOUNT = 7;
     // distance between two shells
@@ -47,9 +47,11 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             Vec3f.POSITIVE_X.getDegreesQuaternion(135)
     };
     // rotation period in ticks
-    private static final float ELECTRON_ROTATION_PERIOD = 3 * 20;
+    private static final float ELECTRON_ROTATION_PERIOD = 4 * 20;
     // amount of points to use for the electron shell orbit line
     private static final int ELECTRON_LINE_NUMPOINTS = 32;
+    // from 0 to 255
+    private static final int ELECTRON_SHELL_LINE_GRAYSCALE_COLOR = 62;
     private static final int ELECTRON_SHELL_LINE_MAX_ALPHA = 150;
     // until this range the lines are fully visible (no fading)
     private static final double ELECTRON_SHELL_LINE_MIN_RENDER_RANGE = 4f;
@@ -65,8 +67,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final float NUCLEUS_SCALE = 0.15f;
 
     // for scaling nucleus radius depending on amount of particles
-    private static final float NUCLEUS_MIN_RADIUS = 0.05f;
-    private static final float NUCLEUS_MAX_RADIUS = 0.2f;
+    private static final float NUCLEUS_MIN_RADIUS = 0.02f;
+    private static final float NUCLEUS_MAX_RADIUS = 0.3f;
     // distance between layers of nucleus
 //    private static final float NUCLEUS_RADIUS_OFFSET = 0.15f;
 
@@ -112,6 +114,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     }
 
     private int[] getElectronShellConfiguration(int nE) {
+        if (nE >= ELECTRON_SHELL_CAPACITIES.length)
+            nE = ELECTRON_SHELL_CAPACITIES.length - 1;
         return ELECTRON_SHELL_CAPACITIES[nE];
     }
 
@@ -252,14 +256,14 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         MatrixStack.Entry matrixEntry = matrices.peek();
         for (int e = 0; e < ELECTRON_LINE_NUMPOINTS; e++) {
             lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0)
-                    .color(0, 0, 0, alpha)
+                    .color(ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, alpha)
                     .normal(matrixEntry.getNormalMatrix(), normalX, normalY, 0)
                     .next();
 
             matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints));
 
             lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0)
-                    .color(0, 0, 0, alpha)
+                    .color(ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, alpha)
                     .normal(matrixEntry.getNormalMatrix(), -normalX, normalY, 0)
                     .next();
         }
@@ -289,7 +293,9 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         int nPRendered = 0;
         int nNRendered = 0;
         int amountToRender = Math.min(NUCLEUS_MAX_ITEMS_RENDERED, nP + nN);
-        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, (float) (nP + nN) / NUCLEUS_MAX_CONTENT_FOR_RADIUS);
+        float volumePercent = (float) (nP + nN) / NUCLEUS_MAX_CONTENT_FOR_RADIUS;
+        float radiusPercent = (float) Math.pow(3 * volumePercent / (4 * Math.PI), 1f/3);    // based on volume of sphere
+        float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, radiusPercent);
 
         matrices.push();
         while (nPRendered + nNRendered < amountToRender) {
@@ -378,8 +384,11 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
         matrices.scale(NUCLEUS_SCALE, NUCLEUS_SCALE, NUCLEUS_SCALE);
 
+        // have normals face sky
+        matrices.peek().getNormalMatrix().multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+
         // have everything facing the camera orientation
-        matrices.multiply(dispatcher.getRotation());
+        matrices.multiplyPositionMatrix(new Matrix4f(dispatcher.getRotation()));
 
         renderItem(type, matrices, vertexConsumers, light);
         matrices.pop();
@@ -526,7 +535,15 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             {2, 8, 18, 32, 32, 18, 5},
             {2, 8, 18, 32, 32, 18, 6},
             {2, 8, 18, 32, 32, 18, 7},
-            {2, 8, 18, 32, 32, 18, 8}
+            {2, 8, 18, 32, 32, 18, 8},  // Og
+            {2, 8, 18, 32, 32, 18, 9},  // made up to have some padding, likely not correct
+            {2, 8, 18, 32, 32, 18, 10},
+            {2, 8, 18, 32, 32, 18, 11},
+            {2, 8, 18, 32, 32, 18, 12},
+            {2, 8, 18, 32, 32, 18, 13},
+            {2, 8, 18, 32, 32, 18, 14},
+            {2, 8, 18, 32, 32, 18, 15},
+            {2, 8, 18, 32, 32, 18, 16}, // 126
     };
 
 }

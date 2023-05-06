@@ -2,6 +2,7 @@ package be.uantwerpen.minelabs.entity;
 
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.Blocks;
+import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.fabric.api.object.builder.v1.villager.VillagerProfessionBuilder;
@@ -63,7 +64,7 @@ public class Villagers {
                 factories -> {
                     factories.add(((entity, random) -> new TradeOffer(
                             new ItemStack(Items.EMERALD, 3),
-                            new ItemStack(be.uantwerpen.minelabs.item.Items.CARBON_ATOM, 5),
+                            new ItemStack(Atom.CARBON.getItem(), 5),
                             6,2,0.02f
                     )));
                 });

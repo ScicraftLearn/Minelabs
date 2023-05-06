@@ -66,14 +66,14 @@ jobs:
         run: ./.github/scripts/sftp_upload.sh
         shell: bash
         env:
-          SFTP_PORT: 2233
+          SFTP_PORT: 2235
 
       - name: Upload to testserver.minelabs.be
         if: matrix.branch == 'testserver'
         run: ./.github/scripts/sftp_upload.sh
         shell: bash
         env:
-          SFTP_PORT: 2235
+          SFTP_PORT: 2233
 
       - name: Upload build reports
         uses: actions/upload-artifact@v3
@@ -110,14 +110,14 @@ jobs:
         run: ./.github/scripts/sftp_upload.sh
         shell: bash
         env:
-          SFTP_PORT: 2233
+          SFTP_PORT: 2235
 
       - name: Upload to testserver.minelabs.be
         if: github.ref == 'refs/heads/testserver'
         run: ./.github/scripts/sftp_upload.sh
         shell: bash
         env:
-          SFTP_PORT: 2235
+          SFTP_PORT: 2233
 
       - name: Upload build reports
         uses: actions/upload-artifact@v3
