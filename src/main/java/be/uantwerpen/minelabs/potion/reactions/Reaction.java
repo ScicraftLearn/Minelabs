@@ -56,7 +56,15 @@ public abstract class Reaction {
 
     protected class Utils {
 
-        private static final List<Block> FLAMMABLE_BLOCKS = List.of(Blocks.TORCH, Blocks.LAVA, Blocks.FIRE);
+        private static final List<Block> FLAMMABLE_BLOCKS = List.of(
+                Blocks.TORCH,
+                Blocks.WALL_TORCH,
+                Blocks.LAVA,
+                Blocks.FIRE,
+                Blocks.SOUL_TORCH,
+                Blocks.SOUL_WALL_TORCH,
+                Blocks.LAVA_CAULDRON
+        );
 
         final static boolean isFlammable(BlockState state) {
             return FLAMMABLE_BLOCKS.contains(state.getBlock())
