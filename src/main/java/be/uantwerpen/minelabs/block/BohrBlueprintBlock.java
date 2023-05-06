@@ -1,15 +1,11 @@
 package be.uantwerpen.minelabs.block;
 
 import be.uantwerpen.minelabs.Minelabs;
-import be.uantwerpen.minelabs.advancement.criterion.BohrCriterion;
-import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.entity.BohrBlueprintEntity;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.item.AtomItem;
-import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
@@ -17,10 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -30,7 +27,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,27 +41,53 @@ public class BohrBlueprintBlock extends Block {
     );
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
-    //    status: 0 = normal, 1 = atom collectible, 2 = atom unstable
-    public static final IntProperty STATUS = MinelabsProperties.STATUS;
+
+    public enum Status implements StringIdentifiable {
+        EMPTY,
+        CRAFTABLE,
+        UNSTABLE;
+
+        @Override
+        public String asString() {
+            return toString().toLowerCase();
+        }
+    }
+
+    public static final EnumProperty<Status> STATUS = EnumProperty.of("status", Status.class);
 
     public BohrBlueprintBlock() {
-        super(FabricBlockSettings.of(new Material.Builder(MapColor.LAPIS_BLUE).blocksPistons().build()).requiresTool().strength(1f).nonOpaque().luminance(100));
+        super(FabricBlockSettings.of(new Material.Builder(MapColor.LAPIS_BLUE).blocksPistons().build()).requiresTool().strength(1f).nonOpaque());
         this.setDefaultState(this.stateManager.getDefaultState()
-                .with(STATUS, 0).with(FACING, Direction.NORTH));
+                .with(STATUS, Status.EMPTY).with(FACING, Direction.NORTH));
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
     }
 
     /**
      * Instead of using a block entity, we have a regular entity for this block. Use this function to fetch it.
      */
     @Nullable
-    private BohrBlueprintEntity getEntity(World world, BlockPos pos){
+    public BohrBlueprintEntity getEntity(World world, BlockPos pos){
+        return getEntity(world, pos, true);
+    }
+
+    /**
+     * Also checks whether exactly one entity is found. If not removes the block.
+     */
+    @Nullable
+    public BohrBlueprintEntity getEntity(World world, BlockPos pos, boolean removeBlock){
         // position of entity is center of bottom. It is placed one block above the bohr plate
         Box box = Box.from(Vec3d.of(pos)).contract(0.4, 0.4, 0.4).offset(0, 0.5, 0);
         List<BohrBlueprintEntity> entities = world.getEntitiesByType(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, box, e -> true);
         if (entities.size() != 1){
-            Minelabs.LOGGER.warn("Expected one entity connected to bohr blueprint at " + pos + ", found: " + entities.size());
-            Minelabs.LOGGER.warn("Removing the bohr blueprint");
-            world.removeBlock(pos, false);
+            if (removeBlock) {
+                Minelabs.LOGGER.warn("Expected one entity connected to bohr blueprint at " + pos + ", found: " + entities.size());
+                Minelabs.LOGGER.warn("Removing the bohr blueprint");
+                world.removeBlock(pos, false);
+            }
             return null;
         }
 
@@ -75,6 +97,12 @@ public class BohrBlueprintBlock extends Block {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(STATUS).add(FACING);
+    }
+
+    public static void updateStatus(World world, BlockPos pos, Status status){
+        if (!world.getBlockState(pos).isOf(Blocks.BOHR_BLUEPRINT)) return;
+        BlockState newState = world.getBlockState(pos).with(BohrBlueprintBlock.STATUS, status);
+        world.setBlockState(pos, newState);
     }
 
     @Override
@@ -94,20 +122,16 @@ public class BohrBlueprintBlock extends Block {
         // Only Atoms can be inserted by right-clicking. Other elements need to be thrown.
         if (!stack.isEmpty()) {
             Item item = stack.getItem();
-            if (item instanceof AtomItem && entity.addItem(item)) {
+            if (item instanceof AtomItem && entity.addItem(item, (ServerPlayerEntity) player)) {
                 if (!player.getAbilities().creativeMode)
                     stack.decrement(1);
-                Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.ADD_ATOM);
                 return ActionResult.SUCCESS;
             }
         }
 
         // Otherwise try to craft atom
-        Item original = entity.getOriginalAtom();
-        ItemStack resultStack = entity.craftAtom();
+        ItemStack resultStack = entity.craftAtom((ServerPlayerEntity) player);
         if (!resultStack.isEmpty()){
-            if (!resultStack.getItem().equals(original))
-                Criteria.BOHR_CRITERION.trigger((ServerPlayerEntity) player, BohrCriterion.Type.CRAFT_ATOM);
             player.getInventory().offerOrDrop(resultStack);
             return ActionResult.SUCCESS;
         }
@@ -139,26 +163,30 @@ public class BohrBlueprintBlock extends Block {
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
         BohrBlueprintEntity entity = getEntity(player.world, pos);
         if (entity != null && !entity.isEmpty()){
-            ItemStack stack = entity.dropLastItem();
-            entity.onPlayerRemovedItem(stack, (ServerPlayerEntity) player, false);
+            ItemStack stack = entity.dropLastItem((ServerPlayerEntity) player);
         }
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
+    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+        super.onBlockAdded(state, world, pos, oldState, notify);
 
         if (world.isClient)
             return;
 
-        BohrBlueprintEntity entity = new BohrBlueprintEntity(world, pos.up());
-        world.emitGameEvent(placer, GameEvent.ENTITY_PLACE, entity.getPos());
-        world.spawnEntity(entity);
+        if (oldState.isOf(state.getBlock()))
+            return;
+
+        if (getEntity(world, pos, false) == null){
+            BohrBlueprintEntity entity = new BohrBlueprintEntity(world, pos.up());
+            world.spawnEntity(entity);
+        }
     }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         super.onStateReplaced(state, world, pos, newState, moved);
+
         if (state.isOf(newState.getBlock()))
             return;
 
