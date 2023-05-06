@@ -65,7 +65,7 @@ public enum Atom {
     TELLURIUM(52, "Te", 2.1, AtomType.METALLOID, 6, 75, Color.GRAY),
     IODINE(53, "I", 2.5, AtomType.NON_METAL, 7, 74, Color.GREEN),
     XENON(54, "Xe", 0, AtomType.NOBLE_GAS, 8, 77, Atom.Color.CYAN),
-    CESIUM(55, "Cs", 0.79, AtomType.ALKALI_METAL, 1, 78, Color.VIOLET),
+    CAESIUM(55, "Cs", 0.79, AtomType.ALKALI_METAL, 1, 78, Color.VIOLET),
     BARIUM(56, "Ba", 0.89, AtomType.ALKALINE_EARTH_METAL, 2, 81, Color.DARK_GREEN),
     LANTHANUM(57, "La", 1.1, AtomType.LANTHANOID, 3, 81, Color.GRAY),
     CERIUM(58, "Ce", 1.12, AtomType.LANTHANOID, 3, 82, Color.GRAY),
@@ -113,22 +113,22 @@ public enum Atom {
     FERMIUM(100, "Fm", 0, AtomType.ACTINOID, 8, 157, Color.GRAY),
     MENDELEVIUM(101, "Md", 0, AtomType.ACTINOID, 8, 157, Color.GRAY),
     NOBELIUM(102, "No", 0, AtomType.ACTINOID, 8, 157, Color.GRAY),
-    LAWRENCIUM(103, "Lr", 0, AtomType.ACTINOID, 8, 159, Color.GRAY),
-    RUTHERFORDIUM(104, "Rf", 0, AtomType.TRANSITION_METAL, 4, 267, Color.GRAY),
-    DUBNIUM(105, "Db", 0, AtomType.TRANSITION_METAL, 5, 270, Color.GRAY),
-    SEABORGIUM(106, "Sg", 0, AtomType.TRANSITION_METAL, 6, 271, Color.GRAY),
-    BOHRIUM(107, "Bh", 0, AtomType.TRANSITION_METAL, 7, 270, Color.GRAY),
-    HASSIUM(108, "Hs", 0, AtomType.TRANSITION_METAL, 8, 277, Color.GRAY),
-    MEITNERIUM(109, "Mt", 0, AtomType.UNKNOWN, 0, 278, Color.GRAY),
-    DARMSTADTIUM(110, "Ds", 0, AtomType.UNKNOWN, 0, 281, Color.GRAY),
-    ROENTGENIUM(111, "Rg", 0, AtomType.UNKNOWN, 0, 282, Color.GRAY),
-    COPERNICIUM(112, "Cn", 0, AtomType.UNKNOWN, 0, 285, Color.GRAY),
-    NIHONIUM(113, "Nh", 0, AtomType.UNKNOWN, 0, 286, Color.GRAY),
-    FLEROVIUM(114, "Fl", 0, AtomType.POST_TRANSITION_METAL, 0, 289, Color.GRAY),
-    MOSCOVIUM(115, "Mc", 0, AtomType.UNKNOWN, 0, 288, Color.GRAY),
-    LIVERMORIUM(116, "Lv", 0, AtomType.UNKNOWN, 0, 293, Color.GRAY),
-    TENNESSINE(117, "Ts", 0, AtomType.METALLOID, 0, 294, Color.GRAY),
-    OGANESSON(118, "Og", 0, AtomType.NOBLE_GAS, 0, 294, Color.GRAY);
+    LAWRENCIUM(103, "Lr", 0, AtomType.ACTINOID, 8, 163, Color.GRAY),
+    RUTHERFORDIUM(104, "Rf", 0, AtomType.TRANSITION_METAL, 4, 163, Color.GRAY),
+    DUBNIUM(105, "Db", 0, AtomType.TRANSITION_METAL, 5, 163, Color.GRAY),
+    SEABORGIUM(106, "Sg", 0, AtomType.TRANSITION_METAL, 6, 163, Color.GRAY),
+    BOHRIUM(107, "Bh", 0, AtomType.TRANSITION_METAL, 7, 163, Color.GRAY),
+    HASSIUM(108, "Hs", 0, AtomType.TRANSITION_METAL, 8, 169, Color.GRAY),
+    MEITNERIUM(109, "Mt", 0, AtomType.UNKNOWN, 0, 169, Color.GRAY),
+    DARMSTADTIUM(110, "Ds", 0, AtomType.UNKNOWN, 0, 171, Color.GRAY),
+    ROENTGENIUM(111, "Rg", 0, AtomType.UNKNOWN, 0, 171, Color.GRAY),
+    COPERNICIUM(112, "Cn", 0, AtomType.UNKNOWN, 0, 172, Color.GRAY),
+    NIHONIUM(113, "Nh", 0, AtomType.UNKNOWN, 0, 173, Color.GRAY),
+    FLEROVIUM(114, "Fl", 0, AtomType.POST_TRANSITION_METAL, 0, 174, Color.GRAY),
+    MOSCOVIUM(115, "Mc", 0, AtomType.UNKNOWN, 0, 175, Color.GRAY),
+    LIVERMORIUM(116, "Lv", 0, AtomType.UNKNOWN, 0, 177, Color.GRAY),
+    TENNESSINE(117, "Ts", 0, AtomType.METALLOID, 0, 177, Color.GRAY),
+    OGANESSON(118, "Og", 0, AtomType.NOBLE_GAS, 0, 176, Color.GRAY);
 
     private static class Color{
         public static final int WHITE = 0xFFFFFF;
@@ -145,8 +145,6 @@ public enum Atom {
         public static final int YELLOW = 0xADA10F;
         public static final int PINK = 0x9B4D7A;
     }
-
-    public static final int LARGEST_ATOM_NUMBER = 119;
     private static final Atom[] ATOM_BY_PROTONS = createAtomProtonIndex();
     private static final Map<String, Atom> ATOM_BY_SYMBOL = createAtomSymbolIndex();
 
@@ -184,7 +182,7 @@ public enum Atom {
     }
 
     private static Atom[] createAtomProtonIndex(){
-        Atom[] array = new Atom[LARGEST_ATOM_NUMBER];
+        Atom[] array = new Atom[OGANESSON.getAtomNumber()+1];
         for (Atom atom : values())
             array[atom.getAtomNumber()] = atom;
         return array;
@@ -199,7 +197,10 @@ public enum Atom {
         return ATOM_BY_SYMBOL.getOrDefault(symbol, null);
     }
 
+    @Nullable
     public static Atom getByNumber(int atomNumber) {
+        if (atomNumber < 1 || atomNumber >= ATOM_BY_PROTONS.length)
+            return null;
         return ATOM_BY_PROTONS[atomNumber];
     }
 
