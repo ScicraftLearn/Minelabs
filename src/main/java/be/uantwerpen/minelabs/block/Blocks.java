@@ -131,7 +131,7 @@ public class Blocks {
     public static final Block HCN = register(new ChemicalFluidBlock(Fluids.STILL_HCN, Molecule.HCN), "hcn");
     public static final Block CH4O = register(new ChemicalFluidBlock(Fluids.STILL_CH4O, Molecule.CH4O), "ch4o");
     public static final Block SICL4 = register(new ChemicalFluidBlock(Fluids.STILL_SiCl4, Molecule.SICL4), "sicl4");
-    public static final Block BOHR_BLUEPRINT = register(new BohrBlueprintBlock(), "bohr_block");
+    public static final BohrBlueprintBlock BOHR_BLUEPRINT = register(new BohrBlueprintBlock(), "bohr_block");
 
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
             FabricBlockSettings.of(Material.METAL).strength(4.0f)), "erlenmeyer_stand");

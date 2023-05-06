@@ -145,8 +145,6 @@ public enum Atom {
         public static final int YELLOW = 0xADA10F;
         public static final int PINK = 0x9B4D7A;
     }
-
-    public static final int LARGEST_ATOM_NUMBER = 119;
     private static final Atom[] ATOM_BY_PROTONS = createAtomProtonIndex();
     private static final Map<String, Atom> ATOM_BY_SYMBOL = createAtomSymbolIndex();
 
@@ -184,7 +182,7 @@ public enum Atom {
     }
 
     private static Atom[] createAtomProtonIndex(){
-        Atom[] array = new Atom[LARGEST_ATOM_NUMBER];
+        Atom[] array = new Atom[OGANESSON.getAtomNumber()+1];
         for (Atom atom : values())
             array[atom.getAtomNumber()] = atom;
         return array;
@@ -199,7 +197,10 @@ public enum Atom {
         return ATOM_BY_SYMBOL.getOrDefault(symbol, null);
     }
 
+    @Nullable
     public static Atom getByNumber(int atomNumber) {
+        if (atomNumber < 1 || atomNumber >= ATOM_BY_PROTONS.length)
+            return null;
         return ATOM_BY_PROTONS[atomNumber];
     }
 

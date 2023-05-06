@@ -114,6 +114,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     }
 
     private int[] getElectronShellConfiguration(int nE) {
+        if (nE >= ELECTRON_SHELL_CAPACITIES.length)
+            nE = ELECTRON_SHELL_CAPACITIES.length - 1;
         return ELECTRON_SHELL_CAPACITIES[nE];
     }
 
@@ -533,7 +535,15 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             {2, 8, 18, 32, 32, 18, 5},
             {2, 8, 18, 32, 32, 18, 6},
             {2, 8, 18, 32, 32, 18, 7},
-            {2, 8, 18, 32, 32, 18, 8}
+            {2, 8, 18, 32, 32, 18, 8},  // Og
+            {2, 8, 18, 32, 32, 18, 9},  // made up to have some padding, likely not correct
+            {2, 8, 18, 32, 32, 18, 10},
+            {2, 8, 18, 32, 32, 18, 11},
+            {2, 8, 18, 32, 32, 18, 12},
+            {2, 8, 18, 32, 32, 18, 13},
+            {2, 8, 18, 32, 32, 18, 14},
+            {2, 8, 18, 32, 32, 18, 15},
+            {2, 8, 18, 32, 32, 18, 16}, // 126
     };
 
 }
