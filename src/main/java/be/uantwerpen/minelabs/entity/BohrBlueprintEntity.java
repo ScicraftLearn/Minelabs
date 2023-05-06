@@ -37,7 +37,7 @@ import java.util.*;
 public class BohrBlueprintEntity extends Entity {
     // Public constants
     public static final int MAX_PROTONS = 200;
-    public static final int MAX_ELECTRONS = MAX_PROTONS;
+    public static final int MAX_ELECTRONS = 126;    // for rendering purposes (8 above Og)
     public static final int MAX_NEUTRONS = 200;
 
     // Private constants
