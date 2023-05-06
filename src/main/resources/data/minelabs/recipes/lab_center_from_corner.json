@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minelabs:lab_corner"
+    }
+  ],
+  "result": {
+    "item": "minelabs:lab_center"
+  }
+}

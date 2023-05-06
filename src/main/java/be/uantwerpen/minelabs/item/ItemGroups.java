@@ -18,7 +18,7 @@ public class ItemGroups {
                 stack.add(new ItemStack(Items.ATOM_FLOOR));
                 stack.add(new ItemStack(Items.SAFETY_GLASSES));
                 stack.add(new ItemStack(Items.LAB_COAT));
-                stack.add(new ItemStack(Items.LAB_COUNTER));
+                stack.add(new ItemStack(Items.LAB_CABIN));
                 stack.add(new ItemStack(Items.LAB_DRAWER));
                 stack.add(new ItemStack(Items.LAB_SINK));
                 stack.add(new ItemStack(Items.LAB_CENTER));

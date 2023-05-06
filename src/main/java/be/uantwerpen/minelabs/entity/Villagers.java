@@ -67,6 +67,67 @@ public class Villagers {
                             new ItemStack(Atom.CARBON.getItem(), 5),
                             6,2,0.02f
                     )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 2),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.ERLENMEYER, 16),
+                            6,2,0.02f
+                    )));
+                });
+        TradeOfferHelper.registerVillagerOffers(SCIENCE_VILLAGER, 2,
+                factories -> {
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 1),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.LAB_CENTER, 2),
+                            4,4,0.02f
+                    )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 3),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.LAB_SINK, 1),
+                            2,4,0.02f
+                    )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 2),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.LAB_DRAWER, 1),
+                            2,4,0.02f
+                    )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 2),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.LAB_CABIN, 1),
+                            2,4,0.02f
+                    )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 1),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.LAB_CORNER, 2),
+                            4,4,0.02f
+                    )));
+                });
+        TradeOfferHelper.registerVillagerOffers(SCIENCE_VILLAGER, 3,
+                factories -> {
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 2),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.MICROSCOPE, 1),
+                            1,5,0.02f
+                    )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 2),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.TUBERACK, 1),
+                            1,5,0.02f
+                    )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 2),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.BURNER, 1),
+                            1,5,0.02f
+                    )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 2),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.LENS, 1),
+                            8,5,0.02f
+                    )));
+                    factories.add(((entity, random) -> new TradeOffer(
+                            new ItemStack(Items.EMERALD, 2),
+                            new ItemStack(be.uantwerpen.minelabs.item.Items.BIG_LENS, 1),
+                            8,5,0.02f
+                    )));
                 });
     }
 }
