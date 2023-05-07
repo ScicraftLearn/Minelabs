@@ -10,7 +10,6 @@ import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.mixins.FishingBobberEntityAccessor;
 import be.uantwerpen.minelabs.util.AtomConfiguration;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -23,7 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -475,7 +475,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     @Override
-    public Packet<?> createSpawnPacket() {
+    public Packet<ClientPlayPacketListener> createSpawnPacket() {
         return new EntitySpawnS2CPacket(this);
     }
 

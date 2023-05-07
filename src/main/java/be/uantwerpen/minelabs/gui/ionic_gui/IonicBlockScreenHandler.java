@@ -170,7 +170,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
      * @return The {@link ItemStack} to be left in the clicked slot
      */
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int invSlot) {
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (invSlot < GRIDSIZE * 2) {

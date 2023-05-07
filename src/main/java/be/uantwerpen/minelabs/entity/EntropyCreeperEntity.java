@@ -8,7 +8,6 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -18,8 +17,8 @@ import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -197,7 +196,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
             this.playSound(SoundEvents.ENTITY_ENTROPY_CREEPER_EXPLODE, 1.0f, 1.0f);
 
             // Use explosion code to determine affected blocks
-            Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
+            Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.KEEP;
             Explosion explosion = new Explosion(this.world, this, null, null, getX(), getY(), getZ(), explosionRadius, false, destructionType);
 
             // Adapted from the Explosion class

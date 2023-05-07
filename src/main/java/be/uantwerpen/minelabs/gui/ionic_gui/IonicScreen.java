@@ -43,7 +43,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
 
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
         RenderSystem.setShaderTexture(0,TEXTURE);
         int x = (width - backgroundWidth) /2;
@@ -65,7 +65,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
             Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
             BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
-            this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+            this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 
         /*
@@ -77,7 +77,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             Slot slot1 = stackToSlotMap.get(graph2.getItemStackOfVertex(edge.getFirst()));
             Slot slot2 = stackToSlotMap.get(graph2.getItemStackOfVertex(edge.getSecond()));
             BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
-            this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+            this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 
         /*
@@ -90,11 +90,11 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
                 break;
             }
             if (handler.getInventory().getStack(2*IonicBlockScreenHandler.GRIDSIZE+i).getCount() < handler.getLeftDensity()) {
-                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18*i, 86+y);
+                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18*i, 86+y);
             } else {
-                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18*i, 86+y);
+                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18*i, 86+y);
             }
-            this.itemRenderer.renderInGuiWithOverrides(atom, x + 12 + 18*i, 86+y);
+            this.itemRenderer.renderInGuiWithOverrides(matrices, atom, x + 12 + 18*i, 86+y);
         }
 
         /*
@@ -107,11 +107,11 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
                 break;
             }
             if (handler.getInventory().getStack(2*IonicBlockScreenHandler.GRIDSIZE + i + leftIngredients.size()).getCount() < handler.getRightDensity()) {
-                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18*i + 18*leftIngredients.size(), 86+y);
+                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18*i + 18*leftIngredients.size(), 86+y);
             } else {
-                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18*i + 18*leftIngredients.size(), 86+y);
+                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18*i + 18*leftIngredients.size(), 86+y);
             }
-            this.itemRenderer.renderInGuiWithOverrides(atom, x + 12 + 18*i + 18*leftIngredients.size(), 86+y);
+            this.itemRenderer.renderInGuiWithOverrides(matrices, atom, x + 12 + 18*i + 18*leftIngredients.size(), 86+y);
         }
         if (handler.getLeftCharge() != 0 && handler.getRightCharge() != 0) {
             this.textRenderer.draw(matrices,"+" + handler.getLeftCharge(), 66+x,6+y, 0);

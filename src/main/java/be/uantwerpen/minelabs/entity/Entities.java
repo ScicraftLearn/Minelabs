@@ -15,8 +15,9 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.SpawnSettings;
 
 import java.util.function.Predicate;
@@ -46,7 +47,7 @@ public class Entities {
      * @return registered EntityType
      */
     private static <T extends Entity> EntityType<T> register(EntityType<T> entityType, String identifier) {
-        return Registry.register(Registry.ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), entityType);
+        return Registry.register(Registries.ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), entityType);
     }
 
     /**
@@ -58,7 +59,7 @@ public class Entities {
      * @return registered BlockEntityType
      */
     private static <T extends BlockEntity> BlockEntityType<T> register(BlockEntityType<T> blockEntityType, String identifier) {
-        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), blockEntityType);
+        return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), blockEntityType);
     }
 
     /**
@@ -72,7 +73,7 @@ public class Entities {
      *                    While testing set Selector to BiomeSelectors.all(), this will spawn you Entity in "The End"/"Nether" when entering
      */
     private static void registerEntitySpawns(EntityType<?> entityType, Predicate<BiomeSelectionContext> selector, SpawnSettings.SpawnEntry spawnEntry) {
-        BiomeModifications.create(Registry.ENTITY_TYPE.getId(entityType))
+        BiomeModifications.create(Registries.ENTITY_TYPE.getId(entityType))
                 .add(ModificationPhase.ADDITIONS, selector, context -> context.getSpawnSettings().addSpawn(entityType.getSpawnGroup(), spawnEntry));
     }
 

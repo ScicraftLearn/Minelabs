@@ -7,16 +7,12 @@ import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.potion.Molecule;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FlowableFluid;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 
 public class Blocks {
 
@@ -26,9 +22,9 @@ public class Blocks {
     //Portal block
     public static final Block PORTAL_BLOCK = register(new PortalBlock(FabricBlockSettings.of(Material.DECORATION)), "portal_block");
 
-    public static final Block SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
+    public static final Block SALT_ORE = register(new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE)
             .mapColor(MapColor.WHITE_GRAY).strength(3.0f, 3.0f).requiresTool(), UniformIntProvider.create(0, 3)), "salt_ore");
-    public static final Block DEEPSLATE_SALT_ORE = register(new OreBlock(FabricBlockSettings.of(Material.STONE)
+    public static final Block DEEPSLATE_SALT_ORE = register(new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE)
             .mapColor(MapColor.WHITE_GRAY).strength(4.5f, 3.0f).requiresTool(), UniformIntProvider.create(1, 4)), "deepslate_salt_ore");
     public static final Block SALT_BLOCK = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE_GRAY).strength(2.0f)), "salt_block");
@@ -152,7 +148,7 @@ public class Blocks {
      * @return {@link Block}
      */
     private static <T extends Block> T register(T block, String identifier) {
-        return Registry.register(Registry.BLOCK, new Identifier(Minelabs.MOD_ID, identifier), block);
+        return Registry.register(Registries.BLOCK, new Identifier(Minelabs.MOD_ID, identifier), block);
     }
 
     /**

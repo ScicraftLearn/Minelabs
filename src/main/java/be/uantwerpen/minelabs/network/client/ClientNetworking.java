@@ -1,4 +1,4 @@
-package be.uantwerpen.minelabs.client.network;
+package be.uantwerpen.minelabs.network.client;
 
 import be.uantwerpen.minelabs.network.IonicDataPacket;
 import be.uantwerpen.minelabs.network.LewisDataPacket;

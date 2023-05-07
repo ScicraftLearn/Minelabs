@@ -1,14 +1,10 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class FlammableReaction extends Reaction {
 

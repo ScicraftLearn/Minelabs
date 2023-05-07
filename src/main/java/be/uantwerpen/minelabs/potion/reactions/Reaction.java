@@ -1,19 +1,17 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
-import be.uantwerpen.minelabs.block.BurnerBlock;
 import be.uantwerpen.minelabs.util.Tags;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.property.Properties;
-import net.minecraft.tag.TagKey;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.*;

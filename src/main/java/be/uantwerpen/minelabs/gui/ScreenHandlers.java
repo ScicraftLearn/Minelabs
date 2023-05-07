@@ -6,10 +6,11 @@ import be.uantwerpen.minelabs.gui.ionic_gui.IonicBlockScreenHandler;
 import be.uantwerpen.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
 import be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class ScreenHandlers {
 
@@ -27,7 +28,7 @@ public class ScreenHandlers {
      * @return {@link ScreenHandler}
      */
     private static <T extends ScreenHandler> ScreenHandlerType<T> registerSimple(ScreenHandlerType.Factory<T> factory, String identifier) {
-        return (ScreenHandlerType) Registry.register(Registry.SCREEN_HANDLER, new Identifier(Minelabs.MOD_ID, identifier), new ScreenHandlerType(factory));
+        return (ScreenHandlerType) Registry.register(Registries.SCREEN_HANDLER, new Identifier(Minelabs.MOD_ID, identifier), new ScreenHandlerType(factory));
     }
 
     /**
@@ -42,7 +43,7 @@ public class ScreenHandlers {
      */
     private static <T extends ScreenHandler> ExtendedScreenHandlerType<T> register(ExtendedScreenHandlerType.ExtendedFactory factory, String identifier) {
         ExtendedScreenHandlerType type = new ExtendedScreenHandlerType<>(factory);
-        return Registry.register(Registry.SCREEN_HANDLER, new Identifier(Minelabs.MOD_ID, identifier), type);
+        return Registry.register(Registries.SCREEN_HANDLER, new Identifier(Minelabs.MOD_ID, identifier), type);
     }
 
 

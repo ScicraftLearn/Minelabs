@@ -6,21 +6,20 @@ import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class LabCoatArmorItem extends ArmorItem implements IAnimatable {
+public class LabCoatArmorItem extends ArmorItem implements GeoAnimatable, GeoItem {
     private final AnimationFactory factory = new AnimationFactory(this);
-    public LabCoatArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+
+    public LabCoatArmorItem(ArmorMaterial material, Type slot, Settings settings) {
         super(material, slot, settings);
     }
 
@@ -59,12 +58,7 @@ public class LabCoatArmorItem extends ArmorItem implements IAnimatable {
     // All you need to do here is add your animation controllers to the
     // AnimationData
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 20, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 20, this::predicate));
     }
 }

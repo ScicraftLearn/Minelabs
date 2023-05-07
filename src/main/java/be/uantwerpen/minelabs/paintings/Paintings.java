@@ -2,9 +2,11 @@ package be.uantwerpen.minelabs.paintings;
 
 import be.uantwerpen.minelabs.Minelabs;
 import net.minecraft.entity.decoration.painting.PaintingVariant;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+
 
 public class Paintings {
     public static final RegistryKey<PaintingVariant> PARTICLE_CPY = register("particle_cpy", new PaintingVariant(32, 32));
@@ -30,8 +32,8 @@ public class Paintings {
      * @return {@link PaintingVariant}
      */
     private static RegistryKey<PaintingVariant> register(String id, PaintingVariant motive) {
-        RegistryKey<PaintingVariant> key = RegistryKey.of(Registry.PAINTING_VARIANT_KEY, new Identifier(Minelabs.MOD_ID, id));
-        Registry.register(Registry.PAINTING_VARIANT, key, motive);
+        RegistryKey<PaintingVariant> key = RegistryKey.of(Registries.PAINTING_VARIANT.getKey(), new Identifier(Minelabs.MOD_ID, id));
+        Registry.register(Registries.PAINTING_VARIANT, key, motive);
         return key;
     }
 

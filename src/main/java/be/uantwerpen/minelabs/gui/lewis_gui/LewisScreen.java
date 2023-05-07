@@ -7,21 +7,15 @@ import be.uantwerpen.minelabs.crafting.molecules.BondManager;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;
 import be.uantwerpen.minelabs.crafting.molecules.ValenceElectrons;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.datafixers.util.Either;
-import io.netty.util.internal.StringUtil;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -30,13 +24,11 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.RegistryKey;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler.GRIDSIZE;
 
@@ -65,7 +57,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
      */
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.handler.hasRecipe()) {
             RenderSystem.setShaderTexture(0, TEXTURE);
@@ -94,7 +86,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
                 Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
                 BondManager.Bond bond = manager.getOrCreateBond(slot1, slot2, edge.data.bondOrder);
-                this.itemRenderer.renderInGuiWithOverrides(bond.getStack(), bond.getX() + x, bond.getY() + y);
+                this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
             }
             for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
                 Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
@@ -109,7 +101,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                         , vertex.data.getMaxPossibleBonds() == total_bonds); //no clue: copied it from getOpenConnections in the MoleculeGraph class
                 for (String i : Arrays.asList("n", "e", "s", "w")) { //render item 4x: N-E-S-W
                     if (valentieE.getDirectionalValence(i) != 0) {
-                        this.itemRenderer.renderInGuiWithOverrides(valentieE.getStack(i), slot.x + x, slot.y + y);
+                        this.itemRenderer.renderInGuiWithOverrides(matrices, valentieE.getStack(i), slot.x + x, slot.y + y);
                     }
                 }
             }
@@ -139,7 +131,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             if (handler.getIoInventory().getStack(i).getCount() < handler.getDensity()) {
                 //this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
             } else {
-                this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
+                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
             }
             //this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
             RenderSystem.disableBlend();
@@ -172,6 +164,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
     @SuppressWarnings("ConstantConditions")
     private void registerButtonWidget() {
+        /*
         buttonWidget = new ButtonWidget(x + 133, y + 17, 18, 18, Text.of("C"),
                 button -> {
                     if (!widgetTooltip) return;
@@ -187,9 +180,27 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 },
                 (button, matrixStack, mx, my) -> {
                     // On Button Hover:
-                    renderTooltip(matrixStack, Text.of(handler.isInputEmpty() ? "Clear 5x5 Grid" : "Clear Bottom Input Slots"), mx, my);
+                    renderTooltip(matrixStack,
+                            Text.of(handler.isInputEmpty() ? "Clear 5x5 Grid" : "Clear Bottom Input Slots"),
+                            mx, my);
                 }
-        );
+        );*/
+        // TODO CHECK
+        buttonWidget = new ButtonWidget.Builder(Text.of("C"), button -> {
+            if (!widgetTooltip) return;
+            if (handler.isInputEmpty()) {
+                for (int i = 0; i < GRIDSIZE; i++) {
+                    client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
+                }
+            } else {
+                for (int i = 0; i < 9; i++) {
+                    client.interactionManager.clickSlot(handler.syncId, i + GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
+                }
+            }
+        }).narrationSupplier(textSupplier -> handler.isInputEmpty() ?
+                Text.translatable("text.minelabs.clear_grid") : Text.translatable("text.minelabs.clear_slots"))
+                .position(x+133, y+17)
+                .build();
     }
 
     @Override

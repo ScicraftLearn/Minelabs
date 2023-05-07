@@ -9,6 +9,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.Items;
@@ -91,9 +92,9 @@ public class BurnerBlock extends CosmeticBlock {
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         if (state.get(LIT) && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entity)) {
             if (state.get(OXYGENATED)){
-                entity.damage(DamageSource.IN_FIRE,2f);
+                entity.damage(world.getDamageSources().inFire(),2f);
             } else {
-                entity.damage(DamageSource.IN_FIRE,1f);
+                entity.damage(world.getDamageSources().inFire(),1f);
             }
         }
 

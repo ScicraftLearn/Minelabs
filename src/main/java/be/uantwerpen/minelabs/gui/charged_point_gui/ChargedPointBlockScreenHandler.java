@@ -32,7 +32,8 @@ public class ChargedPointBlockScreenHandler extends ScreenHandler {
         addPlayerHotbar(playerInventory);
     }
 
-    public ItemStack transferSlot(PlayerEntity player, int invSlot) {
+    @Override
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
@@ -62,8 +63,8 @@ public class ChargedPointBlockScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public void close(PlayerEntity player) {
-        super.close(player);
+    public void onClosed(PlayerEntity player) {
+        super.onClosed(player);
         inventory.onClose(player);
     }
 

@@ -1,13 +1,7 @@
 package be.uantwerpen.minelabs.particle;
 
 import be.uantwerpen.minelabs.Minelabs;
-import com.mojang.brigadier.StringReader;
-import com.mojang.serialization.Codec;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.util.registry.Registry;
+
 
 public class Particles {
 

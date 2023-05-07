@@ -1,9 +1,10 @@
 package be.uantwerpen.minelabs.sound;
 
 import be.uantwerpen.minelabs.Minelabs;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class SoundEvents {
 
@@ -13,7 +14,8 @@ public class SoundEvents {
     public static final SoundEvent ENTITY_ENTROPY_CREEPER_EXPLODE = register("entity.entropy_creeper.explode");
 
     private static SoundEvent register(String id) {
-        return Registry.register(Registry.SOUND_EVENT, id, new SoundEvent(new Identifier(Minelabs.MOD_ID, id)));
+
+        return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(new Identifier(Minelabs.MOD_ID, id)));
     }
 
     /**

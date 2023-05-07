@@ -1,13 +1,11 @@
 package be.uantwerpen.minelabs.potion.reactions;
 
 import net.minecraft.block.AbstractCandleBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.tag.BlockTags;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ExtinguishReaction extends Reaction {

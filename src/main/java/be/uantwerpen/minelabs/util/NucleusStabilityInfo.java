@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.util;
 
-import be.uantwerpen.minelabs.Minelabs;
 import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.Nullable;
 

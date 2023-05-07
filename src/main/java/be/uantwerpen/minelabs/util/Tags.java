@@ -4,9 +4,9 @@ import be.uantwerpen.minelabs.Minelabs;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 /**
  * Use these tags for NEW tags.
@@ -34,7 +34,7 @@ public class Tags {
          * @return {@link TagKey}
          */
         private static TagKey<Block> createTag(String name) {
-            return TagKey.of(Registry.BLOCK_KEY, new Identifier(Minelabs.MOD_ID, name));
+            return TagKey.of(RegistryKeys.BLOCK, new Identifier(Minelabs.MOD_ID, name));
         }
 
         /**
@@ -45,7 +45,7 @@ public class Tags {
          * @return {@link TagKey}
          */
         private static TagKey<Block> createCommonTag(String name) {
-            return TagKey.of(Registry.BLOCK_KEY, new Identifier("c", name));
+            return TagKey.of(RegistryKeys.BLOCK, new Identifier("c", name));
         }
     }
 
@@ -69,7 +69,7 @@ public class Tags {
          * @return {@link TagKey}
          */
         private static TagKey<Item> createTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier(Minelabs.MOD_ID, name));
+            return TagKey.of(RegistryKeys.ITEM, new Identifier(Minelabs.MOD_ID, name));
         }
 
         /**
@@ -80,7 +80,7 @@ public class Tags {
          * @return {@link TagKey}
          */
         private static TagKey<Item> createCommonTag(String name) {
-            return TagKey.of(Registry.ITEM_KEY, new Identifier("c", name));
+            return TagKey.of(RegistryKeys.ITEM, new Identifier("c", name));
         }
     }
 
@@ -96,7 +96,7 @@ public class Tags {
          * @return {@link TagKey}
          */
         private static TagKey<Fluid> createTag(String name) {
-            return TagKey.of(Registry.FLUID_KEY, new Identifier(Minelabs.MOD_ID, name));
+            return TagKey.of(RegistryKeys.FLUID, new Identifier(Minelabs.MOD_ID, name));
         }
 
         /**
@@ -107,7 +107,7 @@ public class Tags {
          * @return {@link TagKey}
          */
         private static TagKey<Fluid> createCommonTag(String name) {
-            return TagKey.of(Registry.FLUID_KEY, new Identifier("c", name));
+            return TagKey.of(RegistryKeys.FLUID, new Identifier("c", name));
         }
     }
 }

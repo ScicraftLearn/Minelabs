@@ -2,7 +2,7 @@ package be.uantwerpen.minelabs;
 
 import be.uantwerpen.minelabs.block.Blocks;
 import be.uantwerpen.minelabs.block.entity.BlockEntities;
-import be.uantwerpen.minelabs.client.network.ClientNetworking;
+import be.uantwerpen.minelabs.network.client.ClientNetworking;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.EntityModelLayers;
 import be.uantwerpen.minelabs.renderer.LabCoatRenderer;

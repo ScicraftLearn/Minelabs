@@ -3,9 +3,9 @@ package be.uantwerpen.minelabs.model;
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.item.LabCoatArmorItem;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class LabCoatModel extends AnimatedGeoModel<LabCoatArmorItem> {
+public class LabCoatModel extends GeoModel<LabCoatArmorItem> {
     @Override
     public Identifier getModelResource(LabCoatArmorItem object) {
         return new Identifier(Minelabs.MOD_ID, "geo/labcoat.geo.json");

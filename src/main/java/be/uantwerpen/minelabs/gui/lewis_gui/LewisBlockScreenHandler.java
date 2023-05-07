@@ -1,8 +1,6 @@
 package be.uantwerpen.minelabs.gui.lewis_gui;
 
-import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
-import be.uantwerpen.minelabs.advancement.criterion.LCTCriterion;
 import be.uantwerpen.minelabs.block.entity.LewisBlockEntity;
 import be.uantwerpen.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.uantwerpen.minelabs.crafting.molecules.Bond;
@@ -27,7 +25,6 @@ import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -188,7 +185,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @return The {@link ItemStack} to be left in the clicked slot
      */
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int invSlot) {
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (invSlot < GRIDSIZE) {

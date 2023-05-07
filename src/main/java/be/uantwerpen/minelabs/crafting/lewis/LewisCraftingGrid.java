@@ -1,6 +1,5 @@
 package be.uantwerpen.minelabs.crafting.lewis;
 
-import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.crafting.molecules.Bond;
 import be.uantwerpen.minelabs.crafting.molecules.MoleculeItemGraph;

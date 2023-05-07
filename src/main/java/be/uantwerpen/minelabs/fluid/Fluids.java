@@ -2,8 +2,9 @@ package be.uantwerpen.minelabs.fluid;
 
 import be.uantwerpen.minelabs.Minelabs;
 import net.minecraft.fluid.FlowableFluid;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class Fluids {
 
@@ -48,7 +49,7 @@ public class Fluids {
      * @return {@link AbstractFluid}
      */
     private static FlowableFluid register(AbstractFluid fluid, String identifier) {
-        return Registry.register(Registry.FLUID, new Identifier(Minelabs.MOD_ID, identifier), fluid);
+        return Registry.register(Registries.FLUID, new Identifier(Minelabs.MOD_ID, identifier), fluid);
     }
 
     /**

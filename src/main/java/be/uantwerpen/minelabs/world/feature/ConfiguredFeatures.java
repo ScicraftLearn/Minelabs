@@ -2,7 +2,7 @@ package be.uantwerpen.minelabs.world.feature;
 
 import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.block.Blocks;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreConfiguredFeatures;

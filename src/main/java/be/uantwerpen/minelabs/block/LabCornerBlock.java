@@ -4,8 +4,6 @@ import be.uantwerpen.minelabs.util.MinelabsProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.enums.StairShape;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
@@ -72,11 +70,11 @@ public class LabCornerBlock extends LabBlock {
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState state = super.getPlacementState(ctx);
         World world = ctx.getWorld();
-        Direction playerF = ctx.getPlayerFacing();
-        if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() != Blocks.LAB_CENTER) {
-            boolean invert = ctx.getPlayerFacing().getDirection() == Direction.AxisDirection.NEGATIVE;
-            if (ctx.getPlayerFacing().getAxis() == Direction.Axis.X) {
-                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getPlayerFacing())).getBlock() instanceof LabBlock) {
+        Direction playerF = ctx.getHorizontalPlayerFacing();
+        if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getHorizontalPlayerFacing())).getBlock() != Blocks.LAB_CENTER) {
+            boolean invert = ctx.getHorizontalPlayerFacing().getDirection() == Direction.AxisDirection.NEGATIVE;
+            if (ctx.getHorizontalPlayerFacing().getAxis() == Direction.Axis.X) {
+                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getHorizontalPlayerFacing())).getBlock() instanceof LabBlock) {
                     if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, 1)).getBlock() instanceof LabBlock) {
                         return state.with(CONNECT, invert ? CornerShape.LEFT : CornerShape.RIGHT);
                     } else if (world.getBlockState(ctx.getBlockPos().offset(Direction.Axis.Z, -1)).getBlock() instanceof LabBlock) {

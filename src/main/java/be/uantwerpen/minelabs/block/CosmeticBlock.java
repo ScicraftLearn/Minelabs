@@ -36,7 +36,7 @@ public abstract class CosmeticBlock extends Block {
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         return this.getDefaultState()
-                .with(FACING, ctx.getPlayerFacing().getOpposite())
+                .with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
                 .with(COUNTER, getBase(ctx.getWorld(), ctx.getBlockPos().down()));
     }
 

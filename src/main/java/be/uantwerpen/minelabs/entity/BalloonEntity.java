@@ -2,29 +2,15 @@ package be.uantwerpen.minelabs.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.decoration.LeashKnotEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.network.packet.s2c.play.EntityAttachS2CPacket;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 public class BalloonEntity extends MobEntity {
     private static final double MAX_DISTANCE = 10.0;

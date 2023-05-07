@@ -39,7 +39,7 @@ public class LabChestScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int invSlot) {
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
@@ -69,8 +69,8 @@ public class LabChestScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public void close(PlayerEntity player) {
-        super.close(player);
+    public void onClosed(PlayerEntity player) {
+        super.onClosed(player);
         inventory.onClose(player);
     }
 
