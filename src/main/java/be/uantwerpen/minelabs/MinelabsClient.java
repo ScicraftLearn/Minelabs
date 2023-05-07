@@ -5,6 +5,7 @@ import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.client.network.ClientNetworking;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.EntityModelLayers;
+import be.uantwerpen.minelabs.renderer.LabCoatRenderer;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
@@ -16,7 +17,6 @@ import be.uantwerpen.minelabs.item.ItemModels;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.model.BalloonEntityModel;
 import be.uantwerpen.minelabs.model.ModelProvider;
-import be.uantwerpen.minelabs.network.NetworkingConstants;
 import be.uantwerpen.minelabs.renderer.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -38,6 +38,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
+import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 import java.util.Map;
 
@@ -125,6 +126,8 @@ public class MinelabsClient implements ClientModInitializer {
             if (screen instanceof LewisScreen)
                 ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
         });
+
+        GeoArmorRenderer.registerArmorRenderer(new LabCoatRenderer(),Items.LAB_COAT);
 
          // Gas
 
