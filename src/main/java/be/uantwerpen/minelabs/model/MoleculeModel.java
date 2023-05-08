@@ -32,7 +32,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Quaternion;
 import org.joml.Vector3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
@@ -169,8 +168,8 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
             return;
         }
 
-        Vector3f pos_diff = pos2.copy();
-        pos_diff.subtract(pos1);
+        Vector3f pos_diff = new Vector3f(pos2);
+        pos_diff.sub(pos1);
         float pos_norm = ModelUtil.norm(pos_diff);
 
         List<Vector3f[]> bondQuads = switch (bond){
@@ -181,8 +180,8 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         };
 
         // direction is the orientation of the bond
-        Vector3f direction = pos2.copy();
-        direction.subtract(pos1);
+        Vector3f direction = new Vector3f(pos2);
+        direction.sub(pos1);
         direction.normalize();
         // compute angle between positive X and direction
         float angle = (float) Math.acos(direction.dot(Vector3f.POSITIVE_X));
@@ -368,7 +367,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         };
         recursiveSubdivision(face, RESOLUTION, quads);
 
-        ModelUtil.transformQuads(quads, v -> v.scale(r));
+        ModelUtil.transformQuads(quads, v -> v.mul(r));
         ModelUtil.transformQuads(quads, v -> v.add(center));
         return quads;
     }
@@ -377,32 +376,32 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         if (RESOLUTION<=0){
             quads.add(quad);
         } else {
-            Vector3f va = quad[0].copy();
+            Vector3f va = new Vector3f(quad[0]);
             va.add(quad[1]);
             va.normalize();
 
-            Vector3f vb = quad[0].copy();
+            Vector3f vb = new Vector3f(quad[0]);
             vb.add(quad[3]);
             vb.normalize();
 
-            Vector3f vc = quad[0].copy();
+            Vector3f vc =new Vector3f( quad[0]);
             vc.add(quad[2]);
             vc.add(quad[1]);
             vc.add(quad[3]);
             vc.normalize();
 
-            Vector3f vd = quad[2].copy();
+            Vector3f vd = new Vector3f(quad[2]);
             vd.add(quad[1]);
             vd.normalize();
 
-            Vector3f ve = quad[3].copy();
+            Vector3f ve = new Vector3f(quad[3]);
             ve.add(quad[2]);
             ve.normalize();
 
-            recursiveSubdivision(new Vector3f[] {quad[0].copy(), va.copy(), vc.copy(), vb.copy()}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vector3f[] {va.copy(), quad[1].copy(), vd.copy(), vc.copy()}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vector3f[] {vc.copy(), vd.copy(), quad[2].copy(), ve.copy()}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vector3f[] {vb.copy(), vc.copy(), ve.copy(), quad[3].copy()}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vector3f[] {new Vector3f(quad[0]), new Vector3f(va), new Vector3f(vc), new Vector3f(vb)}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vector3f[] {new Vector3f(va), new Vector3f(quad[1]), new Vector3f(vd), new Vector3f(vc)}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vector3f[] {new Vector3f(vc), new Vector3f(vd), new Vector3f(quad[2]), new Vector3f(ve)}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vector3f[] {new Vector3f(vb), new Vector3f(vc), new Vector3f(ve), new Vector3f(quad[3])}, RESOLUTION-1, quads);
         }
         return quads;
 
