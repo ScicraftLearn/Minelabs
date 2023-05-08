@@ -23,13 +23,13 @@ public abstract class InGameHudMixin {
     private MinecraftClient client;
 
     @Shadow
-    protected abstract void renderOverlay(Identifier texture, float opacity);
+    protected abstract void renderOverlay(MatrixStack matrices, Identifier texture, float opacity);
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;asItem()Lnet/minecraft/item/Item;"))
     public void renderInject(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
         ItemStack itemStack = client.player.getInventory().getArmorStack(3);
         if (itemStack.isOf(Items.SAFETY_GLASSES)) {
-            renderOverlay(SAFETY_GLASS, 1.0F);
+            renderOverlay(matrices, SAFETY_GLASS, 1.0F);
         }
     }
 }

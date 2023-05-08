@@ -214,7 +214,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 this.renderTooltip(matrices, this.focusedSlot.getStack(), mouseX, mouseY);
             if ((mouseX >= x + 133 && mouseX < x + 133 + 18)
                     && (mouseY >= y + 17 && mouseY < y + 17 + 18)) {
-                buttonWidget.renderTooltip(matrices, mouseX, mouseY);
+                // TODO : No longer needed ?
+                //buttonWidget.renderTooltip(matrices, mouseX, mouseY);
                 widgetTooltip = true;
             }
             if (mouseX >= x + 105 && mouseX < x + 105 + 16 && mouseY >= y + 17 && mouseY < y + 17 + 16) {

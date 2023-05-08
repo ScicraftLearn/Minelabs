@@ -180,4 +180,8 @@ public class ItemGroups {
             })
             .build();
 
+
+    public static void registerItemGroups(){
+        Minelabs.LOGGER.info("registering ItemGroups");
+    }
 }

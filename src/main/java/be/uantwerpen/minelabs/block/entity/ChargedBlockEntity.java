@@ -3,6 +3,7 @@ package be.uantwerpen.minelabs.block.entity;
 import be.uantwerpen.minelabs.advancement.criterion.CoulombCriterion;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +28,7 @@ import java.util.Collections;
 public class ChargedBlockEntity extends BlockEntity{
     protected double charge;
     public static final int e_radius = 12;
-    private Vec3f field;
+    private Vector3f field;
     private boolean update_next_tick = false;
     private static final double e_move = 0.1; //if force is larger, then particles can move
     private final Block anti_block;
@@ -53,9 +55,9 @@ public class ChargedBlockEntity extends BlockEntity{
     public void writeNbt(NbtCompound tag) {
         // Save the current value of the number to the tag
         if (field != null) {
-            tag.putFloat("ex", field.getX());
-            tag.putFloat("ey", field.getY());
-            tag.putFloat("ez", field.getZ());
+            tag.putFloat("ex", field.x);
+            tag.putFloat("ey", field.y);
+            tag.putFloat("ez", field.z);
         }
         tag.putDouble("q", charge);
         tag.putBoolean("ut", update_next_tick);
@@ -67,7 +69,7 @@ public class ChargedBlockEntity extends BlockEntity{
     public void readNbt(NbtCompound tag) {
         super.readNbt(tag);
         if (tag.contains("ex")) {
-            field = new Vec3f(tag.getFloat("ex"), tag.getFloat("ey"), tag.getFloat("ez"));
+            field = new Vector3f(tag.getFloat("ex"), tag.getFloat("ey"), tag.getFloat("ez"));
         }
         charge = tag.getDouble("q");
         update_next_tick = tag.getBoolean("ut");
@@ -83,7 +85,7 @@ public class ChargedBlockEntity extends BlockEntity{
         return createNbt();
     }
 
-    public Vec3f getField() {
+    public Vector3f getField() {
         return field;
     }
 
@@ -111,7 +113,7 @@ public class ChargedBlockEntity extends BlockEntity{
     public void makeField(World world, BlockPos pos, boolean afterTimeFreeze) {
         double kc = 1;
         Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
-        field = new Vec3f(0f, 0f, 0f);
+        field = new Vector3f(0f, 0f, 0f);
 
         // first look whether there is a time freeze block in range
         boolean freeze = false;
@@ -127,11 +129,11 @@ public class ChargedBlockEntity extends BlockEntity{
             // if there is a time freeze block in range, no effect should happen to the particles themselves
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.field != null) {
                 //System.out.println("calculating.....");
-                Vec3f vec_pos = new Vec3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
+                Vector3f vec_pos = new Vector3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
                 float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                vec_pos.scale(d_E);
+                vec_pos.mul(d_E);
                 field.add(vec_pos);
-                particle2.field.subtract(vec_pos);
+                particle2.field.sub(vec_pos);
                 needsUpdate(!freeze);
                 particle2.needsUpdate(!freeze);
             }
@@ -170,9 +172,9 @@ public class ChargedBlockEntity extends BlockEntity{
         }
         for (BlockPos pos_block : blocks_in_radius) {
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.field != null) {
-                Vec3f vec_pos = new Vec3f(pos.getX() - pos_block.getX(), pos.getY() - pos_block.getY(), pos.getZ() - pos_block.getZ());
+                Vector3f vec_pos = new Vector3f(pos.getX() - pos_block.getX(), pos.getY() - pos_block.getY(), pos.getZ() - pos_block.getZ());
                 float d_E = (float) ((getCharge() * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                vec_pos.scale(d_E);
+                vec_pos.mul(d_E);
                 particle2.field.add(vec_pos);
                 particle2.markDirty();
                 particle2.needsUpdate(!freeze);
@@ -218,36 +220,37 @@ public class ChargedBlockEntity extends BlockEntity{
         return Math.random() <= (1 / this.decay_time);
     }
 
-    private Direction movementDirection(World world, BlockPos pos, Vec3f oldField) {
-        if (oldField.equals(Vec3f.ZERO)) {
+    private Direction movementDirection(World world, BlockPos pos, Vector3f oldField) {
+        // TODO CHECK : oldField.equals(Vec3f.ZERO)
+        if (oldField.equals(new Vector3f(0,0,0))) {
             return null;
         }
         ArrayList<Float> list = new ArrayList<>();
-        list.add(Math.abs(oldField.getX()));
-        list.add(Math.abs(oldField.getY()));
-        list.add(Math.abs(oldField.getZ()));
+        list.add(Math.abs(oldField.x));
+        list.add(Math.abs(oldField.y));
+        list.add(Math.abs(oldField.z));
         float max = Collections.max(list);
         if (max < e_move ) {
             return null;
         }
-        oldField.scale(1/max);
-        Vec3f movement = new Vec3f(Math.round(oldField.getX()), Math.round(oldField.getY()), Math.round(oldField.getZ()));
+        oldField.mul(1/max);
+        Vector3f movement = new Vector3f(Math.round(oldField.x), Math.round(oldField.y), Math.round(oldField.z));
         if (movement.dot(movement) > 1) {
-            if (Math.abs(movement.getX()) == 1) {
-                oldField.set(0, oldField.getY(), oldField.getZ());
-            } else if (Math.abs(movement.getY()) == 1) {
-                oldField.set(oldField.getX(), 0, oldField.getZ());
+            if (Math.abs(movement.x) == 1) {
+                oldField.set(0, oldField.y, oldField.z);
+            } else if (Math.abs(movement.y) == 1) {
+                oldField.set(oldField.x, 0, oldField.z);
             }
         }
-        Direction dir = Direction.fromVector(Math.round(oldField.getX()), Math.round(oldField.getY()), Math.round(oldField.getZ()));
+        Direction dir = Direction.fromVector(Math.round(oldField.x), Math.round(oldField.y), Math.round(oldField.z));
 
         if (dir == null || !world.getBlockState(pos.offset(dir)).isAir() && !world.getBlockState(pos.offset(dir)).isOf(Blocks.ANIMATED_CHARGED) && movement.dot(movement) > 1) {
             if (checkAnnihilation() != null) {
                 needsUpdate(true);
                 return dir;
             }
-            movement.scale(max);
-            dir = movementDirection(world, pos, oldField.copy());
+            movement.mul(max);
+            dir = movementDirection(world, pos, new Vector3f(oldField));
         }
         return dir;
     }
@@ -302,7 +305,7 @@ public class ChargedBlockEntity extends BlockEntity{
                     }
                     if (update_next_tick) {
                         //System.out.println("OVERRIDING ANYWAY");
-                        Direction movement = movementDirection(world, pos, field.copy());
+                        Direction movement = movementDirection(world, pos, new Vector3f(field));
                         if (movement != null) {
                             BlockPos nPos = pos.mutableCopy().offset(movement);
                             if (world.getBlockState(nPos).isAir()) {

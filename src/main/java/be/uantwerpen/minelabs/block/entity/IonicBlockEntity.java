@@ -20,6 +20,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -185,7 +186,9 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
             });
         }
         //recipe loaded, check if enough items
-        else if (ionic.inventory.getStack(28).isEmpty() || ionic.inventory.getStack(28).isOf(ionic.currentrecipe.getOutput().getItem())){
+        // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
+        else if (ionic.inventory.getStack(28).isEmpty()
+                || ionic.inventory.getStack(28).isOf(ionic.currentrecipe.getOutput(DynamicRegistryManager.EMPTY).getItem())){
             if (!ionic.inventory.getStack(27).isOf(Items.ERLENMEYER) || ionic.inventory.getStack(27).getCount() < 1) return; //has erlenmeyer
             boolean correct = false;
             for (int i = 0; i < ionic.leftIngredients.size(); i++) {
@@ -212,7 +215,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
             ionic.progress += 1;
             if (ionic.progress >= 23) { //Done crafting
                 if (ionic.inventory.getStack(28).isEmpty()) { //Set output slot
-                    ionic.inventory.setStack(28, ionic.currentrecipe.getOutput());
+                    // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
+                    ionic.inventory.setStack(28, ionic.currentrecipe.getOutput(DynamicRegistryManager.EMPTY));
                 }
                 else {
                     ionic.inventory.getStack(28).increment(1);

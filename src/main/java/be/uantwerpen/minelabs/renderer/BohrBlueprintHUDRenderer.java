@@ -130,16 +130,16 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
         matrixStack.translate(squareCenter, squareCenter, 0);
         matrixStack.scale(2, 2, 2);
         matrixStack.translate(0, (double) -MC_TEXT_HEIGHT / 2, 0);
-        drawCenteredText(matrixStack, tr, symbol, 0, 0, WHITE);
+        drawCenteredTextWithShadow(matrixStack, tr, symbol, 0, 0, WHITE);
         matrixStack.pop();
 
         // draw numbers
-        drawStringWithShadow(matrixStack, tr, protons, 2, 2, WHITE);
-        drawStringWithShadow(matrixStack, tr, mass, 2, squareSize - 2 - MC_TEXT_HEIGHT, zColor);
+        drawTextWithShadow(matrixStack, tr, protons, 2, 2, WHITE);
+        drawTextWithShadow(matrixStack, tr, mass, 2, squareSize - 2 - MC_TEXT_HEIGHT, zColor);
 
         if (!atomConfig.isElectronStable()) {
             int textWidth = tr.getWidth(ionicCharge);
-            drawStringWithShadow(matrixStack, tr, ionicCharge, squareSize - 2 - textWidth, 2, eColor);
+            drawTextWithShadow(matrixStack, tr, ionicCharge, squareSize - 2 - textWidth, 2, eColor);
         }
 
         // overlay when decomposing
@@ -205,7 +205,7 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
 
         TextRenderer tr = MinecraftClient.getInstance().textRenderer;
 //        if (atomConfig.isNucleusStable() && !atomConfig.isElectronDecomposing())
-        drawStringWithShadow(matrixStack, tr, atomName, 0, 0, color);
+        drawTextWithShadow(matrixStack, tr, atomName, 0, 0, color);
     }
 
     private static int getDestructionStage(float integrity) {
@@ -294,7 +294,7 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
         matrixStack.push();
         matrixStack.translate(x, y, 0);
         matrixStack.scale(BAR_TEXT_SCALE, BAR_TEXT_SCALE, BAR_TEXT_SCALE);
-        drawStringWithShadow(matrixStack, tr, label, -textWidth - 1, 1, WHITE);
+        drawTextWithShadow(matrixStack, tr, label, -textWidth - 1, 1, WHITE);
         matrixStack.pop();
     }
 
