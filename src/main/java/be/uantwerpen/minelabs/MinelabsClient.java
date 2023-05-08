@@ -38,7 +38,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 import java.util.Map;
 
@@ -126,8 +126,6 @@ public class MinelabsClient implements ClientModInitializer {
             if (screen instanceof LewisScreen)
                 ScreenMouseEvents.afterMouseRelease(screen).register((d, mouseX, mouseY, e) -> ((LewisScreen) screen).getButtonWidget().onClick(mouseX, mouseY));
         });
-
-        GeoArmorRenderer.registerArmorRenderer(new LabCoatRenderer(),Items.LAB_COAT);
 
          // Gas
 

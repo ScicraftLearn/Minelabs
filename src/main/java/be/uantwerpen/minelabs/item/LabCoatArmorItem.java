@@ -1,8 +1,14 @@
 package be.uantwerpen.minelabs.item;
 
+import be.uantwerpen.minelabs.renderer.LabCoatRenderer;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
+import net.minecraft.item.ItemStack;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -76,7 +82,18 @@ public class LabCoatArmorItem extends ArmorItem implements GeoAnimatable, GeoIte
 
     @Override
     public void createRenderer(Consumer<Object> consumer) {
+        consumer.accept(new RenderProvider() {
+            private LabCoatRenderer renderer;
 
+            @Override
+            public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
+                if (renderer == null){
+                    this.renderer = new LabCoatRenderer();
+                }
+                renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+                return this.renderer;
+            }
+        });
     }
 
     @Override
