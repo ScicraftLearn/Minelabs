@@ -33,7 +33,7 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 
@@ -55,7 +55,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
 
     private ModelTransformation transformation;
 
-    Map<String, Pair<Atom, Vec3f>> positions;
+    Map<String, Pair<Atom, Vector3f>> positions;
     Map<Pair<String, String>, Bond> bonds;
 
     private final float RADIUS_S = 0.08f;
@@ -63,7 +63,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
     private final float RADIUS_L = 0.12f;
     private final float MARGIN = 0.06f;
 
-    public MoleculeModel(Map<String, Pair<Atom, Vec3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
+    public MoleculeModel(Map<String, Pair<Atom, Vector3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
         this.positions = positions;
         this.bonds = bondMap;
     }
@@ -146,7 +146,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         QuadEmitter emitter = builder.getEmitter();
 
         //makeSphere(emitter, center, radius);
-        positions.forEach((s, atomVec3fPair) -> makeSphere(emitter, atomVec3fPair.getSecond(), getAtomSize(atomVec3fPair.getFirst()), atomVec3fPair.getFirst().getColor())); //RGB color in hex
+        positions.forEach((s, atomVector3fPair) -> makeSphere(emitter, atomVector3fPair.getSecond(), getAtomSize(atomVector3fPair.getFirst()), atomVector3fPair.getFirst().getColor())); //RGB color in hex
         bonds.forEach((s, bond) -> makeBond(emitter, positions.get(s.getFirst()).getSecond(),
                 positions.get(s.getSecond()).getSecond(),
                 positions.get(s.getFirst()).getFirst().getColor(),
@@ -164,16 +164,16 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
      * @param pos2 : position Atom 2
      * @param bond : type of bond between Atoms
      */
-    private void makeBond(QuadEmitter emitter, Vec3f pos1, Vec3f pos2, int color1, int color2, Bond bond) {
+    private void makeBond(QuadEmitter emitter, Vector3f pos1, Vector3f pos2, int color1, int color2, Bond bond) {
         if (bond == Bond.COVALENT_ZERO){
             return;
         }
 
-        Vec3f pos_diff = pos2.copy();
+        Vector3f pos_diff = pos2.copy();
         pos_diff.subtract(pos1);
         float pos_norm = ModelUtil.norm(pos_diff);
 
-        List<Vec3f[]> bondQuads = switch (bond){
+        List<Vector3f[]> bondQuads = switch (bond){
             case COVALENT_SINGLE -> getSingleBondVertices(pos_norm);
             case COVALENT_DOUBLE -> getDoubleBondVertices(pos_norm);
             case COVALENT_TRIPLE -> getTripleBondVertices(pos_norm);
@@ -181,13 +181,13 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         };
 
         // direction is the orientation of the bond
-        Vec3f direction = pos2.copy();
+        Vector3f direction = pos2.copy();
         direction.subtract(pos1);
         direction.normalize();
         // compute angle between positive X and direction
-        float angle = (float) Math.acos(direction.dot(Vec3f.POSITIVE_X));
+        float angle = (float) Math.acos(direction.dot(Vector3f.POSITIVE_X));
         // rotate within plane described by two vectors
-        direction.cross(Vec3f.POSITIVE_X);
+        direction.cross(Vector3f.POSITIVE_X);
         direction.normalize();
 
         Quaternion rotation = direction.getRadialQuaternion(angle);
@@ -195,10 +195,10 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         ModelUtil.transformQuads(bondQuads, v -> v.rotate(rotation));
         ModelUtil.transformQuads(bondQuads, v -> v.add(pos1));
 
-        for (Vec3f[] quad : bondQuads) {
+        for (Vector3f[] quad : bondQuads) {
             for (int i = 0; i < 4; i++) {
                 emitter.pos(i, quad[i]);
-                Vec3f norm = ModelUtil.normalOnVertices(quad[i],quad[(((i+1 % 4) + 4) % 4)], quad[(((i-1 % 4) + 4) % 4)]); //zodat licht van beam lijkt te komen
+                Vector3f norm = ModelUtil.normalOnVertices(quad[i],quad[(((i+1 % 4) + 4) % 4)], quad[(((i-1 % 4) + 4) % 4)]); //zodat licht van beam lijkt te komen
                 emitter.normal(i, norm);
             }
 
@@ -223,30 +223,30 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         }
     }
 
-    public List<Vec3f[]> getSingleBondVertices(float len) {
+    public List<Vector3f[]> getSingleBondVertices(float len) {
         float a = 0.05f;
         return getUnitBeam(len, a);
     }
 
-    public List<Vec3f[]> getDoubleBondVertices(float len) {
+    public List<Vector3f[]> getDoubleBondVertices(float len) {
         float a = 0.045f;
         float offset = 0.035f;
-        List<Vec3f[]> quads = new ArrayList<>();
+        List<Vector3f[]> quads = new ArrayList<>();
         quads.addAll(ModelUtil.transformQuads(getUnitBeam(len, a), v -> v.add(0, offset, 0)));
         quads.addAll(ModelUtil.transformQuads(getUnitBeam(len, a), v -> v.add(0, -offset, 0)));
         return quads;
     }
 
-    public List<Vec3f[]> getTripleBondVertices(float len) {
+    public List<Vector3f[]> getTripleBondVertices(float len) {
         float a = 0.038f;
         float offset = 0.045f;
 
-        List<Vec3f[]> quads = new ArrayList<>();
-        Vec3f offsetDirection = new Vec3f(0, offset, 0);
+        List<Vector3f[]> quads = new ArrayList<>();
+        Vector3f offsetDirection = new Vector3f(0, offset, 0);
         quads.addAll(ModelUtil.transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
-        offsetDirection.rotate(Vec3f.POSITIVE_X.getDegreesQuaternion(120));
+        offsetDirection.rotate(Vector3f.POSITIVE_X.getDegreesQuaternion(120));
         quads.addAll(ModelUtil.transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
-        offsetDirection.rotate(Vec3f.POSITIVE_X.getDegreesQuaternion(120));
+        offsetDirection.rotate(Vector3f.POSITIVE_X.getDegreesQuaternion(120));
         quads.addAll(ModelUtil.transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
         return quads;
     }
@@ -257,43 +257,43 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
      * @param len : length of beam
      * @param b   : size of square (endpoint)
      */
-    public List<Vec3f[]> getUnitBeam(float len, float b){
+    public List<Vector3f[]> getUnitBeam(float len, float b){
         float a = b/2;
         len -= 2 * RADIUS_S - 2 * MARGIN;
-        List<Vec3f[]> quads = new ArrayList<>();
-        quads.add(new Vec3f[]{//links
-                new Vec3f(0, -a, -a),
-                new Vec3f(0, a, -a),
-                new Vec3f(len, a, -a),
-                new Vec3f(len, -a, -a),
+        List<Vector3f[]> quads = new ArrayList<>();
+        quads.add(new Vector3f[]{//links
+                new Vector3f(0, -a, -a),
+                new Vector3f(0, a, -a),
+                new Vector3f(len, a, -a),
+                new Vector3f(len, -a, -a),
         });
-        quads.add(new Vec3f[]{//rechts
-                new Vec3f(0, a, a),
-                new Vec3f(0, -a, a),
-                new Vec3f(len, -a, a),
-                new Vec3f(len, a, a),
+        quads.add(new Vector3f[]{//rechts
+                new Vector3f(0, a, a),
+                new Vector3f(0, -a, a),
+                new Vector3f(len, -a, a),
+                new Vector3f(len, a, a),
         });
-        quads.add(new Vec3f[]{//onder
-                new Vec3f(0, -a, a),
-                new Vec3f(0, -a, -a),
-                new Vec3f(len, -a, -a),
-                new Vec3f(len, -a, a),
+        quads.add(new Vector3f[]{//onder
+                new Vector3f(0, -a, a),
+                new Vector3f(0, -a, -a),
+                new Vector3f(len, -a, -a),
+                new Vector3f(len, -a, a),
         });
-        quads.add(new Vec3f[]{//boven
-                new Vec3f(0, a, -a),
-                new Vec3f(0, a, a),
-                new Vec3f(len, a, a),
-                new Vec3f(len, a, -a),
+        quads.add(new Vector3f[]{//boven
+                new Vector3f(0, a, -a),
+                new Vector3f(0, a, a),
+                new Vector3f(len, a, a),
+                new Vector3f(len, a, -a),
         });
         ModelUtil.transformQuads(quads, v -> v.add(RADIUS_S - MARGIN, 0, 0));
         return quads;
     }
 
-    private void makeSphere(QuadEmitter emitter, Vec3f center, float radius, int color) {
-        for (Vec3f[] quad : getSphereVertices(center, radius)) {
+    private void makeSphere(QuadEmitter emitter, Vector3f center, float radius, int color) {
+        for (Vector3f[] quad : getSphereVertices(center, radius)) {
             for (int i = 0; i < 4; i++) {
                 emitter.pos(i, quad[i]);
-                Vec3f norm = ModelUtil.normalOnVertices(quad[i],quad[(((i+1 % 4) + 4) % 4)], quad[(((i-1 % 4) + 4) % 4)]); //zodat licht van beam lijkt te komen
+                Vector3f norm = ModelUtil.normalOnVertices(quad[i],quad[(((i+1 % 4) + 4) % 4)], quad[(((i-1 % 4) + 4) % 4)]); //zodat licht van beam lijkt te komen
                 emitter.normal(i, norm);
             }
 
@@ -313,58 +313,58 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         }
     }
 
-    public List<Vec3f[]> getSphereVertices(Vec3f center, float r) {
+    public List<Vector3f[]> getSphereVertices(Vector3f center, float r) {
         center.add(0.5f, 0.5f, 0.5f);
 
-        List<Vec3f[]> quads = new ArrayList<>();
+        List<Vector3f[]> quads = new ArrayList<>();
         int RESOLUTION = 2;
         float offset = 1/(float) Math.sqrt(3); //moet genormaliseerd zijn
 
-        Vec3f[] face = {
-                new Vec3f(-offset, offset, -offset),
-                new Vec3f(offset, offset, -offset),
-                new Vec3f(offset, -offset, -offset),
-                new Vec3f(-offset, -offset, -offset),
+        Vector3f[] face = {
+                new Vector3f(-offset, offset, -offset),
+                new Vector3f(offset, offset, -offset),
+                new Vector3f(offset, -offset, -offset),
+                new Vector3f(-offset, -offset, -offset),
         };
         recursiveSubdivision(face, RESOLUTION, quads);
 
-        face = new Vec3f[]{
-                new Vec3f(-offset, -offset, offset),
-                new Vec3f(offset, -offset, offset),
-                new Vec3f(offset, offset, offset),
-                new Vec3f(-offset, offset, offset),
+        face = new Vector3f[]{
+                new Vector3f(-offset, -offset, offset),
+                new Vector3f(offset, -offset, offset),
+                new Vector3f(offset, offset, offset),
+                new Vector3f(-offset, offset, offset),
         };
         recursiveSubdivision(face, RESOLUTION, quads);
 
-        face = new Vec3f[]{
-                new Vec3f(-offset, -offset, offset),
-                new Vec3f(-offset, offset, offset),
-                new Vec3f(-offset, offset, -offset),
-                new Vec3f(-offset, -offset, -offset),
+        face = new Vector3f[]{
+                new Vector3f(-offset, -offset, offset),
+                new Vector3f(-offset, offset, offset),
+                new Vector3f(-offset, offset, -offset),
+                new Vector3f(-offset, -offset, -offset),
         };
         recursiveSubdivision(face, RESOLUTION, quads);
 
-        face = new Vec3f[]{
-                new Vec3f(offset, -offset, -offset),
-                new Vec3f(offset, offset, -offset),
-                new Vec3f(offset, offset, offset),
-                new Vec3f(offset, -offset, offset),
+        face = new Vector3f[]{
+                new Vector3f(offset, -offset, -offset),
+                new Vector3f(offset, offset, -offset),
+                new Vector3f(offset, offset, offset),
+                new Vector3f(offset, -offset, offset),
         };
         recursiveSubdivision(face, RESOLUTION, quads);
 
-        face = new Vec3f[]{
-                new Vec3f(-offset, -offset, -offset),
-                new Vec3f(offset, -offset, -offset),
-                new Vec3f(offset, -offset, offset),
-                new Vec3f(-offset, -offset, offset),
+        face = new Vector3f[]{
+                new Vector3f(-offset, -offset, -offset),
+                new Vector3f(offset, -offset, -offset),
+                new Vector3f(offset, -offset, offset),
+                new Vector3f(-offset, -offset, offset),
         };
         recursiveSubdivision(face, RESOLUTION, quads);
 
-        face = new Vec3f[]{
-                new Vec3f(-offset, offset, offset),
-                new Vec3f(offset, offset, offset),
-                new Vec3f(offset, offset, -offset),
-                new Vec3f(-offset, offset, -offset),
+        face = new Vector3f[]{
+                new Vector3f(-offset, offset, offset),
+                new Vector3f(offset, offset, offset),
+                new Vector3f(offset, offset, -offset),
+                new Vector3f(-offset, offset, -offset),
         };
         recursiveSubdivision(face, RESOLUTION, quads);
 
@@ -373,36 +373,36 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         return quads;
     }
 
-    private List<Vec3f[]> recursiveSubdivision(Vec3f[] quad, int RESOLUTION, List<Vec3f[]> quads){
+    private List<Vector3f[]> recursiveSubdivision(Vector3f[] quad, int RESOLUTION, List<Vector3f[]> quads){
         if (RESOLUTION<=0){
             quads.add(quad);
         } else {
-            Vec3f va = quad[0].copy();
+            Vector3f va = quad[0].copy();
             va.add(quad[1]);
             va.normalize();
 
-            Vec3f vb = quad[0].copy();
+            Vector3f vb = quad[0].copy();
             vb.add(quad[3]);
             vb.normalize();
 
-            Vec3f vc = quad[0].copy();
+            Vector3f vc = quad[0].copy();
             vc.add(quad[2]);
             vc.add(quad[1]);
             vc.add(quad[3]);
             vc.normalize();
 
-            Vec3f vd = quad[2].copy();
+            Vector3f vd = quad[2].copy();
             vd.add(quad[1]);
             vd.normalize();
 
-            Vec3f ve = quad[3].copy();
+            Vector3f ve = quad[3].copy();
             ve.add(quad[2]);
             ve.normalize();
 
-            recursiveSubdivision(new Vec3f[] {quad[0].copy(), va.copy(), vc.copy(), vb.copy()}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vec3f[] {va.copy(), quad[1].copy(), vd.copy(), vc.copy()}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vec3f[] {vc.copy(), vd.copy(), quad[2].copy(), ve.copy()}, RESOLUTION-1, quads);
-            recursiveSubdivision(new Vec3f[] {vb.copy(), vc.copy(), ve.copy(), quad[3].copy()}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vector3f[] {quad[0].copy(), va.copy(), vc.copy(), vb.copy()}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vector3f[] {va.copy(), quad[1].copy(), vd.copy(), vc.copy()}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vector3f[] {vc.copy(), vd.copy(), quad[2].copy(), ve.copy()}, RESOLUTION-1, quads);
+            recursiveSubdivision(new Vector3f[] {vb.copy(), vc.copy(), ve.copy(), quad[3].copy()}, RESOLUTION-1, quads);
         }
         return quads;
 
@@ -421,7 +421,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
 
     public static MoleculeModel deserialize(Reader reader) {
 
-        Map<String, Pair<Atom, Vec3f>> positions = new HashMap<>();
+        Map<String, Pair<Atom, Vector3f>> positions = new HashMap<>();
         Map<Pair<String, String>, Bond> bondMap = new HashMap<>();
 
         JsonObject structure = JsonHelper.deserialize(reader).getAsJsonObject("structure");
@@ -431,27 +431,27 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
             String key = atomJson.get("key").getAsString();
             Atom readAtom = Atom.getBySymbol(atomJson.get("atom").getAsString());
             JsonArray pos = atomJson.getAsJsonArray("position");
-            Vec3f vec3f = Vec3f.ZERO.copy();
+            Vector3f Vector3f = Vector3f.ZERO.copy();
             float scale_factor = 4.5f;
             int i = 0;
             for (JsonElement position: pos) {
                 switch (i) {
                     case 0 -> {
-                        vec3f.add(position.getAsFloat() / scale_factor, 0, 0);
+                        Vector3f.add(position.getAsFloat() / scale_factor, 0, 0);
                         i++;
                     }
                     case 1 -> {
-                        vec3f.add(0, position.getAsFloat() / scale_factor, 0);
+                        Vector3f.add(0, position.getAsFloat() / scale_factor, 0);
                         i++;
                     }
                     case 2 -> {
-                        vec3f.add(0, 0, position.getAsFloat() / scale_factor);
+                        Vector3f.add(0, 0, position.getAsFloat() / scale_factor);
                         i++;
                     }
                 }
             }
-            positions.put(key, new Pair<>(readAtom, vec3f.copy()));
-            vec3f.set(0,0,0);
+            positions.put(key, new Pair<>(readAtom, Vector3f.copy()));
+            Vector3f.set(0,0,0);
         }
         JsonArray bonds = structure.getAsJsonArray("bonds");
         for (JsonElement bond: bonds) {

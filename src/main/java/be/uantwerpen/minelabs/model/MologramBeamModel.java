@@ -24,7 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.Nullable;
@@ -127,24 +127,24 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
         return this;
     }
 
-    private void face(List<Vec3f[]> quads, float height, float x, float z){
-        quads.add(new Vec3f[]{
-                new Vec3f(0, 2/16f, 2/16f*z/height),
-                new Vec3f(2/16f*x/height, 2/16f, 0),
-                new Vec3f(x, height, 0),
-                new Vec3f(0, height, z)
+    private void face(List<Vector3f[]> quads, float height, float x, float z){
+        quads.add(new Vector3f[]{
+                new Vector3f(0, 2/16f, 2/16f*z/height),
+                new Vector3f(2/16f*x/height, 2/16f, 0),
+                new Vector3f(x, height, 0),
+                new Vector3f(0, height, z)
 
     });
-        quads.add(new Vec3f[]{
-                new Vec3f(2/16f*x/height, 2/16f, 0),
-                new Vec3f(0, 2/16f, 2/16f*z/height),
-                new Vec3f(0, height, z),
-                new Vec3f(x, height, 0)
+        quads.add(new Vector3f[]{
+                new Vector3f(2/16f*x/height, 2/16f, 0),
+                new Vector3f(0, 2/16f, 2/16f*z/height),
+                new Vector3f(0, height, z),
+                new Vector3f(x, height, 0)
                         });
     }
 
-    public List<Vec3f[]> getBeamVertices(float height, float width) {
-        List<Vec3f[]> quads = new ArrayList<>();
+    public List<Vector3f[]> getBeamVertices(float height, float width) {
+        List<Vector3f[]> quads = new ArrayList<>();
         face(quads, height, width,-width);
         face(quads, height,-width,-width);
         face(quads, height, width, width);
@@ -155,10 +155,10 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
     }
 
     private void makeBeam(QuadEmitter emitter, float height, float width) {
-        for (Vec3f[] quad : getBeamVertices(height, width)) {
+        for (Vector3f[] quad : getBeamVertices(height, width)) {
             for (int i = 0; i < 4; i++) {
                 emitter.pos(i, quad[i]);
-                emitter.normal(i, new Vec3f(0,1,0));
+                emitter.normal(i, new Vector3f(0,1,0));
             }
 
             emitter.sprite(0, 0, 16, 16);

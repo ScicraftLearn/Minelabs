@@ -9,7 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 
 public class ElectricFieldSensorRenderer implements BlockEntityRenderer<ElectricFieldSensorBlockEntity> {
 
@@ -23,7 +23,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
     @Override
     public void render(ElectricFieldSensorBlockEntity entity, float tickDelta, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        Vec3f field = entity.getField().copy();
+        Vector3f field = entity.getField().copy();
 
         matrices.push();
 
@@ -33,7 +33,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         // Center arrow in block
         matrices.translate(0.5, 0.5, 0.5);
 
-        if(field.equals(Vec3f.ZERO)) {
+        if(field.equals(Vector3f.ZERO)) {
             // Don't display arrow if the field is zero
             matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
             // arrow = gray arrow
@@ -50,12 +50,12 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
              *
              * By default, the arrow points in negative x (WEST)
              */
-            Vec3f v = Direction.WEST.getUnitVector();
+            Vector3f v = Direction.WEST.getUnitVector();
 
             // Compute theta with cosine formula.
             double theta = Math.acos(v.dot(field) * MathHelper.fastInverseSqrt(field.dot(field)));
             v.cross(field);
-            if (v.equals(Vec3f.ZERO)) {
+            if (v.equals(Vector3f.ZERO)) {
                 // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
                 // Instead, we set in to one of the infinite valid normal vectors: positive Y.
                 v = Direction.UP.getUnitVector();

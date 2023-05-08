@@ -16,7 +16,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 import net.minecraft.world.World;
 
 
@@ -40,7 +40,7 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
         if (Block.getBlockFromItem(stack.getItem()) != Blocks.AIR) matrices.translate(0.5, 0, 0.5); //if BlockItem
         else {
             matrices.translate(0.5, 0.10, 0.64);
-            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+            matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90));
         }
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
@@ -62,7 +62,7 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
 
         matrices.push();
         matrices.translate(0.5, 0, 0.5);
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRotation(world)));
+        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(getRotation(world)));
         matrices.translate(-0.5, 13/16f, -0.5);
         MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create(), 0, overlay);
         matrices.pop();

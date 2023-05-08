@@ -25,7 +25,7 @@ public class BalloonEntityRenderer extends MobEntityRenderer<BalloonEntity, Ball
 
     @Override
     public void render(BalloonEntity mobEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
-        Quaternion rotation = Vec3f.POSITIVE_Y.getDegreesQuaternion(mobEntity.getRotationY());
+        Quaternion rotation = Vector3f.POSITIVE_Y.getDegreesQuaternion(mobEntity.getRotationY());
         matrixStack.multiply(rotation);
         super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }

@@ -10,12 +10,19 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.*;
 
@@ -37,14 +44,14 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     private static final int ELECTRON_SHELLS_AMOUNT = 7;
     // distance between two shells
     private static final float ELECTRON_SHELL_RADIUS_OFFSET = (MAX_RENDER_RADIUS - ELECTRON_FIRST_SHELL_RADIUS) / (ELECTRON_SHELLS_AMOUNT - 1);
-    private static final Quaternion[] ELECTRON_SHELL_ROTATIONS = {
-            Vec3f.POSITIVE_X.getDegreesQuaternion(0),
-            Vec3f.POSITIVE_Y.getDegreesQuaternion(90),
-            Vec3f.POSITIVE_X.getDegreesQuaternion(90),
-            Vec3f.POSITIVE_Y.getDegreesQuaternion(45),
-            Vec3f.POSITIVE_X.getDegreesQuaternion(45),
-            Vec3f.POSITIVE_Y.getDegreesQuaternion(135),
-            Vec3f.POSITIVE_X.getDegreesQuaternion(135)
+    private static final Quaternionf[] ELECTRON_SHELL_ROTATIONS = {
+            RotationAxis.POSITIVE_X.rotationDegrees(0),
+            RotationAxis.POSITIVE_Y.rotationDegrees(90),
+            RotationAxis.POSITIVE_X.rotationDegrees(90),
+            RotationAxis.POSITIVE_Y.rotationDegrees(45),
+            RotationAxis.POSITIVE_X.rotationDegrees(45),
+            RotationAxis.POSITIVE_Y.rotationDegrees(135),
+            RotationAxis.POSITIVE_X.rotationDegrees(135)
     };
     // rotation period in ticks
     private static final float ELECTRON_ROTATION_PERIOD = 4 * 20;
@@ -74,7 +81,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
     // how many subdivisions are made for the nucleus coordinates. Amount of points is square this number.
     private static final int NUCLEUS_COORDINATES_STEPS = 8;
-    private static final List<Vec3f> NUCLEUS_COORDINATES = uniformSphericalCoordinates(NUCLEUS_COORDINATES_STEPS);
+    private static final List<Vector3f> NUCLEUS_COORDINATES = uniformSphericalCoordinates(NUCLEUS_COORDINATES_STEPS);
 
     private static final int NUCLEUS_MAX_ITEMS_RENDERED = 2 * NUCLEUS_COORDINATES.size();
     // radius of nucleus gets bigger until this capacity.
@@ -92,8 +99,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
      * Computes uniformly spread out points on a unit sphere by iterating polar coordinates.
      * Steps define in how many pieces each angle is divided so amount of points is `steps ** 2`.
      */
-    private static List<Vec3f> uniformSphericalCoordinates(int steps) {
-        List<Vec3f> points = new ArrayList<>();
+    private static List<Vector3f> uniformSphericalCoordinates(int steps) {
+        List<Vector3f> points = new ArrayList<>();
 
         float pi2 = (float) (2 * Math.PI);
         float angle = pi2 / steps;
@@ -105,7 +112,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
                 float x = (float) (Math.sin(alpha) * Math.cos(beta));
                 float y = (float) (Math.sin(alpha) * Math.sin(beta));
                 float z = (float) Math.cos(alpha);
-                points.add(new Vec3f(x, y, z));
+                points.add(new Vector3f(x, y, z));
             }
         }
 
@@ -193,11 +200,11 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
         for (int i = 0; i < electronShellConfiguration.length; i++) {
             int electronsInShell = electronShellConfiguration[i];
-            Quaternion rotation = ELECTRON_SHELL_ROTATIONS[i];
+            Quaternionf rotation = ELECTRON_SHELL_ROTATIONS[i];
 
             // don't update normals for rendering electron items (lighting effect)
             matrices.push();
-            matrices.multiplyPositionMatrix(new Matrix4f(rotation));
+            matrices.multiplyPositionMatrix(rotation.get(new Matrix4f()));
             renderElectronShellElectrons(electronsInShell, radius, instability, time, matrices, vertexConsumers, light);
             matrices.pop();
 
@@ -220,17 +227,17 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
         matrices.push();
         // don't update normals. This allows the lighting to be computed as if the outside is always lit
-        matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angle)));
+        matrices.multiplyPositionMatrix(RotationAxis.POSITIVE_Z.rotationDegrees(angle).get(new Matrix4f()));
 
         // render electron at top of orbit then rotate and repeat
         float angleBetweenElectrons = 360f / nE;
         for (int e = 0; e < nE; e++) {
-            Vec3f pos = new Vec3f(0, radius, 0);
+            Vector3f pos = new Vector3f(0, radius, 0);
             float percentOfOrbit = (float) e / nE;
             renderElectron(matrices, pos, instability, percentOfOrbit, time, vertexConsumers, light);
 
             // don't update normals
-            matrices.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenElectrons)));
+            matrices.multiplyPositionMatrix(RotationAxis.POSITIVE_Z.rotationDegrees(angleBetweenElectrons).get(new Matrix4f()));
 
         }
         matrices.pop();
@@ -260,7 +267,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
                     .normal(matrixEntry.getNormalMatrix(), normalX, normalY, 0)
                     .next();
 
-            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angleBetweenLinePoints));
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(angleBetweenLinePoints));
 
             lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, radius, 0)
                     .color(ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, ELECTRON_SHELL_LINE_GRAYSCALE_COLOR, alpha)
@@ -277,7 +284,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             return;
 
         // place nucleus particles in predetermined coordinates
-        Iterator<Vec3f> posIterator = NUCLEUS_COORDINATES.iterator();
+        Iterator<Vector3f> posIterator = NUCLEUS_COORDINATES.iterator();
 
 
         // we keep ratio of protons rendered as close to requested as possible
@@ -304,8 +311,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
                 nucleusRadius /= 2;
                 posIterator = NUCLEUS_COORDINATES.iterator();
             }
-            Vec3f pos = posIterator.next().copy();
-            pos.scale(nucleusRadius);
+            Vector3f pos = new Vector3f(posIterator.next());
+            pos.mul(nucleusRadius);
 
             ItemStack type = pRatio > pRatioRendered ? PROTON : NEUTRON;
             renderNucleusParticle(type, pos, instability, nNRendered + nPRendered, amountToRender, time, matrices, vertexConsumers, light);
@@ -319,24 +326,24 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrices.pop();
     }
 
-    private Vec3f getElectronInstabilityOffset(float instability, float percentOfOrbit, float time) {
+    private Vector3f getElectronInstabilityOffset(float instability, float percentOfOrbit, float time) {
         // if you don't want all electrons to be in sync
 //        time = time + percentOfOrbit * ELECTRON_ROTATION_PERIOD;
 
         double period = MathHelper.lerp(instability, ELECTRON_INSTABILITY_MIN_PERIOD, ELECTRON_INSTABILITY_MAX_PERIOD);
         float offset = instability * ELECTRON_INSTABILITY_MAX_OFFSET;
         float yOffset = (float) (Math.sin(Math.toRadians(time / period * 360)) + 1) / 2 * offset;
-        return new Vec3f(0, yOffset, 0);
+        return new Vector3f(0, yOffset, 0);
     }
 
-    private void renderElectron(MatrixStack matrices, Vec3f pos, float instability, float percentOfOrbit, float time, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderElectron(MatrixStack matrices, Vector3f pos, float instability, float percentOfOrbit, float time, VertexConsumerProvider vertexConsumers, int light) {
         if (instability > 0)
             pos.add(getElectronInstabilityOffset(instability, percentOfOrbit, time));
 
         matrices.push();
-        matrices.translate(pos.getX(), pos.getY(), pos.getZ());
+        matrices.translate(pos.x, pos.y, pos.z);
         // because we use rotation and the offset is always in the y direction, this faces them outwards
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
         matrices.scale(ELECTRON_SCALE, ELECTRON_SCALE, ELECTRON_SCALE);
         renderItem(ELECTRON, matrices, vertexConsumers, light);
         matrices.pop();
@@ -376,19 +383,19 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         return scale;
     }
 
-    private void renderNucleusParticle(ItemStack type, Vec3f pos, float instability, int index, int total, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private void renderNucleusParticle(ItemStack type, Vector3f pos, float instability, int index, int total, float time, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         if (instability > 0)
-            pos.scale(getNuclideInstabilityScale(instability, index, total, time));
+            pos.mul(getNuclideInstabilityScale(instability, index, total, time));
 
         matrices.push();
-        matrices.translate(pos.getX(), pos.getY(), pos.getZ());
+        matrices.translate(pos.x, pos.y, pos.z);
         matrices.scale(NUCLEUS_SCALE, NUCLEUS_SCALE, NUCLEUS_SCALE);
 
         // have normals face sky
-        matrices.peek().getNormalMatrix().multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+        matrices.peek().getNormalMatrix().mul(RotationAxis.POSITIVE_X.rotationDegrees(90).get(new Matrix3f()));
 
         // have everything facing the camera orientation
-        matrices.multiplyPositionMatrix(new Matrix4f(dispatcher.getRotation()));
+        matrices.multiplyPositionMatrix(dispatcher.getRotation().get(new Matrix4f()));
 
         renderItem(type, matrices, vertexConsumers, light);
         matrices.pop();
@@ -396,7 +403,7 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
 
     private void renderItem(ItemStack stack, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         MinecraftClient.getInstance().getProfiler().push("item renderer");
-        itemRenderer.renderItem(stack, ModelTransformation.Mode.NONE, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
+        itemRenderer.renderItem(stack, ModelTransformationMode.NONE, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, null, 0);
         MinecraftClient.getInstance().getProfiler().pop();
     }
 
@@ -407,9 +414,9 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
         matrixStack.push();
         matrixStack.translate(0, 5f / 16 - 1 - getPositionOffset(entity, tickDelta).getY(), 0.25);
         matrixStack.scale(2, 0.5f, 2);
-        matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+        matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90));
 
-        itemRenderer.renderItem(atomStack, ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumers, 0);
+        itemRenderer.renderItem(atomStack, ModelTransformationMode.GROUND, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumers, null, 0);
         matrixStack.pop();
     }
 
