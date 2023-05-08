@@ -8,9 +8,9 @@ import com.google.gson.stream.JsonReader;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,21 +55,11 @@ public class LaserToolDataProvider implements DataProvider {
 	}
 
 	private static void saveMinecraftBlocksData(DataWriter cache, JsonObject json, Path path) {
-		try {
-			DataProvider.writeToPath(cache, json, path);
-		}
-		catch (IOException string) {
-			LOGGER.error("Couldn't save minecraft block data {}", path, string);
-		}
+		DataProvider.writeToPath(cache, json, path);
 	}
 
 	private static void saveMoleculeData(DataWriter cache, JsonObject json, Path path) {
-		try {
-			DataProvider.writeToPath(cache, json, path);
-		}
-		catch (IOException string) {
-			LOGGER.error("Couldn't save molecule data {}", path, string);
-		}
+		DataProvider.writeToPath(cache, json, path);
 	}
 
 	private void saveLasertoolMineable(DataWriter cache, Set<Identifier> set) throws IOException {
@@ -119,7 +109,7 @@ public class LaserToolDataProvider implements DataProvider {
 		// Add the standard block to the list if it exists ingame
 		boolean notABlock = false;
 		Identifier id = new Identifier(name);
-		if (!Registry.BLOCK.get(id).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
+		if (!Registries.BLOCK.get(id).equals(Registries.BLOCK.get(Registries.BLOCK.getDefaultId()))) {
 			result.add(id);
 		} else {
 			notABlock = true;
@@ -164,7 +154,7 @@ public class LaserToolDataProvider implements DataProvider {
 			LOGGER.error("Block {} in lasertool.json is not an ingame block", name);
 		}
 		for (Identifier block: blocks) {
-			if (!Registry.BLOCK.get(block).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
+			if (!Registries.BLOCK.get(block).equals(Registries.BLOCK.get(Registries.BLOCK.getDefaultId()))) {
 				result.add(block);
 			}
 		}

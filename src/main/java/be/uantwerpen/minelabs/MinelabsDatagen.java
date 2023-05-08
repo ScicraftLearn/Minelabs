@@ -8,7 +8,9 @@ public class MinelabsDatagen implements DataGeneratorEntrypoint {
 
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-		fabricDataGenerator.addProvider(LaserToolDataProvider::new);
+		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+		pack.addProvider(LaserToolDataProvider::new);
+
 	}
 
 }

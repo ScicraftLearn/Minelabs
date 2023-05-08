@@ -104,7 +104,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
                     double n = explosion.getY();
                     double o = explosion.getZ();
                     for (float h = explosion.getPower() * (0.7f + this.world.random.nextFloat() * 0.6f); h > 0.0f; h -= 0.22500001f) {
-                        BlockPos blockPos = new BlockPos(m, n, o);
+                        BlockPos blockPos = BlockPos.ofFloored(m, n, o);
                         BlockState blockState = this.world.getBlockState(blockPos);
                         FluidState fluidState = this.world.getFluidState(blockPos);
                         if (!this.world.isInBuildLimit(blockPos)) continue;

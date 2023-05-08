@@ -30,9 +30,9 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
     @Override
     protected void writeNbt(NbtCompound nbt) {
         if (field != null) {
-            nbt.putFloat("ex", field.getX());
-            nbt.putFloat("ey", field.getY());
-            nbt.putFloat("ez", field.getZ());
+            nbt.putFloat("ex", field.x);
+            nbt.putFloat("ey", field.y);
+            nbt.putFloat("ez", field.z);
         }
         super.writeNbt(nbt);
     }
@@ -77,7 +77,7 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
             if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.getField() != null) {
                 Vector3f vec_pos = new Vector3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
                 float d_E = (float) ((1 * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                vec_pos.scale(d_E);
+                vec_pos.mul(d_E);
                 field.add(vec_pos);
             }
         }

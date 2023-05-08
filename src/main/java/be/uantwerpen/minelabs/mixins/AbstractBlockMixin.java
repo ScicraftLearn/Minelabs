@@ -6,10 +6,10 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,7 +32,7 @@ public abstract class AbstractBlockMixin {
         String block = oldIdentifier.getPath().substring(oldIdentifier.getPath().lastIndexOf("/") + 1);
         Identifier blockIdentifier = new Identifier(oldIdentifier.getNamespace(), block);
 
-        if (Registry.BLOCK.get(blockIdentifier).getDefaultState().isIn(Tags.Blocks.LASERTOOL_MINEABLE)) {
+        if (Registries.BLOCK.get(blockIdentifier).getDefaultState().isIn(Tags.Blocks.LASERTOOL_MINEABLE)) {
             ci.setReturnValue(new Identifier(Minelabs.MOD_ID, "lasertool/" + oldIdentifier.getPath()));
         }
     }

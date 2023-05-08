@@ -8,6 +8,7 @@ import be.uantwerpen.minelabs.gui.lewis_gui.LewisBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -28,7 +29,9 @@ public class ScreenHandlers {
      * @return {@link ScreenHandler}
      */
     private static <T extends ScreenHandler> ScreenHandlerType<T> registerSimple(ScreenHandlerType.Factory<T> factory, String identifier) {
-        return (ScreenHandlerType) Registry.register(Registries.SCREEN_HANDLER, new Identifier(Minelabs.MOD_ID, identifier), new ScreenHandlerType(factory));
+        return (ScreenHandlerType) Registry.register(Registries.SCREEN_HANDLER,
+                new Identifier(Minelabs.MOD_ID, identifier),
+                new ScreenHandlerType(factory, FeatureFlags.VANILLA_FEATURES));
     }
 
     /**

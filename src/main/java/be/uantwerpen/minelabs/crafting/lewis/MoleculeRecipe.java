@@ -13,6 +13,8 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -64,8 +66,8 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     }
 
     @Override
-    public ItemStack craft(LewisCraftingGrid inventory) {
-        return getOutput();
+    public ItemStack craft(LewisCraftingGrid inventory, DynamicRegistryManager registryManager) {
+        return getOutput(registryManager);
     }
 
     @Override
@@ -74,7 +76,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getOutput(DynamicRegistryManager registryManager) {
         return new ItemStack(molecule.getItem());
     }
 
@@ -124,7 +126,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
             if (recipeJson.density == null)
                 throw new JsonSyntaxException("Attribute 'density' is missing");
 
-            Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.result.item))
+            Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(recipeJson.result.item))
                     // Validate the entered item actually exists
                     .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.result.item));
 

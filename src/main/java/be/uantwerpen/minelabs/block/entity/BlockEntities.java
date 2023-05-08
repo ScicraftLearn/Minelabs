@@ -8,8 +8,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 
@@ -105,7 +106,7 @@ public class BlockEntities {
                 FabricBlockEntityTypeBuilder.create((p, s) -> new ChargedPointBlockEntity(p, s, 0, null, 0, null, null), Blocks.CHARGED_POINT_BLOCK).build(null),
                 "charged_point_block_entity");
 
-        IONIC_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "ionic_block"),
+        IONIC_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, "ionic_block"),
                 FabricBlockEntityTypeBuilder.create(IonicBlockEntity::new,
                         Blocks.IONIC_BLOCK).build(null));
 
@@ -142,7 +143,7 @@ public class BlockEntities {
      * @return {@link Block}
      */
     private static <T extends BlockEntity> BlockEntityType<T> register(BlockEntityType<T> blockEntityType, String identifier) {
-        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), blockEntityType);
+        return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), blockEntityType);
     }
 
     /**

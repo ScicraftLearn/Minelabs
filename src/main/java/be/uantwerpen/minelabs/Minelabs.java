@@ -11,6 +11,7 @@ import be.uantwerpen.minelabs.entity.Villagers;
 import be.uantwerpen.minelabs.event.ServerModEvents;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
+import be.uantwerpen.minelabs.item.ItemGroups;
 import be.uantwerpen.minelabs.item.Items;
 import be.uantwerpen.minelabs.paintings.Paintings;
 import be.uantwerpen.minelabs.particle.Particles;
@@ -46,6 +47,7 @@ public class Minelabs implements ModInitializer {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(NucleusStabilityTable.INSTANCE);
 
         Items.registerItems();
+        ItemGroups.registerItemGroups();
         Blocks.registerBlocks();
         BlockEntities.registerBlockEntities();
         Entities.registerEntities();

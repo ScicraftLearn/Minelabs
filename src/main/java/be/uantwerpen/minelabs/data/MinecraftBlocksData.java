@@ -4,8 +4,8 @@ import be.uantwerpen.minelabs.Minelabs;
 import be.uantwerpen.minelabs.crafting.molecules.Atom;
 import be.uantwerpen.minelabs.util.ChemicalFormulaParser;
 import com.google.gson.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,10 +47,10 @@ public class MinecraftBlocksData {
                 convertedMoleculeId = LaserToolDataProvider.expandBlock(convertedMoleculeName).get(0);
                 convertedMoleculeName = convertedMoleculeId.getPath();
             }
-            if(!Registry.BLOCK.get(convertedMoleculeId).equals(Registry.BLOCK.get(Registry.BLOCK.getDefaultId()))) {
+            if(!Registries.BLOCK.get(convertedMoleculeId).equals(Registries.BLOCK.get(Registries.BLOCK.getDefaultId()))) {
                 jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "loot_table").toString()));
                 jsonObject.add("name", new JsonPrimitive(new Identifier(Minelabs.MOD_ID, "lasertool/blocks/" + convertedMoleculeName).toString()));
-            } else if(!Registry.ITEM.get(convertedMoleculeId).equals(Registry.ITEM.get(Registry.ITEM.getDefaultId()))) {
+            } else if(!Registries.ITEM.get(convertedMoleculeId).equals(Registries.ITEM.get(Registries.ITEM.getDefaultId()))) {
                 jsonObject.add("type", new JsonPrimitive(new Identifier("minecraft", "item").toString()));
                 jsonObject.add("name", new JsonPrimitive(convertedMoleculeId.toString()));
             } else if(map.size() == 1) {

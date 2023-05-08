@@ -22,6 +22,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -149,7 +150,9 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
         }
         //recipe loaded, check if enough items
-        else if (lewis.ioInventory.getStack(10).isEmpty() || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput().getItem())){ //can output
+        // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
+        else if (lewis.ioInventory.getStack(10).isEmpty()
+                || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput(DynamicRegistryManager.EMPTY).getItem())){ //can output
             //System.out.println(lewis.currentRecipe.getIngredients());
             if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) {
                 lewis.resetProgress();
@@ -176,7 +179,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
             if (lewis.progress >= lewis.maxProgress) { //Done crafting
                 if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
-                    lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput());
+                    // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
+                    lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput(DynamicRegistryManager.EMPTY));
                 } else {
                     lewis.ioInventory.getStack(10).increment(1);
                 }

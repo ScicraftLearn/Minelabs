@@ -27,6 +27,7 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
         this.molecule = molecule;
     }
 
+   /*TODO : NO LONGER NEEDED ?
     @Override
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         Potion potion = new Potion("Test");
@@ -35,7 +36,7 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
             item.setNbt(null);
             stacks.add(item);
         }
-    }
+    }*/
 
     @Override
     public ItemStack getDefaultStack() {
