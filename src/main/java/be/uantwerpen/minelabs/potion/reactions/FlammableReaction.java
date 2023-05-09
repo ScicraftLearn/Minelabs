@@ -4,6 +4,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class FlammableReaction extends Reaction {
@@ -19,11 +20,11 @@ public class FlammableReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, BlockPos pos) {
+    protected void react(World world, Vec3d pos) {
         Utils.applyRadius(pos, radius, block -> {
-            if (world.getBlockState(block).getBlock() == Blocks.AIR) {
+            if (world.getBlockState(BlockPos.ofFloored(block)).getBlock() == Blocks.AIR) {
                 if (this.pyrophoric || Utils.isFlameNearby(world, block, 3))
-                    world.setBlockState(block, Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
+                    world.setBlockState(BlockPos.ofFloored(block), Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
             }
         });
         Utils.applyRadius(world, pos, radius, e -> {

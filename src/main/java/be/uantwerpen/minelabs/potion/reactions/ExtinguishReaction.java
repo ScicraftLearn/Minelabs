@@ -6,6 +6,7 @@ import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ExtinguishReaction extends Reaction {
@@ -17,17 +18,18 @@ public class ExtinguishReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, BlockPos pos) {
+    protected void react(World world, Vec3d pos) {
         Utils.applyRadius(pos, this.radius, blockPosition -> {
-            BlockState block = world.getBlockState(blockPosition);
+            BlockState block = world.getBlockState(BlockPos.ofFloored(blockPosition));
+            BlockPos blockPos = BlockPos.ofFloored(pos);
             if (block.isIn(BlockTags.FIRE)) {
-                world.removeBlock(blockPosition, false);
+                world.removeBlock(blockPos, false);
             } else if (AbstractCandleBlock.isLitCandle(block)) {
-                AbstractCandleBlock.extinguish(null, block, world, blockPosition);
+                AbstractCandleBlock.extinguish(null, block, world, blockPos);
             } else if (CampfireBlock.isLitCampfire(block)) {
-                world.syncWorldEvent(null, 1009, blockPosition, 0);
-                CampfireBlock.extinguish(null, world, blockPosition, block);
-                world.setBlockState(blockPosition, block.with(CampfireBlock.LIT, false));
+                world.syncWorldEvent(null, 1009, blockPos, 0);
+                CampfireBlock.extinguish(null, world, blockPos, block);
+                world.setBlockState(blockPos, block.with(CampfireBlock.LIT, false));
             }
         });
 

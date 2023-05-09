@@ -3,7 +3,7 @@ package be.uantwerpen.minelabs.potion.reactions;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PoisonousReaction extends Reaction {
@@ -17,7 +17,7 @@ public class PoisonousReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, BlockPos pos) {
+    protected void react(World world, Vec3d pos) {
         Utils.applyRadius(world, pos, radius, this::react);
     }
 

@@ -8,6 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class CorrosiveReaction extends Reaction {
@@ -19,15 +20,15 @@ public class CorrosiveReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, BlockPos pos) {
+    protected void react(World world, Vec3d pos) {
         Utils.applyRadius(pos, this.radius, block -> {
-            BlockState blockState = world.getBlockState(pos);
+            BlockState blockState = world.getBlockState(BlockPos.ofFloored(pos));
             if (blockState.getBlock() == net.minecraft.block.Blocks.WATER)
                 MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.CLOUD,
                         pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
             else
-                if(canReact(world.getBlockState(block)))
-                    world.setBlockState(block, Blocks.AIR.getDefaultState());
+                if(canReact(world.getBlockState(BlockPos.ofFloored(block))))
+                    world.setBlockState(BlockPos.ofFloored(block), Blocks.AIR.getDefaultState());
         });
         Utils.applyRadius(world, pos, radius, this::react);
     }

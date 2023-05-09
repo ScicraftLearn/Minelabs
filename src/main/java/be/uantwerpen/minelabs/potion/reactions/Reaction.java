@@ -18,6 +18,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class Reaction {
+    // TODO CHECK VEC3D pos
+
 
     private final List<TagKey> whiteList = new ArrayList<>();
     private final List<TagKey> blackList = new ArrayList<>(List.of(Tags.Blocks.REACTION_DEFAULT_BLACKLIST));
@@ -34,8 +36,8 @@ public abstract class Reaction {
 
     protected boolean canReact(BlockState state) {
         Objects.requireNonNull(state);
-        return whiteList.stream().allMatch(tag -> state.isIn(tag)) &&
-                blackList.stream().noneMatch(tag -> state.isIn(tag));
+        return whiteList.stream().allMatch(state::isIn) &&
+                blackList.stream().noneMatch(state::isIn);
     }
 
     public void react(World world, Vec3d position, HitResult hitResult) {
@@ -43,9 +45,9 @@ public abstract class Reaction {
         Objects.requireNonNull(position);
         Objects.requireNonNull(hitResult);
         if (hitResult instanceof BlockHitResult blockHitResult)
-            react(world, blockHitResult.getBlockPos());
+            react(world, blockHitResult.getPos());
         else if (hitResult instanceof EntityHitResult entityHitResult)
-            react(world, entityHitResult.getEntity().getBlockPos());
+            react(world, entityHitResult.getEntity().getPos());
     }
 
     protected abstract void react(World world, Vec3d position);
@@ -69,20 +71,20 @@ public abstract class Reaction {
                     || (state.getProperties().contains(Properties.LIT) && state.get(Properties.LIT));
         }
 
-        public static void applyRadius(BlockPos centerPos, int radius, Consumer<BlockPos> blockFunction) {
+        public static void applyRadius(Vec3d centerPos, int radius, Consumer<Vec3d> blockFunction) {
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
                     for (int z = -radius; z <= radius; z++) {
-                        BlockPos blockPos = centerPos.add(x, y, z);
-                        if (Math.sqrt(centerPos.getSquaredDistance(blockPos)) <= radius) {
-                            blockFunction.accept(blockPos);
+                        Vec3d vec = new Vec3d(centerPos.x + x, centerPos.y + y, centerPos.z + z);
+                        if (Math.sqrt(centerPos.squaredDistanceTo(vec)) <= radius) {
+                            blockFunction.accept(vec);
                         }
                     }
                 }
             }
         }
 
-        public static void applyRadius(World world, BlockPos position, int radius, Consumer<LivingEntity> entityFunction) {
+        public static void applyRadius(World world, Vec3d position, int radius, Consumer<LivingEntity> entityFunction) {
             double x = position.getX(), y = position.getY(), z = position.getZ();
             for (Entity entity : world.getOtherEntities(null, new Box(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius)))
                 if (entity instanceof LivingEntity livingEntity)

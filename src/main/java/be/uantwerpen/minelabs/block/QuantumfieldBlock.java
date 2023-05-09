@@ -52,7 +52,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
         int age = state.get(AGE);
         age = Math.min(age + decayrate, MAX_AGE);
         if (age == MAX_AGE) {
-            world.createAndScheduleBlockTick(pos, this, 5);
+            world.scheduleBlockTick(pos, this, 5);
         }
         state = state.with(AGE, age);
         world.setBlockState(pos, state, Block.NOTIFY_ALL);
@@ -64,7 +64,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
         if (state.getBlock() == neighborState.getBlock() && age < neighborState.get(AGE)) {
             age = neighborState.get(AGE);
             if (age == MAX_AGE) {
-                world.createAndScheduleBlockTick(pos, this, 5);
+                world.scheduleBlockTick(pos, this, 5);
             }
             return state.with(AGE, age);
         }
