@@ -16,6 +16,13 @@ public class FlemishLangProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
-        // JUST COPY NL_NL ?
+        try {
+            // JUST COPY NL_NL ?
+            translationBuilder.add(dataOutput.getModContainer()
+                    .findPath("assets/minelabs/lang/nl_be.json").get());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
