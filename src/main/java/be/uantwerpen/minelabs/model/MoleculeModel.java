@@ -32,6 +32,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.RotationAxis;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
@@ -132,10 +135,11 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
     }
 
     @Override
-    public BakedModel bake(ModelLoader loader, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
+    public BakedModel bake(Baker baker, Function<SpriteIdentifier, Sprite> textureGetter,
+                           ModelBakeSettings rotationContainer, Identifier modelId) {
         SPRITE = textureGetter.apply(SPRITE_ID);
 
-        JsonUnbakedModel defaultBlockModel = (JsonUnbakedModel) loader.getOrLoadModel(DEFAULT_BLOCK_MODEL);
+        JsonUnbakedModel defaultBlockModel = (JsonUnbakedModel) baker.getOrLoadModel(DEFAULT_BLOCK_MODEL);
         // Get its ModelTransformation
         transformation = defaultBlockModel.getTransformations();
 
@@ -189,7 +193,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         direction.cross(Vector3f.POSITIVE_X);
         direction.normalize();
 
-        Quaternion rotation = direction.getRadialQuaternion(angle);
+        Quaternionf rotation = direction.getRadialQuaternion(angle);
         rotation.conjugate();
         ModelUtil.transformQuads(bondQuads, v -> v.rotate(rotation));
         ModelUtil.transformQuads(bondQuads, v -> v.add(pos1));
@@ -243,9 +247,9 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         List<Vector3f[]> quads = new ArrayList<>();
         Vector3f offsetDirection = new Vector3f(0, offset, 0);
         quads.addAll(ModelUtil.transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
-        offsetDirection.rotate(Vector3f.POSITIVE_X.getDegreesQuaternion(120));
+        offsetDirection.rotate(RotationAxis.POSITIVE_X.rotationDegrees(120));
         quads.addAll(ModelUtil.transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
-        offsetDirection.rotate(Vector3f.POSITIVE_X.getDegreesQuaternion(120));
+        offsetDirection.rotate(RotationAxis.POSITIVE_X.rotationDegrees(120));
         quads.addAll(ModelUtil.transformQuads(getUnitBeam(len, a), v -> v.add(offsetDirection)));
         return quads;
     }
