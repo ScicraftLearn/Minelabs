@@ -15,6 +15,7 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -50,7 +51,8 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
         annihilation = tag.getBoolean("an");
         time = tag.getLong("time");
         movement_direction = Direction.byId(tag.getInt("md"));
-        render_state = NbtHelper.toBlockState(tag.getCompound("rs"));
+        // TODO CHECK IF CORRECT
+        render_state = NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(), tag.getCompound("rs"));
         Inventories.readNbt(tag, INVENTORY);
         super.readNbt(tag);
     }
