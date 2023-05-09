@@ -9,6 +9,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RotationAxis;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class ElectricFieldSensorRenderer implements BlockEntityRenderer<ElectricFieldSensorBlockEntity> {
@@ -35,7 +37,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
 
         if(field.equals(new Vector3f())) {
             // Don't display arrow if the field is zero
-            matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90));
             // arrow = gray arrow
             arrow = new ItemStack(net.minecraft.item.Items.DARK_OAK_BUTTON);
         } else {
@@ -62,11 +64,10 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
             } else {
                 v.normalize();
             }
-
             matrices.multiply(v.getRadialQuaternion((float)theta));
 
             // correct for default arrow inclination of 45 degrees.
-            matrices.multiply(Direction.SOUTH.getUnitVector().getDegreesQuaternion(-45));
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-45));
 
             // make sure arrows are larger when near charged blocks and smaller when further away
             reference = (float) Math.sqrt(field.dot(field)) / max_field + .2f;

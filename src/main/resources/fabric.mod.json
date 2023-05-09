@@ -3,17 +3,14 @@
   "id": "minelabs",
   "version": "${version}",
   "name": "Minelabs",
-  "description": "Mod Description: TODO",
+  "description": "A mod to add physics and chemistry to your life (and Minecraft)",
   "authors": [
-    "Joey De Pauw",
-    "Bert Jorissen",
-    "pixar02",
-    "TODO: Extend"
+    "Minelabs Team"
   ],
   "contact": {
     "homepage": "https://minelabs.be/",
-    "issues": "TODO",
-    "sources": "TODO"
+    "issues": "https://github.com/ScicraftLearn/Minelabs/issues",
+    "sources": "https://github.com/ScicraftLearn/Minelabs"
   },
   "license": "TODO",
   "icon": "assets/minelabs/icon.png",
