@@ -17,7 +17,7 @@ import be.uantwerpen.minelabs.paintings.Paintings;
 import be.uantwerpen.minelabs.particle.Particles;
 import be.uantwerpen.minelabs.sound.SoundEvents;
 import be.uantwerpen.minelabs.util.NucleusStabilityTable;
-import be.uantwerpen.minelabs.world.gen.OreGenerations;
+import be.uantwerpen.minelabs.world.gen.WorldGeneration;
 import be.uantwerpen.minelabs.world.village.VillageAdditions;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -54,7 +54,7 @@ public class Minelabs implements ModInitializer {
         SoundEvents.registerSounds();
         ScreenHandlers.registerScreens();
         Paintings.registerPaintings();
-        OreGenerations.generateOres();
+        WorldGeneration.generateCustomWorld();
         VillageAdditions.registerVillageStructures();
         Effects.registerStatusEffects();
         Particles.registerParticles();
