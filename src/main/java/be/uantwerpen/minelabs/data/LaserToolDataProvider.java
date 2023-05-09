@@ -5,7 +5,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import net.minecraft.data.DataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.registry.Registries;
@@ -19,12 +19,13 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class LaserToolDataProvider implements DataProvider {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-	private final DataGenerator root;
+	private final FabricDataOutput dataOutput;
 
 	public static HashMap<String, Map<String, Integer>> moleculeNames = new HashMap<>();
 
@@ -34,13 +35,14 @@ public class LaserToolDataProvider implements DataProvider {
 	private static List<Identifier> expandLeaves = new ArrayList<>();
 	private static List<Identifier> expandCoral = new ArrayList<>();
 	
-	public LaserToolDataProvider(DataGenerator root) {
-		this.root = root;
+	public LaserToolDataProvider(FabricDataOutput dataOutput) {
+		// TODO CHECK
+		this.dataOutput = dataOutput;
 	}
 
 	@Override
-	public void run(DataWriter writer) throws IOException {
-		Path path = this.root.getOutput();
+	public CompletableFuture<?> run(DataWriter writer) {
+		Path path = dataOutput.getPath();
 		Set<Identifier> set = Sets.newLinkedHashSet();
 		LaserToolDataProvider.generateMinecraftBlocksData(provider -> {
 			if (!set.add(provider.getId())) {
@@ -51,7 +53,7 @@ public class LaserToolDataProvider implements DataProvider {
 
 		LaserToolDataProvider.generateMoleculeData(provider -> LaserToolDataProvider.saveMoleculeData(writer, provider.toJson(), path.resolve("data/" + provider.getId().getNamespace() + "/loot_tables/molecules/" + provider.getId().getPath() + ".json")));
 
-		saveLasertoolMineable(writer, set);
+		return saveLasertoolMineable(writer, set);
 	}
 
 	private static void saveMinecraftBlocksData(DataWriter cache, JsonObject json, Path path) {
@@ -62,8 +64,8 @@ public class LaserToolDataProvider implements DataProvider {
 		DataProvider.writeToPath(cache, json, path);
 	}
 
-	private void saveLasertoolMineable(DataWriter cache, Set<Identifier> set) throws IOException {
-		Path path = this.root.getOutput();
+	private CompletableFuture<?> saveLasertoolMineable(DataWriter cache, Set<Identifier> set) {
+		Path path = dataOutput.getPath();
 
 		JsonObject root = new JsonObject();
 		root.add("replace", new JsonPrimitive(false));
@@ -72,7 +74,7 @@ public class LaserToolDataProvider implements DataProvider {
 			values.add(new JsonPrimitive(id.toString()));
 		}
 		root.add("values", values);
-		DataProvider.writeToPath(cache, root, path.resolve("data/" + Minelabs.MOD_ID + "/tags/blocks/lasertool_mineable.json"));
+		return DataProvider.writeToPath(cache, root, path.resolve("data/" + Minelabs.MOD_ID + "/tags/blocks/lasertool_mineable.json"));
 	}
 	
 	public static void generateMinecraftBlocksData(Consumer<MinecraftBlocksData> data, Path input) {
