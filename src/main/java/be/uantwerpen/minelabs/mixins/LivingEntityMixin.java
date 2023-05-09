@@ -27,8 +27,11 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
     private float movementSpeed;
+
+    //TODO CHECK
     @Shadow
-    public float airStrafingSpeed;
+    protected abstract float getOffGroundSpeed();
+    //public float airStrafingSpeed;
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -67,7 +70,7 @@ public abstract class LivingEntityMixin extends Entity {
      */
     @Overwrite
     private float getMovementSpeed(float slipperiness) {
-        float speed = (this.onGround ? this.getMovementSpeed() * (0.21600002F / (slipperiness * slipperiness * slipperiness)) : this.airStrafingSpeed);
+        float speed = (this.onGround ? this.getMovementSpeed() * (0.21600002F / (slipperiness * slipperiness * slipperiness)) : this.getOffGroundSpeed());
         if (this.world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
             speed *= atom_movement_multiplier;
         return speed;
