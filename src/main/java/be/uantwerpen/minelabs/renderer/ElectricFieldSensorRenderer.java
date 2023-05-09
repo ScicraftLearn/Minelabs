@@ -4,7 +4,7 @@ import be.uantwerpen.minelabs.block.entity.ElectricFieldSensorBlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
@@ -23,7 +23,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
     @Override
     public void render(ElectricFieldSensorBlockEntity entity, float tickDelta, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        Vector3f field = entity.getField().copy();
+        Vector3f field = new Vector3f(entity.getField());
 
         matrices.push();
 
@@ -33,14 +33,14 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         // Center arrow in block
         matrices.translate(0.5, 0.5, 0.5);
 
-        if(field.equals(Vector3f.ZERO)) {
+        if(field.equals(new Vector3f())) {
             // Don't display arrow if the field is zero
             matrices.multiply(Direction.UP.getUnitVector().getDegreesQuaternion(90));
             // arrow = gray arrow
             arrow = new ItemStack(net.minecraft.item.Items.DARK_OAK_BUTTON);
         } else {
             // We want the arrows to point the other direction, so we turn the field vector around.
-            field.scale(-1);
+            field.mul(-1);
 
             /*
              * This algorithm determines the normal vector of the plane described by the original orientation
@@ -55,7 +55,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
             // Compute theta with cosine formula.
             double theta = Math.acos(v.dot(field) * MathHelper.fastInverseSqrt(field.dot(field)));
             v.cross(field);
-            if (v.equals(Vector3f.ZERO)) {
+            if (v.equals(new Vector3f())) {
                 // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
                 // Instead, we set in to one of the infinite valid normal vectors: positive Y.
                 v = Direction.UP.getUnitVector();
@@ -80,9 +80,8 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         }
 
         matrices.scale(reference, reference, reference);
-        context.getItemRenderer().renderItem(
-                arrow, ModelTransformation.Mode.GUI, light, overlay, matrices, vertexConsumers, 0
-        );
+        context.getItemRenderer().renderItem(arrow, ModelTransformationMode.GUI,
+                light, overlay, matrices, vertexConsumers,null,0);
         matrices.pop();
     }
 }

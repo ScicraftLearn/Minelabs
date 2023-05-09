@@ -430,27 +430,27 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
             String key = atomJson.get("key").getAsString();
             Atom readAtom = Atom.getBySymbol(atomJson.get("atom").getAsString());
             JsonArray pos = atomJson.getAsJsonArray("position");
-            Vector3f Vector3f = Vector3f.ZERO.copy();
+            Vector3f vec = new Vector3f();
             float scale_factor = 4.5f;
             int i = 0;
             for (JsonElement position: pos) {
                 switch (i) {
                     case 0 -> {
-                        Vector3f.add(position.getAsFloat() / scale_factor, 0, 0);
+                        vec.add(position.getAsFloat() / scale_factor, 0, 0);
                         i++;
                     }
                     case 1 -> {
-                        Vector3f.add(0, position.getAsFloat() / scale_factor, 0);
+                        vec.add(0, position.getAsFloat() / scale_factor, 0);
                         i++;
                     }
                     case 2 -> {
-                        Vector3f.add(0, 0, position.getAsFloat() / scale_factor);
+                        vec.add(0, 0, position.getAsFloat() / scale_factor);
                         i++;
                     }
                 }
             }
-            positions.put(key, new Pair<>(readAtom, Vector3f.copy()));
-            Vector3f.set(0,0,0);
+            positions.put(key, new Pair<>(readAtom, new Vector3f(vec)));
+            vec.set(0,0,0);
         }
         JsonArray bonds = structure.getAsJsonArray("bonds");
         for (JsonElement bond: bonds) {
