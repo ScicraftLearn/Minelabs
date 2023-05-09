@@ -8,8 +8,8 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Quaternion;
-import org.joml.Vector3f;
+import net.minecraft.util.math.RotationAxis;
+import org.joml.Quaternionf;
 
 public class BalloonEntityRenderer extends MobEntityRenderer<BalloonEntity, BalloonEntityModel> {
 
@@ -25,8 +25,9 @@ public class BalloonEntityRenderer extends MobEntityRenderer<BalloonEntity, Ball
 
     @Override
     public void render(BalloonEntity mobEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
-        Quaternion rotation = Vector3f.POSITIVE_Y.getDegreesQuaternion(mobEntity.getRotationY());
-        matrixStack.multiply(rotation);
+        Quaternionf rot = RotationAxis.POSITIVE_Y.rotationDegrees(mobEntity.getRotationY());
+        //Quaternion rotation = Vector3f.POSITIVE_Y.getDegreesQuaternion(mobEntity.getRotationY());
+        matrixStack.multiply(rot);
         super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }
 }

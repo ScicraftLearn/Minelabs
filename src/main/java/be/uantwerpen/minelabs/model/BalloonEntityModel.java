@@ -2,19 +2,10 @@ package be.uantwerpen.minelabs.model;
 
 import be.uantwerpen.minelabs.entity.BalloonEntity;
 import com.google.common.collect.ImmutableList;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.model.EntityModelPartNames;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.net.URL;
 
 public class BalloonEntityModel extends EntityModel<BalloonEntity> {
 

@@ -48,7 +48,7 @@ public abstract class Reaction {
             react(world, entityHitResult.getEntity().getBlockPos());
     }
 
-    protected abstract void react(World world, BlockPos position);
+    protected abstract void react(World world, Vec3d position);
 
     public abstract void react(LivingEntity entity);
 
@@ -90,11 +90,12 @@ public abstract class Reaction {
 
         }
 
-        public static boolean isFlameNearby(World world, BlockPos source, int radius) {
+        public static boolean isFlameNearby(World world, Vec3d source, int radius) {
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
                     for (int z = -radius; z <= radius; z++) {
-                        if (isFlammable(world.getBlockState(source.add(x, y, z)))) {
+                        if (isFlammable(world.getBlockState(
+                                BlockPos.ofFloored(source.x + x, source.y + y, source.z + z)))) {
                             return true;
                         }
                     }

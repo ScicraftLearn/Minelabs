@@ -3,7 +3,6 @@ package be.uantwerpen.minelabs.block.entity;
 import be.uantwerpen.minelabs.advancement.criterion.CoulombCriterion;
 import be.uantwerpen.minelabs.advancement.criterion.Criteria;
 import be.uantwerpen.minelabs.block.Blocks;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

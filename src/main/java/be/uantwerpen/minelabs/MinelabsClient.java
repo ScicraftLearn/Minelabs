@@ -5,7 +5,6 @@ import be.uantwerpen.minelabs.block.entity.BlockEntities;
 import be.uantwerpen.minelabs.network.client.ClientNetworking;
 import be.uantwerpen.minelabs.entity.Entities;
 import be.uantwerpen.minelabs.entity.EntityModelLayers;
-import be.uantwerpen.minelabs.renderer.LabCoatRenderer;
 import be.uantwerpen.minelabs.event.ClientModsEvents;
 import be.uantwerpen.minelabs.fluid.Fluids;
 import be.uantwerpen.minelabs.gui.ScreenHandlers;
@@ -38,7 +37,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 import java.util.Map;
 

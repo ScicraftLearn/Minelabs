@@ -39,7 +39,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
         tag.putBoolean("an", annihilation);
         tag.putLong("time", time);
         tag.putInt("md", movement_direction.getId());
-        tag.put("rs",NbtHelper.fromBlockState(render_state));
+        tag.put("rs", NbtHelper.fromBlockState(render_state));
         Inventories.writeNbt(tag, INVENTORY);
         super.writeNbt(tag);
     }
