@@ -44,27 +44,12 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
             // We want the arrows to point the other direction, so we turn the field vector around.
             field.mul(-1);
 
-            /*
-             * This algorithm determines the normal vector of the plane described by the original orientation
-             * of the arrow (v) and the target direction (field).
-             * It then rotates around this vector with the angle theta between the two vectors to point
-             * the arrow in the direction of the field.
-             *
-             * By default, the arrow points in negative x (WEST)
-             */
+            // By default, the arrow points in negative x (WEST)
             Vector3f v = Direction.WEST.getUnitVector();
 
-            // Compute theta with cosine formula.
-            double theta = Math.acos(v.dot(field) * MathHelper.fastInverseSqrt(field.dot(field)));
-            v.cross(field);
-            if (v.equals(new Vector3f())) {
-                // When the two vectors are parallel, their cross product does not produce the normal vector of the plane.
-                // Instead, we set in to one of the infinite valid normal vectors: positive Y.
-                v = Direction.UP.getUnitVector();
-            } else {
-                v.normalize();
-            }
-            matrices.multiply(v.getRadialQuaternion((float)theta));
+            // Rotate towards field
+            Quaternionf rotation = v.rotationTo(field, new Quaternionf());
+            matrices.multiply(rotation);
 
             // correct for default arrow inclination of 45 degrees.
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-45));

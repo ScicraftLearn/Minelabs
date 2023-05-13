@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.*;
@@ -53,30 +54,27 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
 
     private Sprite SPRITE;
 
-    private static final Identifier DEFAULT_BLOCK_MODEL = new Identifier("minecraft:block/block");
-
-    private ModelTransformation transformation;
-
     Map<String, Pair<Atom, Vector3f>> positions;
     Map<Pair<String, String>, Bond> bonds;
 
-    private final float RADIUS_S = 0.08f;
-    private final float RADIUS_M = 0.10f;
-    private final float RADIUS_L = 0.12f;
-    private final float MARGIN = 0.06f;
+    private static final float RADIUS_S = 0.08f;
+    private static final float RADIUS_M = 0.10f;
+    private static final float RADIUS_L = 0.12f;
+    private static final float MARGIN = 0.06f;
 
     public MoleculeModel(Map<String, Pair<Atom, Vector3f>> positions, Map<Pair<String, String>, Bond> bondMap) {
         this.positions = positions;
         this.bonds = bondMap;
     }
 
+    @Override
     public Collection<Identifier> getModelDependencies() {
-        return List.of(DEFAULT_BLOCK_MODEL);
+        return Collections.emptyList();
     }
 
     @Override
-    public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-        return List.of(SPRITE_ID);
+    public void setParents(Function<Identifier, UnbakedModel> modelLoader) {
+
     }
 
     @Override
@@ -117,7 +115,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
 
     @Override
     public ModelTransformation getTransformation() {
-        return transformation;
+        return ModelHelper.MODEL_TRANSFORM_BLOCK;
     }
 
     @Override
@@ -138,10 +136,6 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
     public BakedModel bake(Baker baker, Function<SpriteIdentifier, Sprite> textureGetter,
                            ModelBakeSettings rotationContainer, Identifier modelId) {
         SPRITE = textureGetter.apply(SPRITE_ID);
-
-        JsonUnbakedModel defaultBlockModel = (JsonUnbakedModel) baker.getOrLoadModel(DEFAULT_BLOCK_MODEL);
-        // Get its ModelTransformation
-        transformation = defaultBlockModel.getTransformations();
 
         // Build the mesh using the Renderer API
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
@@ -184,17 +178,11 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         };
 
         // direction is the orientation of the bond
-        Vector3f direction = new Vector3f(pos2);
-        direction.sub(pos1);
-        direction.normalize();
-        // compute angle between positive X and direction
-        float angle = (float) Math.acos(direction.dot(Vector3f.POSITIVE_X));
-        // rotate within plane described by two vectors
-        direction.cross(Vector3f.POSITIVE_X);
-        direction.normalize();
+        Vector3f direction = new Vector3f(pos2).sub(pos1);
 
-        Quaternionf rotation = direction.getRadialQuaternion(angle);
-        rotation.conjugate();
+        Quaternionf rotation = new Vector3f(1, 0 , 0).rotationTo(direction, new Quaternionf());
+//        rotation.conjugate();
+
         ModelUtil.transformQuads(bondQuads, v -> v.rotate(rotation));
         ModelUtil.transformQuads(bondQuads, v -> v.add(pos1));
 

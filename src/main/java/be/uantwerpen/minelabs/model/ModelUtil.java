@@ -22,14 +22,12 @@ public class ModelUtil {
     }
 
     public static Vector3f normalOnVertices(Vector3f v1, Vector3f v2, Vector3f v3){
-        Vector3f dir1 = new Vector3f(v2);
-        dir1.sub(v1);
-        Vector3f dir2 = new Vector3f(v3);
-        dir2.sub(v1);
-        return unit_cross(dir1, dir2);
+        Vector3f dir1 = new Vector3f(v2).sub(v1);
+        Vector3f dir2 = new Vector3f(v3).sub(v1);
+        return unitCross(dir1, dir2);
     }
 
-    public static Vector3f unit_cross(Vector3f dir1, Vector3f dir2){
+    public static Vector3f unitCross(Vector3f dir1, Vector3f dir2){
         Vector3f l = new Vector3f(dir2);
         l.cross(dir1);
         l.mul(1/norm(l));

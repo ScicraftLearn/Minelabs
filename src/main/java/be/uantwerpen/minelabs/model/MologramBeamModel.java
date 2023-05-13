@@ -1,7 +1,6 @@
 package be.uantwerpen.minelabs.model;
 
 import be.uantwerpen.minelabs.Minelabs;
-import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
@@ -11,6 +10,7 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.*;
@@ -24,20 +24,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import org.joml.Vector3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedModel {
     private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "block/mologram/mologram_beam"));
-    private static final Identifier DEFAULT_BLOCK_MODEL = new Identifier("minecraft:block/block");
-    private ModelTransformation transformation;
     private Sprite SPRITE;
     private Mesh mesh;
     @Override
@@ -87,7 +88,7 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
 
     @Override
     public ModelTransformation getTransformation() {
-        return transformation;
+        return ModelHelper.MODEL_TRANSFORM_BLOCK;
     }
 
     @Override
@@ -97,22 +98,18 @@ public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedM
 
     @Override
     public Collection<Identifier> getModelDependencies() {
-        return List.of(DEFAULT_BLOCK_MODEL);
+        return Collections.emptyList();
     }
 
     @Override
-    public Collection<SpriteIdentifier> getTextureDependencies(Function<Identifier, UnbakedModel> unbakedModelGetter, Set<Pair<String, String>> unresolvedTextureReferences) {
-        return List.of(SPRITE_ID);
+    public void setParents(Function<Identifier, UnbakedModel> modelLoader) {
+
     }
 
     @Nullable
     @Override
     public BakedModel bake(Baker baker, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer, Identifier modelId) {
         SPRITE = textureGetter.apply(SPRITE_ID);
-
-        JsonUnbakedModel defaultBlockModel = (JsonUnbakedModel) baker.getOrLoadModel(DEFAULT_BLOCK_MODEL);
-        // Get its ModelTransformation
-        transformation = defaultBlockModel.getTransformations();
 
         // Build the mesh using the Renderer API
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
