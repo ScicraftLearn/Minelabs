@@ -1,6 +1,7 @@
 package be.uantwerpen.minelabs.renderer;
 
 import be.uantwerpen.minelabs.Minelabs;
+import be.uantwerpen.minelabs.MinelabsClient;
 import be.uantwerpen.minelabs.block.entity.MologramBlockEntity;
 import be.uantwerpen.minelabs.item.IMoleculeItem;
 import net.minecraft.block.Block;
@@ -37,9 +38,10 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
 
         // Render item inside
         matrices.push();
-        if (Block.getBlockFromItem(stack.getItem()) != Blocks.AIR) matrices.translate(0.5, 0, 0.5); //if BlockItem
-        else {
-            matrices.translate(0.5, 0.10, 0.64);
+        if (Block.getBlockFromItem(stack.getItem()) != Blocks.AIR) {
+            matrices.translate(0.5, 0, 0.5); //if BlockItem
+        } else {
+            matrices.translate(0.5, 0.1, 0.5); //if BlockItem
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90));
         }
 
@@ -64,7 +66,7 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
         matrices.translate(0.5, 0, 0.5);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(getRotation(world)));
         matrices.translate(-0.5, 13/16f, -0.5);
-        MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), true, net.minecraft.util.math.random.Random.create(), 0, overlay);
+        MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(world, model, entity.getCachedState(), pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), false, net.minecraft.util.math.random.Random.create(), 0, overlay);
         matrices.pop();
     }
 
