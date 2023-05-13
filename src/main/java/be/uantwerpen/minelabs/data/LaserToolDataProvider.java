@@ -36,7 +36,6 @@ public class LaserToolDataProvider implements DataProvider {
 	private static List<Identifier> expandCoral = new ArrayList<>();
 	
 	public LaserToolDataProvider(FabricDataOutput dataOutput) {
-		// TODO CHECK
 		this.dataOutput = dataOutput;
 	}
 

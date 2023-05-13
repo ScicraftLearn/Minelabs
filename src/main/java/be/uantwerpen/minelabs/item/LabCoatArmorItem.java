@@ -28,40 +28,6 @@ public class LabCoatArmorItem extends ArmorItem implements GeoAnimatable, GeoIte
         super(material, slot, settings);
     }
 
-    // Predicate runs every frame
-    /* TODO CHECK ?
-    private <AnimationStateHandler> PlayState predicate(AnimationState state) {
-
-        // This is all the extradata this event carries. The livingentity is the entity
-        // that's wearing the armor. The itemstack and equipmentslottype are self
-        // explanatory.
-        LivingEntity livingEntity = state.getExtraDataOfType(LivingEntity.class).get(0);
-
-        // Always loop the animation but later on in this method we'll decide whether or
-        // not to actually play it
-        state.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
-
-        // If the living entity is an armorstand just play the animation nonstop
-        if (livingEntity instanceof ArmorStandEntity) {
-            return PlayState.CONTINUE;
-        }
-
-        // elements 2 to 6 are the armor so we take the sublist. Armorlist now only
-        // contains the 4 armor slots
-        List<Item> armorList = new ArrayList<>(4);
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-                if (livingEntity.getEquippedStack(slot) != null) {
-                    armorList.add(livingEntity.getEquippedStack(slot).getItem());
-                }
-            }
-        }
-
-        // Make sure the player is wearing all the armor. If they are, continue playing
-        // the animation, otherwise stop
-        return armorList.contains(Items.LAB_COAT) ? PlayState.CONTINUE : PlayState.STOP;
-    }*/
-
     private PlayState predicate(AnimationState state){
         state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;

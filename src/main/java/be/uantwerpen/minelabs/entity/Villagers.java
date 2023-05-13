@@ -35,17 +35,8 @@ public class Villagers {
      * @return VillagerProfession
      */
     public static VillagerProfession registerProfession(String name, RegistryKey<PointOfInterestType> type){
-        //TODO CHECK
         return Registry.register(Registries.VILLAGER_PROFESSION, new Identifier(Minelabs.MOD_ID, name),
                 makeProfession("minelabs:" + name, type, SoundEvents.ENTITY_VILLAGER_WORK_ARMORER));
-
-        /*
-        return Registry.register(Registries.VILLAGER_PROFESSION, new Identifier(Minelabs.MOD_ID, name),
-                VillagerProfessionBuilder.create()
-                        .id(new Identifier(Minelabs.MOD_ID,name))
-                        .workstation(type)
-                        .workSound(SoundEvents.ENTITY_VILLAGER_WORK_ARMORER)
-                        .build());*/
     }
 
     private static VillagerProfession makeProfession(String id, RegistryKey<PointOfInterestType> workstation, SoundEvent workSound){

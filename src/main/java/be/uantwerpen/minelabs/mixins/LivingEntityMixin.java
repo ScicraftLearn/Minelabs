@@ -26,10 +26,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     private float movementSpeed;
 
-    //TODO CHECK
     @Shadow
     protected abstract float getOffGroundSpeed();
-    //public float airStrafingSpeed;
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
