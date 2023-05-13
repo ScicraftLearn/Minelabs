@@ -34,6 +34,7 @@ import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -113,11 +114,11 @@ public class MinelabsClient implements ClientModInitializer {
         EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(EntityModelLayers.BALLOON_MODEL, BalloonEntityModel::getTexturedModelData);
 
-        BlockEntityRendererRegistry.register(BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntities.ELECTRIC_FIELD_SENSOR, ElectricFieldSensorRenderer::new);
-        //BlockEntityRendererRegistry.register(BlockEntities.LAB_CHEST_BLOCK_ENTITY, LabChestBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntities.ELECTRIC_FIELD_SENSOR, ElectricFieldSensorRenderer::new);
+        //BlockEntityRendererFactories.register(BlockEntities.LAB_CHEST_BLOCK_ENTITY, LabChestBlockEntityRenderer::new);
 
         // Register rendering lewis crafting table inventory
         HandledScreens.register(ScreenHandlers.LEWIS_SCREEN_HANDLER, LewisScreen::new);

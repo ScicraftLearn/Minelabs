@@ -10,6 +10,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.texture.SpriteAtlasTexture;
@@ -162,28 +163,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
     @SuppressWarnings("ConstantConditions")
     private void registerButtonWidget() {
-        /*
-        buttonWidget = new ButtonWidget(x + 133, y + 17, 18, 18, Text.of("C"),
-                button -> {
-                    if (!widgetTooltip) return;
-                    if (handler.isInputEmpty()) {
-                        for (int i = 0; i < GRIDSIZE; i++) {
-                            client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
-                        }
-                    } else {
-                        for (int i = 0; i < 9; i++) {
-                            client.interactionManager.clickSlot(handler.syncId, i + GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
-                        }
-                    }
-                },
-                (button, matrixStack, mx, my) -> {
-                    // On Button Hover:
-                    renderTooltip(matrixStack,
-                            Text.of(handler.isInputEmpty() ? "Clear 5x5 Grid" : "Clear Bottom Input Slots"),
-                            mx, my);
-                }
-        );*/
-        // TODO CHECK
         buttonWidget = new ButtonWidget.Builder(Text.of("C"), button -> {
             if (!widgetTooltip) return;
             if (handler.isInputEmpty()) {
@@ -195,10 +174,11 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                     client.interactionManager.clickSlot(handler.syncId, i + LewisBlockScreenHandler.GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
                 }
             }
-        }).narrationSupplier(textSupplier -> handler.isInputEmpty() ?
-                Text.translatable("text.minelabs.clear_grid") : Text.translatable("text.minelabs.clear_slots"))
-                .position(x+133, y+17)
-                .build();
+        }).position(x+133, y+17).size(18,18)
+          /*.tooltip(Tooltip.of(handler.isInputEmpty() ?
+                  Text.translatableWithFallback("text.minelabs.clear_grid", "Clear Grid") :
+                  Text.translatableWithFallback("text.minelabs.clear_slots", "Clear Slots")))*/
+          .build();
     }
 
     @Override
@@ -210,10 +190,10 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         if (this.handler.getCursorStack().isEmpty()) {
             if (this.focusedSlot != null && this.focusedSlot.hasStack())
                 this.renderTooltip(matrices, this.focusedSlot.getStack(), mouseX, mouseY);
-            if ((mouseX >= x + 133 && mouseX < x + 133 + 18)
-                    && (mouseY >= y + 17 && mouseY < y + 17 + 18)) {
-                // TODO : No longer needed ?
-                //buttonWidget.renderTooltip(matrices, mouseX, mouseY);
+            if (buttonWidget.isMouseOver(mouseX, mouseY)){
+                renderTooltip(matrices, handler.isInputEmpty() ?
+                        Text.translatableWithFallback("text.minelabs.clear_grid", "Clear Grid") :
+                        Text.translatableWithFallback("text.minelabs.clear_slots", "Clear Slots"), mouseX, mouseY);
                 widgetTooltip = true;
             }
             if (mouseX >= x + 105 && mouseX < x + 105 + 16 && mouseY >= y + 17 && mouseY < y + 17 + 16) {
