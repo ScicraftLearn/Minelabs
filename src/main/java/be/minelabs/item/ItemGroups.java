@@ -2,7 +2,7 @@ package be.minelabs.item;
 
 import be.minelabs.Minelabs;
 import be.minelabs.crafting.molecules.Atom;
-import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupBuilderImpl;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -11,7 +11,7 @@ public class ItemGroups {
     // Hard-coded ItemGroup, update from 19.3 allows to use ItemGroupEvents to extend ItemGroups. Currently, only
     //  addition by had is allowed or automatic addition (in Items.Settings). You cant combine both because of the
     //  implementation within the Fabric-API.
-    public static final ItemGroup MINELABS = new FabricItemGroupBuilderImpl(
+    public static final ItemGroup MINELABS = FabricItemGroup.builder(
                     new Identifier(Minelabs.MOD_ID, "minelabs"))
             .icon(() -> new ItemStack(Items.MOLOGRAM))
             .entries((displayContext, entries) -> {
@@ -44,7 +44,7 @@ public class ItemGroups {
             })
             .build();
 
-    public static final ItemGroup CHEMICALS = new FabricItemGroupBuilderImpl(
+    public static final ItemGroup CHEMICALS = FabricItemGroup.builder(
                     new Identifier(Minelabs.MOD_ID, "chemicals"))
             .icon(() -> new ItemStack(Items.ERLENMEYER))
             .entries((displayContext, entries) -> {
@@ -126,13 +126,13 @@ public class ItemGroups {
             })
             .build();
 
-    public static final ItemGroup ATOMS = new FabricItemGroupBuilderImpl(
+    public static final ItemGroup ATOMS = FabricItemGroup.builder(
                     new Identifier(Minelabs.MOD_ID, "atoms"))
             .icon(() -> new ItemStack(Atom.HYDROGEN.getItem()))
             .entries((displayContext, entries) -> entries.addAll(Items.ATOMS.stream().map(ItemStack::new).toList()))
             .build();
 
-    public static final ItemGroup ELEMENTARY_PARTICLES = new FabricItemGroupBuilderImpl(
+    public static final ItemGroup ELEMENTARY_PARTICLES = FabricItemGroup.builder(
                     new Identifier(Minelabs.MOD_ID, "elementary_particles"))
             .icon(() -> new ItemStack(Items.PION_NUL))
             .entries((displayContext, entries) ->{
@@ -166,7 +166,7 @@ public class ItemGroups {
             })
             .build();
 
-    public static final ItemGroup QUANTUM_FIELDS = new FabricItemGroupBuilderImpl(
+    public static final ItemGroup QUANTUM_FIELDS = FabricItemGroup.builder(
                     new Identifier(Minelabs.MOD_ID, "quantum_fields"))
             .icon(() -> new ItemStack(Items.GLUON_QUANTUMFIELD))
             .entries((displayContext, entries) -> {
