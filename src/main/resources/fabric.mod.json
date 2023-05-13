@@ -18,13 +18,13 @@
   "accessWidener" : "minelabs.accesswidener",
   "entrypoints": {
     "main": [
-      "be.uantwerpen.minelabs.Minelabs"
+      "be.minelabs.Minelabs"
     ],
     "client": [
-      "be.uantwerpen.minelabs.MinelabsClient"
+      "be.minelabs.MinelabsClient"
     ],
     "fabric-datagen": [
-      "be.uantwerpen.minelabs.MinelabsDatagen"
+      "be.minelabs.MinelabsDatagen"
     ]
   },
   "mixins": [
