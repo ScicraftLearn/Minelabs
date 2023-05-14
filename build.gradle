@@ -111,6 +111,15 @@ loom {
 			vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
 		}
 	}
+
+	splitEnvironmentSourceSets()
+
+	mods {
+		"${mod_id}" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
 }
 assemble.dependsOn(runDatagen)
 
