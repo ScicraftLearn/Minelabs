@@ -1,4 +1,5 @@
 {
+  "group": "microscope",
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "#G#",

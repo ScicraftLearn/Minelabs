@@ -1,4 +1,5 @@
 {
+  "group": "lasertool",
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " t ",

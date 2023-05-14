@@ -1,4 +1,5 @@
 {
+  "group": "lab_blocks",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {

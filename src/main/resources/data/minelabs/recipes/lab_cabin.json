@@ -1,5 +1,5 @@
 {
-  "group": "scicraft",
+  "group": "lab_blocks",
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "ggg",
