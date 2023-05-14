@@ -125,6 +125,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             matrices.scale(0.5f, 0.5f, 0.5f);
             drawSprite(matrices, 2*(x + 8 + 18*i), 2*(133+y-20), 1, 32, 32, SPRITE_ID.getSprite());
             //MinecraftClient.getInstance().textRenderer.draw(matrices, Integer.toString(handler.getDensity()), 2*(x + 8 + 18*i)+24, (int) 2*(133+y-20)+24, 5592405);
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
             matrices.pop();
 
             if (handler.getIoInventory().getStack(i).getCount() < handler.getDensity()) {
@@ -134,7 +135,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             }
             //this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
             RenderSystem.disableBlend();
-            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         }
         matrices.push();
         matrices.scale(0.5f, 0.5f, 0.5f);
