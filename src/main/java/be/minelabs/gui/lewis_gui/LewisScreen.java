@@ -134,6 +134,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             }
             //this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
             RenderSystem.disableBlend();
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         }
         matrices.push();
         matrices.scale(0.5f, 0.5f, 0.5f);
