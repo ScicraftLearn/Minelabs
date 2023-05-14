@@ -2,7 +2,7 @@ package be.minelabs;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.dimension.ModDimensions;
-import be.minelabs.gui.ScreenHandlers;
+import be.minelabs.screen.ScreenHandlers;
 import be.minelabs.item.Items;
 import be.minelabs.paintings.Paintings;
 import be.minelabs.particle.Particles;

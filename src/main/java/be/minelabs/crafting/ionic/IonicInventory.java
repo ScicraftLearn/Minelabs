@@ -1,7 +1,7 @@
 package be.minelabs.crafting.ionic;
 
 import be.minelabs.crafting.lewis.LewisCraftingGrid;
-import be.minelabs.gui.ionic_gui.IonicBlockScreenHandler;
+import be.minelabs.screen.IonicBlockScreenHandler;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 

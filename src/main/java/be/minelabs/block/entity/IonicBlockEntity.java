@@ -3,7 +3,7 @@ package be.minelabs.block.entity;
 import be.minelabs.item.Items;
 import be.minelabs.crafting.ionic.IonicInventory;
 import be.minelabs.crafting.ionic.IonicRecipe;
-import be.minelabs.gui.ionic_gui.IonicBlockScreenHandler;
+import be.minelabs.screen.IonicBlockScreenHandler;
 import be.minelabs.network.IonicDataPacket;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static be.minelabs.gui.ionic_gui.IonicBlockScreenHandler.GRIDSIZE;
+import static be.minelabs.screen.IonicBlockScreenHandler.GRIDSIZE;
 
 /**
  * IonicBlockEntity. We still implement {@link Inventory} for compat.

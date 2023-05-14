@@ -1,6 +1,6 @@
 package be.minelabs.block.entity;
 
-import be.minelabs.gui.lab_chest_gui.LabChestScreenHandler;
+import be.minelabs.screen.LabChestScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.ViewerCountManager;

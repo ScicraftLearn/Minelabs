@@ -2,7 +2,6 @@ package be.minelabs.potion.reactions;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -24,8 +23,7 @@ public class CorrosiveReaction extends Reaction {
         Utils.applyRadius(pos, this.radius, block -> {
             BlockState blockState = world.getBlockState(BlockPos.ofFloored(pos));
             if (blockState.getBlock() == net.minecraft.block.Blocks.WATER)
-                MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.CLOUD,
-                        pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
+                world.addParticle(ParticleTypes.CLOUD, pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
             else
                 if(canReact(world.getBlockState(BlockPos.ofFloored(block))))
                     world.setBlockState(BlockPos.ofFloored(block), Blocks.AIR.getDefaultState());

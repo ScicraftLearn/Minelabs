@@ -2,7 +2,7 @@ package be.minelabs.block.entity;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
-import be.minelabs.gui.lewis_gui.LewisBlockScreenHandler;
+import be.minelabs.screen.LewisBlockScreenHandler;
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.minelabs.crafting.lewis.MoleculeRecipe;

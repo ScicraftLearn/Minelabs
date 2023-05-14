@@ -21,7 +21,7 @@
       "be.minelabs.Minelabs"
     ],
     "client": [
-      "be.minelabs.MinelabsClient"
+      "be.minelabs.client.MinelabsClient"
     ],
     "fabric-datagen": [
       "be.minelabs.MinelabsDatagen"

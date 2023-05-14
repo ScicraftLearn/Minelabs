@@ -1,7 +1,7 @@
 package be.minelabs.block.entity;
 
 import be.minelabs.inventory.ImplementedInventory;
-import be.minelabs.gui.charged_point_gui.ChargedPointBlockScreenHandler;
+import be.minelabs.screen.ChargedPointBlockScreenHandler;
 import be.minelabs.util.Tags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
