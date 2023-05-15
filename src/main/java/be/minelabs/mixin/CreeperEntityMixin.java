@@ -1,4 +1,4 @@
-package be.minelabs.mixins;
+package be.minelabs.mixin;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.CreeperEntity;

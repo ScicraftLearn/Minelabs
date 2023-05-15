@@ -1,7 +1,7 @@
 package be.minelabs.util;
 
-import be.minelabs.block.entity.QuantumFieldBlockEntity;
 import be.minelabs.block.Blocks;
+import be.minelabs.block.entity.QuantumFieldBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.server.network.ServerPlayerEntity;

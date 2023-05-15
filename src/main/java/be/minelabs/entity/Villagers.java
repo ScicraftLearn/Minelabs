@@ -1,8 +1,8 @@
 package be.minelabs.entity;
 
 import be.minelabs.Minelabs;
-import be.minelabs.crafting.molecules.Atom;
 import be.minelabs.block.Blocks;
+import be.minelabs.crafting.molecules.Atom;
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;

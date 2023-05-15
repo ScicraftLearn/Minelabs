@@ -1,4 +1,4 @@
-package be.minelabs.mixins;
+package be.minelabs.mixin;
 
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;

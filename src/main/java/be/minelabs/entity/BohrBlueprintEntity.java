@@ -1,14 +1,14 @@
 package be.minelabs.entity;
 
-import be.minelabs.advancement.criterion.Criteria;
-import be.minelabs.util.AtomConfiguration;
 import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.BohrCriterion;
+import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.BohrBlueprintBlock;
 import be.minelabs.item.AtomItem;
 import be.minelabs.item.Items;
-import be.minelabs.mixins.FishingBobberEntityAccessor;
+import be.minelabs.mixin.FishingBobberEntityAccessor;
+import be.minelabs.util.AtomConfiguration;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -32,7 +32,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Stack;
 
 public class BohrBlueprintEntity extends Entity {
     // Public constants

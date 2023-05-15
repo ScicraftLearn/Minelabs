@@ -1,11 +1,11 @@
 package be.minelabs.client.gui.screen;
 
 
-import be.minelabs.crafting.molecules.ValenceElectrons;
 import be.minelabs.Minelabs;
 import be.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.minelabs.crafting.molecules.BondManager;
 import be.minelabs.crafting.molecules.MoleculeItemGraph;
+import be.minelabs.crafting.molecules.ValenceElectrons;
 import be.minelabs.screen.LewisBlockScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;

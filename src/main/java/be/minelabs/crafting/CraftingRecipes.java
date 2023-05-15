@@ -1,8 +1,8 @@
 package be.minelabs.crafting;
 
 import be.minelabs.Minelabs;
-import be.minelabs.crafting.lewis.MoleculeRecipe;
 import be.minelabs.crafting.ionic.IonicRecipe;
+import be.minelabs.crafting.lewis.MoleculeRecipe;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;

@@ -1,6 +1,5 @@
 package be.minelabs.screen;
 
-import be.minelabs.screen.ScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;

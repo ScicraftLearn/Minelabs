@@ -2,13 +2,13 @@ package be.minelabs.block.entity;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
-import be.minelabs.screen.LewisBlockScreenHandler;
-import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.minelabs.crafting.lewis.MoleculeRecipe;
 import be.minelabs.crafting.molecules.MoleculeGraph;
+import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.item.Items;
 import be.minelabs.network.LewisDataPacket;
+import be.minelabs.screen.LewisBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

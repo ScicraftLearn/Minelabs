@@ -1,7 +1,7 @@
 package be.minelabs.block;
 
-import be.minelabs.block.entity.LewisBlockEntity;
 import be.minelabs.block.entity.BlockEntities;
+import be.minelabs.block.entity.LewisBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;

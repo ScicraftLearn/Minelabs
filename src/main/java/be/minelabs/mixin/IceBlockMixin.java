@@ -1,4 +1,4 @@
-package be.minelabs.mixins;
+package be.minelabs.mixin;
 
 import be.minelabs.util.Tags;
 import net.minecraft.block.BlockState;

@@ -1,7 +1,7 @@
 package be.minelabs.entity;
 
-import be.minelabs.mixins.ThrownEntityMixin;
 import be.minelabs.item.Items;
+import be.minelabs.mixin.ThrownEntityMixin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;

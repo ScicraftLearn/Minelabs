@@ -1,7 +1,7 @@
 package be.minelabs.crafting.lewis;
 
-import be.minelabs.crafting.molecules.MoleculeRecipeJsonFormat;
 import be.minelabs.crafting.molecules.Molecule;
+import be.minelabs.crafting.molecules.MoleculeRecipeJsonFormat;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

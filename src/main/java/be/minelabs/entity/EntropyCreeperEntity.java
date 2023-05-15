@@ -1,9 +1,9 @@
 package be.minelabs.entity;
 
 import be.minelabs.Minelabs;
+import be.minelabs.mixin.ExplosionAccessor;
 import be.minelabs.sound.SoundEvents;
 import be.minelabs.util.Tags;
-import be.minelabs.mixins.ExplosionAccessor;
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

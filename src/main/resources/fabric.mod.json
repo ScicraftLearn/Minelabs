@@ -28,8 +28,17 @@
     ]
   },
   "mixins": [
-    "minelabs.mixins.json"
+    "minelabs.mixins.json",
+    {
+      "config": "minelabs.client.mixins.json",
+      "environment": "client"
+    }
   ],
+  "custom": {
+    "loom:injected_interfaces": {
+      "be/minelabs/item/LabCoatArmorItem": ["software/bernie/geckolib/animatable/GeoItem"]
+    }
+  },
   "depends": {
     "fabricloader": ">=0.14.19",
     "fabric-api": "*",

@@ -3,7 +3,8 @@ package be.minelabs.util;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChemicalFormulaParser {
     public static Map<String, Integer> parseFormula(String formula) {

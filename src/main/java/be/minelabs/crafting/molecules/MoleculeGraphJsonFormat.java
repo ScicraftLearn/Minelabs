@@ -2,7 +2,9 @@ package be.minelabs.crafting.molecules;
 
 import com.google.gson.JsonSyntaxException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MoleculeGraphJsonFormat {
 

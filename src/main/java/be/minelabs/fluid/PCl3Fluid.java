@@ -1,7 +1,7 @@
 package be.minelabs.fluid;
 
-import be.minelabs.item.Items;
 import be.minelabs.block.Blocks;
+import be.minelabs.item.Items;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;

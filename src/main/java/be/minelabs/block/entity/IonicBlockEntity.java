@@ -1,10 +1,10 @@
 package be.minelabs.block.entity;
 
-import be.minelabs.item.Items;
 import be.minelabs.crafting.ionic.IonicInventory;
 import be.minelabs.crafting.ionic.IonicRecipe;
-import be.minelabs.screen.IonicBlockScreenHandler;
+import be.minelabs.item.Items;
 import be.minelabs.network.IonicDataPacket;
+import be.minelabs.screen.IonicBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

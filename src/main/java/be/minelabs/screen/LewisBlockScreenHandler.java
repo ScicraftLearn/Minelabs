@@ -1,15 +1,14 @@
 package be.minelabs.screen;
 
 import be.minelabs.advancement.criterion.Criteria;
+import be.minelabs.block.entity.LewisBlockEntity;
+import be.minelabs.crafting.lewis.LewisCraftingGrid;
 import be.minelabs.crafting.molecules.Bond;
+import be.minelabs.crafting.molecules.MoleculeGraph;
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.inventory.slot.CraftingResultSlot;
 import be.minelabs.inventory.slot.FilteredSlot;
 import be.minelabs.inventory.slot.LockableGridSlot;
-import be.minelabs.block.entity.LewisBlockEntity;
-import be.minelabs.crafting.lewis.LewisCraftingGrid;
-import be.minelabs.crafting.molecules.MoleculeGraph;
-import be.minelabs.screen.ScreenHandlers;
 import be.minelabs.item.Items;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
