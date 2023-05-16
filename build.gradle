@@ -60,7 +60,9 @@ dependencies {
 	include "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
 
 	// depend on source -> it needs to be installed alongside our mod or also be a hard dependency
-	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
+	modImplementation("net.kyrptonaught:customportalapi:${project.portal_api_verion}"){
+		exclude module: "sodium"
+	}
 	modImplementation "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
 //	modImplementation "maven.modrinth:Wd844r7Q:${project.structure_api_verion}"
 
