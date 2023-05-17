@@ -1,7 +1,7 @@
 package be.minelabs.data;
 
 import be.minelabs.Minelabs;
-import be.minelabs.crafting.molecules.Atom;
+import be.minelabs.recipe.molecules.Atom;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;

@@ -1,7 +1,7 @@
 package be.minelabs.item;
 
 import be.minelabs.Minelabs;
-import be.minelabs.crafting.molecules.Atom;
+import be.minelabs.recipe.molecules.Atom;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

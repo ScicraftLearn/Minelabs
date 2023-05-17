@@ -2,9 +2,9 @@ package be.minelabs.screen;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.entity.LewisBlockEntity;
-import be.minelabs.crafting.lewis.LewisCraftingGrid;
-import be.minelabs.crafting.molecules.Bond;
-import be.minelabs.crafting.molecules.MoleculeGraph;
+import be.minelabs.recipe.lewis.LewisCraftingGrid;
+import be.minelabs.recipe.molecules.Bond;
+import be.minelabs.recipe.molecules.MoleculeGraph;
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.inventory.slot.CraftingResultSlot;
 import be.minelabs.inventory.slot.FilteredSlot;

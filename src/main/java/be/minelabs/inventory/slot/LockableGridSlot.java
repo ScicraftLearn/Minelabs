@@ -1,6 +1,6 @@
 package be.minelabs.inventory.slot;
 
-import be.minelabs.item.AtomItem;
+import be.minelabs.item.items.AtomItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;

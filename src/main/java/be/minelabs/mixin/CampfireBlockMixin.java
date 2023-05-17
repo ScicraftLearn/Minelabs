@@ -1,7 +1,7 @@
 package be.minelabs.mixin;
 
 import be.minelabs.block.entity.ICampfireBlockEntity;
-import be.minelabs.util.MinelabsProperties;
+import be.minelabs.state.MinelabsProperties;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

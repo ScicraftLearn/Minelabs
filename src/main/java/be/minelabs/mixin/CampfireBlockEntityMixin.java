@@ -2,7 +2,7 @@ package be.minelabs.mixin;
 
 import be.minelabs.block.entity.ICampfireBlockEntity;
 import be.minelabs.item.IFireReaction;
-import be.minelabs.util.MinelabsProperties;
+import be.minelabs.state.MinelabsProperties;
 import be.minelabs.util.Tags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.CampfireBlockEntity;

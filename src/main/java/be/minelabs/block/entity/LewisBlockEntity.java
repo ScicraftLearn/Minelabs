@@ -2,9 +2,9 @@ package be.minelabs.block.entity;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
-import be.minelabs.crafting.lewis.LewisCraftingGrid;
-import be.minelabs.crafting.lewis.MoleculeRecipe;
-import be.minelabs.crafting.molecules.MoleculeGraph;
+import be.minelabs.recipe.lewis.LewisCraftingGrid;
+import be.minelabs.recipe.lewis.MoleculeRecipe;
+import be.minelabs.recipe.molecules.MoleculeGraph;
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.item.Items;
 import be.minelabs.network.LewisDataPacket;

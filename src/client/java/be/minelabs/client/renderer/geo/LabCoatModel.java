@@ -1,7 +1,7 @@
 package be.minelabs.client.renderer.geo;
 
 import be.minelabs.Minelabs;
-import be.minelabs.item.LabCoatArmorItem;
+import be.minelabs.item.items.LabCoatArmorItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;

@@ -3,7 +3,7 @@ package be.minelabs.client.mixin;
 
 import be.minelabs.Minelabs;
 import be.minelabs.client.renderer.geo.LabCoatRenderer;
-import be.minelabs.item.LabCoatArmorItem;
+import be.minelabs.item.items.LabCoatArmorItem;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;

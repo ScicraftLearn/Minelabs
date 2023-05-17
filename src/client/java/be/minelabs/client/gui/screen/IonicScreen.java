@@ -1,9 +1,9 @@
 package be.minelabs.client.gui.screen;
 
 import be.minelabs.Minelabs;
-import be.minelabs.crafting.lewis.LewisCraftingGrid;
-import be.minelabs.crafting.molecules.BondManager;
-import be.minelabs.crafting.molecules.MoleculeItemGraph;
+import be.minelabs.recipe.lewis.LewisCraftingGrid;
+import be.minelabs.recipe.molecules.BondManager;
+import be.minelabs.recipe.molecules.MoleculeItemGraph;
 import be.minelabs.screen.IonicBlockScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;

@@ -2,7 +2,9 @@ package be.minelabs.item;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.crafting.molecules.Atom;
+import be.minelabs.item.items.*;
+import be.minelabs.item.items.ArmorMaterials;
+import be.minelabs.recipe.molecules.Atom;
 import be.minelabs.entity.Entities;
 import be.minelabs.fluid.Fluids;
 import be.minelabs.potion.GasPotion;
@@ -58,7 +60,7 @@ public class Items {
     public static final Item BUDDING_SALT_BLOCK = register(new BlockItem(Blocks.BUDDING_SALT_BLOCK,
             new FabricItemSettings().maxCount(64)), "budding_salt_block");
 
-    public static final Item SAFETY_GLASSES = register(new ArmorItem(be.minelabs.item.ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
+    public static final Item SAFETY_GLASSES = register(new ArmorItem(be.minelabs.item.items.ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
             new FabricItemSettings()), "safety_glasses");
 
    /* public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,

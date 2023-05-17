@@ -1,6 +1,7 @@
 package be.minelabs.block;
 
 import be.minelabs.Minelabs;
+import be.minelabs.block.blocks.*;
 import be.minelabs.block.entity.BlockEntities;
 import be.minelabs.block.entity.ChemicalFluidBlock;
 import be.minelabs.fluid.Fluids;
