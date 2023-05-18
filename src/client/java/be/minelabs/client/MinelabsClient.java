@@ -63,10 +63,6 @@ public class MinelabsClient implements ClientModInitializer {
         //Register ItemModels
         ItemModels.registerModels();
 
-        // Temporary fix. Sodium doesn't register itself and indigo detects sodium so it also doesn't register.
-        // Sodium included through custom portals api, which we actually don't want to happen at all.
-        //RendererAccess.INSTANCE.registerRenderer(IndigoRenderer.INSTANCE);
-
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(ModelProvider::new);
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
             Map<Identifier, Resource> molecules = manager.findResources("models/molecules", (i) -> true);

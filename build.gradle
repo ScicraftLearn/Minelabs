@@ -54,15 +54,13 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// hard dependency -> actually includes it in our jar
-	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
+	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}" exclude module: "sodium"
 //	include "maven.modrinth:Wd844r7Q:${project.structure_api_verion}"
 	include "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 	include "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
 
 	// depend on source -> it needs to be installed alongside our mod or also be a hard dependency
-	modImplementation("net.kyrptonaught:customportalapi:${project.portal_api_verion}"){
-		exclude module: "sodium"
-	}
+	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}" exclude module: "sodium"
 	modImplementation "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
 //	modImplementation "maven.modrinth:Wd844r7Q:${project.structure_api_verion}"
 
