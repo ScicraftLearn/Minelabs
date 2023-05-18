@@ -3,12 +3,11 @@ package be.minelabs.item;
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
 import be.minelabs.item.items.*;
-import be.minelabs.item.items.ArmorMaterials;
-import be.minelabs.recipe.molecules.Atom;
+import be.minelabs.science.Atom;
 import be.minelabs.entity.Entities;
 import be.minelabs.fluid.Fluids;
-import be.minelabs.potion.GasPotion;
-import be.minelabs.potion.Molecule;
+import be.minelabs.item.items.GasPotion;
+import be.minelabs.science.Molecule;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
@@ -60,7 +59,7 @@ public class Items {
     public static final Item BUDDING_SALT_BLOCK = register(new BlockItem(Blocks.BUDDING_SALT_BLOCK,
             new FabricItemSettings().maxCount(64)), "budding_salt_block");
 
-    public static final Item SAFETY_GLASSES = register(new ArmorItem(be.minelabs.item.items.ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
+    public static final Item SAFETY_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
             new FabricItemSettings()), "safety_glasses");
 
    /* public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
@@ -351,7 +350,7 @@ public class Items {
      * Main class method<br>
      * Registers all (Block)Items
      */
-    public static void registerItems() {
-        Minelabs.LOGGER.info("registering items");
+    public static void onInitialize() {
+        ItemGroups.onInitialize();
     }
 }

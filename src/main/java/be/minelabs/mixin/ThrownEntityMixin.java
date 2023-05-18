@@ -1,6 +1,6 @@
 package be.minelabs.mixin;
 
-import be.minelabs.entity.SubatomicParticleEntity;
+import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;

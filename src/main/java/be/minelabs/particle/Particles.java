@@ -16,7 +16,7 @@ public class Particles {
 //        GAS = register("gas", true);
 //    }
 
-    public static void registerParticles() {
+    public static void onInitialize() {
         Minelabs.LOGGER.info("registering particles");
     }
 }

@@ -1,14 +1,13 @@
 package be.minelabs.block.blocks;
 
 import be.minelabs.block.Blocks;
-import be.minelabs.state.MinelabsProperties;
+import be.minelabs.state.property.Properties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
@@ -20,8 +19,8 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class CosmeticBlock extends Block {
 
-    protected static final IntProperty COUNTER = MinelabsProperties.COUNTER;
-    protected static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    protected static final IntProperty COUNTER = Properties.COUNTER;
+    protected static final DirectionProperty FACING = net.minecraft.state.property.Properties.HORIZONTAL_FACING;
 
     public CosmeticBlock(Settings settings) {
         super(settings);

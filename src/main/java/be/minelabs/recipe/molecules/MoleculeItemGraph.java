@@ -1,5 +1,6 @@
 package be.minelabs.recipe.molecules;
 
+import be.minelabs.science.Atom;
 import be.minelabs.util.Graph;
 import net.minecraft.item.ItemStack;
 

@@ -1,6 +1,6 @@
 package be.minelabs.block.blocks;
 
-import be.minelabs.state.MinelabsProperties;
+import be.minelabs.state.property.Properties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +22,7 @@ import net.minecraft.world.event.GameEvent;
 
 public class LabSinkBlock extends LabBlock {
 
-    public static BooleanProperty FILLED = MinelabsProperties.FILLED;
+    public static BooleanProperty FILLED = Properties.FILLED;
 
     public LabSinkBlock(Settings settings) {
         super(settings);

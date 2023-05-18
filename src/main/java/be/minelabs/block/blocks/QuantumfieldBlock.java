@@ -2,7 +2,7 @@ package be.minelabs.block.blocks;
 
 import be.minelabs.block.Blocks;
 import be.minelabs.block.entity.QuantumFieldBlockEntity;
-import be.minelabs.state.MinelabsProperties;
+import be.minelabs.state.property.Properties;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -28,7 +28,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     //    max 15 in minecraft
     public static final int MAX_LIGHT = 15;
     public static final int MIN_LIGHT = 0;
-    public static final BooleanProperty MASTER = MinelabsProperties.MASTER;
+    public static final BooleanProperty MASTER = Properties.MASTER;
     public static final IntProperty AGE = IntProperty.of("age", 0, 10);
 
 

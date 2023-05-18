@@ -1,7 +1,7 @@
 package be.minelabs.client.renderer.model;
 
 import be.minelabs.Minelabs;
-import be.minelabs.recipe.molecules.Atom;
+import be.minelabs.science.Atom;
 import be.minelabs.recipe.molecules.Bond;
 import be.minelabs.recipe.molecules.MoleculeGraphJsonFormat;
 import com.google.gson.Gson;

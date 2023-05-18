@@ -22,8 +22,7 @@ public class SoundEvents {
      * Main class method
      * Registers all sounds
      */
-    public static void registerSounds() {
-        Minelabs.LOGGER.info("registering sounds");
+    public static void onInitialize() {
     }
 
 

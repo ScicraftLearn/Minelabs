@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 
 public class CraftingRecipes {
 
-    public static void register() {
+    public static void onInitialize() {
         // Ionic Recipe
         Registry.register(Registries.RECIPE_SERIALIZER,
                 new Identifier(Minelabs.MOD_ID, IonicRecipe.IonicRecipeSerializer.ID),

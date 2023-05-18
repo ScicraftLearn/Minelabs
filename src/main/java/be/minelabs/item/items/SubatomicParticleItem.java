@@ -1,6 +1,6 @@
 package be.minelabs.item.items;
 
-import be.minelabs.entity.SubatomicParticleEntity;
+import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;

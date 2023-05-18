@@ -1,5 +1,7 @@
 package be.minelabs.recipe.molecules;
 
+import be.minelabs.science.Atom;
+
 import java.util.Collection;
 
 public class PartialMolecule {

@@ -22,10 +22,8 @@ public class ModDimensions {
     public static Identifier SUBATOMICPORTAL_FRAMETESTER = new Identifier(Minelabs.MOD_ID, "subatom");
 
 
-    public static void register() {
-        Minelabs.LOGGER.info("Dimensions done");
+    public static void onInitialize() {
         registerPortals();
-        Minelabs.LOGGER.info("Portals done");
     }
 
     private static void registerPortals() {

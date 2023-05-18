@@ -1,6 +1,6 @@
 package be.minelabs.util;
 
-import be.minelabs.recipe.molecules.Atom;
+import be.minelabs.science.Atom;
 import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

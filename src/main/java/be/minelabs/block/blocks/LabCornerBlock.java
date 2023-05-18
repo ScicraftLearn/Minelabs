@@ -1,7 +1,7 @@
 package be.minelabs.block.blocks;
 
 import be.minelabs.block.Blocks;
-import be.minelabs.state.MinelabsProperties;
+import be.minelabs.state.property.Properties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class LabCornerBlock extends LabBlock {
 
     private static final VoxelShape table_top = VoxelShapes.cuboid(0f, 0.8125f, 0f, 1f, 0.875f, 1f);
-    private static final EnumProperty<CornerShape> CONNECT = MinelabsProperties.CONNECT;
+    private static final EnumProperty<CornerShape> CONNECT = Properties.CONNECT;
 
     public LabCornerBlock(Settings settings) {
         super(settings);

@@ -1,6 +1,11 @@
 package be.minelabs.entity;
 
 import be.minelabs.Minelabs;
+import be.minelabs.entity.decoration.painting.Paintings;
+import be.minelabs.entity.effect.Effects;
+import be.minelabs.entity.mob.BalloonEntity;
+import be.minelabs.entity.mob.EntropyCreeperEntity;
+import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
 import be.minelabs.util.AtomConfiguration;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
@@ -81,8 +86,10 @@ public class Entities {
      * Main class method
      * Register All entities
      */
-    public static void registerEntities() {
-        Minelabs.LOGGER.info("registering entities");
+    public static void onInitialize() {
+        Paintings.onInitialize();
+        Effects.onInitialize();
+
         FabricDefaultAttributeRegistry.register(ENTROPY_CREEPER, EntropyCreeperEntity.createCreeperAttributes());
         registerEntitySpawns(ENTROPY_CREEPER, BiomeSelectors.foundInOverworld().or(BiomeSelectors.foundInTheNether()),
                 new SpawnSettings.SpawnEntry(ENTROPY_CREEPER, 100, 0, 1));

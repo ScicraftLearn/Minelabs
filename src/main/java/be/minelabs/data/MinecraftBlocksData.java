@@ -1,7 +1,7 @@
 package be.minelabs.data;
 
 import be.minelabs.Minelabs;
-import be.minelabs.recipe.molecules.Atom;
+import be.minelabs.science.Atom;
 import be.minelabs.util.ChemicalFormulaParser;
 import com.google.gson.*;
 import net.minecraft.registry.Registries;

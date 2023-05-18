@@ -1,13 +1,14 @@
 package be.minelabs.world.gen;
 
-import be.minelabs.world.feature.PlacedFeatures;
+import be.minelabs.world.gen.feature.PlacedFeatures;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.world.gen.GenerationStep;
 
 public class WorldGeneration {
-    public static void generateCustomWorld(){
+    public static void onInitialize(){
         generateOres();
+        VillageAdditions.onInitialize();
     }
 
     private static void generateOres() {

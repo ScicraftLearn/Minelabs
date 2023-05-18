@@ -56,7 +56,6 @@ public class Fluids {
      * Main class method
      * Registers all Fluids
      */
-    public static void registerFluids() {
-        Minelabs.LOGGER.info("registering fluids");
+    public static void onInitialize() {
     }
 }

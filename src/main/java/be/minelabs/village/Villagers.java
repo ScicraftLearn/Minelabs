@@ -2,7 +2,7 @@ package be.minelabs.village;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.recipe.molecules.Atom;
+import be.minelabs.science.Atom;
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
@@ -61,7 +61,7 @@ public class Villagers {
     }
 
     //logger so that all the static fields get initialised correctly
-    public static void registerVillagers() {
+    public static void onInitialize() {
         Minelabs.LOGGER.debug("registering villagers");
         registerTrades();
     }

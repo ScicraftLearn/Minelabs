@@ -2,7 +2,7 @@ package be.minelabs.mixin;
 
 import be.minelabs.block.entity.ICampfireBlockEntity;
 import be.minelabs.item.IFireReaction;
-import be.minelabs.state.MinelabsProperties;
+import be.minelabs.state.property.Properties;
 import be.minelabs.util.Tags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.CampfireBlockEntity;
@@ -26,16 +26,16 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity {
 
     @Inject(method = "litServerTick", at = @At(value = "HEAD"))
     private static void injectServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
-        int color = state.get(MinelabsProperties.FIRE_COLOR);
+        int color = state.get(Properties.FIRE_COLOR);
         for (int i = 0; i < campfire.getItemsBeingCooked().size(); i++) {
             if (campfire.getItemsBeingCooked().get(i).isIn(Tags.Items.FIRE_CHANGER)) {
                 IFireReaction item = (IFireReaction) campfire.getItemsBeingCooked().get(i).getItem();
                 color = item.getFireColor();
             }
         }
-        if (color != state.get(MinelabsProperties.FIRE_COLOR)) {
+        if (color != state.get(Properties.FIRE_COLOR)) {
             //Change 3 -> 19 if you don't want observer updates
-            world.setBlockState(pos, state.with(MinelabsProperties.FIRE_COLOR, color), 3);
+            world.setBlockState(pos, state.with(Properties.FIRE_COLOR, color), 3);
             //campfire.setCachedState(state.with(Properties.FIRE_COLOR, color));
         }
     }
@@ -44,7 +44,7 @@ public abstract class CampfireBlockEntityMixin implements ICampfireBlockEntity {
     private static void craftServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
         ICampfireBlockEntity castedE = (ICampfireBlockEntity) campfire;
         //Change 3 -> 19 if you don't want observer updates
-        world.setBlockState(pos, state.with(MinelabsProperties.FIRE_COLOR, castedE.getLatestFire()), 3);
+        world.setBlockState(pos, state.with(Properties.FIRE_COLOR, castedE.getLatestFire()), 3);
     }
 
     /**

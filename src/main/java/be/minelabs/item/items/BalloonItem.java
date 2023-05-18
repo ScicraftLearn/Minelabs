@@ -1,6 +1,6 @@
 package be.minelabs.item.items;
 
-import be.minelabs.entity.BalloonEntity;
+import be.minelabs.entity.mob.BalloonEntity;
 import be.minelabs.entity.Entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

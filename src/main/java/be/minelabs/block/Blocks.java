@@ -5,7 +5,7 @@ import be.minelabs.block.blocks.*;
 import be.minelabs.block.entity.BlockEntities;
 import be.minelabs.block.entity.ChemicalFluidBlock;
 import be.minelabs.fluid.Fluids;
-import be.minelabs.potion.Molecule;
+import be.minelabs.science.Molecule;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.registry.Registries;
@@ -156,7 +156,8 @@ public class Blocks {
      * Main class method
      * Registers all Blocks
      */
-    public static void registerBlocks() {
-        Minelabs.LOGGER.info("registering blocks");
+    public static void onInitialize() {
+        BlockEntities.onInitialize();
+        ExtraDispenserBehavior.onInitialize();
     }
 }

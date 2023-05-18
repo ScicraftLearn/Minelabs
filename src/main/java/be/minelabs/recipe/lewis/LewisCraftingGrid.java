@@ -1,6 +1,6 @@
 package be.minelabs.recipe.lewis;
 
-import be.minelabs.recipe.molecules.Atom;
+import be.minelabs.science.Atom;
 import be.minelabs.recipe.molecules.Bond;
 import be.minelabs.recipe.molecules.MoleculeItemGraph;
 import be.minelabs.recipe.molecules.PartialMolecule;

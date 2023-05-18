@@ -1,6 +1,7 @@
 package be.minelabs.recipe.molecules;
 
 
+import be.minelabs.science.Atom;
 import be.minelabs.util.Graph;
 
 import java.util.ArrayList;

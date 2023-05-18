@@ -13,7 +13,7 @@ public class Criteria {
         return net.minecraft.advancement.criterion.Criteria.register(c);
     }
 
-    public static void registerCriteria() {
+    public static void onInitialize() {
 
     }
 }

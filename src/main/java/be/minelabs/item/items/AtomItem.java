@@ -1,6 +1,6 @@
 package be.minelabs.item.items;
 
-import be.minelabs.recipe.molecules.Atom;
+import be.minelabs.science.Atom;
 import net.minecraft.item.Item;
 
 public class AtomItem extends Item {

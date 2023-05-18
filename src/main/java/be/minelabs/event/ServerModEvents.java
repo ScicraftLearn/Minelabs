@@ -17,7 +17,7 @@ import net.minecraft.util.TypedActionResult;
 
 
 public class ServerModEvents {
-    public static void registerEvents() {
+    public static void onInitialize() {
         //Check for dimension and block used
         UseBlockCallback.EVENT.register((player, world, hand, block) -> {
             if (!player.getAbilities().creativeMode) {

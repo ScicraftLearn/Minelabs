@@ -36,8 +36,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
-import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -55,13 +53,13 @@ import java.util.Map;
 public class MinelabsClient implements ClientModInitializer {
     @Override()
     public void onInitializeClient() {
-        ClientModsEvents.registerEvents();
+        ClientModsEvents.onInitializeClient();
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ATOM_FLOOR, RenderLayer.getTranslucent());
         //BlockRenderLayerMap.INSTANCE.putBlock(Blocks.PORTAL_BLOCK, RenderLayer.getTranslucent());
 
         //Register ItemModels
-        ItemModels.registerModels();
+        ItemModels.onInitializeClient();
 
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(ModelProvider::new);
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {

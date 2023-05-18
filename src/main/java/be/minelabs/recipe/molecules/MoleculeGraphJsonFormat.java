@@ -1,5 +1,6 @@
 package be.minelabs.recipe.molecules;
 
+import be.minelabs.science.Atom;
 import com.google.gson.JsonSyntaxException;
 
 import java.util.HashMap;

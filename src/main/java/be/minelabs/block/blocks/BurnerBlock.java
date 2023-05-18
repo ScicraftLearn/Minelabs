@@ -1,6 +1,6 @@
 package be.minelabs.block.blocks;
 
-import be.minelabs.state.MinelabsProperties;
+import be.minelabs.state.property.Properties;
 import be.minelabs.util.Tags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,7 +17,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -30,8 +29,8 @@ import net.minecraft.world.World;
 
 public class BurnerBlock extends CosmeticBlock {
 
-    private static final BooleanProperty LIT = Properties.LIT;
-    private static final BooleanProperty OXYGENATED = MinelabsProperties.OXYGENATED;
+    private static final BooleanProperty LIT = net.minecraft.state.property.Properties.LIT;
+    private static final BooleanProperty OXYGENATED = Properties.OXYGENATED;
     private static final ParticleEffect RED_FIRE = ParticleTypes.FLAME;
     private static final ParticleEffect BLUE_FIRE = ParticleTypes.SOUL_FIRE_FLAME;
 

@@ -24,7 +24,7 @@
       "be.minelabs.client.MinelabsClient"
     ],
     "fabric-datagen": [
-      "be.minelabs.MinelabsDatagen"
+      "be.minelabs.data.Datagen"
     ]
   },
   "mixins": [

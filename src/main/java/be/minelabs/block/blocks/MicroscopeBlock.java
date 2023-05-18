@@ -1,7 +1,7 @@
 package be.minelabs.block.blocks;
 
 import be.minelabs.item.Items;
-import be.minelabs.state.MinelabsProperties;
+import be.minelabs.state.property.Properties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -21,7 +21,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class MicroscopeBlock extends CosmeticBlock {
-    private static final BooleanProperty ZOOM = MinelabsProperties.ZOOMED;
+    private static final BooleanProperty ZOOM = Properties.ZOOMED;
 
     public MicroscopeBlock(Settings settings) {
         super(settings);

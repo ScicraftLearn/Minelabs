@@ -50,7 +50,6 @@ public class ScreenHandlers {
      * Main class method
      * Registers all Screens
      */
-    public static void registerScreens() {
-        Minelabs.LOGGER.info("registering screens");
+    public static void onInitialize() {
     }
 }

@@ -150,7 +150,6 @@ public class BlockEntities {
      * Main class method
      * Registers all BlocksEntities
      */
-    public static void registerBlockEntities() {
-        Minelabs.LOGGER.info("registering blockEntities");
+    public static void onInitialize() {
     }
 }
