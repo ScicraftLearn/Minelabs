@@ -35,7 +35,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=1": {
-      "model": "minelabs:block/campfire_carmine",
+      "model": "minelabs:block/fire/campfire_carmine",
       "y": 270
     },
     "facing=north,lit=false,fire_color=1": {
@@ -43,21 +43,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=1": {
-      "model": "minelabs:block/campfire_carmine",
+      "model": "minelabs:block/fire/campfire_carmine",
       "y": 180
     },
     "facing=south,lit=false,fire_color=1": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=1": {
-      "model": "minelabs:block/campfire_carmine"
+      "model": "minelabs:block/fire/campfire_carmine"
     },
     "facing=west,lit=false,fire_color=1": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=1": {
-      "model": "minelabs:block/campfire_carmine",
+      "model": "minelabs:block/fire/campfire_carmine",
       "y": 90
     },
     "facing=east,lit=false,fire_color=2": {
@@ -65,7 +65,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=2": {
-      "model": "minelabs:block/campfire_red",
+      "model": "minelabs:block/fire/campfire_red",
       "y": 270
     },
     "facing=north,lit=false,fire_color=2": {
@@ -73,21 +73,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=2": {
-      "model": "minelabs:block/campfire_red",
+      "model": "minelabs:block/fire/campfire_red",
       "y": 180
     },
     "facing=south,lit=false,fire_color=2": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=2": {
-      "model": "minelabs:block/campfire_red"
+      "model": "minelabs:block/fire/campfire_red"
     },
     "facing=west,lit=false,fire_color=2": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=2": {
-      "model": "minelabs:block/campfire_red",
+      "model": "minelabs:block/fire/campfire_red",
       "y": 90
     },
     "facing=east,lit=false,fire_color=3": {
@@ -95,7 +95,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=3": {
-      "model": "minelabs:block/campfire_orange",
+      "model": "minelabs:block/fire/campfire_orange",
       "y": 270
     },
     "facing=north,lit=false,fire_color=3": {
@@ -103,21 +103,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=3": {
-      "model": "minelabs:block/campfire_orange",
+      "model": "minelabs:block/fire/campfire_orange",
       "y": 180
     },
     "facing=south,lit=false,fire_color=3": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=3": {
-      "model": "minelabs:block/campfire_orange"
+      "model": "minelabs:block/fire/campfire_orange"
     },
     "facing=west,lit=false,fire_color=3": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=3": {
-      "model": "minelabs:block/campfire_orange",
+      "model": "minelabs:block/fire/campfire_orange",
       "y": 90
     },
     "facing=east,lit=false,fire_color=4": {
@@ -125,7 +125,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=4": {
-      "model": "minelabs:block/campfire_yellow",
+      "model": "minelabs:block/fire/campfire_yellow",
       "y": 270
     },
     "facing=north,lit=false,fire_color=4": {
@@ -133,21 +133,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=4": {
-      "model": "minelabs:block/campfire_yellow",
+      "model": "minelabs:block/fire/campfire_yellow",
       "y": 180
     },
     "facing=south,lit=false,fire_color=4": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=4": {
-      "model": "minelabs:block/campfire_yellow"
+      "model": "minelabs:block/fire/campfire_yellow"
     },
     "facing=west,lit=false,fire_color=4": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=4": {
-      "model": "minelabs:block/campfire_yellow",
+      "model": "minelabs:block/fire/campfire_yellow",
       "y": 90
     },
     "facing=east,lit=false,fire_color=5": {
@@ -155,7 +155,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=5": {
-      "model": "minelabs:block/campfire_lime",
+      "model": "minelabs:block/fire/campfire_lime",
       "y": 270
     },
     "facing=north,lit=false,fire_color=5": {
@@ -163,21 +163,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=5": {
-      "model": "minelabs:block/campfire_lime",
+      "model": "minelabs:block/fire/campfire_lime",
       "y": 180
     },
     "facing=south,lit=false,fire_color=5": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=5": {
-      "model": "minelabs:block/campfire_lime"
+      "model": "minelabs:block/fire/campfire_lime"
     },
     "facing=west,lit=false,fire_color=5": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=5": {
-      "model": "minelabs:block/campfire_lime",
+      "model": "minelabs:block/fire/campfire_lime",
       "y": 90
     },
     "facing=east,lit=false,fire_color=6": {
@@ -185,7 +185,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=6": {
-      "model": "minelabs:block/campfire_green",
+      "model": "minelabs:block/fire/campfire_green",
       "y": 270
     },
     "facing=north,lit=false,fire_color=6": {
@@ -193,21 +193,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=6": {
-      "model": "minelabs:block/campfire_green",
+      "model": "minelabs:block/fire/campfire_green",
       "y": 180
     },
     "facing=south,lit=false,fire_color=6": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=6": {
-      "model": "minelabs:block/campfire_green"
+      "model": "minelabs:block/fire/campfire_green"
     },
     "facing=west,lit=false,fire_color=6": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=6": {
-      "model": "minelabs:block/campfire_green",
+      "model": "minelabs:block/fire/campfire_green",
       "y": 90
     },
     "facing=east,lit=false,fire_color=7": {
@@ -215,7 +215,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=7": {
-      "model": "minelabs:block/campfire_blue",
+      "model": "minelabs:block/fire/campfire_blue",
       "y": 270
     },
     "facing=north,lit=false,fire_color=7": {
@@ -223,21 +223,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=7": {
-      "model": "minelabs:block/campfire_blue",
+      "model": "minelabs:block/fire/campfire_blue",
       "y": 180
     },
     "facing=south,lit=false,fire_color=7": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=7": {
-      "model": "minelabs:block/campfire_blue"
+      "model": "minelabs:block/fire/campfire_blue"
     },
     "facing=west,lit=false,fire_color=7": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=7": {
-      "model": "minelabs:block/campfire_blue",
+      "model": "minelabs:block/fire/campfire_blue",
       "y": 90
     },
     "facing=east,lit=false,fire_color=8": {
@@ -245,7 +245,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=8": {
-      "model": "minelabs:block/campfire_violet",
+      "model": "minelabs:block/fire/campfire_violet",
       "y": 270
     },
     "facing=north,lit=false,fire_color=8": {
@@ -253,21 +253,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=8": {
-      "model": "minelabs:block/campfire_violet",
+      "model": "minelabs:block/fire/campfire_violet",
       "y": 180
     },
     "facing=south,lit=false,fire_color=8": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=8": {
-      "model": "minelabs:block/campfire_violet"
+      "model": "minelabs:block/fire/campfire_violet"
     },
     "facing=west,lit=false,fire_color=8": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=8": {
-      "model": "minelabs:block/campfire_violet",
+      "model": "minelabs:block/fire/campfire_violet",
       "y": 90
     },
     "facing=east,lit=false,fire_color=9": {
@@ -275,7 +275,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=9": {
-      "model": "minelabs:block/campfire_purple",
+      "model": "minelabs:block/fire/campfire_purple",
       "y": 270
     },
     "facing=north,lit=false,fire_color=9": {
@@ -283,21 +283,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=9": {
-      "model": "minelabs:block/campfire_purple",
+      "model": "minelabs:block/fire/campfire_purple",
       "y": 180
     },
     "facing=south,lit=false,fire_color=9": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=9": {
-      "model": "minelabs:block/campfire_purple"
+      "model": "minelabs:block/fire/campfire_purple"
     },
     "facing=west,lit=false,fire_color=9": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=9": {
-      "model": "minelabs:block/campfire_purple",
+      "model": "minelabs:block/fire/campfire_purple",
       "y": 90
     },
     "facing=east,lit=false,fire_color=10": {
@@ -305,7 +305,7 @@
       "y": 270
     },
     "facing=east,lit=true,fire_color=10": {
-      "model": "minelabs:block/campfire_white",
+      "model": "minelabs:block/fire/campfire_white",
       "y": 270
     },
     "facing=north,lit=false,fire_color=10": {
@@ -313,21 +313,21 @@
       "y": 180
     },
     "facing=north,lit=true,fire_color=10": {
-      "model": "minelabs:block/campfire_white",
+      "model": "minelabs:block/fire/campfire_white",
       "y": 180
     },
     "facing=south,lit=false,fire_color=10": {
       "model": "minecraft:block/campfire_off"
     },
     "facing=south,lit=true,fire_color=10": {
-      "model": "minelabs:block/campfire_white"
+      "model": "minelabs:block/fire/campfire_white"
     },
     "facing=west,lit=false,fire_color=10": {
       "model": "minecraft:block/campfire_off",
       "y": 90
     },
     "facing=west,lit=true,fire_color=10": {
-      "model": "minelabs:block/campfire_white",
+      "model": "minelabs:block/fire/campfire_white",
       "y": 90
     }
   }

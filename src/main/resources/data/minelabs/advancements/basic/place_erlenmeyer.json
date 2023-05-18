@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_stand"
+      "item": "minelabs:lab/erlenmeyer_stand"
     },
     "title": "Careful now",
     "description": "Place an erlenmeyer in the world",
@@ -16,7 +16,7 @@
     "place_erlenmeyer": {
       "trigger": "minecraft:placed_block",
       "conditions": {
-        "block": "minelabs:erlenmeyer_stand"
+        "block": "minelabs:lab/erlenmeyer_stand"
       }
     }
   },

@@ -232,7 +232,7 @@ public enum Atom {
     }
 
     public Identifier getItemId() {
-        return new Identifier(Minelabs.MOD_ID, name().toLowerCase() + "_atom");
+        return new Identifier(Minelabs.MOD_ID, "atom/" + name().toLowerCase() + "_atom");
     }
 
     public Item getItem() {

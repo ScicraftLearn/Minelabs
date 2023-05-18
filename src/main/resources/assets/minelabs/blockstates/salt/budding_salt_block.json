@@ -1,0 +1,8 @@
+{
+
+  "variants": {
+    "": {
+      "model": "minelabs:block/salt/budding_salt_block"
+    }
+  }
+}
