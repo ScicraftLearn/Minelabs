@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minelabs:cs2",
-    "minelabs:flowing_cs2"
+    "minelabs:chemical/cs2",
+    "minelabs:chemical/flowing_cs2"
   ]
 }

@@ -1,13 +1,13 @@
 {
   "replace": false,
   "values": [
-    "minelabs:salt_ore",
-    "minelabs:deepslate_salt_ore",
-    "minelabs:salt_block",
-    "minelabs:budding_salt_block",
+    "minelabs:salt/salt_ore",
+    "minelabs:salt/deepslate_salt_ore",
+    "minelabs:salt/salt_block",
+    "minelabs:salt/budding_salt_block",
     "minelabs:bohr_block",
-    "minelabs:lab_sink",
-    "minelabs:lab_drawer",
-    "minelabs:lab_cabin"
+    "minelabs:lab/lab_sink",
+    "minelabs:lab/lab_drawer",
+    "minelabs:lab/lab_cabin"
   ]
 }

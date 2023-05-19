@@ -2,9 +2,9 @@ package be.minelabs.event;
 
 import be.minelabs.advancement.criterion.BohrCriterion;
 import be.minelabs.advancement.criterion.Criteria;
-import be.minelabs.dimension.ModDimensions;
+import be.minelabs.world.dimension.ModDimensions;
 import be.minelabs.entity.BohrBlueprintEntity;
-import be.minelabs.item.AtomItem;
+import be.minelabs.item.items.AtomItem;
 import be.minelabs.item.ItemGroups;
 import be.minelabs.item.Items;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -17,7 +17,7 @@ import net.minecraft.util.TypedActionResult;
 
 
 public class ServerModEvents {
-    public static void registerEvents() {
+    public static void onInitialize() {
         //Check for dimension and block used
         UseBlockCallback.EVENT.register((player, world, hand, block) -> {
             if (!player.getAbilities().creativeMode) {

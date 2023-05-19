@@ -1,19 +1,15 @@
 package be.minelabs.data;
 
 import be.minelabs.Minelabs;
-import be.minelabs.crafting.molecules.Atom;
+import be.minelabs.science.Atom;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
 public class MoleculeData {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private final String name;
     private final Map<String, Integer> data;
 

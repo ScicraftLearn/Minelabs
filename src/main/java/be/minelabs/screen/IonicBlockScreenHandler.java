@@ -1,10 +1,10 @@
 package be.minelabs.screen;
 
 import be.minelabs.block.entity.IonicBlockEntity;
-import be.minelabs.crafting.ionic.IonicInventory;
-import be.minelabs.inventory.slot.CraftingResultSlot;
-import be.minelabs.inventory.slot.FilteredSlot;
-import be.minelabs.inventory.slot.LockableGridSlot;
+import be.minelabs.recipe.ionic.IonicInventory;
+import be.minelabs.screen.slot.CraftingResultSlot;
+import be.minelabs.screen.slot.FilteredSlot;
+import be.minelabs.screen.slot.LockableGridSlot;
 import be.minelabs.item.Items;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

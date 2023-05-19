@@ -2,7 +2,7 @@ package be.minelabs.client.renderer.entity;
 
 import be.minelabs.client.renderer.entity.model.BalloonEntityModel;
 import be.minelabs.client.renderer.entity.model.EntityModelLayers;
-import be.minelabs.entity.BalloonEntity;
+import be.minelabs.entity.mob.BalloonEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;

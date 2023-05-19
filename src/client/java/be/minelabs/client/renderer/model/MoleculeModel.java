@@ -1,9 +1,9 @@
 package be.minelabs.client.renderer.model;
 
 import be.minelabs.Minelabs;
-import be.minelabs.crafting.molecules.Atom;
-import be.minelabs.crafting.molecules.Bond;
-import be.minelabs.crafting.molecules.MoleculeGraphJsonFormat;
+import be.minelabs.science.Atom;
+import be.minelabs.recipe.molecules.Bond;
+import be.minelabs.recipe.molecules.MoleculeGraphJsonFormat;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

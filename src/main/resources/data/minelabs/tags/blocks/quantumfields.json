@@ -1,12 +1,12 @@
 {
   "replace": false,
   "values": [
-    "minelabs:gluon_quantumfield",
-    "minelabs:photon_quantumfield",
-    "minelabs:weak_boson_quantumfield",
-    "minelabs:electron_quantumfield",
-    "minelabs:neutrino_quantumfield",
-    "minelabs:upquark_quantumfield",
-    "minelabs:downquark_quantumfield"
+    "minelabs:quantumfield/gluon_quantumfield",
+    "minelabs:quantumfield/photon_quantumfield",
+    "minelabs:quantumfield/weak_boson_quantumfield",
+    "minelabs:quantumfield/electron_quantumfield",
+    "minelabs:quantumfield/neutrino_quantumfield",
+    "minelabs:quantumfield/upquark_quantumfield",
+    "minelabs:quantumfield/downquark_quantumfield"
   ]
 }

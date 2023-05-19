@@ -1,7 +1,7 @@
 package be.minelabs.block.entity;
 
-import be.minelabs.crafting.ionic.IonicInventory;
-import be.minelabs.crafting.ionic.IonicRecipe;
+import be.minelabs.recipe.ionic.IonicInventory;
+import be.minelabs.recipe.ionic.IonicRecipe;
 import be.minelabs.item.Items;
 import be.minelabs.network.IonicDataPacket;
 import be.minelabs.screen.IonicBlockScreenHandler;

@@ -1,6 +1,6 @@
 package be.minelabs.block.entity;
 
-import be.minelabs.potion.Molecule;
+import be.minelabs.science.Molecule;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;

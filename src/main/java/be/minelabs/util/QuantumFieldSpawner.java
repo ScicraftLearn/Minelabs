@@ -2,6 +2,7 @@ package be.minelabs.util;
 
 import be.minelabs.block.Blocks;
 import be.minelabs.block.entity.QuantumFieldBlockEntity;
+import be.minelabs.state.property.Properties;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -95,7 +96,7 @@ public class QuantumFieldSpawner {
          * (a,0,0); (0,b,0),(0,0,c)
          */
         if (!checkFields(pos, world, x_size, y_size, z_size)) {
-            world.setBlockState(pos, state.with(MinelabsProperties.MASTER, true));
+            world.setBlockState(pos, state.with(Properties.MASTER, true));
             for (int x = -x_size / 2; x <= x_size / 2; x++) {
 //                x_sub = x^2/a^2
                 x_sub = x * x / (a * a);

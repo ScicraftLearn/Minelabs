@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public class ClientModsEvents {
-    public static void registerEvents() {
+    public static void onInitializeClient() {
         // render HUD of the closest bohr blueprint
         HudRenderCallback.EVENT.register(
                 (matrixStack, delta) -> {

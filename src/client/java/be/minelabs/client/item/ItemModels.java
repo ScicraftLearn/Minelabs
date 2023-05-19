@@ -55,9 +55,7 @@ public class ItemModels {
      * Main class method<br>
      * Registers all ItemModels
      */
-    public static void registerModels() {
-        Minelabs.LOGGER.info("registering itemmodels");
-
+    public static void onInitializeClient() {
         Items.ATOMS.forEach(ItemModels::registerAtom);
 
         registerBond(Items.BOND);

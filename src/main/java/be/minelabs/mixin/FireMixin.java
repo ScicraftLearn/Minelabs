@@ -1,7 +1,7 @@
 package be.minelabs.mixin;
 
 import be.minelabs.block.Blocks;
-import be.minelabs.block.GreenFire;
+import be.minelabs.block.blocks.GreenFire;
 import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;

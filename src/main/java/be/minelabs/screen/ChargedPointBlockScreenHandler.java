@@ -1,6 +1,6 @@
 package be.minelabs.screen;
 
-import be.minelabs.inventory.slot.FilteredSlot;
+import be.minelabs.screen.slot.FilteredSlot;
 import be.minelabs.util.Tags;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

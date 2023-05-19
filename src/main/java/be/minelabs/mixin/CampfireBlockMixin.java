@@ -1,7 +1,7 @@
 package be.minelabs.mixin;
 
 import be.minelabs.block.entity.ICampfireBlockEntity;
-import be.minelabs.util.MinelabsProperties;
+import be.minelabs.state.property.Properties;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -39,7 +39,7 @@ public abstract class CampfireBlockMixin {
     @Shadow
     protected abstract boolean isSignalFireBaseBlock(BlockState state);
 
-    private static final IntProperty FIRE_COLOR = MinelabsProperties.FIRE_COLOR;
+    private static final IntProperty FIRE_COLOR = Properties.FIRE_COLOR;
 
     @Inject(method = "appendProperties", at = @At("HEAD"))
     public void injectProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {

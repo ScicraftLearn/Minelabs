@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "minelabs:lab_drawer",
-    "minelabs:lab_cabin",
-    "minelabs:lab_sink"
+    "minelabs:lab/lab_drawer",
+    "minelabs:lab/lab_cabin",
+    "minelabs:lab/lab_sink"
   ]
 }

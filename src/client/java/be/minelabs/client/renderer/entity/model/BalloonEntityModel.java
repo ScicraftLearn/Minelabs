@@ -1,6 +1,6 @@
 package be.minelabs.client.renderer.entity.model;
 
-import be.minelabs.entity.BalloonEntity;
+import be.minelabs.entity.mob.BalloonEntity;
 import com.google.common.collect.ImmutableList;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

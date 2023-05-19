@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:lab_sink"
+      "item": "minelabs:lab/lab_sink"
     },
     "title": "Where is my beaker?",
     "description": "Open the lab drawers and the lab cabin",
@@ -23,7 +23,7 @@
         "location": {
           "block": {
             "blocks": [
-              "minelabs:lab_cabin"
+              "minelabs:lab/lab_cabin"
             ]
           }
         }
@@ -45,7 +45,7 @@
         "location": {
           "block": {
             "blocks": [
-              "minelabs:lab_cabin"
+              "minelabs:lab/lab_cabin"
             ]
           }
         }
@@ -62,7 +62,7 @@
         "location": {
           "block": {
             "blocks": [
-              "minelabs:lab_drawer"
+              "minelabs:lab/lab_drawer"
             ]
           }
         }
@@ -84,7 +84,7 @@
         "location": {
           "block": {
             "blocks": [
-              "minelabs:lab_drawer"
+              "minelabs:lab/lab_drawer"
             ]
           }
         }

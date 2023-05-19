@@ -1,6 +1,6 @@
 package be.minelabs.mixin;
 
-import be.minelabs.dimension.ModDimensions;
+import be.minelabs.world.dimension.ModDimensions;
 import be.minelabs.util.Tags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
