@@ -204,8 +204,7 @@ public class BohrBlueprintBlock extends Block {
         if (!world.getBlockState(blockPos).canReplace(ctx) || !world.getWorldBorder().contains(blockPos)) {
             return null;
         }
-
-        return getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
+        return getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Override
