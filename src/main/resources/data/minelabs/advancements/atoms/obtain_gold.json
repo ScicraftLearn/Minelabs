@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:gold_atom"
+      "item": "minelabs:atom/gold_atom"
     },
     "title": "Gold digger",
     "description": "Obtain gold",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:gold_atom"
+              "minelabs:atom/gold_atom"
             ]
           }
         ]

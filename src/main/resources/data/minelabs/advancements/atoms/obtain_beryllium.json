@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:beryllium_atom"
+      "item": "minelabs:atom/beryllium_atom"
     },
     "title": "Just \"Be\" yourself",
     "description": "Obtain beryllium",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:beryllium_atom"
+              "minelabs:atom/beryllium_atom"
             ]
           }
         ]

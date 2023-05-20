@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:chlorine_atom"
+      "item": "minelabs:atom/chlorine_atom"
     },
     "title": "Do you smell the swimming pool?",
     "description": "Obtain chlorine",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:chlorine_atom"
+              "minelabs:atom/chlorine_atom"
             ]
           }
         ]

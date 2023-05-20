@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minelabs:electron"
+          "name": "minelabs:subatomic/electron"
         }
       ],
       "conditions": [

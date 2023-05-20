@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minelabs:weak_boson"
+          "name": "minelabs:subatomic/weak_boson"
         }
       ],
       "conditions": [

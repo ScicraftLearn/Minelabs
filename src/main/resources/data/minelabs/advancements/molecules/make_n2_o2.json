@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_n2"
+      "item": "minelabs:erlenmeyer/erlenmeyer_n2"
     },
     "title": "Fresh Air",
     "description": "Craft N2 and O2 in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_n2"
+              "minelabs:erlenmeyer/erlenmeyer_n2"
             ]
           }
         ]
@@ -30,7 +30,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_o2"
+              "minelabs:erlenmeyer/erlenmeyer_o2"
             ]
           }
         ]

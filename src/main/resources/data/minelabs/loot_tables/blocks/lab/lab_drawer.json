@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minelabs:lab_drawer"
+          "name": "minelabs:lab/lab_drawer"
         }
       ]
     }

@@ -6,7 +6,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "minelabs:neutrino"
+                    "name": "minelabs:subatomic/neutrino"
                 }
             ],
             "conditions": [
@@ -17,7 +17,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "minelabs:antineutrino"
+                    "name": "minelabs:subatomic/antineutrino"
                 }
             ],
             "conditions": [

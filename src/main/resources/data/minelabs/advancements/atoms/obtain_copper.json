@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:copper_atom"
+      "item": "minelabs:atom/copper_atom"
     },
     "title": "Electrically conductive",
     "description": "Obtain copper",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:copper_atom"
+              "minelabs:atom/copper_atom"
             ]
           }
         ]

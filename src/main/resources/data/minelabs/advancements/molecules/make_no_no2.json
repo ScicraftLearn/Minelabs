@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_no2"
+      "item": "minelabs:erlenmeyer/erlenmeyer_no2"
     },
     "title": "NOx",
     "description": "Craft NO and NO2 in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_no"
+              "minelabs:erlenmeyer/erlenmeyer_no"
             ]
           }
         ]
@@ -30,7 +30,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_no2"
+              "minelabs:erlenmeyer/erlenmeyer_no2"
             ]
           }
         ]

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_h2o"
+      "item": "minelabs:erlenmeyer/erlenmeyer_h2o"
     },
     "title": "Spill the tea",
     "description": "Pour out an erlenmeyer",

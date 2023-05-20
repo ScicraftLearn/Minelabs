@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_ncl3"
+      "item": "minelabs:erlenmeyer/erlenmeyer_ncl3"
     },
     "title": "Quite explosive",
     "description": "Craft nitrogen trichloride in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_ncl3"
+              "minelabs:erlenmeyer/erlenmeyer_ncl3"
             ]
           }
         ]

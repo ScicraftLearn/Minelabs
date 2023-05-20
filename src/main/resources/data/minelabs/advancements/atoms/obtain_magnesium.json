@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:magnesium_atom"
+      "item": "minelabs:atom/magnesium_atom"
     },
     "title": "Bright white fire",
     "description": "Obtain magnesium",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:magnesium_atom"
+              "minelabs:atom/magnesium_atom"
             ]
           }
         ]

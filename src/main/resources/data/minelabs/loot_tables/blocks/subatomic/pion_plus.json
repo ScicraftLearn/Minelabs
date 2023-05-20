@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minelabs:pion_plus"
+          "name": "minelabs:subatomic/pion_plus"
         }
       ],
       "conditions": [

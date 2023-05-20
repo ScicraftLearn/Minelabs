@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:proton"
+      "item": "minelabs:subatomic/proton"
     },
     "title": "May the force be with you",
     "description": "Let charged particles interact",

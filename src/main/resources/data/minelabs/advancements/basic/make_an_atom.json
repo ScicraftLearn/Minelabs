@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:hydrogen_atom"
+      "item": "minelabs:atom/hydrogen_atom"
     },
     "title": "Nuclear Fusion?",
     "description": "Craft an atom using the Bohr blueprint",

@@ -6,7 +6,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "minelabs:gluon"
+                    "name": "minelabs:subatomic/gluon"
                 }
             ],
             "conditions": [

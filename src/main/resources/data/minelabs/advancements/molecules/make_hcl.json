@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_hcl"
+      "item": "minelabs:erlenmeyer/erlenmeyer_hcl"
     },
     "title": "Stomach acid",
     "description": "Craft HCl in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_hcl"
+              "minelabs:erlenmeyer/erlenmeyer_hcl"
             ]
           }
         ]

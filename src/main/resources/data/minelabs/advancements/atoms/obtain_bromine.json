@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:bromine_atom"
+      "item": "minelabs:atom/bromine_atom"
     },
     "title": "You are my Bro(mine)",
     "description": "Obtain bromine",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:bromine_atom"
+              "minelabs:atom/bromine_atom"
             ]
           }
         ]

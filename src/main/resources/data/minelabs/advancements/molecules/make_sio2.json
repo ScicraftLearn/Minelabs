@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:silicon_dioxide_dust"
+      "item": "minelabs:dust/silicon_dioxide_dust"
     },
     "title": "I don't like sand (it's coarse and ruff)",
     "description": "Craft SiO2 in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:silicon_dioxide_dust"
+              "minelabs:dust/silicon_dioxide_dust"
             ]
           }
         ]

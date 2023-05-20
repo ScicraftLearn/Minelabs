@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_he"
+      "item": "minelabs:erlenmeyer/erlenmeyer_he"
     },
     "title": "Sir Atom",
     "description": "Craft a noble gas in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_he"
+              "minelabs:erlenmeyer/erlenmeyer_he"
             ]
           }
         ]
@@ -30,7 +30,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_ne"
+              "minelabs:erlenmeyer/erlenmeyer_ne"
             ]
           }
         ]
@@ -42,7 +42,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_ar"
+              "minelabs:erlenmeyer/erlenmeyer_ar"
             ]
           }
         ]

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_ch4"
+      "item": "minelabs:erlenmeyer/erlenmeyer_ch4"
     },
     "title": "A fart in a bottle",
     "description": "Craft methane in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_ch4"
+              "minelabs:erlenmeyer/erlenmeyer_ch4"
             ]
           }
         ]

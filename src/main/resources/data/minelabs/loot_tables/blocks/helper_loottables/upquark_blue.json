@@ -5,7 +5,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "minelabs:upquark_blue"
+                    "name": "minelabs:subatomic/upquark_blue"
                 }
             ],
             "conditions": [
@@ -16,7 +16,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "minelabs:anti_upquark_blue"
+                    "name": "minelabs:subatomic/anti_upquark_blue"
                 }
             ],
             "conditions": [
