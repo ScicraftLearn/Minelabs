@@ -17,7 +17,7 @@
                       "function": "minecraft:apply_bonus"
                     }
                   ],
-                  "name": "minelabs:phosphorus_atom",
+                  "name": "minelabs:atom/phosphorus_atom",
                   "weight": 100
                 }
               ],

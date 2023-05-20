@@ -17,7 +17,7 @@
                       "function": "minecraft:apply_bonus"
                     }
                   ],
-                  "name": "minelabs:copper_atom",
+                  "name": "minelabs:atom/copper_atom",
                   "weight": 74
                 },
                 {

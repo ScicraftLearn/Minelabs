@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "minelabs:salt_ore"
+          "Name": "minelabs:salt/salt_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",
@@ -15,7 +15,7 @@
       },
       {
         "state": {
-          "Name": "minelabs:deepslate_salt_ore"
+          "Name": "minelabs:salt/deepslate_salt_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

@@ -53,7 +53,7 @@
                       "function": "minecraft:apply_bonus"
                     }
                   ],
-                  "name": "minelabs:oxygen_atom",
+                  "name": "minelabs:atom/oxygen_atom",
                   "weight": 25
                 },
                 {
