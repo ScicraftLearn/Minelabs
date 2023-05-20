@@ -30,22 +30,22 @@ public class Items {
     public static final Item LASERTOOL_DIAMOND = register(new LaserTool(2.5f, -2.4f, ToolMaterials.DIAMOND, new Item.Settings()), "lasertool_diamond");
 
     public static final Item SALT = register(new FireReactionBlockItem(Blocks.SALT_WIRE,
-            new FabricItemSettings().maxCount(64), 4, "NaCl"), "salt/");
+            new FabricItemSettings().maxCount(64), 4, "NaCl"), "salt/salt");
 
     public static final Item SALT_SHARD = register(new Item(
-            new FabricItemSettings().maxCount(64)), "salt/_shard");
+            new FabricItemSettings().maxCount(64)), "salt/salt_shard");
 
     public static final Item SALT_ORE = register(new BlockItem(Blocks.SALT_ORE,
-            new FabricItemSettings().maxCount(64)), "salt/_ore");
+            new FabricItemSettings().maxCount(64)), "salt/salt_ore");
 
     public static final Item DEEPSLATE_SALT_ORE = register(new BlockItem(Blocks.DEEPSLATE_SALT_ORE,
             new FabricItemSettings().maxCount(64)), "salt/deepslate_salt_ore");
 
     public static final Item SALT_BLOCK = register(new BlockItem(Blocks.SALT_BLOCK,
-            new FabricItemSettings().maxCount(64)), "salt/_block");
+            new FabricItemSettings().maxCount(64)), "salt/salt_block");
 
     public static final Item SALT_CRYSTAL = register(new BlockItem(Blocks.SALT_CRYSTAL,
-            new FabricItemSettings().maxCount(64)), "salt/_crystal");
+            new FabricItemSettings().maxCount(64)), "salt/salt_crystal");
 
     public static final Item SMALL_SALT_CRYSTAL = register(new BlockItem(Blocks.SMALL_SALT_CRYSTAL,
             new FabricItemSettings().maxCount(64)), "salt/small_salt_crystal");

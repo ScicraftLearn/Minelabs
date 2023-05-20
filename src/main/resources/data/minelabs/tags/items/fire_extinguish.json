@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minelabs:erlenmeyer_h2o",
+    "minelabs:erlenmeyer/erlenmeyer_h2o",
     "minecraft:water_bucket"
   ]
 }

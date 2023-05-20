@@ -1,17 +1,17 @@
 {
     "replace": false,
     "values": [
-        "minelabs:upquark_red",
-        "minelabs:upquark_green",
-        "minelabs:upquark_blue",
-        "minelabs:anti_upquark_red",
-        "minelabs:anti_upquark_green",
-        "minelabs:anti_upquark_blue",
-        "minelabs:downquark_red",
-        "minelabs:downquark_green",
-        "minelabs:downquark_blue",
-        "minelabs:anti_downquark_red",
-        "minelabs:anti_downquark_green",
-        "minelabs:anti_downquark_blue"
+        "minelabs:subatomic/upquark_red",
+        "minelabs:subatomic/upquark_green",
+        "minelabs:subatomic/upquark_blue",
+        "minelabs:subatomic/anti_upquark_red",
+        "minelabs:subatomic/anti_upquark_green",
+        "minelabs:subatomic/anti_upquark_blue",
+        "minelabs:subatomic/downquark_red",
+        "minelabs:subatomic/downquark_green",
+        "minelabs:subatomic/downquark_blue",
+        "minelabs:subatomic/anti_downquark_red",
+        "minelabs:subatomic/anti_downquark_green",
+        "minelabs:subatomic/anti_downquark_blue"
     ]
 }

@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "minelabs:positron",
-    "minelabs:proton",
-    "minelabs:pion_plus"
+    "minelabs:subatomic/positron",
+    "minelabs:subatomic/proton",
+    "minelabs:subatomic/pion_plus"
   ]
 }
