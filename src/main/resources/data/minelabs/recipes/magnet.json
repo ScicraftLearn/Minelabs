@@ -7,10 +7,10 @@
   ],
   "key": {
     "a": {
-      "item": "minelabs:proton"
+      "item": "minelabs:subatomic/proton"
     },
     "b": {
-      "item": "minelabs:electron"
+      "item": "minelabs:subatomic/electron"
     },
     "c": {
       "item": "minecraft:iron_ingot"

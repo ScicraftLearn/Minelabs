@@ -3,26 +3,26 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minelabs:upquark_blue"
+      "item": "minelabs:subatomic/upquark_blue"
     },
     {
-      "item": "minelabs:downquark_red"
+      "item": "minelabs:subatomic/downquark_red"
     },
     {
-      "item": "minelabs:downquark_green"
+      "item": "minelabs:subatomic/downquark_green"
     },
     {
-      "item": "minelabs:gluon"
+      "item": "minelabs:subatomic/gluon"
     },
     {
-      "item": "minelabs:gluon"
+      "item": "minelabs:subatomic/gluon"
     },
     {
-      "item": "minelabs:gluon"
+      "item": "minelabs:subatomic/gluon"
     }
   ],
   "result": {
-    "item": "minelabs:neutron",
+    "item": "minelabs:subatomic/neutron",
     "count": 1
   }
 }

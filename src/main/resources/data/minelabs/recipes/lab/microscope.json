@@ -14,14 +14,14 @@
       "item": "minecraft:iron_ingot"
     },
     "l": {
-      "item": "minelabs:lens"
+      "item": "minelabs:lab/lens"
     },
     "U": {
       "item": "minecraft:glowstone_dust"
     }
   },
   "result": {
-    "item": "minelabs:microscope",
+    "item": "minelabs:lab/microscope",
     "count": 1
   }
 }

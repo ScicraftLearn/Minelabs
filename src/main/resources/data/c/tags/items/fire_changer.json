@@ -1,19 +1,19 @@
 {
   "replace": false,
   "values": [
-    "minelabs:salt",
-    "minelabs:lithium_chloride_dust",
-    "minelabs:strontium_chloride_dust",
-    "minelabs:strontium_nitrate_dust",
-    "minelabs:calcium_chloride_dust",
-    "minelabs:sodium_carbonate_dust",
-    "minelabs:borax_dust",
-    "minelabs:copper_sulfate_dust",
-    "minelabs:boric_acid",
-    "minelabs:copper_chloride_dust",
-    "minelabs:potassium_chloride_dust",
-    "minelabs:potassium_sulfate_dust",
-    "minelabs:potassium_nitrate_dust",
-    "minelabs:magnesium_sulfate_dust"
+    "minelabs:salt/salt",
+    "minelabs:dust/lithium_chloride_dust",
+    "minelabs:dust/strontium_chloride_dust",
+    "minelabs:dust/strontium_nitrate_dust",
+    "minelabs:dust/calcium_chloride_dust",
+    "minelabs:dust/sodium_carbonate_dust",
+    "minelabs:dust/borax_dust",
+    "minelabs:dust/copper_sulfate_dust",
+    "minelabs:erlenmeyer/erlenmeyer_boric_acid",
+    "minelabs:dust/copper_chloride_dust",
+    "minelabs:dust/potassium_chloride_dust",
+    "minelabs:dust/potassium_sulfate_dust",
+    "minelabs:dust/potassium_nitrate_dust",
+    "minelabs:dust/magnesium_sulfate_dust"
   ]
 }

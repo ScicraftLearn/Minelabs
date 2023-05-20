@@ -17,7 +17,7 @@
       "item": "minecraft:copper_ingot"
     },
     "e": {
-      "item": "minelabs:erlenmeyer_he"
+      "item": "minelabs:erlenmeyer/erlenmeyer_he"
     }
   },
   "result": {

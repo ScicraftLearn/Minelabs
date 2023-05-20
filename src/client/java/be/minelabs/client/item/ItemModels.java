@@ -1,6 +1,5 @@
 package be.minelabs.client.item;
 
-import be.minelabs.Minelabs;
 import be.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

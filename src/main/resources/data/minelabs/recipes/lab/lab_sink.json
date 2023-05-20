@@ -22,7 +22,7 @@
     }
   },
   "result": {
-    "item": "minelabs:lab_sink",
+    "item": "minelabs:lab/lab_sink",
     "count": 1
   }
 }

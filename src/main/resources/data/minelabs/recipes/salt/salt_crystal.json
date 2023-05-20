@@ -6,10 +6,10 @@
   ],
   "key": {
     "c": {
-      "item": "minelabs:salt_shard"
+      "item": "minelabs:salt/salt_shard"
     }
   },
   "result": {
-    "item": "minelabs:salt_crystal"
+    "item": "minelabs:salt/salt_crystal"
   }
 }

@@ -7,10 +7,10 @@
   ],
   "key": {
     "#": {
-      "item": "minelabs:salt"
+      "item": "minelabs:salt/salt"
     }
   },
   "result": {
-    "item": "minelabs:salt_block"
+    "item": "minelabs:salt/salt_block"
   }
 }

@@ -6,9 +6,9 @@
   ],
   "key": {
     "p": {
-      "item": "minelabs:photon"},
+      "item": "minelabs:subatomic/photon"},
     "g": {
-      "item": "minelabs:gluon"
+      "item": "minelabs:subatomic/gluon"
     }
   },
   "result": {

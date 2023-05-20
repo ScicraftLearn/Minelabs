@@ -3,23 +3,23 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minelabs:upquark_green"
+      "item": "minelabs:subatomic/upquark_green"
     },
     {
-      "item": "minelabs:anti_downquark_green"
+      "item": "minelabs:subatomic/anti_downquark_green"
     },
     {
-      "item": "minelabs:gluon"
+      "item": "minelabs:subatomic/gluon"
     },
     {
-      "item": "minelabs:gluon"
+      "item": "minelabs:subatomic/gluon"
     },
     {
-      "item": "minelabs:gluon"
+      "item": "minelabs:subatomic/gluon"
     }
   ],
   "result": {
-    "item": "minelabs:pion_plus",
+    "item": "minelabs:subatomic/pion_plus",
     "count": 1
   }
 }

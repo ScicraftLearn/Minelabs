@@ -1,9 +1,9 @@
 {
   "type": "minecraft:campfire_cooking",
   "ingredient": {
-    "item": "minelabs:boric_acid"
+    "item": "minelabs:erlenmeyer/erlenmeyer_boric_acid"
   },
-  "result": "minelabs:erlenmeyer",
+  "result": "minelabs:erlenmeyer/erlenmeyer",
   "experience": 0.5,
   "cookingtime": 300
 }

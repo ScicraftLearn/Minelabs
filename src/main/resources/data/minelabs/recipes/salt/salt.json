@@ -2,11 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minelabs:salt_shard"
+      "item": "minelabs:salt/salt_shard"
     }
   ],
   "result": {
-    "item": "minelabs:salt",
+    "item": "minelabs:salt/salt",
     "count": 2
   }
 }
