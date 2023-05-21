@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
-import org.jetbrains.annotations.Nullable;
 
 public class Datagen implements DataGeneratorEntrypoint {
 
@@ -14,6 +13,7 @@ public class Datagen implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 		pack.addProvider(LaserToolDataProvider::new);
+		// TODO REMOVE/UPDATE OLD TRANSLATIONS
 		pack.addProvider(LangProvider::new);
 		pack.addProvider(DutchLangProvider::new);
 //		pack.addProvider(FlemishLangProvider::new);
