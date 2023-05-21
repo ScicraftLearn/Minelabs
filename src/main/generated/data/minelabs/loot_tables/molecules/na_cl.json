@@ -1,0 +1,19 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/chlorine_atom",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/sodium_atom",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}
