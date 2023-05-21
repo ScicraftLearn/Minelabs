@@ -1,16 +1,19 @@
 package be.minelabs.data;
 
-import be.minelabs.block.Blocks;
-import be.minelabs.entity.Entities;
+import be.minelabs.Minelabs;
 import be.minelabs.item.ItemGroups;
-import be.minelabs.item.Items;
-import be.minelabs.item.items.AtomItem;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.block.Block;
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
+import net.minecraft.registry.DefaultedRegistry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 
 import java.nio.file.Path;
@@ -72,75 +75,39 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
      */
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
-        // item groups
+        // MANUALLY DOING GROUPS
         translationBuilder.add(ItemGroups.ATOMS, "");
         translationBuilder.add(ItemGroups.MINELABS, "");
         translationBuilder.add(ItemGroups.QUANTUM_FIELDS, "");
         translationBuilder.add(ItemGroups.CHEMICALS, "");
         translationBuilder.add(ItemGroups.ELEMENTARY_PARTICLES, "");
 
-        // blocks
-        translationBuilder.add(Blocks.ANTI_NEUTRON, "");
-        translationBuilder.add(Blocks.ANTI_PROTON, "");
-        translationBuilder.add(Blocks.ANTINEUTRINO, "");
-        translationBuilder.add(Blocks.ATOM_FLOOR, "");
-        translationBuilder.add(Blocks.BUDDING_SALT_BLOCK, "");
-        translationBuilder.add(Blocks.BOHR_BLUEPRINT, "");
-        translationBuilder.add(Blocks.BURNER, "");
-        translationBuilder.add(Blocks.CHARGED_POINT_BLOCK, "");
-        translationBuilder.add(Blocks.DEEPSLATE_SALT_ORE, "");
-        translationBuilder.add(Blocks.DOWNQUARK_QUANTUMFIELD, "");
-        translationBuilder.add(Blocks.ELECTRON, "");
-        translationBuilder.add(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, "");
-        translationBuilder.add(Blocks.ELECTRON_QUANTUMFIELD, "");
-        translationBuilder.add(Blocks.ERLENMEYER_STAND, "");
-        translationBuilder.add(Blocks.GLUON_QUANTUMFIELD, "");
-        translationBuilder.add(Blocks.GREEN_FIRE, "");
-        translationBuilder.add(Blocks.IONIC_BLOCK, "");
-        translationBuilder.add(Blocks.LAB_CABIN, "");
-        translationBuilder.add(Blocks.LAB_CENTER, "");
-        translationBuilder.add(Blocks.LAB_CORNER, "");
-        translationBuilder.add(Blocks.LAB_DRAWER, "");
-        translationBuilder.add(Blocks.LAB_SINK, "");
-        translationBuilder.add(Blocks.LARGE_SALT_CRYSTAL, "");
-        translationBuilder.add(Blocks.LEWIS_BLOCK, "");
-        translationBuilder.add(Blocks.MEDIUM_SALT_CRYSTAL, "");
-        translationBuilder.add(Blocks.MOLOGRAM_BLOCK, "");
-        translationBuilder.add(Blocks.MICROSCOPE, "");
-        translationBuilder.add(Blocks.NEUTRINO, "");
-        translationBuilder.add(Blocks.NEUTRINO_QUANTUMFIELD, "");
-        translationBuilder.add(Blocks.NEUTRON, "");
-        translationBuilder.add(Blocks.PHOTON_QUANTUMFIELD, "");
-        translationBuilder.add(Blocks.PION_MINUS, "");
-        translationBuilder.add(Blocks.PION_NUL, "");
-        translationBuilder.add(Blocks.PION_PLUS, "");
-        translationBuilder.add(Blocks.POSITRON, "");
-        translationBuilder.add(Blocks.PORTAL_BLOCK, "");
-        translationBuilder.add(Blocks.PROTON, "");
-        translationBuilder.add(Blocks.SALT_CRYSTAL, "");
-        translationBuilder.add(Blocks.SALT_ORE, "");
-        translationBuilder.add(Blocks.SALT_WIRE, "");
-        translationBuilder.add(Blocks.SALT_BLOCK, "");
-        translationBuilder.add(Blocks.SMALL_SALT_CRYSTAL, "");
-        translationBuilder.add(Blocks.TIME_FREEZE_BLOCK, "");
-        translationBuilder.add(Blocks.TUBERACK, "");
-        translationBuilder.add(Blocks.UPQUARK_QUANTUMFIELD, "");
-        translationBuilder.add(Blocks.WEAK_BOSON, "");
-        translationBuilder.add(Blocks.WEAK_BOSON_QUANTUMFIELD, "");
+        for (Map.Entry<RegistryKey<Item>, Item> entry : Registries.ITEM.getEntrySet()) {
+            if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
+                translationBuilder.add(entry.getValue(), "");
+            }
+        }
 
-        // items (not BlockItems)
-        Items.ATOMS.forEach(atomItem -> translationBuilder.add(atomItem, ""));
-        translationBuilder.add(Items.MAGNET, "");
-        translationBuilder.add(Items.POCKET_HOLE, "");
-        translationBuilder.add(Items.LASERTOOL_IRON, "");
-        translationBuilder.add(Items.LASERTOOL_GOLD, "");
-        translationBuilder.add(Items.LASERTOOL_DIAMOND, "");
+        for (Map.Entry<RegistryKey<Block>, Block> entry : Registries.BLOCK.getEntrySet()) {
+            if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
+                translationBuilder.add(entry.getValue(), "");
+            }
+        }
 
-        // entities (may include manual)
-        translationBuilder.add(Entities.ENTROPY_CREEPER, "");
-        translationBuilder.add(Entities.BALLOON, "");
+        for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> entry : Registries.ENTITY_TYPE.getEntrySet()) {
+            if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
+                translationBuilder.add(entry.getValue(), "");
+            }
+        }
+
+        //addEmptyKeys(Registries.ITEM, translationBuilder);
+        //addEmptyKeys(Registries.BLOCK, translationBuilder);
+        //addEmptyKeys(Registries.ENTITY_TYPE, translationBuilder);
+
+
         translationBuilder.add("entity.minecraft.villager.sciencevillager", "");
-
+        // DO NOT USE
+        //addEmptyKeys(Registries.VILLAGER_PROFESSION, translationBuilder);
 
         // manual : text
         translationBuilder.add("text.minelabs.valid", "");
@@ -150,7 +117,14 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
         translationBuilder.add("text.minelabs.active", "");
         translationBuilder.add("text.minelabs.inactive", "");
         translationBuilder.add("text.minelabs.toggle_instruction", "");
+    }
 
-
+    private <T> void addEmptyKeys(DefaultedRegistry<T> registry, TranslationBuilder builder) {
+        // TODO WIP
+        for (Map.Entry<? extends RegistryKey<T>, T> entry : registry.getEntrySet()) {
+            if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
+                builder.add((Identifier) entry.getValue(), "");
+            }
+        }
     }
 }
