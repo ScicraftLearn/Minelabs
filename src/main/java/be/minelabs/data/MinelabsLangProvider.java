@@ -23,7 +23,7 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
 
     private final String languageCode;
 
-    protected MinelabsLangProvider(FabricDataOutput dataOutput) {
+    public MinelabsLangProvider(FabricDataOutput dataOutput) {
         super(dataOutput);
         this.languageCode = "en_us";
     }
