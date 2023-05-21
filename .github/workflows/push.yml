@@ -58,7 +58,7 @@ jobs:
   gradle_from_main:
     runs-on: ubuntu-latest
     environment: minelabs_upload
-    needs: update_server
+    needs: update_server_main
     if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
@@ -108,7 +108,7 @@ jobs:
   gradle_from_alpha:
     runs-on: ubuntu-latest
     environment: minelabs_upload
-    needs: update_server
+    needs: update_server_alpha
     if: github.ref == 'refs/heads/alpha'
     strategy:
       matrix:
