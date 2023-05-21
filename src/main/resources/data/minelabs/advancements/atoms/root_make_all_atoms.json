@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:hydrogen_atom"
+      "item": "minelabs:atom/hydrogen_atom"
     },
     "title": "Atoms",
     "description": "Obtain all atoms",

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:phosphorus_atom"
+      "item": "minelabs:atom/phosphorus_atom"
     },
     "title": "Lucifer",
     "description": "Obtain phosphorus",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:phosphorus_atom"
+              "minelabs:atom/phosphorus_atom"
             ]
           }
         ]

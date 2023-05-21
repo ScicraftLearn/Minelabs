@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_n2o"
+      "item": "minelabs:erlenmeyer/erlenmeyer_n2o"
     },
     "title": "A good joke",
     "description": "Craft N2O in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_n2o"
+              "minelabs:erlenmeyer/erlenmeyer_n2o"
             ]
           }
         ]

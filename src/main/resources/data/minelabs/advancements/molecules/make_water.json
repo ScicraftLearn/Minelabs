@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_h2o"
+      "item": "minelabs:erlenmeyer/erlenmeyer_h2o"
     },
     "title": "Wo-Tah",
     "description": "Craft water in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_h2o"
+              "minelabs:erlenmeyer/erlenmeyer_h2o"
             ]
           }
         ]

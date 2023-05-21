@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:weak_boson"
+      "item": "minelabs:subatomic/weak_boson"
     },
     "title": "Radioactive",
     "description": "Observe a decay",

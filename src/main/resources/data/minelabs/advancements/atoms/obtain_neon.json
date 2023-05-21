@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:neon_atom"
+      "item": "minelabs:atom/neon_atom"
     },
     "title": "Neon lights",
     "description": "Obtain neon",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:neon_atom"
+              "minelabs:atom/neon_atom"
             ]
           }
         ]

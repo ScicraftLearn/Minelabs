@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:sodium_atom"
+      "item": "minelabs:atom/sodium_atom"
     },
     "title": "Tasty explosion",
     "description": "Obtain sodium",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:sodium_atom"
+              "minelabs:atom/sodium_atom"
             ]
           }
         ]

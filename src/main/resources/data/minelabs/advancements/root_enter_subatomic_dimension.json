@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:gluon_quantumfield"
+      "item": "minelabs:quantumfield/gluon_quantumfield"
     },
     "title": "Elementary Particles",
     "description": "Obtain all the elementary particles",

@@ -4,12 +4,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minelabs:chlorine_atom",
+          "name": "minelabs:atom/chlorine_atom",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "minelabs:sodium_atom",
+          "name": "minelabs:atom/sodium_atom",
           "weight": 1
         }
       ],

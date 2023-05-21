@@ -1,0 +1,27 @@
+{
+  "group": "microscope",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " #i",
+    " li",
+    "iUi"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:glass_pane"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "l": {
+      "item": "minelabs:lab/lens"
+    },
+    "U": {
+      "item": "minecraft:glowstone_dust"
+    }
+  },
+  "result": {
+    "item": "minelabs:lab/microscope",
+    "count": 1
+  }
+}

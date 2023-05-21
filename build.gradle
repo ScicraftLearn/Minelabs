@@ -1,14 +1,14 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version '1.2-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
 
 repositories {
     // Add repositories to retrieve artifacts from in here.
@@ -25,7 +25,8 @@ repositories {
 		url = "https://maven.kyrptonaught.dev"
 	}
 	// info: https://github.com/Wyn-Price/CurseMaven
-	maven {url = 'https://www.cursemaven.com'
+	maven {
+		url = 'https://www.cursemaven.com'
 		content {
 			includeGroup "curse.maven"
 		}
@@ -53,15 +54,15 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// hard dependency -> actually includes it in our jar
-	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
-	include "maven.modrinth:Wd844r7Q:${project.structure_api_verion}"
+	include "net.kyrptonaught:customportalapi:${project.portal_api_verion}" exclude module: "sodium"
+//	include "maven.modrinth:Wd844r7Q:${project.structure_api_verion}"
 	include "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 	include "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
 
 	// depend on source -> it needs to be installed alongside our mod or also be a hard dependency
-	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}"
+	modImplementation "net.kyrptonaught:customportalapi:${project.portal_api_verion}" exclude module: "sodium"
 	modImplementation "software.bernie.geckolib:geckolib-fabric-${project.geckolib_verion}"
-	modImplementation "maven.modrinth:Wd844r7Q:${project.structure_api_verion}"
+//	modImplementation "maven.modrinth:Wd844r7Q:${project.structure_api_verion}"
 
 	// debug dependency -> only used while running mod, not included or needed when released
 	// Mods (none API's) that are actually running, also need to be included.
@@ -87,6 +88,9 @@ java {
 	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {
@@ -100,14 +104,24 @@ loom {
 	
 	runs {
 		datagen {
-			server()
+			inherit server
 
 			name = "Data Generation"
 			runDir = "build/datagen"
 
-			vmArg("-Dgeckolib.disable_examples=true")
-			vmArg("-Dfabric-api.datagen")
-			vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
+			vmArg "-Dgeckolib.disable_examples=true"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+			vmArg "-Dfabric-api.datagen.modid=${mod_id}"
+		}
+	}
+
+	splitEnvironmentSourceSets()
+
+	mods {
+		"${mod_id}" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
 		}
 	}
 }

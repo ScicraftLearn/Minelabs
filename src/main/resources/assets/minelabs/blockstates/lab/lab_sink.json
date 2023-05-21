@@ -1,0 +1,35 @@
+{
+  "variants": {
+    "facing=north,filled=false": {
+      "model": "minelabs:block/lab/lab_sink"
+    },
+    "facing=east,filled=false": {
+      "model": "minelabs:block/lab/lab_sink",
+      "y": 90
+    },
+    "facing=south,filled=false": {
+      "model": "minelabs:block/lab/lab_sink",
+      "y": 180
+    },
+    "facing=west,filled=false": {
+      "model": "minelabs:block/lab/lab_sink",
+      "y": 270
+    },
+    "facing=north,filled=true": {
+      "model": "minelabs:block/lab/lab_sink_filled"
+    },
+    "facing=east,filled=true": {
+      "model": "minelabs:block/lab/lab_sink_filled",
+      "y": 90
+    },
+    "facing=south,filled=true": {
+      "model": "minelabs:block/lab/lab_sink_filled",
+      "y": 180
+    },
+    "facing=west,filled=true": {
+      "model": "minelabs:block/lab/lab_sink_filled",
+      "y": 270
+    }
+
+  }
+}

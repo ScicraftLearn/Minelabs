@@ -1,5 +1,4 @@
 {
-  "group": "scicraft",
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "lll",
@@ -14,7 +13,7 @@
     ],
     "h": [
       {
-        "item": "minelabs:erlenmeyer_he"
+        "item": "minelabs:erlenmeyer/erlenmeyer_he"
       }
     ],
     "s": {

@@ -439,15 +439,15 @@
     "molecules": ["oxidized_copper", "honeycomb_block"],
     "distribution": ["95","5"]
 },{
-    "blocks": ["minelabs:salt_block"],
+    "blocks": ["minelabs:salt/salt_block"],
     "molecules": ["NaCl"],
     "distribution": ["100"]
 },{
-    "blocks": ["minelabs:salt_ore"],
+    "blocks": ["minelabs:salt/salt_ore"],
     "molecules": ["minelabs:salt_block", "stone"],
     "distribution": ["20","80"]
 },{
-    "blocks": ["minelabs:deepslate_salt_ore"],
+    "blocks": ["minelabs:salt/deepslate_salt_ore"],
     "molecules": ["minelabs:salt_block", "deepslate"],
     "distribution": ["20","80"]
 }]}

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:safety_glasses"
+      "item": "minelabs:lab/safety_glasses"
     },
     "title": "Deal with it!",
     "description": "Wear safety glasses",
@@ -19,7 +19,7 @@
           "equipment": {
             "head": {
               "items": [
-                "minelabs:safety_glasses"
+                "minelabs:lab/safety_glasses"
               ]
             }
           }

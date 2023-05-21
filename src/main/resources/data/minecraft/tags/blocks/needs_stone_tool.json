@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "minelabs:salt_ore",
-    "minelabs:deepslate_salt_ore",
-    "minelabs:salt_block"
+    "minelabs:salt/salt_ore",
+    "minelabs:salt/deepslate_salt_ore",
+    "minelabs:salt/salt_block"
   ]
 }

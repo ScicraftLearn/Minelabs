@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_o2"
+      "item": "minelabs:erlenmeyer/erlenmeyer_o2"
     },
     "title": "OSHA violation",
     "description": "Break an erlenmeyer",

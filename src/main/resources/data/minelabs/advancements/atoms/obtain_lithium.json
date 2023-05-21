@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:lithium_atom"
+      "item": "minelabs:atom/lithium_atom"
     },
     "title": "Battery pack",
     "description": "Obtain lithium",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:lithium_atom"
+              "minelabs:atom/lithium_atom"
             ]
           }
         ]

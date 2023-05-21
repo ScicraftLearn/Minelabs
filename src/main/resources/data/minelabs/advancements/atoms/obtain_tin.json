@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:tin_atom"
+      "item": "minelabs:atom/tin_atom"
     },
     "title": "Tin Man",
     "description": "Obtain tin",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:tin_atom"
+              "minelabs:atom/tin_atom"
             ]
           }
         ]

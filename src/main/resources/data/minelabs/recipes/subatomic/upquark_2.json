@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minelabs:subatomic/weak_boson" },
+    { "item": "minelabs:subatomic/downquark_blue" }
+  ],
+  "result": {
+    "item": "minelabs:subatomic/upquark_blue",
+    "count": 1
+  }
+}

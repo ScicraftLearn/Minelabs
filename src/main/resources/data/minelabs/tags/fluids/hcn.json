@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minelabs:hcn",
-    "minelabs:flowing_hcn"
+    "minelabs:chemical/hcn",
+    "minelabs:chemical/flowing_hcn"
   ]
 }

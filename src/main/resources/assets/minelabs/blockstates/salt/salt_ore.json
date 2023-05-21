@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "minelabs:block/salt/salt_ore"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minelabs:salt/salt"
+    }
+  },
+  "result": {
+    "item": "minelabs:salt/salt_block"
+  }
+}

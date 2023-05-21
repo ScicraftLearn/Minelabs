@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "minelabs:block/quantumfield/weak_boson_quantumfield" }
+    }
+}

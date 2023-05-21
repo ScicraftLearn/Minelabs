@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:potassium_atom"
+      "item": "minelabs:atom/potassium_atom"
     },
     "title": "Banana!",
     "description": "Obtain potassium",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:potassium_atom"
+              "minelabs:atom/potassium_atom"
             ]
           }
         ]

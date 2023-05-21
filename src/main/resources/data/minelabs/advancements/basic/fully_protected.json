@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:lab_coat"
+      "item": "minelabs:lab/lab_coat"
     },
     "title": "Like a real scientist",
     "description": "Wear safety glasses and a lab coat",
@@ -19,12 +19,12 @@
           "equipment": {
             "head": {
               "items": [
-                "minelabs:safety_glasses"
+                "minelabs:lab/safety_glasses"
               ]
             },
             "chest": {
               "items": [
-                "minelabs:lab_coat"
+                "minelabs:lab/lab_coat"
               ]
             }
           }

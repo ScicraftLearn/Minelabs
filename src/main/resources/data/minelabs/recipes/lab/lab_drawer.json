@@ -1,0 +1,28 @@
+{
+  "group": "lab_blocks",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ggg",
+    "www",
+    "whw"
+  ],
+  "key": {
+    "g": [
+      {
+        "item": "minecraft:light_blue_terracotta"
+      }
+    ],
+    "h": [
+      {
+        "item": "minecraft:chest"
+      }
+    ],
+    "w": {
+      "item": "minecraft:white_concrete"
+    }
+  },
+  "result": {
+    "item": "minelabs:lab/lab_drawer",
+    "count": 1
+  }
+}

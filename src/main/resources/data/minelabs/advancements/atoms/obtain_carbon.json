@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:carbon_atom"
+      "item": "minelabs:atom/carbon_atom"
     },
     "title": "The building block of life",
     "description": "Obtain carbon",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:carbon_atom"
+              "minelabs:atom/carbon_atom"
             ]
           }
         ]

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:silicon_atom"
+      "item": "minelabs:atom/silicon_atom"
     },
     "title": "Sand and computerchips",
     "description": "Obtain silicon",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:silicon_atom"
+              "minelabs:atom/silicon_atom"
             ]
           }
         ]

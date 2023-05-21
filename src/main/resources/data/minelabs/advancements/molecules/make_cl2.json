@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer_cl2"
+      "item": "minelabs:erlenmeyer/erlenmeyer_cl2"
     },
     "title": "Chemical warfare",
     "description": "Craft Cl2 in the Lewis Crafting Table",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:erlenmeyer_cl2"
+              "minelabs:erlenmeyer/erlenmeyer_cl2"
             ]
           }
         ]

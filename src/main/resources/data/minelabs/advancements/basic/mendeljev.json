@@ -19,7 +19,7 @@
         "items": [
           {
             "items": [
-              "minelabs:hydrogen_atom"
+              "minelabs:atom/hydrogen_atom"
             ]
           }
         ]
@@ -31,7 +31,7 @@
         "items": [
           {
             "items": [
-              "minelabs:helium_atom"
+              "minelabs:atom/helium_atom"
             ]
           }
         ]
@@ -43,7 +43,7 @@
         "items": [
           {
             "items": [
-              "minelabs:lithium_atom"
+              "minelabs:atom/lithium_atom"
             ]
           }
         ]
@@ -55,7 +55,7 @@
         "items": [
           {
             "items": [
-              "minelabs:beryllium_atom"
+              "minelabs:atom/beryllium_atom"
             ]
           }
         ]
@@ -67,7 +67,7 @@
         "items": [
           {
             "items": [
-              "minelabs:boron_atom"
+              "minelabs:atom/boron_atom"
             ]
           }
         ]
@@ -79,7 +79,7 @@
         "items": [
           {
             "items": [
-              "minelabs:carbon_atom"
+              "minelabs:atom/carbon_atom"
             ]
           }
         ]
@@ -91,7 +91,7 @@
         "items": [
           {
             "items": [
-              "minelabs:nitrogen_atom"
+              "minelabs:atom/nitrogen_atom"
             ]
           }
         ]
@@ -103,7 +103,7 @@
         "items": [
           {
             "items": [
-              "minelabs:oxygen_atom"
+              "minelabs:atom/oxygen_atom"
             ]
           }
         ]
@@ -115,7 +115,7 @@
         "items": [
           {
             "items": [
-              "minelabs:fluorine_atom"
+              "minelabs:atom/fluorine_atom"
             ]
           }
         ]
@@ -127,7 +127,7 @@
         "items": [
           {
             "items": [
-              "minelabs:neon_atom"
+              "minelabs:atom/neon_atom"
             ]
           }
         ]
@@ -139,7 +139,7 @@
         "items": [
           {
             "items": [
-              "minelabs:sodium_atom"
+              "minelabs:atom/sodium_atom"
             ]
           }
         ]
@@ -151,7 +151,7 @@
         "items": [
           {
             "items": [
-              "minelabs:magnesium_atom"
+              "minelabs:atom/magnesium_atom"
             ]
           }
         ]
@@ -163,7 +163,7 @@
         "items": [
           {
             "items": [
-              "minelabs:aluminium_atom"
+              "minelabs:atom/aluminium_atom"
             ]
           }
         ]
@@ -175,7 +175,7 @@
         "items": [
           {
             "items": [
-              "minelabs:silicon_atom"
+              "minelabs:atom/silicon_atom"
             ]
           }
         ]
@@ -187,7 +187,7 @@
         "items": [
           {
             "items": [
-              "minelabs:phosphorus_atom"
+              "minelabs:atom/phosphorus_atom"
             ]
           }
         ]
@@ -199,7 +199,7 @@
         "items": [
           {
             "items": [
-              "minelabs:sulfur_atom"
+              "minelabs:atom/sulfur_atom"
             ]
           }
         ]
@@ -211,7 +211,7 @@
         "items": [
           {
             "items": [
-              "minelabs:chlorine_atom"
+              "minelabs:atom/chlorine_atom"
             ]
           }
         ]
@@ -223,7 +223,7 @@
         "items": [
           {
             "items": [
-              "minelabs:argon_atom"
+              "minelabs:atom/argon_atom"
             ]
           }
         ]
@@ -235,7 +235,7 @@
         "items": [
           {
             "items": [
-              "minelabs:potassium_atom"
+              "minelabs:atom/potassium_atom"
             ]
           }
         ]
@@ -247,7 +247,19 @@
         "items": [
           {
             "items": [
-              "minelabs:calcium_atom"
+              "minelabs:atom/calcium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_scandium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/scandium_atom"
             ]
           }
         ]
@@ -259,7 +271,31 @@
         "items": [
           {
             "items": [
-              "minelabs:titanium_atom"
+              "minelabs:atom/titanium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_vanadium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/vanadium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_chromium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/chromium_atom"
             ]
           }
         ]
@@ -271,7 +307,7 @@
         "items": [
           {
             "items": [
-              "minelabs:manganese_atom"
+              "minelabs:atom/manganese_atom"
             ]
           }
         ]
@@ -283,7 +319,31 @@
         "items": [
           {
             "items": [
-              "minelabs:iron_atom"
+              "minelabs:atom/iron_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_cobalt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/cobalt_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_nickel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/nickel_atom"
             ]
           }
         ]
@@ -295,7 +355,7 @@
         "items": [
           {
             "items": [
-              "minelabs:copper_atom"
+              "minelabs:atom/copper_atom"
             ]
           }
         ]
@@ -307,7 +367,55 @@
         "items": [
           {
             "items": [
-              "minelabs:zinc_atom"
+              "minelabs:atom/zinc_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_gallium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/gallium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_germanium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/germanium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_arsenic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/arsenic_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_selenium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/selenium_atom"
             ]
           }
         ]
@@ -319,7 +427,31 @@
         "items": [
           {
             "items": [
-              "minelabs:bromine_atom"
+              "minelabs:atom/bromine_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_krypton": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/krypton_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_rubidium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/rubidium_atom"
             ]
           }
         ]
@@ -331,7 +463,103 @@
         "items": [
           {
             "items": [
-              "minelabs:strontium_atom"
+              "minelabs:atom/strontium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_yttrium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/yttrium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_zirconium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/zirconium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_niobium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/niobium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_molybdenum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/molybdenum_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_technetium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/technetium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_ruthenium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/ruthenium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_rhodium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/rhodium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_palladium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/palladium_atom"
             ]
           }
         ]
@@ -343,7 +571,7 @@
         "items": [
           {
             "items": [
-              "minelabs:silver_atom"
+              "minelabs:atom/silver_atom"
             ]
           }
         ]
@@ -355,7 +583,19 @@
         "items": [
           {
             "items": [
-              "minelabs:cadmium_atom"
+              "minelabs:atom/cadmium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_indium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/indium_atom"
             ]
           }
         ]
@@ -367,7 +607,31 @@
         "items": [
           {
             "items": [
-              "minelabs:tin_atom"
+              "minelabs:atom/tin_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_antimony": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/antimony_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_tellurium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/tellurium_atom"
             ]
           }
         ]
@@ -379,7 +643,247 @@
         "items": [
           {
             "items": [
-              "minelabs:iodine_atom"
+              "minelabs:atom/iodine_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_xenon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/xenon_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_caesium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/caesium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_barium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/barium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_lanthanum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/lanthanum_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_cerium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/cerium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_praseodymium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/praseodymium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_neodymium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/neodymium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_promethium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/promethium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_samarium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/samarium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_europium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/europium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_gadolinium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/gadolinium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_terbium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/terbium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_dysprosium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/dysprosium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_holmium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/holmium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_erbium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/erbium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_thulium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/thulium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_ytterbium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/ytterbium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_lutetium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/lutetium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_hafnium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/hafnium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_tantalum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/tantalum_atom"
             ]
           }
         ]
@@ -391,7 +895,55 @@
         "items": [
           {
             "items": [
-              "minelabs:tungsten_atom"
+              "minelabs:atom/tungsten_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_rhenium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/rhenium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_osmium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/osmium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_iridium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/iridium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_platinum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/platinum_atom"
             ]
           }
         ]
@@ -403,7 +955,7 @@
         "items": [
           {
             "items": [
-              "minelabs:gold_atom"
+              "minelabs:atom/gold_atom"
             ]
           }
         ]
@@ -415,7 +967,19 @@
         "items": [
           {
             "items": [
-              "minelabs:mercury_atom"
+              "minelabs:atom/mercury_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_thallium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/thallium_atom"
             ]
           }
         ]
@@ -427,7 +991,115 @@
         "items": [
           {
             "items": [
-              "minelabs:lead_atom"
+              "minelabs:atom/lead_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_bismuth": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/bismuth_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_polonium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/polonium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_astatine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/astatine_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_radon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/radon_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_francium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/francium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_radium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/radium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_actinium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/actinium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_thorium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/thorium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_protactinium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/protactinium_atom"
             ]
           }
         ]
@@ -439,7 +1111,319 @@
         "items": [
           {
             "items": [
-              "minelabs:uranium_atom"
+              "minelabs:atom/uranium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_neptunium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/neptunium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_plutonium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/plutonium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_americium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/americium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_curium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/curium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_berkelium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/berkelium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_californium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/californium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_einsteinium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/einsteinium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_fermium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/fermium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_mendelevium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/mendelevium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_nobelium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/nobelium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_lawrencium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/lawrencium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_rutherfordium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/rutherfordium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_dubnium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/dubnium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_seaborgium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/seaborgium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_bohrium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/bohrium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_hassium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/hassium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_meitnerium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/meitnerium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_darmstadtium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/darmstadtium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_roentgenium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/roentgenium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_copernicium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/copernicium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_nihonium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/nihonium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_flerovium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/flerovium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_moscovium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/moscovium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_livermorium": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/livermorium_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_tennessine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/tennessine_atom"
+            ]
+          }
+        ]
+      }
+    },
+    "make_oganesson": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minelabs:atom/oganesson_atom"
             ]
           }
         ]

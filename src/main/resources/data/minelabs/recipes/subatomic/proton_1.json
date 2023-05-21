@@ -1,0 +1,28 @@
+{
+  "group":"proton",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minelabs:subatomic/upquark_red"
+    },
+    {
+      "item": "minelabs:subatomic/upquark_green"
+    },
+    {
+      "item": "minelabs:subatomic/downquark_blue"
+    },
+    {
+      "item": "minelabs:subatomic/gluon"
+    },
+    {
+      "item": "minelabs:subatomic/gluon"
+    },
+    {
+      "item": "minelabs:subatomic/gluon"
+    }
+  ],
+  "result": {
+    "item": "minelabs:subatomic/proton",
+    "count": 1
+  }
+}

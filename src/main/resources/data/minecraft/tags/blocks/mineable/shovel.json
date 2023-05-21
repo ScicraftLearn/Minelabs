@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "minelabs:salt_block"
+    "minelabs:salt/salt_block"
   ]
 }
