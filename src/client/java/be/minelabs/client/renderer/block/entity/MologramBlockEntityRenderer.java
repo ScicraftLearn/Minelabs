@@ -39,13 +39,8 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
 
         // Render item inside
         matrices.push();
-        if (Block.getBlockFromItem(stack.getItem()) != Blocks.AIR) {
-            matrices.translate(0.5, 0, 0.5); //if BlockItem
-        } else {
-            matrices.translate(0.5, 0.1, 0.5); //if BlockItem
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90));
-        }
-
+        matrices.translate(0.5, 0.1, 0.6);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90));
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.GROUND, light, overlay, matrices, vertexConsumers, null, 0);
         matrices.pop();
 
