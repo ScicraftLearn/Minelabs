@@ -5,12 +5,9 @@ import be.minelabs.item.ItemGroups;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.block.Block;
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
 import net.minecraft.registry.DefaultedRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -24,6 +21,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public abstract class MinelabsLangProvider extends FabricLanguageProvider {
+
+    private static final String EMPTY_TRANSLATION = "missing_translation";
 
     private final String languageCode;
 
@@ -45,14 +44,14 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
             Objects.requireNonNull(key);
             Objects.requireNonNull(value);
 
-            if (translationEntries.containsKey(key) && !translationEntries.get(key).isEmpty()) {
+            if (translationEntries.containsKey(key) &&
+                    !translationEntries.get(key).isEmpty() && !translationEntries.get(key).equals(EMPTY_TRANSLATION)) {
                 //THIS IS THE ONLY REASON WE OVERRIDE THE METHOD
                 // we want Value replacements IF EMPTY
-                throw new RuntimeException("Existing translation key found - " + key + " - Duplicate will be ignored.");
+                throw new RuntimeException("Translation key - " + key + " - Already has a value.");
             }
 
             translationEntries.put(key, value);
-
         });
 
         JsonObject langEntryJson = new JsonObject();
@@ -76,50 +75,30 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
      */
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
+        // automatic Block/item/entity(type) key gen
+        addEmptyKeys(Registries.ITEM, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
+        addEmptyKeys(Registries.BLOCK, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
+        addEmptyKeys(Registries.ENTITY_TYPE, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
+
         // MANUALLY DOING GROUPS
-        translationBuilder.add(ItemGroups.ATOMS, "");
-        translationBuilder.add(ItemGroups.MINELABS, "");
-        translationBuilder.add(ItemGroups.QUANTUM_FIELDS, "");
-        translationBuilder.add(ItemGroups.CHEMICALS, "");
-        translationBuilder.add(ItemGroups.ELEMENTARY_PARTICLES, "");
+        translationBuilder.add(ItemGroups.ATOMS, EMPTY_TRANSLATION);
+        translationBuilder.add(ItemGroups.MINELABS, EMPTY_TRANSLATION);
+        translationBuilder.add(ItemGroups.QUANTUM_FIELDS, EMPTY_TRANSLATION);
+        translationBuilder.add(ItemGroups.CHEMICALS, EMPTY_TRANSLATION);
+        translationBuilder.add(ItemGroups.ELEMENTARY_PARTICLES, EMPTY_TRANSLATION);
 
-        for (Map.Entry<RegistryKey<Item>, Item> entry : Registries.ITEM.getEntrySet()) {
-            if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
-                translationBuilder.add(entry.getValue(), "");
-            }
-        }
-
-        for (Map.Entry<RegistryKey<Block>, Block> entry : Registries.BLOCK.getEntrySet()) {
-            if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
-                translationBuilder.add(entry.getValue(), "");
-            }
-        }
-
-        for (Map.Entry<RegistryKey<EntityType<?>>, EntityType<?>> entry : Registries.ENTITY_TYPE.getEntrySet()) {
-            if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
-                translationBuilder.add(entry.getValue(), "");
-            }
-        }
-
-        addEmptyKeys(Registries.ITEM, (k, v) -> translationBuilder.add(v, k.getPath()));
-//        builder.add(value, entry.getKey().getValue().getPath());
-
-        //addEmptyKeys(Registries.BLOCK, translationBuilder);
-        //addEmptyKeys(Registries.ENTITY_TYPE, translationBuilder);
-
-
-        translationBuilder.add("entity.minecraft.villager.sciencevillager", "");
+        translationBuilder.add("entity.minecraft.villager.sciencevillager", EMPTY_TRANSLATION);
         // DO NOT USE
         //addEmptyKeys(Registries.VILLAGER_PROFESSION, translationBuilder);
 
         // manual : text
-        translationBuilder.add("text.minelabs.valid", "");
-        translationBuilder.add("text.minelabs.invalid", "");
-        translationBuilder.add("text.minelabs.not_implemented", "");
-        translationBuilder.add("text.minelabs.multiple_molecules", "");
-        translationBuilder.add("text.minelabs.active", "");
-        translationBuilder.add("text.minelabs.inactive", "");
-        translationBuilder.add("text.minelabs.toggle_instruction", "");
+        translationBuilder.add("text.minelabs.valid", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.invalid", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.not_implemented", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.multiple_molecules", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.active", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.inactive", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.toggle_instruction", EMPTY_TRANSLATION);
     }
 
     private <T> void addEmptyKeys(DefaultedRegistry<T> registry, BiConsumer<Identifier, T> consumer) {
