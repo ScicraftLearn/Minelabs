@@ -13,9 +13,10 @@ public class Datagen implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 		pack.addProvider(LaserToolDataProvider::new);
-//		pack.addProvider(LangProvider::new);
+		// TODO REMOVE/UPDATE OLD TRANSLATIONS
+		pack.addProvider(LangProvider::new);
 //		pack.addProvider(DutchLangProvider::new);
-//		pack.addProvider(FlemishLangProvider::new);
+		pack.addProvider(FlemishLangProvider::new);
 
 		// Try keeping this at the end.
 		pack.addProvider(WorldGenerator::new);
