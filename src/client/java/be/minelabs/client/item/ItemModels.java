@@ -1,8 +1,10 @@
 package be.minelabs.client.item;
 
+import be.minelabs.block.Blocks;
 import be.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
@@ -10,6 +12,16 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class ItemModels {
+    public static void onInitializeClient() {
+        Erlenmeyers.onInitializeClient();
+
+        Items.ATOMS.forEach(ItemModels::registerAtom);
+
+        registerBond(Items.BOND);
+        registerValence(Items.VALENCEE);
+
+        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> 0x3495eb, Blocks.LAB_SINK);
+    }
 
     /**
      * Register Atoms to Model Provider Registry ({@link ModelPredicateProviderRegistry})<br>
@@ -49,15 +61,5 @@ public class ItemModels {
                 (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("s"))/2f );
         ModelPredicateProviderRegistry.register(item, new Identifier("w"),
                 (stack, world, entity, seed) -> ((float) stack.getOrCreateNbt().getInt("w"))/2f );
-    }
-    /**
-     * Main class method<br>
-     * Registers all ItemModels
-     */
-    public static void onInitializeClient() {
-        Items.ATOMS.forEach(ItemModels::registerAtom);
-
-        registerBond(Items.BOND);
-        registerValence(Items.VALENCEE);
     }
 }

@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 @Environment(EnvType.CLIENT)
 public class ClientNetworking {
-    public static void registerHandlers(){
+    public static void onInitializeClient(){
         registerS2CPacketHandlers();
     }
 
