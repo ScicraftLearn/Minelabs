@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 public abstract class MinelabsLangProvider extends FabricLanguageProvider {
 
@@ -100,7 +101,9 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
             }
         }
 
-        //addEmptyKeys(Registries.ITEM, translationBuilder);
+        addEmptyKeys(Registries.ITEM, (k, v) -> translationBuilder.add(v, k.getPath()));
+//        builder.add(value, entry.getKey().getValue().getPath());
+
         //addEmptyKeys(Registries.BLOCK, translationBuilder);
         //addEmptyKeys(Registries.ENTITY_TYPE, translationBuilder);
 
@@ -119,11 +122,10 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
         translationBuilder.add("text.minelabs.toggle_instruction", "");
     }
 
-    private <T> void addEmptyKeys(DefaultedRegistry<T> registry, TranslationBuilder builder) {
-        // TODO WIP
+    private <T> void addEmptyKeys(DefaultedRegistry<T> registry, BiConsumer<Identifier, T> consumer) {
         for (Map.Entry<? extends RegistryKey<T>, T> entry : registry.getEntrySet()) {
             if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
-                builder.add((Identifier) entry.getValue(), "");
+                consumer.accept(entry.getKey().getValue(), entry.getValue());
             }
         }
     }
