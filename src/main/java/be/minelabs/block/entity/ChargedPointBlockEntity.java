@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 public class ChargedPointBlockEntity extends ChargedBlockEntity implements NamedScreenHandlerFactory, SidedStorageBlockEntity {
 
-//    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private final SimpleInventory inventory = new SimpleInventory(1);
 
     public ChargedPointBlockEntity(BlockPos pos, BlockState state,

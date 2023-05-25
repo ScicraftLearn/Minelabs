@@ -33,7 +33,7 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
         if (world == null) return;
 
         BlockPos pos = entity.getPos();
-        ItemStack stack = entity.getStack(0);
+        ItemStack stack = entity.getContents();
         if (stack.isEmpty()) return;
 
 
@@ -46,17 +46,12 @@ public class MologramBlockEntityRenderer implements BlockEntityRenderer<Mologram
 
 
         // Render molecule above
-        BakedModel model;
-        if (stack.getItem() instanceof IMoleculeItem molecule) {
-            model = MinecraftClient.getInstance().getBakedModelManager().models.get(
-                    new Identifier(Minelabs.MOD_ID, "molecules/" + molecule.getMolecule().toLowerCase()));
-        } else {
+        if (!(stack.getItem() instanceof IMoleculeItem molecule))
             return;
-        }
 
-        if (model == null) {
+        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().models.get(new Identifier(Minelabs.MOD_ID, "molecules/" + molecule.getMolecule().toLowerCase()));
+        if (model == null)
             return;
-        }
 
         matrices.push();
         matrices.translate(0.5, 0, 0.5);
