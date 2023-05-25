@@ -2,19 +2,21 @@ package be.minelabs.item.items;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.ErlenmeyerCriterion;
+import be.minelabs.entity.projectile.thrown.GasPotionEntity;
 import be.minelabs.item.IMoleculeItem;
 import be.minelabs.item.Items;
-import be.minelabs.entity.projectile.thrown.GasPotionEntity;
 import be.minelabs.science.Molecule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.LingeringPotionItem;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
 public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
@@ -78,5 +80,10 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     @Override
     public String getMolecule() {
         return molecule.toString();
+    }
+
+    @Override
+    public String getTranslationKey(ItemStack stack) {
+        return Util.createTranslationKey("item", Registries.ITEM.getId(this));
     }
 }

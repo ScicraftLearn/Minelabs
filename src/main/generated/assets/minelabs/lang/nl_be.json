@@ -538,6 +538,8 @@
   "itemGroup.minelabs.minelabs": "Minelabs",
   "itemGroup.minelabs.quantum_fields": "Kwantumvelden",
   "text.minelabs.active": "Actief",
+  "text.minelabs.clear_grid": "missing_translation",
+  "text.minelabs.clear_slots": "missing_translation",
   "text.minelabs.inactive": "Inactief",
   "text.minelabs.invalid": "Onvolledige Molecule",
   "text.minelabs.multiple_molecules": "Te veel moleculen",
