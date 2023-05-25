@@ -24,7 +24,7 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
 
     private static final String EMPTY_TRANSLATION = "missing_translation";
 
-    private final String languageCode;
+    protected final String languageCode;
 
     public MinelabsLangProvider(FabricDataOutput dataOutput) {
         super(dataOutput);
@@ -63,7 +63,7 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
         return DataProvider.writeToPath(writer, langEntryJson, getLangFilePath(languageCode));
     }
 
-    private Path getLangFilePath(String code) {
+    protected Path getLangFilePath(String code) {
         return dataOutput
                 .getResolver(DataOutput.OutputType.RESOURCE_PACK, "lang")
                 .resolveJson(new Identifier(dataOutput.getModId(), code));
@@ -96,6 +96,8 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
         translationBuilder.add("text.minelabs.invalid", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.not_implemented", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.multiple_molecules", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.clear_grid", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.clear_slots", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.active", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.inactive", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.toggle_instruction", EMPTY_TRANSLATION);
