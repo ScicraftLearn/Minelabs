@@ -10,8 +10,10 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -30,7 +32,8 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     public final static int time_move_ticks = 4;
     public BlockState render_state = net.minecraft.block.Blocks.AIR.getDefaultState();
     public boolean annihilation = false;
-    private final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    // should really just copy all nbt over, not make variables like this
+    private final SimpleInventory inventory = new SimpleInventory(1);
 
     public AnimatedChargedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -38,24 +41,25 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
 
     @Override
     public void writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
         tag.putBoolean("an", annihilation);
         tag.putLong("time", time);
         tag.putInt("md", movement_direction.getId());
         tag.put("rs", NbtHelper.fromBlockState(render_state));
-        Inventories.writeNbt(tag, INVENTORY);
-        super.writeNbt(tag);
+        tag.put("Content", inventory.toNbtList());
     }
 
     // Deserialize the BlockEntity
     @Override
     public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
         annihilation = tag.getBoolean("an");
         time = tag.getLong("time");
         movement_direction = Direction.byId(tag.getInt("md"));
         // TODO CHECK IF CORRECT
         render_state = NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(), tag.getCompound("rs"));
-        Inventories.readNbt(tag, INVENTORY);
-        super.readNbt(tag);
+        if (tag.contains("Content"))
+            inventory.readNbtList(tag.getList("Content", NbtElement.COMPOUND_TYPE));
     }
 
     @Nullable
@@ -82,7 +86,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
                 if (world.getBlockState(blockPos).getBlock().equals(Blocks.CHARGED_PLACEHOLDER)) { //also change other particle for client
                     world.setBlockState(blockPos, render_state, Block.NOTIFY_ALL);
                     if(world.getBlockEntity(blockPos) instanceof ChargedPointBlockEntity cpbe) {
-                        cpbe.setInventory(INVENTORY.get(0));
+                        cpbe.setContents(inventory.getStack(0));
                     }
                 }
                 Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, pos, 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
@@ -102,7 +106,7 @@ public class AnimatedChargedBlockEntity extends BlockEntity {
     }
 
     public void setInventory(ItemStack inventoryIn) {
-        INVENTORY.set(0, inventoryIn);
+        inventory.setStack(0, inventoryIn);
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, AnimatedChargedBlockEntity be) {
