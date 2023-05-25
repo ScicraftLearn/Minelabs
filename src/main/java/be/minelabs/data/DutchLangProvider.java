@@ -11,14 +11,10 @@ public class DutchLangProvider extends MinelabsLangProvider {
 
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
-        super.generateTranslations(translationBuilder);
-        //TODO COPY NL_BE
         try {
-            translationBuilder.add(dataOutput.getModContainer()
-                    .findPath("assets/minelabs/lang/nl_nl.json").get());
+            translationBuilder.add(dataOutput.getPath().resolve("assets/minelabs/lang/nl_be.json").toAbsolutePath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
