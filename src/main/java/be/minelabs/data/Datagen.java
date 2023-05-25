@@ -15,8 +15,8 @@ public class Datagen implements DataGeneratorEntrypoint {
 		pack.addProvider(LaserToolDataProvider::new);
 		// TODO REMOVE/UPDATE OLD TRANSLATIONS
 		pack.addProvider(LangProvider::new);
-		pack.addProvider(DutchLangProvider::new);
 		pack.addProvider(FlemishLangProvider::new);
+		pack.addProvider(DutchLangProvider::new);
 
 		// Try keeping this at the end.
 		pack.addProvider(WorldGenerator::new);
