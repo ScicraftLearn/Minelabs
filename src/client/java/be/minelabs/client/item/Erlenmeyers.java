@@ -53,25 +53,25 @@ public class Erlenmeyers {
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);
         registerErlenmeyer(Items.ERLENMEYER_H2O, 0x3495eb, 0);
         registerErlenmeyer(Items.ERLENMEYER_NCL3, 0xe8dc5a, 0);
-        registerErlenmeyer(Items.ERLENMEYER_CS2, 0xAFAFAF, 0);
-        registerErlenmeyer(Items.ERLENMEYER_CCL4, 0xAFAFAF, 0);
-        registerErlenmeyer(Items.ERLENMEYER_PCl3, 0xAFAFAF, 0);
-        registerErlenmeyer(Items.ERLENMEYER_SCl2, 0xAFAFAF, 0);
-        registerErlenmeyer(Items.ERLENMEYER_HCN, 0xCCCCFF, 0);
-        registerErlenmeyer(Items.ERLENMEYER_CH4O, 0xAFAFAF, 0);
-        registerErlenmeyer(Items.ERLENMEYER_SICL4, 0xAFAFAF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CS2, 0xCFCFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CCL4, 0xCFCFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_PCl3, 0xCFCFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SCl2, 0xCFCFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_HCN, 0xCFCFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_CH4O, 0xCFCFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_SICL4, 0xCFCFFF, 0);
 
         registerErlenmeyerFluid(Fluids.STILL_HNO3, Fluids.FLOWING_HNO3, 0xA1FFCC33);
         registerErlenmeyerFluid(Fluids.STILL_H2O, Fluids.FLOWING_H2O, 0xA10084FF);
         registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1E8DC5A);
-        registerErlenmeyerFluid(Fluids.STILL_HCN, Fluids.FLOWING_HCN, 0xA1CCCCFF);
+        registerErlenmeyerFluid(Fluids.STILL_HCN, Fluids.FLOWING_HCN, 0xA1CFCFFF);
         registerErlenmeyerFluid(Fluids.STILL_NCl3, Fluids.FLOWING_NCl3, 0xA1e8dc5a); // Default
-        registerErlenmeyerFluid(Fluids.STILL_CS2, Fluids.FLOWING_CS2, 0xA1AFAFAF);
-        registerErlenmeyerFluid(Fluids.STILL_CCl4, Fluids.FLOWING_CCl4, 0xA1AFAFAF);
-        registerErlenmeyerFluid(Fluids.STILL_PCl3, Fluids.FLOWING_PCl3, 0xA1AFAFAF);
-        registerErlenmeyerFluid(Fluids.STILL_SCl2, Fluids.FLOWING_SCl2, 0xA1AFAFAF);
-        registerErlenmeyerFluid(Fluids.STILL_CH4O, Fluids.FLOWING_CH4O, 0xA1AFAFAF);
-        registerErlenmeyerFluid(Fluids.STILL_SiCl4, Fluids.FLOWING_SiCl4, 0xA1AFAFAF);
+        registerErlenmeyerFluid(Fluids.STILL_CS2, Fluids.FLOWING_CS2, 0xA1CFCFFF);
+        registerErlenmeyerFluid(Fluids.STILL_CCl4, Fluids.FLOWING_CCl4, 0xA1CFCFFF);
+        registerErlenmeyerFluid(Fluids.STILL_PCl3, Fluids.FLOWING_PCl3, 0xA1CFCFFF);
+        registerErlenmeyerFluid(Fluids.STILL_SCl2, Fluids.FLOWING_SCl2, 0xA1CFCFFF);
+        registerErlenmeyerFluid(Fluids.STILL_CH4O, Fluids.FLOWING_CH4O, 0xA1CFCFFF);
+        registerErlenmeyerFluid(Fluids.STILL_SiCl4, Fluids.FLOWING_SiCl4, 0xA1CFCFFF);
 
     }
 
