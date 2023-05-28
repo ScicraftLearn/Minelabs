@@ -60,6 +60,7 @@
   "blockEntity.minelabs.charged_block": "Geladen Blok",
   "entity.minecraft.villager.sciencevillager": "Wetenschaps Dorpeling",
   "entity.minelabs.entropy_creeper": "Entropie Creeper",
+  "entity.minelabs.balloon": "Ballon",
   "item.minelabs.entropy_creeper_spawn_egg": "EntropieCreeper Spawnei",
   "item.minelabs.salt_shard": "Zoutscherf",
 
@@ -225,6 +226,7 @@
   "item.minelabs.tennessine_atom": "Tennessine",
   "item.minelabs.oganesson_atom": "Oganesson",
 
+  "item.minelabs.balloon": "Ballon",
   "item.minelabs.erlenmeyer": "Erlenmeyer",
   "item.minelabs.erlenmeyer_h2o": "Water (H\u2082O)",
   "item.minelabs.erlenmeyer_o2.effect.empty": "Zuurstofgas (O\u2082)",
@@ -260,7 +262,7 @@
   "item.minelabs.erlenmeyer_so2.effect.empty": "Zwaveldioxide (SO\u2082)",
   "item.minelabs.erlenmeyer_clf.effect.empty": "Chloorfluoride (ClF)",
   "item.minelabs.erlenmeyer_f2.effect.empty": "Difluor (F\u2082)",
-  "item.minelabs.erlenmeyer_sicl4.effect.empty": "Siliciumtetrachloride (SiCl\u2084)",
+  "item.minelabs.erlenmeyer_sicl4": "Siliciumtetrachloride (SiCl\u2084)",
 
   "item.minelabs.safety_glasses": "Veiligheidsbril",
   "item.minelabs.lab_coat": "Labojas",
@@ -300,5 +302,32 @@
   "item.minelabs.lasertool_gold": "Gouden Laser Tool",
   "item.minelabs.lasertool_diamond": "Diamanten Laser Tool",
   "item.minelabs.magnet": "Magneet",
-  "item.minelabs.pocket_hole": "Miniatuur Zwart Gat"
+  "item.minelabs.pocket_hole": "Miniatuur Zwart Gat",
+
+  "painting.minelabs.lab_compressedgas.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_compressedgas.title": "Gecomprimeerd Gas",
+  "painting.minelabs.lab_corrosive.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_corrosive.title": "Corrosief",
+  "painting.minelabs.lab_creeper.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_creeper.title": "Creeper",
+  "painting.minelabs.lab_explosive.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_explosive.title": "Explosief",
+  "painting.minelabs.lab_flammable.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_flammable.title": "Licht Ontvlambaar",
+  "painting.minelabs.lab_healthhazard.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_healthhazard.title": "Gezondheidsrisico",
+  "painting.minelabs.lab_ionizingradiation.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_ionizingradiation.title": "Ioniserende Straling",
+  "painting.minelabs.lab_irritant.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_irritant.title": "Irritant",
+  "painting.minelabs.lab_laser.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_laser.title": "Laser",
+  "painting.minelabs.lab_oxidizing.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_oxidizing.title": "Oxiderend",
+  "painting.minelabs.lab_toxic.author": "Inspirade & IneMEGAmaxi",
+  "painting.minelabs.lab_toxic.title": "Giftig",
+  "painting.minelabs.particle_cpy.author": "IneMEGAmaxi",
+  "painting.minelabs.particle_cpy.title": "Standaardmodel Antideeltjes",
+  "painting.minelabs.particle_rgb.author": "IneMEGAmaxi",
+  "painting.minelabs.particle_rgb.title": "Standaardmodel Deeltjes"
 }
