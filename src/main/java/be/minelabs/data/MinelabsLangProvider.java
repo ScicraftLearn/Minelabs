@@ -23,6 +23,7 @@ import java.util.function.BiConsumer;
 public abstract class MinelabsLangProvider extends FabricLanguageProvider {
 
     private static final String EMPTY_TRANSLATION = "missing_translation";
+    private static final String DEFAULT_ARTIST = "Minelabs Team";
 
     protected final String languageCode;
 
@@ -71,6 +72,7 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
 
     /**
      * Generate Empty keys for translation files
+     *
      * @param translationBuilder : Map/TreeMap for addition
      */
     @Override
@@ -101,6 +103,34 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
         translationBuilder.add("text.minelabs.active", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.inactive", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.toggle_instruction", EMPTY_TRANSLATION);
+        // manual : PAINTING author/title
+        translationBuilder.add("painting.minelabs.lab_compressedgas.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_compressedgas.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_corrosive.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_corrosive.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_creeper.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_creeper.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_explosive.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_explosive.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_flammable.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_flammable.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_healthhazard.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_healthhazard.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_ionizingradiation.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_ionizingradiation.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_irritant.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_irritant.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_laser.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_laser.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_oxidizing.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_oxidizing.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.lab_toxic.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.lab_toxic.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.particle_cpy.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.particle_cpy.title", EMPTY_TRANSLATION);
+        translationBuilder.add("painting.minelabs.particle_rgb.author", DEFAULT_ARTIST);
+        translationBuilder.add("painting.minelabs.particle_rgb.title", EMPTY_TRANSLATION);
+
     }
 
     private <T> void addEmptyKeys(DefaultedRegistry<T> registry, BiConsumer<Identifier, T> consumer) {
