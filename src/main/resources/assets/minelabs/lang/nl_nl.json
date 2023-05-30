@@ -11,6 +11,8 @@
   "text.minelabs.active": "Actief",
   "text.minelabs.inactive": "Inactief",
   "text.minelabs.toggle_instruction": "Shift Klik met de rechtermuisknop om te wisselen",
+  "text.minelabs.clear_slots": "Invoer Leegmaken",
+  "text.minelabs.clear_grid":  "Rooster Leegmagen",
 
   "block.minelabs.salt_ore": "Zouterts",
   "block.minelabs.deepslate_salt_ore": "Deepslate Zouterts",
@@ -60,6 +62,7 @@
   "blockEntity.minelabs.charged_block": "Geladen Blok",
   "entity.minecraft.villager.sciencevillager": "Wetenschaps Dorpeling",
   "entity.minelabs.entropy_creeper": "Entropie Creeper",
+  "entity.minelabs.balloon": "Ballon",
   "item.minelabs.entropy_creeper_spawn_egg": "EntropieCreeper Spawnei",
   "item.minelabs.salt_shard": "Zoutscherf",
 
@@ -225,6 +228,7 @@
   "item.minelabs.tennessine_atom": "Tennessine",
   "item.minelabs.oganesson_atom": "Oganesson",
 
+  "item.minelabs.balloon": "Ballon",
   "item.minelabs.erlenmeyer": "Erlenmeyer",
   "item.minelabs.erlenmeyer_h2o": "Water (H\u2082O)",
   "item.minelabs.erlenmeyer_o2.effect.empty": "Zuurstofgas (O\u2082)",
