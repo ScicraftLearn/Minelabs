@@ -4,10 +4,13 @@ import be.minelabs.block.entity.ChargedBlockEntity;
 import be.minelabs.block.entity.ChargedPointBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.SidedInventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
@@ -21,6 +24,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -53,7 +57,7 @@ public class ChargedPointBlock extends ChargedBlock {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof ChargedPointBlockEntity chargedPointBlockEntity) {
-                ItemScatterer.spawn(world, pos, chargedPointBlockEntity.getItems());
+                ItemScatterer.spawn(world, pos, chargedPointBlockEntity.getInventory());
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }

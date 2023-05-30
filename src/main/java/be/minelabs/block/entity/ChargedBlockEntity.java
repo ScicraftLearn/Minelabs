@@ -253,7 +253,7 @@ public class ChargedBlockEntity extends BlockEntity{
         return dir;
     }
 
-    public ItemStack getInventory() {
+    public ItemStack getContents() {
         return ItemStack.EMPTY;
     }
 
@@ -312,7 +312,7 @@ public class ChargedBlockEntity extends BlockEntity{
                                 if (world.getBlockEntity(pos) instanceof AnimatedChargedBlockEntity animation1) {
                                     animation1.movement_direction = movement;
                                     animation1.render_state = getCachedState();
-                                    animation1.setInventory(getInventory());
+                                    animation1.setInventory(getContents());
                                 }
                             }
                             markDirty();

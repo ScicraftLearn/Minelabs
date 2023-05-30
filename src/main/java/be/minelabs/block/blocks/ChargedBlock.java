@@ -42,8 +42,8 @@ public class ChargedBlock extends BlockWithEntity{
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof ChargedBlockEntity charged && !newState.isOf(Blocks.ANIMATED_CHARGED)) {
 			charged.removeField(world, pos);
-			if (charged.getInventory() != ItemStack.EMPTY) {
-				world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), charged.getInventory()));
+			if (charged.getContents() != ItemStack.EMPTY) {
+				world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), charged.getContents()));
 			}
 		}
 		super.onStateReplaced(state, world, pos, newState, moved);
