@@ -1,5 +1,6 @@
 package be.minelabs.client.renderer.entity;
 
+import be.minelabs.Minelabs;
 import be.minelabs.client.renderer.entity.model.BalloonEntityModel;
 import be.minelabs.client.renderer.entity.model.EntityModelLayers;
 import be.minelabs.entity.mob.BalloonEntity;
@@ -23,7 +24,7 @@ public class BalloonEntityRenderer extends MobEntityRenderer<BalloonEntity, Ball
 
     @Override
     public Identifier getTexture(BalloonEntity entity) {
-        return new Identifier("minelabs:textures/entity/balloon/balloon.png");
+        return new Identifier(Minelabs.MOD_ID, "textures/entity/balloon/balloon.png");
     }
 
     @Override
