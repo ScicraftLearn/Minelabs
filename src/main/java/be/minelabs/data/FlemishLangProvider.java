@@ -18,6 +18,16 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        // Add MISSING translations here
 
+
+
+        try {
+            // ADD OVERRIDE translations here
+
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

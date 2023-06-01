@@ -16,5 +16,13 @@ public class DutchLangProvider extends MinelabsLangProvider {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        try {
+            // ADD OVERRIDE Translations here
+
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

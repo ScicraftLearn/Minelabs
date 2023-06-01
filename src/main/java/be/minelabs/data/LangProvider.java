@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
 import java.io.IOException;
 
-public class LangProvider extends MinelabsLangProvider{
+public class LangProvider extends MinelabsLangProvider {
 
     public LangProvider(FabricDataOutput dataOutput) {
         // DEFAULT LANG: en_us
