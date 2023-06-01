@@ -45,8 +45,9 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
             Objects.requireNonNull(key);
             Objects.requireNonNull(value);
 
-            if (translationEntries.containsKey(key) &&
-                    !translationEntries.get(key).isEmpty() && !translationEntries.get(key).equals(EMPTY_TRANSLATION)) {
+            if (translationEntries.containsKey(key) && !translationEntries.get(key).isEmpty()
+                    && !translationEntries.get(key).equals(EMPTY_TRANSLATION)
+                    && !translationEntries.get(key).equals(DEFAULT_ARTIST)) {
                 //THIS IS THE ONLY REASON WE OVERRIDE THE METHOD
                 // we want Value replacements IF EMPTY
                 throw new RuntimeException("Translation key - " + key + " - Already has a value.");
