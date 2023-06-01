@@ -13,6 +13,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
@@ -83,7 +84,7 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
 
     @Override
     public boolean useAmbientOcclusion() {
-        return true; // we want the block to have a shadow depending on the adjacent blocks
+        return false;
     }
 
     @Override
@@ -184,17 +185,22 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         ModelUtil.transformQuads(bondQuads, v -> v.add(pos1));
 
         for (Vector3f[] quad : bondQuads) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++)
                 emitter.pos(i, quad[i]);
-                Vector3f norm = ModelUtil.normalOnVertices(quad[i],quad[(((i+1 % 4) + 4) % 4)], quad[(((i-1 % 4) + 4) % 4)]); //zodat licht van beam lijkt te komen
-                emitter.normal(i, norm);
-            }
 
-            float p = 15f / 32f;
+            emitter.material(RendererAccess.INSTANCE.getRenderer().materialFinder().disableAo(0, true).emissive(0, true).find());
+
+            // Have it appear as if light comes from the bottom instead of the sky
+            Vector3f norm = emitter.faceNormal().negate();
+            for (int i = 0; i < 4; i++)
+                emitter.normal(i, norm);
+
+            // take one pixel of sprite
+            float p = 1;
             emitter.sprite(0, 0, p, p);
-            emitter.sprite(1, 0, p, 0.5f);
-            emitter.sprite(2, 0, 0.5f, 0.5f);
-            emitter.sprite(3, 0, 0.5f, p);
+            emitter.sprite(1, 0, p, 0);
+            emitter.sprite(2, 0, 0, 0);
+            emitter.sprite(3, 0, 0, p);
 
             emitter.spriteBake(0, SPRITE, MutableQuadView.BAKE_ROTATE_NONE);
 
@@ -279,13 +285,25 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
 
     private void makeSphere(QuadEmitter emitter, Vector3f center, float radius, int color) {
         for (Vector3f[] quad : getSphereVertices(center, radius)) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++){
                 emitter.pos(i, quad[i]);
-                Vector3f norm = ModelUtil.normalOnVertices(quad[i],quad[(((i+1 % 4) + 4) % 4)], quad[(((i-1 % 4) + 4) % 4)]); //zodat licht van beam lijkt te komen
-                emitter.normal(i, norm);
             }
 
-            float p = 1;
+            // Set emissive lighting
+            emitter.material(RendererAccess.INSTANCE.getRenderer().materialFinder().disableAo(0, true).emissive(0, true).find());
+
+            // Have it appear as if light comes from the bottom instead of the sky
+            Vector3f norm = emitter.faceNormal().negate();
+            // The brightness of EAST and WEST faces is lower than SOUTH and NORTH in MC.
+            // Somehow rotating the normals towards the other two orientations helps prevent this to some degree.
+            switch(emitter.lightFace()){
+                case EAST, WEST ->
+                    norm.rotateY((float) (Math.PI/2));
+            }
+            for (int i = 0; i < 4; i++)
+                emitter.normal(i, norm);
+
+            float p = 2;
             emitter.sprite(0, 0, p, p);
             emitter.sprite(1, 0, p, 0);
             emitter.sprite(2, 0, 0, 0);

@@ -1,4 +1,5 @@
 {
+  "group":"quarks",
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     { "item": "minelabs:subatomic/weak_boson" },

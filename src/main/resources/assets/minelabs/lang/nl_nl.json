@@ -11,8 +11,8 @@
   "text.minelabs.active": "Actief",
   "text.minelabs.inactive": "Inactief",
   "text.minelabs.toggle_instruction": "Shift Klik met de rechtermuisknop om te wisselen",
-  "text.minelabs.clear_slots": "Invoer leegmaken",
-  "text.minelabs.clear_grid":  "Rooster leegmagen",
+  "text.minelabs.clear_slots": "Invoer Leegmaken",
+  "text.minelabs.clear_grid":  "Rooster Leegmagen",
 
   "block.minelabs.salt_ore": "Zouterts",
   "block.minelabs.deepslate_salt_ore": "Deepslate Zouterts",

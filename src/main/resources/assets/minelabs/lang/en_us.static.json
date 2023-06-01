@@ -11,6 +11,8 @@
   "text.minelabs.active": "Active",
   "text.minelabs.inactive": "Inactive",
   "text.minelabs.toggle_instruction": "Shift + Right click to toggle",
+  "text.minelabs.clear_slots": "Clear Input Slots",
+  "text.minelabs.clear_grid":  "Clear Grid",
 
   "block.minelabs.charged_point": "Point Charge",
   "block.minelabs.proton": "Proton",
