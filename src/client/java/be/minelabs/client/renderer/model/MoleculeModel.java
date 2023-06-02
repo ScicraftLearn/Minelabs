@@ -126,8 +126,8 @@ public class MoleculeModel implements UnbakedModel, BakedModel, FabricBakedModel
         return switch (atom) {
             case HYDROGEN, HELIUM, FLUORINE, LITHIUM, SODIUM -> RADIUS_S; // Small Atoms
             case ARGON, POTASSIUM, CALCIUM, TITANIUM, MANGANESE, IRON, COPPER, ZINC, BROMINE, STRONTIUM, SILVER,
-                    CADMIUM, TIN, IODINE, TUNGSTEN, GOLD, MERCURY, LEAD, URANIUM -> RADIUS_L; // Large Atoms (PLACEHOLDERS)
-            default -> RADIUS_M; // All others are Medium Atoms
+                    CADMIUM, TIN, IODINE, TUNGSTEN, GOLD, MERCURY, LEAD, URANIUM -> RADIUS_L; // Large Atoms
+            default -> atom.getAtomNumber() >= 37 ? RADIUS_L : RADIUS_M; // All others are Large or Medium Atoms depending on atom nr
         };
     }
 
