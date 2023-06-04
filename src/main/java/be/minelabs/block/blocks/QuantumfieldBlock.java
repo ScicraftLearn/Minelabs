@@ -29,7 +29,8 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     public static final int MAX_LIGHT = 15;
     public static final int MIN_LIGHT = 0;
     public static final BooleanProperty MASTER = Properties.MASTER;
-    public static final IntProperty AGE = IntProperty.of("age", 0, 10);
+
+    public static final IntProperty AGE = IntProperty.of("age", 0, MAX_AGE);
 
 
     public QuantumfieldBlock() {
@@ -42,8 +43,12 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
         this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false));
     }
 
-    public boolean isMaster(BlockState state) {
+    public static boolean isMaster(BlockState state) {
         return state.get(MASTER);
+    }
+
+    public static int getAge(BlockState state){
+        return state.get(AGE);
     }
 
     @Override
