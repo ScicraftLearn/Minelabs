@@ -47,6 +47,11 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     }
 
     @Override
+    public boolean hasRandomTicks(BlockState state) {
+        return isMaster(state);
+    }
+
+    @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (!isMaster(state)) return;
 
@@ -79,13 +84,13 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(AGE).add(MASTER);
+        builder.add(AGE, MASTER);
     }
 
     public void removeQuantumBlockIfNeeded(BlockState state, ServerWorld world, BlockPos pos){
         if (MAX_AGE == state.get(AGE)) {
             world.removeBlock(pos, false);
-            if (pos.getY() == AtomicFloor.AtomicFloorLayer) {
+            if (pos.getY() == AtomicFloor.ATOMIC_FLOOR_LAYER) {
                 world.setBlockState(pos, Blocks.ATOM_FLOOR.getDefaultState(), Block.NO_REDRAW);
             }
         }
