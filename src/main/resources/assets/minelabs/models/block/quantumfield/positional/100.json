@@ -1,6 +1,6 @@
 {
   "elements": [
-    {   "from": [ 0, 0, 0 ],
+    { "from": [ 0, 0, 0 ],
       "to": [ 16, 16, 16 ],
       "faces": {
         "down":  { "uv": [16, 0, 0, 16], "texture": "#down", "cullface": "down" },
@@ -11,7 +11,7 @@
         "east":  { "uv": [16, 0, 0, 16], "texture": "#west", "cullface": "east" }
       }
     },
-    {   "from": [ 0, 0, 0 ],
+    { "from": [ 0, 0, 0 ],
       "to": [ 16, 16, 16 ],
       "faces": {
         "down":  { "texture": "#symbol", "cullface": "down" },
