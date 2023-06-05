@@ -28,10 +28,11 @@ public class AtomPackItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (hand == Hand.MAIN_HAND && !world.isClient){
-            ExtendedScreenHandlerFactory factory = new ExtendedScreenHandlerFactory() {
+            user.openHandledScreen(new ExtendedScreenHandlerFactory() {
+                // Using extended so we can call user.openHandledScreen(...)
                 @Override
                 public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-
+                    // DO we need this?
                 }
 
                 @Override
@@ -44,8 +45,7 @@ public class AtomPackItem extends Item {
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new AtomPackScreenHandler(syncId, playerInventory, inventory);
                 }
-            };
-            user.openHandledScreen(factory);
+            });
         }
         return TypedActionResult.fail(user.getStackInHand(hand));
     }
