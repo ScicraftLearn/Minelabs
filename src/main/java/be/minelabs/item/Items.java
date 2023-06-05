@@ -239,6 +239,8 @@ public class Items {
     public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings()), "lewis_block");
     public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings()), "ionic_block");
 
+    public static final Item ATOMIC_STORAGE =  register(new BlockItem(Blocks.ATOMIC_STORAGE, new Item.Settings()), "atomic_storage");
+
     // Erlenmeyer
     public static final Item ERLENMEYER_STAND = register(new BlockItem(Blocks.ERLENMEYER_STAND,
             new FabricItemSettings()), "lab/erlenmeyer_stand");

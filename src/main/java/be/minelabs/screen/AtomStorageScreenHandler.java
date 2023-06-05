@@ -12,15 +12,15 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.NotNull;
 
-public class AtomPackScreenHandler extends ScreenHandler {
+public class AtomStorageScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
 
-    public AtomPackScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
+    public AtomStorageScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
         this(syncId, inventory, new SimpleInventory(Items.ATOMS.size()));
     }
 
-    public AtomPackScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
+    public AtomStorageScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
         super(ScreenHandlers.ATOM_PACK_SCREEN_HANDLER, syncId);
         checkSize(inventory, Items.ATOMS.size());
         this.inventory = inventory;

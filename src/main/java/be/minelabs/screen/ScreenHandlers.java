@@ -16,7 +16,7 @@ public class ScreenHandlers {
     public static final ScreenHandlerType<LabChestScreenHandler> LAB_CHEST_SCREEN_HANDLER = registerSimple(LabChestScreenHandler::new, "lab_chest");
     public static final ScreenHandlerType<ChargedPointBlockScreenHandler> CHARGED_POINT_SCREEN_HANDLER = registerSimple(ChargedPointBlockScreenHandler::new, "charged_point");
 
-    public static final ExtendedScreenHandlerType<AtomPackScreenHandler> ATOM_PACK_SCREEN_HANDLER = register(AtomPackScreenHandler::new, "atom_pack");
+    public static final ExtendedScreenHandlerType<AtomStorageScreenHandler> ATOM_PACK_SCREEN_HANDLER = register(AtomStorageScreenHandler::new, "atom_pack");
 
     /**
      * Register a Screen

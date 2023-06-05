@@ -2,7 +2,7 @@ package be.minelabs.item.items;
 
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.item.Items;
-import be.minelabs.screen.AtomPackScreenHandler;
+import be.minelabs.screen.AtomStorageScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -43,7 +43,7 @@ public class AtomPackItem extends Item {
                 @Nullable
                 @Override
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                    return new AtomPackScreenHandler(syncId, playerInventory, inventory);
+                    return new AtomStorageScreenHandler(syncId, playerInventory, inventory);
                 }
             });
         }
