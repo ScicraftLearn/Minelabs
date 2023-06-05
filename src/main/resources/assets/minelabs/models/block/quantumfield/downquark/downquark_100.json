@@ -1,0 +1,13 @@
+{
+    "parent": "minelabs:block/quantumfield/positional/100",
+    "textures": {
+        "down": "minelabs:block/quantumfield/downquark/down",
+        "up": "minelabs:block/quantumfield/downquark/up",
+        "north": "minelabs:block/quantumfield/downquark/north",
+        "east": "minelabs:block/quantumfield/downquark/east",
+        "south": "minelabs:block/quantumfield/downquark/south",
+        "west": "minelabs:block/quantumfield/downquark/west",
+        "particle": "minelabs:block/quantumfield/downquark/down",
+        "symbol": "minelabs:block/void"
+    }
+}
