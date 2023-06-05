@@ -5,6 +5,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 public class PositionalQuantumFieldBlock extends QuantumfieldBlock{
@@ -25,15 +29,33 @@ public class PositionalQuantumFieldBlock extends QuantumfieldBlock{
         builder.add(X_ODD, Y_ODD, Z_ODD);
     }
 
+    public static BlockState getStateWithPositionInfo(BlockState state, BlockPos pos){
+        return state
+                .with(X_ODD, Math.floorMod(pos.getX(), 2) == 1)
+                .with(Y_ODD, Math.floorMod(pos.getY(), 2) == 1)
+                .with(Z_ODD, Math.floorMod(pos.getZ(), 2) == 1);
+    }
+
+    @Override
+    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+        super.onBlockAdded(state, world, pos, oldState, notify);
+        // update state depending on position
+        BlockState stateWithPosInfo = getStateWithPositionInfo(state, pos);
+        if (!state.equals(stateWithPosInfo))
+            world.setBlockState(pos, stateWithPosInfo, notify ? Block.NOTIFY_ALL : 0);
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState state = super.getPlacementState(ctx);
         if (state == null) return state;
-        return state
-                .with(X_ODD, Math.floorMod(ctx.getBlockPos().getX(), 2) == 1)
-                .with(Y_ODD, Math.floorMod(ctx.getBlockPos().getY(), 2) == 1)
-                .with(Z_ODD, Math.floorMod(ctx.getBlockPos().getZ(), 2) == 1);
+        return getStateWithPositionInfo(state, ctx.getBlockPos());
     }
 
 }

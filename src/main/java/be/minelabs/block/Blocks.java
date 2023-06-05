@@ -101,14 +101,15 @@ public class Blocks {
 
     // Quantumfields
     public static final Block GLUON_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/gluon_quantumfield");
+    public static final Block UPQUARK_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/upquark_quantumfield");
+    public static final Block DOWNQUARK_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/downquark_quantumfield");
+
     public static final Block PHOTON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/photon_quantumfield");
     public static final Block WEAK_BOSON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/weak_boson_quantumfield");
     public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/electron_quantumfield");
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/neutrino_quantumfield");
-    public static final Block UPQUARK_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/upquark_quantumfield");
-    public static final Block DOWNQUARK_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/downquark_quantumfield");
-    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(), "time_freeze_block");
 
+    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(), "time_freeze_block");
     public static final ElectricFieldSensorBlock ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
