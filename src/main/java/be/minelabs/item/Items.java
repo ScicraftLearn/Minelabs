@@ -2,11 +2,10 @@ package be.minelabs.item;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.item.items.*;
-import be.minelabs.science.Atom;
 import be.minelabs.entity.Entities;
 import be.minelabs.fluid.Fluids;
-import be.minelabs.item.items.GasPotion;
+import be.minelabs.item.items.*;
+import be.minelabs.science.Atom;
 import be.minelabs.science.Molecule;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
@@ -24,6 +23,8 @@ public class Items {
     // Items
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings()), "entropy_creeper_spawn_egg");
+    // Items > Atoms
+    public static final List<AtomItem> ATOMS = Arrays.stream(Atom.values()).map(Items::registerAtom).toList();
 
     public static final Item LASERTOOL_IRON = register(new LaserTool(2.5f, -2.4f, ToolMaterials.IRON, new Item.Settings()), "lasertool_iron");
     public static final Item LASERTOOL_GOLD = register(new LaserTool(2.5f, -2.4f, ToolMaterials.GOLD, new Item.Settings()), "lasertool_gold");
@@ -105,6 +106,9 @@ public class Items {
     public static final Item POCKET_HOLE = register(new BlackHoleItem(
             new FabricItemSettings().maxCount(1)), "pocket_hole");
 
+    public static final Item ATOM_PACK = register(new AtomPackItem(
+            new FabricItemSettings().maxCount(1)), "atom_pack");
+
     public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64), 1, "LiCl"), "dust/lithium_chloride_dust");
 
@@ -173,9 +177,6 @@ public class Items {
 
     public static final Item DUST_SO3 = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64), "SO3"), "dust/sulfur_trioxide_dust");
-
-    // Items > Atoms
-    public static final List<AtomItem> ATOMS = Arrays.stream(Atom.values()).map(Items::registerAtom).toList();
 
     // Items > Bond to display in LCT (internal)
     public static final Item BOND = register(new Item(new Item.Settings()), "bond");
