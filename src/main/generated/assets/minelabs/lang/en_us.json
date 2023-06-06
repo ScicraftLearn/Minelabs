@@ -465,6 +465,8 @@
   "painting.minelabs.particle_rgb.author": "IneMEGAmaxi",
   "painting.minelabs.particle_rgb.title": "Standard Model Particles",
   "text.minelabs.active": "Active",
+  "text.minelabs.clear_grid": "Clear Grid",
+  "text.minelabs.clear_slots": "Clear Input Slots",
   "text.minelabs.inactive": "Inactive",
   "text.minelabs.invalid": "Incomplete Molecule",
   "text.minelabs.multiple_molecules": "Too many molecules",

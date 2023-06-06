@@ -465,6 +465,8 @@
   "painting.minelabs.particle_rgb.author": "IneMEGAmaxi",
   "painting.minelabs.particle_rgb.title": "Standaardmodel Deeltjes",
   "text.minelabs.active": "Actief",
+  "text.minelabs.clear_grid": "Rooster leegmagen",
+  "text.minelabs.clear_slots": "Invoer leegmaken",
   "text.minelabs.inactive": "Inactief",
   "text.minelabs.invalid": "Onvolledige Molecule",
   "text.minelabs.multiple_molecules": "Te veel moleculen",

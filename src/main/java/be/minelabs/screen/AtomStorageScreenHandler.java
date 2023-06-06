@@ -1,13 +1,11 @@
 package be.minelabs.screen;
 
 import be.minelabs.item.Items;
-import be.minelabs.screen.slot.FilteredSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.NotNull;
@@ -16,25 +14,26 @@ public class AtomStorageScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
 
-    public AtomStorageScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
+    public AtomStorageScreenHandler(int syncId, PlayerInventory inventory) {
         this(syncId, inventory, new SimpleInventory(Items.ATOMS.size()));
     }
 
     public AtomStorageScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
-        super(ScreenHandlers.ATOM_PACK_SCREEN_HANDLER, syncId);
+        super(ScreenHandlers.ATOM_STORAGE_SCREEN_HANDLER, syncId);
         checkSize(inventory, Items.ATOMS.size());
         this.inventory = inventory;
         this.inventory.onOpen(playerInventory.player);
 
-        for (int i = 0; i < 3; ++i) {
+        this.addSlot(new Slot(inventory, 0, 8, -10));
+        this.addSlot(new Slot(inventory, 1, 152, -10));
+
+        for (int i = 0; i < 5; ++i) {
             for (int j = 0; j < 9; ++j) {
-                int finalJ = j;
-                int finalI = i;
-                this.addSlot(new FilteredSlot(playerInventory, j + i * 9 + 9, 8 + j * 18, 69 + i * 18,
-                        itemStack -> Items.ATOMS.get(finalJ + finalI*9).equals(itemStack.getItem())));
+                if (j==2) // skipping a column
+                    continue;
+                this.addSlot(new Slot(inventory, 2+j+i*8, 8 + j * 18, 8 + i * 18));
             }
         }
-
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
@@ -79,14 +78,14 @@ public class AtomStorageScreenHandler extends ScreenHandler {
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 69 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 112 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 127));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 170));
         }
     }
 

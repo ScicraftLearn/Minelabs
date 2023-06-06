@@ -10,7 +10,7 @@ public class Screens {
         HandledScreens.register(ScreenHandlers.IONIC_SCREEN_HANDLER, IonicScreen::new);
         HandledScreens.register(ScreenHandlers.LAB_CHEST_SCREEN_HANDLER, LabChestScreen::new);
         HandledScreens.register(ScreenHandlers.CHARGED_POINT_SCREEN_HANDLER, ChargedPointScreen::new);
-        HandledScreens.register(ScreenHandlers.ATOM_PACK_SCREEN_HANDLER, AtomPackScreen::new);
+        HandledScreens.register(ScreenHandlers.ATOM_STORAGE_SCREEN_HANDLER, AtomStorageScreen::new);
     }
 
 }
