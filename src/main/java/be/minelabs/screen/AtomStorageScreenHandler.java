@@ -1,11 +1,11 @@
 package be.minelabs.screen;
 
+import be.minelabs.inventory.AtomicInventory;
 import be.minelabs.item.Items;
 import be.minelabs.screen.slot.AtomSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -13,16 +13,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class AtomStorageScreenHandler extends ScreenHandler {
 
-    private final Inventory inventory;
+    private final AtomicInventory inventory;
 
     public AtomStorageScreenHandler(int syncId, PlayerInventory inventory) {
-        this(syncId, inventory, new SimpleInventory(Items.ATOMS.size()));
+        this(syncId, inventory, new AtomicInventory(512));
     }
 
     public AtomStorageScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
         super(ScreenHandlers.ATOM_STORAGE_SCREEN_HANDLER, syncId);
         checkSize(inventory, Items.ATOMS.size());
-        this.inventory = inventory;
+        this.inventory = (AtomicInventory) inventory;
         this.inventory.onOpen(playerInventory.player);
 
         addAtomSlots();

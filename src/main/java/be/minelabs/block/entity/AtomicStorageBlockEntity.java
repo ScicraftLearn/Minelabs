@@ -1,8 +1,6 @@
 package be.minelabs.block.entity;
 
 import be.minelabs.inventory.AtomicInventory;
-import be.minelabs.inventory.OrderedInventory;
-import be.minelabs.item.Items;
 import be.minelabs.screen.AtomStorageScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
-    private OrderedInventory inventory = new AtomicInventory(512);
+    private AtomicInventory inventory = new AtomicInventory(512);
 
     public AtomicStorageBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.ATOMIC_STORAGE_BLOCK_ENTITY, pos, state);
@@ -42,7 +40,7 @@ public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreen
 
     @Override
     public void readNbt(NbtCompound nbt) {
-        this.inventory = new OrderedInventory(Items.ATOMS.size());
+        this.inventory = new AtomicInventory(512);
         Inventories.readNbt(nbt, inventory.stacks);
         super.readNbt(nbt);
     }

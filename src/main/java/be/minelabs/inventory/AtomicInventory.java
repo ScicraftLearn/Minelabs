@@ -3,10 +3,11 @@ package be.minelabs.inventory;
 import be.minelabs.item.Items;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 
-public class AtomicInventory extends OrderedInventory {
+public class AtomicInventory extends SimpleInventory {
 
     // Allows stacks with more then 64 inside of the inventory
     private final int MAX_SIZE;

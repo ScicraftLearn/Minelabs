@@ -1,7 +1,6 @@
 package be.minelabs.item.items;
 
 import be.minelabs.inventory.AtomicInventory;
-import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.screen.AtomStorageScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -25,7 +24,7 @@ public class AtomPackItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (hand == Hand.MAIN_HAND && !world.isClient){
-            OrderedInventory inventory = new AtomicInventory(256);
+            AtomicInventory inventory = new AtomicInventory(256);
 
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
