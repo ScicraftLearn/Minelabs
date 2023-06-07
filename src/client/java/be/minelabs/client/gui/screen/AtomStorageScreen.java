@@ -26,8 +26,11 @@ public class AtomStorageScreen extends HandledScreen<AtomStorageScreenHandler> i
     @Override
     protected void init() {
         super.init();
-        backgroundHeight = 274; // 281
+        backgroundHeight = 274;
         backgroundWidth = 346;
+        //x = (width - backgroundWidth) / 2;
+        //y= (height - backgroundHeight) / 2;
+
         titleX = titleX - 7;
         titleY = titleY - 48;
         playerInventoryTitleY = this.backgroundHeight - 150;
