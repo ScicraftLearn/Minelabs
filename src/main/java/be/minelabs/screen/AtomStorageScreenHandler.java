@@ -1,7 +1,7 @@
 package be.minelabs.screen;
 
 import be.minelabs.item.Items;
-import be.minelabs.screen.slot.FilteredSlot;
+import be.minelabs.screen.slot.AtomSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -25,7 +25,7 @@ public class AtomStorageScreenHandler extends ScreenHandler {
         this.inventory = inventory;
         this.inventory.onOpen(playerInventory.player);
 
-        addFilterdSlots();
+        addAtomSlots();
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
     }
@@ -66,9 +66,9 @@ public class AtomStorageScreenHandler extends ScreenHandler {
         inventory.onClose(player);
     }
 
-    private void addFilterdSlots(){
-        this.addSlot(new FilteredSlot(inventory, 0, -77, -47, itemStack -> itemStack.getItem() == Items.ATOMS.get(0)));
-        this.addSlot(new FilteredSlot(inventory, 1, 237, -47, itemStack -> itemStack.getItem() == Items.ATOMS.get(1)));
+    private void addAtomSlots(){
+        this.addSlot(new AtomSlot(inventory, 0, -77, -47));
+        this.addSlot(new AtomSlot(inventory, 1, 237, -47));
 
         int index = 2;
         for (int i = 0; i < 6; i++) {
@@ -83,17 +83,15 @@ public class AtomStorageScreenHandler extends ScreenHandler {
                 if (i < 2 && j > 1 && j < 12)
                     continue;
 
-                int finalIndex = index;
-                this.addSlot(new FilteredSlot(inventory, index, offset + j * 18, -29 + i * 18, itemStack -> itemStack.getItem() == Items.ATOMS.get(finalIndex)));
-
                 if (index == 56 || index == 88){
-                    for (int k = 0; k < 14; k++) {
+                    for (int k = 0; k < 15; k++) {
+                        this.addSlot(new AtomSlot(inventory, index, -37 + k * 18, index < 87 ? 83 : 101));
                         index++;
-                        int finalIndex1 = index;
-                        this.addSlot(new FilteredSlot(inventory, index, -37 + k * 18, index < 88 ? 83 : 101, itemStack -> itemStack.getItem() == Items.ATOMS.get(finalIndex1)));
                     }
+                } else {
+                    this.addSlot(new AtomSlot(inventory, index, offset + j * 18, -29 + i * 18));
+                    index++;
                 }
-                index++;
             }
         }
     }

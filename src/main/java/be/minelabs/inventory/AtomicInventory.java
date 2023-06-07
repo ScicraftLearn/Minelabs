@@ -8,6 +8,7 @@ import net.minecraft.util.Hand;
 
 public class AtomicInventory extends OrderedInventory {
 
+    // Allows stacks with more then 64 inside of the inventory
     private final int MAX_SIZE;
 
     public AtomicInventory(int stack_size) {
@@ -35,9 +36,9 @@ public class AtomicInventory extends OrderedInventory {
 
     }
 
-    // Allows stacks with more then 64 inside of the inventory
     @Override
     public int getMaxCountPerStack() {
+        // TODO OVERRIDE ITEM MAX STACK SIZE
         return MAX_SIZE;
     }
 }
