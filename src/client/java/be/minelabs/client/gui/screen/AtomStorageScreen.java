@@ -17,7 +17,7 @@ import net.minecraft.util.Identifier;
 public class AtomStorageScreen extends HandledScreen<AtomStorageScreenHandler> implements ScreenHandlerProvider<AtomStorageScreenHandler> {
 
     private static final Identifier TEXTURE =
-            new Identifier(Minelabs.MOD_ID, "textures/gui/atom_storage/atom_storage_page_1.png");
+            new Identifier(Minelabs.MOD_ID, "textures/gui/atom_storage/atom_storage.png");
 
     public AtomStorageScreen(AtomStorageScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -26,10 +26,12 @@ public class AtomStorageScreen extends HandledScreen<AtomStorageScreenHandler> i
     @Override
     protected void init() {
         super.init();
-        backgroundHeight = 114 + 108; // 114: user inv, 108 screen slots
-        //titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        titleY = titleY - 28;
-        playerInventoryTitleY = this.backgroundHeight - 122;
+        backgroundHeight = 274; // 281
+        backgroundWidth = 346;
+        titleX = titleX - 7;
+        titleY = titleY - 48;
+        playerInventoryTitleY = this.backgroundHeight - 150;
+        playerInventoryTitleX = playerInventoryTitleX -10;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class AtomStorageScreen extends HandledScreen<AtomStorageScreenHandler> i
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 512, 512);
     }
 
     @Override

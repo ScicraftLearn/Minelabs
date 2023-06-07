@@ -1,6 +1,7 @@
 package be.minelabs.screen;
 
 import be.minelabs.item.Items;
+import be.minelabs.screen.slot.FilteredSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -24,17 +25,7 @@ public class AtomStorageScreenHandler extends ScreenHandler {
         this.inventory = inventory;
         this.inventory.onOpen(playerInventory.player);
 
-        this.addSlot(new Slot(inventory, 0, 8, -10));
-        this.addSlot(new Slot(inventory, 1, 152, -10));
-
-        for (int i = 0; i < 5; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                if (j==2) // skipping a column
-                    continue;
-                this.addSlot(new Slot(inventory, 2+j+i*8, 8 + j * 18, 8 + i * 18));
-            }
-        }
-
+        addFilterdSlots();
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
     }
@@ -75,17 +66,49 @@ public class AtomStorageScreenHandler extends ScreenHandler {
         inventory.onClose(player);
     }
 
+    private void addFilterdSlots(){
+        this.addSlot(new FilteredSlot(inventory, 0, -77, -47, itemStack -> itemStack.getItem() == Items.ATOMS.get(0)));
+        this.addSlot(new FilteredSlot(inventory, 1, 237, -47, itemStack -> itemStack.getItem() == Items.ATOMS.get(1)));
+
+        int index = 2;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 18; j++) {
+                int offset = -77;
+
+                if (j > 1 && j <= 16){
+                    offset += 4;
+                } else if (j > 16) {
+                    offset += 8;
+                }
+                if (i < 2 && j > 1 && j < 12)
+                    continue;
+
+                int finalIndex = index;
+                this.addSlot(new FilteredSlot(inventory, index, offset + j * 18, -29 + i * 18, itemStack -> itemStack.getItem() == Items.ATOMS.get(finalIndex)));
+
+                if (index == 56 || index == 88){
+                    for (int k = 0; k < 14; k++) {
+                        index++;
+                        int finalIndex1 = index;
+                        this.addSlot(new FilteredSlot(inventory, index, -37 + k * 18, index < 88 ? 83 : 101, itemStack -> itemStack.getItem() == Items.ATOMS.get(finalIndex1)));
+                    }
+                }
+                index++;
+            }
+        }
+    }
+
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 112 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, -1 + l * 18, 138 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 170));
+            this.addSlot(new Slot(playerInventory, i, -1 + i * 18, 196));
         }
     }
 
