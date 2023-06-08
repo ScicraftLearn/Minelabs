@@ -9,6 +9,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import org.jetbrains.annotations.NotNull;
 
 public class AtomStorageScreenHandler extends ScreenHandler {
@@ -35,6 +36,13 @@ public class AtomStorageScreenHandler extends ScreenHandler {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
+            if (player.getMainHandStack().isOf(Items.ATOM_PACK)){
+                // Don't allow the pack to be moved
+                if (ItemStack.areEqual(slot.getStack(), player.getMainHandStack())){
+                    return ItemStack.EMPTY; // SOMETHING ELSE ??
+                }
+            }
+
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
             if (invSlot < this.inventory.size()) {
@@ -53,6 +61,26 @@ public class AtomStorageScreenHandler extends ScreenHandler {
         }
 
         return newStack;
+    }
+
+    @Override
+    public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+        // TODO WORKS BUT crashes when outside of range
+        //   SLOTACTIONTYPE comes from WHERE ?
+        if (slotIndex < 0)
+            return;
+        if (player.getMainHandStack().isOf(Items.ATOM_PACK)){
+            // Don't allow the pack to be moved
+            if (ItemStack.areEqual(slots.get(slotIndex).getStack(), player.getMainHandStack())){
+                return; // SOMETHING ELSE ??
+            }
+        }
+        super.onSlotClick(slotIndex, button, actionType, player);
+    }
+
+    @Override
+    public boolean isValid(int slot) {
+        return super.isValid(slot);
     }
 
     @Override
@@ -109,9 +137,4 @@ public class AtomStorageScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, i, -1 + i * 18, 196));
         }
     }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
 }

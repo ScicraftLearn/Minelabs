@@ -34,7 +34,6 @@ public class AtomicInventory extends SimpleInventory {
             Inventories.readNbt(player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt(), this.stacks);
         }
         super.onOpen(player);
-
     }
 
     @Override

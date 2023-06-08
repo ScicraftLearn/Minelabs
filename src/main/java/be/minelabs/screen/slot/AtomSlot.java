@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import java.util.function.Predicate;
 
 public class AtomSlot extends FilteredSlot{
+
     // If we want to manually use this type of slot (with costum filter)
     public AtomSlot(Inventory inventory, int index, int x, int y, Predicate<ItemStack> filter) {
         super(inventory, index, x, y, filter);
