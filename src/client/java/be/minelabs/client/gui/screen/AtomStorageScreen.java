@@ -25,16 +25,14 @@ public class AtomStorageScreen extends HandledScreen<AtomStorageScreenHandler> i
 
     @Override
     protected void init() {
-        super.init();
         backgroundHeight = 274;
         backgroundWidth = 346;
-        //x = (width - backgroundWidth) / 2;
-        //y= (height - backgroundHeight) / 2;
 
-        titleX = titleX - 7;
-        titleY = titleY - 48;
-        playerInventoryTitleY = this.backgroundHeight - 150;
-        playerInventoryTitleX = playerInventoryTitleX -10;
+        titleX = titleX + 78;
+        titleY = titleY + 6;
+        playerInventoryTitleY = this.backgroundHeight - 96;
+        playerInventoryTitleX = playerInventoryTitleX + 76;
+        super.init();
     }
 
     @Override
@@ -42,8 +40,6 @@ public class AtomStorageScreen extends HandledScreen<AtomStorageScreenHandler> i
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 512, 512);
     }
 

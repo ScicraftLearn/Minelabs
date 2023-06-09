@@ -65,8 +65,6 @@ public class AtomStorageScreenHandler extends ScreenHandler {
 
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
-        // TODO WORKS BUT crashes when outside of range
-        //   SLOTACTIONTYPE comes from WHERE ?
         if (slotIndex < 0)
             return;
         if (player.getMainHandStack().isOf(Items.ATOM_PACK)){
@@ -95,13 +93,13 @@ public class AtomStorageScreenHandler extends ScreenHandler {
     }
 
     private void addAtomSlots(){
-        this.addSlot(new AtomSlot(inventory, 0, -77, -47));
-        this.addSlot(new AtomSlot(inventory, 1, 237, -47));
+        this.addSlot(new AtomSlot(inventory, 0, 8, 7));
+        this.addSlot(new AtomSlot(inventory, 1, 322, 7));
 
         int index = 2;
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 18; j++) {
-                int offset = -77;
+                int offset = 8;
 
                 if (j > 1 && j <= 16){
                     offset += 4;
@@ -113,11 +111,11 @@ public class AtomStorageScreenHandler extends ScreenHandler {
 
                 if (index == 56 || index == 88){
                     for (int k = 0; k < 15; k++) {
-                        this.addSlot(new AtomSlot(inventory, index, -37 + k * 18, index < 87 ? 83 : 101));
+                        this.addSlot(new AtomSlot(inventory, index, 48 + k * 18, index < 87 ? 137 : 155));
                         index++;
                     }
                 } else {
-                    this.addSlot(new AtomSlot(inventory, index, offset + j * 18, -29 + i * 18));
+                    this.addSlot(new AtomSlot(inventory, index, offset + j * 18, 25 + i * 18));
                     index++;
                 }
             }
@@ -127,14 +125,14 @@ public class AtomStorageScreenHandler extends ScreenHandler {
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, -1 + l * 18, 138 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 84 + l * 18, 192 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, -1 + i * 18, 196));
+            this.addSlot(new Slot(playerInventory, i, 84 + i * 18, 250));
         }
     }
 }
