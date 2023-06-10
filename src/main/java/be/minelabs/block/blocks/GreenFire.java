@@ -1,9 +1,10 @@
 package be.minelabs.block.blocks;
 
 import be.minelabs.util.Tags;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FireBlock;
+import net.minecraft.block.*;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldView;
 
 /**
@@ -13,6 +14,20 @@ public class GreenFire extends FireBlock {
 
     public GreenFire(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        super.scheduledTick(state, world, pos, random);
+
+        if (isCopperBase(world.getBlockState(pos.down()))){
+            // BASE IS COPPER (incase fire was place with command)
+            BlockState blockState = world.getBlockState(pos.down());
+            Block block = blockState.getBlock();
+            if (block instanceof Degradable<?> degradable){
+                degradable.tickDegradation(blockState, world, pos.down(), random);
+            }
+        }
     }
 
     /**

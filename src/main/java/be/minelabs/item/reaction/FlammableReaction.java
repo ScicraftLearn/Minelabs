@@ -3,6 +3,8 @@ package be.minelabs.item.reaction;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -36,5 +38,10 @@ public class FlammableReaction extends Reaction {
     public void react(LivingEntity entity) {
 //        if (this.pyrophoric || Utils.isFlameNearby(entity.getWorld(), entity.getBlockPos(), 3))
 //            entity.setFireTicks(duration);
+    }
+
+    @Override
+    public Text getTooltipText() {
+        return getTooltipText("flammable").formatted(Formatting.RED);
     }
 }
