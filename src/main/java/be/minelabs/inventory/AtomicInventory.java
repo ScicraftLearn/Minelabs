@@ -10,7 +10,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 
 public class AtomicInventory extends SimpleInventory {
 
@@ -28,7 +27,7 @@ public class AtomicInventory extends SimpleInventory {
         super.onClose(player);
         if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK){
             NbtCompound nbt = player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt();
-            this.writeNbt(nbt, this.stacks);
+            this.writeNbt(nbt);
         }
     }
 
@@ -36,7 +35,7 @@ public class AtomicInventory extends SimpleInventory {
     @Override
     public void onOpen(PlayerEntity player) {
         if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK){
-            readNbt(player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt(), this.stacks);
+            readNbt(player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt());
         }
         super.onOpen(player);
     }
@@ -47,7 +46,7 @@ public class AtomicInventory extends SimpleInventory {
         return MAX_SIZE;
     }
 
-    public void readNbt(NbtCompound nbt, DefaultedList<ItemStack> stacks){
+    public void readNbt(NbtCompound nbt){
         NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         for (int i = 0; i < nbtList.size(); ++i) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
@@ -61,7 +60,7 @@ public class AtomicInventory extends SimpleInventory {
         }
     }
 
-    public NbtCompound writeNbt(NbtCompound nbt, DefaultedList<ItemStack> stacks){
+    public NbtCompound writeNbt(NbtCompound nbt){
         NbtList nbtList = new NbtList();
         for (int i = 0; i < stacks.size(); ++i) {
             ItemStack itemStack = stacks.get(i);
