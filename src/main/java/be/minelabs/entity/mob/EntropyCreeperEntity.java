@@ -40,7 +40,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
     // Portion of affected blocks to shuffle
     private static final double SHUFFLE_PERCENTAGE = 0.25;
 
-    private final int explosionRadius = 3;
+    private static final int EXPLOSION_RADIUS = 3;
 
     private final List<BlockPos> blocksToShuffle = new ArrayList<>();
     private final List<LivingEntity> entitiesToShuffle = new ArrayList<>();
@@ -197,7 +197,9 @@ public class EntropyCreeperEntity extends CreeperEntity {
 
             // Use explosion code to determine affected blocks
             Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.KEEP;
-            Explosion explosion = new Explosion(this.world, this, null, null, getX(), getY(), getZ(), explosionRadius, false, destructionType);
+            // if creeper is charged
+            float multiplier = this.shouldRenderOverlay() ? 2.0f : 1.0f;
+            Explosion explosion = new Explosion(this.world, this, null, null, getX(), getY(), getZ(), EXPLOSION_RADIUS * multiplier, false, destructionType);
 
             // Adapted from the Explosion class
             Set<BlockPos> blockposSet = getAffectedBlocks((ExplosionAccessor) explosion);
