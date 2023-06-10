@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import java.util.function.Predicate;
 
 public class AtomSlot extends FilteredSlot{
-// TODO ENSURE ONLY TAKE STACK AT A TIME  (when more is available)
 
     // If we want to manually use this type of slot (with costum filter)
     public AtomSlot(Inventory inventory, int index, int x, int y, Predicate<ItemStack> filter) {
@@ -30,5 +29,10 @@ public class AtomSlot extends FilteredSlot{
     @Override
     public int getMaxItemCount(ItemStack stack) {
         return getMaxItemCount();
+    }
+
+    @Override
+    public ItemStack takeStack(int amount) {
+        return super.takeStack(Math.min(amount, 64));
     }
 }

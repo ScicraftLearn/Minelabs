@@ -25,7 +25,7 @@ public class AtomicInventory extends SimpleInventory {
     @Override
     public void onClose(PlayerEntity player) {
         super.onClose(player);
-        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK){
+        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == 256){
             NbtCompound nbt = player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt();
             this.writeNbt(nbt);
         }
@@ -34,7 +34,7 @@ public class AtomicInventory extends SimpleInventory {
     // Load inventory from NBT if it's the Atom Pack
     @Override
     public void onOpen(PlayerEntity player) {
-        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK){
+        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == 256){
             readNbt(player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt());
         }
         super.onOpen(player);
