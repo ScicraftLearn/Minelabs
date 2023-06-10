@@ -43,4 +43,8 @@ public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreen
         inventory.readNbt(nbt);
         super.readNbt(nbt);
     }
+
+    public AtomicInventory getInventory() {
+        return inventory;
+    }
 }

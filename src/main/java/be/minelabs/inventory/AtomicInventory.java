@@ -40,9 +40,35 @@ public class AtomicInventory extends SimpleInventory {
         super.onOpen(player);
     }
 
+    /**
+     * Try to fill THIS inventory with the origin
+     *
+     * @param origin : Inventory to TAKE from
+     */
+    public void tryToFill(AtomicInventory origin){
+        for (int i = 0; i < stacks.size(); i++) {
+            if (stacks.get(i).getCount() == getMaxCountPerStack() || origin.getStack(i).isEmpty()){
+                // Slot if FULL || Nothing to fill with
+                continue;
+            } else {
+                // Try to fill
+                int count = origin.getStack(i).getCount();
+                if (stacks.get(i).isEmpty()){
+                    stacks.set(i, origin.getStack(i).copy());
+                    origin.stacks.set(i, ItemStack.EMPTY);
+                } else if (stacks.get(i).getCount() + count > MAX_SIZE){
+                    origin.stacks.get(i).decrement(MAX_SIZE-stacks.get(i).getCount());
+                    stacks.get(i).setCount(MAX_SIZE);
+                } else {
+                    stacks.get(i).increment(count);
+                    origin.stacks.set(i, ItemStack.EMPTY);
+                }
+            }
+        }
+    }
+
     @Override
     public int getMaxCountPerStack() {
-        // TODO OVERRIDE ITEM MAX STACK SIZE
         return MAX_SIZE;
     }
 
