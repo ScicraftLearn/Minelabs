@@ -5,6 +5,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -39,5 +41,10 @@ public class ExtinguishReaction extends Reaction {
     @Override
     public void react(LivingEntity entity) {
         entity.setFireTicks(0);
+    }
+
+    @Override
+    public Text getTooltipText() {
+        return getTooltipText("extinguish").formatted(Formatting.GRAY);
     }
 }

@@ -331,5 +331,12 @@
   "painting.minelabs.particle_cpy.author": "IneMEGAmaxi",
   "painting.minelabs.particle_cpy.title": "Standard Model Anti-Particles",
   "painting.minelabs.particle_rgb.author": "IneMEGAmaxi",
-  "painting.minelabs.particle_rgb.title": "Standard Model Particles"
+  "painting.minelabs.particle_rgb.title": "Standard Model Particles",
+  "reaction.minelabs.corrosive" : "Corrosive",
+  "reaction.minelabs.dissolve" : "Dissolve",
+  "reaction.minelabs.explosive" : "Explosive",
+  "reaction.minelabs.extinguish" : "Extinguish",
+  "reaction.minelabs.poisonous" : "Poissonous",
+  "reaction.minelabs.flammable" : "Flammable"
+
 }

@@ -6,6 +6,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -34,5 +36,10 @@ public class CorrosiveReaction extends Reaction {
     @Override
     public void react(LivingEntity entity) {
         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_DAMAGE, 1, 1));
+    }
+
+    @Override
+    public Text getTooltipText() {
+        return getTooltipText("corrosive").formatted(Formatting.GRAY);
     }
 }
