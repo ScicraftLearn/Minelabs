@@ -5,6 +5,7 @@ import be.minelabs.mixin.ExplosionAccessor;
 import be.minelabs.sound.SoundEvents;
 import be.minelabs.util.Tags;
 import com.google.common.collect.Sets;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.piston.PistonBehavior;
@@ -247,17 +248,22 @@ public class EntropyCreeperEntity extends CreeperEntity {
                 BlockState b1 = world.getBlockState(pos1);
                 BlockState b2 = world.getBlockState(pos2);
                 if (b1.getPistonBehavior() == PistonBehavior.DESTROY) {
-                    world.setBlockState(pos1, Blocks.AIR.getDefaultState());
+                    world.breakBlock(pos1, true, this);
+                    b1 = Blocks.AIR.getDefaultState();
                 }
                 if (b2.getPistonBehavior() == PistonBehavior.DESTROY) {
-                    world.setBlockState(pos2, Blocks.AIR.getDefaultState());
+                    world.breakBlock(pos2, true, this);
+                    b2 = Blocks.AIR.getDefaultState();
                 }
                 Minelabs.LOGGER.debug(b1 + " <-> " + b2);
 
-                BlockState shuffle = world.getBlockState(pos1);
-                world.setBlockState(pos1, world.getBlockState(pos2));
-                world.setBlockState(pos2, shuffle);
+                // prepare blockstates for their placement position
+                b1 = Block.postProcessState(b1, world, pos2);
+                b2 = Block.postProcessState(b2, world, pos1);
+                world.setBlockState(pos1, b2, Block.NOTIFY_LISTENERS | Block.MOVED);
+                world.setBlockState(pos2, b1, Block.NOTIFY_LISTENERS | Block.MOVED);
             }
+            blocksToShuffle.forEach(pos -> world.updateNeighbors(pos, world.getBlockState(pos).getBlock()));
         }
     }
 
