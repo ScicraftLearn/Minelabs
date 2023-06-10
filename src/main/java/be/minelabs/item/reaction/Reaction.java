@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -57,6 +59,12 @@ public abstract class Reaction {
     protected abstract void react(World world, Vec3d position);
 
     public abstract void react(LivingEntity entity);
+
+    public abstract Text getTooltipText();
+
+    public MutableText getTooltipText(String reaction){
+        return Text.translatable("reaction.minelabs." + reaction);
+    }
 
     protected class Utils {
 

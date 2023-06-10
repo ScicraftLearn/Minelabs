@@ -2,20 +2,25 @@ package be.minelabs.item.items;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.ErlenmeyerCriterion;
+import be.minelabs.entity.projectile.thrown.GasPotionEntity;
 import be.minelabs.item.IMoleculeItem;
 import be.minelabs.item.Items;
-import be.minelabs.entity.projectile.thrown.GasPotionEntity;
 import be.minelabs.science.Molecule;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.LingeringPotionItem;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     private final Molecule molecule;
@@ -35,6 +40,11 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
             stacks.add(item);
         }
     }*/
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        molecule.makeTooltip(tooltip);
+    }
 
     @Override
     public ItemStack getDefaultStack() {

@@ -3,6 +3,7 @@ package be.minelabs.science;
 import be.minelabs.item.reaction.*;
 import be.minelabs.util.Tags;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -158,4 +159,7 @@ public enum Molecule {
         return name;
     }
 
+    public void makeTooltip(List<Text> tooltip) {
+        reactions.forEach(reaction -> tooltip.add(reaction.getTooltipText()));
+    }
 }
