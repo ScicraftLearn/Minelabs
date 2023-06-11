@@ -9,6 +9,7 @@ import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.item.Items;
 import be.minelabs.mixin.FishingBobberEntityAccessor;
+import be.minelabs.particle.ParticleTypes;
 import be.minelabs.util.AtomConfiguration;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
@@ -26,7 +27,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -102,7 +102,7 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void clientTick() {
         if (getProtons() == 0 && getNeutrons() == 0) {
-            this.world.addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX(), this.getY() + 0.5f * getHeight(), this.getZ(), 0, 0, 0);
+            this.world.addParticle(ParticleTypes.BOHR_PLATE_PARTICLE, this.getX(), this.getY() + 0.5f * getHeight(), this.getZ(), 0, 0, 0);
         }
     }
 
