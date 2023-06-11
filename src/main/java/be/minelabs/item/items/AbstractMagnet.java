@@ -110,7 +110,11 @@ public abstract class AbstractMagnet extends Item {
      * @return boolean: true/false
      */
     protected boolean getState(ItemStack stack){
-        return stack.getOrCreateNbt().getBoolean(ENABLED_KEY);
+        NbtCompound nbt = stack.getNbt();
+        if (nbt != null && nbt.contains(ENABLED_KEY)){
+            return nbt.getBoolean(ENABLED_KEY);
+        }
+        return false;
     }
 
     /**
