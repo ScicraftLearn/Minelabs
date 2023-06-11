@@ -1,7 +1,6 @@
 package be.minelabs.util;
 
 import be.minelabs.block.Blocks;
-import be.minelabs.block.blocks.PositionalQuantumFieldBlock;
 import be.minelabs.block.entity.QuantumFieldBlockEntity;
 import be.minelabs.state.property.Properties;
 import com.google.common.collect.Lists;
@@ -19,8 +18,6 @@ import net.minecraft.world.chunk.WorldChunk;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-
-//import static be.uantwerpen.minelabs.block.QuantumfieldBlock.MASTER;
 
 public class QuantumFieldSpawner {
     static java.util.Random r = new Random();
@@ -130,10 +127,8 @@ public class QuantumFieldSpawner {
     }
 
     private static void placeQuantumField(World world, BlockPos pos, BlockState state){
-//        if (state.getBlock() instanceof PositionalQuantumFieldBlock)
-//            state = PositionalQuantumFieldBlock.getStateWithPositionInfo(state, pos);
-        // only update listeners at first, neighbours are updated after. See FillCommand.
         state = Block.postProcessState(state, world, pos);
+        // only update listeners at first, neighbours are updated after. See FillCommand.
         world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
     }
 
