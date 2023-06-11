@@ -37,17 +37,8 @@ public class PositionalQuantumFieldBlock extends QuantumfieldBlock{
     }
 
     @Override
-    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        super.onBlockAdded(state, world, pos, oldState, notify);
-        // update state depending on position
-        BlockState stateWithPosInfo = getStateWithPositionInfo(state, pos);
-        if (!state.equals(stateWithPosInfo))
-            world.setBlockState(pos, stateWithPosInfo, notify ? Block.NOTIFY_ALL : 0);
-    }
-
-    @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+        return getStateWithPositionInfo(super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos), pos);
     }
 
     @Nullable

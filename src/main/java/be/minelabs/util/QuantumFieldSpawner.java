@@ -130,9 +130,10 @@ public class QuantumFieldSpawner {
     }
 
     private static void placeQuantumField(World world, BlockPos pos, BlockState state){
-        if (state.getBlock() instanceof PositionalQuantumFieldBlock)
-            state = PositionalQuantumFieldBlock.getStateWithPositionInfo(state, pos);
+//        if (state.getBlock() instanceof PositionalQuantumFieldBlock)
+//            state = PositionalQuantumFieldBlock.getStateWithPositionInfo(state, pos);
         // only update listeners at first, neighbours are updated after. See FillCommand.
+        state = Block.postProcessState(state, world, pos);
         world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
     }
 

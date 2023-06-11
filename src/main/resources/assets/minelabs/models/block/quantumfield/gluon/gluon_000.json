@@ -8,6 +8,6 @@
         "south": "minelabs:block/quantumfield/gluon/south",
         "west": "minelabs:block/quantumfield/gluon/west",
         "particle": "minelabs:block/quantumfield/gluon/down",
-        "symbol": "minelabs:block/void"
+        "symbol": "minelabs:block/quantumfield/gluon/symbol"
     }
 }

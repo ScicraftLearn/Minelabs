@@ -8,6 +8,6 @@
         "south": "minelabs:block/quantumfield/downquark/south",
         "west": "minelabs:block/quantumfield/downquark/west",
         "particle": "minelabs:block/quantumfield/downquark/down",
-        "symbol": "minelabs:block/void"
+        "symbol": "minelabs:block/quantumfield/downquark/symbol"
     }
 }
