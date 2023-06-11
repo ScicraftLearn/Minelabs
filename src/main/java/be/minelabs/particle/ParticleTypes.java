@@ -12,7 +12,7 @@ public class ParticleTypes {
 
     public static final DefaultParticleType BOHR_PLATE_PARTICLE = register(FabricParticleTypes.simple(), "bohrplate");
 
-    private static DefaultParticleType register(DefaultParticleType particle, String path){
+    private static  DefaultParticleType register(DefaultParticleType particle, String path){
         return Registry.register(Registries.PARTICLE_TYPE, new Identifier(Minelabs.MOD_ID, path), particle);
     }
 
