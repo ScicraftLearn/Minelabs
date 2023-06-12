@@ -21,6 +21,11 @@ public class AtomicInventory extends SimpleInventory {
         MAX_SIZE = stack_size;
     }
 
+    public AtomicInventory(NbtCompound nbt){
+        this(256);
+        this.readNbt(nbt);
+    }
+
     // Save inventory to NBT if it's the Atom Pack
     @Override
     public void onClose(PlayerEntity player) {
