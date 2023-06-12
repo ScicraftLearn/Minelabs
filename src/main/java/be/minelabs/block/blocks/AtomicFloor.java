@@ -11,7 +11,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public class AtomicFloor extends AbstractGlassBlock {
-    public final static int AtomicFloorLayer = 64;
+    public final static int ATOMIC_FLOOR_LAYER = 64;
 
     public AtomicFloor() {
         super(Settings.of(Material.AMETHYST).strength(-1f, 3600000.0F).nonOpaque().ticksRandomly());
