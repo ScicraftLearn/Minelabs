@@ -17,6 +17,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -24,12 +25,13 @@ import org.jetbrains.annotations.Nullable;
 
 public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     public static final int MAX_AGE = 10;
-    public static final int decayrate = 1;
-    //    max 15 in minecraft
-    public static final int MAX_LIGHT = 15;
-    public static final int MIN_LIGHT = 0;
-    public static final BooleanProperty MASTER = Properties.MASTER;
+    public static final int DECAYRATE = 1;
 
+    //    max 15 in minecraft
+    protected static final int MAX_LIGHT = 15;
+    protected static final int MIN_LIGHT = 0;
+
+    public static final BooleanProperty MASTER = Properties.MASTER;
     public static final IntProperty AGE = IntProperty.of("age", 0, MAX_AGE);
 
 
@@ -37,10 +39,14 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
         // Properties of all quantumfield blocks
         // Change the first value in strength to get the wanted mining speed
         // Made material not solid so portals can't spawn on it.
-        super(FabricBlockSettings.of(Material.POWDER_SNOW).strength(0.5f, 2.0f)
-                .ticksRandomly().luminance(state ->
-                        Math.round(MIN_LIGHT + ((float) (MAX_AGE - state.get(AGE) - 1) / MAX_AGE) * (MAX_LIGHT - MIN_LIGHT))));
+        super(FabricBlockSettings
+                .of(Material.POWDER_SNOW)
+                .strength(0.5f, 2.0f)
+                .ticksRandomly()
+                .luminance(state -> (int) Math.ceil(MathHelper.clampedLerp(MAX_LIGHT, MIN_LIGHT, (float) getAge(state) / MAX_AGE)))
+        );
         this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false));
+
     }
 
     public static boolean isMaster(BlockState state) {
@@ -60,8 +66,8 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (!isMaster(state)) return;
 
-        int age = state.get(AGE);
-        age = Math.min(age + decayrate, MAX_AGE);
+        int age = getAge(state);
+        age = Math.min(age + DECAYRATE, MAX_AGE);
         if (age == MAX_AGE) {
             world.scheduleBlockTick(pos, this, 5);
         }
@@ -71,9 +77,9 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        int age = state.get(AGE);
-        if (state.getBlock() == neighborState.getBlock() && age < neighborState.get(AGE)) {
-            age = neighborState.get(AGE);
+        int age = getAge(state);
+        if (neighborState.isOf(state.getBlock()) && age < getAge(neighborState)) {
+            age = getAge(neighborState);
             if (age == MAX_AGE) {
                 world.scheduleBlockTick(pos, this, 5);
             }
@@ -83,17 +89,12 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
-    }
-
-    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(AGE, MASTER);
     }
 
     public void removeQuantumBlockIfNeeded(BlockState state, ServerWorld world, BlockPos pos){
-        if (MAX_AGE == state.get(AGE)) {
+        if (MAX_AGE == getAge(state)) {
             world.removeBlock(pos, false);
             if (pos.getY() == AtomicFloor.ATOMIC_FLOOR_LAYER) {
                 world.setBlockState(pos, Blocks.ATOM_FLOOR.getDefaultState(), Block.NO_REDRAW);
@@ -105,12 +106,6 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         removeQuantumBlockIfNeeded(state,world,pos);
         super.scheduledTick(state, world, pos, random);
-    }
-
-    @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//        world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(player, state));
-        super.onBreak(world,pos,state,player);
     }
 
     @Override
