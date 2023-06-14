@@ -2,14 +2,14 @@ package be.minelabs.screen;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.entity.LewisBlockEntity;
+import be.minelabs.inventory.OrderedInventory;
+import be.minelabs.item.Items;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.molecules.Bond;
 import be.minelabs.recipe.molecules.MoleculeGraph;
-import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.screen.slot.CraftingResultSlot;
 import be.minelabs.screen.slot.FilteredSlot;
 import be.minelabs.screen.slot.LockableGridSlot;
-import be.minelabs.item.Items;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -148,6 +148,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (1 output slot)
         this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 - o));
 
+        // TODO ATOMIC STORAGE ... (check if "click/selected" pack/button)
+
         //The player inventory (3x9 slots)
         for (int m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
@@ -218,6 +220,13 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         super.onSlotClick(slotIndex, button, actionType, player);
         if (slotIndex < GRIDSIZE)
             onGridChangedByPlayer(player);
+        if (slotIndex >= 36 && slotIndex <=71){
+            if (getSlot(slotIndex).getStack().isOf(Items.ATOM_PACK)) {
+                //
+
+            }
+        }
+
     }
 
     /**
@@ -293,6 +302,16 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     //A recipe is found (so the density is larger than 0)
     public boolean hasRecipe() {
         return this.getDensity() > 0;
+    }
+
+    /**
+     * Should The Screen render the Atom Storage (link)
+     *
+     * @return boolean
+     */
+    public boolean showAtomStorage(){
+        //TODO
+        return false;
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {

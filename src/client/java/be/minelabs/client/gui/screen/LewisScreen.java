@@ -17,7 +17,6 @@ import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -30,7 +29,6 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,6 +38,9 @@ import java.util.Map;
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler> {
     private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory_craftable.png");
     private static final Identifier TEXTURE2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory.png");
+    private static final Identifier TEXTURE_STORAGE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_craftable_with_pack.png");
+    private static final Identifier TEXTURE_STORAGE_2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_with_pack.png");
+
     private ButtonWidget buttonWidget;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
@@ -55,10 +56,18 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        if (this.handler.hasRecipe()) {
-            RenderSystem.setShaderTexture(0, TEXTURE);
-        } else {
-            RenderSystem.setShaderTexture(0, TEXTURE2);
+        if (handler.showAtomStorage()){
+            if (this.handler.hasRecipe()) {
+                RenderSystem.setShaderTexture(0, TEXTURE_STORAGE);
+            } else {
+                RenderSystem.setShaderTexture(0, TEXTURE_STORAGE_2);
+            }
+        }else {
+            if (this.handler.hasRecipe()) {
+                RenderSystem.setShaderTexture(0, TEXTURE);
+            } else {
+                RenderSystem.setShaderTexture(0, TEXTURE2);
+            }
         }
 
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
