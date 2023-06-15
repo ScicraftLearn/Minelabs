@@ -1,5 +1,5 @@
 {
-    "parent": "block/cube",
+    "parent": "minelabs:block/quantumfield/positional/000",
     "textures": {
         "down": "minelabs:block/quantumfield/gluon/down",
         "up": "minelabs:block/quantumfield/gluon/up",
@@ -7,6 +7,7 @@
         "east": "minelabs:block/quantumfield/gluon/east",
         "south": "minelabs:block/quantumfield/gluon/south",
         "west": "minelabs:block/quantumfield/gluon/west",
-        "particle": "minelabs:block/quantumfield/gluon/down"
+        "particle": "minelabs:block/quantumfield/gluon/down",
+        "symbol": "minelabs:block/quantumfield/gluon/symbol"
     }
 }
