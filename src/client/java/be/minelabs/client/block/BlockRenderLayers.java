@@ -32,7 +32,7 @@ public class BlockRenderLayers {
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.DOWNQUARK_QUANTUMFIELD, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.UPQUARK_QUANTUMFIELD, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MOLOGRAM_BLOCK, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.MOLOGRAM_BLOCK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.GREEN_FIRE, RenderLayer.getCutout());
 
