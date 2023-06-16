@@ -69,14 +69,35 @@ public class AtomicInventory extends SimpleInventory {
 
     @Override
     public ItemStack addStack(ItemStack stack) {
+        this.addToExistingSlot(stack);
+        if (stack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        this.addToNewSlot(stack);
+        if (stack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        return stack;
+    }
+
+    private void addToNewSlot(ItemStack stack) {
+        for (int i = 0; i < this.stacks.size(); ++i) {
+            ItemStack itemStack = this.getStack(i);
+            if (!itemStack.isEmpty()) continue;
+            this.setStack(i, stack.copy());
+            stack.setCount(0);
+            return;
+        }
+    }
+
+    private void addToExistingSlot(ItemStack stack) {
         for (int i = 0; i < this.stacks.size(); ++i) {
             ItemStack itemStack = this.getStack(i);
             if (!ItemStack.canCombine(itemStack, stack)) continue;
             this.transfer(stack, itemStack);
             if (!stack.isEmpty()) continue;
-            return ItemStack.EMPTY;
+            return;
         }
-        return stack;
     }
 
     private void transfer(ItemStack source, ItemStack target) {
