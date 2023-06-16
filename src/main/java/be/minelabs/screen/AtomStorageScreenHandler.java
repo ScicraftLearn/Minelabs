@@ -46,10 +46,12 @@ public class AtomStorageScreenHandler extends ScreenHandler {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
             if (invSlot < this.inventory.size()) {
+                // Atomic -> player
                 if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
+                // Player -> Atomic
                 return ItemStack.EMPTY;
             }
 
@@ -64,14 +66,21 @@ public class AtomStorageScreenHandler extends ScreenHandler {
     }
 
     @Override
+    public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
+        if (slot.inventory instanceof AtomicInventory){
+            return false;
+        }
+        return super.canInsertIntoSlot(stack, slot);
+    }
+
+    @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
         if (slotIndex < 0)
             return;
-        if (player.getMainHandStack().isOf(Items.ATOM_PACK)){
+        if (player.getMainHandStack().isOf(Items.ATOM_PACK)
+                && ItemStack.areEqual(slots.get(slotIndex).getStack(), player.getMainHandStack())){
             // Don't allow the pack to be moved
-            if (ItemStack.areEqual(slots.get(slotIndex).getStack(), player.getMainHandStack())){
-                return; // SOMETHING ELSE ??
-            }
+            return; // SOMETHING ELSE ??
         }
         super.onSlotClick(slotIndex, button, actionType, player);
     }
