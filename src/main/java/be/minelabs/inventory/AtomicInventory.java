@@ -57,18 +57,34 @@ public class AtomicInventory extends SimpleInventory {
                 continue;
             } else {
                 // Try to fill
-                int count = origin.getStack(i).getCount();
                 if (stacks.get(i).isEmpty()){
                     stacks.set(i, origin.getStack(i).copy());
                     origin.stacks.set(i, ItemStack.EMPTY);
-                } else if (stacks.get(i).getCount() + count > MAX_SIZE){
-                    origin.stacks.get(i).decrement(MAX_SIZE-stacks.get(i).getCount());
-                    stacks.get(i).setCount(MAX_SIZE);
                 } else {
-                    stacks.get(i).increment(count);
-                    origin.stacks.set(i, ItemStack.EMPTY);
+                    transfer(origin.stacks.get(i), stacks.get(i));
                 }
             }
+        }
+    }
+
+    @Override
+    public ItemStack addStack(ItemStack stack) {
+        for (int i = 0; i < this.stacks.size(); ++i) {
+            ItemStack itemStack = this.getStack(i);
+            if (!ItemStack.canCombine(itemStack, stack)) continue;
+            this.transfer(stack, itemStack);
+            if (!stack.isEmpty()) continue;
+            return ItemStack.EMPTY;
+        }
+        return stack;
+    }
+
+    private void transfer(ItemStack source, ItemStack target) {
+        int j = Math.min(source.getCount(), getMaxCountPerStack() - target.getCount());
+        if (j > 0) {
+            target.increment(j);
+            source.decrement(j);
+            this.markDirty();
         }
     }
 

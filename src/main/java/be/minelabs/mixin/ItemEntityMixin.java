@@ -40,10 +40,9 @@ public abstract class ItemEntityMixin {
                 for (ItemStack atom_pack_stack : getPack(player.getInventory())) {
 
                     AtomicInventory inv = new AtomicInventory(atom_pack_stack.getNbt()); // Load the inv from stack
-                    setStack(inv.addStack(getStack())); // Try addin stack to inv && SET itemEntity stack to the returned enity
+                    setStack(inv.addStack(getStack())); // Try adding stack to inv && SET itemEntity stack to the returned enity
                     atom_pack_stack.setNbt(inv.writeNbt(new NbtCompound())); // Save inv to stack
-                    // TODO FIX DUPLICATES
-                    // Should stop after Atom stack is empty
+                    // Pickup sound / advancement / stats are no longer updated
                 }
             }
         }
