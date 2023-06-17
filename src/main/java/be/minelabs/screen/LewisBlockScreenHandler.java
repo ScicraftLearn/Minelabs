@@ -2,11 +2,13 @@ package be.minelabs.screen;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.entity.LewisBlockEntity;
+import be.minelabs.inventory.AtomicInventory;
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.item.Items;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.molecules.Bond;
 import be.minelabs.recipe.molecules.MoleculeGraph;
+import be.minelabs.screen.slot.AtomSlot;
 import be.minelabs.screen.slot.CraftingResultSlot;
 import be.minelabs.screen.slot.FilteredSlot;
 import be.minelabs.screen.slot.LockableGridSlot;
@@ -14,6 +16,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -36,7 +39,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     private final LewisCraftingGrid craftingGrid;
 
-    private final Inventory ioInventory;
+    private final SimpleInventory ioInventory;
+
+    private AtomicInventory atomicStorage = new AtomicInventory(512);
 
     //PropertyDelegate that holds the progress and density
     private final PropertyDelegate propertyDelegate;
@@ -72,7 +77,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @param playerInventory  Player's inventory to sync with screen's inventory slots
      * @param propertyDelegate PropertyDelegate is used to sync data across server and client side handlers
      */
-    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, LewisCraftingGrid craftingGrid, Inventory ioInventory, PropertyDelegate propertyDelegate, BlockPos pos) {
+    public LewisBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, LewisCraftingGrid craftingGrid, SimpleInventory ioInventory, PropertyDelegate propertyDelegate, BlockPos pos) {
         super(ScreenHandlers.LEWIS_SCREEN_HANDLER, syncId);
         checkSize(ioInventory, 10);
         this.craftingGrid = craftingGrid;
@@ -152,18 +157,34 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 - o));
 
         // TODO ATOMIC STORAGE ... (check if "click/selected" pack/button)
-
-        //The player inventory (3x9 slots)
-        for (int m = 0; m < 3; ++m) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18 - o + 5));
+        //  REDO SLOTS (dynamic change between player io and Atomic)
+        if (storage){
+            addAtomicSlots();
+        } else {
+            //The player inventory (3x9 slots)
+            for (int m = 0; m < 3; ++m) {
+                for (int l = 0; l < 9; ++l) {
+                    this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18 - o + 5));
+                }
+            }
+            //The player Hotbar (9 slots)
+            for (int m = 0; m < 9; ++m) {
+                this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - o + 5));
             }
         }
-        //The player Hotbar (9 slots)
-        for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - o + 5));
-        }
+    }
 
+    private void addAtomicSlots() {
+        addSlot(new AtomSlot(atomicStorage, 0, 8, 145));
+        addSlot(new AtomSlot(atomicStorage, 1, 152, 145));
+        for (int i = 0; i < 5; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                //TODO FIX INDEX (must match atoms to show)
+                if (j==2)
+                    continue;
+                addSlot(new AtomSlot(atomicStorage, 2 + j + i * 9, 8 + j * 18, 163 + i * 18));
+            }
+        }
     }
 
     public Inventory getIoInventory() {
@@ -220,16 +241,17 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
-        super.onSlotClick(slotIndex, button, actionType, player);
-        if (slotIndex < GRIDSIZE)
-            onGridChangedByPlayer(player);
         if (slotIndex >= 36 && slotIndex <= 71){
             if (getSlot(slotIndex).getStack().isOf(Items.ATOM_PACK)) {
                 // TODO ENABLE BACK BUTTON
                 storage = true;
+                atomicStorage = new AtomicInventory(getSlot(slotIndex).getStack().getOrCreateNbt());
+                return;
             }
         }
-
+        super.onSlotClick(slotIndex, button, actionType, player);
+        if (slotIndex < GRIDSIZE)
+            onGridChangedByPlayer(player);
     }
 
     /**
@@ -343,5 +365,13 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         } else {
             return 3;
         }
+    }
+
+    public void clearGrid() {
+        craftingGrid.clear();
+    }
+
+    public void clearIO() {
+        ioInventory.clear();
     }
 }

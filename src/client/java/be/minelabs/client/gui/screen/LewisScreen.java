@@ -25,7 +25,6 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -46,7 +45,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
-        backgroundHeight += (18 * 3 + 4) + 5;
+        //backgroundHeight += (18 * 3 + 4) + 5;
+        backgroundHeight = 229;
     }
 
     /*
@@ -57,12 +57,14 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (handler.showAtomStorage()){
+            backgroundHeight = 256;
             if (this.handler.hasRecipe()) {
                 RenderSystem.setShaderTexture(0, TEXTURE_STORAGE);
             } else {
                 RenderSystem.setShaderTexture(0, TEXTURE_STORAGE_2);
             }
-        }else {
+        } else {
+            backgroundHeight = 229;
             if (this.handler.hasRecipe()) {
                 RenderSystem.setShaderTexture(0, TEXTURE);
             } else {
@@ -173,14 +175,16 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private void registerButtonWidget() {
         buttonWidget = new ButtonWidget.Builder(Text.of("C"), button -> {
             if (handler.isInputEmpty()) {
-                for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
+                handler.clearGrid();
+                //for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
                     // TODO: don't use interaction manager. If clear is selected when you have something in your hand it backfires
-                    client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
-                }
+                    //client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
+                //}
             } else {
-                for (int i = 0; i < 9; i++) {
-                    client.interactionManager.clickSlot(handler.syncId, i + LewisBlockScreenHandler.GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
-                }
+                handler.clearIO();
+                //for (int i = 0; i < 9; i++) {
+                //    client.interactionManager.clickSlot(handler.syncId, i + LewisBlockScreenHandler.GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
+                //}
             }
             // unfocus button after activation. Only works with tab and enter. Click needs extra override see mouseClicked.
             button.setFocused(false);
