@@ -1,6 +1,7 @@
 package be.minelabs.inventory;
 
 import be.minelabs.item.Items;
+import be.minelabs.item.items.AtomItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -67,39 +68,40 @@ public class AtomicInventory extends SimpleInventory {
         }
     }
 
+    /**
+     * Try to add the given stack to the inv
+     *
+     * @param stack : Stack to add (can only be of AtomItem)
+     * @return ItemStack.EMPTY if fully inserted OR remainder of the stack
+     */
     @Override
     public ItemStack addStack(ItemStack stack) {
-        this.addToExistingSlot(stack);
-        if (stack.isEmpty()) {
-            return ItemStack.EMPTY;
-        }
-        this.addToNewSlot(stack);
-        if (stack.isEmpty()) {
-            return ItemStack.EMPTY;
-        }
-        return stack;
-    }
+        AtomItem atom = (AtomItem) stack.getItem();
+        ItemStack inv_stack = stacks.get(atom.getAtom().getAtomNumber()-1);
 
-    private void addToNewSlot(ItemStack stack) {
-        for (int i = 0; i < this.stacks.size(); ++i) {
-            ItemStack itemStack = this.getStack(i);
-            if (!itemStack.isEmpty()) continue;
-            this.setStack(i, stack.copy());
+        if (inv_stack.isEmpty()){
+            // Empty stack
+            setStack(atom.getAtom().getAtomNumber()-1, stack);
             stack.setCount(0);
-            return;
+            return ItemStack.EMPTY;
+        } else {
+            // Not an empty stack
+            if (ItemStack.canCombine(inv_stack, stack)){
+                this.transfer(stack, inv_stack);
+                if (stack.isEmpty()){
+                    return ItemStack.EMPTY;
+                }
+            }
+            return stack;
         }
     }
 
-    private void addToExistingSlot(ItemStack stack) {
-        for (int i = 0; i < this.stacks.size(); ++i) {
-            ItemStack itemStack = this.getStack(i);
-            if (!ItemStack.canCombine(itemStack, stack)) continue;
-            this.transfer(stack, itemStack);
-            if (!stack.isEmpty()) continue;
-            return;
-        }
-    }
-
+    /**
+     * Transfer source stack into target stack
+     *
+     * @param source : ItemStack to take from
+     * @param target : ItemStack to increase
+     */
     private void transfer(ItemStack source, ItemStack target) {
         int j = Math.min(source.getCount(), getMaxCountPerStack() - target.getCount());
         if (j > 0) {

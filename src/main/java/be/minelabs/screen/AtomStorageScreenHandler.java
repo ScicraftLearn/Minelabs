@@ -66,6 +66,12 @@ public class AtomStorageScreenHandler extends ScreenHandler {
     }
 
     @Override
+    protected boolean insertItem(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
+        // TODO OVERRIDE for MAX STACK SIZE (shift)
+        return super.insertItem(stack, startIndex, endIndex, fromLast);
+    }
+
+    @Override
     public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
         if (slot.inventory instanceof AtomicInventory){
             return false;

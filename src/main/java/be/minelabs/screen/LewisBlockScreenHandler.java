@@ -44,6 +44,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     //The LewisBlockEntity that belongs to the screen. Can be used to get extra data, as long as that data is synced
     private LewisBlockEntity lewis;
 
+    private boolean storage;
+
 
     /**
      * This constructor gets called on the client when the server wants it to open the screenHandler<br>
@@ -76,6 +78,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.craftingGrid = craftingGrid;
         this.ioInventory = ioInventory;
         this.propertyDelegate = propertyDelegate;
+        storage = false;
         BlockEntity be = playerInventory.player.world.getBlockEntity(pos);
         if (be instanceof LewisBlockEntity lewis) {
             this.lewis = lewis;
@@ -220,10 +223,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         super.onSlotClick(slotIndex, button, actionType, player);
         if (slotIndex < GRIDSIZE)
             onGridChangedByPlayer(player);
-        if (slotIndex >= 36 && slotIndex <=71){
+        if (slotIndex >= 36 && slotIndex <= 71){
             if (getSlot(slotIndex).getStack().isOf(Items.ATOM_PACK)) {
-                //
-
+                // TODO ENABLE BACK BUTTON
+                storage = true;
             }
         }
 
@@ -310,8 +313,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @return boolean
      */
     public boolean showAtomStorage(){
-        //TODO
-        return false;
+        return storage;
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
