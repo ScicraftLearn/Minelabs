@@ -1,10 +1,8 @@
 package be.minelabs.client.item;
 
-import be.minelabs.block.Blocks;
 import be.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
@@ -19,8 +17,6 @@ public class ItemModels {
 
         registerBond(Items.BOND);
         registerValence(Items.VALENCEE);
-
-        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> 0x3495eb, Blocks.LAB_SINK);
     }
 
     /**
@@ -64,6 +60,7 @@ public class ItemModels {
                     return 0.0f;
                 });
     }
+
     private static void registerValence(Item item) {
         String[] directions = {"n", "e", "s", "w"};
         for (String direction : directions) {
