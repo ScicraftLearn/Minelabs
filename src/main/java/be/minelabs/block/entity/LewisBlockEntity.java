@@ -2,12 +2,12 @@ package be.minelabs.block.entity;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
-import be.minelabs.recipe.lewis.LewisCraftingGrid;
-import be.minelabs.recipe.lewis.MoleculeRecipe;
-import be.minelabs.recipe.molecules.MoleculeGraph;
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.item.Items;
 import be.minelabs.network.LewisDataPacket;
+import be.minelabs.recipe.lewis.LewisCraftingGrid;
+import be.minelabs.recipe.lewis.MoleculeRecipe;
+import be.minelabs.recipe.molecules.MoleculeGraph;
 import be.minelabs.screen.LewisBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -22,7 +22,6 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -150,9 +149,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
         }
         //recipe loaded, check if enough items
-        // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
         else if (lewis.ioInventory.getStack(10).isEmpty()
-                || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput(DynamicRegistryManager.EMPTY).getItem())){ //can output
+                || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput(world.getRegistryManager()).getItem())){ //can output
             //System.out.println(lewis.currentRecipe.getIngredients());
             if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) {
                 lewis.resetProgress();
@@ -179,8 +177,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
             if (lewis.progress >= lewis.maxProgress) { //Done crafting
                 if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
-                    // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
-                    lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput(DynamicRegistryManager.EMPTY));
+                    lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput(world.getRegistryManager()));
                 } else {
                     lewis.ioInventory.getStack(10).increment(1);
                 }
