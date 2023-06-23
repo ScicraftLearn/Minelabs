@@ -366,12 +366,4 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             return 3;
         }
     }
-
-    public void clearGrid() {
-        craftingGrid.clear();
-    }
-
-    public void clearIO() {
-        ioInventory.clear();
-    }
 }

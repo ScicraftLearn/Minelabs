@@ -25,6 +25,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -175,16 +176,14 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private void registerButtonWidget() {
         buttonWidget = new ButtonWidget.Builder(Text.of("C"), button -> {
             if (handler.isInputEmpty()) {
-                handler.clearGrid();
-                //for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
+                for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
                     // TODO: don't use interaction manager. If clear is selected when you have something in your hand it backfires
-                    //client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
-                //}
+                    client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
+                }
             } else {
-                handler.clearIO();
-                //for (int i = 0; i < 9; i++) {
-                //    client.interactionManager.clickSlot(handler.syncId, i + LewisBlockScreenHandler.GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
-                //}
+                for (int i = 0; i < 9; i++) {
+                    client.interactionManager.clickSlot(handler.syncId, i + LewisBlockScreenHandler.GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
+                }
             }
             // unfocus button after activation. Only works with tab and enter. Click needs extra override see mouseClicked.
             button.setFocused(false);
