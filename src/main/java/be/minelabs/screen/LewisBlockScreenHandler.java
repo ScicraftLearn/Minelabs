@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.ArrayPropertyDelegate;
@@ -49,7 +50,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     //The LewisBlockEntity that belongs to the screen. Can be used to get extra data, as long as that data is synced
     private LewisBlockEntity lewis;
 
-    private boolean storage;
+    private Slot clickedSlot = null;
 
 
     /**
@@ -83,7 +84,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.craftingGrid = craftingGrid;
         this.ioInventory = ioInventory;
         this.propertyDelegate = propertyDelegate;
-        storage = false;
         BlockEntity be = playerInventory.player.world.getBlockEntity(pos);
         if (be instanceof LewisBlockEntity lewis) {
             this.lewis = lewis;
@@ -130,7 +130,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (1 output slot)
         this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 - o));
 
-        addAtomicSlots();
+        //addAtomicSlots();
         addPlayerSlots(playerInventory, o);
 
     }
@@ -176,7 +176,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18 - offset + 5){
                     @Override
                     public boolean isEnabled() {
-                        return !storage;
+                        return !showAtomStorage();
                     }
                 });
             }
@@ -186,7 +186,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - offset + 5){
                 @Override
                 public boolean isEnabled() {
-                    return !storage;
+                    return !showAtomStorage();
                 }
             });
         }
@@ -211,6 +211,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 index++;
             }
         }
+    }
+
+    private void removeAtomicSlots() {
+        slots.removeIf(slot -> slot instanceof AtomicSlot);
     }
 
     public Inventory getIoInventory() {
@@ -269,6 +273,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
         if (getSlot(slotIndex).inventory instanceof PlayerInventory){
             if (getSlot(slotIndex).getStack().isOf(Items.ATOM_PACK)) {
+                clickedSlot = getSlot(slotIndex);
                 openAtomicStorage(getSlot(slotIndex).getStack());
                 return;
             }
@@ -279,13 +284,15 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     public void openAtomicStorage(ItemStack stack){
-        storage = true;
         atomicStorage = new AtomicInventory(stack.getOrCreateNbt());
+        addAtomicSlots();
     }
 
-    public void closeAtomicStorage(){
-        storage = false;
+    public void closeAtomicStorage() {
+        clickedSlot.getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
         atomicStorage = null;
+        removeAtomicSlots();
+        clickedSlot = null;
     }
 
     /**
@@ -369,7 +376,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @return boolean
      */
     public boolean showAtomStorage(){
-        return storage;
+        return clickedSlot != null;
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
@@ -409,7 +416,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         @Override
         public boolean isEnabled() {
-            return storage;
+            return showAtomStorage();
         }
     }
 }
