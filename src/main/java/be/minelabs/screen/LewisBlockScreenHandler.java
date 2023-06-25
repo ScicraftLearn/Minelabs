@@ -50,7 +50,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     //The LewisBlockEntity that belongs to the screen. Can be used to get extra data, as long as that data is synced
     private LewisBlockEntity lewis;
 
-    private Slot clickedSlot = null;
+    private int clickedIndex = -1;
 
 
     /**
@@ -130,9 +130,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (1 output slot)
         this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 - o));
 
-        //addAtomicSlots();
         addPlayerSlots(playerInventory, o);
-
+        addAtomicSlots();
     }
 
     private void addGridSlots(int offset){
@@ -213,8 +212,13 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    private void removeAtomicSlots() {
-        slots.removeIf(slot -> slot instanceof AtomicSlot);
+    private void updateAtomicSlots() {
+        for (int i = 0; i < slots.size(); i++) {
+            if (slots.get(i) instanceof AtomicSlot) {
+                slots.set(i, new AtomicSlot(atomicStorage, slots.get(i)));
+            }
+        }
+        ;
     }
 
     public Inventory getIoInventory() {
@@ -271,9 +275,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
-        if (getSlot(slotIndex).inventory instanceof PlayerInventory){
+        if (slotIndex < 0) {
+            return;
+        }
+        if (getSlot(slotIndex).inventory instanceof PlayerInventory) {
             if (getSlot(slotIndex).getStack().isOf(Items.ATOM_PACK)) {
-                clickedSlot = getSlot(slotIndex);
+                clickedIndex = slotIndex;
                 openAtomicStorage(getSlot(slotIndex).getStack());
                 return;
             }
@@ -283,16 +290,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             onGridChangedByPlayer(player);
     }
 
-    public void openAtomicStorage(ItemStack stack){
+    public void openAtomicStorage(ItemStack stack) {
         atomicStorage = new AtomicInventory(stack.getOrCreateNbt());
-        addAtomicSlots();
+        // "update" the Atomic slots with the new inventory (link between inv and slots is final)
+        // Just replacing with correctly linked ones
+        updateAtomicSlots();
     }
 
     public void closeAtomicStorage() {
-        clickedSlot.getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
+        // TODO fix NBT SAVE : SYNC ??
+        getSlot(clickedIndex).getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
         atomicStorage = null;
-        removeAtomicSlots();
-        clickedSlot = null;
+        clickedIndex = -1;
     }
 
     /**
@@ -375,8 +384,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      *
      * @return boolean
      */
-    public boolean showAtomStorage(){
-        return clickedSlot != null;
+    public boolean showAtomStorage() {
+        return clickedIndex >= 0;
+        //return clickedStack != null;
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
@@ -408,7 +418,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    private class AtomicSlot extends AtomSlot{
+    private class AtomicSlot extends AtomSlot {
+
+        /**
+         * Make a copy of the old Slot with a new Inventory to link it with
+         *
+         * @param inventory : new inventory
+         * @param old       : old slot data
+         */
+        public AtomicSlot(Inventory inventory, Slot old) {
+            this(inventory, old.getIndex(), old.x, old.y);
+            id = old.id;
+        }
 
         public AtomicSlot(Inventory inventory, int index, int x, int y) {
             super(inventory, index, x, y);
