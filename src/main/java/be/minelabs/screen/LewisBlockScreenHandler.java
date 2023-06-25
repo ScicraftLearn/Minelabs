@@ -121,10 +121,25 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // offset
         int o = 11 - 29;
 
+        addGridSlots(o);
+        addIoSlots(o);
+
+        // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
+        this.addSlot(new FilteredSlot(ioInventory, 9, 8 + 7 * 18, 2 * 18 - o + 36, s -> s.isOf(Items.ERLENMEYER)));
+
+        // Lewis Crafting Table Inventory (1 output slot)
+        this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 - o));
+
+        addAtomicSlots();
+        addPlayerSlots(playerInventory, o);
+
+    }
+
+    private void addGridSlots(int offset){
         // Lewis Crafting Table Inventory (5x5 grid)
         for (int m = 0; m < 5; ++m) {
             for (int l = 0; l < 5; ++l) {
-                this.addSlot(new LockableGridSlot(craftingGrid, l + m * 5, 8 + l * 18, m * 18 - o) {//Anonymous implementation to link it to the slots.
+                this.addSlot(new LockableGridSlot(craftingGrid, l + m * 5, 8 + l * 18, m * 18 - offset) {//Anonymous implementation to link it to the slots.
                     @Override
                     public boolean isLocked() {
                         return !isInputEmpty(); //Locked if the input had items
@@ -132,9 +147,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 });
             }
         }
+    }
+
+    private void addIoSlots(int offset){
         // Lewis Crafting Table Inventory (9 input slots)
         for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(ioInventory, m, 8 + m * 18, 5 * 18 - o + 5) {//Anonymous implementation to link it to the slots.
+            this.addSlot(new Slot(ioInventory, m, 8 + m * 18, 5 * 18 - offset + 5) {//Anonymous implementation to link it to the slots.
                 @Override
                 public boolean isEnabled() {
                     return hasRecipe();
@@ -149,40 +167,48 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 }
             });
         }
+    }
 
-        // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
-        this.addSlot(new FilteredSlot(ioInventory, 9, 8 + 7 * 18, 2 * 18 - o + 36, s -> s.isOf(Items.ERLENMEYER)));
-
-        // Lewis Crafting Table Inventory (1 output slot)
-        this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 - o));
-
-        // TODO ATOMIC STORAGE ... (check if "click/selected" pack/button)
-        //  REDO SLOTS (dynamic change between player io and Atomic)
-        if (storage){
-            addAtomicSlots();
-        } else {
-            //The player inventory (3x9 slots)
-            for (int m = 0; m < 3; ++m) {
-                for (int l = 0; l < 9; ++l) {
-                    this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18 - o + 5));
+    private void addPlayerSlots(PlayerInventory playerInventory, int offset){
+        //The player inventory (3x9 slots)
+        for (int m = 0; m < 3; ++m) {
+            for (int l = 0; l < 9; ++l) {
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18 - offset + 5){
+                    @Override
+                    public boolean isEnabled() {
+                        return !storage;
+                    }
+                });
+            }
+        }
+        //The player Hotbar (9 slots)
+        for (int m = 0; m < 9; ++m) {
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - offset + 5){
+                @Override
+                public boolean isEnabled() {
+                    return !storage;
                 }
-            }
-            //The player Hotbar (9 slots)
-            for (int m = 0; m < 9; ++m) {
-                this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - o + 5));
-            }
+            });
         }
     }
 
     private void addAtomicSlots() {
-        addSlot(new AtomSlot(atomicStorage, 0, 8, 145));
-        addSlot(new AtomSlot(atomicStorage, 1, 152, 145));
+        addSlot(new AtomicSlot(atomicStorage, 0, 8, 145));
+        addSlot(new AtomicSlot(atomicStorage, 1, 152, 145));
+        int index = 2;
+
         for (int i = 0; i < 5; ++i) {
             for (int j = 0; j < 9; ++j) {
-                //TODO FIX INDEX (must match atoms to show)
-                if (j==2)
+                if (j == 2) {
+                    if (i == 2 || i == 3){
+                        index += 10;
+                    } else if (i == 4) {
+                        index += 25;
+                    }
                     continue;
-                addSlot(new AtomSlot(atomicStorage, 2 + j + i * 9, 8 + j * 18, 163 + i * 18));
+                }
+                addSlot(new AtomicSlot(atomicStorage, index, 8 + j * 18, 163 + i * 18));
+                index++;
             }
         }
     }
@@ -241,17 +267,25 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
-        if (slotIndex >= 36 && slotIndex <= 71){
+        if (getSlot(slotIndex).inventory instanceof PlayerInventory){
             if (getSlot(slotIndex).getStack().isOf(Items.ATOM_PACK)) {
-                // TODO ENABLE BACK BUTTON
-                storage = true;
-                atomicStorage = new AtomicInventory(getSlot(slotIndex).getStack().getOrCreateNbt());
+                openAtomicStorage(getSlot(slotIndex).getStack());
                 return;
             }
         }
         super.onSlotClick(slotIndex, button, actionType, player);
         if (slotIndex < GRIDSIZE)
             onGridChangedByPlayer(player);
+    }
+
+    public void openAtomicStorage(ItemStack stack){
+        storage = true;
+        atomicStorage = new AtomicInventory(stack.getOrCreateNbt());
+    }
+
+    public void closeAtomicStorage(){
+        storage = false;
+        atomicStorage = null;
     }
 
     /**
@@ -364,6 +398,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             return 1;
         } else {
             return 3;
+        }
+    }
+
+    private class AtomicSlot extends AtomSlot{
+
+        public AtomicSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return storage;
         }
     }
 }

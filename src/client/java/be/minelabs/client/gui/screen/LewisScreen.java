@@ -43,6 +43,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
     private ButtonWidget buttonWidget;
 
+    private ButtonWidget returnButton;
+
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
@@ -189,6 +191,18 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             button.setFocused(false);
         }).position(x + 133, y + 17).size(18, 18).build();
         addDrawableChild(buttonWidget);
+
+        returnButton = new ButtonWidget.Builder(Text.of("<--"), button ->{
+            // TODO HIDE PLAYER INVENTORY
+            // TODO PRESS ACTION
+            handler.closeAtomicStorage();
+
+            // unfocus button && hide
+            returnButton.visible = false;
+            button.setFocused(false);
+        }).position(x + 143,y + 130).size(25, 12).build();
+        returnButton.visible = false;
+        addDrawableChild(returnButton);
     }
 
     @Override
@@ -198,6 +212,16 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         if (ret)
             setFocused(null);
         return ret;
+    }
+
+    @Override
+    protected void onMouseClick(Slot slot, int slotId, int button, SlotActionType actionType) {
+        super.onMouseClick(slot, slotId, button, actionType);
+        if (slot.inventory instanceof PlayerInventory && slot.getStack().isOf(be.minelabs.item.Items.ATOM_PACK)){
+            if (handler.showAtomStorage()){ // Handler ensures correct
+                returnButton.visible = true;
+            }
+        }
     }
 
     @Override
