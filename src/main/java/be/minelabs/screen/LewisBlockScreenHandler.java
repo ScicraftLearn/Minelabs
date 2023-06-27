@@ -386,7 +386,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     public boolean showAtomStorage() {
         return clickedIndex >= 0;
-        //return clickedStack != null;
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {

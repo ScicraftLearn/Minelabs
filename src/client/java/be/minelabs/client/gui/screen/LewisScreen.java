@@ -192,15 +192,12 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         }).position(x + 133, y + 17).size(18, 18).build();
         addDrawableChild(buttonWidget);
 
-        returnButton = new ButtonWidget.Builder(Text.of("<--"), button ->{
-            // TODO HIDE PLAYER INVENTORY
-            // TODO PRESS ACTION
+        returnButton = new ButtonWidget.Builder(Text.of("<--"), button -> {
             handler.closeAtomicStorage();
-
             // unfocus button && hide
             returnButton.visible = false;
             button.setFocused(false);
-        }).position(x + 143,y + 130).size(25, 12).build();
+        }).position(x + 144, y + 131).size(25, 12).build();
         returnButton.visible = false;
         addDrawableChild(returnButton);
     }
@@ -217,9 +214,11 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     @Override
     protected void onMouseClick(Slot slot, int slotId, int button, SlotActionType actionType) {
         super.onMouseClick(slot, slotId, button, actionType);
-        if (slot.inventory instanceof PlayerInventory && slot.getStack().isOf(be.minelabs.item.Items.ATOM_PACK)){
-            if (handler.showAtomStorage()){ // Handler ensures correct
-                returnButton.visible = true;
+        if (slot != null) { // Might be null - Method is also called for normal clicks (outside bounds)
+            if (slot.inventory instanceof PlayerInventory && slot.getStack().isOf(be.minelabs.item.Items.ATOM_PACK)) {
+                if (handler.showAtomStorage()) { // Handler ensures correct
+                    returnButton.visible = true;
+                }
             }
         }
     }
