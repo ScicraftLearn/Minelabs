@@ -1,18 +1,15 @@
 package be.minelabs.block.blocks;
 
-import be.minelabs.block.entity.BlockEntities;
+import be.minelabs.block.Blocks;
 import be.minelabs.block.entity.MologramBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -34,6 +31,8 @@ public class MologramBlock extends BlockWithEntity implements Waterloggable {
     public static final BooleanProperty LIT = BooleanProperty.of("lit");
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
+    private static final VoxelShape OUTLINE_SHAPE = VoxelShapes.cuboid(1f / 16f, 0, 1f / 16f, 15f / 16f, 12f / 16f, 15f / 16f);
+
     public MologramBlock(Settings settings) {
         super(settings);
         setDefaultState(getStateManager().getDefaultState().with(LIT, false).with(WATERLOGGED, false));
@@ -41,8 +40,7 @@ public class MologramBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(LIT);
-        builder.add(WATERLOGGED);
+        builder.add(LIT, WATERLOGGED);
     }
 
     @Override
@@ -52,39 +50,38 @@ public class MologramBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
-        //With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
         return BlockRenderType.MODEL;
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShapes.cuboid(1f/16f, 0, 1f/16f, 15f/16f, 12f / 16f, 15f/16f);
+        return OUTLINE_SHAPE;
     }
 
     @Override
     public ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult blockHitResult) {
-        BlockEntity blockEntity = world.getBlockEntity(blockPos);
-        if (!(blockEntity instanceof MologramBlockEntity mologramBlockEntity)) {
+        if (!(world.getBlockEntity(blockPos) instanceof MologramBlockEntity mologramBlockEntity))
             return ActionResult.PASS;
-        }
+
         ItemStack stack = mologramBlockEntity.getContents();
         if (!stack.isEmpty()) { //remove molecule
             player.getInventory().offerOrDrop(stack);
-            world.setBlockState(blockPos, blockState.with(LIT, false));
             mologramBlockEntity.setContents(ItemStack.EMPTY);
-            if (!world.isClient){((ServerWorld) world).getChunkManager().markForUpdate(blockPos);}
 
         } else if (!player.getStackInHand(hand).isEmpty()) { //insert molecule
             ItemStack toInsert = player.getStackInHand(hand).copyWithCount(1);
-            if (mologramBlockEntity.getInventory().canInsert(toInsert)){
+            if (mologramBlockEntity.getInventory().canInsert(toInsert)) {
                 mologramBlockEntity.setContents(toInsert);
                 player.getStackInHand(hand).decrement(1);
-                world.setBlockState(blockPos, blockState.with(LIT, true));
-                if (!world.isClient)
-                    ((ServerWorld) world).getChunkManager().markForUpdate(blockPos);
             }
         }
         return ActionResult.SUCCESS;
+    }
+
+    public static void onInventoryChanged(BlockState state, World world, BlockPos pos, Inventory inventory) {
+        if (!state.isOf(Blocks.MOLOGRAM_BLOCK)) return;
+        // Update blockstate depending on contents of block entity
+        world.setBlockState(pos, state.with(Properties.LIT, !inventory.isEmpty()));
     }
 
     @Override
@@ -97,12 +94,6 @@ public class MologramBlock extends BlockWithEntity implements Waterloggable {
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.MOLOGRAM_BLOCK_ENTITY, MologramBlockEntity::tick);
     }
 
     @Override
@@ -130,7 +121,6 @@ public class MologramBlock extends BlockWithEntity implements Waterloggable {
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (state.get(WATERLOGGED)) {
-            // This is for 1.17 and below: world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
             world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
 
