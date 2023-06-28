@@ -1,5 +1,8 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.Minelabs;
+import be.minelabs.block.Blocks;
+import be.minelabs.block.blocks.MologramBlock;
 import be.minelabs.inventory.SidedSimpleInventory;
 import be.minelabs.item.IMoleculeItem;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
@@ -25,7 +28,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class MologramBlockEntity extends BlockEntity implements SidedStorageBlockEntity {
-    private final SimpleInventory inventory = new SimpleInventory(1){
+    private final SimpleInventory inventory = new SimpleInventory(1) {
         @Override
         public int getMaxCountPerStack() {
             return 1;
@@ -51,17 +54,18 @@ public class MologramBlockEntity extends BlockEntity implements SidedStorageBloc
 
     public MologramBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.MOLOGRAM_BLOCK_ENTITY, pos, state);
+        inventory.addListener(this::onInventoryChanged);
     }
 
-    public SimpleInventory getInventory(){
+    public SimpleInventory getInventory() {
         return inventory;
     }
 
-    public ItemStack getContents(){
+    public ItemStack getContents() {
         return inventory.getStack(0);
     }
 
-    public void setContents(ItemStack stack){
+    public void setContents(ItemStack stack) {
         inventory.setStack(0, stack);
     }
 
@@ -70,28 +74,14 @@ public class MologramBlockEntity extends BlockEntity implements SidedStorageBloc
         return InventoryStorage.of(inventory, null);
     }
 
-    public static void tick(World world, BlockPos blockPos, BlockState state, MologramBlockEntity entity) {
-        ItemStack stack = entity.getContents();
-        if (!world.isClient) {
-            // SERVER
-            ServerWorld serverWorld = (ServerWorld) world;
-            if (state.get(Properties.LIT) && stack.isEmpty()) { // hopper extracted
-                world.setBlockState(blockPos, state.with(Properties.LIT, false));
-                serverWorld.getChunkManager().markForUpdate(blockPos);
-                world.updateListeners(blockPos, state,
-                        state.with(Properties.LIT, false), Block.NOTIFY_LISTENERS);
-            } else if (!state.get(Properties.LIT) && !stack.isEmpty()) {// hopper inserted
-                world.setBlockState(blockPos, state.with(Properties.LIT, true));
-                serverWorld.getChunkManager().markForUpdate(blockPos);
-                world.updateListeners(blockPos, state,
-                        state.with(Properties.LIT, true), Block.NOTIFY_LISTENERS);
-            }
-        } else {
-            //CLIENT
-            if (!state.get(Properties.LIT) && !stack.isEmpty()) {
-                entity.setContents(ItemStack.EMPTY);
-            }
-        }
+    private void onInventoryChanged(Inventory inventory) {
+        if (!(world instanceof ServerWorld serverWorld))
+            return;
+
+        BlockState state = serverWorld.getBlockState(pos);
+        MologramBlock.onInventoryChanged(state, world, pos, inventory);
+        // Tells the server block entity to sync its data to the client which is needed for rendering the contents.
+        serverWorld.getChunkManager().markForUpdate(pos);
     }
 
     @Override
