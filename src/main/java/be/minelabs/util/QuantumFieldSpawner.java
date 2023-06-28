@@ -3,6 +3,8 @@ package be.minelabs.util;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.entity.QuantumFieldBlockEntity;
 import be.minelabs.state.property.Properties;
+import com.google.common.collect.Lists;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -13,10 +15,9 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-
-//import static be.uantwerpen.minelabs.block.QuantumfieldBlock.MASTER;
 
 public class QuantumFieldSpawner {
     static java.util.Random r = new Random();
@@ -75,14 +76,12 @@ public class QuantumFieldSpawner {
     }
 
     private static void spawnCloud(World world, BlockPos pos, BlockState state) {
-
         int x_size = r.nextInt(5, 25);
         int y_size = r.nextInt(4, 15);
         int z_size = r.nextInt(5, 25);
         int max_cloud_height = 100;
         int cloudHeight = r.nextInt(0, max_cloud_height) - max_cloud_height / 2;
 
-        BlockPos blockPos;
         pos = pos.up(cloudHeight);
         float a = x_size / 2.0f;
         float b = y_size / 2.0f;
@@ -96,7 +95,9 @@ public class QuantumFieldSpawner {
          * (a,0,0); (0,b,0),(0,0,c)
          */
         if (!checkFields(pos, world, x_size, y_size, z_size)) {
-            world.setBlockState(pos, state.with(Properties.MASTER, true));
+            ArrayList<BlockPos> placedPositions = Lists.newArrayList();
+            placeQuantumField(world, pos, state.with(Properties.MASTER, true));
+            placedPositions.add(pos);
             for (int x = -x_size / 2; x <= x_size / 2; x++) {
 //                x_sub = x^2/a^2
                 x_sub = x * x / (a * a);
@@ -107,17 +108,28 @@ public class QuantumFieldSpawner {
 //                z_sub = z^2/b^2
                         z_sub = z * z / (c * c);
                         if (x_sub + z_sub + y_sub <= 1.0f) {
-                            blockPos = new BlockPos(x + pos.getX(), y + pos.getY(), z + pos.getZ());
+                            BlockPos blockPos = new BlockPos(x + pos.getX(), y + pos.getY(), z + pos.getZ());
                             tempState = world.getBlockState(blockPos);
                             if (tempState.isAir() || tempState.getBlock().equals(Blocks.ATOM_FLOOR)) {
-                                world.setBlockState(blockPos, state);
+                                placeQuantumField(world, blockPos, state);
+                                placedPositions.add(blockPos);
                             }
                         }
                     }
                 }
             }
-
+            // Neighbours are updated after everything is placed. See FillCommand.
+            for (BlockPos blockPos : placedPositions) {
+                Block block = world.getBlockState(blockPos).getBlock();
+                world.updateNeighbors(blockPos, block);
+            }
         }
+    }
+
+    private static void placeQuantumField(World world, BlockPos pos, BlockState state){
+        state = Block.postProcessState(state, world, pos);
+        // only update listeners at first, neighbours are updated after. See FillCommand.
+        world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
     }
 
     //Checking if there are no other clouds near

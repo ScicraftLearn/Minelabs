@@ -1,6 +1,8 @@
 package be.minelabs.item.reaction;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -28,5 +30,9 @@ public class ExplosiveReaction extends Reaction {
     @Override
     public void react(LivingEntity entity) {
 
+    }
+
+    public Text getTooltipText() {
+        return getTooltipText("explosive").formatted(Formatting.RED);
     }
 }
