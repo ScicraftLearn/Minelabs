@@ -1,17 +1,18 @@
 package be.minelabs.data;
 
 import be.minelabs.block.Blocks;
+import be.minelabs.entity.Entities;
 import be.minelabs.item.Items;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
 import java.io.IOException;
 
 public class FlemishLangProvider extends MinelabsLangProvider {
+
     public FlemishLangProvider(FabricDataOutput dataOutput) {
         super(dataOutput, "nl_be");
     }
 
-    @Override
     public void generateTranslations(TranslationBuilder builder) {
         super.generateTranslations(builder);
         try {
@@ -20,6 +21,11 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        builder.add(Blocks.LEWIS_BLOCK, "Lewis Werkbank");
+        builder.add(Blocks.IONIC_BLOCK, "Ionic Werkbank");
+        builder.add(Blocks.BOHR_BLUEPRINT, "Bohr Blauwdruk");
+        builder.add(Blocks.MOLOGRAM_BLOCK, "Molograaf");
 
         builder.add(Items.SALT, "Zout");
         builder.add(Items.SALT_SHARD, "Zoutscherf");
@@ -52,6 +58,34 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Items.MAGNET, "Magneet");
         builder.add(Items.POCKET_HOLE, "Miniatuur Zwart Gat");
 
+        builder.add(Items.ANTI_NEUTRON, "Anti-Neutron");
+        builder.add(Items.ANTI_PROTON, "Anti-Proton");
+        builder.add(Items.ANTINEUTRINO, "Anti-Neutrino");
+        builder.add(Items.ELECTRON, "Elektron");
+        builder.add(Items.NEUTRINO, "Neutrino");
+        builder.add(Items.NEUTRON, "Neutron");
+        builder.add(Items.POSITRON, "Positron");
+        builder.add(Items.PROTON, "Proton");
+        builder.add(Items.WEAK_BOSON, "Zwak Boson");
+        builder.add(Items.PION_MINUS, "Pion Minus");
+        builder.add(Items.PION_NUL, "Pion Nul");
+        builder.add(Items.PION_PLUS, "Pion Plus");
+        builder.add(Items.GLUON, "Gluon");
+        builder.add(Items.PHOTON, "Foton");
+
+        builder.add(Items.ANTI_DOWNQUARK_BLUE, "Anti-Downquark");
+        builder.add(Items.ANTI_DOWNQUARK_GREEN, "Anti-Downquark");
+        builder.add(Items.ANTI_DOWNQUARK_RED, "Anti-Downquark");
+        builder.add(Items.ANTI_UPQUARK_BLUE, "Anti-Upquark");
+        builder.add(Items.ANTI_UPQUARK_GREEN, "Anti-Upquark");
+        builder.add(Items.ANTI_UPQUARK_RED, "Anti-Upquark");
+        builder.add(Items.DOWNQUARK_BLUE, "Downquark");
+        builder.add(Items.DOWNQUARK_GREEN, "Downquark");
+        builder.add(Items.DOWNQUARK_RED, "Downquark");
+        builder.add(Items.UPQUARK_BLUE, "Upquark");
+        builder.add(Items.UPQUARK_GREEN, "Upquark");
+        builder.add(Items.UPQUARK_RED, "Upquark");
+
         builder.add(Blocks.WEAK_BOSON_QUANTUMFIELD, "Zwak Boson Kwantumveld");
         builder.add(Blocks.UPQUARK_QUANTUMFIELD, "Upquark Kwantumveld");
         builder.add(Blocks.DOWNQUARK_QUANTUMFIELD, "Downquark Kwantumveld");
@@ -59,5 +93,8 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Blocks.NEUTRINO_QUANTUMFIELD, "Neutrino Kwantumveld");
         builder.add(Blocks.ELECTRON_QUANTUMFIELD, "Elektron Kwantumveld");
         builder.add(Blocks.GLUON_QUANTUMFIELD, "Gluon Kwantumveld");
+
+        builder.add(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, "Bohr Entity");
+        builder.add(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, "Subatomisch Deeltje");
     }
 }

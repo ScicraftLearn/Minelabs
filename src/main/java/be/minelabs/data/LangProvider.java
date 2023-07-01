@@ -88,7 +88,6 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Items.UPQUARK_GREEN, "Upquark");
         builder.add(Items.UPQUARK_RED, "Upquark");
 
-
         builder.add(Blocks.WEAK_BOSON_QUANTUMFIELD, "Weak Boson Quantumfield");
         builder.add(Blocks.UPQUARK_QUANTUMFIELD, "Upquark Quantumfield");
         builder.add(Blocks.DOWNQUARK_QUANTUMFIELD, "Downquark Quantumfield");
@@ -99,6 +98,5 @@ public class LangProvider extends MinelabsLangProvider {
 
         builder.add(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, "Bohr Entity");
         builder.add(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, "Subatomic Particle");
-
     }
 }

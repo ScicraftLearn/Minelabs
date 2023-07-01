@@ -76,7 +76,6 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
      *
      * @param translationBuilder : Map/TreeMap for addition
      */
-    @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
         // automatic Block/item/entity(type) key gen
         addEmptyKeys(Registries.ITEM, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
