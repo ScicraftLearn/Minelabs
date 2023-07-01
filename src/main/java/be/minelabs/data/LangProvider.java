@@ -23,6 +23,7 @@ public class LangProvider extends MinelabsLangProvider {
             throw new RuntimeException(e);
         }
 
+
         builder.add(Items.SALT, "Salt");
         builder.add(Items.SALT_SHARD, "Salt Shard");
         builder.add(Items.SALT_BLOCK, "Block of Salt");
@@ -53,6 +54,35 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Items.LASERTOOL_DIAMOND, "Diamond Laser Tool");
         builder.add(Items.MAGNET, "Magnet");
         builder.add(Items.POCKET_HOLE, "Pocket Black Hole");
+
+        builder.add(Items.ANTI_NEUTRON, "AntiNeutron");
+        builder.add(Items.ANTI_PROTON, "AntiProton");
+        builder.add(Items.ANTINEUTRINO, "AntiNeutrino");
+        builder.add(Items.ELECTRON, "Electron");
+        builder.add(Items.NEUTRINO, "Neutrino");
+        builder.add(Items.NEUTRON, "Neutron");
+        builder.add(Items.POSITRON, "Positron");
+        builder.add(Items.PROTON, "Proton");
+        builder.add(Items.WEAK_BOSON, "Weak Boson");
+        builder.add(Items.PION_MINUS, "Pion Minus");
+        builder.add(Items.PION_NUL, "Pion Nul");
+        builder.add(Items.PION_PLUS, "Pion Plus");
+        builder.add(Items.GLUON, "Gluon");
+        builder.add(Items.PHOTON, "Photon");
+
+        builder.add(Items.ANTI_DOWNQUARK_BLUE, "Anti Downquark");
+        builder.add(Items.ANTI_DOWNQUARK_GREEN, "Anti Downquark");
+        builder.add(Items.ANTI_DOWNQUARK_RED, "Anti Downquark");
+        builder.add(Items.ANTI_UPQUARK_BLUE, "Anti Upquark");
+        builder.add(Items.ANTI_UPQUARK_GREEN, "Anti Upquark");
+        builder.add(Items.ANTI_UPQUARK_RED, "Anti Upquark");
+        builder.add(Items.DOWNQUARK_BLUE, "Downquark");
+        builder.add(Items.DOWNQUARK_GREEN, "Downquark");
+        builder.add(Items.DOWNQUARK_RED, "Downquark");
+        builder.add(Items.UPQUARK_BLUE, "Upquark");
+        builder.add(Items.UPQUARK_GREEN, "Upquark");
+        builder.add(Items.UPQUARK_RED, "Upquark");
+
 
         builder.add(Blocks.WEAK_BOSON_QUANTUMFIELD, "Weak Boson Quantumfield");
         builder.add(Blocks.UPQUARK_QUANTUMFIELD, "Upquark Quantumfield");
