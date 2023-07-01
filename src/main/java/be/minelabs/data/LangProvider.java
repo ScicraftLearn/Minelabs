@@ -1,6 +1,7 @@
 package be.minelabs.data;
 
 import be.minelabs.block.Blocks;
+import be.minelabs.entity.Entities;
 import be.minelabs.item.Items;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
@@ -23,6 +24,10 @@ public class LangProvider extends MinelabsLangProvider {
             throw new RuntimeException(e);
         }
 
+        builder.add(Blocks.LEWIS_BLOCK, "Lewis Crafting Table");
+        builder.add(Blocks.IONIC_BLOCK, "Ionic Crafting Table");
+        builder.add(Blocks.BOHR_BLUEPRINT, "Bohr Blueprint");
+        builder.add(Blocks.MOLOGRAM_BLOCK, "Mologram");
 
         builder.add(Items.SALT, "Salt");
         builder.add(Items.SALT_SHARD, "Salt Shard");
@@ -92,6 +97,8 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Blocks.ELECTRON_QUANTUMFIELD, "Electron Quantumfield");
         builder.add(Blocks.GLUON_QUANTUMFIELD, "Gluon Quantumfield");
 
+        builder.add(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, "Bohr Entity");
+        builder.add(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, "Subatomic Particle");
 
     }
 }
