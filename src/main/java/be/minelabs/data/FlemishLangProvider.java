@@ -23,7 +23,7 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         }
 
         builder.add(Blocks.LEWIS_BLOCK, "Lewis Werkbank");
-        builder.add(Blocks.IONIC_BLOCK, "Ionic Werkbank");
+        builder.add(Blocks.IONIC_BLOCK, "Ion Werkbank");
         builder.add(Blocks.BOHR_BLUEPRINT, "Bohr Blauwdruk");
         builder.add(Blocks.MOLOGRAM_BLOCK, "Molograaf");
 
@@ -67,7 +67,7 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Items.POSITRON, "Positron");
         builder.add(Items.PROTON, "Proton");
         builder.add(Items.WEAK_BOSON, "Zwak Boson");
-        builder.add(Items.PION_MINUS, "Pion Minus");
+        builder.add(Items.PION_MINUS, "Pion Min");
         builder.add(Items.PION_NUL, "Pion Nul");
         builder.add(Items.PION_PLUS, "Pion Plus");
         builder.add(Items.GLUON, "Gluon");

@@ -246,5 +246,11 @@
   "painting.minelabs.particle_cpy.author": "IneMEGAmaxi",
   "painting.minelabs.particle_cpy.title": "Standaardmodel Antideeltjes",
   "painting.minelabs.particle_rgb.author": "IneMEGAmaxi",
-  "painting.minelabs.particle_rgb.title": "Standaardmodel Deeltjes"
+  "painting.minelabs.particle_rgb.title": "Standaardmodel Deeltjes",
+  "reaction.minelabs.corrosive": "",
+  "reaction.minelabs.dissolve": "",
+  "reaction.minelabs.explosive": "",
+  "reaction.minelabs.extinguish": "",
+  "reaction.minelabs.poisonous": "",
+  "reaction.minelabs.flammable": ""
 }

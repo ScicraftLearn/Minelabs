@@ -22,7 +22,7 @@ public class DutchLangProvider extends MinelabsLangProvider {
 
 
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            // Silently catch the error, because we are override some lines
         }
     }
 }
