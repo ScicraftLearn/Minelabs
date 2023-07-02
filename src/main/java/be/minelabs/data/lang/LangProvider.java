@@ -1,4 +1,4 @@
-package be.minelabs.data;
+package be.minelabs.data.lang;
 
 import be.minelabs.block.Blocks;
 import be.minelabs.entity.Entities;

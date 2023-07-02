@@ -1,15 +1,15 @@
-package be.minelabs.data;
+package be.minelabs.data.lang;
 
 import be.minelabs.Minelabs;
-import be.minelabs.item.ItemGroups;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
-import net.minecraft.registry.DefaultedRegistry;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 
@@ -81,13 +81,17 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
         addEmptyKeys(Registries.ITEM, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
         addEmptyKeys(Registries.BLOCK, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
         addEmptyKeys(Registries.ENTITY_TYPE, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
+        addEmptyKeys(Registries.ATTRIBUTE, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
+        addEmptyKeys(Registries.ENCHANTMENT, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
+        addEmptyKeys(Registries.STAT_TYPE, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
+        addEmptyKeys(Registries.STATUS_EFFECT, (k, v) -> translationBuilder.add(v, EMPTY_TRANSLATION));
 
-        // MANUALLY DOING GROUPS
-        translationBuilder.add(ItemGroups.ATOMS, EMPTY_TRANSLATION);
-        translationBuilder.add(ItemGroups.MINELABS, EMPTY_TRANSLATION);
-        translationBuilder.add(ItemGroups.QUANTUM_FIELDS, EMPTY_TRANSLATION);
-        translationBuilder.add(ItemGroups.CHEMICALS, EMPTY_TRANSLATION);
-        translationBuilder.add(ItemGroups.ELEMENTARY_PARTICLES, EMPTY_TRANSLATION);
+        // ItemGroups
+        ItemGroups.getGroups().forEach(itemGroup -> {
+            if (Minelabs.MOD_ID.equals(itemGroup.getId().getNamespace())) {
+                translationBuilder.add(itemGroup, EMPTY_TRANSLATION);
+            }
+        });
 
         translationBuilder.add("entity.minecraft.villager.sciencevillager", EMPTY_TRANSLATION);
         // DO NOT USE
@@ -133,7 +137,7 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
 
     }
 
-    private <T> void addEmptyKeys(DefaultedRegistry<T> registry, BiConsumer<Identifier, T> consumer) {
+    private <T> void addEmptyKeys(Registry<T> registry, BiConsumer<Identifier, T> consumer) {
         for (Map.Entry<? extends RegistryKey<T>, T> entry : registry.getEntrySet()) {
             if (entry.getKey().getValue().getNamespace().equals(Minelabs.MOD_ID)) {
                 consumer.accept(entry.getKey().getValue(), entry.getValue());

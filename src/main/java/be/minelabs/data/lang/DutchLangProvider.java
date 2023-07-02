@@ -1,4 +1,4 @@
-package be.minelabs.data;
+package be.minelabs.data.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
