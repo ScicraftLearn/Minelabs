@@ -1,4 +1,4 @@
-package be.minelabs.data;
+package be.minelabs.data.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
@@ -11,14 +11,18 @@ public class DutchLangProvider extends MinelabsLangProvider {
 
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
-        super.generateTranslations(translationBuilder);
-        //TODO COPY NL_BE
         try {
-            translationBuilder.add(dataOutput.getModContainer()
-                    .findPath("assets/minelabs/lang/nl_nl.json").get());
+            translationBuilder.add(getLangFilePath("nl_be"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        try {
+            // ADD OVERRIDE Translations here
+
+
+        } catch (RuntimeException e) {
+            // Silently catch the error, because we are override some lines
+        }
     }
 }

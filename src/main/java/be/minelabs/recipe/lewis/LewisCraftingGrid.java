@@ -18,8 +18,8 @@ public class LewisCraftingGrid extends OrderedInventory {
 
     private PartialMolecule currentMolecule = new PartialMolecule();
 
-    private int width = 5;
-    private int height = 5;
+    private final int width;
+    private final int height;
 
     public LewisCraftingGrid(int width, int height) {
         super(width * height);

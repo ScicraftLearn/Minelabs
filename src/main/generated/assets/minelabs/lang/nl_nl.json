@@ -311,6 +311,7 @@
   "reaction.minelabs.extinguish": "Verstikkend",
   "reaction.minelabs.flammable": "Brandbaar",
   "reaction.minelabs.poisonous": "Giftig",
+  "test.minelabs": "test",
   "text.minelabs.active": "Actief",
   "text.minelabs.clear_grid": "Rooster leegmagen",
   "text.minelabs.clear_slots": "Invoer leegmaken",
