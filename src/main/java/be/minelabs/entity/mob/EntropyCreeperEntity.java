@@ -5,6 +5,7 @@ import be.minelabs.mixin.ExplosionAccessor;
 import be.minelabs.sound.SoundEvents;
 import be.minelabs.util.Tags;
 import com.google.common.collect.Sets;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.piston.PistonBehavior;
@@ -40,7 +41,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
     // Portion of affected blocks to shuffle
     private static final double SHUFFLE_PERCENTAGE = 0.25;
 
-    private final int explosionRadius = 3;
+    private static final int EXPLOSION_RADIUS = 3;
 
     private final List<BlockPos> blocksToShuffle = new ArrayList<>();
     private final List<LivingEntity> entitiesToShuffle = new ArrayList<>();
@@ -197,7 +198,9 @@ public class EntropyCreeperEntity extends CreeperEntity {
 
             // Use explosion code to determine affected blocks
             Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.KEEP;
-            Explosion explosion = new Explosion(this.world, this, null, null, getX(), getY(), getZ(), explosionRadius, false, destructionType);
+            // if creeper is charged
+            float multiplier = this.shouldRenderOverlay() ? 2.0f : 1.0f;
+            Explosion explosion = new Explosion(this.world, this, null, null, getX(), getY(), getZ(), EXPLOSION_RADIUS * multiplier, false, destructionType);
 
             // Adapted from the Explosion class
             Set<BlockPos> blockposSet = getAffectedBlocks((ExplosionAccessor) explosion);
@@ -245,17 +248,22 @@ public class EntropyCreeperEntity extends CreeperEntity {
                 BlockState b1 = world.getBlockState(pos1);
                 BlockState b2 = world.getBlockState(pos2);
                 if (b1.getPistonBehavior() == PistonBehavior.DESTROY) {
-                    world.setBlockState(pos1, Blocks.AIR.getDefaultState());
+                    world.breakBlock(pos1, true, this);
+                    b1 = Blocks.AIR.getDefaultState();
                 }
                 if (b2.getPistonBehavior() == PistonBehavior.DESTROY) {
-                    world.setBlockState(pos2, Blocks.AIR.getDefaultState());
+                    world.breakBlock(pos2, true, this);
+                    b2 = Blocks.AIR.getDefaultState();
                 }
                 Minelabs.LOGGER.debug(b1 + " <-> " + b2);
 
-                BlockState shuffle = world.getBlockState(pos1);
-                world.setBlockState(pos1, world.getBlockState(pos2));
-                world.setBlockState(pos2, shuffle);
+                // prepare blockstates for their placement position
+                b1 = Block.postProcessState(b1, world, pos2);
+                b2 = Block.postProcessState(b2, world, pos1);
+                world.setBlockState(pos1, b2, Block.NOTIFY_LISTENERS | Block.MOVED);
+                world.setBlockState(pos2, b1, Block.NOTIFY_LISTENERS | Block.MOVED);
             }
+            blocksToShuffle.forEach(pos -> world.updateNeighbors(pos, world.getBlockState(pos).getBlock()));
         }
     }
 
