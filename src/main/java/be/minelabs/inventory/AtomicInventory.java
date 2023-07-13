@@ -76,24 +76,24 @@ public class AtomicInventory extends SimpleInventory {
      */
     @Override
     public ItemStack addStack(ItemStack stack) {
-        AtomItem atom = (AtomItem) stack.getItem();
-        ItemStack inv_stack = stacks.get(atom.getAtom().getAtomNumber()-1);
-
-        if (inv_stack.isEmpty()){
-            // Empty stack
-            setStack(atom.getAtom().getAtomNumber()-1, stack);
-            stack.setCount(0);
-            return ItemStack.EMPTY;
-        } else {
-            // Not an empty stack
-            if (ItemStack.canCombine(inv_stack, stack)){
-                this.transfer(stack, inv_stack);
-                if (stack.isEmpty()){
-                    return ItemStack.EMPTY;
+        if (stack.getItem() instanceof AtomItem atom) {
+            ItemStack inv_stack = stacks.get(atom.getAtom().getAtomNumber() - 1);
+            if (inv_stack.isEmpty()) {
+                // Empty stack
+                setStack(atom.getAtom().getAtomNumber() - 1, stack);
+                stack.setCount(0);
+                return ItemStack.EMPTY;
+            } else {
+                // Not an empty stack
+                if (ItemStack.canCombine(inv_stack, stack)) {
+                    this.transfer(stack, inv_stack);
+                    if (stack.isEmpty()) {
+                        return ItemStack.EMPTY;
+                    }
                 }
             }
-            return stack;
         }
+        return stack;
     }
 
     /**
