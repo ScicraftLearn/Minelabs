@@ -1,6 +1,7 @@
 {
   "block.minelabs.animated_charged": "",
   "block.minelabs.atomic_floor": "",
+  "block.minelabs.atomic_storage": "Atomic Storage",
   "block.minelabs.bohr_block": "Bohr Blueprint",
   "block.minelabs.charged_placeholder": "",
   "block.minelabs.charged_point": "Point Charge",
@@ -182,6 +183,7 @@
   "item.minelabs.atom.yttrium_atom": "Yttrium",
   "item.minelabs.atom.zinc_atom": "Zinc",
   "item.minelabs.atom.zirconium_atom": "Zirconium",
+  "item.minelabs.atom_pack": "Atom pack",
   "item.minelabs.balloon": "Balloon",
   "item.minelabs.bond": "",
   "item.minelabs.dust.aluminium_hydride_dust": "Aluminium Hydride (AlH₃)",

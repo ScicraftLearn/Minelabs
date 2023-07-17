@@ -1,6 +1,7 @@
 {
   "block.minelabs.animated_charged": "",
   "block.minelabs.atomic_floor": "",
+  "block.minelabs.atomic_storage": "Atoom Opslag",
   "block.minelabs.bohr_block": "Bohr Blauwdruk",
   "block.minelabs.charged_placeholder": "",
   "block.minelabs.charged_point": "Puntlading",
@@ -182,6 +183,7 @@
   "item.minelabs.atom.yttrium_atom": "Yttrium",
   "item.minelabs.atom.zinc_atom": "Zink",
   "item.minelabs.atom.zirconium_atom": "Zirkonium",
+  "item.minelabs.atom_pack": "Atom pak",
   "item.minelabs.balloon": "Ballon",
   "item.minelabs.bond": "",
   "item.minelabs.dust.aluminium_hydride_dust": "Aluminiumhydride (AlH₃)",
@@ -311,7 +313,6 @@
   "reaction.minelabs.extinguish": "Verstikkend",
   "reaction.minelabs.flammable": "Brandbaar",
   "reaction.minelabs.poisonous": "Giftig",
-  "test.minelabs": "test",
   "text.minelabs.active": "Actief",
   "text.minelabs.clear_grid": "Rooster leegmagen",
   "text.minelabs.clear_slots": "Invoer leegmaken",
