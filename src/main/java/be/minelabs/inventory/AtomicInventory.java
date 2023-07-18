@@ -80,7 +80,7 @@ public class AtomicInventory extends SimpleInventory {
             ItemStack inv_stack = stacks.get(atom.getAtom().getAtomNumber() - 1);
             if (inv_stack.isEmpty()) {
                 // Empty stack
-                setStack(atom.getAtom().getAtomNumber() - 1, stack);
+                setStack(atom.getAtom().getAtomNumber() - 1, stack.copy());
                 stack.setCount(0);
                 return ItemStack.EMPTY;
             } else {
