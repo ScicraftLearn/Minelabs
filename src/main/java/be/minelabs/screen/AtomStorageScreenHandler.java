@@ -81,10 +81,10 @@ public class AtomStorageScreenHandler extends ScreenHandler {
 
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
-        if (slotIndex < 0)
-            return;
-        if (player.getMainHandStack().isOf(Items.ATOM_PACK)
-                && ItemStack.areEqual(slots.get(slotIndex).getStack(), player.getMainHandStack())){
+        // DONT BLOCK : SLOTINDEX < 0
+        // USED FOR SHIFT/DRAG/THROW
+        if (slotIndex > 0 && player.getMainHandStack().isOf(Items.ATOM_PACK)
+                && ItemStack.areEqual(slots.get(slotIndex).getStack(), player.getMainHandStack())) {
             // Don't allow the pack to be moved
             return; // SOMETHING ELSE ??
         }
