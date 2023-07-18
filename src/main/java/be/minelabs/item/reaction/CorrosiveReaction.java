@@ -1,5 +1,7 @@
 package be.minelabs.item.reaction;
 
+import be.minelabs.entity.CorrosiveEntity;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
@@ -27,8 +29,14 @@ public class CorrosiveReaction extends Reaction {
             if (blockState.getBlock() == net.minecraft.block.Blocks.WATER)
                 world.addParticle(ParticleTypes.CLOUD, pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
             else
-                if(canReact(world.getBlockState(BlockPos.ofFloored(block))))
-                    world.setBlockState(BlockPos.ofFloored(block), Blocks.AIR.getDefaultState());
+                if(canReact(world.getBlockState(BlockPos.ofFloored(block)))) {
+                    // Calculate the distance between pos and block
+                    double distance = pos.distanceTo(Vec3d.ofCenter(BlockPos.ofFloored(block)));
+                    // Create a new CorrosiveEntity at the given blockpos
+                    CorrosiveEntity entity = CorrosiveEntity.create(world, BlockPos.ofFloored(block), distance);
+                    // Spawn the entity
+                    world.spawnEntity(entity);
+                }
         });
         Utils.applyRadius(world, pos, radius, this::react);
     }
