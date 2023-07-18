@@ -40,7 +40,10 @@ public class CorrosiveEntity extends Entity {
         }
         if (this.blockPos != null) {
             ticks++;
-            int progress = (int) (ticks / (3*(1+distance)));
+            // Get the hardness of the block at the blockpos
+            float hardness = this.world.getBlockState(blockPos).getHardness(this.world, blockPos);
+            // The formula below can be modified to weigh the progress more towards the distance, the hardness, or the general case
+            int progress = (int) (ticks / ((1+distance)*(1+hardness)));
             // If progress is 10, destroy the entity and the block, otherwise set the progress
             if (progress == 10) {
                 this.remove(RemovalReason.DISCARDED);
