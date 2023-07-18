@@ -11,8 +11,6 @@ public class CorrosiveEntity extends Entity {
     // Hold a reference to a blockpos
     private BlockPos blockPos;
     private int ticks = 0;
-    private int blockHash = 0;
-    private int posHash = 0;
     private double distance = 0;
 
     public CorrosiveEntity(EntityType<? extends Entity> type, World world) {
@@ -22,8 +20,6 @@ public class CorrosiveEntity extends Entity {
     private CorrosiveEntity(World world, BlockPos blockPos, double distance) {
         this(Entities.CORROSIVE_ENTITY, world);
         this.blockPos = blockPos;
-        this.blockHash = world.getBlockState(blockPos).hashCode();
-        this.posHash = blockPos.hashCode();
         this.distance = distance;
     }
 
