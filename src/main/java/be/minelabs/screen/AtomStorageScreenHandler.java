@@ -67,8 +67,61 @@ public class AtomStorageScreenHandler extends ScreenHandler {
 
     @Override
     protected boolean insertItem(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
-        // TODO OVERRIDE for MAX STACK SIZE (shift)
-        return super.insertItem(stack, startIndex, endIndex, fromLast);
+        ItemStack itemStack;
+        Slot slot;
+        boolean bl = false;
+        int i = startIndex;
+        if (fromLast) {
+            i = endIndex - 1;
+        }
+        if (stack.isStackable()) {
+            while (!stack.isEmpty() && (fromLast ? i >= startIndex : i < endIndex)) {
+                slot = this.slots.get(i); // Slot to insert into
+                itemStack = slot.getStack();
+                if (!itemStack.isEmpty() && ItemStack.canCombine(stack, itemStack)) {
+                    int j = itemStack.getCount() + stack.getCount();
+                    if (j <= slot.getMaxItemCount()) {
+                        stack.setCount(0);
+                        itemStack.setCount(j);
+                        slot.markDirty();
+                        bl = true;
+                    } else if (itemStack.getCount() < slot.getMaxItemCount()) {
+                        stack.decrement(stack.getMaxCount() - itemStack.getCount());
+                        itemStack.setCount(stack.getMaxCount());
+                        slot.markDirty();
+                        bl = true;
+                    }
+                }
+                if (fromLast) {
+                    --i;
+                    continue;
+                }
+                ++i;
+            }
+        }
+        if (!stack.isEmpty()) {
+            i = fromLast ? endIndex - 1 : startIndex;
+            while (fromLast ? i >= startIndex : i < endIndex) {
+                slot = this.slots.get(i);
+                itemStack = slot.getStack();
+                if (itemStack.isEmpty() && slot.canInsert(stack)) {
+                    if (stack.getCount() > slot.getMaxItemCount()) {
+                        slot.setStack(stack.split(slot.getMaxItemCount()));
+                    } else {
+                        slot.setStack(stack.split(stack.getCount()));
+                    }
+                    slot.markDirty();
+                    bl = true;
+                    break;
+                }
+                if (fromLast) {
+                    --i;
+                    continue;
+                }
+                ++i;
+            }
+        }
+        return bl;
     }
 
     @Override
