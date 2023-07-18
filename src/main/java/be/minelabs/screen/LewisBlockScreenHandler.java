@@ -275,10 +275,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
-        if (slotIndex < 0) {
-            return;
-        }
-        if (getSlot(slotIndex).inventory instanceof PlayerInventory) {
+        if (slotIndex > 0 && getSlot(slotIndex).inventory instanceof PlayerInventory) {
             if (getSlot(slotIndex).getStack().isOf(Items.ATOM_PACK)) {
                 clickedIndex = slotIndex;
                 openAtomicStorage(getSlot(slotIndex).getStack());
@@ -286,7 +283,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             }
         }
         super.onSlotClick(slotIndex, button, actionType, player);
-        if (slotIndex < GRIDSIZE)
+        if (slotIndex > 0 && slotIndex < GRIDSIZE)
             onGridChangedByPlayer(player);
     }
 
@@ -350,7 +347,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     @Override
     public boolean canInsertIntoSlot(Slot slot) {
-        if (slot.getIndex() > GRIDSIZE - 1) {
+        if (slot instanceof LockableGridSlot) {
             return false;
         }
         return super.canInsertIntoSlot(slot);
