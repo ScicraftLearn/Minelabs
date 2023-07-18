@@ -7,6 +7,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class FlammableReaction extends Reaction {
@@ -24,10 +25,12 @@ public class FlammableReaction extends Reaction {
     @Override
     protected void react(World world, Vec3d pos) {
         Utils.applyRadius(pos, radius, block -> {
-            if (world.getBlockState(BlockPos.ofFloored(block)).getBlock() == Blocks.AIR) {
-                if (this.pyrophoric || Utils.isFlameNearby(world, block, 3))
-                    world.setBlockState(BlockPos.ofFloored(block), Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
-            }
+            if(!world.getGameRules().getBoolean(GameRules.DO_FIRE_TICK))
+                return;
+            if (world.getBlockState(BlockPos.ofFloored(block)).getBlock() != Blocks.AIR)
+                return;
+            if (this.pyrophoric || Utils.isFlameNearby(world, block, 3))
+                world.setBlockState(BlockPos.ofFloored(block), Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
         });
         Utils.applyRadius(world, pos, radius, e -> {
 

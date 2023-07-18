@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class CorrosiveEntity extends Entity {
@@ -44,7 +45,7 @@ public class CorrosiveEntity extends Entity {
             if (progress == 10) {
                 this.remove(RemovalReason.DISCARDED);
                 this.world.setBlockBreakingInfo(this.getId(), this.blockPos, 0);
-                this.world.breakBlock(this.blockPos, true);
+                this.world.breakBlock(this.blockPos, this.world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS));
             } else {
                 this.world.setBlockBreakingInfo(this.getId(), this.blockPos, progress);
             }
