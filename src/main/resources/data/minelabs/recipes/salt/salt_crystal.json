@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " c ",
+    "ccc"
+  ],
+  "key": {
+    "c": {
+      "item": "minelabs:salt/salt_shard"
+    }
+  },
+  "result": {
+    "item": "minelabs:salt/salt_crystal"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:argon_atom"
+      "item": "minelabs:atom/argon_atom"
     },
     "title": "The good jokes argon",
     "description": "Obtain argon",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:argon_atom"
+              "minelabs:atom/argon_atom"
             ]
           }
         ]

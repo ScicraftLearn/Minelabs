@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:boron_atom"
+      "item": "minelabs:atom/boron_atom"
     },
     "title": "You moron, you made boron",
     "description": "Obtain boron",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:boron_atom"
+              "minelabs:atom/boron_atom"
             ]
           }
         ]

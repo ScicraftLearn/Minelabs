@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minelabs:subatomic/neutrino"
+                }
+            ],
+            "conditions": [
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minelabs:subatomic/antineutrino"
+                }
+            ],
+            "conditions": [
+            ]
+        }
+    ]
+}

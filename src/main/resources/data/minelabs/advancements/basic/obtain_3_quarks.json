@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:upquark_green"
+      "item": "minelabs:subatomic/upquark_green"
     },
     "title": "Three quarks for muster mark",
     "description": "Obtain a red, blue and green quark",
@@ -18,8 +18,8 @@
         "items": [
           {
             "items": [
-              "minelabs:upquark_red",
-              "minelabs:downquark_red"
+              "minelabs:subatomic/upquark_red",
+              "minelabs:subatomic/downquark_red"
             ]
           }
         ]
@@ -31,8 +31,8 @@
         "items": [
           {
             "items": [
-              "minelabs:upquark_green",
-              "minelabs:downquark_green"
+              "minelabs:subatomic/upquark_green",
+              "minelabs:subatomic/downquark_green"
             ]
           }
         ]
@@ -44,8 +44,8 @@
         "items": [
           {
             "items": [
-              "minelabs:upquark_blue",
-              "minelabs:downquark_blue"
+              "minelabs:subatomic/upquark_blue",
+              "minelabs:subatomic/downquark_blue"
             ]
           }
         ]

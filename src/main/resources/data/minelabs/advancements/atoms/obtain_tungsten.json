@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:tungsten_atom"
+      "item": "minelabs:atom/tungsten_atom"
     },
     "title": "The brightest light casts the darkest shadow",
     "description": "Obtain tungsten",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:tungsten_atom"
+              "minelabs:atom/tungsten_atom"
             ]
           }
         ]

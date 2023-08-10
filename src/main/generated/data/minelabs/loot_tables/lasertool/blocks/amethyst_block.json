@@ -29,7 +29,7 @@
                       "function": "minecraft:apply_bonus"
                     }
                   ],
-                  "name": "minelabs:iron_atom",
+                  "name": "minelabs:atom/iron_atom",
                   "weight": 1
                 }
               ],

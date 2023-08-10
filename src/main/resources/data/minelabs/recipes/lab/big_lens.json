@@ -1,0 +1,21 @@
+{
+  "group": "microscope",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#G#",
+    "# #",
+    "#G#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:iron_nugget"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "result": {
+    "item": "minelabs:lab/big_lens",
+    "count": 1
+  }
+}

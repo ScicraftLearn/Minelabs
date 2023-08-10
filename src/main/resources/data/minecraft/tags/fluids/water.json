@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minelabs:h2o",
-    "minelabs:flowing_h2o"
+    "minelabs:chemical/h2o",
+    "minelabs:chemical/flowing_h2o"
   ]
 }

@@ -12,7 +12,7 @@
         {
           "type": "minecraft:item",
           "weight": 25,
-          "name": "minelabs:salt",
+          "name": "minelabs:salt/salt",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -27,7 +27,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minelabs:erlenmeyer",
+          "name": "minelabs:erlenmeyer/erlenmeyer",
           "weight": 15,
           "functions": [
             {
@@ -54,12 +54,12 @@
         {
           "type": "minecraft:item",
           "weight": 15,
-          "name": "minelabs:safety_glasses"
+          "name": "minelabs:lab/safety_glasses"
         },
         {
           "type": "minecraft:item",
           "weight": 15,
-          "name": "minelabs:lab_coat"
+          "name": "minelabs:lab/lab_coat"
         },
         {
           "type": "minecraft:item",
@@ -69,12 +69,12 @@
         {
           "type": "minecraft:item",
           "weight": 5,
-          "name": "minelabs:erlenmeyer_h2o"
+          "name": "minelabs:erlenmeyer/erlenmeyer_h2o"
         },
         {
           "type": "minecraft:item",
           "weight": 5,
-          "name": "minelabs:erlenmeyer_he"
+          "name": "minelabs:erlenmeyer/erlenmeyer_he"
         }
       ]
     }

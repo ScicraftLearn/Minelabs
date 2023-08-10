@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minelabs:salt/salt_shard"
+    }
+  ],
+  "result": {
+    "item": "minelabs:salt/salt",
+    "count": 2
+  }
+}

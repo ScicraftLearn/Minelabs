@@ -4,17 +4,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minelabs:carbon_atom",
+          "name": "minelabs:atom/carbon_atom",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "minelabs:calcium_atom",
+          "name": "minelabs:atom/calcium_atom",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "minelabs:oxygen_atom",
+          "name": "minelabs:atom/oxygen_atom",
           "weight": 3
         }
       ],

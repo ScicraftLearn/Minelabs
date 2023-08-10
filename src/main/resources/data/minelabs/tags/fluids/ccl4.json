@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minelabs:ccl4",
-    "minelabs:flowing_ccl4"
+    "minelabs:chemical/ccl4",
+    "minelabs:chemical/flowing_ccl4"
   ]
 }

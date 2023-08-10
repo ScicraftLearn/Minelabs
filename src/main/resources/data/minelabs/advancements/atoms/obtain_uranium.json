@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:uranium_atom"
+      "item": "minelabs:atom/uranium_atom"
     },
     "title": "Fuel for fission",
     "description": "Obtain uranium",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:uranium_atom"
+              "minelabs:atom/uranium_atom"
             ]
           }
         ]

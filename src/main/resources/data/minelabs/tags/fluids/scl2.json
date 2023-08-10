@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minelabs:scl2",
-    "minelabs:flowing_scl2"
+    "minelabs:chemical/scl2",
+    "minelabs:chemical/flowing_scl2"
   ]
 }

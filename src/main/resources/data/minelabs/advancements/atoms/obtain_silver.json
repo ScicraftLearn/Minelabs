@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:silver_atom"
+      "item": "minelabs:atom/silver_atom"
     },
     "title": "The silver lining",
     "description": "Obtain silver",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:silver_atom"
+              "minelabs:atom/silver_atom"
             ]
           }
         ]

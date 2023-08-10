@@ -1,0 +1,28 @@
+{
+  "group": "lab_blocks",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ghg",
+    "www",
+    "www"
+  ],
+  "key": {
+    "g": [
+      {
+        "item": "minecraft:light_blue_terracotta"
+      }
+    ],
+    "h": [
+      {
+        "item": "minecraft:water_bucket"
+      }
+    ],
+    "w": {
+      "item": "minecraft:white_concrete"
+    }
+  },
+  "result": {
+    "item": "minelabs:lab/lab_sink",
+    "count": 1
+  }
+}

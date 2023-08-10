@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minelabs:ncl3",
-    "minelabs:flowing_ncl3"
+    "minelabs:chemical/ncl3",
+    "minelabs:chemical/flowing_ncl3"
   ]
 }

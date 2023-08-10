@@ -1,0 +1,28 @@
+{
+  "group":"anti_proton",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minelabs:subatomic/anti_upquark_red"
+    },
+    {
+      "item": "minelabs:subatomic/anti_upquark_green"
+    },
+    {
+      "item": "minelabs:subatomic/anti_downquark_blue"
+    },
+    {
+      "item": "minelabs:subatomic/gluon"
+    },
+    {
+      "item": "minelabs:subatomic/gluon"
+    },
+    {
+      "item": "minelabs:subatomic/gluon"
+    }
+  ],
+  "result": {
+    "item": "minelabs:subatomic/anti_proton",
+    "count": 1
+  }
+}

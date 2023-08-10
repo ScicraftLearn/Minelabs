@@ -3,17 +3,14 @@
   "id": "minelabs",
   "version": "${version}",
   "name": "Minelabs",
-  "description": "Mod Description: TODO",
+  "description": "A mod to add physics and chemistry to your life (and Minecraft)",
   "authors": [
-    "Joey De Pauw",
-    "Bert Jorissen",
-    "pixar02",
-    "TODO: Extend"
+    "Minelabs Team"
   ],
   "contact": {
-    "homepage": "https://scicraft.be/",
-    "issues": "TODO",
-    "sources": "TODO"
+    "homepage": "https://minelabs.be/",
+    "issues": "https://github.com/ScicraftLearn/Minelabs/issues",
+    "sources": "https://github.com/ScicraftLearn/Minelabs"
   },
   "license": "TODO",
   "icon": "assets/minelabs/icon.png",
@@ -21,22 +18,29 @@
   "accessWidener" : "minelabs.accesswidener",
   "entrypoints": {
     "main": [
-      "be.uantwerpen.minelabs.Minelabs"
+      "be.minelabs.Minelabs"
     ],
     "client": [
-      "be.uantwerpen.minelabs.MinelabsClient"
+      "be.minelabs.client.MinelabsClient"
     ],
     "fabric-datagen": [
-      "be.uantwerpen.minelabs.MinelabsDatagen"
+      "be.minelabs.data.Datagen"
     ]
   },
   "mixins": [
-    "minelabs.mixins.json"
+    "minelabs.mixins.json",
+    {
+      "config": "minelabs.client.mixins.json",
+      "environment": "client"
+    }
   ],
   "depends": {
-    "fabricloader": ">=0.14.8",
-    "fabric": "*",
-    "minecraft": "1.19.x",
+    "fabricloader": ">=0.14.19",
+    "fabric-api": "*",
+    "minecraft": "~1.19.4",
     "java": ">=17"
+  },
+  "conflicts": {
+    "sodium": "*"
   }
 }

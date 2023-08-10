@@ -1,0 +1,23 @@
+{
+  "group": "lab_blocks",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ggg",
+    "www",
+    "www"
+  ],
+  "key": {
+    "g": [
+      {
+        "item": "minecraft:light_blue_terracotta"
+      }
+    ],
+    "w": {
+      "item": "minecraft:white_concrete"
+    }
+  },
+  "result": {
+    "item": "minelabs:lab/lab_center",
+    "count": 1
+  }
+}

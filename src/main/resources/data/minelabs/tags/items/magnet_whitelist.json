@@ -21,6 +21,6 @@
     "minecraft:iron_leggings",
     "minecraft:iron_boots",
     "minecraft:iron_horse_armor",
-    "minelabs:iron_atom"
+    "minelabs:atom/iron_atom"
   ]
 }

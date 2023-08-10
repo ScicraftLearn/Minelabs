@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:erlenmeyer"
+      "item": "minelabs:erlenmeyer/erlenmeyer"
     },
     "title": "Baby's first molecule",
     "description": "Craft a molecule in the Lewis Crafting Table",

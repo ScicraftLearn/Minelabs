@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:oxygen_atom"
+      "item": "minelabs:atom/oxygen_atom"
     },
     "title": "Just breathe",
     "description": "Obtain oxygen",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:oxygen_atom"
+              "minelabs:atom/oxygen_atom"
             ]
           }
         ]

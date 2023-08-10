@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minelabs:hydrogen_atom"
+      "item": "minelabs:atom/hydrogen_atom"
     },
     "title": "It's so simple",
     "description": "Obtain hydrogen",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "minelabs:hydrogen_atom"
+              "minelabs:atom/hydrogen_atom"
             ]
           }
         ]

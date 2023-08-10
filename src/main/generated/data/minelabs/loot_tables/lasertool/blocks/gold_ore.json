@@ -17,7 +17,7 @@
                       "function": "minecraft:apply_bonus"
                     }
                   ],
-                  "name": "minelabs:gold_atom",
+                  "name": "minelabs:atom/gold_atom",
                   "weight": 20
                 },
                 {

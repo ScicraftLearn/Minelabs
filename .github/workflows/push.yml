@@ -4,17 +4,18 @@ on:
   push:
     branches:
       - main
+      - alpha
       - testserver
       - buildserver
 
 jobs:
-  update_server:
+  update_server_main:
     runs-on: ubuntu-latest
     environment: minelabs_upload
     if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
-        branch: [testserver, buildserver]
+        branch: [testserver]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -31,14 +32,87 @@ jobs:
         run: |
           git push origin ${{ matrix.branch }}
 
+  update_server_alpha:
+    runs-on: ubuntu-latest
+    environment: minelabs_upload
+    if: github.ref == 'refs/heads/alpha'
+    strategy:
+      matrix:
+        branch: [buildserver]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          repository: ScicraftLearn/Minelabs
+      - name: Update branch ${{ matrix.branch }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout ${{ matrix.branch }}
+          git merge origin/alpha --no-edit -m "Merged alpha branch on $(date +%F)"
+      - name: Push the updated branch ${{ matrix.branch }}
+        run: |
+          git push origin ${{ matrix.branch }}
+
   gradle_from_main:
     runs-on: ubuntu-latest
     environment: minelabs_upload
-    needs: update_server
+    needs: update_server_main
     if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
-        branch: [testserver, buildserver, main]
+        branch: [testserver, main]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.branch }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_MINELABS_KEY }}
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Execute Gradle build
+        run: ./gradlew build
+
+      - name: Move build to output
+        run: ./.github/scripts/move_build.sh
+        shell: bash
+
+      - name: Upload to minelabs.be
+        if: matrix.branch == 'buildserver'
+        run: ./.github/scripts/sftp_upload.sh
+        shell: bash
+        env:
+          SFTP_PORT: 2235
+
+      - name: Upload to testserver.minelabs.be
+        if: matrix.branch == 'testserver'
+        run: ./.github/scripts/sftp_upload.sh
+        shell: bash
+        env:
+          SFTP_PORT: 2233
+
+      - name: Upload build reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: mod ${{ matrix.branch }}
+          path: output
+
+  gradle_from_alpha:
+    runs-on: ubuntu-latest
+    environment: minelabs_upload
+    needs: update_server_alpha
+    if: github.ref == 'refs/heads/alpha'
+    strategy:
+      matrix:
+        branch: [buildserver]
     steps:
       - uses: actions/checkout@v3
         with:

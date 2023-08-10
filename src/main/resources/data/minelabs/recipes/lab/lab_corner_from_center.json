@@ -1,0 +1,12 @@
+{
+  "group": "lab_blocks",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minelabs:lab/lab_center"
+    }
+  ],
+  "result": {
+    "item": "minelabs:lab/lab_corner"
+  }
+}

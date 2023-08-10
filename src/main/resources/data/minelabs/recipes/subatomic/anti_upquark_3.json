@@ -1,0 +1,12 @@
+{
+  "group":"quarks",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minelabs:subatomic/weak_boson" },
+    { "item": "minelabs:subatomic/anti_downquark_green" }
+  ],
+  "result": {
+    "item": "minelabs:subatomic/anti_upquark_green",
+    "count": 1
+  }
+}
