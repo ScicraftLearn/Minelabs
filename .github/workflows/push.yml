@@ -194,7 +194,7 @@ jobs:
         env:
           SFTP_PORT: 2233
 
-      - name: Upload to pandas.minelabs.be
+      - name: Upload to pandas.minelabs.be 🐼
         if: github.ref == 'refs/heads/pandaserver'
         run: ./.github/scripts/sftp_upload.sh
         shell: bash
