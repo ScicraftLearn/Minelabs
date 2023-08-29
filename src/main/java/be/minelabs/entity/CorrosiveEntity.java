@@ -36,7 +36,7 @@ public class CorrosiveEntity extends Entity {
         super.tick();
         // If the block at the blockpos has turned into air, remove the entity
         if (this.blockPos != null && this.world.getBlockState(blockPos).isOf(net.minecraft.block.Blocks.AIR)) {
-            this.world.setBlockBreakingInfo(this.getId(), this.blockPos, 0);
+            this.world.setBlockBreakingInfo(this.getId(), this.blockPos, -1);
             this.remove(RemovalReason.DISCARDED);
         }
         if (this.blockPos != null) {
@@ -48,7 +48,7 @@ public class CorrosiveEntity extends Entity {
             // If progress is 10, destroy the entity and the block, otherwise set the progress
             if (progress == 10) {
                 this.remove(RemovalReason.DISCARDED);
-                this.world.setBlockBreakingInfo(this.getId(), this.blockPos, 0);
+                this.world.setBlockBreakingInfo(this.getId(), this.blockPos, -1);
                 this.world.breakBlock(this.blockPos, this.world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS));
             } else {
                 this.world.setBlockBreakingInfo(this.getId(), this.blockPos, progress);
