@@ -3,6 +3,7 @@ package be.minelabs.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -57,16 +58,20 @@ public class CorrosiveEntity extends Entity {
 
     @Override
     protected void initDataTracker() {
-        // TODO Auto-generated method stub
+        // No Data to be tracked
     }
 
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
-        // TODO Auto-generated method stub
+        ticks = nbt.getInt("minelabs.time");
+        distance = nbt.getDouble("minelabs.distance");
+        blockPos = NbtHelper.toBlockPos(nbt.getCompound("minelabs.pos"));
     }
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
-        // TODO Auto-generated method stub
+        nbt.putInt("minelabs.time", ticks);
+        nbt.putDouble("minelabs.distance", distance);
+        nbt.put("minelabs.pos", NbtHelper.fromBlockPos(blockPos));
     }
 }

@@ -42,7 +42,7 @@ public class Entities {
     public static final EntityType<BalloonEntity> BALLOON = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, BalloonEntity::new)
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "balloon");
     public static final EntityType<CorrosiveEntity> CORROSIVE_ENTITY = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, CorrosiveEntity::new)
-            .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "corrosive");
+            .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).disableSummon().fireImmune().build(), "corrosive");
 
 
     /**
