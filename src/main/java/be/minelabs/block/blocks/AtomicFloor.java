@@ -2,6 +2,7 @@ package be.minelabs.block.blocks;
 
 import be.minelabs.item.Items;
 import be.minelabs.util.QuantumFieldSpawner;
+import be.minelabs.util.Tags;
 import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +29,9 @@ public class AtomicFloor extends AbstractGlassBlock {
         if (world.isClient()) {
             return;
         }
-        QuantumFieldSpawner.tryToSpawnCloud(world, pos);
+        if (world.getBiome(pos).isIn(Tags.Biomes.ALLOW_QFIELDS)){
+            QuantumFieldSpawner.tryToSpawnCloud(world, pos);
+        }
     }
 
 
