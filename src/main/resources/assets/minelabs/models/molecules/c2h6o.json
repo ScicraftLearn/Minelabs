@@ -3,8 +3,8 @@
   {
     "atoms": [
       {"key": "O1", "atom": "O", "position": [ -1.17, 0.29, 0.00]},
-      {"key": "C1", "atom": "C", "position": [ -0.04, -0.56, 0.00]},
-      {"key": "C2", "atom": "C", "position": [ 1.21, 0.26, 0.00]},
+      {"key": "C2", "atom": "C", "position": [ -0.04, -0.56, 0.00]},
+      {"key": "C1", "atom": "C", "position": [ 1.21, 0.26, 0.00]},
       {"key": "H1", "atom": "H", "position": [-0.09, -1.21, 0.88]},
       {"key": "H2", "atom": "H", "position": [-0.09, -1.19, -0.89]},
       {"key": "H3", "atom": "H", "position": [2.10, -0.37, -0.01]},
@@ -13,15 +13,15 @@
       {"key": "H6", "atom": "H", "position": [-1.12, 0.83, 0.80]}
     ],
     "bonds": [
-      {"from": "H1", "to": "C1", "bondOrder": 1},
-      {"from": "H2", "to": "C1", "bondOrder": 1},
+      {"from": "H1", "to": "C2", "bondOrder": 1},
+      {"from": "H2", "to": "C2", "bondOrder": 1},
       {"from": "H3", "to": "C1", "bondOrder": 1},
       {"from": "C1", "to": "C2", "bondOrder": 1},
-      {"from": "H4", "to": "C2", "bondOrder": 1},
-      {"from": "H5", "to": "C2", "bondOrder": 1},
+      {"from": "H4", "to": "C1", "bondOrder": 1},
+      {"from": "H5", "to": "C1", "bondOrder": 1},
       {"from": "O1", "to": "C2", "bondOrder": 1},
       {"from": "H6", "to": "O1", "bondOrder": 1}
     ]
   },
-  "items": ["minelabs:erlenmeyer_ccl4"]
+  "items": ["minelabs:erlenmeyer/erlenmeyer_ethanol"]
 }

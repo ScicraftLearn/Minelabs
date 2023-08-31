@@ -1,5 +1,6 @@
 package be.minelabs.item.reaction;
 
+import be.minelabs.util.Tags;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
 import net.minecraft.entity.LivingEntity;
@@ -25,19 +26,20 @@ public class FlammableReaction extends Reaction {
     protected void react(World world, Vec3d pos) {
         Utils.applyRadius(pos, radius, block -> {
             if (world.getBlockState(BlockPos.ofFloored(block)).getBlock() == Blocks.AIR) {
-                if (this.pyrophoric || Utils.isFlameNearby(world, block, 3))
+                if (this.pyrophoric || Utils.isFlameNearby(world, block, 3)
+                        || world.getBiome(BlockPos.ofFloored(pos.x, pos.y, pos.z)).isIn(Tags.Biomes.FLAMMABLE_BIOMES))
                     world.setBlockState(BlockPos.ofFloored(block), Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
             }
-        });
-        Utils.applyRadius(world, pos, radius, e -> {
-
         });
     }
 
     @Override
     public void react(LivingEntity entity) {
-//        if (this.pyrophoric || Utils.isFlameNearby(entity.getWorld(), entity.getBlockPos(), 3))
-//            entity.setFireTicks(duration);
+        Utils.applyRadius(entity.getWorld(), entity.getPos(), radius, e -> {
+            //if (this.pyrophoric || Utils.isFlameNearby(e.getWorld(), e.getPos(), 3)) {
+            //    e.setFireTicks(duration);
+            //}
+        });
     }
 
     @Override

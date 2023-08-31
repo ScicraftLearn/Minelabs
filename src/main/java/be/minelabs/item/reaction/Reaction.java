@@ -66,21 +66,12 @@ public abstract class Reaction {
         return Text.translatable("reaction.minelabs." + reaction);
     }
 
-    protected class Utils {
+    protected static class Utils {
 
-        private static final List<Block> FLAMMABLE_BLOCKS = List.of(
-                Blocks.TORCH,
-                Blocks.WALL_TORCH,
-                Blocks.LAVA,
-                Blocks.FIRE,
-                Blocks.SOUL_TORCH,
-                Blocks.SOUL_WALL_TORCH,
-                Blocks.LAVA_CAULDRON
-        );
-
-        final static boolean isFlammable(BlockState state) {
-            return FLAMMABLE_BLOCKS.contains(state.getBlock())
-                    || (state.getProperties().contains(Properties.LIT) && state.get(Properties.LIT));
+        static boolean isFlammable(BlockState state) {
+            return state.isIn(Tags.Blocks.FLAMMABLE_BLOCKS)
+                    || (state.getProperties().contains(Properties.LIT) && state.get(Properties.LIT))
+                    && !state.isIn(Tags.Blocks.FLAMMABLE_BLACKLIST);
         }
 
         public static void applyRadius(Vec3d centerPos, int radius, Consumer<Vec3d> blockFunction) {
