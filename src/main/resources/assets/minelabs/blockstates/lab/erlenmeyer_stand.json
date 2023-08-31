@@ -6,11 +6,11 @@
     },
     "facing=east": {
       "model": "minelabs:block/lab/erlenmeyer_stand_2",
-      "y": 90
+      "y": 270
     },
     "facing=west": {
       "model": "minelabs:block/lab/erlenmeyer_stand_2",
-      "y": 270
+      "y": 90
     },
     "facing=south": {
       "model": "minelabs:block/lab/erlenmeyer_stand_2"

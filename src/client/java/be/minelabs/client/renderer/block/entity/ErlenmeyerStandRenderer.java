@@ -45,9 +45,8 @@ public class ErlenmeyerStandRenderer implements BlockEntityRenderer<ErlenmeyerBl
                 }
                 matrices.translate(-0.5f,0f,-0.5f);
 
-                // Seed should be given (properties) not made every frame
-                int seed = 1; //entity.getWorld().getRandom().nextInt(3);
-                renderErlenmeyer(seed, entity, matrices, vertexConsumers, light, overlay);
+                int seed = entity.getCachedState().get(Properties.TYPE);
+                renderErlenmeyer(seed, matrices, vertexConsumers, light, overlay);
 
                 matrices.scale(0.5f,0.5f,0.5f);
                 context.getItemRenderer().renderItem(new ItemStack(entity.getItem()), ModelTransformationMode.GROUND, light,
@@ -58,7 +57,7 @@ public class ErlenmeyerStandRenderer implements BlockEntityRenderer<ErlenmeyerBl
         }
     }
 
-    private void renderErlenmeyer(int seed, ErlenmeyerBlockEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay){
+    private void renderErlenmeyer(int seed, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay){
         switch (seed) {
             case 0 -> {
                 matrices.translate(0.5f, 0f, 0.5f);
