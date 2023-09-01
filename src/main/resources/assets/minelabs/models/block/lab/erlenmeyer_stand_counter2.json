@@ -3,6 +3,7 @@
   "textures": {
     "10": "minelabs:block/erlenmeyer_stand_bot",
     "11": "minelabs:block/erlenmeyer_stand_arm",
+    "12": "minelabs:block/erlenmeyer_stand_top",
     "particle": "minelabs:block/erlenmeyer"
   },
   "elements": [
@@ -141,6 +142,155 @@
             2
           ],
           "texture": "#11"
+        }
+      }
+    },
+    {
+      "name": "top",
+      "from": [
+        7.75,
+        9.25,
+        5
+      ],
+      "to": [
+        8.25,
+        10.25,
+        11
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            4,
+            3,
+            6
+          ],
+          "texture": "#12"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            6,
+            2
+          ],
+          "texture": "#12"
+        },
+        "south": {
+          "uv": [
+            3,
+            4,
+            4,
+            6
+          ],
+          "texture": "#12"
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            6,
+            4
+          ],
+          "texture": "#12"
+        },
+        "up": {
+          "uv": [
+            1,
+            10,
+            0,
+            4
+          ],
+          "texture": "#12"
+        },
+        "down": {
+          "uv": [
+            2,
+            4,
+            1,
+            10
+          ],
+          "texture": "#12"
+        }
+      }
+    },
+    {
+      "name": "top2",
+      "from": [
+        7.5,
+        5.9,
+        6.75
+      ],
+      "to": [
+        13.5,
+        6.9,
+        7.25
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          11.75,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            2
+          ],
+          "texture": "#12"
+        },
+        "east": {
+          "uv": [
+            3,
+            4,
+            4,
+            6
+          ],
+          "texture": "#12"
+        },
+        "south": {
+          "uv": [
+            0,
+            2,
+            6,
+            4
+          ],
+          "texture": "#12"
+        },
+        "west": {
+          "uv": [
+            2,
+            4,
+            3,
+            6
+          ],
+          "texture": "#12"
+        },
+        "up": {
+          "uv": [
+            1,
+            10,
+            0,
+            4
+          ],
+          "rotation": 270,
+          "texture": "#12"
+        },
+        "down": {
+          "uv": [
+            2,
+            4,
+            1,
+            10
+          ],
+          "rotation": 90,
+          "texture": "#12"
         }
       }
     }

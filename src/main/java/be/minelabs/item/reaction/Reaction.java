@@ -1,9 +1,7 @@
 package be.minelabs.item.reaction;
 
 import be.minelabs.util.Tags;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.tag.TagKey;
