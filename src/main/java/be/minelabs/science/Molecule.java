@@ -123,7 +123,8 @@ public enum Molecule {
             new PoisonousReaction(3, 20*5, 3),
             new CorrosiveReaction(3).addToBlackList(Tags.Blocks.HCL_BLACKLIST)
     )),
-    ;
+    C2H6O("C2H6O", 0xAFAFAF, List.of(
+            new FlammableReaction(20*5, 3, false)));
 
 
     private final int color;
