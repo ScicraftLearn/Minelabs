@@ -1,20 +1,15 @@
 package be.minelabs.client.renderer.block.entity;
 
-import be.minelabs.Minelabs;
 import be.minelabs.block.entity.ErlenmeyerBlockEntity;
 import be.minelabs.state.property.Properties;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 
 @Environment(EnvType.CLIENT)
@@ -29,10 +24,6 @@ public class ErlenmeyerStandRenderer implements BlockEntityRenderer<ErlenmeyerBl
     public void render(ErlenmeyerBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (entity != null){
             if (entity.getItem() != null){
-                //int color = ColorProviderRegistry.ITEM.get(entity.getItem()).getColor(new ItemStack(entity.getItem()), 0); // Should get the color
-                //BakedModel model = MinecraftClient.getInstance().getBakedModelManager().models.get(new Identifier(Minelabs.MOD_ID, "molecules/" + molecule.getMolecule().toLowerCase()));
-
-                //context.getRenderManager().getModelRenderer().render(entity.getWorld(), model, entity.getCachedState(), entity.getPos(), matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()));
                 matrices.push();
 
                 matrices.translate(0f,-(float)entity.getCachedState().get(Properties.COUNTER)/16f, 0f); // Down for Counter
@@ -46,7 +37,7 @@ public class ErlenmeyerStandRenderer implements BlockEntityRenderer<ErlenmeyerBl
                 matrices.translate(-0.5f,0f,-0.5f);
 
                 int seed = entity.getCachedState().get(Properties.TYPE);
-                renderErlenmeyer(seed, matrices, vertexConsumers, light, overlay);
+                renderErlenmeyer(seed, matrices);
 
                 matrices.scale(0.5f,0.5f,0.5f);
                 context.getItemRenderer().renderItem(new ItemStack(entity.getItem()), ModelTransformationMode.GROUND, light,
@@ -57,7 +48,7 @@ public class ErlenmeyerStandRenderer implements BlockEntityRenderer<ErlenmeyerBl
         }
     }
 
-    private void renderErlenmeyer(int seed, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay){
+    private void renderErlenmeyer(int seed, MatrixStack matrices){
         switch (seed) {
             case 0 -> {
                 matrices.translate(0.5f, 0f, 0.5f);
@@ -68,14 +59,9 @@ public class ErlenmeyerStandRenderer implements BlockEntityRenderer<ErlenmeyerBl
                 matrices.translate(0.5f, 0f, 0.5f);
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-45));
                 matrices.translate(-1f / 16f, 5 / 16f, -5 / 16f);
-                //TODO render arm
-                //6 quads //8 vertices
-                //vertexConsumers.getBuffer(RenderLayer.getSolid()).vertex(matrices, x,y,z)
             }
             default -> {
                 matrices.translate(8 / 16f, 8.4 / 16f, 9.5 / 16f);
-
-                //TODO render arm
             }
         }
     }
