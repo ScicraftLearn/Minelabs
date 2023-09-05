@@ -308,6 +308,9 @@ public class Items {
     public static final Item ERLENMEYER_F2 = register(new GasPotion(
             new Item.Settings().recipeRemainder(ERLENMEYER), Molecule.F2), "erlenmeyer/erlenmeyer_f2");
 
+    public static final Item ERLENMEYER_C2H6O = register(new GasPotion(
+            new Item.Settings().recipeRemainder(ERLENMEYER), Molecule.C2H6O), "erlenmeyer/erlenmeyer_ethanol");
+
     public static final Item ERLENMEYER_HNO3 = register(new ErlenmeyerItem(
             Fluids.STILL_HNO3, new Item.Settings().recipeRemainder(ERLENMEYER), "HNO3"), "erlenmeyer/erlenmeyer_hno3");
     public static final Item ERLENMEYER_H2O = register(new ErlenmeyerItem(

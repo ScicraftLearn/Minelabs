@@ -133,14 +133,13 @@ public class Blocks {
     public static final BohrBlueprintBlock BOHR_BLUEPRINT = register(new BohrBlueprintBlock(), "bohr_block");
 
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
-            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "lab/erlenmeyer_stand");
+            FabricBlockSettings.of(Material.GLASS).strength(0.75f)), "lab/erlenmeyer_stand");
     public static final Block MICROSCOPE = register(new MicroscopeBlock(
-            FabricBlockSettings.of(Material.METAL).strength(4.0f).luminance(6)), "lab/microscope");
+            FabricBlockSettings.of(Material.METAL).strength(1f).luminance(6)), "lab/microscope");
     public static final Block TUBERACK = register(new TubeRackBlock(
-            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "lab/tuberack");
-
+            FabricBlockSettings.of(Material.METAL).strength(1f)), "lab/tuberack");
     public static final Block BURNER = register(new BurnerBlock(FabricBlockSettings.of(Material.METAL)
-            .strength(4.0f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "lab/burner");
+            .strength(1f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "lab/burner");
 
     /**
      * Register a Block
