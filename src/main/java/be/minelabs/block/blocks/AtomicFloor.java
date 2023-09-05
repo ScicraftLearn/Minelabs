@@ -15,7 +15,7 @@ public class AtomicFloor extends AbstractGlassBlock {
     public final static int ATOMIC_FLOOR_LAYER = 64;
 
     public AtomicFloor() {
-        super(Settings.of(Material.AMETHYST).strength(-1f, 3600000.0F).nonOpaque().ticksRandomly());
+        super(Settings.copy(Blocks.AMETHYST_BLOCK).strength(-1f, 3600000.0F).nonOpaque().ticksRandomly());
     }
 
     @Override

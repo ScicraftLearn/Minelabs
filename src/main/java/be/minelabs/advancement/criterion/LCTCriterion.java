@@ -8,6 +8,7 @@ import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
 import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -32,7 +33,7 @@ public class LCTCriterion extends NeighbourhoodCriterion<LCTCriterion.Condition>
     public static final Identifier IDENTIFIER = new Identifier(Minelabs.MOD_ID, "lct");
 
     @Override
-    protected Condition conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+    protected Condition conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
         JsonPrimitive orderJson = obj.getAsJsonPrimitive("order");
         if(orderJson != null){
             Type type = Type.bondTypeFromOrder(orderJson.getAsInt());
@@ -71,7 +72,7 @@ public class LCTCriterion extends NeighbourhoodCriterion<LCTCriterion.Condition>
 
         private final Type type;
 
-        private Condition(EntityPredicate.Extended playerPredicate, Type type) {
+        private Condition(LootContextPredicate playerPredicate, Type type) {
             super(IDENTIFIER, playerPredicate);
             this.type = type;
         }

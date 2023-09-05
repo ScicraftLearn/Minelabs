@@ -27,9 +27,9 @@ public class GasPotionEntity extends PotionEntity { // TODO: better to extends f
 
     @Override
     protected void onCollision(HitResult hitResult) {
-        molecule.react(this.world, this.getPos(), hitResult);
-        if (!this.world.isClient) {
-            this.world.syncWorldEvent(2002, this.getBlockPos(), molecule.getColor());
+        molecule.react(this.getWorld(), this.getPos(), hitResult);
+        if (!this.getWorld().isClient) {
+            this.getWorld().syncWorldEvent(2002, this.getBlockPos(), molecule.getColor());
             this.discard();
         }
     }
@@ -40,7 +40,7 @@ public class GasPotionEntity extends PotionEntity { // TODO: better to extends f
         if (this.isTouchingWater()) {
             // TODO: Sketchy, replace this
             BlockHitResult blockHitResult = new BlockHitResult(this.getPos(), Direction.UP, this.getBlockPos(), false);
-            molecule.react(this.world, this.getPos(), blockHitResult);
+            molecule.react(this.getWorld(), this.getPos(), blockHitResult);
 //            this.kill();
         }
     }

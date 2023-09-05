@@ -21,7 +21,7 @@ public class ClientModsEvents {
     public static void onInitializeClient() {
         // render HUD of the closest bohr blueprint
         HudRenderCallback.EVENT.register(
-                (matrixStack, delta) -> {
+                (drawContext, delta) -> {
                     MinecraftClient client = MinecraftClient.getInstance();
 
                     if (client.world == null || client.player == null)
@@ -52,7 +52,7 @@ public class ClientModsEvents {
                     if (closestBohrBlockEntity.isPresent()) {
                         BohrBlueprintEntity bohrBlueprintEntity = closestBohrBlockEntity.get();
                         if (entityToRadiansAngle.apply(bohrBlueprintEntity) < BohrBlueprintHUDRenderer.MAX_RENDER_ANGLE) {
-                            BohrBlueprintHUDRenderer.renderHud(matrixStack, bohrBlueprintEntity);
+                            BohrBlueprintHUDRenderer.renderHud(drawContext, bohrBlueprintEntity);
                         }
                     }
                 }

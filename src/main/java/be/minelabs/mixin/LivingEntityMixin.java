@@ -42,7 +42,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Overwrite
     public float getJumpVelocity() {
         float jumpvelocity = 0.42F * this.getJumpVelocityMultiplier();
-        if (this.world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY)) {
+        if (this.getWorld().getRegistryKey().equals(ModDimensions.SUBATOM_KEY)) {
             jumpvelocity *= atom_movement_multiplier;
         }
         return jumpvelocity;
@@ -55,7 +55,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Overwrite
     public float getMovementSpeed() {
         float speed = this.movementSpeed;
-        if (this.world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
+        if (this.getWorld().getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
             speed *= atom_movement_multiplier;
         return speed;
     }
@@ -66,8 +66,8 @@ public abstract class LivingEntityMixin extends Entity {
      */
     @Overwrite
     private float getMovementSpeed(float slipperiness) {
-        float speed = (this.onGround ? this.getMovementSpeed() * (0.21600002F / (slipperiness * slipperiness * slipperiness)) : this.getOffGroundSpeed());
-        if (this.world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
+        float speed = (this.isOnGround() ? this.getMovementSpeed() * (0.21600002F / (slipperiness * slipperiness * slipperiness)) : this.getOffGroundSpeed());
+        if (this.getWorld().getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
             speed *= atom_movement_multiplier;
         return speed;
     }
@@ -78,7 +78,7 @@ public abstract class LivingEntityMixin extends Entity {
      */
     @Overwrite
     public boolean hasStatusEffect(StatusEffect effect) {
-        if (this.world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY)&&effect.equals(StatusEffects.SLOW_FALLING)){
+        if (this.getWorld().getRegistryKey().equals(ModDimensions.SUBATOM_KEY)&&effect.equals(StatusEffects.SLOW_FALLING)){
             return true;
         }
         return getActiveStatusEffects().containsKey(effect);

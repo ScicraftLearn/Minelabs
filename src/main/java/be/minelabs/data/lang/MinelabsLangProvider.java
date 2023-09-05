@@ -88,9 +88,10 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
 
         // ItemGroups
         ItemGroups.getGroups().forEach(itemGroup -> {
-            if (Minelabs.MOD_ID.equals(itemGroup.getId().getNamespace())) {
-                translationBuilder.add(itemGroup, EMPTY_TRANSLATION);
-            }
+            //TODO FIX (they removed ID)
+            //if (Minelabs.MOD_ID.equals(itemGroup.getDisplayName().)) {
+            //    translationBuilder.add(itemGroup, EMPTY_TRANSLATION);
+            //}
         });
 
         translationBuilder.add("entity.minecraft.villager.sciencevillager", EMPTY_TRANSLATION);

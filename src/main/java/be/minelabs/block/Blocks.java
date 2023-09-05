@@ -21,20 +21,20 @@ public class Blocks {
     public static final Block ATOM_FLOOR = register(new AtomicFloor(), "atomic_floor");
 
     //Portal block
-    public static final Block PORTAL_BLOCK = register(new PortalBlock(FabricBlockSettings.of(Material.DECORATION)), "portal_block");
+    //public static final Block PORTAL_BLOCK = register(new PortalBlock(FabricBlockSettings.of(Material.DECORATION)), "portal_block");
 
-    public static final Block SALT_ORE = register(new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE)
+    public static final Block SALT_ORE = register(new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.STONE)
             .mapColor(MapColor.WHITE_GRAY).strength(3.0f, 3.0f).requiresTool(), UniformIntProvider.create(0, 3)), "salt/salt_ore");
-    public static final Block DEEPSLATE_SALT_ORE = register(new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE)
+    public static final Block DEEPSLATE_SALT_ORE = register(new ExperienceDroppingBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.STONE)
             .mapColor(MapColor.WHITE_GRAY).strength(4.5f, 3.0f).requiresTool(), UniformIntProvider.create(1, 4)), "salt/deepslate_salt_ore");
-    public static final Block SALT_BLOCK = register(new Block(FabricBlockSettings.of(Material.WOOL)
+    public static final Block SALT_BLOCK = register(new Block(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE_GRAY).strength(2.0f)), "salt/salt_block");
 
-    public static final Block SALT_WIRE = register(new SaltWireBlock(FabricBlockSettings.of(Material.DECORATION)
+    public static final Block SALT_WIRE = register(new SaltWireBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.REDSTONE_WIRE)
             .mapColor(MapColor.WHITE_GRAY).noCollision().breakInstantly().dynamicBounds()), "salt/salt_wire");
 
     public static final Block SALT_CRYSTAL = register(new AmethystClusterBlock(7, 3,
-            FabricBlockSettings.of(Material.AMETHYST).nonOpaque().ticksRandomly()
+            FabricBlockSettings.copy(net.minecraft.block.Blocks.AMETHYST_CLUSTER).nonOpaque().ticksRandomly()
                     .sounds(BlockSoundGroup.AMETHYST_CLUSTER).strength(1.5f).luminance((state) -> 5)), "salt/salt_crystal");
     public static final Block LARGE_SALT_CRYSTAL = register(new AmethystClusterBlock(5, 3,
             FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.LARGE_AMETHYST_BUD).luminance((state) -> 4)), "salt/large_salt_crystal");
@@ -44,59 +44,59 @@ public class Blocks {
             FabricBlockSettings.copy(SALT_CRYSTAL).sounds(BlockSoundGroup.SMALL_AMETHYST_BUD).luminance((state) -> 1)), "salt/small_salt_crystal");
 
     public static final Block BUDDING_SALT_BLOCK = register(new BuddingSaltBlock(
-            FabricBlockSettings.of(Material.AMETHYST).ticksRandomly().strength(1.5F)
+            FabricBlockSettings.copyOf(net.minecraft.block.Blocks.BUDDING_AMETHYST).ticksRandomly().strength(1.5F)
                     .sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool()), "salt/budding_salt_block");
 
     public static final Block LAB_CABIN = register(new LabChestBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_cabin");
+            .copyOf(net.minecraft.block.Blocks.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_cabin");
     public static final Block LAB_DRAWER = register(new LabChestBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_drawer");
+            .copyOf(net.minecraft.block.Blocks.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_drawer");
     public static final Block LAB_SINK = register(new LabSinkBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_sink");
+            .copyOf(net.minecraft.block.Blocks.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_sink");
     public static final Block LAB_CENTER = register(new LabCenterBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_center");
+            .copyOf(net.minecraft.block.Blocks.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_center");
     public static final Block LAB_CORNER = register(new LabCornerBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_corner");
+            .copyOf(net.minecraft.block.Blocks.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_corner");
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
-    public static final Block PION_NUL = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block PION_NUL = register(new ChargedPionBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_NUL_BLOCK_ENTITY), "subatomic/pion_nul");
-    public static final Block PION_MINUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block PION_MINUS = register(new ChargedPionBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_MINUS_BLOCK_ENTITY), "subatomic/pion_minus");
-    public static final Block PION_PLUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block PION_PLUS = register(new ChargedPionBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_PLUS_BLOCK_ENTITY), "subatomic/pion_plus");
 
-    public static final Block WEAK_BOSON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block WEAK_BOSON = register(new ChargedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.WEAK_BOSON_BLOCK_ENTITY), "subatomic/weak_boson");
-    public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
+    public static final Block NEUTRINO = register(new Block(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "subatomic/neutrino");
-    public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
+    public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "subatomic/antineutrino");
 
-    public static final ChargedBlock POSITRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlock POSITRON = register(new ChargedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.POSTIRON_BLOCK_ENTITY), "subatomic/positron");
-    public static final ChargedBlock ELECTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlock ELECTRON = register(new ChargedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ELECTRON_BLOCK_ENTITY), "subatomic/electron");
 
-    public static final ChargedBlock PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlock PROTON = register(new ChargedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PROTON_BLOCK_ENTITY), "subatomic/proton");
-    public static final ChargedBlock ANTI_PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlock ANTI_PROTON = register(new ChargedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANTI_PROTON_BLOCK_ENTITY), "subatomic/anti_proton");
 
-    public static final ChargedBlock NEUTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlock NEUTRON = register(new ChargedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.NEUTRON_BLOCK_ENTITY), "subatomic/neutron");
 
-    public static final ChargedBlock ANTI_NEUTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlock ANTI_NEUTRON = register(new ChargedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANTI_NEUTRON_BLOCK_ENTITY), "subatomic/anti_neutron");
 
 
-    public static final ChargedBlock CHARGED_POINT_BLOCK = register(new ChargedPointBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final ChargedBlock CHARGED_POINT_BLOCK = register(new ChargedPointBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f), () -> BlockEntities.CHARGED_POINT_BLOCK_ENTITY), "charged_point");
 
 
-    public static final Block CHARGED_PLACEHOLDER = register(new ChargedPlaceholderBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block CHARGED_PLACEHOLDER = register(new ChargedPlaceholderBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque(), () -> BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY), "charged_placeholder");
-    public static final Block ANIMATED_CHARGED = register(new AnimatedChargedBlock(FabricBlockSettings.of(Material.WOOL)
+    public static final Block ANIMATED_CHARGED = register(new AnimatedChargedBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY), "animated_charged");
 
     // Quantumfields
@@ -110,14 +110,16 @@ public class Blocks {
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/neutrino_quantumfield");
 
     public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(), "time_freeze_block");
-    public static final ElectricFieldSensorBlock ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
+    public static final ElectricFieldSensorBlock ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(
+            FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK).noCollision().nonOpaque()), "electric_field_sensor");
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
-    public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE, MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "fire/green_fire");
+    public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.FIRE)
+            .mapColor(MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "fire/green_fire");
 
-    public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.METAL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
-    public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "lewis_block");
-    public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
+    public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK).mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
+    public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK).nonOpaque()), "lewis_block");
+    public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK).nonOpaque()), "ionic_block");
 
     public static final Block HNO3 = register(new ChemicalFluidBlock(Fluids.STILL_HNO3, Molecule.HNO3), "chemical/hno3");
     public static final Block H2O = register(new ChemicalFluidBlock(Fluids.STILL_H2O, Molecule.H2O), "chemical/h2o");
@@ -132,12 +134,12 @@ public class Blocks {
     public static final BohrBlueprintBlock BOHR_BLUEPRINT = register(new BohrBlueprintBlock(), "bohr_block");
 
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
-            FabricBlockSettings.of(Material.GLASS).strength(0.75f)), "lab/erlenmeyer_stand");
+            FabricBlockSettings.copyOf(net.minecraft.block.Blocks.GLASS).strength(0.75f)), "lab/erlenmeyer_stand");
     public static final Block MICROSCOPE = register(new MicroscopeBlock(
-            FabricBlockSettings.of(Material.METAL).strength(1f).luminance(6)), "lab/microscope");
+            FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK).strength(1f).luminance(6)), "lab/microscope");
     public static final Block TUBERACK = register(new TubeRackBlock(
-            FabricBlockSettings.of(Material.METAL).strength(1f)), "lab/tuberack");
-    public static final Block BURNER = register(new BurnerBlock(FabricBlockSettings.of(Material.METAL)
+            FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK).strength(1f)), "lab/tuberack");
+    public static final Block BURNER = register(new BurnerBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK)
             .strength(1f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "lab/burner");
 
     /**

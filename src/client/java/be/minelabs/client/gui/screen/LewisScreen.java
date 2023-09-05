@@ -12,6 +12,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -48,11 +49,12 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         backgroundHeight += (18 * 3 + 4) + 5;
     }
 
+    // TODO CHECK DRAWITEM (OVERRIDES ??)
     /*
      * draw function is called every tick
      */
     @Override
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.handler.hasRecipe()) {
@@ -61,9 +63,9 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             RenderSystem.setShaderTexture(0, TEXTURE2);
         }
 
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
-        renderProgressArrow(matrices, this.x, this.y);
-        renderRecipeCheck(matrices, this.x, this.y);
+        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        renderProgressArrow(context, this.x, this.y);
+        renderRecipeCheck(context, this.x, this.y);
 
         // Keep mapping between stack (in graph) and slots (for rendering)
         Map<ItemStack, Slot> stackToSlotMap = new HashMap<>();
@@ -81,7 +83,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
                 Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
                 BondManager.Bond bond = manager.getOrCreateBond(slot1, slot2, edge.data.bondOrder);
-                this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
+                context.drawItem(bond.getStack(), bond.getX()+x, bond.getY()+y);
             }
             for (MoleculeItemGraph.Vertex vertex : graph.getVertices()) {
                 Slot slot = stackToSlotMap.get(graph.getItemStackOfVertex(vertex));
@@ -96,7 +98,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                         , vertex.data.getMaxPossibleBonds() == total_bonds); //no clue: copied it from getOpenConnections in the MoleculeGraph class
                 for (String i : Arrays.asList("n", "e", "s", "w")) { //render item 4x: N-E-S-W
                     if (valentieE.getDirectionalValence(i) != 0) {
-                        this.itemRenderer.renderInGuiWithOverrides(matrices, valentieE.getStack(i), slot.x + x, slot.y + y);
+                        context.drawItem(valentieE.getStack(i), slot.x + x, slot.y + y);
                     }
                 }
             }
@@ -119,33 +121,33 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
             RenderSystem.setShaderColor(0.2F, 0.2F, 0.2F, 0.8F);
             RenderSystem.enableBlend();
-            matrices.push();
-            matrices.scale(0.5f, 0.5f, 0.5f);
-            drawSprite(matrices, 2 * (x + 8 + 18 * i), 2 * (133 + y - 20), 1, 32, 32, spriteId.getSprite());
+            context.getMatrices().push();
+            context.getMatrices().scale(0.5f, 0.5f, 0.5f);
+            context.drawSprite(2 * (x + 8 + 18 * i), 2 * (133 + y - 20), 1, 32, 32, spriteId.getSprite());
             //MinecraftClient.getInstance().textRenderer.draw(matrices, Integer.toString(handler.getDensity()), 2*(x + 8 + 18*i)+24, (int) 2*(133+y-20)+24, 5592405);
             RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-            matrices.pop();
+            context.getMatrices().pop();
 
             if (handler.getIoInventory().getStack(i).getCount() < handler.getDensity()) {
                 //this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
             } else {
-                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
+                context.drawItem(new ItemStack(Items.GREEN_STAINED_GLASS_PANE),x + 8 + 18 * i, 133 + y - 20);
             }
             //this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
             RenderSystem.disableBlend();
         }
-        matrices.push();
-        matrices.scale(0.5f, 0.5f, 0.5f);
+        context.getMatrices().push();
+        context.getMatrices().scale(0.5f, 0.5f, 0.5f);
         for (int i = 0; i < ingredients.size(); i++) { //yes, separate loop... the drawtext somehow changes things to the rendering and does not reset after
             ItemStack atom = ingredients.get(i).getMatchingStacks()[0];
             if (!this.handler.hasRecipe() || atom.isEmpty()) {
                 break;
             }
             if (handler.getIoInventory().getStack(i).getCount() == 0) {
-                MinecraftClient.getInstance().textRenderer.draw(matrices, Integer.toString(handler.getDensity()), 2 * (x + 8 + 18 * i) + 25, (int) 2 * (133 + y - 20) + 23, 5592405);
+                context.drawText(textRenderer, Integer.toString(handler.getDensity()), 2 * (x + 8 + 18 * i) + 25, (int) 2 * (133 + y - 20) + 23, 5592405, false);
             }
         }
-        matrices.pop();
+        context.getMatrices().pop();
     }
 
 
@@ -189,46 +191,46 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackground(context);
+        super.render(context, mouseX, mouseY, delta);
 
         // TODO: this should be updated on state change, not during render call
         buttonWidget.setTooltip(Tooltip.of(handler.isInputEmpty() ?
                 Text.translatableWithFallback("text.minelabs.clear_grid", "Clear Grid") :
                 Text.translatableWithFallback("text.minelabs.clear_slots", "Clear Slots")));
 
-        drawMouseoverTooltip(matrices, mouseX, mouseY);
+        drawMouseoverTooltip(context, mouseX, mouseY);
 
         if (this.handler.getCursorStack().isEmpty()) {
             if (mouseX >= x + 105 && mouseX < x + 105 + 16 && mouseY >= y + 17 && mouseY < y + 17 + 16) {
                 switch (handler.getStatus()) {
-                    case 1 -> renderTooltip(matrices, Arrays.asList(
+                    case 1 -> context.drawTooltip(textRenderer, Arrays.asList(
                             Text.translatable("text.minelabs.valid"),
                             Text.translatable("text.minelabs.not_implemented")), mouseX, mouseY);
-                    case 2 -> renderTooltip(matrices,
+                    case 2 -> context.drawTooltip(textRenderer,
                             Text.translatable("text.minelabs.valid"), mouseX, mouseY);
-                    case 3 -> renderTooltip(matrices,
+                    case 3 -> context.drawTooltip(textRenderer,
                             Text.translatable("text.minelabs.multiple_molecules"), mouseX, mouseY);
-                    default -> renderTooltip(matrices,
+                    default -> context.drawTooltip(textRenderer,
                             Text.translatable("text.minelabs.invalid"), mouseX, mouseY);
                 }
             }
         }
     }
 
-    private void renderProgressArrow(MatrixStack matrices, int x, int y) {
+    private void renderProgressArrow(DrawContext context, int x, int y) {
         if (handler.isCrafting()) {
-            drawTexture(matrices, x + 102, y + 52, 176, 0, handler.getScaledProgress(), 20);
+            context.drawTexture(TEXTURE, x + 102, y + 52, 176, 0, handler.getScaledProgress(), 20);
         }
     }
 
-    private void renderRecipeCheck(MatrixStack matrices, int x, int y) {
+    private void renderRecipeCheck(DrawContext context, int x, int y) {
         switch (handler.getStatus()) {
-            case 1 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16); // NOT IMPLEMENTED
-            case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 55, 16, 16); // VALID
-            case 3 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16);
-            default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
+            case 1 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 38, 16, 16); // NOT IMPLEMENTED
+            case 2 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 55, 16, 16); // VALID
+            case 3 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 38, 16, 16);
+            default -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 21, 16, 16); // INVALID
         }
     }
 }

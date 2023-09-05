@@ -9,6 +9,7 @@ import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
 import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -26,7 +27,7 @@ public class BohrCriterion extends AbstractCriterion<BohrCriterion.Condition> {
     public static final Identifier IDENTIFIER = new Identifier(Minelabs.MOD_ID, "bohr_blueprint");
 
     @Override
-    protected BohrCriterion.Condition conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+    protected BohrCriterion.Condition conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
         JsonPrimitive typeJson = obj.getAsJsonPrimitive("type");
         String typeStr = typeJson == null ? "ANY" : typeJson.getAsString().toUpperCase();
         JsonPrimitive hookJson = obj.getAsJsonPrimitive("hook");
@@ -57,7 +58,7 @@ public class BohrCriterion extends AbstractCriterion<BohrCriterion.Condition> {
         private final Type type;
         private final boolean hook;
 
-        public Condition(EntityPredicate.Extended playerPredicate, Type type, boolean isHook) {
+        public Condition(LootContextPredicate playerPredicate, Type type, boolean isHook) {
             super(IDENTIFIER, playerPredicate);
             this.type = type;
             this.hook = isHook;

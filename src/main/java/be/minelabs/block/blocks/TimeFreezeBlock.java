@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -28,7 +28,7 @@ public class TimeFreezeBlock extends BlockWithEntity {
     public static final int e_radius = 8;
 
     public TimeFreezeBlock() {
-        super(FabricBlockSettings.of(Material.GLASS).noCollision().strength(0.5f, 2.0f));
+        super(FabricBlockSettings.copyOf(Blocks.GLASS).noCollision().strength(0.5f, 2.0f));
     }
 
     @Override

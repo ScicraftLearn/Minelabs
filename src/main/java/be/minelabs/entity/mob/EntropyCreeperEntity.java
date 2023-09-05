@@ -89,6 +89,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @return Set of {@link BlockPos}
      */
     protected Set<BlockPos> getAffectedBlocks(ExplosionAccessor explosion) {
+        World world = getWorld();
         Set<BlockPos> blocks = Sets.newHashSet();
         for (int j = 0; j < 16; ++j) {
             for (int k = 0; k < 16; ++k) {
@@ -104,16 +105,16 @@ public class EntropyCreeperEntity extends CreeperEntity {
                     double m = explosion.getX();
                     double n = explosion.getY();
                     double o = explosion.getZ();
-                    for (float h = explosion.getPower() * (0.7f + this.world.random.nextFloat() * 0.6f); h > 0.0f; h -= 0.22500001f) {
+                    for (float h = explosion.getPower() * (0.7f + world.random.nextFloat() * 0.6f); h > 0.0f; h -= 0.22500001f) {
                         BlockPos blockPos = BlockPos.ofFloored(m, n, o);
-                        BlockState blockState = this.world.getBlockState(blockPos);
-                        FluidState fluidState = this.world.getFluidState(blockPos);
-                        if (!this.world.isInBuildLimit(blockPos)) continue;
-                        Optional<Float> optional = explosion.getBehavior().getBlastResistance((Explosion) explosion, this.world, blockPos, blockState, fluidState);
+                        BlockState blockState = world.getBlockState(blockPos);
+                        FluidState fluidState = world.getFluidState(blockPos);
+                        if (!world.isInBuildLimit(blockPos)) continue;
+                        Optional<Float> optional = explosion.getBehavior().getBlastResistance((Explosion) explosion, world, blockPos, blockState, fluidState);
                         if (optional.isPresent()) {
                             h -= (optional.get() + 0.3f) * 0.3f;
                         }
-                        if (h > 0.0f && explosion.getBehavior().canDestroyBlock((Explosion) explosion, this.world, blockPos, blockState, h) && isShuffleable(world.getBlockState(blockPos))) {
+                        if (h > 0.0f && explosion.getBehavior().canDestroyBlock((Explosion) explosion, world, blockPos, blockState, h) && isShuffleable(world.getBlockState(blockPos))) {
                             blocks.add(blockPos);
                         }
                         m += d * (double) 0.3f;
@@ -142,7 +143,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
         int q = MathHelper.floor(explosion.getY() + (double) j + 1.0);
         int e = MathHelper.floor(explosion.getZ() - (double) j - 1.0);
         int r = MathHelper.floor(explosion.getZ() + (double) j + 1.0);
-        List<Entity> f = world.getOtherEntities(this, new Box(k, d, e, l, q, r));
+        List<Entity> f = getWorld().getOtherEntities(this, new Box(k, d, e, l, q, r));
         Vec3d vec3d = getPos();
 
         Predicate<Entity> predicate = EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR;
@@ -187,7 +188,7 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * @return boolean: cancel default explosion or not
      */
     public boolean preExplode() {
-        if (!this.world.isClient) {
+        if (!getWorld().isClient) {
             dead = true;
             this.setInvulnerable(true);
             setInvisible(true);     // so we can't see it (discard happens after animation)
@@ -197,10 +198,10 @@ public class EntropyCreeperEntity extends CreeperEntity {
             this.playSound(SoundEvents.ENTITY_ENTROPY_CREEPER_EXPLODE, 1.0f, 1.0f);
 
             // Use explosion code to determine affected blocks
-            Explosion.DestructionType destructionType = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.KEEP;
+            Explosion.DestructionType destructionType = this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.KEEP;
             // if creeper is charged
             float multiplier = this.shouldRenderOverlay() ? 2.0f : 1.0f;
-            Explosion explosion = new Explosion(this.world, this, null, null, getX(), getY(), getZ(), EXPLOSION_RADIUS * multiplier, false, destructionType);
+            Explosion explosion = new Explosion(this.getWorld(), this, null, null, getX(), getY(), getZ(), EXPLOSION_RADIUS * multiplier, false, destructionType);
 
             // Adapted from the Explosion class
             Set<BlockPos> blockposSet = getAffectedBlocks((ExplosionAccessor) explosion);
@@ -222,8 +223,8 @@ public class EntropyCreeperEntity extends CreeperEntity {
      * Shuffles the blocks
      */
     private void shuffle() {
-        if (this.world.isClient) return;
-
+        if (this.getWorld().isClient) return;
+        World world = getWorld();
         // Teleport affected entities
         for (LivingEntity entity : entitiesToShuffle) {
             if (entity != null) {

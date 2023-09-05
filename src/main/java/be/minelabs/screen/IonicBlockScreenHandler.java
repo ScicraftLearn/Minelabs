@@ -58,7 +58,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         checkSize(inventory, 29);
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
-        BlockEntity be = playerInventory.player.world.getBlockEntity(pos);
+        BlockEntity be = playerInventory.player.getWorld().getBlockEntity(pos);
         if (be instanceof IonicBlockEntity ionic) {
             this.ionic = ionic;
         }

@@ -76,7 +76,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         this.craftingGrid = craftingGrid;
         this.ioInventory = ioInventory;
         this.propertyDelegate = propertyDelegate;
-        BlockEntity be = playerInventory.player.world.getBlockEntity(pos);
+        BlockEntity be = playerInventory.player.getWorld().getBlockEntity(pos);
         if (be instanceof LewisBlockEntity lewis) {
             this.lewis = lewis;
         }

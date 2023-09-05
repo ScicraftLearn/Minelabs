@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(Block.class)
 public class BlockMixin {
-    @Inject(method = "dropStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/loot/context/LootContext$Builder;)V", at = @At(value= "INVOKE", target = "Lnet/minecraft/block/BlockState;onStacksDropped(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/item/ItemStack;Z)V"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+    /*@Inject(method = "dropStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/loot/context/LootContext$Builder;)V", at = @At(value= "INVOKE", target = "Lnet/minecraft/block/BlockState;onStacksDropped(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/item/ItemStack;Z)V"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
     private static void dropStacks(BlockState state, LootContext.Builder lootContext, CallbackInfo ci, ServerWorld serverWorld, BlockPos blockPos) {
         if (serverWorld.getBlockState(blockPos) == state) {
             // If the block is replaced by the lasertool
@@ -26,7 +26,7 @@ public class BlockMixin {
             state.onStacksDropped(serverWorld, blockPos, ItemStack.EMPTY, false);
             ci.cancel();
         }
-    }
+    }*/
 
     @Inject(method = "dropStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V", at = @At(value= "INVOKE", target = "Lnet/minecraft/block/BlockState;onStacksDropped(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/item/ItemStack;Z)V"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
     private static void dropStacks(BlockState state, World world, BlockPos pos, CallbackInfo ci) {

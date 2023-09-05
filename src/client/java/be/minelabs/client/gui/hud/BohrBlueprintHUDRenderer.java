@@ -8,16 +8,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.model.ModelLoader;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 
 @Environment(EnvType.CLIENT)
-public class BohrBlueprintHUDRenderer extends DrawableHelper {
+public class BohrBlueprintHUDRenderer {
     // range in blocks from where the HUD is rendered
     public static final int HUD_RENDER_RADIUS = 9;
     // maximal angle in radians between player camera and entity where HUD is still rendered
@@ -54,50 +53,51 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
     /**
      * renders the text of the bohrplate status. Gets called from HUD render event callback.
      */
-    public static void renderHud(MatrixStack matrixStack, BohrBlueprintEntity entity) {
+    public static void renderHud(DrawContext context, BohrBlueprintEntity entity) {
         AtomConfiguration atomConfig = entity.getAtomConfig();
         float integrity = entity.getIntegrity();
 
-        renderHud(matrixStack, atomConfig, integrity);
+        renderHud(context, atomConfig, integrity);
     }
 
-    public static void renderHud(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity) {
+    public static void renderHud(DrawContext context, AtomConfiguration atomConfig, float integrity) {
         MinecraftClient.getInstance().getProfiler().push("bohr_hud");
         int xBars = (MinecraftClient.getInstance().getWindow().getScaledWidth() - BARS_WIDTH) / 2;
 
-        matrixStack.push();
+        context.getMatrices().push();
         MinecraftClient.getInstance().getProfiler().push("bars");
-        matrixStack.translate(xBars, TOP_PADDING, 0);
-        renderBars(matrixStack, atomConfig);
+        context.getMatrices().translate(xBars, TOP_PADDING, 0);
+        renderBars(context, atomConfig);
         if (atomConfig.getProtons() > 0 || atomConfig.getNeutrons() > 0) {
             MinecraftClient.getInstance().getProfiler().swap("square");
             // shift to left of bars and center for element square
-            matrixStack.push();
+            context.getMatrices().push();
             int xOffset = -(HORIZONTAL_PADDING + ELEMENT_SQUARE_SIZE);
             int yOffset = -(ELEMENT_SQUARE_SIZE - (2 * BARS_POSITION_OFFSET + BARS_HEIGHT)) / 2;
-            matrixStack.translate(xOffset, yOffset, 0);
-            renderElementSquare(matrixStack, atomConfig, integrity);
-            matrixStack.pop();
+            context.getMatrices().translate(xOffset, yOffset, 0);
+            renderElementSquare(context, atomConfig, integrity);
+            context.getMatrices().pop();
 
             MinecraftClient.getInstance().getProfiler().swap("name");
             // shift to right of bars for name
-            matrixStack.push();
+            context.getMatrices().push();
             xOffset = HORIZONTAL_PADDING + BARS_WIDTH;
-            matrixStack.translate(xOffset, NAME_OFFSET_Y, 0);
-            renderElementName(matrixStack, atomConfig);
-            matrixStack.pop();
+            context.getMatrices().translate(xOffset, NAME_OFFSET_Y, 0);
+            renderElementName(context, atomConfig);
+            context.getMatrices().pop();
         }
         MinecraftClient.getInstance().getProfiler().pop();
 
         // DEBUG: render stability as percent left of element square
 //        String stability = (int) ((1f - atomConfig.getNucleusInstability()) * 100) + "%";
-//        drawCenteredText(matrixStack, MinecraftClient.getInstance().textRenderer, stability, -80, 8, WHITE);
+//        context.drawCenteredTextWithShadow(MinecraftClient.getInstance().textRenderer, stability, -80, 8, WHITE);
 
-        matrixStack.pop();
+
+        context.getMatrices().pop();
         MinecraftClient.getInstance().getProfiler().pop();
     }
 
-    private static void renderElementSquare(MatrixStack matrixStack, AtomConfiguration atomConfig, float integrity) {
+    private static void renderElementSquare(DrawContext context, AtomConfiguration atomConfig, float integrity) {
         String symbol = atomConfig.getSymbol().orElse("?");
         String protons = Integer.toString(atomConfig.getProtons());
         String mass = Integer.toString(atomConfig.getProtons() + atomConfig.getNeutrons());
@@ -122,74 +122,74 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
         TextRenderer tr = MinecraftClient.getInstance().textRenderer;
 
         // draw frame
-        drawSquare(matrixStack, squareSize, WHITE);
+        drawSquare(context, squareSize, WHITE);
 
         // draw symbol
-        matrixStack.push();
+        context.getMatrices().push();
         int squareCenter = squareSize / 2;
-        matrixStack.translate(squareCenter, squareCenter, 0);
-        matrixStack.scale(2, 2, 2);
-        matrixStack.translate(0, (double) -MC_TEXT_HEIGHT / 2, 0);
-        drawCenteredTextWithShadow(matrixStack, tr, symbol, 0, 0, WHITE);
-        matrixStack.pop();
+        context.getMatrices().translate(squareCenter, squareCenter, 0);
+        context.getMatrices().scale(2, 2, 2);
+        context.getMatrices().translate(0, (double) -MC_TEXT_HEIGHT / 2, 0);
+        context.drawCenteredTextWithShadow(tr, symbol, 0,0, WHITE);
+        context.getMatrices().pop();
 
         // draw numbers
-        drawTextWithShadow(matrixStack, tr, protons, 2, 2, WHITE);
-        drawTextWithShadow(matrixStack, tr, mass, 2, squareSize - 2 - MC_TEXT_HEIGHT, zColor);
+        context.drawText(tr, protons, 2,2, WHITE, true);
+        context.drawText(tr, mass, 2, squareSize - 2 - MC_TEXT_HEIGHT, zColor,  true);
 
         if (!atomConfig.isElectronStable()) {
             int textWidth = tr.getWidth(ionicCharge);
-            drawTextWithShadow(matrixStack, tr, ionicCharge, squareSize - 2 - textWidth, 2, eColor);
+            context.drawText(tr, ionicCharge, squareSize - 2 - textWidth, 2, eColor, true);
         }
 
         // overlay when decomposing
-        drawIntegrity(matrixStack, squareSize, atomConfig, integrity);
+        drawIntegrity(context, squareSize, atomConfig, integrity);
     }
 
     /**
      * drawRectangle with shadow=true
      */
-    private static void drawRectangle(MatrixStack matrixStack, int width, int height, int color) {
-        fill(matrixStack, 1, 0, width - 1, 1, color);           // top
-        fill(matrixStack, 1, height - 1, width - 1, height, color);         // bottom
-        fill(matrixStack, 0, 1, 1, height - 1, color);          // left
-        fill(matrixStack, width - 1, 1, width, height - 1, color);          // right
+    private static void drawRectangle(DrawContext context, int width, int height, int color) {
+        context.fill(1, 0, width - 1, 1, color);           // top
+        context.fill(1, height - 1, width - 1, height, color);         // bottom
+        context.fill(0, 1, 1, height - 1, color);          // left
+        context.fill(width - 1, 1, width, height - 1, color);          // right
     }
 
     /**
      * Draw outline of a rectangle of width and height (including edges) and corners empty/
      * Shadow is not included in size.
      */
-    private static void drawRectangle(MatrixStack matrixStack, int width, int height, int color, boolean shadow) {
+    private static void drawRectangle(DrawContext context, int width, int height, int color, boolean shadow) {
         if (shadow) {
             // alternative: all edges have shadow (if used: give functions x and y params please)
-//            matrixStack.push();
-//            matrixStack.translate(1, 1, 0);
-//            drawRectangle(matrixStack, width, height, SHADOW_COLOR);
-//            matrixStack.pop();
+            context.getMatrices().push();
+            context.getMatrices().translate(1, 1, 0);
+            drawRectangle(context, width, height, SHADOW_COLOR);
+            context.getMatrices().pop();
 
-            fill(matrixStack, 2, height, width, height + 1, SHADOW_COLOR);         // bottom
-            fill(matrixStack, width, 2, width + 1, height, SHADOW_COLOR);          // right
+            context.fill(2, height, width, height + 1, SHADOW_COLOR);         // bottom
+            context.fill(width, 2, width + 1, height, SHADOW_COLOR);          // right
         }
 
-        drawRectangle(matrixStack, width, height, color);
+        drawRectangle(context, width, height, color);
     }
 
     /**
      * drawSquare with shadow.
      */
-    private static void drawSquare(MatrixStack matrixStack, int size, int color) {
-        drawSquare(matrixStack, size, color, true);
+    private static void drawSquare(DrawContext context, int size, int color) {
+        drawSquare(context, size, color, true);
     }
 
     /**
      * Draw outline of a square with given size (including edges) and corners empty
      */
-    private static void drawSquare(MatrixStack matrixStack, int size, int color, boolean shadow) {
-        drawRectangle(matrixStack, size, size, color, shadow);
+    private static void drawSquare(DrawContext context, int size, int color, boolean shadow) {
+        drawRectangle(context, size, size, color, shadow);
     }
 
-    private static void renderElementName(MatrixStack matrixStack, AtomConfiguration atomConfig) {
+    private static void renderElementName(DrawContext context, AtomConfiguration atomConfig) {
         if (atomConfig.getName().isEmpty())
             return;
 
@@ -205,7 +205,7 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
 
         TextRenderer tr = MinecraftClient.getInstance().textRenderer;
 //        if (atomConfig.isNucleusStable() && !atomConfig.isElectronDecomposing())
-        drawTextWithShadow(matrixStack, tr, atomName, 0, 0, color);
+        context.drawText(tr, atomName, 0, 0, color, true);
     }
 
     private static int getDestructionStage(float integrity) {
@@ -214,7 +214,7 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
         return p;
     }
 
-    private static void drawIntegrity(MatrixStack matrixStack, int size, AtomConfiguration atomConfig, float integrity) {
+    private static void drawIntegrity(DrawContext context, int size, AtomConfiguration atomConfig, float integrity) {
         if (!atomConfig.isNucleusDecomposing()) return;
 
         int stage = getDestructionStage(integrity);
@@ -230,60 +230,60 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
 
         // 1 pixel padding for border
         float scale = (size - 2) / 16f;
-        matrixStack.push();
-        matrixStack.translate(1, 1, 0);
-        matrixStack.scale(scale, scale, scale);
+        context.getMatrices().push();
+        context.getMatrices().translate(1, 1, 0);
+        context.getMatrices().scale(scale, scale, scale);
         // z=1 makes sure it renders above other text
-        drawTexture(matrixStack, 0, 0, 1, 0, 0, 16, 16, 16, 16);
-        matrixStack.pop();
+        context.drawTexture(crumblingTexture, 0, 0, 1, 0, 0, 16, 16, 16, 16);
+        context.getMatrices().pop();
 
         blockBreakingLayer.endDrawing();
     }
 
-    private static void renderBars(MatrixStack matrixStack, AtomConfiguration atomConfig) {
+    private static void renderBars(DrawContext context, AtomConfiguration atomConfig) {
         BarCapacity cap = BarCapacity.get(atomConfig);
 
-        drawFilledBar(matrixStack, 0, 0, atomConfig.getProtons(), cap);
-        drawFilledBar(matrixStack, BARS_POSITION_OFFSET, 4 * BARS_HEIGHT, atomConfig.getNeutrons(), cap, atomConfig.isNucleusStable());
-        drawFilledBar(matrixStack, 2 * BARS_POSITION_OFFSET, 2 * BARS_HEIGHT, atomConfig.getElectrons(), cap, atomConfig.isElectronStable());
+        drawFilledBar(context, 0, 0, atomConfig.getProtons(), cap);
+        drawFilledBar(context, BARS_POSITION_OFFSET, 4 * BARS_HEIGHT, atomConfig.getNeutrons(), cap, atomConfig.isNucleusStable());
+        drawFilledBar(context, 2 * BARS_POSITION_OFFSET, 2 * BARS_HEIGHT, atomConfig.getElectrons(), cap, atomConfig.isElectronStable());
     }
 
     // assumes texture is already set
-    private static void drawBar(MatrixStack matrixStack, int y, int v, int width) {
-        drawTexture(matrixStack, 0, y, -10, 0, v, width, BARS_HEIGHT, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
+    private static void drawBar(DrawContext context, int y, int v, int width) {
+        context.drawTexture(BARS_TEXTURE, 0, y, -10, 0, v, width, BARS_HEIGHT, BARS_TEXTURE_SIZE, BARS_TEXTURE_SIZE);
     }
 
     // assumes texture is already set
-    private static void drawBar(MatrixStack matrixStack, int y, int v) {
-        drawBar(matrixStack, y, v, BARS_WIDTH);
+    private static void drawBar(DrawContext context, int y, int v) {
+        drawBar(context, y, v, BARS_WIDTH);
     }
 
     // assumes texture is already set
-    private static void drawRedOutlineBar(MatrixStack matrixStack, int y) {
+    private static void drawRedOutlineBar(DrawContext context, int y) {
         long time = MinecraftClient.getInstance().world != null ? MinecraftClient.getInstance().world.getTime() : 0;
         if ((time % BARS_FLICKER_PERIOD) < BARS_FLICKER_PERIOD / 2)
-            drawBar(matrixStack, y, BARS_RED_OUTLINE_V, BARS_WIDTH);
+            drawBar(context, y, BARS_RED_OUTLINE_V, BARS_WIDTH);
     }
 
     // assumes texture is already set
-    private static void drawFilledBar(MatrixStack matrixStack, int y, int vEmpty, float progress) {
+    private static void drawFilledBar(DrawContext context, int y, int vEmpty, float progress) {
         int vFilled = vEmpty + BARS_HEIGHT;       // see texture: filled bar is below empty one
 
-        drawBar(matrixStack, y, vEmpty);
-        drawBar(matrixStack, y, vFilled, (int) (BARS_WIDTH * progress));
+        drawBar(context, y, vEmpty);
+        drawBar(context, y, vFilled, (int) (BARS_WIDTH * progress));
     }
 
     // assumes texture is already set
-    private static void drawBarTicks(MatrixStack matrixStack, int y, BarCapacity cap) {
+    private static void drawBarTicks(DrawContext context, int y, BarCapacity cap) {
         if (cap == BarCapacity.CAP_MAX)
             return;
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        drawBar(matrixStack, y, cap.vTicks);
+        drawBar(context, y, cap.vTicks);
         RenderSystem.disableBlend();
     }
 
-    private static void drawBarText(MatrixStack matrixStack, int y, int amount, float progress) {
+    private static void drawBarText(DrawContext context, int y, int amount, float progress) {
         if (amount == 0)
             return;
         TextRenderer tr = MinecraftClient.getInstance().textRenderer;
@@ -291,36 +291,36 @@ public class BohrBlueprintHUDRenderer extends DrawableHelper {
         String label = Integer.toString(amount);
         int textWidth = tr.getWidth(label);
 
-        matrixStack.push();
-        matrixStack.translate(x, y, 0);
-        matrixStack.scale(BAR_TEXT_SCALE, BAR_TEXT_SCALE, BAR_TEXT_SCALE);
-        drawTextWithShadow(matrixStack, tr, label, -textWidth - 1, 1, WHITE);
-        matrixStack.pop();
+        context.getMatrices().push();
+        context.getMatrices().translate(x, y, 0);
+        context.getMatrices().scale(BAR_TEXT_SCALE, BAR_TEXT_SCALE, BAR_TEXT_SCALE);
+        context.drawText(tr, label, -textWidth - 1, 1, WHITE, true);
+        context.getMatrices().pop();
     }
 
     /**
      * Renders filled bar with ticks and text. Texture does not need to be set beforehand.
      */
-    private static void drawFilledBar(MatrixStack matrixStack, int y, int vEmpty, int amount, BarCapacity cap) {
-        drawFilledBar(matrixStack, y, vEmpty, amount, cap, true);
+    private static void drawFilledBar(DrawContext context, int y, int vEmpty, int amount, BarCapacity cap) {
+        drawFilledBar(context, y, vEmpty, amount, cap, true);
     }
 
     /**
      * Renders filled bar with ticks, text and instability indicator. Texture does not need to be set beforehand.
      */
-    private static void drawFilledBar(MatrixStack matrixStack, int y, int vEmpty, int amount, BarCapacity cap, boolean stable) {
+    private static void drawFilledBar(DrawContext context, int y, int vEmpty, int amount, BarCapacity cap, boolean stable) {
         float progress = (float) amount / cap.capacity;
 
         RenderSystem.setShaderTexture(0, BARS_TEXTURE);
-        drawFilledBar(matrixStack, y, vEmpty, progress);
-        drawBarTicks(matrixStack, y, cap);
+        drawFilledBar(context, y, vEmpty, progress);
+        drawBarTicks(context, y, cap);
 
         if (!stable) {
-            drawRedOutlineBar(matrixStack, y);
+            drawRedOutlineBar(context, y);
         }
 
         // this call changes texture
-        drawBarText(matrixStack, y, amount, progress);
+        drawBarText(context, y, amount, progress);
     }
 
     /**

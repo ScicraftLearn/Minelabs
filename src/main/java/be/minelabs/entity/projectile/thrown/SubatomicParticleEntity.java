@@ -61,13 +61,13 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
     public void onCreated(boolean checkCollision) {
         setNoGravity(true);
 
-        if (world.isClient)
+        if (getWorld().isClient)
             return;
 
         if (checkCollision) {
             // on server check for collision with other entities upon spawning
             // when inside of entity from start this is not checked by the default collision logic
-            List<Entity> entities = world.getOtherEntities(this, getBoundingBox().expand(0.2f), Entity::canHit);
+            List<Entity> entities = getWorld().getOtherEntities(this, getBoundingBox().expand(0.2f), Entity::canHit);
             for (Entity entity : entities.stream().sorted(Comparator.comparing(this::distanceTo)).toList()) {
                 onEntityHit(new EntityHitResult(entity));
                 if (isRemoved()) break;
@@ -109,7 +109,7 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
                 double velocityX = (Math.random() * 2.0 - 1.0) * (double) 0.3f;
                 double velocityY = (Math.random() * 2.0 - 1.0) * (double) 0.3f;
                 double velocityZ = (Math.random() * 2.0 - 1.0) * (double) 0.3f;
-                this.world.addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), velocityX, velocityY, velocityZ);
+                this.getWorld().addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), velocityX, velocityY, velocityZ);
             }
         }
     }
@@ -137,7 +137,7 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
 
             // Logic to despawn SubatomicParticle
             ++this.itemAge;
-            if (!this.world.isClient && this.itemAge >= getDespawnAge()) {
+            if (!this.getWorld().isClient && this.itemAge >= getDespawnAge()) {
                 this.discard();
             }
         }
@@ -155,9 +155,9 @@ public class SubatomicParticleEntity extends ThrownItemEntity {
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             // Generates clientside particles
-            this.world.sendEntityStatus(this, (byte) 3);
+            this.getWorld().sendEntityStatus(this, (byte) 3);
             // Remove Entity from the server
             this.kill();
         }

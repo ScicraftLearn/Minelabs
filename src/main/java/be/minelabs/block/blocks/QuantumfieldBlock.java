@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -40,7 +39,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
         // Change the first value in strength to get the wanted mining speed
         // Made material not solid so portals can't spawn on it.
         super(FabricBlockSettings
-                .of(Material.POWDER_SNOW)
+                .copyOf(net.minecraft.block.Blocks.POWDER_SNOW)
                 .strength(0.5f, 2.0f)
                 .ticksRandomly()
                 .luminance(state -> (int) Math.ceil(MathHelper.clampedLerp(MAX_LIGHT, MIN_LIGHT, (float) getAge(state) / MAX_AGE)))

@@ -89,7 +89,7 @@ public class BohrBlueprintEntity extends Entity {
         if (this.isRemoved())
             return;
 
-        if (this.world.isClient) {
+        if (this.getWorld().isClient) {
             clientTick();
             return;
         }
@@ -102,7 +102,7 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void clientTick() {
         if (getProtons() == 0 && getNeutrons() == 0) {
-            this.world.addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX(), this.getY() + 0.5f * getHeight(), this.getZ(), 0, 0, 0);
+            this.getWorld().addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX(), this.getY() + 0.5f * getHeight(), this.getZ(), 0, 0, 0);
         }
     }
 
@@ -142,7 +142,7 @@ public class BohrBlueprintEntity extends Entity {
 
     // Called by subatomic particle when it collides with this entity.
     public void onParticleCollision(SubatomicParticleEntity particle) {
-        if (world.isClient)
+        if (this.getWorld().isClient)
             return;
         ItemStack stack = particle.getStack();
         Item item = stack.getItem();
@@ -157,7 +157,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     public boolean isAttachedToBlock() {
-        return world.getBlockState(getBohrBlueprintPos()).isOf(Blocks.BOHR_BLUEPRINT);
+        return this.getWorld().getBlockState(getBohrBlueprintPos()).isOf(Blocks.BOHR_BLUEPRINT);
     }
 
     @Override
@@ -172,9 +172,9 @@ public class BohrBlueprintEntity extends Entity {
         // cleanup after entity is removed
         if (reason.shouldDestroy()){
             dropContents();
-            BlockState state = world.getBlockState(getBohrBlueprintPos());
+            BlockState state = this.getWorld().getBlockState(getBohrBlueprintPos());
             if (state.isOf(Blocks.BOHR_BLUEPRINT))
-                world.removeBlock(getBohrBlueprintPos(), false);
+                this.getWorld().removeBlock(getBohrBlueprintPos(), false);
         }
     }
 
@@ -225,7 +225,7 @@ public class BohrBlueprintEntity extends Entity {
 
     public boolean addItem(Item item, @Nullable ServerPlayerEntity source) {
         // we don't want the client to modify inventory. Always return false because we can't check inventory for remove.
-        if (world.isClient)
+        if (this.getWorld().isClient)
             return false;
 
         if (isRemovalItem(item))
@@ -247,7 +247,7 @@ public class BohrBlueprintEntity extends Entity {
 
     private boolean removeItem(Item item, @Nullable ServerPlayerEntity source) {
         // we don't want the client to modify inventory
-        if (world.isClient)
+        if (this.getWorld().isClient)
             return false;
 
         // iterate in reverse order
@@ -318,7 +318,7 @@ public class BohrBlueprintEntity extends Entity {
     private void launchParticle(Item item) {
         // launch particle
         ItemStack stack = item.getDefaultStack();
-        SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack, false);
+        SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), getWorld(), stack, false);
         // velocity chosen such that it launches up and around, but not too much at the ground
         Vec3d velocity = new Vec3d(0, 0.2, 0)
                 .add(
@@ -327,7 +327,7 @@ public class BohrBlueprintEntity extends Entity {
                         this.random.nextTriangular(0, 1d) * 2
                 ).normalize().multiply(SubatomicParticleEntity.DEFAULT_SPEED);
         entity.setVelocity(velocity);
-        world.spawnEntity(entity);
+        this.getWorld().spawnEntity(entity);
     }
 
     private void decomposeAtom() {
@@ -378,7 +378,7 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     public boolean canHit() {
         // on server this function is used for collision checks
-        if (!world.isClient) return true;
+        if (!this.getWorld().isClient) return true;
         // on the client it is used for mining interaction
         return !isEmpty();
     }
@@ -396,7 +396,7 @@ public class BohrBlueprintEntity extends Entity {
         if (this.isInvulnerableTo(source)) {
             return false;
         }
-        if (!this.isRemoved() && !this.world.isClient) {
+        if (!this.isRemoved() && !this.getWorld().isClient) {
             if (source.getAttacker() instanceof ServerPlayerEntity player) {
                 onHitByPlayer(player);
                 return true;
@@ -412,14 +412,14 @@ public class BohrBlueprintEntity extends Entity {
     public ItemStack extractByRod(ServerPlayerEntity player, FishingBobberEntity bobber) {
         ItemStack stack = removeLastItem(player);
 
-        if (stack.isEmpty() || world.isClient)
+        if (stack.isEmpty() || this.getWorld().isClient)
             return stack;
 
         // custom drop logic based on dropStack of entity.
         // We immediately add fishing hook pulling logic before entity is spawned so the info is synced with the client.
-        ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), this.getY(), this.getZ(), stack);
+        ItemEntity itemEntity = new ItemEntity(this.getWorld(), this.getX(), this.getY(), this.getZ(), stack);
         ((FishingBobberEntityAccessor) bobber).invokePullHookedEntity(itemEntity);
-        this.world.spawnEntity(itemEntity);
+        this.getWorld().spawnEntity(itemEntity);
 
         return stack;
     }
@@ -430,11 +430,11 @@ public class BohrBlueprintEntity extends Entity {
 
         // Remove other bohr blueprint entities already present.
         // We put this check here because the position needs to be known and it is loaded from nbt, for example when copied by structure block
-        if (!world.isClient){
-            List<Entity> entities = world.getOtherEntities(this, getBoundingBox(), e -> e instanceof BohrBlueprintEntity);
+        if (!this.getWorld().isClient){
+            List<Entity> entities = this.getWorld().getOtherEntities(this, getBoundingBox(), e -> e instanceof BohrBlueprintEntity);
             for (Entity entity: entities){
                 // move below map first so the bohr plate below won't be found and it doesn't destroy it.
-                entity.setPosition(getX(), world.getBottomY()-1, getZ());
+                entity.setPosition(getX(), this.getWorld().getBottomY()-1, getZ());
                 entity.discard();
             }
         }
@@ -517,7 +517,7 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void compositionChanged() {
         // server only from here on
-        if (world.isClient) return;
+        if (this.getWorld().isClient) return;
 
         if (!getAtomConfig().isNucleusDecomposing())
             setIntegrity(1f);
@@ -530,7 +530,7 @@ public class BohrBlueprintEntity extends Entity {
         BohrBlueprintBlock.Status status = BohrBlueprintBlock.Status.EMPTY;
         if (!getCraftableAtom().isEmpty()) status = BohrBlueprintBlock.Status.CRAFTABLE;
         else if(!getAtomConfig().isStable()) status = BohrBlueprintBlock.Status.UNSTABLE;
-        BohrBlueprintBlock.updateStatus(world, getBohrBlueprintPos(), status);
+        BohrBlueprintBlock.updateStatus(getWorld(), getBohrBlueprintPos(), status);
     }
 
     public AtomConfiguration getAtomConfig() {

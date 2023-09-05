@@ -113,7 +113,6 @@ public class ErlenmeyerItem extends Item implements FluidModificationItem, IMole
         } else {
             BlockState blockState = world.getBlockState(pos);
             Block block = blockState.getBlock();
-            Material material = blockState.getMaterial();
             boolean bl = blockState.canBucketPlace(this.fluid);
             boolean bl2 = blockState.isAir() || bl || block instanceof FluidFillable && ((FluidFillable) block).canFillWithFluid(world, pos, blockState, this.fluid);
             if (!bl2) {
@@ -134,7 +133,7 @@ public class ErlenmeyerItem extends Item implements FluidModificationItem, IMole
                 this.playEmptyingSound(player, world, pos);
                 return true;
             } else {
-                if (!world.isClient && bl && !material.isLiquid()) {
+                if (!world.isClient && bl && !blockState.isLiquid()) {
                     world.breakBlock(pos, true);
                 }
 

@@ -7,6 +7,7 @@ import be.minelabs.entity.Entities;
 import be.minelabs.item.items.AtomItem;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
@@ -57,7 +58,8 @@ public class BohrBlueprintBlock extends Block {
     public static final EnumProperty<Status> STATUS = EnumProperty.of("status", Status.class);
 
     public BohrBlueprintBlock() {
-        super(FabricBlockSettings.of(new Material.Builder(MapColor.LAPIS_BLUE).blocksPistons().build()).requiresTool().strength(1f).nonOpaque());
+        super(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.OBSIDIAN).pistonBehavior(PistonBehavior.BLOCK)
+                .mapColor(MapColor.LAPIS_BLUE).requiresTool().strength(1f).nonOpaque());
         this.setDefaultState(this.stateManager.getDefaultState()
                 .with(STATUS, Status.EMPTY).with(FACING, Direction.NORTH));
     }
@@ -145,7 +147,7 @@ public class BohrBlueprintBlock extends Block {
     @Override
     public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos) {
         // While it contains content don't start breaking progress. Items are dropped in onBlockBreakStart.
-        BohrBlueprintEntity entity = getEntity(player.world, pos);
+        BohrBlueprintEntity entity = getEntity(player.getWorld(), pos);
         if (entity != null && !entity.isEmpty()){
             return 0;
         }
@@ -162,7 +164,7 @@ public class BohrBlueprintBlock extends Block {
             return;
 
         // While it contains content, drop them one by one. Block break progress is stopped in calcBlockBreakingDelta.
-        BohrBlueprintEntity entity = getEntity(player.world, pos);
+        BohrBlueprintEntity entity = getEntity(player.getWorld(), pos);
         if (entity != null && !entity.isEmpty()){
             ItemStack stack = entity.dropLastItem((ServerPlayerEntity) player);
         }

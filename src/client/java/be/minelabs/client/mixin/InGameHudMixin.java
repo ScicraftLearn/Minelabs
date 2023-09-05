@@ -5,6 +5,7 @@ import be.minelabs.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -26,13 +27,13 @@ public abstract class InGameHudMixin {
     private MinecraftClient client;
 
     @Shadow
-    protected abstract void renderOverlay(MatrixStack matrices, Identifier texture, float opacity);
+    protected abstract void renderOverlay(DrawContext context, Identifier texture, float opacity);
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;asItem()Lnet/minecraft/item/Item;"))
-    public void renderInject(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
+    public void renderInject(DrawContext context, float tickDelta, CallbackInfo ci) {
         ItemStack itemStack = client.player.getInventory().getArmorStack(3);
         if (itemStack.isOf(Items.SAFETY_GLASSES)) {
-            renderOverlay(matrices, SAFETY_GLASS, 1.0F);
+            renderOverlay(context, SAFETY_GLASS, 1.0F);
         }
     }
 }
