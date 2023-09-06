@@ -36,7 +36,7 @@ import java.util.Optional;
 
 public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory {
     // slots 0-24
-    private final LewisCraftingGrid craftingGrid = new LewisCraftingGrid(5,5);
+    private final LewisCraftingGrid craftingGrid = new LewisCraftingGrid(5, 5);
 
     // slots 0-8: atoms, slot 9: erlenmeyer, slot 10: output
     // combined with craftingGrid this gives slots 25-33: atoms, slot 34: erlenmeyer, slot 35: output
@@ -58,7 +58,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     public LewisBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.LEWIS_BLOCK_ENTITY, pos, state);
-        //this.matchGetter = RecipeManager.createCachedMatchGetter(CraftingRecipes.MOLECULE_CRAFTING);
 
         propertyDelegate = new PropertyDelegate() {
 
@@ -131,28 +130,40 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return super.createNbt();
     }
 
+    public void tick(World world, BlockPos pos, BlockState state){
+        DynamicRegistryManager manager =  world.getRegistryManager();
+        if (hasRecipe()){
+
+        } else {
+            resetProgress();
+        }
+    }
+
+    private boolean hasRecipe(){
+        return false;
+    }
+
     public static void tick(World world, BlockPos pos, BlockState state, LewisBlockEntity lewis) {
+        DynamicRegistryManager manager = world.getRegistryManager();
         //No recipe loaded, try to load one.
         if (lewis.currentRecipe == null) {
             Optional<MoleculeRecipe> recipe = world.getRecipeManager().getFirstMatch(MoleculeRecipe.MoleculeRecipeType.INSTANCE, lewis.craftingGrid, world);
-            //Optional<MoleculeRecipe> recipe = lewis.matchGetter.getFirstMatch(lewis.craftingGrid, world);
             recipe.ifPresent(r -> {
                 lewis.setRecipe(r);
                 LewisDataPacket packet = new LewisDataPacket(pos, lewis.ingredients); //custom packet to sync ingredients
                 packet.send(world, pos);
             });
             // Advancement, to be refactored along with everything else
-            if (recipe.isEmpty() && world instanceof ServerWorld serverWorld){
+            if (recipe.isEmpty() && world instanceof ServerWorld serverWorld) {
                 MoleculeGraph structure = lewis.craftingGrid.getPartialMolecule().getStructure();
-                if (structure.getVertices().size() > 0 && structure.getTotalOpenConnections() == 0 && structure.isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()){
+                if (structure.getVertices().size() > 0 && structure.getTotalOpenConnections() == 0 && structure.isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
                     Criteria.LCT_CRITERION.trigger(serverWorld, pos, 5, c -> c.test(LCTCriterion.Type.UNKNOWN_MOLECULE));
                 }
             }
         }
         //recipe loaded, check if enough items
-        // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
         else if (lewis.ioInventory.getStack(10).isEmpty()
-                || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput(DynamicRegistryManager.EMPTY).getItem())){ //can output
+                || lewis.ioInventory.getStack(10).isOf(lewis.currentRecipe.getOutput(manager).getItem())) { //can output
             //System.out.println(lewis.currentRecipe.getIngredients());
             if (!lewis.ioInventory.getStack(9).isOf(Items.ERLENMEYER) || lewis.ioInventory.getStack(9).getCount() < 1) {
                 lewis.resetProgress();
@@ -169,7 +180,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             if (lewis.progress > 0) {
                 lewis.progress = correct ? lewis.progress : -1; //enough items? continue or reset;
             } else {
-                lewis.progress = correct? 0 : -1; //enough items? start or reset;
+                lewis.progress = correct ? 0 : -1; //enough items? start or reset;
             }
         }
         //Busy crafting
@@ -179,8 +190,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
             if (lewis.progress >= lewis.maxProgress) { //Done crafting
                 if (lewis.ioInventory.getStack(10).isEmpty()) { //Set output slot
-                    // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
-                    lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput(DynamicRegistryManager.EMPTY));
+                    lewis.ioInventory.setStack(10, lewis.currentRecipe.getOutput(manager));
                 } else {
                     lewis.ioInventory.getStack(10).increment(1);
                 }
@@ -194,11 +204,12 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         lewis.markDirty();
     }
 
-    private void setRecipe(MoleculeRecipe recipe){
+    private void setRecipe(MoleculeRecipe recipe) {
         this.currentRecipe = recipe;
         ingredients = DefaultedList.ofSize(0); // why?
         ingredients = recipe.getIngredients();
         density = recipe.getDensity();
+        maxProgress = recipe.getTime();
     }
 
     private void resetProgress() {
@@ -232,7 +243,23 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.progress = -1;
         this.ingredients = DefaultedList.ofSize(0);
         this.density = 0;
+        this.maxProgress=  23;
         markDirty();
+    }
+
+    public void updateRecipe() {
+        getWorld().getRecipeManager().getFirstMatch(MoleculeRecipe.MoleculeRecipeType.INSTANCE, craftingGrid, getWorld())
+                .ifPresentOrElse(moleculeRecipe -> {
+                    if (moleculeRecipe != currentRecipe) {
+                        // Different recipe
+                        this.currentRecipe = moleculeRecipe;
+                        this.progress = -1;
+                        this.ingredients = moleculeRecipe.getIngredients();
+                        this.density = moleculeRecipe.getDensity();
+                        this.maxProgress = moleculeRecipe.getTime();
+                        markDirty();
+                    }
+                }, this::resetRecipe);
     }
 
     public void setIngredients(DefaultedList<Ingredient> ingredients) {

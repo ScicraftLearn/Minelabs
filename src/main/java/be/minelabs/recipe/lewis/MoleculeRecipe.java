@@ -26,16 +26,18 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     private final Identifier id;
     private final JsonObject json;
     private final Integer density;
+    private final Integer time;
+    private final Boolean container;
 
 
-    public MoleculeRecipe(Molecule molecule, Identifier id, JsonObject json,Integer density) {
+    public MoleculeRecipe(Molecule molecule, Identifier id, JsonObject json, Integer density, Boolean container, Integer time) {
         this.molecule = molecule;
         ingredients.addAll(molecule.getIngredients().stream().map(atom -> Ingredient.ofItems(atom.getItem())).toList());
         this.id = id;
         this.json = json;
         this.density = density;
-//        Minelabs.LOGGER.info("Recipe made: " + id.toString());
-//        Minelabs.LOGGER.info(molecule.getStructure().toCanonical());
+        this.container = container;
+        this.time = time;
     }
 
     /*
@@ -51,6 +53,15 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     public Molecule getMolecule(){
         return molecule;
     }
+
+    public Boolean needsContainer() {
+        return container;
+    }
+
+    public Integer getTime(){
+        return this.time;
+    }
+
 
     @Override
     public boolean matches(LewisCraftingGrid inventory, World world) {
@@ -118,21 +129,11 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
         @Override
         public MoleculeRecipe read(Identifier id, JsonObject json) {
             MoleculeRecipeJsonFormat recipeJson = new Gson().fromJson(json, MoleculeRecipeJsonFormat.class);
-            // Validate all fields are there
-            if (recipeJson.result == null)
-                throw new JsonSyntaxException("Attribute 'result' is missing");
-            if (recipeJson.structure == null)
-                throw new JsonSyntaxException("Attribute 'structure' is missing");
-            if (recipeJson.density == null)
-                throw new JsonSyntaxException("Attribute 'density' is missing");
+            recipeJson.validate();
 
-            Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(recipeJson.result.item))
-                    // Validate the entered item actually exists
-                    .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.result.item));
+            Molecule molecule = new Molecule(recipeJson.structure.get(), recipeJson.getOutput());
 
-            Molecule molecule = new Molecule(recipeJson.structure.get(), outputItem);
-
-            return new MoleculeRecipe(molecule, id, json, recipeJson.density);
+            return new MoleculeRecipe(molecule, id, json, recipeJson.density, recipeJson.container, recipeJson.time);
         }
 
         @Override
