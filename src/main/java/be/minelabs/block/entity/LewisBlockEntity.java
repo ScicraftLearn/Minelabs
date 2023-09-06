@@ -1,14 +1,13 @@
 package be.minelabs.block.entity;
 
-import be.minelabs.advancement.criterion.Criteria;
-import be.minelabs.advancement.criterion.LCTCriterion;
+import be.minelabs.network.NetworkingConstants;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
-import be.minelabs.recipe.molecules.MoleculeGraph;
 import be.minelabs.inventory.OrderedInventory;
-import be.minelabs.item.Items;
-import be.minelabs.network.LewisDataPacket;
 import be.minelabs.screen.LewisBlockScreenHandler;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -32,9 +31,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory {
     // slots 0-24
@@ -210,8 +206,9 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
      * @return
      */
     private boolean canExport() {
-        return ioInventory.getStack(10).isEmpty() ||
-                ioInventory.getStack(10).getCount() < ioInventory.getStack(10).getMaxCount();
+        return ioInventory.getStack(10).isEmpty()
+                || ioInventory.getStack(10).getCount() < ioInventory.getStack(10).getMaxCount()
+                && ioInventory.getStack(10).isOf(currentRecipe.getOutput(getWorld().getRegistryManager()).getItem());
     }
 
     private boolean hasRecipe() {
@@ -264,8 +261,25 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                         this.density = moleculeRecipe.getDensity();
                         this.maxProgress = moleculeRecipe.getTime();
                         markDirty();
+                        sendDataPacket();
                     }
                 }, this::resetRecipe);
+    }
+
+    private void sendDataPacket() {
+        if (world.isClient) {
+            return;
+        }
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(this.pos);
+        buf.writeInt(this.ingredients.size());
+        for (Ingredient ingredient: this.ingredients) {
+            ingredient.write(buf);
+        }
+
+        for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
+            ServerPlayNetworking.send(player, NetworkingConstants.LEWISDATASYNC, buf);
+        }
     }
 
     public void setIngredients(DefaultedList<Ingredient> ingredients) {
