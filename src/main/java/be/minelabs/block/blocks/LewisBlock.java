@@ -137,6 +137,5 @@ public class LewisBlock extends BlockWithEntity implements Waterloggable {
                 blockEntity.tick(world1, pos, state1);
             }
         });
-        //return checkType(type, BlockEntities.LEWIS_BLOCK_ENTITY, world.isClient ? null : LewisBlockEntity::tick);
     }
 }
