@@ -110,13 +110,17 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         //This will place the slot in the correct locations. The slots exist on both server and client!
         //This will not render the background of the slots however, this is the Screens job
 
-        // offset
-        int o = 11 - 29;
+        addGridSlots();
+        addIOSlots();
+        addPlayerSlots(playerInventory);
 
+    }
+
+    private void addGridSlots() {
         // Lewis Crafting Table Inventory (5x5 grid)
         for (int m = 0; m < 5; ++m) {
             for (int l = 0; l < 5; ++l) {
-                this.addSlot(new LockableGridSlot(craftingGrid, l + m * 5, 8 + l * 18, m * 18 - o) {//Anonymous implementation to link it to the slots.
+                this.addSlot(new LockableGridSlot(craftingGrid, l + m * 5, 8 + l * 18, m * 18 + 18) {//Anonymous implementation to link it to the slots.
                     @Override
                     public boolean isLocked() {
                         return !isInputEmpty(); //Locked if the input had items
@@ -124,9 +128,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 });
             }
         }
+    }
+
+    private void addIOSlots() {
         // Lewis Crafting Table Inventory (9 input slots)
         for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(ioInventory, m, 8 + m * 18, 5 * 18 - o + 5) {//Anonymous implementation to link it to the slots.
+            this.addSlot(new Slot(ioInventory, m, 8 + m * 18, 5 * 18 + 23) {//Anonymous implementation to link it to the slots.
                 @Override
                 public boolean isEnabled() {
                     return hasRecipe();
@@ -143,22 +150,23 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
 
         // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
-        this.addSlot(new FilteredSlot(ioInventory, 9, 8 + 7 * 18, 2 * 18 - o + 36, s -> s.isOf(Items.ERLENMEYER)));
+        this.addSlot(new FilteredSlot(ioInventory, 9, 8 + 7 * 18, 2 * 18 + 54, s -> s.isOf(Items.ERLENMEYER)));
 
         // Lewis Crafting Table Inventory (1 output slot)
-        this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 - o));
+        this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 + 18));
+    }
 
+    private void addPlayerSlots(PlayerInventory playerInventory) {
         //The player inventory (3x9 slots)
         for (int m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18 - o + 5));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 145 + m * 18));
             }
         }
         //The player Hotbar (9 slots)
         for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - o + 5));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 203));
         }
-
     }
 
     public Inventory getIoInventory() {
@@ -315,10 +323,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         if (propertyDelegate.get(2) > 0) {
             // Density found -> json recipe found
             return 2;
-        }else if (craftingGrid.isEmpty() || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0) {
+        } else if (craftingGrid.isEmpty() || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0) {
             // Empty grid or still has possible conections
             return 0;
-        }else if (craftingGrid.getPartialMolecule().getStructure().isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
+        } else if (craftingGrid.getPartialMolecule().getStructure().isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
             return 1;
         } else {
             return 3;
