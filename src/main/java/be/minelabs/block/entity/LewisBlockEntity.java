@@ -1,5 +1,6 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
 import be.minelabs.network.NetworkingConstants;
@@ -132,6 +133,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
+        Minelabs.LOGGER.info("d: " + density);
         DynamicRegistryManager manager = world.getRegistryManager();
         if (hasRecipe() && canExport(manager) && containerCheck() && hasEnoughItems()) {
             progress++;
@@ -223,7 +225,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
      */
     private boolean canExport(DynamicRegistryManager manager) {
         return ioInventory.getStack(10).isEmpty()
-                || ioInventory.getStack(10).getCount() + currentRecipe.getOutput(manager).getCount() < ioInventory.getStack(10).getMaxCount()
+                || ioInventory.getStack(10).getCount() + currentRecipe.getOutput(manager).getCount() <= ioInventory.getStack(10).getMaxCount()
                 && ioInventory.getStack(10).isOf(currentRecipe.getOutput(getWorld().getRegistryManager()).getItem());
     }
 
