@@ -88,7 +88,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 
     @Override
     public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return new ItemStack(molecule.getItem());
+        return new ItemStack(molecule.getItem(), molecule.getCount());
     }
 
     @Override
@@ -131,7 +131,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
             MoleculeRecipeJsonFormat recipeJson = new Gson().fromJson(json, MoleculeRecipeJsonFormat.class);
             recipeJson.validate();
 
-            Molecule molecule = new Molecule(recipeJson.structure.get(), recipeJson.getOutput());
+            Molecule molecule = new Molecule(recipeJson.structure.get(), recipeJson.getOutput(), recipeJson.result.count);
 
             return new MoleculeRecipe(molecule, id, json, recipeJson.density, recipeJson.container, recipeJson.time);
         }

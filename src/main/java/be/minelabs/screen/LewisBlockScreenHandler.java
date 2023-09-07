@@ -1,5 +1,6 @@
 package be.minelabs.screen;
 
+import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.entity.LewisBlockEntity;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
@@ -299,6 +300,28 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     public LewisCraftingGrid getLewisCraftingGrid() {
         return craftingGrid;
+    }
+
+    @Override
+    public boolean onButtonClick(PlayerEntity player, int id) {
+        // Change if to switch/case when more buttons are present
+        if (id == 0) {
+            if (isInputEmpty()) {
+                for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
+                    craftingGrid.removeStack(i);
+                }
+                craftingGrid.markDirty();
+            } else {
+                for (int i = 0; i < 9; i++) {
+                    ItemStack itemStack = ioInventory.removeStack(i);
+                    if (!player.getInventory().insertStack(itemStack)) {
+                        player.dropItem(itemStack, false);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     public boolean isCrafting() {

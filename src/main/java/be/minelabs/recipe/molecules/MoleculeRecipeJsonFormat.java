@@ -19,12 +19,16 @@ public class MoleculeRecipeJsonFormat {
 
     public static class Result {
         public String item;
+        public Integer count;
     }
 
     public void validate() {
         // Validate all fields are there (and set default values)
         if (result == null)
             throw new JsonSyntaxException("Attribute 'result' is missing");
+        if (result.count == null){
+            result.count = 1;
+        }
         if (structure == null)
             throw new JsonSyntaxException("Attribute 'structure' is missing");
         if (density == null)
