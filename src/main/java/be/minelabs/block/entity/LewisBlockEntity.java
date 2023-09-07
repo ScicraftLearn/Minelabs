@@ -1,9 +1,12 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.advancement.criterion.Criteria;
+import be.minelabs.advancement.criterion.LCTCriterion;
 import be.minelabs.network.NetworkingConstants;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
 import be.minelabs.inventory.OrderedInventory;
+import be.minelabs.recipe.molecules.MoleculeGraph;
 import be.minelabs.screen.LewisBlockScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -141,6 +144,19 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
         } else {
             resetProgress();
+            advancementCheck();
+        }
+    }
+
+    /**
+     * Callback used for advancement
+     */
+    private void advancementCheck() {
+        if (currentRecipe == null && getWorld() instanceof ServerWorld serverWorld) {
+            MoleculeGraph structure = craftingGrid.getPartialMolecule().getStructure();
+            if (!structure.getVertices().isEmpty() && structure.getTotalOpenConnections() == 0 && structure.isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
+                Criteria.LCT_CRITERION.trigger(serverWorld, getPos(), 5, c -> c.test(LCTCriterion.Type.UNKNOWN_MOLECULE));
+            }
         }
     }
 
@@ -273,7 +289,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBlockPos(this.pos);
         buf.writeInt(this.ingredients.size());
-        for (Ingredient ingredient: this.ingredients) {
+        for (Ingredient ingredient : this.ingredients) {
             ingredient.write(buf);
         }
 

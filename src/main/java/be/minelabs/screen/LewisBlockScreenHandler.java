@@ -90,6 +90,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId < GRIDSIZE) {
                     lewis.updateRecipe();
+                    onGridChangedByPlayer(playerInventory.player);
                     handler.updateToClient();
                 } else {
                     handler.updateToClient();
@@ -197,7 +198,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         Slot slot = this.slots.get(invSlot);
         if (invSlot < GRIDSIZE) {
             slot.setStack(itemStack);
-            onGridChangedByPlayer(player);
             return itemStack;
         }
         if (slot.hasStack()) {
@@ -219,13 +219,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
 
         return itemStack;
-    }
-
-    @Override
-    public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
-        super.onSlotClick(slotIndex, button, actionType, player);
-        if (slotIndex < GRIDSIZE)
-            onGridChangedByPlayer(player);
     }
 
     /**
