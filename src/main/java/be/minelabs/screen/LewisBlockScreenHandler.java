@@ -90,10 +90,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 if (slotId < GRIDSIZE) {
                     lewis.updateRecipe();
                     onGridChangedByPlayer(playerInventory.player);
-                    handler.updateToClient();
-                } else {
-                    handler.updateToClient();
                 }
+                handler.updateToClient();
             }
 
             @Override
@@ -338,7 +336,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             // Density found -> json recipe found
             return 2;
         } else if (craftingGrid.isEmpty() || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0) {
-            // Empty grid or still has possible conections
+            // Empty grid or still has possible connections
             return 0;
         } else if (craftingGrid.getPartialMolecule().getStructure().isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
             return 1;

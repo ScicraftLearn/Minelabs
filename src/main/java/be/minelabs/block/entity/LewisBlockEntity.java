@@ -1,6 +1,5 @@
 package be.minelabs.block.entity;
 
-import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
 import be.minelabs.network.NetworkingConstants;
@@ -133,7 +132,6 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        //Minelabs.LOGGER.info("d: " + density);
         DynamicRegistryManager manager = world.getRegistryManager();
         if (hasRecipe() && canExport(manager) && containerCheck() && hasEnoughItems()) {
             progress++;
@@ -221,7 +219,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
      * Check if we can Export to the output Slot (10)
      * Empty slot? or reached max stack size ?
      *
-     * @return
+     * @return boolean
      */
     private boolean canExport(DynamicRegistryManager manager) {
         return ioInventory.getStack(10).isEmpty()
@@ -247,7 +245,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     /**
-     * Provides a buffer to {@link LewisBlockScreenHandler}, to get the position of the blockentity
+     * Provides a buffer to {@link LewisBlockScreenHandler}, to get the position of the blockentity.
      * The blockentity is used to get all needed values.
      *
      * @param player the player that is opening the screen
