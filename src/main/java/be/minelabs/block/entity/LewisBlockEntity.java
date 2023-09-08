@@ -133,7 +133,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        Minelabs.LOGGER.info("d: " + density);
+        //Minelabs.LOGGER.info("d: " + density);
         DynamicRegistryManager manager = world.getRegistryManager();
         if (hasRecipe() && canExport(manager) && containerCheck() && hasEnoughItems()) {
             progress++;
