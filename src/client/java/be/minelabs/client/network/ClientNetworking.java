@@ -1,7 +1,7 @@
 package be.minelabs.client.network;
 
+import be.minelabs.block.entity.IonicBlockEntity;
 import be.minelabs.block.entity.LewisBlockEntity;
-import be.minelabs.network.IonicDataPacket;
 import be.minelabs.network.NetworkingConstants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 
 @Environment(EnvType.CLIENT)
 public class ClientNetworking {
-    public static void onInitializeClient(){
+    public static void onInitializeClient() {
         registerS2CPacketHandlers();
     }
 
@@ -33,6 +33,26 @@ public class ClientNetworking {
                 lewis.setIngredients(ingredients);
             }
         });
-        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.IONICDATASYNC, (c, h, b, s) -> IonicDataPacket.receive(c.world, b, s));
+        ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.IONICDATASYNC, (c, h, buf, sender) -> {
+            BlockPos pos = buf.readBlockPos();
+            int leftSize = buf.readInt();
+            DefaultedList<Ingredient> leftIngredients = DefaultedList.of();
+            if (leftSize > 0) {
+                for (int i = 0; i < leftSize; i++) {
+                    leftIngredients.add(Ingredient.fromPacket(buf));
+                }
+            }
+            int rightSize = buf.readInt();
+            DefaultedList<Ingredient> rightIngredients = DefaultedList.of();
+            if (rightSize > 0) {
+                for (int i = 0; i < rightSize; i++) {
+                    rightIngredients.add(Ingredient.fromPacket(buf));
+                }
+            }
+            BlockEntity be = c.world.getBlockEntity(pos);
+            if (be instanceof IonicBlockEntity ionic) {
+                ionic.setIngredients(leftIngredients, rightIngredients);
+            }
+        });
     }
 }

@@ -86,7 +86,7 @@ public class IonicBlock extends BlockWithEntity implements BlockEntityProvider, 
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new IonicBlockEntity(pos,state);
+        return new IonicBlockEntity(pos, state);
     }
 
 
@@ -96,8 +96,8 @@ public class IonicBlock extends BlockWithEntity implements BlockEntityProvider, 
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof IonicBlockEntity) {
-                ItemScatterer.spawn(world, pos, (IonicBlockEntity)blockEntity);
-                world.updateComparators(pos,this);
+                ItemScatterer.spawn(world, pos, (IonicBlockEntity) blockEntity);
+                world.updateComparators(pos, this);
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
@@ -119,6 +119,11 @@ public class IonicBlock extends BlockWithEntity implements BlockEntityProvider, 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.IONIC_BLOCK_ENTITY, world.isClient? null : IonicBlockEntity::tick);
+        //Only tick server, the result will be synced in this case
+        return checkType(type, BlockEntities.IONIC_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> {
+            if (!world1.isClient()) {
+                blockEntity.tick(world1, pos, state1);
+            }
+        });
     }
 }
