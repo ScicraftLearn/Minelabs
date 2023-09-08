@@ -2,7 +2,6 @@ package be.minelabs.client.network;
 
 import be.minelabs.block.entity.IonicBlockEntity;
 import be.minelabs.block.entity.LewisBlockEntity;
-import be.minelabs.network.IonicDataPacket;
 import be.minelabs.network.NetworkingConstants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
