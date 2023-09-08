@@ -34,12 +34,12 @@ public class IonicBlockScreenHandler extends ScreenHandler {
      * This constructor gets called on the client when the server wants it to open the screenHandler<br>
      * The client will call the other constructor with an empty Inventory and the screenHandler will automatically
      * sync this empty inventory with the inventory on the server.
-     *
+     * <p>
      * This constructor uses the buffer from {@link IonicBlockEntity#writeScreenOpeningData(ServerPlayerEntity, PacketByteBuf)}
      * This gives it the Blockpos of the BlockEntity
      */
     public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buff) {
-        this(syncId,playerInventory,new IonicInventory(9, 9, 11), new ArrayPropertyDelegate(5), buff.readBlockPos());
+        this(syncId, playerInventory, new IonicInventory(9, 9, 11), new ArrayPropertyDelegate(6), buff.readBlockPos());
     }
 
     /**
@@ -70,90 +70,32 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         this.addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                if (slotId < GRIDSIZE*2) {
-                    ionic.resetRecipe();
+                if (slotId < GRIDSIZE * 2) {
+                    ionic.updateRecipe();
+                    onGridChanged(playerInventory.player);
                 }
+                updateToClient();
             }
 
             @Override
             public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
-
+                updateToClient();
             }
         });
 
         inventory.onOpen(playerInventory.player);
 
-        //first 3x3 gridslots(left)
-        //14 is the x position where the top-left corner of the square for the item needs to be drawn, 18 is height of 1 square
-        //22 is the y position where the top-left corner of the square needs to be
-        for(int i = 0; i<3;i++){
-            for(int y = 0;y<3;y++){
-                this.addSlot(new LockableGridSlot(inventory,i*3+y,14+y*18,22+i*18) {
-                    @Override
-                    public boolean isLocked() {
-                        return !isInputEmpty();
-                    }
-                });
-            }
-        }
-        //second 3x3 gridslots(right)
-        for(int i = 0; i<3;i++){
-            for(int y = 0;y<3;y++){
-                this.addSlot(new LockableGridSlot(inventory,i*3+y+9,87+y*18,22+i*18) {
-                    @Override
-                    public boolean isLocked() {
-                        return !isInputEmpty();
-                    }
-                });
-            }
-        }
-        //row of inputslots
-        for(int i = 0; i<9;i++){
-            this.addSlot(new Slot(inventory,i+18,12+i*18,86) {
+        addGridSlots();
+        addIOSlots();
+        addPlayerSlots(playerInventory);
 
-                @Override
-                public boolean isEnabled() {
-                    return hasRecipe();
-                }
+    }
 
-                @Override
-                public boolean canInsert(ItemStack stack) {
-                    if (getLeftIngredients().size() > this.getIndex()-2*GRIDSIZE && this.getIndex()-2*GRIDSIZE >= 0) {
-                        return getLeftIngredients().get(this.getIndex()-2*GRIDSIZE).test(stack);
-                    }
-                    if (getRightIngredients().size() > this.getIndex()-2*GRIDSIZE - getLeftIngredients().size() && this.getIndex()-2*GRIDSIZE - getLeftIngredients().size() >= 0) {
-                        return getRightIngredients().get(this.getIndex()-2*GRIDSIZE - getLeftIngredients().size()).test(stack);
-                    }
-                    return false;
-                }
-
-                @Override
-                public int getMaxItemCount(ItemStack stack) {
-                    if (getLeftIngredients().size() > this.getIndex()-2*GRIDSIZE) { //Slot differnce of GRIDSIZE due to the grid
-                        return getLeftDensity();
-                    }
-                    if (getRightIngredients().size() > this.getIndex()-2*GRIDSIZE - getLeftIngredients().size()) { //Slot differnce of GRIDSIZE due to the grid
-                        return getRightDensity();
-                    }
-                    return 0;
-                }
-            });
-        }
-        //erlemeyer slot
-        this.addSlot(new FilteredSlot(inventory,27,178,86, s -> s.isOf(Items.ERLENMEYER)));
-        //result slot
-        this.addSlot(new CraftingResultSlot(inventory,28,176,40));
-        //add inventory and hotbar slots
-        for (int m = 0; m < 3; ++m) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 23 + l * 18, 118 + m * 18));
-            }
-        }
-        //The player Hotbar (9 slots)
-        for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 23 + m * 18, 176));
-        }
-
+    /**
+     * Callback used for advancements
+     */
+    private void onGridChanged(PlayerEntity player) {
+        // TODO advancements
     }
 
     @Override
@@ -209,7 +151,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
      */
     @Override
     protected boolean insertItem(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
-        if(startIndex < GRIDSIZE *2) {
+        if (startIndex < GRIDSIZE * 2) {
             return false;
         }
         return super.insertItem(stack, startIndex, endIndex, fromLast);
@@ -223,7 +165,8 @@ public class IonicBlockScreenHandler extends ScreenHandler {
      */
     @Override
     public boolean canInsertIntoSlot(Slot slot) {
-        if(slot.getIndex() > GRIDSIZE * 2 -1) {
+        if (slot instanceof LockableGridSlot) {
+            //We only want to block our ICT inventory (excluding the players)
             return false;
         }
         return super.canInsertIntoSlot(slot);
@@ -276,17 +219,82 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         return this.inventory;
     }
 
-    private void addPlayerHotbar(PlayerInventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 23 + i * 18, 176));
+    private void addIOSlots() {
+        //row of inputslots
+        for (int i = 0; i < 9; i++) {
+            this.addSlot(new Slot(inventory, i + 18, 12 + i * 18, 86) {
+
+                @Override
+                public boolean isEnabled() {
+                    return hasRecipe();
+                }
+
+                @Override
+                public boolean canInsert(ItemStack stack) {
+                    if (getLeftIngredients().size() > this.getIndex() - 2 * GRIDSIZE && this.getIndex() - 2 * GRIDSIZE >= 0) {
+                        return getLeftIngredients().get(this.getIndex() - 2 * GRIDSIZE).test(stack);
+                    }
+                    if (getRightIngredients().size() > this.getIndex() - 2 * GRIDSIZE - getLeftIngredients().size() && this.getIndex() - 2 * GRIDSIZE - getLeftIngredients().size() >= 0) {
+                        return getRightIngredients().get(this.getIndex() - 2 * GRIDSIZE - getLeftIngredients().size()).test(stack);
+                    }
+                    return false;
+                }
+
+                @Override
+                public int getMaxItemCount(ItemStack stack) {
+                    if (getLeftIngredients().size() > this.getIndex() - 2 * GRIDSIZE) { //Slot difference of GRIDSIZE due to the grid
+                        return getLeftDensity();
+                    }
+                    if (getRightIngredients().size() > this.getIndex() - 2 * GRIDSIZE - getLeftIngredients().size()) { //Slot difference of GRIDSIZE due to the grid
+                        return getRightDensity();
+                    }
+                    return 0;
+                }
+            });
+        }
+        //erlemeyer slot
+        this.addSlot(new FilteredSlot(inventory, 27, 178, 86, s -> s.isOf(Items.ERLENMEYER)));
+        //result slot
+        this.addSlot(new CraftingResultSlot(inventory, 28, 176, 40));
+    }
+
+    private void addGridSlots() {
+        //first 3x3 gridslots(left)
+        //14 is the x position where the top-left corner of the square for the item needs to be drawn, 18 is height of 1 square
+        //22 is the y position where the top-left corner of the square needs to be
+        for (int i = 0; i < 3; i++) {
+            for (int y = 0; y < 3; y++) {
+                this.addSlot(new LockableGridSlot(inventory, i * 3 + y, 14 + y * 18, 22 + i * 18) {
+                    @Override
+                    public boolean isLocked() {
+                        return !isInputEmpty();
+                    }
+                });
+            }
+        }
+        //second 3x3 gridslots(right)
+        for (int i = 0; i < 3; i++) {
+            for (int y = 0; y < 3; y++) {
+                this.addSlot(new LockableGridSlot(inventory, i * 3 + y + 9, 87 + y * 18, 22 + i * 18) {
+                    @Override
+                    public boolean isLocked() {
+                        return !isInputEmpty();
+                    }
+                });
+            }
         }
     }
 
-    private void addPlayerInventory(PlayerInventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
+    private void addPlayerSlots(PlayerInventory playerInventory) {
+        //The player inventory (3x9 slots)
+        for (int m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9, 23 + l * 18, 118 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 23 + l * 18, 118 + m * 18));
             }
+        }
+        //The player Hotbar (9 slots)
+        for (int m = 0; m < 9; ++m) {
+            this.addSlot(new Slot(playerInventory, m, 23 + m * 18, 176));
         }
     }
 }

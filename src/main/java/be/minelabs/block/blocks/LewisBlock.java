@@ -133,7 +133,7 @@ public class LewisBlock extends BlockWithEntity implements Waterloggable {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         //Only tick server, the result will be synced in this case
         return checkType(type, BlockEntities.LEWIS_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> {
-            if (!world1.isClient()){
+            if (!world1.isClient()) {
                 blockEntity.tick(world1, pos, state1);
             }
         });

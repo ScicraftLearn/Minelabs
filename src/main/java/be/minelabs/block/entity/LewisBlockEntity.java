@@ -274,7 +274,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
                     if (moleculeRecipe != currentRecipe) {
                         // Different recipe
                         this.currentRecipe = moleculeRecipe;
-                        this.progress = -1;
+                        this.progress = 0;
                         this.ingredients = moleculeRecipe.getIngredients();
                         this.density = moleculeRecipe.getDensity();
                         this.maxProgress = moleculeRecipe.getTime();
