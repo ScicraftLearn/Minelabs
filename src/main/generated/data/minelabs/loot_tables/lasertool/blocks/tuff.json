@@ -83,33 +83,14 @@
               ],
               "conditions": [
                 {
-                  "condition": "minecraft:alternative",
-                  "terms": [
-                    {
-                      "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "items": [
-                          "minelabs:lasertool_iron"
-                        ]
-                      }
-                    },
-                    {
-                      "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "items": [
-                          "minelabs:lasertool_gold"
-                        ]
-                      }
-                    },
-                    {
-                      "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "items": [
-                          "minelabs:lasertool_diamond"
-                        ]
-                      }
-                    }
-                  ]
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "items": [
+                      "minelabs:lasertool_diamond",
+                      "minelabs:lasertool_gold",
+                      "minelabs:lasertool_iron"
+                    ]
+                  }
                 }
               ]
             },

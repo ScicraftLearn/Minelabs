@@ -87,7 +87,7 @@ public class MinecraftBlocksData {
         // Build JSON object for the loot table
         JsonObject group = new JsonObject();
         group.add("type", new JsonPrimitive("minecraft:group"));
-        group.add("conditions", JsonParser.parseString("[{\"condition\": \"minecraft:alternative\",\"terms\": [{\"condition\": \"minecraft:match_tool\",\"predicate\": {\"items\": [\"minelabs:lasertool_iron\"]}},{\"condition\": \"minecraft:match_tool\",\"predicate\": {\"items\": [\"minelabs:lasertool_gold\"]}},{\"condition\": \"minecraft:match_tool\",\"predicate\": {\"items\": [\"minelabs:lasertool_diamond\"]}}]}]").getAsJsonArray());
+        group.add("conditions", JsonParser.parseString("[{\"condition\": \"minecraft:match_tool\",\"predicate\": {\"items\": [\"minelabs:lasertool_diamond\",\"minelabs:lasertool_gold\",\"minelabs:lasertool_iron\"]}}]"));
         group.add("children", entries);
         JsonObject lootTable = new JsonObject();
         lootTable.add("type", new JsonPrimitive("minecraft:loot_table"));
