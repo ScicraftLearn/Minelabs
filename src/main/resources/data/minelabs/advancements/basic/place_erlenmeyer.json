@@ -16,7 +16,13 @@
     "place_erlenmeyer": {
       "trigger": "minecraft:placed_block",
       "conditions": {
-        "block": "minelabs:lab/erlenmeyer_stand"
+        "location": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "minelabs:lab/erlenmeyer_stand",
+            "properties": {}
+          }
+        ]
       }
     }
   },

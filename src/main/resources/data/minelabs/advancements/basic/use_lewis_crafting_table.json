@@ -15,16 +15,18 @@
     "use_lewis_crafting_table": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
-        "location": {
-          "block": {
-            "blocks": ["minelabs:lewis_block"]
-          }
-        },
         "player": {
           "flags": {
             "is_sneaking": false
           }
-        }
+        },
+        "location": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {}
+          }
+        ]
       }
     }
   },

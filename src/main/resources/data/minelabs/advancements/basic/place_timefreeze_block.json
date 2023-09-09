@@ -16,7 +16,13 @@
     "place_time_freeze_block": {
       "trigger": "minecraft:placed_block",
       "conditions": {
-        "block": "minelabs:time_freeze_block"
+        "location": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "minelabs:time_freeze_block",
+            "properties": {}
+          }
+        ]
       }
     }
   },
