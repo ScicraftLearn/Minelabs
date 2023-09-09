@@ -18,14 +18,14 @@ public enum Molecule {
     N2("N2", 0xAFAFAF, List.of(new ExtinguishReaction(3))),
     CH4("CH4", 0xAFAFAF, List.of(new FlammableReaction(20 * 5, 3, false))),
     H2("H2", 0xAFAFAF, List.of(new ExplosiveReaction(1, false, false))),
-    NO("NO", 0xAFAFAF, List.of(new PoisonousReaction(3, 20*5, 1))),
-    NO2("NO2", 0x991c00, List.of(new PoisonousReaction(3, 20*5, 1))),
-    CL2("CL2", 0xE8F48C, List.of(new PoisonousReaction(3, 20*5, 2))), // TODO: oxiderend
+    NO("NO", 0xAFAFAF, List.of(new PoisonousReaction(3, 20 * 5, 1))),
+    NO2("NO2", 0x991c00, List.of(new PoisonousReaction(3, 20 * 5, 1))),
+    CL2("CL2", 0xE8F48C, List.of(new PoisonousReaction(3, 20 * 5, 2))), // TODO: oxiderend
     CO2("CO2", 0xAFAFAF, List.of(new ExtinguishReaction(3))),
-    CO("CO", 0xAFAFAF, List.of(new PoisonousReaction(3, 20*5, 1))),
+    CO("CO", 0xAFAFAF, List.of(new PoisonousReaction(3, 20 * 5, 1))),
     NH3("NH3", 0xAFAFAF, List.of(
             new DissolveReaction(),
-            new PoisonousReaction(3, 20*5, 1)
+            new PoisonousReaction(3, 20 * 5, 1)
     )),
     N2O("N2O", 0xAFAFAF, List.of()), // TODO: lachgas, oxiderend
     HCL("HCl", 0xAFAFAF, List.of(
@@ -37,22 +37,22 @@ public enum Molecule {
     CL2O("Cl2O", 0xAFAFAF, List.of(
             new CorrosiveReaction(3).addToBlackList(Tags.Blocks.HCL_BLACKLIST),
             new ExplosiveReaction(1, false, false),
-            new PoisonousReaction(3, 20*5, 3)
+            new PoisonousReaction(3, 20 * 5, 3)
     )),
     H2CO3("H2CO3", 0xAFAFAF, List.of()),
     CH4S("CH4S", 0xAFAFAF, List.of(
-            new FlammableReaction(20*5, 3, false),
-            new PoisonousReaction(3, 20*5, 3)
+            new FlammableReaction(20 * 5, 3, false),
+            new PoisonousReaction(3, 20 * 5, 3)
     )),
     CH2O("CH2O", 0xAFAFAF, List.of(
-            new PoisonousReaction(3, 20*5, 1)
+            new PoisonousReaction(3, 20 * 5, 1)
     )),
     BH3("BH3", 0xFFFFFF, List.of(
             new FlammableReaction(20 * 5, 3, true),
-            new PoisonousReaction(3, 20*5, 1)
+            new PoisonousReaction(3, 20 * 5, 1)
     )),
     HF("HF", 0xFFFFFF, List.of(
-            new PoisonousReaction(3, 20*5, 3),
+            new PoisonousReaction(3, 20 * 5, 3),
             new CorrosiveReaction(3)
     )),
     SIH4("SiH4", 0xFFFFFF, List.of(
@@ -60,31 +60,31 @@ public enum Molecule {
     )),
     PH3("PH3", 0xFFFFFF, List.of(
             new ExplosiveReaction(1, true, false),
-            new PoisonousReaction(3, 20*5, 3),
+            new PoisonousReaction(3, 20 * 5, 3),
             new CorrosiveReaction(3).addToBlackList(Tags.Blocks.HCL_BLACKLIST)
     )),
     H2S("H2S", 0xFFFFFF, List.of(
             new ExplosiveReaction(1, true, false),
-            new PoisonousReaction(3, 20*5, 2)
+            new PoisonousReaction(3, 20 * 5, 2)
     )),
     CF4("CF4", 0xFFFFFF, List.of()),
     BF3("BF3", 0xFFFFFF, List.of(
-            new PoisonousReaction(3, 20*5, 2),
+            new PoisonousReaction(3, 20 * 5, 2),
             new CorrosiveReaction(3)
     )),
     BCL3("BCl3", 0xFFFFFF, List.of(
-            new PoisonousReaction(3, 20*5, 2),
+            new PoisonousReaction(3, 20 * 5, 2),
             new CorrosiveReaction(3)
     )),
     SO2("SO2", 0xFFFFFF, List.of(
-            new PoisonousReaction(3, 20*5, 1),
+            new PoisonousReaction(3, 20 * 5, 1),
             new CorrosiveReaction(3)
     )),
     CLF("ClF", 0xFFFFFF, List.of(
             new CorrosiveReaction(3).addToWhiteList(Tags.Blocks.HCL_BLACKLIST)
     )),
     F2("F2", 0xFFFFFF, List.of(
-            new PoisonousReaction(3, 20*5, 3),
+            new PoisonousReaction(3, 20 * 5, 3),
             new CorrosiveReaction(3)
     )),
 
@@ -98,33 +98,33 @@ public enum Molecule {
             new ExplosiveReaction(1, false, true)
     )),
     CS2("CS2", 0xAFAFAF, List.of(
-            new FlammableReaction(20*5, 3, false)
+            new FlammableReaction(20 * 5, 3, false)
     )),
     CCL4("CCl4", 0xAFAFAF, List.of(
-            new PoisonousReaction(3, 20*5, 1)
+            new PoisonousReaction(3, 20 * 5, 1)
     )),
     PCL3("PCl3", 0xAFAFAF, List.of(
-            new PoisonousReaction(3, 20*5, 3),
+            new PoisonousReaction(3, 20 * 5, 3),
             new CorrosiveReaction(3).addToBlackList(Tags.Blocks.HCL_BLACKLIST)
     )),
     SCL2("SCl2", 0xAFAFAF, List.of(
-            new PoisonousReaction(3, 20*5, 3),
+            new PoisonousReaction(3, 20 * 5, 3),
             new CorrosiveReaction(3).addToBlackList(Tags.Blocks.HCL_BLACKLIST)
     )),
     HCN("HCN", 0xCCCCFF, List.of(
-            new PoisonousReaction(3, 20*5, 3),
-            new FlammableReaction(20*5, 3, false)
+            new PoisonousReaction(3, 20 * 5, 3),
+            new FlammableReaction(20 * 5, 3, false)
     )),
     CH4O("CH4O", 0xAFAFAF, List.of(
-            new FlammableReaction(20*5, 3, false),
-            new PoisonousReaction(3, 20*5, 1)
+            new FlammableReaction(20 * 5, 3, false),
+            new PoisonousReaction(3, 20 * 5, 1)
     )),
     SICL4("SiCl4", 0xAFAFAF, List.of(
-            new PoisonousReaction(3, 20*5, 3),
+            new PoisonousReaction(3, 20 * 5, 3),
             new CorrosiveReaction(3).addToBlackList(Tags.Blocks.HCL_BLACKLIST)
     )),
     C2H6O("C2H6O", 0xAFAFAF, List.of(
-            new FlammableReaction(20*5, 3, false)));
+            new FlammableReaction(20 * 5, 3, false)));
 
 
     private final int color;
