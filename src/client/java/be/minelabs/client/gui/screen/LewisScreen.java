@@ -58,12 +58,11 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.handler.hasRecipe()) {
-            RenderSystem.setShaderTexture(0, TEXTURE);
+            context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
         } else {
-            RenderSystem.setShaderTexture(0, TEXTURE2);
+            context.drawTexture(TEXTURE2, x, y, 0, 0, backgroundWidth, backgroundHeight);
         }
 
-        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
         renderProgressArrow(context, this.x, this.y);
         renderRecipeCheck(context, this.x, this.y);
 

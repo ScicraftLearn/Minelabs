@@ -34,24 +34,25 @@ public class CorrosiveEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
+        World world = getWorld();
         // If the block at the blockpos has turned into air, remove the entity
-        if (this.blockPos != null && this.world.getBlockState(blockPos).isOf(net.minecraft.block.Blocks.AIR)) {
-            this.world.setBlockBreakingInfo(this.getId(), this.blockPos, -1);
+        if (this.blockPos != null && world.getBlockState(blockPos).isOf(net.minecraft.block.Blocks.AIR)) {
+            world.setBlockBreakingInfo(this.getId(), this.blockPos, -1);
             this.remove(RemovalReason.DISCARDED);
         }
         if (this.blockPos != null) {
             ticks++;
             // Get the hardness of the block at the blockpos
-            float hardness = this.world.getBlockState(blockPos).getHardness(this.world, blockPos);
+            float hardness = world.getBlockState(blockPos).getHardness(world, blockPos);
             // The formula below can be modified to weigh the progress more towards the distance, the hardness, or the general case
             int progress = (int) (ticks / ((1+distance)*(1+hardness)));
             // If progress is 10, destroy the entity and the block, otherwise set the progress
             if (progress == 10) {
                 this.remove(RemovalReason.DISCARDED);
-                this.world.setBlockBreakingInfo(this.getId(), this.blockPos, -1);
-                this.world.breakBlock(this.blockPos, this.world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS));
+                world.setBlockBreakingInfo(this.getId(), this.blockPos, -1);
+                world.breakBlock(this.blockPos, world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS));
             } else {
-                this.world.setBlockBreakingInfo(this.getId(), this.blockPos, progress);
+                world.setBlockBreakingInfo(this.getId(), this.blockPos, progress);
             }
         }
     }
