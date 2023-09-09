@@ -266,7 +266,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      */
     @Override
     public boolean canInsertIntoSlot(Slot slot) {
-        if (slot.getIndex() > GRIDSIZE - 1) {
+        if (slot instanceof LockableGridSlot) {
+            //We only want to block our LCT inventory (excluding the players)
             return false;
         }
         return super.canInsertIntoSlot(slot);
