@@ -7,6 +7,7 @@ import be.minelabs.recipe.molecules.PartialMolecule;
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.item.items.AtomItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,12 @@ public class LewisCraftingGrid extends OrderedInventory {
         this.width = width;
         this.height = height;
         markDirty();
+    }
+
+    @Override
+    public void readNbtList(NbtList nbtList) {
+        super.readNbtList(nbtList);
+        currentMolecule = buildPartialMoleculeFromInventory();
     }
 
     @Override

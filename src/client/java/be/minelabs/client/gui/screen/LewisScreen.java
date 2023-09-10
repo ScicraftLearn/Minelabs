@@ -177,16 +177,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     @SuppressWarnings("ConstantConditions")
     private void registerButtonWidget() {
         buttonWidget = new ButtonWidget.Builder(Text.of("C"), button -> {
-            if (handler.isInputEmpty()) {
-                for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
-                    // TODO: don't use interaction manager. If clear is selected when you have something in your hand it backfires
-                    client.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, client.player);
-                }
-            } else {
-                for (int i = 0; i < 9; i++) {
-                    client.interactionManager.clickSlot(handler.syncId, i + LewisBlockScreenHandler.GRIDSIZE, 0, SlotActionType.QUICK_MOVE, client.player);
-                }
-            }
+            client.interactionManager.clickButton(handler.syncId, 0);
             // unfocus button after activation. Only works with tab and enter. Click needs extra override see mouseClicked.
             button.setFocused(false);
         }).position(x + 133, y + 17).size(18, 18).build();
@@ -266,4 +257,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
         }
     }
+
+
 }

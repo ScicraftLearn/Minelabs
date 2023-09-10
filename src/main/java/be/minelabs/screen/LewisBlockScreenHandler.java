@@ -12,6 +12,7 @@ import be.minelabs.screen.slot.AtomSlot;
 import be.minelabs.screen.slot.CraftingResultSlot;
 import be.minelabs.screen.slot.FilteredSlot;
 import be.minelabs.screen.slot.LockableGridSlot;
+import be.minelabs.item.Items;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -97,11 +98,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId < GRIDSIZE) {
-                    lewis.resetRecipe();
-                    handler.updateToClient();
-                } else {
-                    handler.updateToClient();
+                    lewis.updateRecipe();
+                    onGridChangedByPlayer(playerInventory.player);
                 }
+                handler.updateToClient();
             }
 
             @Override
@@ -118,27 +118,17 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         //This will place the slot in the correct locations. The slots exist on both server and client!
         //This will not render the background of the slots however, this is the Screens job
 
-        // offset
-        int o = 11 - 29;
-
-        addGridSlots(o);
-        addIoSlots(o);
-
-        // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
-        this.addSlot(new FilteredSlot(ioInventory, 9, 8 + 7 * 18, 2 * 18 - o + 36, s -> s.isOf(Items.ERLENMEYER)));
-
-        // Lewis Crafting Table Inventory (1 output slot)
-        this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 - o));
-
-        addPlayerSlots(playerInventory, o);
+        addGridSlots();
+        addIOSlots();
+        addPlayerSlots(playerInventory);
         addAtomicSlots();
     }
 
-    private void addGridSlots(int offset){
+    private void addGridSlots() {
         // Lewis Crafting Table Inventory (5x5 grid)
         for (int m = 0; m < 5; ++m) {
             for (int l = 0; l < 5; ++l) {
-                this.addSlot(new LockableGridSlot(craftingGrid, l + m * 5, 8 + l * 18, m * 18 - offset) {//Anonymous implementation to link it to the slots.
+                this.addSlot(new LockableGridSlot(craftingGrid, l + m * 5, 8 + l * 18, m * 18 + 18) {//Anonymous implementation to link it to the slots.
                     @Override
                     public boolean isLocked() {
                         return !isInputEmpty(); //Locked if the input had items
@@ -148,10 +138,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
     }
 
-    private void addIoSlots(int offset){
+    private void addIOSlots() {
         // Lewis Crafting Table Inventory (9 input slots)
         for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(ioInventory, m, 8 + m * 18, 5 * 18 - offset + 5) {//Anonymous implementation to link it to the slots.
+            this.addSlot(new Slot(ioInventory, m, 8 + m * 18, 5 * 18 + 23) {//Anonymous implementation to link it to the slots.
                 @Override
                 public boolean isEnabled() {
                     return hasRecipe();
@@ -166,13 +156,19 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 }
             });
         }
+
+        // Lewis Crafting Table Inventory (1 slot for erlenmeyer)
+        this.addSlot(new FilteredSlot(ioInventory, 9, 8 + 7 * 18, 2 * 18 + 54, s -> s.isOf(Items.ERLENMEYER)));
+
+        // Lewis Crafting Table Inventory (1 output slot)
+        this.addSlot(new CraftingResultSlot(ioInventory, 10, 8 + 7 * 18, 2 * 18 + 18));
     }
 
-    private void addPlayerSlots(PlayerInventory playerInventory, int offset){
+    private void addPlayerSlots(PlayerInventory playerInventory) {
         //The player inventory (3x9 slots)
         for (int m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 122 + m * 18 - offset + 5){
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 145 + m * 18){
                     @Override
                     public boolean isEnabled() {
                         return !showAtomStorage();
@@ -182,7 +178,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
         //The player Hotbar (9 slots)
         for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 180 - offset + 5){
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 203){
                 @Override
                 public boolean isEnabled() {
                     return !showAtomStorage();
@@ -190,7 +186,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             });
         }
     }
-
     private void addAtomicSlots() {
         addSlot(new AtomicSlot(atomicStorage, 0, 8, 145));
         addSlot(new AtomicSlot(atomicStorage, 1, 152, 145));
@@ -218,9 +213,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 slots.set(i, new AtomicSlot(atomicStorage, slots.get(i)));
             }
         }
-        ;
-    }
-
     public Inventory getIoInventory() {
         return ioInventory;
     }
@@ -249,7 +241,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         Slot slot = this.slots.get(invSlot);
         if (invSlot < GRIDSIZE) {
             slot.setStack(itemStack);
-            onGridChangedByPlayer(player);
             return itemStack;
         }
         if (slot.hasStack()) {
@@ -272,7 +263,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         return itemStack;
     }
-
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
         if (slotIndex > 0 && getSlot(slotIndex).inventory instanceof PlayerInventory) {
@@ -283,8 +273,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             }
         }
         super.onSlotClick(slotIndex, button, actionType, player);
-        if (slotIndex > 0 && slotIndex < GRIDSIZE)
-            onGridChangedByPlayer(player);
     }
 
     public void openAtomicStorage(ItemStack stack) {
@@ -390,6 +378,28 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         return craftingGrid;
     }
 
+    @Override
+    public boolean onButtonClick(PlayerEntity player, int id) {
+        // Change if to switch/case when more buttons are present
+        if (id == 0) {
+            if (isInputEmpty()) {
+                for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
+                    craftingGrid.removeStack(i);
+                }
+                craftingGrid.markDirty();
+            } else {
+                for (int i = 0; i < 9; i++) {
+                    ItemStack itemStack = ioInventory.removeStack(i);
+                    if (!player.getInventory().insertStack(itemStack)) {
+                        player.dropItem(itemStack, false);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public boolean isCrafting() {
         return propertyDelegate.get(0) > 0;
     }
@@ -405,10 +415,10 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         if (propertyDelegate.get(2) > 0) {
             // Density found -> json recipe found
             return 2;
-        }else if (craftingGrid.isEmpty() || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0) {
-            // Empty grid or still has possible conections
+        } else if (craftingGrid.isEmpty() || craftingGrid.getPartialMolecule().getStructure().getTotalOpenConnections() != 0) {
+            // Empty grid or still has possible connections
             return 0;
-        }else if (craftingGrid.getPartialMolecule().getStructure().isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
+        } else if (craftingGrid.getPartialMolecule().getStructure().isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
             return 1;
         } else {
             return 3;
