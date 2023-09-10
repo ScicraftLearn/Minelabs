@@ -14,7 +14,6 @@ public class ItemGroups {
     // Hard-coded ItemGroup, update from 19.3 allows to use ItemGroupEvents to extend ItemGroups. Currently, only
     //  addition by had is allowed or automatic addition (in Items.Settings). You cant combine both because of the
     //  implementation within the Fabric-API.
-    // TODO CHECK DISPLAY-NAME
     public static final ItemGroup MINELABS = Registry.register(Registries.ITEM_GROUP,
             new Identifier(Minelabs.MOD_ID, "minelabs"), FabricItemGroup.builder()
                     .icon(() -> new ItemStack(Items.MOLOGRAM))
