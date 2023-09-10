@@ -35,6 +35,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Optional;
+
 public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory {
     // slots 0-24
     private final LewisCraftingGrid craftingGrid = new LewisCraftingGrid(5, 5);
@@ -150,9 +152,11 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     /**
      * Callback used for advancement
+     * Don't use currentRecipe, it might trigger the advancement
      */
     private void advancementCheck() {
-        if (currentRecipe == null && getWorld() instanceof ServerWorld serverWorld) {
+        Optional<MoleculeRecipe> recipe = getWorld().getRecipeManager().getFirstMatch(MoleculeRecipe.MoleculeRecipeType.INSTANCE, craftingGrid, getWorld());
+        if (recipe.isEmpty() && getWorld() instanceof ServerWorld serverWorld) {
             MoleculeGraph structure = craftingGrid.getPartialMolecule().getStructure();
             if (!structure.getVertices().isEmpty() && structure.getTotalOpenConnections() == 0 && structure.isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
                 Criteria.LCT_CRITERION.trigger(serverWorld, getPos(), 5, c -> c.test(LCTCriterion.Type.UNKNOWN_MOLECULE));
