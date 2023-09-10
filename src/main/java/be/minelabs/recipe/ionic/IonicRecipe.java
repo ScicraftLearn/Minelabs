@@ -14,7 +14,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 
-
 public class IonicRecipe implements Recipe<IonicInventory> {
 
     private final JsonObject leftjson;
@@ -31,8 +30,11 @@ public class IonicRecipe implements Recipe<IonicInventory> {
     private final DefaultedList<Ingredient> rightingredients = DefaultedList.of();
     private final ItemStack output;
 
+    private final Integer time;
+    private final Boolean container;
 
-    IonicRecipe(JsonObject leftjson, int leftdensity, int leftCharge, JsonObject rightjson,  int rightdensity, int rightCharge, ItemStack output, Identifier id) {
+
+    IonicRecipe(JsonObject leftjson, int leftdensity, int leftCharge, JsonObject rightjson, int rightdensity, int rightCharge, ItemStack output, Identifier id) {
         MoleculeGraphJsonFormat leftGraph = new Gson().fromJson(leftjson, MoleculeGraphJsonFormat.class);
         this.leftMolecule = new PartialMolecule(leftGraph.get());
 
@@ -47,6 +49,8 @@ public class IonicRecipe implements Recipe<IonicInventory> {
         this.rightCharge = rightCharge;
         this.output = output;
         this.id = id;
+        this.time = 23;
+        this.container = true;
 
         this.leftingredients.addAll(leftMolecule.getIngredients().stream().map(atom -> Ingredient.ofItems(atom.getItem())).toList());
         this.rightingredients.addAll(rightMolecule.getIngredients().stream().map(atom -> Ingredient.ofItems(atom.getItem())).toList());
@@ -126,6 +130,14 @@ public class IonicRecipe implements Recipe<IonicInventory> {
 
     public int getRightCharge() {
         return rightCharge;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public boolean needsContainer() {
+        return container;
     }
 
     public static class IonicRecipeType implements RecipeType<IonicRecipe> {

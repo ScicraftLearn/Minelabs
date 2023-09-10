@@ -125,12 +125,17 @@ public class LewisBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        return world.getBlockEntity(pos, BlockEntities.LEWIS_BLOCK_ENTITY).get().getCurrentRecipe() != null ? 15 : 0;
+        return ((LewisBlockEntity) world.getBlockEntity(pos)).getCurrentRecipe() != null ? 15 : 0;
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.LEWIS_BLOCK_ENTITY, world.isClient ? null : LewisBlockEntity::tick); //Only tick server, the result will be synced in this case
+        //Only tick server, the result will be synced in this case
+        return checkType(type, BlockEntities.LEWIS_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> {
+            if (!world1.isClient()) {
+                blockEntity.tick(world1, pos, state1);
+            }
+        });
     }
 }

@@ -17,5 +17,6 @@
   "result": {
     "item": "minelabs:dust/aluminium_trichloride_dust"
   },
-  "density": 8
+  "density": 8,
+  "container": false
 }

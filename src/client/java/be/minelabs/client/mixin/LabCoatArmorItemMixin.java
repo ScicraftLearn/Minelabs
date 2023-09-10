@@ -25,7 +25,7 @@ public class LabCoatArmorItemMixin{
 
             @Override
             public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
-                Minelabs.LOGGER.info("getting labcoat renderer");
+                //Minelabs.LOGGER.info("getting labcoat renderer");
                 renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
                 return (BipedEntityModel<LivingEntity>) renderer;
             }
