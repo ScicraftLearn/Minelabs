@@ -13,9 +13,7 @@ public class MoleculeRecipeJsonFormat {
 
     public Result result;
     public Boolean container;
-
     public Integer time;
-
 
     public static class Result {
         public String item;

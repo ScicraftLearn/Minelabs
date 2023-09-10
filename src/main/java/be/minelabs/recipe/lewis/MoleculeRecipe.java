@@ -26,8 +26,10 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
     private final Integer time;
     private final Boolean container;
 
+    private final Integer count;
 
-    public MoleculeRecipe(Molecule molecule, Identifier id, JsonObject json, Integer density, Boolean container, Integer time) {
+
+    public MoleculeRecipe(Molecule molecule, Identifier id, JsonObject json, Integer density, Boolean container, Integer time, Integer count) {
         this.molecule = molecule;
         ingredients.addAll(molecule.getIngredients().stream().map(atom -> Ingredient.ofItems(atom.getItem())).toList());
         this.id = id;
@@ -35,6 +37,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
         this.density = density;
         this.container = container;
         this.time = time;
+        this.count = count;
     }
 
     /*
@@ -85,7 +88,7 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
 
     @Override
     public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return new ItemStack(molecule.getItem(), molecule.getCount());
+        return new ItemStack(molecule.getItem(), this.count);
     }
 
     @Override
@@ -128,9 +131,9 @@ public class MoleculeRecipe implements Recipe<LewisCraftingGrid> {
             MoleculeRecipeJsonFormat recipeJson = new Gson().fromJson(json, MoleculeRecipeJsonFormat.class);
             recipeJson.validate();
 
-            Molecule molecule = new Molecule(recipeJson.structure.get(), recipeJson.getOutput(), recipeJson.result.count);
+            Molecule molecule = new Molecule(recipeJson.structure.get(), recipeJson.getOutput());
 
-            return new MoleculeRecipe(molecule, id, json, recipeJson.density, recipeJson.container, recipeJson.time);
+            return new MoleculeRecipe(molecule, id, json, recipeJson.density, recipeJson.container, recipeJson.time, recipeJson.result.count);
         }
 
         @Override
