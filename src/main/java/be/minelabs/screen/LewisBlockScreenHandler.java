@@ -168,7 +168,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         //The player inventory (3x9 slots)
         for (int m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 145 + m * 18){
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 145 + m * 18) {
                     @Override
                     public boolean isEnabled() {
                         return !showAtomStorage();
@@ -178,7 +178,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         }
         //The player Hotbar (9 slots)
         for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 203){
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 203) {
                 @Override
                 public boolean isEnabled() {
                     return !showAtomStorage();
@@ -186,6 +186,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
             });
         }
     }
+
     private void addAtomicSlots() {
         addSlot(new AtomicSlot(atomicStorage, 0, 8, 145));
         addSlot(new AtomicSlot(atomicStorage, 1, 152, 145));
@@ -194,7 +195,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         for (int i = 0; i < 5; ++i) {
             for (int j = 0; j < 9; ++j) {
                 if (j == 2) {
-                    if (i == 2 || i == 3){
+                    if (i == 2 || i == 3) {
                         index += 10;
                     } else if (i == 4) {
                         index += 25;
@@ -213,6 +214,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 slots.set(i, new AtomicSlot(atomicStorage, slots.get(i)));
             }
         }
+    }
+
     public Inventory getIoInventory() {
         return ioInventory;
     }
@@ -263,6 +266,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
         return itemStack;
     }
+
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
         if (slotIndex > 0 && getSlot(slotIndex).inventory instanceof PlayerInventory) {
