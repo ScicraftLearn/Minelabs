@@ -41,6 +41,8 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.ENTROPY_CREEPER_SPAWN_EGG));
                 entries.add(new ItemStack(Items.MAGNET));
                 entries.add(new ItemStack(Items.POCKET_HOLE));
+                entries.add(new ItemStack(Items.MINUS));
+                entries.add(new ItemStack(Items.PLUS));
             })
             .build();
 

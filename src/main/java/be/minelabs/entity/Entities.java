@@ -44,6 +44,8 @@ public class Entities {
     public static final EntityType<CorrosiveEntity> CORROSIVE_ENTITY = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, CorrosiveEntity::new)
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).disableSummon().fireImmune().build(), "corrosive");
 
+    public static final EntityType<ChargedEntity> CHARGED_ENTITY =  register(FabricEntityTypeBuilder.<ChargedEntity>create(SpawnGroup.MISC, ChargedEntity::new)
+            .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(2).build(), "charged_entity");
 
     /**
      * Register a single entity

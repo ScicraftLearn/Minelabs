@@ -12,6 +12,7 @@ public class EntityRenderers {
         EntityRendererRegistry.register(Entities.ENTROPY_CREEPER, EntropyCreeperEntityRenderer::new);
         EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
         EntityRendererRegistry.register(Entities.CORROSIVE_ENTITY, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.CHARGED_ENTITY, ChargedEntityRenderer::new);
     }
 
 }
