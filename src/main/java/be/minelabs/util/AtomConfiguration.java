@@ -45,7 +45,7 @@ public class AtomConfiguration{
     public ItemStack getAtomStack() {
         // it's ok if this is null. The ItemStack will be the empty stack.
         Item atomItem = getAtomItem();
-        return new ItemStack(atomItem, 1);
+        return atomItem == null ? ItemStack.EMPTY : new ItemStack(atomItem, 1);
     }
 
     public Optional<String> getSymbol() {

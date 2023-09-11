@@ -163,10 +163,10 @@ public class BohrBlueprintHUDRenderer {
     private static void drawRectangle(DrawContext context, int width, int height, int color, boolean shadow) {
         if (shadow) {
             // alternative: all edges have shadow (if used: give functions x and y params please)
-            context.getMatrices().push();
-            context.getMatrices().translate(1, 1, 0);
-            drawRectangle(context, width, height, SHADOW_COLOR);
-            context.getMatrices().pop();
+            //context.getMatrices().push();
+            //context.getMatrices().translate(1, 1, 0);
+            //drawRectangle(context, width, height, SHADOW_COLOR);
+            //context.getMatrices().pop();
 
             context.fill(2, height, width, height + 1, SHADOW_COLOR);         // bottom
             context.fill(width, 2, width + 1, height, SHADOW_COLOR);          // right
