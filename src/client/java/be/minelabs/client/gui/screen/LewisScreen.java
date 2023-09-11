@@ -184,7 +184,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         addDrawableChild(buttonWidget);
 
         returnButton = new ButtonWidget.Builder(Text.of("<--"), button -> {
-            handler.closeAtomicStorage();
+            handler.closeAtomicStorage(); // visual close + no de-sync
+            client.interactionManager.clickButton(handler.syncId, 1);
             // unfocus button && hide
             returnButton.visible = false;
             button.setFocused(false);

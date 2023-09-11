@@ -384,24 +384,31 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
-        // Change if to switch/case when more buttons are present
-        if (id == 0) {
-            if (isInputEmpty()) {
-                for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
-                    craftingGrid.removeStack(i);
-                }
-                craftingGrid.markDirty();
-            } else {
-                for (int i = 0; i < 9; i++) {
-                    ItemStack itemStack = ioInventory.removeStack(i);
-                    if (!player.getInventory().insertStack(itemStack)) {
-                        player.dropItem(itemStack, false);
+        switch (id) {
+            case 0 -> {
+                if (isInputEmpty()) {
+                    for (int i = 0; i < LewisBlockScreenHandler.GRIDSIZE; i++) {
+                        craftingGrid.removeStack(i);
+                    }
+                    craftingGrid.markDirty();
+                } else {
+                    for (int i = 0; i < 9; i++) {
+                        ItemStack itemStack = ioInventory.removeStack(i);
+                        if (!player.getInventory().insertStack(itemStack)) {
+                            player.dropItem(itemStack, false);
+                        }
                     }
                 }
+                return true;
             }
-            return true;
+            case 1 -> {
+                closeAtomicStorage(); // Need to call serverside close (save nbt)
+                return true;
+            }
+            default -> {
+                return false;
+            }
         }
-        return false;
     }
 
     public boolean isCrafting() {
