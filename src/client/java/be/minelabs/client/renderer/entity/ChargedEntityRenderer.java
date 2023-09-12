@@ -33,7 +33,7 @@ public class ChargedEntityRenderer extends EntityRenderer<ChargedEntity> {
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
 
         boolean isPositive = entity.getCharge() >= 0;
-        BlockState renderState = isPositive ? Blocks.PROTON.getDefaultState() : Blocks.ELECTRON.getDefaultState();
+        BlockState renderState = isPositive ? Blocks.POSITRON.getDefaultState() : Blocks.ELECTRON.getDefaultState();
 
         matrices.push();
         matrices.translate(-0.5, -0.25, -0.5);
