@@ -1,6 +1,7 @@
 package be.minelabs.entity;
 
 import be.minelabs.block.Blocks;
+import be.minelabs.item.Items;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -8,8 +9,13 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -76,14 +82,33 @@ public class ChargedEntity extends ThrownEntity {
 
             for (Entity entity : entities) {
                 if (entity instanceof ChargedEntity chargedEntity) {
-                    double force = getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
+                    double force = 8.987f * getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
                     Vec3d vector = getPos().subtract(chargedEntity.getPos());
-                    vector = vector.multiply(force);
+                    vector = vector.multiply(force / mass);
                     updateVelocity(0.003f, vector.normalize());
                 }
             }
+            tryCheckBlockCollision();
         }
         super.tick();
+    }
+
+    /**
+     * Entity collision
+     *
+     * @param entityHitResult
+     */
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+        if (entityHitResult.getEntity() instanceof ChargedEntity charged) {
+            // do annihilation : gives 2 photons per charge
+            if (charged.getCharge() == -this.getCharge()) {
+                this.discard();
+                charged.discard();
+                ItemScatterer.spawn(getWorld(), getBlockPos(),
+                        DefaultedList.copyOf(ItemStack.EMPTY, new ItemStack(Items.PHOTON, 2 * getCharge())));
+            }
+        }
     }
 
     @Override
@@ -108,10 +133,5 @@ public class ChargedEntity extends ThrownEntity {
 
     public void setCharge(int charge) {
         dataTracker.set(CHARGE, charge);
-    }
-
-    @Override
-    protected float getGravity() {
-        return 0.8f * mass;
     }
 }
