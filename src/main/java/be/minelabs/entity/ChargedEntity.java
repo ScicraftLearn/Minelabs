@@ -83,7 +83,7 @@ public class ChargedEntity extends ThrownEntity {
     @Override
     public boolean damage(DamageSource source, float amount) {
         this.discard();
-        return super.damage(source, amount);
+        return true;
     }
 
     @Override
