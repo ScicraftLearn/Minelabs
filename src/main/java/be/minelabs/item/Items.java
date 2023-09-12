@@ -19,8 +19,8 @@ import java.util.List;
 
 public class Items {
 
-    public static final Item MINUS = register(new ChargedItem(new Item.Settings(), -1),"minus");
-    public static final Item PLUS = register(new ChargedItem(new Item.Settings(), 1),"plus");
+    public static final Item MINUS = register(new ChargedItem(new Item.Settings(), -1, 0.033f),"minus");
+    public static final Item PLUS = register(new ChargedItem(new Item.Settings(), 1, 0.05f),"plus");
 
     public static final Item ATOM_FLOOR = register(new BlockItem((Blocks.ATOM_FLOOR), new FabricItemSettings()), "atomic_floor");
 

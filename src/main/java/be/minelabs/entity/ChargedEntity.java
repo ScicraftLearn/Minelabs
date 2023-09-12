@@ -23,16 +23,19 @@ import java.util.List;
 public class ChargedEntity extends ThrownEntity {
     private int charge = 0;
 
+    private float mass;
+
     private final static int e_radius = 12;
 
     public ChargedEntity(EntityType<? extends ThrownEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    public ChargedEntity(World world, BlockPos pos, int charge) {
+    public ChargedEntity(World world, BlockPos pos, int charge, float mass) {
         this(Entities.CHARGED_ENTITY, world);
         setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
         this.charge = charge;
+        this.mass = mass;
     }
 
     @Override
@@ -68,9 +71,7 @@ public class ChargedEntity extends ThrownEntity {
                     double force = charge * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
                     Vec3d vector = getPos().subtract(chargedEntity.getPos());
                     vector = vector.multiply(force);
-                    //Minelabs.LOGGER.info("vec: " + vector);
-                    //Minelabs.LOGGER.info("norm:" + vector.normalize());
-                    updateVelocity(0.03f, vector.normalize());
+                    updateVelocity(0.003f, vector.normalize());
                 }
             }
         }
@@ -102,8 +103,6 @@ public class ChargedEntity extends ThrownEntity {
 
     @Override
     protected float getGravity() {
-        return 0.5f;
+        return 0.8f * mass;
     }
-
-
 }
