@@ -2,6 +2,7 @@ package be.minelabs.entity;
 
 import be.minelabs.block.Blocks;
 import be.minelabs.item.Items;
+import be.minelabs.sound.SoundEvents;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -38,6 +39,11 @@ public class ChargedEntity extends ThrownEntity {
         this(Entities.CHARGED_ENTITY, world);
         setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
         setCharge(charge);
+        this.mass = mass;
+    }
+
+    public ChargedEntity(LivingEntity owner, World world, int charge, float mass) {
+        super(Entities.CHARGED_ENTITY, owner, world);
         this.mass = mass;
     }
 
@@ -107,6 +113,7 @@ public class ChargedEntity extends ThrownEntity {
                 charged.discard();
                 ItemScatterer.spawn(getWorld(), getBlockPos(),
                         DefaultedList.copyOf(ItemStack.EMPTY, new ItemStack(Items.PHOTON, 2 * getCharge())));
+
             }
         }
     }
