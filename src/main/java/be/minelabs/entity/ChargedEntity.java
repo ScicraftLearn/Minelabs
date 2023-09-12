@@ -106,9 +106,9 @@ public class ChargedEntity extends ThrownEntity {
             for (Entity entity : entities) {
                 if (entity instanceof ChargedEntity chargedEntity) {
                     double force = 8.987f * getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
-                    Vec3d vector = getPos().subtract(chargedEntity.getPos());
-                    vector = vector.multiply(force / mass);
-                    updateVelocity(0.003f, vector.normalize());
+                    Vec3d vector = getPos().subtract(chargedEntity.getPos()); // Vector between entities
+                    vector = vector.multiply(force / mass); //scale vector with Force and mass of atom
+                    updateVelocity(0.003f, vector); // apply the vertor with 0.003
                 }
             }
             tryCheckBlockCollision();
