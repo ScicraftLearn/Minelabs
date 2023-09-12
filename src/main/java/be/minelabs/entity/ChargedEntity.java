@@ -35,6 +35,14 @@ public class ChargedEntity extends ThrownEntity {
         super(entityType, world);
     }
 
+    /**
+     * Summon/Spawn a new Entity
+     *
+     * @param world  : in what world should we make the entity
+     * @param pos    : position in the world to spawn the entity
+     * @param charge : what charge should it have
+     * @param mass   : what's the mass
+     */
     public ChargedEntity(World world, BlockPos pos, int charge, float mass) {
         this(Entities.CHARGED_ENTITY, world);
         setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
@@ -42,6 +50,14 @@ public class ChargedEntity extends ThrownEntity {
         this.mass = mass;
     }
 
+    /**
+     * Make a new Thrown Entity
+     *
+     * @param owner  : who threw the Entity/Item
+     * @param world  : what world did we do this in
+     * @param charge : what charge did the item have (and should the entity have)
+     * @param mass   : what's the mass of the item (and should the entity have)
+     */
     public ChargedEntity(LivingEntity owner, World world, int charge, float mass) {
         super(Entities.CHARGED_ENTITY, owner, world);
         setCharge(charge);
@@ -108,6 +124,7 @@ public class ChargedEntity extends ThrownEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         if (entityHitResult.getEntity() instanceof ChargedEntity charged) {
+            // Could do way more with this!
             // do annihilation : gives 2 photons per charge
             if (charged.getCharge() == -this.getCharge()) {
                 this.discard();
