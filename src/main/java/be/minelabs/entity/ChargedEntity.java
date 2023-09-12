@@ -44,6 +44,7 @@ public class ChargedEntity extends ThrownEntity {
 
     public ChargedEntity(LivingEntity owner, World world, int charge, float mass) {
         super(Entities.CHARGED_ENTITY, owner, world);
+        setCharge(charge);
         this.mass = mass;
     }
 

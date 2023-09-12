@@ -36,7 +36,7 @@ public class ChargedItem extends Item {
             ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().up(), this.charge, this.mass);
             context.getWorld().spawnEntity(entity);
         }
-        return super.useOnBlock(context);
+        return ActionResult.success(context.getWorld().isClient);
     }
 
     /**
@@ -52,7 +52,7 @@ public class ChargedItem extends Item {
         ItemStack stack = user.getStackInHand(hand);
         if (!world.isClient) {
             ChargedEntity entity = new ChargedEntity(user, world, charge, mass);
-            entity.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 0.5f, 0f);
+            entity.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 0.4f, 0f);
             world.spawnEntity(entity);
         }
         user.incrementStat(Stats.USED.getOrCreateStat(this));
