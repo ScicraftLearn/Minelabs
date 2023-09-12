@@ -45,7 +45,7 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).disableSummon().fireImmune().build(), "corrosive");
 
     public static final EntityType<ChargedEntity> CHARGED_ENTITY =  register(FabricEntityTypeBuilder.<ChargedEntity>create(SpawnGroup.MISC, ChargedEntity::new)
-            .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(2).build(), "charged_entity");
+            .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(2).forceTrackedVelocityUpdates(true).build(), "charged_entity");
 
     /**
      * Register a single entity

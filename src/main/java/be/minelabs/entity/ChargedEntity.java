@@ -1,20 +1,32 @@
 package be.minelabs.entity;
 
+import be.minelabs.Minelabs;
+import be.minelabs.item.Items;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.thrown.ThrownEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Arm;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ChargedEntity extends Entity {
-    private int charge;
+import java.util.List;
 
-    public ChargedEntity(EntityType<?> type, World world) {
-        super(type, world);
-        charge = 0;
+public class ChargedEntity extends ThrownEntity {
+    private int charge = 0;
+
+    private final static int e_radius = 12;
+
+    public ChargedEntity(EntityType<? extends ThrownEntity> entityType, World world) {
+        super(entityType, world);
     }
 
     public ChargedEntity(World world, BlockPos pos, int charge) {
@@ -47,8 +59,22 @@ public class ChargedEntity extends Entity {
 
     @Override
     public void tick() {
+        if (!world.isClient) {
+            List<Entity> entities = world.getOtherEntities(this,
+                    Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
+
+            for (Entity entity : entities) {
+                if (entity instanceof ChargedEntity chargedEntity) {
+                    double force = charge * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
+                    Vec3d vector = getPos().subtract(chargedEntity.getPos());
+                    vector = vector.multiply(force);
+                    //Minelabs.LOGGER.info("vec: " + vector);
+                    //Minelabs.LOGGER.info("norm:" + vector.normalize());
+                    updateVelocity(0.03f, vector.normalize());
+                }
+            }
+        }
         super.tick();
-        //TODO move to/away other charged entities depending on the field
     }
 
     @Override
@@ -57,13 +83,26 @@ public class ChargedEntity extends Entity {
     }
 
     @Override
-    protected void readCustomDataFromNbt(NbtCompound nbt) {
+    public void readCustomDataFromNbt(NbtCompound nbt) {
         charge = nbt.getInt("charge");
     }
 
     @Override
-    protected void writeCustomDataToNbt(NbtCompound nbt) {
+    public void writeCustomDataToNbt(NbtCompound nbt) {
         nbt.putInt("charge", charge);
+    }
+
+    public int getCharge() {
+        return charge;
+    }
+
+    public void setCharge(int charge) {
+        this.charge = charge;
+    }
+
+    @Override
+    protected float getGravity() {
+        return 0.5f;
     }
 
 
