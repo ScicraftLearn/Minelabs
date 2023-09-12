@@ -1,5 +1,6 @@
 package be.minelabs.client;
 
+import be.minelabs.client.block.BlockColors;
 import be.minelabs.client.block.BlockRenderLayers;
 import be.minelabs.client.event.ClientModsEvents;
 import be.minelabs.client.gui.screen.Screens;
@@ -23,6 +24,7 @@ public class MinelabsClient implements ClientModInitializer {
 
         ItemModels.onInitializeClient();
         BlockRenderLayers.onInitializeClient();
+        BlockColors.onInitializeClient();
 
         EntityRenderers.onInitializeClient();
         EntityModelLayers.onInitializeClient();

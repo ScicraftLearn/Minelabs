@@ -7,16 +7,48 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
 
 /**
  * Use these tags for NEW tags.
  * Using old tags just add a json in our mod:
- * "data/minecraft/blocks/", "data/minecraft/items/", "data/minecraft/fluids/"
+ * "data/minecraft/blocks/", "data/minecraft/items/", "data/minecraft/fluids/", "data/minecraft/worldgen/biome/"
  *
  * @author pixar02
  */
 public class Tags {
+    public static class Biomes{
+        // Tags used to check biomes
+        public static final TagKey<Biome> ALLOW_QFIELDS = createTag("allow_qfields");
+
+        public static final TagKey<Biome> FLAMMABLE_BIOMES = createTag("flammable_biomes");
+
+        /**
+         * Create a Block tag (tag is only used inside this mod)
+         * Don't forget the json file (data/minelabs/tags/blocks)
+         *
+         * @param name : name of the tag
+         * @return {@link TagKey}
+         */
+        private static TagKey<Biome> createTag(String name) {
+            return TagKey.of(RegistryKeys.BIOME, new Identifier(Minelabs.MOD_ID, name));
+        }
+
+        /**
+         * Create a Biome tag (tag for usage outside this mod)
+         * Don't forget the json file (data/c/tags/blocks)
+         *
+         * @param name : name of the tag
+         * @return {@link TagKey}
+         */
+        private static TagKey<Biome> createCommonTag(String name) {
+            return TagKey.of(RegistryKeys.BIOME, new Identifier("c", name));
+        }
+    }
+
     public static class Blocks {
+
+        public static final TagKey<Block> FLAMMABLE_BLOCKS = createTag("flammable_blocks");
         public static final TagKey<Block> QUANTUMFIELDS = createTag("quantumfields");
         public static final TagKey<Block> LASERTOOL_MINEABLE = createTag("lasertool_mineable");
         public static final TagKey<Block> COPPER_BLOCKS = createTag("copper_blocks");
@@ -25,6 +57,7 @@ public class Tags {
         public static final TagKey<Block> REACTION_DEFAULT_BLACKLIST = createTag("reaction_default_blacklist");
         public static final TagKey<Block> HCL_BLACKLIST = createTag("hcl_blacklist");
         public static final TagKey<Block> GLAZED_TERRACOTTA = createTag("glazed_terracotta");
+        public static final TagKey<Block> FLAMMABLE_BLACKLIST = createTag("flammable_blacklist");
 
         /**
          * Create a Block tag (tag is only used inside this mod)

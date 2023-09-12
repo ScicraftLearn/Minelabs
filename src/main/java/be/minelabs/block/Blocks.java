@@ -100,24 +100,25 @@ public class Blocks {
             .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY), "animated_charged");
 
     // Quantumfields
-    public static final Block GLUON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/gluon_quantumfield");
+    public static final Block GLUON_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/gluon_quantumfield");
+    public static final Block UPQUARK_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/upquark_quantumfield");
+    public static final Block DOWNQUARK_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/downquark_quantumfield");
+
     public static final Block PHOTON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/photon_quantumfield");
     public static final Block WEAK_BOSON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/weak_boson_quantumfield");
     public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/electron_quantumfield");
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/neutrino_quantumfield");
-    public static final Block UPQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/upquark_quantumfield");
-    public static final Block DOWNQUARK_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/downquark_quantumfield");
-    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(), "time_freeze_block");
 
+    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(), "time_freeze_block");
     public static final ElectricFieldSensorBlock ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE, MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "fire/green_fire");
 
-    public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.METAL)
-            .mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
+    public static final Block MOLOGRAM_BLOCK = register(new MologramBlock(FabricBlockSettings.of(Material.METAL).mapColor(MapColor.WHITE).strength(2f).nonOpaque().luminance(state -> state.get(MologramBlock.LIT) ? 8 : 0)), "mologram");
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "lewis_block");
     public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
+
     public static final Block HNO3 = register(new ChemicalFluidBlock(Fluids.STILL_HNO3, Molecule.HNO3), "chemical/hno3");
     public static final Block H2O = register(new ChemicalFluidBlock(Fluids.STILL_H2O, Molecule.H2O), "chemical/h2o");
     public static final Block CS2 = register(new ChemicalFluidBlock(Fluids.STILL_CS2, Molecule.CS2), "chemical/cs2");
@@ -131,14 +132,13 @@ public class Blocks {
     public static final BohrBlueprintBlock BOHR_BLUEPRINT = register(new BohrBlueprintBlock(), "bohr_block");
 
     public static final Block ERLENMEYER_STAND = register(new ErlenmeyerBlock(
-            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "lab/erlenmeyer_stand");
+            FabricBlockSettings.of(Material.GLASS).strength(0.75f)), "lab/erlenmeyer_stand");
     public static final Block MICROSCOPE = register(new MicroscopeBlock(
-            FabricBlockSettings.of(Material.METAL).strength(4.0f).luminance(6)), "lab/microscope");
+            FabricBlockSettings.of(Material.METAL).strength(1f).luminance(6)), "lab/microscope");
     public static final Block TUBERACK = register(new TubeRackBlock(
-            FabricBlockSettings.of(Material.METAL).strength(4.0f)), "lab/tuberack");
-
+            FabricBlockSettings.of(Material.METAL).strength(1f)), "lab/tuberack");
     public static final Block BURNER = register(new BurnerBlock(FabricBlockSettings.of(Material.METAL)
-            .strength(4.0f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "lab/burner");
+            .strength(1f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "lab/burner");
 
     /**
      * Register a Block

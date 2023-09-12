@@ -1,13 +1,13 @@
 package be.minelabs.item.reaction;
 
 import be.minelabs.util.Tags;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -58,21 +58,18 @@ public abstract class Reaction {
 
     public abstract void react(LivingEntity entity);
 
-    protected class Utils {
+    public abstract Text getTooltipText();
 
-        private static final List<Block> FLAMMABLE_BLOCKS = List.of(
-                Blocks.TORCH,
-                Blocks.WALL_TORCH,
-                Blocks.LAVA,
-                Blocks.FIRE,
-                Blocks.SOUL_TORCH,
-                Blocks.SOUL_WALL_TORCH,
-                Blocks.LAVA_CAULDRON
-        );
+    public MutableText getTooltipText(String reaction){
+        return Text.translatable("reaction.minelabs." + reaction);
+    }
 
-        final static boolean isFlammable(BlockState state) {
-            return FLAMMABLE_BLOCKS.contains(state.getBlock())
-                    || (state.getProperties().contains(Properties.LIT) && state.get(Properties.LIT));
+    protected static class Utils {
+
+        static boolean isFlammable(BlockState state) {
+            return state.isIn(Tags.Blocks.FLAMMABLE_BLOCKS)
+                    || (state.getProperties().contains(Properties.LIT) && state.get(Properties.LIT))
+                    && !state.isIn(Tags.Blocks.FLAMMABLE_BLACKLIST);
         }
 
         public static void applyRadius(Vec3d centerPos, int radius, Consumer<Vec3d> blockFunction) {
