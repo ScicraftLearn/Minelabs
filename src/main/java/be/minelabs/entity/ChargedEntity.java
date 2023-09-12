@@ -88,31 +88,37 @@ public class ChargedEntity extends ThrownEntity {
 
     @Override
     public void tick() {
-        if (!world.isClient) {
-            Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
-            for (BlockPos pos : positions) {
-                if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
-                    //"Force" a stop
-                    updateVelocity(5f, Vec3d.ZERO);
-
-                    super.tick();
-                    return;
-                }
-            }
-
-            List<Entity> entities = world.getOtherEntities(this,
-                    Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
-
-            for (Entity entity : entities) {
-                if (entity instanceof ChargedEntity chargedEntity) {
-                    double force = 8.987f * getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
-                    Vec3d vector = getPos().subtract(chargedEntity.getPos()); // Vector between entities
-                    vector = vector.multiply(force / mass); //scale vector with Force and mass of atom
-                    updateVelocity(0.003f, vector); // apply the vertor with 0.003
-                }
-            }
-            tryCheckBlockCollision();
+        if (world.isClient) {
+            super.tick();
+            return;
         }
+
+        Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
+        for (BlockPos pos : positions) {
+            if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
+                //"Force" a stop
+                updateVelocity(5f, Vec3d.ZERO);
+
+                super.tick();
+                return;
+            }
+        }
+
+        List<Entity> entities = world.getOtherEntities(this,
+                Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
+
+        for (Entity entity : entities) {
+            if (entity instanceof ChargedEntity chargedEntity) {
+                double force = 8.987f * getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
+                Vec3d vector = getPos().subtract(chargedEntity.getPos()).normalize(); // Vector between entities
+                vector = vector.multiply(force / mass); //scale vector with Force and mass of atom
+                vector = vector.multiply(0.0001);
+                if (getVelocity().length() < 10) {
+                    addVelocity(vector);
+                }
+            }
+        }
+        tryCheckBlockCollision();
         super.tick();
     }
 
