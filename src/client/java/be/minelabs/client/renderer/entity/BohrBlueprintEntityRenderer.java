@@ -1,5 +1,6 @@
 package be.minelabs.client.renderer.entity;
 
+import be.minelabs.Minelabs;
 import be.minelabs.entity.BohrBlueprintEntity;
 import be.minelabs.item.Items;
 import be.minelabs.util.AtomConfiguration;
@@ -76,14 +77,8 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
     // for scaling nucleus radius depending on amount of particles
     private static final float NUCLEUS_MIN_RADIUS = 0.02f;
     private static final float NUCLEUS_MAX_RADIUS = 0.4f;
-    // distance between layers of nucleus
-//    private static final float NUCLEUS_RADIUS_OFFSET = 0.15f;
 
-    // how many subdivisions are made for the nucleus coordinates. Amount of points is square this number.
-    //private static final int NUCLEUS_COORDINATES_STEPS = 8;
-    //private static final List<Vector3f> NUCLEUS_COORDINATES = uniformSphericalCoordinates(NUCLEUS_COORDINATES_STEPS);
-
-    //private static final int NUCLEUS_MAX_ITEMS_RENDERED = 2 * NUCLEUS_COORDINATES.size();
+    private static final int NUCLEUS_MAX_ITEMS_RENDERED = 100;
     // radius of nucleus gets bigger until this capacity.
     private static final int NUCLEUS_MAX_CONTENT_FOR_RADIUS = BohrBlueprintEntity.MAX_PROTONS + BohrBlueprintEntity.MAX_NEUTRONS;
 
@@ -99,23 +94,20 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
      * Computes uniformly spread out points on a unit sphere using Fibonacci grid
      */
     private static List<Vector3f> uniformSphericalCoordinates(int nrOfPoints) {
+        if (nrOfPoints == 1)
+            return List.of(new Vector3f(0, 0, 0));
 
-        List<Vector3f> points = new ArrayList<>();
-        float goldenRatio = (float) (Math.PI*(Math.sqrt(5f)-1f));
-        if(nrOfPoints==1){
-            points.add(new Vector3f(0,0,0));
-            return points;
-        }
+        List<Vector3f> points = new ArrayList<>(nrOfPoints);
+        double goldenRatio = Math.PI * (Math.sqrt(5f) - 1f);
         for (int i = 0; i < nrOfPoints; i++) {
-            float y = 1-2*i/((float) (nrOfPoints-1));
-            float r = (float) Math.sqrt(1-y*y);
-            float x = (float) (Math.sin(goldenRatio*i)*r);
-            float z = (float) Math.cos(goldenRatio*i)*r;
+            float y = 1 - 2 * i / ((float) (nrOfPoints - 1));
+            double r = (float) Math.sqrt(1 - y * y);
+            float x = (float) (Math.sin(goldenRatio * i) * r);
+            float z = (float) (Math.cos(goldenRatio * i) * r);
 
             points.add(new Vector3f(x, y, z));
-            }
+        }
 
-        Collections.shuffle(points, new Random(42));
         return points;
     }
 
@@ -283,39 +275,23 @@ public class BohrBlueprintEntityRenderer extends EntityRenderer<BohrBlueprintEnt
             return;
 
         // place nucleus particles in predetermined coordinates
-        Iterator<Vector3f> posIterator = uniformSphericalCoordinates(nP+nN).iterator();
-
+        int nToRender = Math.min(NUCLEUS_MAX_ITEMS_RENDERED, nP + nN);
+        List<Vector3f> positions = uniformSphericalCoordinates(nToRender);
+        Collections.shuffle(positions, new Random(42));
 
         // we keep ratio of protons rendered as close to requested as possible
         float pRatio = (float) nP / (float) (nP + nN);
-        float pRatioRendered = nP > nN ? 0 : 1;     // initializer determines which to render first
+        int nPToRender = (int) Math.floor(pRatio * nToRender);
 
-        // special case to handle zero.
-        if (nP == 0)
-            pRatio = -1;
-        else if (nN == 0)
-            pRatio = 2;
-
-        int nPRendered = 0;
-        int nNRendered = 0;
-        int amountToRender = nP + nN;
         float volumePercent = (float) (nP + nN) / NUCLEUS_MAX_CONTENT_FOR_RADIUS;
-        float radiusPercent = (float) Math.pow(3 * volumePercent / (4 * Math.PI), 1f/3);    // based on volume of sphere
+        float radiusPercent = (float) Math.pow(3 * volumePercent / (4 * Math.PI), 1f / 3);    // based on volume of sphere
         float nucleusRadius = MathHelper.clampedLerp(NUCLEUS_MIN_RADIUS, NUCLEUS_MAX_RADIUS, radiusPercent);
 
         matrices.push();
-        while (nPRendered + nNRendered < amountToRender) {
-            Vector3f pos = new Vector3f(posIterator.next());
-            pos.mul(nucleusRadius);
-
-            ItemStack type = pRatio > pRatioRendered ? PROTON : NEUTRON;
-            renderNucleusParticle(type, pos, instability, nNRendered + nPRendered, amountToRender, time, matrices, vertexConsumers, light);
-
-            if (type == PROTON)
-                nPRendered += 1;
-            else
-                nNRendered += 1;
-            pRatioRendered = (float) nPRendered / (float) (nPRendered + nNRendered);
+        for (int i = 0; i < nToRender;i++){
+            Vector3f pos = positions.get(i).mul(nucleusRadius);
+            ItemStack type = i < nPToRender ? PROTON : NEUTRON;
+            renderNucleusParticle(type, pos, instability, i, nToRender, time, matrices, vertexConsumers, light);
         }
         matrices.pop();
     }
