@@ -1,7 +1,10 @@
 package be.minelabs.block;
 
+import be.minelabs.entity.ChargedEntity;
 import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
 import be.minelabs.item.Items;
+import be.minelabs.item.items.ChargedItem;
+import be.minelabs.item.items.ChargedPointItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
@@ -12,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.math.BlockPointer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
@@ -36,6 +40,9 @@ public class ExtraDispenserBehavior {
         registerSubatomicParticle(Items.POSITRON);
         registerSubatomicParticle(Items.ANTI_PROTON);
         registerSubatomicParticle(Items.ANTI_NEUTRON);
+
+        registerChargedEntity(Items.MINUS);
+        registerChargedEntity(Items.PLUS);
 
         /**
          * Register dispenser behavior for using Entropy Creeper Spawn Egg
@@ -71,6 +78,21 @@ public class ExtraDispenserBehavior {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                 return new SubatomicParticleEntity(position.getX(), position.getY(), position.getZ(), world, stack);
+            }
+        });
+    }
+
+    /**
+     * Register a single SubatomicParticle for the dispenser
+     *
+     * @param item   : Item that should be used
+     **/
+    private static void registerChargedEntity(Item item) {
+        ChargedItem chargedItem = ((ChargedPointItem) item);
+        DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
+            @Override
+            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                return new ChargedEntity(world, BlockPos.ofFloored(position), chargedItem.getCharge(), chargedItem.getMass());
             }
         });
     }

@@ -1,6 +1,5 @@
 package be.minelabs.item.items;
 
-import be.minelabs.Minelabs;
 import be.minelabs.entity.ChargedEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -62,5 +61,13 @@ public class ChargedItem extends Item {
         }
 
         return TypedActionResult.success(stack, world.isClient());
+    }
+
+    public int getCharge() {
+        return charge;
+    }
+
+    public float getMass() {
+        return mass;
     }
 }

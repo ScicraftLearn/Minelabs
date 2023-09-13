@@ -60,18 +60,6 @@ public class Entities {
     }
 
     /**
-     * Register a single block entity
-     * <p>
-     *
-     * @param blockEntityType : BlockEntityType to register
-     * @param identifier      : String name of the entity
-     * @return registered BlockEntityType
-     */
-    private static <T extends BlockEntity> BlockEntityType<T> register(BlockEntityType<T> blockEntityType, String identifier) {
-        return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), blockEntityType);
-    }
-
-    /**
      * Modify the Entity spawns
      * <p>
      *

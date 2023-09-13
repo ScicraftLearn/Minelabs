@@ -2,7 +2,6 @@ package be.minelabs.entity;
 
 import be.minelabs.block.Blocks;
 import be.minelabs.item.Items;
-import be.minelabs.sound.SoundEvents;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -14,9 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -113,7 +110,7 @@ public class ChargedEntity extends ThrownEntity {
                 Vec3d vector = getPos().subtract(chargedEntity.getPos()).normalize(); // Vector between entities
                 vector = vector.multiply(force / mass); //scale vector with Force and mass of atom
                 vector = vector.multiply(0.0001);
-                if (getVelocity().length() < 10) {
+                if (getVelocity().length() < 5) {
                     addVelocity(vector);
                 }
             }
@@ -133,11 +130,10 @@ public class ChargedEntity extends ThrownEntity {
             // Could do way more with this!
             // do annihilation : gives 2 photons per charge
             if (charged.getCharge() == -this.getCharge()) {
+                ItemScatterer.spawn(getWorld(), getBlockPos(),
+                        DefaultedList.copyOf(ItemStack.EMPTY, new ItemStack(Items.PHOTON, 2)));
                 this.discard();
                 charged.discard();
-                ItemScatterer.spawn(getWorld(), getBlockPos(),
-                        DefaultedList.copyOf(ItemStack.EMPTY, new ItemStack(Items.PHOTON, 2 * getCharge())));
-
             }
         }
     }
