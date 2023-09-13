@@ -1,0 +1,71 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:group",
+              "children": [
+                {
+                  "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
+                  "name": "minelabs:atom/carbon_atom",
+                  "weight": 33
+                },
+                {
+                  "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
+                  "name": "minelabs:atom/oxygen_atom",
+                  "weight": 22
+                },
+                {
+                  "type": "minecraft:item",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
+                  "name": "minelabs:atom/hydrogen_atom",
+                  "weight": 45
+                }
+              ],
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "items": [
+                      "minelabs:lasertool_diamond",
+                      "minelabs:lasertool_gold",
+                      "minelabs:lasertool_iron"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:loot_table",
+              "name": "minecraft:blocks/bamboo_stairs"
+            }
+          ]
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

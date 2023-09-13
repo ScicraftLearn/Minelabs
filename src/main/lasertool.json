@@ -63,7 +63,7 @@
     "molecules": ["mud", "hay_block"],
     "distribution": ["90", "10"]
 }, {
-    "blocks": ["acacia", "birch", "dark_oak", "jungle", "oak", "spruce", "mangrove", "cherry"],
+    "blocks": ["acacia", "birch", "dark_oak", "jungle", "oak", "spruce", "mangrove", "cherry", "bamboo"],
     "molecules": ["C","O","H"],
     "distribution": ["33","22","45"]
 }, {
