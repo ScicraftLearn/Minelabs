@@ -25,7 +25,7 @@
     "concrete", "concrete_powder"
 ],
 "expand_wood": [
-    "acacia", "birch", "dark_oak", "jungle", "oak", "spruce", "mangrove",
+    "acacia", "birch", "dark_oak", "jungle", "oak", "spruce", "mangrove", "cherry",
     "crimson", "warped"
 ],
 "expand_leaves": [
@@ -63,7 +63,7 @@
     "molecules": ["mud", "hay_block"],
     "distribution": ["90", "10"]
 }, {
-    "blocks": ["acacia", "birch", "dark_oak", "jungle", "oak", "spruce", "mangrove"],
+    "blocks": ["acacia", "birch", "dark_oak", "jungle", "oak", "spruce", "mangrove", "cherry"],
     "molecules": ["C","O","H"],
     "distribution": ["33","22","45"]
 }, {
