@@ -71,8 +71,8 @@ public class ExtraDispenserBehavior {
     /**
      * Register a single SubatomicParticle for the dispenser
      *
-     * @param item   : Item that should be used
-     **/
+     * @param item : Item that should be used
+     */
     private static void registerSubatomicParticle(Item item) {
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
@@ -83,15 +83,15 @@ public class ExtraDispenserBehavior {
     }
 
     /**
-     * Register a single SubatomicParticle for the dispenser
+     * Register a single ChargedItem for the dispenser
      *
-     * @param item   : Item that should be used
-     **/
+     * @param item : Item that should be used
+     */
     private static void registerChargedEntity(Item item) {
-        ChargedItem chargedItem = ((ChargedPointItem) item);
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                ChargedItem chargedItem = (ChargedItem) stack.getItem();
                 return new ChargedEntity(world, BlockPos.ofFloored(position), chargedItem.getCharge(), chargedItem.getMass());
             }
         });
