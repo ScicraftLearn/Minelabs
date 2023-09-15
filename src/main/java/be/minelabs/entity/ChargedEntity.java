@@ -1,7 +1,10 @@
 package be.minelabs.entity;
 
+import be.minelabs.advancement.criterion.CoulombCriterion;
+import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.item.Items;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -11,6 +14,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.EntityHitResult;
@@ -94,8 +98,7 @@ public class ChargedEntity extends ThrownEntity {
         for (BlockPos pos : positions) {
             if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
                 //"Force" a stop
-                updateVelocity(5f, Vec3d.ZERO);
-
+                setVelocity(Vec3d.ZERO);
                 super.tick();
                 return;
             }
@@ -113,10 +116,25 @@ public class ChargedEntity extends ThrownEntity {
                 if (getVelocity().length() < 5) {
                     addVelocity(vector);
                 }
+                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
             }
         }
-        tryCheckBlockCollision();
         super.tick();
+        tryDecay();
+    }
+
+    /**
+     * Try to decay the entity
+     * 1.5% chance that it happens
+     * <p>
+     * Called 20 times second !
+     */
+    private void tryDecay() {
+        if (world.getRandom().nextFloat() < 0.015) {
+            // TODO spawn decay item
+            this.discard();
+            Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
+        }
     }
 
     /**
@@ -132,10 +150,19 @@ public class ChargedEntity extends ThrownEntity {
             if (charged.getCharge() == -this.getCharge()) {
                 ItemScatterer.spawn(getWorld(), getBlockPos(),
                         DefaultedList.copyOf(ItemStack.EMPTY, new ItemStack(Items.PHOTON, 2)));
+                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
                 this.discard();
                 charged.discard();
             }
         }
+    }
+
+    @Override
+    protected void onBlockCollision(BlockState state) {
+        // TODO no ghosts
+        // if (!world.isClient) {
+        //     setVelocity(getVelocity().multiply(-1)); // invert velocity (should only happen on the block hit)
+        // }
     }
 
     @Override
