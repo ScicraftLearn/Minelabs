@@ -4,6 +4,8 @@ import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.item.Items;
+import be.minelabs.util.LootTables;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -13,6 +15,10 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
@@ -131,7 +137,7 @@ public class ChargedEntity extends ThrownEntity {
      */
     private void tryDecay() {
         if (world.getRandom().nextFloat() < 0.015) {
-            // TODO spawn decay item
+            ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getDecayStack());
             this.discard();
             Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
         }
@@ -148,8 +154,7 @@ public class ChargedEntity extends ThrownEntity {
             // Could do way more with this!
             // do annihilation : gives 2 photons per charge
             if (charged.getCharge() == -this.getCharge()) {
-                ItemScatterer.spawn(getWorld(), getBlockPos(),
-                        DefaultedList.copyOf(ItemStack.EMPTY, new ItemStack(Items.PHOTON, 2)));
+                ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
                 Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
                 this.discard();
                 charged.discard();
@@ -163,6 +168,19 @@ public class ChargedEntity extends ThrownEntity {
         // if (!world.isClient) {
         //     setVelocity(getVelocity().multiply(-1)); // invert velocity (should only happen on the block hit)
         // }
+    }
+
+    private ItemStack getAnnihilationStack() {
+        LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.ANNIHILATION);
+        return lootTable.generateLoot(new LootContext.Builder((ServerWorld) world)
+                .parameter(LootContextParameters.THIS_ENTITY, this).random(world.random).build(LootContextTypes.BARTER)).get(0);
+    }
+
+    private ItemStack getDecayStack() {
+        LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.DECAY);
+        return lootTable.generateLoot(new LootContext.Builder((ServerWorld) world)
+                .parameter(LootContextParameters.THIS_ENTITY, this).random(world.random).build(LootContextTypes.BARTER)).get(0);
+
     }
 
     @Override
