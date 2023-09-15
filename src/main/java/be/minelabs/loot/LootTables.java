@@ -1,4 +1,4 @@
-package be.minelabs.util;
+package be.minelabs.loot;
 
 import be.minelabs.Minelabs;
 import net.minecraft.util.Identifier;

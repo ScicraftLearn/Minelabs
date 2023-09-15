@@ -3,9 +3,7 @@ package be.minelabs.entity;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
-import be.minelabs.item.Items;
-import be.minelabs.util.LootTables;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import be.minelabs.loot.LootTables;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -22,7 +20,6 @@ import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -150,6 +147,8 @@ public class ChargedEntity extends ThrownEntity {
      */
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
+        if (world.isClient)
+            return;
         if (entityHitResult.getEntity() instanceof ChargedEntity charged) {
             // Could do way more with this!
             // do annihilation : gives 2 photons per charge
