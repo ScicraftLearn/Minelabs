@@ -135,6 +135,7 @@ public class ChargedEntity extends ThrownEntity {
     /**
      * Try to decay the entity
      * 0.15% chance that it happens
+     * ONLY if the entity isn't stable
      * <p>
      * Called 20 times second !
      */
