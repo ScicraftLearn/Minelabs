@@ -1,9 +1,11 @@
 package be.minelabs.entity;
 
+import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.loot.LootTables;
+import be.minelabs.sound.SoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -128,15 +130,16 @@ public class ChargedEntity extends ThrownEntity {
 
     /**
      * Try to decay the entity
-     * 1.5% chance that it happens
+     * 0.15% chance that it happens
      * <p>
      * Called 20 times second !
      */
     private void tryDecay() {
-        if (world.getRandom().nextFloat() < 0.015) {
+        if (world.getRandom().nextFloat() < 0.0015f) {
             ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getDecayStack());
             this.discard();
             Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
+            playSound(SoundEvents.COULOMB_DECAY, 1f,1f);
         }
     }
 
@@ -155,6 +158,7 @@ public class ChargedEntity extends ThrownEntity {
             if (charged.getCharge() == -this.getCharge()) {
                 ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
                 Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
+                playSound(SoundEvents.COULOMB_ANNIHILATE, 1f,1f);
                 this.discard();
                 charged.discard();
             }
@@ -164,9 +168,9 @@ public class ChargedEntity extends ThrownEntity {
     @Override
     protected void onBlockCollision(BlockState state) {
         // TODO no ghosts
-        // if (!world.isClient) {
-        //     setVelocity(getVelocity().multiply(-1)); // invert velocity (should only happen on the block hit)
-        // }
+         if (!world.isClient && !state.isAir()) {
+             setVelocity(Vec3d.ZERO); // invert velocity (should only happen on the block hit)
+         }
     }
 
     private ItemStack getAnnihilationStack() {
