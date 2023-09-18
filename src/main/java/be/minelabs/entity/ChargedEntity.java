@@ -158,7 +158,9 @@ public class ChargedEntity extends ThrownEntity {
     private void tryDecay() {
         if (!data.stable) {
             if (world.getRandom().nextFloat() < data.decay_chance) {
-                ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getDecayStack());
+                ItemEntity item = new ItemEntity(world, getX(), getY() + .5, getZ(), getDecayStack());
+                item.setVelocity(getVelocity().multiply(2));
+                world.spawnEntity(item);
                 this.discard();
                 Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
                 playSound(SoundEvents.COULOMB_DECAY, 1f, 1f);
@@ -241,6 +243,7 @@ public class ChargedEntity extends ThrownEntity {
 
     /**
      * Get the Item used to "spawn" the entity (saved in custom entity name)
+     *
      * @return Item
      */
     public Item getItem() {
