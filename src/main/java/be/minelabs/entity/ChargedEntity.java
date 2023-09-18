@@ -1,6 +1,5 @@
 package be.minelabs.entity;
 
-import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
@@ -144,14 +143,14 @@ public class ChargedEntity extends ThrownEntity {
             ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getDecayStack());
             this.discard();
             Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
-            playSound(SoundEvents.COULOMB_DECAY, 1f,1f);
+            playSound(SoundEvents.COULOMB_DECAY, 1f, 1f);
         }
     }
 
     /**
      * Entity collision
      *
-     * @param entityHitResult
+     * @param entityHitResult : info regarding the collision
      */
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
@@ -159,11 +158,10 @@ public class ChargedEntity extends ThrownEntity {
             return;
         if (entityHitResult.getEntity() instanceof ChargedEntity charged) {
             // Could do way more with this!
-            // do annihilation : gives 2 photons per charge
             if (charged.getCharge() == -this.getCharge()) {
                 ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
                 Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
-                playSound(SoundEvents.COULOMB_ANNIHILATE, 1f,1f);
+                playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
                 this.discard();
                 charged.discard();
             }
@@ -172,17 +170,27 @@ public class ChargedEntity extends ThrownEntity {
 
     @Override
     protected void onBlockCollision(BlockState state) {
-         if (!world.isClient && !state.isAir()) {
-             setVelocity(Vec3d.ZERO); // invert velocity (should only happen on the block hit)
-         }
+        if (!world.isClient && !state.isAir()) {
+            setVelocity(Vec3d.ZERO); // invert velocity (should only happen on the block hit)
+        }
     }
 
+    /**
+     * Get the Stack that drops when the entity annihilates
+     *
+     * @return ItemStack
+     */
     private ItemStack getAnnihilationStack() {
         LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.ANNIHILATION);
         return lootTable.generateLoot(new LootContext.Builder((ServerWorld) world)
                 .parameter(LootContextParameters.THIS_ENTITY, this).random(world.random).build(LootContextTypes.BARTER)).get(0);
     }
 
+    /**
+     * Get the Stack that drops when the entity decay's
+     *
+     * @return ItemStack
+     */
     private ItemStack getDecayStack() {
         LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.DECAY);
         return lootTable.generateLoot(new LootContext.Builder((ServerWorld) world)
