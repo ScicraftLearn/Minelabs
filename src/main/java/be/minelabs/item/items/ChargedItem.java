@@ -17,10 +17,13 @@ public class ChargedItem extends Item {
 
     private final float mass;
 
-    public ChargedItem(Settings settings, int charge, float mass) {
+    private final boolean stable;
+
+    public ChargedItem(Settings settings, int charge, float mass, boolean stable) {
         super(settings);
         this.charge = charge;
         this.mass = mass;
+        this.stable = stable;
     }
 
     /**
@@ -32,7 +35,8 @@ public class ChargedItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient) {
-            ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().up(), this.charge, this.mass);
+            ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().up(),
+                    this.charge, this.mass, this.stable);
             context.getWorld().spawnEntity(entity);
         }
         return ActionResult.success(context.getWorld().isClient);
@@ -50,7 +54,7 @@ public class ChargedItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         if (!world.isClient) {
-            ChargedEntity entity = new ChargedEntity(user, world, charge, mass);
+            ChargedEntity entity = new ChargedEntity(user, world, charge, mass, stable);
             entity.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 0.4f, 0f);
             world.spawnEntity(entity);
         }
@@ -69,5 +73,9 @@ public class ChargedItem extends Item {
 
     public float getMass() {
         return mass;
+    }
+
+    public boolean isStable() {
+        return stable;
     }
 }

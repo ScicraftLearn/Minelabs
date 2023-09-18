@@ -35,6 +35,8 @@ public class ChargedEntity extends ThrownEntity {
 
     private float mass;
 
+    private boolean stable;
+
     private final static int e_radius = 12;
 
     public ChargedEntity(EntityType<? extends ThrownEntity> entityType, World world) {
@@ -49,11 +51,12 @@ public class ChargedEntity extends ThrownEntity {
      * @param charge : what charge should it have
      * @param mass   : what's the mass
      */
-    public ChargedEntity(World world, BlockPos pos, int charge, float mass) {
+    public ChargedEntity(World world, BlockPos pos, int charge, float mass, boolean stable) {
         this(Entities.CHARGED_ENTITY, world);
         setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
         setCharge(charge);
         this.mass = mass;
+        this.stable = stable;
     }
 
     /**
@@ -64,10 +67,11 @@ public class ChargedEntity extends ThrownEntity {
      * @param charge : what charge did the item have (and should the entity have)
      * @param mass   : what's the mass of the item (and should the entity have)
      */
-    public ChargedEntity(LivingEntity owner, World world, int charge, float mass) {
+    public ChargedEntity(LivingEntity owner, World world, int charge, float mass, boolean stable) {
         super(Entities.CHARGED_ENTITY, owner, world);
         setCharge(charge);
         this.mass = mass;
+        this.stable = stable;
     }
 
     @Override
@@ -135,7 +139,7 @@ public class ChargedEntity extends ThrownEntity {
      * Called 20 times second !
      */
     private void tryDecay() {
-        if (world.getRandom().nextFloat() < 0.0015f) {
+        if (world.getRandom().nextFloat() < 0.0015f && !stable) {
             ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getDecayStack());
             this.discard();
             Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
@@ -167,7 +171,6 @@ public class ChargedEntity extends ThrownEntity {
 
     @Override
     protected void onBlockCollision(BlockState state) {
-        // TODO no ghosts
          if (!world.isClient && !state.isAir()) {
              setVelocity(Vec3d.ZERO); // invert velocity (should only happen on the block hit)
          }
@@ -195,11 +198,15 @@ public class ChargedEntity extends ThrownEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         dataTracker.set(CHARGE, nbt.getInt("charge"));
+        mass = nbt.getFloat("mass");
+        stable = nbt.getBoolean("stable");
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         nbt.putInt("charge", dataTracker.get(CHARGE));
+        nbt.putFloat("mass", mass);
+        nbt.putBoolean("stable", stable);
     }
 
     public int getCharge() {
