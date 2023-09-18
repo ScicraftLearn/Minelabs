@@ -1,5 +1,6 @@
 package be.minelabs.science;
 
+import be.minelabs.Minelabs;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,9 +11,9 @@ public class CoulombGson {
 
     public String anti_item;
     public Boolean stable;
-    public Integer decay_chance;
+    public Float decay_chance;
     public Integer charge;
-    public Integer mass;
+    public Float mass;
 
     public Annihilation annihilation_drop;
     public Decay decay_drop;
@@ -26,7 +27,6 @@ public class CoulombGson {
         public String item;
         public Integer count;
     }
-
 
     public void validate() {
         if (anti_item == null)
@@ -63,7 +63,7 @@ public class CoulombGson {
         return new ItemStack(Registries.ITEM.get(new Identifier(annihilation_drop.item)), annihilation_drop.count);
     }
 
-    public Item getAntiItem(){
+    public Item getAntiItem() {
         return Registries.ITEM.get(new Identifier(anti_item));
     }
 }

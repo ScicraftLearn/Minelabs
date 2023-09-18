@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:generic",
+  "type": "minecraft:entity",
   "pools": [
     {
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minelabs:subatomic/weak_boson"
+          "name": "minelabs:plus"
         }
       ]
     }

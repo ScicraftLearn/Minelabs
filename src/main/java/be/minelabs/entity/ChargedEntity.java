@@ -8,6 +8,7 @@ import be.minelabs.loot.LootTables;
 import be.minelabs.science.CoulombGson;
 import be.minelabs.sound.SoundEvents;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import net.minecraft.block.BlockState;
@@ -35,9 +36,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.List;
 
 public class ChargedEntity extends ThrownEntity {
@@ -79,20 +80,14 @@ public class ChargedEntity extends ThrownEntity {
 
     private void loadData(String file) {
         setCustomName(Text.translatable(file));
-
-        file = "resources/data/minelabs/science/coulomb/" + file.split("\\.")[2] + ".json";
-        // data/minelabs/science/coulomb/minus.json
-        Minelabs.LOGGER.info(file);
-        try {
-            JsonReader reader = new JsonReader(new FileReader(file));
-            CoulombGson json = new Gson().fromJson(reader, CoulombGson.class);
-            json.validate();
-
-            setCharge(json.charge);
-            this.data = json;
-        } catch (FileNotFoundException exception) {
-            exception.printStackTrace();
-        }
+        if (world.isClient)
+            return;
+        file = "/data/minelabs/science/coulomb/" + file.split("\\.")[2] + ".json";
+        CoulombGson json = new Gson().fromJson(JsonParser.parseReader(
+                new InputStreamReader(getClass().getResourceAsStream(file))), CoulombGson.class);
+        json.validate();
+        setCharge(json.charge);
+        this.data = json;
     }
 
 
@@ -114,7 +109,7 @@ public class ChargedEntity extends ThrownEntity {
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        this.discard();
+        this.kill();
         return true;
     }
 
@@ -244,7 +239,12 @@ public class ChargedEntity extends ThrownEntity {
         dataTracker.set(CHARGE, charge);
     }
 
+    /**
+     * Get the Item used to "spawn" the entity (saved in custom entity name)
+     * @return Item
+     */
     public Item getItem() {
-        return Registries.ITEM.get(new Identifier(getName().getString()));
+        // spliting on '.' : translation key: "item.minelabs.name"
+        return Registries.ITEM.get(new Identifier(Minelabs.MOD_ID, getName().getString().split("\\.")[2]));
     }
 }
