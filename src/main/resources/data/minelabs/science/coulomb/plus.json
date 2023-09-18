@@ -1,0 +1,7 @@
+{
+  "anti_item": "minelabs:minus",
+  "stable": true,
+  "charge": 1,
+  "mass": 0.005,
+  "annihilation_drop": "minelabs:subatomic/weak_boson"
+}

@@ -1,5 +1,6 @@
 package be.minelabs.recipe.lewis;
 
+import be.minelabs.Minelabs;
 import be.minelabs.recipe.molecules.Molecule;
 import be.minelabs.recipe.molecules.MoleculeRecipeJsonFormat;
 import com.google.gson.Gson;

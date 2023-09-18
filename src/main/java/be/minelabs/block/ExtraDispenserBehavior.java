@@ -91,8 +91,7 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                ChargedItem chargedItem = (ChargedItem) stack.getItem();
-                return new ChargedEntity(world, BlockPos.ofFloored(position), chargedItem.getCharge(), chargedItem.getMass(), chargedItem.isStable());
+                return new ChargedEntity(world, BlockPos.ofFloored(position), stack.getTranslationKey());
             }
         });
     }

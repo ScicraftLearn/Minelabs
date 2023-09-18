@@ -1,10 +1,15 @@
 package be.minelabs.entity;
 
+import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.loot.LootTables;
+import be.minelabs.science.CoulombGson;
 import be.minelabs.sound.SoundEvents;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -13,13 +18,17 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -27,16 +36,17 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.List;
 
 public class ChargedEntity extends ThrownEntity {
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
-    private float mass;
-
-    private boolean stable;
-
     private final static int e_radius = 12;
+
+    private CoulombGson data;
+
 
     public ChargedEntity(EntityType<? extends ThrownEntity> entityType, World world) {
         super(entityType, world);
@@ -45,33 +55,46 @@ public class ChargedEntity extends ThrownEntity {
     /**
      * Summon/Spawn a new Entity
      *
-     * @param world  : in what world should we make the entity
-     * @param pos    : position in the world to spawn the entity
-     * @param charge : what charge should it have
-     * @param mass   : what's the mass
+     * @param world : in what world should we make the entity
+     * @param pos   : position in the world to spawn the entity
+     * @param data  : String, with location to data file (json)
      */
-    public ChargedEntity(World world, BlockPos pos, int charge, float mass, boolean stable) {
+    public ChargedEntity(World world, BlockPos pos, String data) {
         this(Entities.CHARGED_ENTITY, world);
         setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
-        setCharge(charge);
-        this.mass = mass;
-        this.stable = stable;
+        loadData(data);
     }
 
     /**
      * Make a new Thrown Entity
      *
-     * @param owner  : who threw the Entity/Item
-     * @param world  : what world did we do this in
-     * @param charge : what charge did the item have (and should the entity have)
-     * @param mass   : what's the mass of the item (and should the entity have)
+     * @param owner : who threw the Entity/Item
+     * @param world : what world did we do this in
+     * @param data  : String, with location to data file (json)
      */
-    public ChargedEntity(LivingEntity owner, World world, int charge, float mass, boolean stable) {
+    public ChargedEntity(LivingEntity owner, World world, String data) {
         super(Entities.CHARGED_ENTITY, owner, world);
-        setCharge(charge);
-        this.mass = mass;
-        this.stable = stable;
+        loadData(data);
     }
+
+    private void loadData(String file) {
+        setCustomName(Text.translatable(file));
+
+        file = "resources/data/minelabs/science/coulomb/" + file.split("\\.")[2] + ".json";
+        // data/minelabs/science/coulomb/minus.json
+        Minelabs.LOGGER.info(file);
+        try {
+            JsonReader reader = new JsonReader(new FileReader(file));
+            CoulombGson json = new Gson().fromJson(reader, CoulombGson.class);
+            json.validate();
+
+            setCharge(json.charge);
+            this.data = json;
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+        }
+    }
+
 
     @Override
     public PistonBehavior getPistonBehavior() {
@@ -119,7 +142,7 @@ public class ChargedEntity extends ThrownEntity {
             if (entity instanceof ChargedEntity chargedEntity) {
                 double force = 8.987f * getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
                 Vec3d vector = getPos().subtract(chargedEntity.getPos()).normalize(); // Vector between entities
-                vector = vector.multiply(force / mass); //scale vector with Force and mass of atom
+                vector = vector.multiply(force / data.mass); //scale vector with Force and mass of atom
                 vector = vector.multiply(0.0001);
                 if (getVelocity().length() < 5) {
                     addVelocity(vector);
@@ -139,11 +162,13 @@ public class ChargedEntity extends ThrownEntity {
      * Called 20 times second !
      */
     private void tryDecay() {
-        if (world.getRandom().nextFloat() < 0.0015f && !stable) {
-            ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getDecayStack());
-            this.discard();
-            Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
-            playSound(SoundEvents.COULOMB_DECAY, 1f, 1f);
+        if (!data.stable) {
+            if (world.getRandom().nextFloat() < data.decay_chance) {
+                ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getDecayStack());
+                this.discard();
+                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
+                playSound(SoundEvents.COULOMB_DECAY, 1f, 1f);
+            }
         }
     }
 
@@ -158,9 +183,10 @@ public class ChargedEntity extends ThrownEntity {
             return;
         if (entityHitResult.getEntity() instanceof ChargedEntity charged) {
             // Could do way more with this!
-            if (charged.getCharge() == -this.getCharge()) {
+            if (data.getAntiItem() == charged.getItem()) {
                 ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
-                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
+                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
+                        (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
                 playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
                 this.discard();
                 charged.discard();
@@ -181,9 +207,7 @@ public class ChargedEntity extends ThrownEntity {
      * @return ItemStack
      */
     private ItemStack getAnnihilationStack() {
-        LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.ANNIHILATION);
-        return lootTable.generateLoot(new LootContext.Builder((ServerWorld) world)
-                .parameter(LootContextParameters.THIS_ENTITY, this).random(world.random).build(LootContextTypes.BARTER)).get(0);
+        return data.getAnnihilationDrop();
     }
 
     /**
@@ -192,10 +216,7 @@ public class ChargedEntity extends ThrownEntity {
      * @return ItemStack
      */
     private ItemStack getDecayStack() {
-        LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.DECAY);
-        return lootTable.generateLoot(new LootContext.Builder((ServerWorld) world)
-                .parameter(LootContextParameters.THIS_ENTITY, this).random(world.random).build(LootContextTypes.BARTER)).get(0);
-
+        return data.getDecayDrop();
     }
 
     @Override
@@ -207,15 +228,13 @@ public class ChargedEntity extends ThrownEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         dataTracker.set(CHARGE, nbt.getInt("charge"));
-        mass = nbt.getFloat("mass");
-        stable = nbt.getBoolean("stable");
+        loadData(nbt.getString("data"));
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         nbt.putInt("charge", dataTracker.get(CHARGE));
-        nbt.putFloat("mass", mass);
-        nbt.putBoolean("stable", stable);
+        nbt.putString("data", getName().getString());
     }
 
     public int getCharge() {
@@ -224,5 +243,9 @@ public class ChargedEntity extends ThrownEntity {
 
     public void setCharge(int charge) {
         dataTracker.set(CHARGE, charge);
+    }
+
+    public Item getItem() {
+        return Registries.ITEM.get(new Identifier(getName().getString()));
     }
 }

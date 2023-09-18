@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class ChargedPointItem extends ChargedItem{
     public ChargedPointItem(Settings settings) {
-        super(settings, 0, 0);
+        super(settings);
     }
 
     @Override

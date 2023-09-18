@@ -13,17 +13,8 @@ import net.minecraft.world.World;
 
 public class ChargedItem extends Item {
 
-    private final int charge;
-
-    private final float mass;
-
-    private final boolean stable;
-
-    public ChargedItem(Settings settings, int charge, float mass, boolean stable) {
+    public ChargedItem(Settings settings) {
         super(settings);
-        this.charge = charge;
-        this.mass = mass;
-        this.stable = stable;
     }
 
     /**
@@ -35,8 +26,7 @@ public class ChargedItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient) {
-            ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().up(),
-                    this.charge, this.mass, this.stable);
+            ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().up(), getTranslationKey());
             context.getWorld().spawnEntity(entity);
         }
         return ActionResult.success(context.getWorld().isClient);
@@ -54,7 +44,7 @@ public class ChargedItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         if (!world.isClient) {
-            ChargedEntity entity = new ChargedEntity(user, world, charge, mass, stable);
+            ChargedEntity entity = new ChargedEntity(user, world, getTranslationKey());
             entity.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 0.4f, 0f);
             world.spawnEntity(entity);
         }
@@ -67,15 +57,4 @@ public class ChargedItem extends Item {
         return TypedActionResult.success(stack, world.isClient());
     }
 
-    public int getCharge() {
-        return charge;
-    }
-
-    public float getMass() {
-        return mass;
-    }
-
-    public boolean isStable() {
-        return stable;
-    }
 }
