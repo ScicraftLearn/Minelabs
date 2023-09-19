@@ -38,8 +38,6 @@ public class ExtraDispenserBehavior {
         registerChargedEntity(Items.ANTI_PROTON);
         registerChargedEntity(Items.ANTI_NEUTRON);
 
-        registerChargedEntity(Items.MINUS);
-        registerChargedEntity(Items.PLUS);
 
         /**
          * Register dispenser behavior for using Entropy Creeper Spawn Egg
