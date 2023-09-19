@@ -18,10 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Items {
-
-    public static final Item MINUS = register(new ChargedItem(new Item.Settings()), "minus");
-    public static final Item PLUS = register(new ChargedItem(new Item.Settings()), "plus");
-
     public static final Item ATOM_FLOOR = register(new BlockItem((Blocks.ATOM_FLOOR), new FabricItemSettings()), "atomic_floor");
 
     // Items
