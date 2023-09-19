@@ -115,6 +115,11 @@ public class ChargedEntity extends ThrownItemEntity {
     }
 
     @Override
+    public boolean isPushedByFluids() {
+        return false;
+    }
+
+    @Override
     public boolean damage(DamageSource source, float amount) {
         this.kill();
         return true;
