@@ -78,7 +78,6 @@ public class ChargedEntity extends ThrownItemEntity {
     }
 
     private void loadData(String file) {
-        Minelabs.LOGGER.info(file);
         setCustomName(Text.translatable(file));
         if (world.isClient)
             return;
