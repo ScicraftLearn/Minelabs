@@ -116,11 +116,6 @@ public class ChargedEntity extends ThrownItemEntity {
 
     @Override
     public void tick() {
-        if (world.isClient) {
-            super.tick();
-            return;
-        }
-
         Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
         for (BlockPos pos : positions) {
             if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
@@ -129,6 +124,11 @@ public class ChargedEntity extends ThrownItemEntity {
                 super.tick();
                 return;
             }
+        }
+
+        if (world.isClient) {
+            super.tick();
+            return;
         }
 
         List<Entity> entities = world.getOtherEntities(this,
@@ -187,6 +187,9 @@ public class ChargedEntity extends ThrownItemEntity {
                 playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
                 this.discard();
                 charged.discard();
+            } else {
+                setVelocity(Vec3d.ZERO);
+                charged.setVelocity(Vec3d.ZERO);
             }
         } else if (entityHitResult.getEntity() instanceof BohrBlueprintEntity bohr) {
             bohr.onParticleCollision(this);
@@ -195,7 +198,7 @@ public class ChargedEntity extends ThrownItemEntity {
 
     @Override
     protected void onBlockCollision(BlockState state) {
-        if (!world.isClient && !state.isAir()) {
+        if (!state.isAir()) {
             setVelocity(Vec3d.ZERO); // invert velocity (should only happen on the block hit)
         }
     }
