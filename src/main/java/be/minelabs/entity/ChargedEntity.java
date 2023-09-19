@@ -16,6 +16,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -178,7 +179,8 @@ public class ChargedEntity extends ThrownItemEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         if (world.isClient)
             return;
-        if (entityHitResult.getEntity() instanceof ChargedEntity charged) {
+        Entity entity = entityHitResult.getEntity();
+        if (entity instanceof ChargedEntity charged) {
             // Could do way more with this!
             if (data.getAntiItem() != null && charged.getItem().isOf(data.getAntiItem())) {
                 ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
@@ -191,8 +193,11 @@ public class ChargedEntity extends ThrownItemEntity {
                 setVelocity(Vec3d.ZERO);
                 charged.setVelocity(Vec3d.ZERO);
             }
-        } else if (entityHitResult.getEntity() instanceof BohrBlueprintEntity bohr) {
+        } else if (entity instanceof BohrBlueprintEntity bohr) {
             bohr.onParticleCollision(this);
+        } else if (entity instanceof CreeperEntity creeperEntity) {
+            creeperEntity.getDataTracker().set(CreeperEntity.CHARGED, true);
+            this.discard();
         }
     }
 
