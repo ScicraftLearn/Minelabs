@@ -26,7 +26,7 @@ public class ChargedItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient) {
-            ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().up(), context.getStack());
+            ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().offset(context.getSide()), context.getStack());
             context.getWorld().spawnEntity(entity);
         }
         return ActionResult.success(context.getWorld().isClient);
