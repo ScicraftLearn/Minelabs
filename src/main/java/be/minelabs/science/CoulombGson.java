@@ -1,6 +1,5 @@
 package be.minelabs.science;
 
-import be.minelabs.Minelabs;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,7 +29,15 @@ public class CoulombGson {
 
     public void validate() {
         if (anti_item == null)
-            throw new JsonSyntaxException("Attribute 'anti_item' is missing");
+            anti_item = "";
+        if (!anti_item.isEmpty() || !anti_item.isBlank()) {
+            if (annihilation_drop == null)
+                throw new JsonSyntaxException("Attribute 'annihilation_drop' is missing");
+            if (annihilation_drop.item == null)
+                throw new JsonSyntaxException("Attribute 'annihilation_drop item' is missing");
+            if (annihilation_drop.count == null)
+                annihilation_drop.count = 1;
+        }
         if (stable == null)
             stable = false;
         if (decay_chance == null && !stable)
@@ -39,12 +46,7 @@ public class CoulombGson {
             throw new JsonSyntaxException("Attribute 'charge' is missing");
         if (mass == null)
             throw new JsonSyntaxException("Attribute 'mass' is missing");
-        if (annihilation_drop == null)
-            throw new JsonSyntaxException("Attribute 'annihilation_drop' is missing");
-        if (annihilation_drop.item == null)
-            throw new JsonSyntaxException("Attribute 'annihilation_drop item' is missing");
-        if (annihilation_drop.count == null)
-            annihilation_drop.count = 1;
+
         if (!stable) {
             if (decay_drop == null)
                 throw new JsonSyntaxException("Attribute 'decay_drop' is missing OR 'stable' is false/missing");
@@ -64,6 +66,9 @@ public class CoulombGson {
     }
 
     public Item getAntiItem() {
+        if (anti_item == null || anti_item.isEmpty() || anti_item.isBlank()) {
+            return null;
+        }
         return Registries.ITEM.get(new Identifier(anti_item));
     }
 }

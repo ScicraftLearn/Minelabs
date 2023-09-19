@@ -181,7 +181,7 @@ public class ChargedEntity extends ThrownEntity {
             return;
         if (entityHitResult.getEntity() instanceof ChargedEntity charged) {
             // Could do way more with this!
-            if (data.getAntiItem() == charged.getItem()) {
+            if (data.getAntiItem() != null && data.getAntiItem() == charged.getItem()) {
                 ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
                 Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
                         (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));

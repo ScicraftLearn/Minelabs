@@ -1,5 +1,5 @@
 {
-  "anti_item": "minelabs:plus",
+  "anti_item": "",
   "stable": false,
   "decay_chance": 0.0015,
   "charge": 0,
@@ -9,7 +9,7 @@
     "count": 2
   },
   "decay_drop": {
-    "item" : "minelabs:subatomic/weak_boson",
+    "item" : "minelabs:subatomic/electron",
     "count": 1
   }
 }

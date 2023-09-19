@@ -1,8 +1,8 @@
 {
-  "anti_item": "minelabs:subatomic/pion_plus",
+  "anti_item": "",
   "stable": false,
   "decay_chance": 0.0020,
-  "charge": -1,
+  "charge": 0,
   "mass": 0.0003,
   "annihilation_drop": {
     "item" : "minelabs:subatomic/photon",
@@ -10,6 +10,6 @@
   },
   "decay_drop": {
     "item" : "minelabs:subatomic/photon",
-    "count": 1
+    "count": 2
   }
 }
