@@ -143,7 +143,7 @@ public class BohrBlueprintEntity extends Entity {
     public void onParticleCollision(ChargedEntity particle) {
         if (world.isClient)
             return;
-        ItemStack stack = new ItemStack(particle.getItem());
+        ItemStack stack = particle.getStack();
         Item item = stack.getItem();
 
         if (addItem(item, (ServerPlayerEntity) particle.getOwner())) {
@@ -317,7 +317,7 @@ public class BohrBlueprintEntity extends Entity {
     private void launchParticle(Item item) {
         // launch particle
         ChargedEntity entity = new ChargedEntity(world,
-                BlockPos.ofFloored(getX(), getY() + getHeight() / 2f, getZ()), item.getTranslationKey());
+                BlockPos.ofFloored(getX(), getY() + getHeight() / 2f, getZ()), new ItemStack(item));
         // velocity chosen such that it launches up and around, but not too much at the ground
         Vec3d velocity = new Vec3d(0, 0.2, 0)
                 .add(

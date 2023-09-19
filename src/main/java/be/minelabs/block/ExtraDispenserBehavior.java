@@ -72,7 +72,7 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return new ChargedEntity(world, BlockPos.ofFloored(position), stack.getTranslationKey());
+                return new ChargedEntity(world, BlockPos.ofFloored(position), stack);
             }
         });
     }

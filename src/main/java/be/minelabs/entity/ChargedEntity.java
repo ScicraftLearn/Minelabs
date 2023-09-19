@@ -4,13 +4,11 @@ import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
-import be.minelabs.loot.LootTables;
+import be.minelabs.item.Items;
 import be.minelabs.science.CoulombGson;
 import be.minelabs.sound.SoundEvents;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -18,40 +16,38 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.projectile.thrown.ThrownEntity;
+import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 import java.io.*;
 import java.util.List;
 
-public class ChargedEntity extends ThrownEntity {
+public class ChargedEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     private final static int e_radius = 12;
-    public static final float DEFAULT_SPEED = 1.5f;
+    public static final float DEFAULT_SPEED = 0.5f;
 
     private CoulombGson data;
 
 
-    public ChargedEntity(EntityType<? extends ThrownEntity> entityType, World world) {
+    public ChargedEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Override
+    public Item getDefaultItem() {
+        return Items.ELECTRON;
     }
 
     /**
@@ -59,12 +55,13 @@ public class ChargedEntity extends ThrownEntity {
      *
      * @param world : in what world should we make the entity
      * @param pos   : position in the world to spawn the entity
-     * @param data  : String, with location to data file (json)
+     * @param stack : Item used for throwing
      */
-    public ChargedEntity(World world, BlockPos pos, String data) {
+    public ChargedEntity(World world, BlockPos pos, ItemStack stack) {
         this(Entities.CHARGED_ENTITY, world);
         setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
-        loadData(data);
+        setItem(stack);
+        loadData(stack.getItem().getTranslationKey());
     }
 
     /**
@@ -72,20 +69,22 @@ public class ChargedEntity extends ThrownEntity {
      *
      * @param owner : who threw the Entity/Item
      * @param world : what world did we do this in
-     * @param data  : String, with location to data file (json)
+     * @param stack : Item used for throwing
      */
-    public ChargedEntity(LivingEntity owner, World world, String data) {
+    public ChargedEntity(LivingEntity owner, World world, ItemStack stack) {
         super(Entities.CHARGED_ENTITY, owner, world);
-        loadData(data);
+        setItem(stack);
+        loadData(stack.getItem().getTranslationKey());
     }
 
     private void loadData(String file) {
+        Minelabs.LOGGER.info(file);
         setCustomName(Text.translatable(file));
         if (world.isClient)
             return;
         // item.minelabs.subatomic.name
         String[] split = file.split("\\.");
-        file = "/data/minelabs/science/coulomb/" + split[split.length-1] + ".json";
+        file = "/data/minelabs/science/coulomb/" + split[split.length - 1] + ".json";
         CoulombGson json = new Gson().fromJson(JsonParser.parseReader(
                 new InputStreamReader(getClass().getResourceAsStream(file))), CoulombGson.class);
         json.validate();
@@ -182,7 +181,7 @@ public class ChargedEntity extends ThrownEntity {
             return;
         if (entityHitResult.getEntity() instanceof ChargedEntity charged) {
             // Could do way more with this!
-            if (data.getAntiItem() != null && data.getAntiItem() == charged.getItem()) {
+            if (data.getAntiItem() != null && charged.getItem().isOf(data.getAntiItem())) {
                 ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
                 Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
                         (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
@@ -222,6 +221,7 @@ public class ChargedEntity extends ThrownEntity {
 
     @Override
     protected void initDataTracker() {
+        super.initDataTracker();
         this.setNoGravity(true);
         dataTracker.startTracking(CHARGE, 0);
     }
@@ -230,10 +230,12 @@ public class ChargedEntity extends ThrownEntity {
     public void readCustomDataFromNbt(NbtCompound nbt) {
         dataTracker.set(CHARGE, nbt.getInt("charge"));
         loadData(nbt.getString("data"));
+        super.readCustomDataFromNbt(nbt);
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
         nbt.putInt("charge", dataTracker.get(CHARGE));
         nbt.putString("data", getName().getString());
     }
@@ -244,15 +246,5 @@ public class ChargedEntity extends ThrownEntity {
 
     public void setCharge(int charge) {
         dataTracker.set(CHARGE, charge);
-    }
-
-    /**
-     * Get the Item used to "spawn" the entity (saved in custom entity name)
-     *
-     * @return Item
-     */
-    public Item getItem() {
-        // spliting on '.' : translation key: "item.minelabs.name"
-        return Registries.ITEM.get(new Identifier(Minelabs.MOD_ID, getName().getString().split("\\.")[2]));
     }
 }

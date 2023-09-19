@@ -26,7 +26,7 @@ public class ChargedItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getWorld().isClient) {
-            ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().up(), getTranslationKey());
+            ChargedEntity entity = new ChargedEntity(context.getWorld(), context.getBlockPos().up(), context.getStack());
             context.getWorld().spawnEntity(entity);
         }
         return ActionResult.success(context.getWorld().isClient);
@@ -44,7 +44,7 @@ public class ChargedItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         if (!world.isClient) {
-            ChargedEntity entity = new ChargedEntity(user, world, getTranslationKey());
+            ChargedEntity entity = new ChargedEntity(user, world, stack);
             entity.setVelocity(user, user.getPitch(), user.getYaw(), user.getRoll(), 0.4f, 0f);
             world.spawnEntity(entity);
         }
