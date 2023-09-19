@@ -5,7 +5,6 @@ import be.minelabs.entity.decoration.painting.Paintings;
 import be.minelabs.entity.effect.Effects;
 import be.minelabs.entity.mob.BalloonEntity;
 import be.minelabs.entity.mob.EntropyCreeperEntity;
-import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
 import be.minelabs.util.AtomConfiguration;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
@@ -13,8 +12,6 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -30,9 +27,6 @@ import java.util.function.Predicate;
 
 public class Entities {
     // EntityTypes
-    public static final EntityType<SubatomicParticleEntity> SUBATOMIC_PARTICLE_ENTITY_TYPE = register(FabricEntityTypeBuilder.<SubatomicParticleEntity>create(SpawnGroup.MISC, SubatomicParticleEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "subatomic_particle_entity");
-
     public static final EntityType<BohrBlueprintEntity> BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE = register(FabricEntityTypeBuilder.<BohrBlueprintEntity>create(SpawnGroup.MISC, BohrBlueprintEntity::new)
             .dimensions(EntityDimensions.fixed(1.5F, 1.5F)).trackRangeChunks(3).disableSummon().fireImmune().build(), "bohr_blueprint_entity");
 

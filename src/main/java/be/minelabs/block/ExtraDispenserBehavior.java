@@ -1,10 +1,7 @@
 package be.minelabs.block;
 
 import be.minelabs.entity.ChargedEntity;
-import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
 import be.minelabs.item.Items;
-import be.minelabs.item.items.ChargedItem;
-import be.minelabs.item.items.ChargedPointItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
@@ -34,12 +31,12 @@ public class ExtraDispenserBehavior {
          * The entity is shot up slight as defined in dispenseSilently in ProjectileDispenserBehavior:
          * direction.getOffsetY() + 0.1F
          */
-        registerSubatomicParticle(Items.ELECTRON);
-        registerSubatomicParticle(Items.PROTON);
-        registerSubatomicParticle(Items.NEUTRON);
-        registerSubatomicParticle(Items.POSITRON);
-        registerSubatomicParticle(Items.ANTI_PROTON);
-        registerSubatomicParticle(Items.ANTI_NEUTRON);
+        registerChargedEntity(Items.ELECTRON);
+        registerChargedEntity(Items.PROTON);
+        registerChargedEntity(Items.NEUTRON);
+        registerChargedEntity(Items.POSITRON);
+        registerChargedEntity(Items.ANTI_PROTON);
+        registerChargedEntity(Items.ANTI_NEUTRON);
 
         registerChargedEntity(Items.MINUS);
         registerChargedEntity(Items.PLUS);
@@ -64,20 +61,6 @@ public class ExtraDispenserBehavior {
                 stack.decrement(1);
                 pointer.getWorld().emitGameEvent(null, GameEvent.ENTITY_PLACE, pointer.getPos());
                 return stack;
-            }
-        });
-    }
-
-    /**
-     * Register a single SubatomicParticle for the dispenser
-     *
-     * @param item : Item that should be used
-     */
-    private static void registerSubatomicParticle(Item item) {
-        DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
-            @Override
-            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return new SubatomicParticleEntity(position.getX(), position.getY(), position.getZ(), world, stack);
             }
         });
     }

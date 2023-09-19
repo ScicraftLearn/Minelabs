@@ -19,8 +19,8 @@ import java.util.List;
 
 public class Items {
 
-    public static final Item MINUS = register(new ChargedItem(new Item.Settings()),"minus");
-    public static final Item PLUS = register(new ChargedItem(new Item.Settings()),"plus");
+    public static final Item MINUS = register(new ChargedItem(new Item.Settings()), "minus");
+    public static final Item PLUS = register(new ChargedItem(new Item.Settings()), "plus");
 
     public static final Item ATOM_FLOOR = register(new BlockItem((Blocks.ATOM_FLOOR), new FabricItemSettings()), "atomic_floor");
 
@@ -211,23 +211,23 @@ public class Items {
     public static final Item ANTI_DOWNQUARK_GREEN = register(new Item(new Item.Settings().maxCount(64)), "subatomic/anti_downquark_green");
     public static final Item ANTI_DOWNQUARK_BLUE = register(new Item(new Item.Settings().maxCount(64)), "subatomic/anti_downquark_blue");
 
-    public static final Item GLUON = register(new Item(new Item.Settings().maxCount(64)), "subatomic/gluon");
+    public static final Item GLUON = register(new Item(new FabricItemSettings()), "subatomic/gluon");
 
-    public static final Item ELECTRON = register(new SubatomicParticleItem(Blocks.ELECTRON, new Item.Settings().maxCount(64)), "subatomic/electron");
-    public static final Item POSITRON = register(new SubatomicParticleItem(Blocks.POSITRON, new Item.Settings().maxCount(64)), "subatomic/positron");
-    public static final Item PHOTON = register(new Item(new Item.Settings().maxCount(64)), "subatomic/photon");
+    public static final Item ELECTRON = register(new ChargedItem(new FabricItemSettings()), "subatomic/electron");
+    public static final Item POSITRON = register(new ChargedItem(new FabricItemSettings()), "subatomic/positron");
+    public static final Item PHOTON = register(new Item(new FabricItemSettings()), "subatomic/photon");
 
     public static final Item NEUTRINO = register(new BlockItem(Blocks.NEUTRINO, new FabricItemSettings()), "subatomic/neutrino");
     public static final Item ANTINEUTRINO = register(new BlockItem(Blocks.ANTINEUTRINO, new FabricItemSettings()), "subatomic/antineutrino");
     public static final Item WEAK_BOSON = register(new BlockItem(Blocks.WEAK_BOSON, new FabricItemSettings()), "subatomic/weak_boson");
 
-    public static final Item PROTON = register(new SubatomicParticleItem(Blocks.PROTON, new Item.Settings().maxCount(64)), "subatomic/proton");
-    public static final Item ANTI_PROTON = register(new SubatomicParticleItem(Blocks.ANTI_PROTON, new Item.Settings().maxCount(64)), "subatomic/anti_proton");
-    public static final Item NEUTRON = register(new SubatomicParticleItem(Blocks.NEUTRON, new Item.Settings().maxCount(64)), "subatomic/neutron");
-    public static final Item ANTI_NEUTRON = register(new SubatomicParticleItem(Blocks.ANTI_NEUTRON, new Item.Settings().maxCount(64)), "subatomic/anti_neutron");
-    public static final Item PION_NUL = register(new BlockItem(Blocks.PION_NUL, new FabricItemSettings()), "subatomic/pion_nul");
-    public static final Item PION_MINUS = register(new BlockItem(Blocks.PION_MINUS, new FabricItemSettings()), "subatomic/pion_minus");
-    public static final Item PION_PLUS = register(new BlockItem(Blocks.PION_PLUS, new FabricItemSettings()), "subatomic/pion_plus");
+    public static final Item PROTON = register(new ChargedItem(new FabricItemSettings()), "subatomic/proton");
+    public static final Item ANTI_PROTON = register(new ChargedItem(new FabricItemSettings()), "subatomic/anti_proton");
+    public static final Item NEUTRON = register(new ChargedItem(new FabricItemSettings()), "subatomic/neutron");
+    public static final Item ANTI_NEUTRON = register(new ChargedItem(new FabricItemSettings()), "subatomic/anti_neutron");
+    public static final Item PION_NUL = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_nul");
+    public static final Item PION_MINUS = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_minus");
+    public static final Item PION_PLUS = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_plus");
 
     public static final Item CHARGED_POINT = register(new BlockItem(Blocks.CHARGED_POINT_BLOCK, new FabricItemSettings()), "charged_point");
     public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings()), "electric_field_sensor");
@@ -344,7 +344,7 @@ public class Items {
         return Registry.register(Registries.ITEM, identifier, item);
     }
 
-    private static AtomItem registerAtom(Atom atom){
+    private static AtomItem registerAtom(Atom atom) {
         AtomItem item = register(new AtomItem(new Item.Settings(), atom), atom.getItemId());
         atom.setItem(item);
         return item;

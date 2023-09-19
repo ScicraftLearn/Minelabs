@@ -45,6 +45,7 @@ public class ChargedEntity extends ThrownEntity {
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     private final static int e_radius = 12;
+    public static final float DEFAULT_SPEED = 1.5f;
 
     private CoulombGson data;
 
@@ -82,7 +83,7 @@ public class ChargedEntity extends ThrownEntity {
         setCustomName(Text.translatable(file));
         if (world.isClient)
             return;
-        file = "/data/minelabs/science/coulomb/" + file.split("\\.")[2] + ".json";
+        file = "/data/minelabs/science/coulomb/" + file.split("\\.")[2].split("/")[1] + ".json";
         CoulombGson json = new Gson().fromJson(JsonParser.parseReader(
                 new InputStreamReader(getClass().getResourceAsStream(file))), CoulombGson.class);
         json.validate();
@@ -187,6 +188,8 @@ public class ChargedEntity extends ThrownEntity {
                 this.discard();
                 charged.discard();
             }
+        } else if (entityHitResult.getEntity() instanceof BohrBlueprintEntity bohr) {
+            bohr.onParticleCollision(this);
         }
     }
 

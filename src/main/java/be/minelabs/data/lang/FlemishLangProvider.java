@@ -95,6 +95,5 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Blocks.GLUON_QUANTUMFIELD, "Gluon Kwantumveld");
 
         builder.add(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, "Bohr Entity");
-        builder.add(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, "Subatomisch Deeltje");
     }
 }

@@ -3,6 +3,7 @@ package be.minelabs.client.renderer.entity;
 import be.minelabs.block.Blocks;
 import be.minelabs.entity.ChargedEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -37,6 +38,7 @@ public class ChargedEntityRenderer extends EntityRenderer<ChargedEntity> {
 
         matrices.push();
         matrices.translate(-0.5, -0.25, -0.5);
+
         blockRenderManager.renderBlockAsEntity(renderState, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV);
         matrices.pop();
 
