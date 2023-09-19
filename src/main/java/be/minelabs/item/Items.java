@@ -219,7 +219,7 @@ public class Items {
 
     public static final Item NEUTRINO = register(new BlockItem(Blocks.NEUTRINO, new FabricItemSettings()), "subatomic/neutrino");
     public static final Item ANTINEUTRINO = register(new BlockItem(Blocks.ANTINEUTRINO, new FabricItemSettings()), "subatomic/antineutrino");
-    public static final Item WEAK_BOSON = register(new BlockItem(Blocks.WEAK_BOSON, new FabricItemSettings()), "subatomic/weak_boson");
+    public static final Item WEAK_BOSON = register(new ChargedItem(new FabricItemSettings()), "subatomic/weak_boson");
 
     public static final Item PROTON = register(new ChargedItem(new FabricItemSettings()), "subatomic/proton");
     public static final Item ANTI_PROTON = register(new ChargedItem(new FabricItemSettings()), "subatomic/anti_proton");
@@ -229,7 +229,7 @@ public class Items {
     public static final Item PION_MINUS = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_minus");
     public static final Item PION_PLUS = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_plus");
 
-    public static final Item CHARGED_POINT = register(new BlockItem(Blocks.CHARGED_POINT_BLOCK, new FabricItemSettings()), "charged_point");
+    public static final Item CHARGED_POINT = register(new Item(new FabricItemSettings()), "charged_point");
     public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings()), "electric_field_sensor");
 
     public static final Item MOLOGRAM = register(new BlockItem(Blocks.MOLOGRAM_BLOCK, new FabricItemSettings()), "mologram");

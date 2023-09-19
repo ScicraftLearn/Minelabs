@@ -83,7 +83,8 @@ public class ChargedEntity extends ThrownEntity {
         setCustomName(Text.translatable(file));
         if (world.isClient)
             return;
-        file = "/data/minelabs/science/coulomb/" + file.split("\\.")[2].split("/")[1] + ".json";
+        // item.minelabs.subatomic/name
+        file = "/data/minelabs/science/coulomb/" + file.split("/")[1] + ".json";
         CoulombGson json = new Gson().fromJson(JsonParser.parseReader(
                 new InputStreamReader(getClass().getResourceAsStream(file))), CoulombGson.class);
         json.validate();

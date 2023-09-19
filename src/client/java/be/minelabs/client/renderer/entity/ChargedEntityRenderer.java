@@ -33,13 +33,14 @@ public class ChargedEntityRenderer extends EntityRenderer<ChargedEntity> {
     public void render(ChargedEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
 
+        // TODO RENDERING
         boolean isPositive = entity.getCharge() >= 0;
-        BlockState renderState = isPositive ? Blocks.POSITRON.getDefaultState() : Blocks.ELECTRON.getDefaultState();
+        //BlockState renderState = isPositive ? Blocks.POSITRON.getDefaultState() : Blocks.ELECTRON.getDefaultState();
 
         matrices.push();
         matrices.translate(-0.5, -0.25, -0.5);
 
-        blockRenderManager.renderBlockAsEntity(renderState, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV);
+        //blockRenderManager.renderBlockAsEntity(renderState, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV);
         matrices.pop();
 
         Vec3d velocity = entity.getVelocity().multiply(30);
