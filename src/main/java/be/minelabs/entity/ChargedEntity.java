@@ -1,6 +1,5 @@
 package be.minelabs.entity;
 
-import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
@@ -9,7 +8,6 @@ import be.minelabs.science.CoulombGson;
 import be.minelabs.sound.SoundEvents;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
