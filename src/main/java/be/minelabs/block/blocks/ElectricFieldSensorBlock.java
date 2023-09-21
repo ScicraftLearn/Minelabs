@@ -5,6 +5,8 @@ import be.minelabs.block.entity.ElectricFieldSensorBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -33,7 +35,7 @@ public class ElectricFieldSensorBlock extends BlockWithEntity {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof ElectricFieldSensorBlockEntity sensor) {
-            sensor.calculateField(world, pos, null);
+            sensor.calculateField(world, pos);
         }
         super.onPlaced(world, pos, state, placer, itemStack);
     }
@@ -53,4 +55,17 @@ public class ElectricFieldSensorBlock extends BlockWithEntity {
         }
         return super.onUse(state, world, pos, player, hand, hit);
     }
+
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        //Only tick server, the result will be synced in this case
+        return checkType(type, BlockEntities.ELECTRIC_FIELD_SENSOR, (world1, pos, state1, blockEntity) -> {
+            if (!world1.isClient()) {
+                blockEntity.tick(world1, pos, state1);
+            }
+        });
+    }
+
 }

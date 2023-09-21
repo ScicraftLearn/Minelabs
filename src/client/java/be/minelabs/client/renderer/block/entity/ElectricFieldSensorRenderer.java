@@ -27,7 +27,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
     @Override
     public void render(ElectricFieldSensorBlockEntity entity, float tickDelta, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        Vector3f field = new Vector3f(entity.getField());
+        Vector3f field = new Vector3f(entity.getField().toVector3f());
 
         matrices.push();
 

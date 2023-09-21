@@ -35,7 +35,7 @@ import java.util.List;
 public class ChargedEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
-    private final static int e_radius = 12;
+    public final static int e_radius = 12;
     public static final float DEFAULT_SPEED = 0.5f;
 
     private CoulombGson data;
@@ -180,9 +180,6 @@ public class ChargedEntity extends ThrownItemEntity {
                 if (data.shouldReplace()) {
                     setItem(data.getDecayReplacement());
                     return;
-                    //ChargedEntity replacement = new ChargedEntity(world, BlockPos.ofFloored(getPos()), data.getDecayReplacement());
-                    //replacement.setVelocity(getVelocity());
-                    //world.spawnEntity(replacement);
                 }
 
                 this.discard();

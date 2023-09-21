@@ -2,18 +2,13 @@ package be.minelabs.block.entity;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.item.Items;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-
-import java.util.ArrayList;
-
 
 public class BlockEntities {
     public static final BlockEntityType<ErlenmeyerBlockEntity> ERLENMEYER_STAND_BLOCK_ENTITY;
@@ -35,7 +30,9 @@ public class BlockEntities {
         LEWIS_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create(LewisBlockEntity::new, Blocks.LEWIS_BLOCK).build(null), "lewis_block");
 
-        ELECTRIC_FIELD_SENSOR = register(FabricBlockEntityTypeBuilder.create((p, s) -> new ElectricFieldSensorBlockEntity(ELECTRIC_FIELD_SENSOR, p, s), Blocks.ELECTRIC_FIELD_SENSOR_BLOCK).build(null), "electric_field_sensor");
+        ELECTRIC_FIELD_SENSOR = register(FabricBlockEntityTypeBuilder.create((p, s) ->
+                new ElectricFieldSensorBlockEntity(ELECTRIC_FIELD_SENSOR, p, s),
+                Blocks.ELECTRIC_FIELD_SENSOR_BLOCK).build(null), "electric_field_sensor");
 
         QUANTUM_FIELD_BLOCK_ENTITY = register(
                 FabricBlockEntityTypeBuilder.create(QuantumFieldBlockEntity::new,
