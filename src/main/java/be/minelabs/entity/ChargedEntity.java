@@ -9,6 +9,7 @@ import be.minelabs.science.CoulombGson;
 import be.minelabs.sound.SoundEvents;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -62,7 +63,6 @@ public class ChargedEntity extends ThrownItemEntity {
         this(Entities.CHARGED_ENTITY, world);
         setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
         setItem(stack);
-        loadData(stack.getItem().getTranslationKey());
     }
 
     /**
@@ -75,7 +75,6 @@ public class ChargedEntity extends ThrownItemEntity {
     public ChargedEntity(LivingEntity owner, World world, ItemStack stack) {
         super(Entities.CHARGED_ENTITY, owner, world);
         setItem(stack);
-        loadData(stack.getItem().getTranslationKey());
     }
 
     private void loadData(String file) {
@@ -92,6 +91,11 @@ public class ChargedEntity extends ThrownItemEntity {
         this.data = json;
     }
 
+    @Override
+    public void setItem(ItemStack item) {
+        super.setItem(item);
+        loadData(item.getItem().getTranslationKey());
+    }
 
     @Override
     public PistonBehavior getPistonBehavior() {
@@ -173,9 +177,17 @@ public class ChargedEntity extends ThrownItemEntity {
                 ItemEntity item = new ItemEntity(world, getX(), getY() + .5, getZ(), getDecayStack());
                 item.setVelocity(getVelocity().multiply(2));
                 world.spawnEntity(item);
-                this.discard();
                 Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
                 playSound(SoundEvents.COULOMB_DECAY, 1f, 1f);
+                if (data.shouldReplace()) {
+                    setItem(data.getDecayReplacement());
+                    return;
+                    //ChargedEntity replacement = new ChargedEntity(world, BlockPos.ofFloored(getPos()), data.getDecayReplacement());
+                    //replacement.setVelocity(getVelocity());
+                    //world.spawnEntity(replacement);
+                }
+
+                this.discard();
             }
         }
     }

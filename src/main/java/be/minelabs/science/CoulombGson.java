@@ -17,9 +17,11 @@ public class CoulombGson {
     public Annihilation annihilation_drop;
     public Decay decay_drop;
 
+
     public static class Decay {
         public String item;
         public Integer count;
+        public String replace;
     }
 
     public static class Annihilation {
@@ -50,15 +52,28 @@ public class CoulombGson {
         if (!stable) {
             if (decay_drop == null)
                 throw new JsonSyntaxException("Attribute 'decay_drop' is missing OR 'stable' is false/missing");
+            if (decay_drop.item == null && decay_drop.replace == null)
+                throw new JsonSyntaxException("Attribute 'decay_drop' is missing an 'item' or 'replace' item attribute");
             if (decay_drop.item == null)
-                throw new JsonSyntaxException("Attribute 'decay_drop item' is missing OR 'stable' is false/missing");
+                decay_drop.item = "minecraft:air";
             if (decay_drop.count == null)
                 decay_drop.count = 1;
+            if (decay_drop.replace == null) {
+                decay_drop.replace = "";
+            }
         }
     }
 
     public ItemStack getDecayDrop() {
         return new ItemStack(Registries.ITEM.get(new Identifier(decay_drop.item)), decay_drop.count);
+    }
+
+    public boolean shouldReplace() {
+        return !decay_drop.replace.isEmpty() || !decay_drop.replace.isBlank();
+    }
+
+    public ItemStack getDecayReplacement() {
+        return new ItemStack(Registries.ITEM.get(new Identifier(decay_drop.replace)));
     }
 
     public ItemStack getAnnihilationDrop() {

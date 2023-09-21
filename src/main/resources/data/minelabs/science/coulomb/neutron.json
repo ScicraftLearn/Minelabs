@@ -3,12 +3,13 @@
   "stable": false,
   "decay_chance": 0.0005,
   "charge": 0,
-  "mass": 0.0003,
+  "mass": 0.003,
   "annihilation_drop": {
     "item" : "minelabs:subatomic/photon",
     "count": 2
   },
   "decay_drop": {
+    "replace": "minelabs:subatomic/proton",
     "item" : "minelabs:subatomic/weak_boson",
     "count": 1
   }
