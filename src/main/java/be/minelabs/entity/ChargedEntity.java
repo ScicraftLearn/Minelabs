@@ -271,4 +271,38 @@ public class ChargedEntity extends ThrownItemEntity {
     public void setCharge(int charge) {
         dataTracker.set(CHARGE, charge);
     }
+
+    /**
+     * Get the field of this entity
+     * direction vector * Force/mass
+     *
+     * @return Vec3d
+     */
+    public Vec3d getField() {
+        Vec3d field = Vec3d.ZERO;
+
+        List<Entity> entities = world.getOtherEntities(this,
+                Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
+
+        for (Entity entity : entities) {
+            if (entity instanceof ChargedEntity chargedEntity) {
+                double force = 8.987f * getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
+                Vec3d vector = getPos().subtract(chargedEntity.getPos()).normalize(); // Vector between entities
+                vector = vector.multiply(force / data.mass); //scale vector with Force and mass of atom
+                //vector = vector.multiply(0.0001);
+                //if (field.length() < 5) {
+                field = field.add(vector);
+                //}
+            }
+        }
+        return field;
+    }
+
+    /**
+     * Is there enough "velocity" for the entity to be considered moving.
+     * @return Boolean
+     */
+    public boolean hasAField() {
+        return getField().length() > 0.0001;
+    }
 }

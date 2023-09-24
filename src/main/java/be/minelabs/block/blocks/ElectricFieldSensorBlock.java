@@ -32,14 +32,6 @@ public class ElectricFieldSensorBlock extends BlockWithEntity {
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof ElectricFieldSensorBlockEntity sensor) {
-            sensor.calculateField(world, pos);
-        }
-        super.onPlaced(world, pos, state, placer, itemStack);
-    }
-    @Override
     public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
         return true;
     }

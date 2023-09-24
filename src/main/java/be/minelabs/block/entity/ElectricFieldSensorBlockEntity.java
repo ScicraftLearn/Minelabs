@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ElectricFieldSensorBlockEntity extends BlockEntity {
 
-    private Vec3d field = Vec3d.ZERO;
+    private Vec3d field = new Vec3d(0,0,0);
 
     public ElectricFieldSensorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -58,15 +58,16 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
         int e_radius = ChargedEntity.e_radius;
         Iterable<Entity> entities_in_radius = world.getOtherEntities(null, Box.of(pos.toCenterPos(), e_radius, e_radius, e_radius));
 
-        field = Vec3d.ZERO;
+        field = Vec3d.ZERO; // Clean field / RESET the field
+
         for (Entity entity : entities_in_radius) {
             if (entity instanceof ChargedEntity chargedEntity) {
-                if (!chargedEntity.getPos().equals(pos.toCenterPos()) && chargedEntity.getVelocity().length() > .0001) {
+                if (!chargedEntity.getPos().equals(pos.toCenterPos()) && chargedEntity.hasAField()) {
                     // Moving + not in sensor
                     Vec3d vec_pos = getPos().toCenterPos().subtract(chargedEntity.getPos()).normalize();
                     double force = 8.987f * chargedEntity.getCharge() / getPos().toCenterPos().squaredDistanceTo(chargedEntity.getPos());
                     vec_pos.multiply(force * 100);
-                    field.add(vec_pos);
+                    field = field.add(vec_pos);
                 }
             }
         }
