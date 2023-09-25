@@ -1,5 +1,6 @@
 package be.minelabs.entity;
 
+import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
@@ -23,9 +24,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -219,10 +222,10 @@ public class ChargedEntity extends ThrownItemEntity {
     }
 
     @Override
-    protected void onBlockCollision(BlockState state) {
-        if (!state.isAir()) {
-            setVelocity(Vec3d.ZERO); // invert velocity (should only happen on the block hit)
-        }
+    protected void onBlockHit(BlockHitResult blockHitResult) {
+        Vec3d sideHit = Vec3d.of(blockHitResult.getSide().getVector()); // Side that the entity hit
+        addVelocity(getVelocity().multiply(sideHit));
+        super.onBlockHit(blockHitResult);
     }
 
     /**
@@ -300,6 +303,7 @@ public class ChargedEntity extends ThrownItemEntity {
 
     /**
      * Is there enough "velocity" for the entity to be considered moving.
+     *
      * @return Boolean
      */
     public boolean hasAField() {
