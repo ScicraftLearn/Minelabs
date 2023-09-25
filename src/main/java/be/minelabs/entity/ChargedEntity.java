@@ -39,18 +39,13 @@ public class ChargedEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public final static int e_radius = 12;
-    public static final float DEFAULT_SPEED = 0.5f;
+    public static final float DEFAULT_SPEED = 0.3f;
 
     private CoulombGson data;
 
 
     public ChargedEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    @Override
-    public Item getDefaultItem() {
-        return Items.ELECTRON;
     }
 
     /**
@@ -76,6 +71,11 @@ public class ChargedEntity extends ThrownItemEntity {
     public ChargedEntity(LivingEntity owner, World world, ItemStack stack) {
         super(Entities.CHARGED_ENTITY, owner, world);
         setItem(stack);
+    }
+
+    @Override
+    public Item getDefaultItem() {
+        return Items.ELECTRON;
     }
 
     private void loadData(String file) {
@@ -216,7 +216,10 @@ public class ChargedEntity extends ThrownItemEntity {
         } else if (entity instanceof BohrBlueprintEntity bohr) {
             bohr.onParticleCollision(this);
         } else if (entity instanceof CreeperEntity creeperEntity) {
-            creeperEntity.getDataTracker().set(CreeperEntity.CHARGED, true);
+            creeperEntity.setInvulnerable(true);
+            creeperEntity.onStruckByLightning((ServerWorld) world, new LightningEntity(EntityType.LIGHTNING_BOLT, world));
+            creeperEntity.extinguish();
+            creeperEntity.setInvulnerable(false);
             this.discard();
         }
     }
