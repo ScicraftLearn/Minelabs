@@ -312,4 +312,11 @@ public class ChargedEntity extends ThrownItemEntity {
     public boolean hasAField() {
         return getField().length() > 0.0001;
     }
+
+    @Override
+    public void kill() {
+        ItemStack stack = getItem() != null ? getItem() : new ItemStack(getDefaultItem());
+        world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), stack));
+        super.kill();
+    }
 }
