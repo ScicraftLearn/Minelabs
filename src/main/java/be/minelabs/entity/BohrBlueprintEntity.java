@@ -139,17 +139,17 @@ public class BohrBlueprintEntity extends Entity {
         }
     }
 
-    // Called by particle when it collides with this entity.
-    public void onParticleCollision(ChargedEntity particle) {
-        if (world.isClient)
-            return;
-        ItemStack stack = particle.getStack();
-        Item item = stack.getItem();
-
-        if (addItem(item, (ServerPlayerEntity) particle.getOwner())) {
-            particle.discard();
-        }
-    }
+//    // Called by particle when it collides with this entity.
+//    public void onParticleCollision(ChargedEntity particle) {
+//        if (world.isClient)
+//            return;
+//        ItemStack stack = particle.getStack();
+//        Item item = stack.getItem();
+//
+//        if (addItem(item, (ServerPlayerEntity) particle.getOwner())) {
+//            particle.discard();
+//        }
+//    }
 
     public BlockPos getBohrBlueprintPos() {
         return getBlockPos().down();

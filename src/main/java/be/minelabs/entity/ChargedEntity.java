@@ -17,6 +17,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,7 @@ import net.minecraft.world.World;
 import java.io.InputStreamReader;
 import java.util.List;
 
-public class ChargedEntity extends ThrownItemEntity {
+public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity {
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public final static int e_radius = 12;
@@ -45,7 +46,7 @@ public class ChargedEntity extends ThrownItemEntity {
     private CoulombGson data;
 
 
-    public ChargedEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
+    public ChargedEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
 
@@ -70,13 +71,19 @@ public class ChargedEntity extends ThrownItemEntity {
      * @param stack : Item used for throwing
      */
     public ChargedEntity(LivingEntity owner, World world, ItemStack stack) {
-        super(Entities.CHARGED_ENTITY, owner, world);
+        super(Entities.CHARGED_ENTITY, world);
         setItem(stack);
     }
 
-    @Override
+//    @Override
     public Item getDefaultItem() {
         return Items.ELECTRON;
+    }
+
+    @Override
+    public ItemStack getStack() {
+        // TODO: placeholder code, please fixme
+        return new ItemStack(Items.ELECTRON);
     }
 
     private void loadData(String file) {
@@ -93,9 +100,9 @@ public class ChargedEntity extends ThrownItemEntity {
         this.data = json;
     }
 
-    @Override
+//    @Override
     public void setItem(ItemStack item) {
-        super.setItem(item);
+//        super.setItem(item);
         loadData(item.getItem().getTranslationKey());
     }
 
@@ -143,28 +150,27 @@ public class ChargedEntity extends ThrownItemEntity {
             }
         }
 
-        if (world.isClient) {
-            super.tick();
-            return;
-        }
+        if (!world.isClient) {
+            List<Entity> entities = world.getOtherEntities(this,
+                    Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
 
-        List<Entity> entities = world.getOtherEntities(this,
-                Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
-
-        for (Entity entity : entities) {
-            if (entity instanceof ChargedEntity chargedEntity) {
-                double force = 8.987f * getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
-                Vec3d vector = getPos().subtract(chargedEntity.getPos()).normalize(); // Vector between entities
-                vector = vector.multiply(force / data.mass); //scale vector with Force and mass of atom
-                vector = vector.multiply(0.0001);
-                if (getVelocity().length() < 5) {
-                    addVelocity(vector);
+            for (Entity entity : entities) {
+                if (entity instanceof ChargedEntity chargedEntity) {
+                    double force = 8.987f * getCharge() * chargedEntity.getCharge() / squaredDistanceTo(chargedEntity);
+                    Vec3d vector = getPos().subtract(chargedEntity.getPos()).normalize(); // Vector between entities
+                    vector = vector.multiply(force / data.mass); //scale vector with Force and mass of atom
+                    vector = vector.multiply(0.0001);
+                    if (getVelocity().length() < 5) {
+                        addVelocity(vector);
+                    }
+                    Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
                 }
-                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
             }
+            tryDecay();
         }
+
         super.tick();
-        tryDecay();
+        move(MovementType.SELF, getVelocity());
     }
 
     /**
@@ -191,39 +197,39 @@ public class ChargedEntity extends ThrownItemEntity {
         }
     }
 
-    /**
-     * Entity collision
-     *
-     * @param entityHitResult : info regarding the collision
-     */
-    @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (world.isClient)
-            return;
-        Entity entity = entityHitResult.getEntity();
-        if (entity instanceof ChargedEntity charged) {
-            // Could do way more with this!
-            if (data.getAntiItem() != null && charged.getItem().isOf(data.getAntiItem())) {
-                ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
-                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
-                        (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
-                playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
-                this.discard();
-                charged.discard();
-            } else {
-                setVelocity(Vec3d.ZERO);
-                charged.setVelocity(Vec3d.ZERO);
-            }
-        } else if (entity instanceof BohrBlueprintEntity bohr) {
-            bohr.onParticleCollision(this);
-        } else if (entity instanceof CreeperEntity creeperEntity) {
-            creeperEntity.setInvulnerable(true);
-            creeperEntity.onStruckByLightning((ServerWorld) world, new LightningEntity(EntityType.LIGHTNING_BOLT, world));
-            creeperEntity.extinguish();
-            creeperEntity.setInvulnerable(false);
-            this.discard();
-        }
-    }
+//    /**
+//     * Entity collision
+//     *
+//     * @param entityHitResult : info regarding the collision
+//     */
+//    @Override
+//    protected void onEntityHit(EntityHitResult entityHitResult) {
+//        if (world.isClient)
+//            return;
+//        Entity entity = entityHitResult.getEntity();
+//        if (entity instanceof ChargedEntity charged) {
+//            // Could do way more with this!
+//            if (data.getAntiItem() != null && charged.getItem().isOf(data.getAntiItem())) {
+//                ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
+//                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
+//                        (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
+//                playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
+//                this.discard();
+//                charged.discard();
+//            } else {
+//                setVelocity(Vec3d.ZERO);
+//                charged.setVelocity(Vec3d.ZERO);
+//            }
+//        } else if (entity instanceof BohrBlueprintEntity bohr) {
+//            bohr.onParticleCollision(this);
+//        } else if (entity instanceof CreeperEntity creeperEntity) {
+//            creeperEntity.setInvulnerable(true);
+//            creeperEntity.onStruckByLightning((ServerWorld) world, new LightningEntity(EntityType.LIGHTNING_BOLT, world));
+//            creeperEntity.extinguish();
+//            creeperEntity.setInvulnerable(false);
+//            this.discard();
+//        }
+//    }
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
@@ -257,7 +263,7 @@ public class ChargedEntity extends ThrownItemEntity {
 
     @Override
     protected void initDataTracker() {
-        super.initDataTracker();
+//        super.initDataTracker();
         this.setNoGravity(true);
         dataTracker.startTracking(CHARGE, 0);
     }
@@ -319,10 +325,10 @@ public class ChargedEntity extends ThrownItemEntity {
         return getField().length() > 0.0001;
     }
 
-    @Override
-    public void kill() {
-        ItemStack stack = getItem() != null ? getItem() : new ItemStack(getDefaultItem());
-        world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), stack));
-        super.kill();
-    }
+//    @Override
+//    public void kill() {
+//        ItemStack stack = getItem() != null ? getItem() : new ItemStack(getDefaultItem());
+//        world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), stack));
+//        super.kill();
+//    }
 }
