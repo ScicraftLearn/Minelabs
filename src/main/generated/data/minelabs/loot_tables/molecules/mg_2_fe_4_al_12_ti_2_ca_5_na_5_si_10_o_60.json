@@ -1,0 +1,49 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/aluminium_atom",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/calcium_atom",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/iron_atom",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/magnesium_atom",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/sodium_atom",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/oxygen_atom",
+          "weight": 60
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/silicon_atom",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/titanium_atom",
+          "weight": 2
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}
