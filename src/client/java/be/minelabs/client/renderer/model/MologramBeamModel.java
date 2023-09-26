@@ -23,6 +23,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -40,7 +41,7 @@ import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public class MologramBeamModel implements UnbakedModel, BakedModel, FabricBakedModel {
-    private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "block/mologram/mologram_beam"));
+    private static final SpriteIdentifier SPRITE_ID = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "block/mologram/mologram_beam"));
     private Sprite SPRITE;
     private Mesh mesh;
     @Override
