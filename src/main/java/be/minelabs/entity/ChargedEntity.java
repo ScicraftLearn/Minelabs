@@ -1,6 +1,5 @@
 package be.minelabs.entity;
 
-import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
@@ -10,6 +9,7 @@ import be.minelabs.sound.SoundEvents;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -28,11 +28,12 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.EmptyBlockView;
 import net.minecraft.world.World;
 
-import java.io.*;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class ChargedEntity extends ThrownItemEntity {
@@ -226,6 +227,11 @@ public class ChargedEntity extends ThrownItemEntity {
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
+        BlockState state = world.getBlockState(blockHitResult.getBlockPos());
+        if (state.getCollisionShape(EmptyBlockView.INSTANCE, blockHitResult.getBlockPos(), ShapeContext.absent()) == VoxelShapes.empty()){
+            // No collision keep moving
+            return;
+        }
         Vec3d sideHit = Vec3d.of(blockHitResult.getSide().getVector()); // Side that the entity hit
         addVelocity(getVelocity().multiply(sideHit));
         super.onBlockHit(blockHitResult);
