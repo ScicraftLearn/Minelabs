@@ -3,6 +3,7 @@ package be.minelabs.entity;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
+import be.minelabs.block.blocks.TimeFreezeBlock;
 import be.minelabs.item.Items;
 import be.minelabs.science.CoulombGson;
 import be.minelabs.sound.SoundEvents;
@@ -136,10 +137,12 @@ public class ChargedEntity extends ThrownItemEntity {
         Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
         for (BlockPos pos : positions) {
             if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
-                //"Force" a stop
-                setVelocity(Vec3d.ZERO);
-                super.tick();
-                return;
+                if (world.getBlockState(pos).get(TimeFreezeBlock.LIT)) {
+                    //"Force" a stop
+                    setVelocity(Vec3d.ZERO);
+                    super.tick();
+                    return;
+                }
             }
         }
 
