@@ -228,7 +228,7 @@ public class ChargedEntity extends ThrownItemEntity {
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         BlockState state = world.getBlockState(blockHitResult.getBlockPos());
-        if (state.getCollisionShape(EmptyBlockView.INSTANCE, blockHitResult.getBlockPos(), ShapeContext.absent()) == VoxelShapes.empty()){
+        if (state.getCollisionShape(EmptyBlockView.INSTANCE, blockHitResult.getBlockPos(), ShapeContext.absent()) == VoxelShapes.empty()) {
             // No collision keep moving
             return;
         }
@@ -321,8 +321,11 @@ public class ChargedEntity extends ThrownItemEntity {
 
     @Override
     public void kill() {
-        ItemStack stack = getItem() != null ? getItem() : new ItemStack(getDefaultItem());
-        world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), stack));
+        if (getItem() == null || getItem().isOf(net.minecraft.item.Items.AIR)) {
+            world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), new ItemStack(getDefaultItem())));
+        } else {
+            world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), getItem()));
+        }
         super.kill();
     }
 }
