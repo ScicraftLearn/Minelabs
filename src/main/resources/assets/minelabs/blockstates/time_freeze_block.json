@@ -1,5 +1,10 @@
 {
   "variants": {
-    "": { "model": "minelabs:block/time_freeze_block" }
+    "lit=false": {
+      "model": "minelabs:block/time_freeze_block_stopped"
+    },
+    "lit=true": {
+      "model": "minelabs:block/time_freeze_block"
+    }
   }
 }

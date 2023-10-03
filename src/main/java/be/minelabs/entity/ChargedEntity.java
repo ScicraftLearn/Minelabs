@@ -3,6 +3,7 @@ package be.minelabs.entity;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
+import be.minelabs.block.blocks.TimeFreezeBlock;
 import be.minelabs.item.Items;
 import be.minelabs.science.CoulombGson;
 import be.minelabs.sound.SoundEvents;
@@ -143,10 +144,12 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
         Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
         for (BlockPos pos : positions) {
             if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
-                //"Force" a stop
-                setVelocity(Vec3d.ZERO);
-                super.tick();
-                return;
+                if (world.getBlockState(pos).get(TimeFreezeBlock.LIT)) {
+                    //"Force" a stop
+                    setVelocity(Vec3d.ZERO);
+                    super.tick();
+                    return;
+                }
             }
         }
 
@@ -197,44 +200,10 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
         }
     }
 
-//    /**
-//     * Entity collision
-//     *
-//     * @param entityHitResult : info regarding the collision
-//     */
-//    @Override
-//    protected void onEntityHit(EntityHitResult entityHitResult) {
-//        if (world.isClient)
-//            return;
-//        Entity entity = entityHitResult.getEntity();
-//        if (entity instanceof ChargedEntity charged) {
-//            // Could do way more with this!
-//            if (data.getAntiItem() != null && charged.getItem().isOf(data.getAntiItem())) {
-//                ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
-//                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
-//                        (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
-//                playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
-//                this.discard();
-//                charged.discard();
-//            } else {
-//                setVelocity(Vec3d.ZERO);
-//                charged.setVelocity(Vec3d.ZERO);
-//            }
-//        } else if (entity instanceof BohrBlueprintEntity bohr) {
-//            bohr.onParticleCollision(this);
-//        } else if (entity instanceof CreeperEntity creeperEntity) {
-//            creeperEntity.setInvulnerable(true);
-//            creeperEntity.onStruckByLightning((ServerWorld) world, new LightningEntity(EntityType.LIGHTNING_BOLT, world));
-//            creeperEntity.extinguish();
-//            creeperEntity.setInvulnerable(false);
-//            this.discard();
-//        }
-//    }
-
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         BlockState state = world.getBlockState(blockHitResult.getBlockPos());
-        if (state.getCollisionShape(EmptyBlockView.INSTANCE, blockHitResult.getBlockPos(), ShapeContext.absent()) == VoxelShapes.empty()){
+        if (state.getCollisionShape(EmptyBlockView.INSTANCE, blockHitResult.getBlockPos(), ShapeContext.absent()) == VoxelShapes.empty()) {
             // No collision keep moving
             return;
         }
@@ -325,10 +294,13 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
         return getField().length() > 0.0001;
     }
 
-//    @Override
-//    public void kill() {
-//        ItemStack stack = getItem() != null ? getItem() : new ItemStack(getDefaultItem());
-//        world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), stack));
-//        super.kill();
-//    }
+    @Override
+    public void kill() {
+        if (getItem() == null || getItem().isOf(net.minecraft.item.Items.AIR)) {
+            world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), new ItemStack(getDefaultItem())));
+        } else {
+            world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), getItem()));
+        }
+        super.kill();
+    }
 }

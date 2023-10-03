@@ -24,6 +24,7 @@ public class LabCoatArmorItemMixin{
             private final LabCoatRenderer renderer = new LabCoatRenderer();
 
             @Override
+            @SuppressWarnings("unchecked")
             public BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
                 //Minelabs.LOGGER.info("getting labcoat renderer");
                 renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);

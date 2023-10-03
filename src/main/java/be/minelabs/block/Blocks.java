@@ -75,7 +75,7 @@ public class Blocks {
     public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/electron_quantumfield");
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/neutrino_quantumfield");
 
-    public static final Block TIME_FREEZE_BLOCK = register(new Block(FabricBlockSettings.of(Material.GLASS)
+    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(FabricBlockSettings.of(Material.GLASS)
             .noCollision().strength(0.5f,2.0f)), "time_freeze_block");
     public static final ElectricFieldSensorBlock ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
 
