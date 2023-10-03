@@ -17,17 +17,14 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.Util;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -39,6 +36,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity {
+    private static final TrackedData<ItemStack> ITEM = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public final static int e_radius = 12;
@@ -46,45 +44,46 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
 
     private CoulombGson data;
 
-
     public ChargedEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
+        this.setNoGravity(true);
     }
 
-    /**
-     * Summon/Spawn a new Entity
-     *
-     * @param world : in what world should we make the entity
-     * @param pos   : position in the world to spawn the entity
-     * @param stack : Item used for throwing
-     */
-    public ChargedEntity(World world, BlockPos pos, ItemStack stack) {
+    private ChargedEntity(World world, ItemStack stack) {
         this(Entities.CHARGED_ENTITY, world);
+        setItem(stack);
+    }
+
+    public ChargedEntity(World world, BlockPos pos, ItemStack stack) {
+        this(world, stack);
         setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
-        setItem(stack);
     }
 
-    /**
-     * Make a new Thrown Entity
-     *
-     * @param owner : who threw the Entity/Item
-     * @param world : what world did we do this in
-     * @param stack : Item used for throwing
-     */
     public ChargedEntity(LivingEntity owner, World world, ItemStack stack) {
-        super(Entities.CHARGED_ENTITY, world);
-        setItem(stack);
-    }
-
-//    @Override
-    public Item getDefaultItem() {
-        return Items.ELECTRON;
+        this(world, stack);
+        this.setPosition(owner.getX(), owner.getEyeY() - (double)0.1f, owner.getZ());
+        setOwner(owner);
     }
 
     @Override
     public ItemStack getStack() {
-        // TODO: placeholder code, please fixme
-        return new ItemStack(Items.ELECTRON);
+        ItemStack itemStack = this.getItem();
+        return itemStack.isEmpty() ? new ItemStack(this.getDefaultItem()) : itemStack;
+    }
+
+    public void setItem(ItemStack item) {
+        if (!item.isOf(this.getDefaultItem()) || item.hasNbt()) {
+            this.getDataTracker().set(ITEM, Util.make(item.copy(), stack -> stack.setCount(1)));
+        }
+        loadData(item.getItem().getTranslationKey());
+    }
+
+    protected ItemStack getItem() {
+        return this.getDataTracker().get(ITEM);
+    }
+
+    protected Item getDefaultItem(){
+        return Items.ELECTRON;
     }
 
     private void loadData(String file) {
@@ -99,12 +98,6 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
         json.validate();
         setCharge(json.charge);
         this.data = json;
-    }
-
-//    @Override
-    public void setItem(ItemStack item) {
-//        super.setItem(item);
-        loadData(item.getItem().getTranslationKey());
     }
 
     @Override
@@ -232,9 +225,8 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
 
     @Override
     protected void initDataTracker() {
-//        super.initDataTracker();
-        this.setNoGravity(true);
         dataTracker.startTracking(CHARGE, 0);
+        dataTracker.startTracking(ITEM, ItemStack.EMPTY);
     }
 
     @Override
