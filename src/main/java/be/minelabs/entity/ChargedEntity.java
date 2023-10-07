@@ -17,14 +17,19 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Util;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -134,6 +139,24 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
 
     @Override
     public void tick() {
+        super.tick();
+
+        tickCollision();
+        tickCoulomb();
+        tickDecay();
+
+        move(MovementType.SELF, getVelocity());
+    }
+
+    protected void tickCollision(){
+        HitResult hitResult = ProjectileUtil.getCollision(this, this::canHit);
+        if (hitResult.getType() != HitResult.Type.MISS) {
+            this.onCollision(hitResult);
+        }
+        this.checkBlockCollision();
+    }
+
+    protected void tickCoulomb(){
         Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
         for (BlockPos pos : positions) {
             if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
@@ -162,20 +185,12 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
                     Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
                 }
             }
-            tryDecay();
         }
-
-        super.tick();
-        move(MovementType.SELF, getVelocity());
     }
 
-    /**
-     * Try to decay the entity
-     * ONLY if the entity isn't stable
-     * <p>
-     * Called 20 times a second !
-     */
-    private void tryDecay() {
+    protected void tickDecay() {
+        if (world.isClient) return;
+
         if (!data.stable) {
             if (world.getRandom().nextFloat() < data.decay_chance) {
                 ItemEntity item = new ItemEntity(world, getX(), getY() + .5, getZ(), getDecayStack());
@@ -190,6 +205,33 @@ public class ChargedEntity extends ProjectileEntity implements FlyingItemEntity 
 
                 this.discard();
             }
+        }
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+        if (world.isClient)
+            return;
+        Entity entity = entityHitResult.getEntity();
+        if (entity instanceof ChargedEntity charged) {
+            // Could do way more with this!
+            if (data.getAntiItem() != null && charged.getItem().isOf(data.getAntiItem())) {
+                ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
+                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
+                        (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
+                playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
+                this.discard();
+                charged.discard();
+            }
+        }
+        if (entity instanceof BohrBlueprintEntity bohr) {
+            bohr.onParticleCollision(this);
+        } else if (entity instanceof CreeperEntity creeperEntity) {
+            creeperEntity.setInvulnerable(true);
+            creeperEntity.onStruckByLightning((ServerWorld) world, new LightningEntity(EntityType.LIGHTNING_BOLT, world));
+            creeperEntity.extinguish();
+            creeperEntity.setInvulnerable(false);
+            this.discard();
         }
     }
 
