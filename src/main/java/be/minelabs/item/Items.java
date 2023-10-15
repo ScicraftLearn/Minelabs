@@ -195,18 +195,18 @@ public class Items {
 
     // Items > Elementary particles
 
-    public static final Item UPQUARK_RED = register(new Item(new Item.Settings().maxCount(64)), "subatomic/upquark_red");
-    public static final Item UPQUARK_GREEN = register(new Item(new Item.Settings().maxCount(64)), "subatomic/upquark_green");
-    public static final Item UPQUARK_BLUE = register(new Item(new Item.Settings().maxCount(64)), "subatomic/upquark_blue");
-    public static final Item ANTI_UPQUARK_RED = register(new Item(new Item.Settings().maxCount(64)), "subatomic/anti_upquark_red");
-    public static final Item ANTI_UPQUARK_GREEN = register(new Item(new Item.Settings().maxCount(64)), "subatomic/anti_upquark_green");
-    public static final Item ANTI_UPQUARK_BLUE = register(new Item(new Item.Settings().maxCount(64)), "subatomic/anti_upquark_blue");
-    public static final Item DOWNQUARK_RED = register(new Item(new Item.Settings().maxCount(64)), "subatomic/downquark_red");
-    public static final Item DOWNQUARK_GREEN = register(new Item(new Item.Settings().maxCount(64)), "subatomic/downquark_green");
-    public static final Item DOWNQUARK_BLUE = register(new Item(new Item.Settings().maxCount(64)), "subatomic/downquark_blue");
-    public static final Item ANTI_DOWNQUARK_RED = register(new Item(new Item.Settings().maxCount(64)), "subatomic/anti_downquark_red");
-    public static final Item ANTI_DOWNQUARK_GREEN = register(new Item(new Item.Settings().maxCount(64)), "subatomic/anti_downquark_green");
-    public static final Item ANTI_DOWNQUARK_BLUE = register(new Item(new Item.Settings().maxCount(64)), "subatomic/anti_downquark_blue");
+    public static final Item UPQUARK_RED = register(new QuarkItem(new FabricItemSettings()), "subatomic/upquark_red");
+    public static final Item UPQUARK_GREEN = register(new QuarkItem(new FabricItemSettings()), "subatomic/upquark_green");
+    public static final Item UPQUARK_BLUE = register(new QuarkItem(new FabricItemSettings()), "subatomic/upquark_blue");
+    public static final Item ANTI_UPQUARK_RED = register(new QuarkItem(new FabricItemSettings()), "subatomic/anti_upquark_red");
+    public static final Item ANTI_UPQUARK_GREEN = register(new QuarkItem(new FabricItemSettings()), "subatomic/anti_upquark_green");
+    public static final Item ANTI_UPQUARK_BLUE = register(new QuarkItem(new FabricItemSettings()), "subatomic/anti_upquark_blue");
+    public static final Item DOWNQUARK_RED = register(new QuarkItem(new FabricItemSettings()), "subatomic/downquark_red");
+    public static final Item DOWNQUARK_GREEN = register(new QuarkItem(new FabricItemSettings()), "subatomic/downquark_green");
+    public static final Item DOWNQUARK_BLUE = register(new QuarkItem(new FabricItemSettings()), "subatomic/downquark_blue");
+    public static final Item ANTI_DOWNQUARK_RED = register(new QuarkItem(new FabricItemSettings()), "subatomic/anti_downquark_red");
+    public static final Item ANTI_DOWNQUARK_GREEN = register(new QuarkItem(new FabricItemSettings()), "subatomic/anti_downquark_green");
+    public static final Item ANTI_DOWNQUARK_BLUE = register(new QuarkItem(new FabricItemSettings()), "subatomic/anti_downquark_blue");
 
     public static final Item GLUON = register(new Item(new Item.Settings().maxCount(64)), "subatomic/gluon");
 
@@ -341,7 +341,7 @@ public class Items {
         return Registry.register(Registries.ITEM, identifier, item);
     }
 
-    private static AtomItem registerAtom(Atom atom){
+    private static AtomItem registerAtom(Atom atom) {
         AtomItem item = register(new AtomItem(new Item.Settings(), atom), atom.getItemId());
         atom.setItem(item);
         return item;
