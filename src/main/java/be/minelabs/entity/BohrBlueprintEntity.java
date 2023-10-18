@@ -5,6 +5,8 @@ import be.minelabs.advancement.criterion.BohrCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.blocks.BohrBlueprintBlock;
+import be.minelabs.entity.projectile.thrown.ChargedEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.item.Items;
 import be.minelabs.mixin.FishingBobberEntityAccessor;
@@ -316,7 +318,7 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void launchParticle(Item item) {
         // launch particle
-        ChargedEntity entity = new ChargedEntity(world,
+        ParticleEntity entity = new ParticleEntity(world,
                 BlockPos.ofFloored(getX(), getY() + getHeight() / 2f, getZ()), new ItemStack(item));
         // velocity chosen such that it launches up and around, but not too much at the ground
         Vec3d velocity = new Vec3d(0, 0.2, 0)
@@ -324,7 +326,7 @@ public class BohrBlueprintEntity extends Entity {
                         this.random.nextTriangular(0, 1d) * 2,
                         this.random.nextTriangular(0, 1d) * 1,
                         this.random.nextTriangular(0, 1d) * 2
-                ).normalize().multiply(ChargedEntity.DEFAULT_SPEED);
+                ).normalize().multiply(ParticleEntity.DEFAULT_SPEED);
         entity.setVelocity(velocity);
         world.spawnEntity(entity);
     }

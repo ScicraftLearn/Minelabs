@@ -1,6 +1,6 @@
 package be.minelabs.block;
 
-import be.minelabs.entity.ChargedEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import be.minelabs.item.Items;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -72,7 +72,7 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return new ChargedEntity(world, BlockPos.ofFloored(position), stack);
+                return new ParticleEntity(world, BlockPos.ofFloored(position), stack);
             }
         });
     }

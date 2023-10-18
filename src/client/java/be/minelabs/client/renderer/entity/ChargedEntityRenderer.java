@@ -1,6 +1,6 @@
 package be.minelabs.client.renderer.entity;
 
-import be.minelabs.entity.ChargedEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -9,14 +9,14 @@ import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
 
-public class ChargedEntityRenderer extends FlyingItemEntityRenderer<ChargedEntity> {
+public class ChargedEntityRenderer extends FlyingItemEntityRenderer<ParticleEntity> {
 
     protected ChargedEntityRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, 1.5f, false);
     }
 
     @Override
-    public void render(ChargedEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    public void render(ParticleEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
         matrices.translate(0, 0.05f, 0);
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);

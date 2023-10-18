@@ -1,6 +1,6 @@
 package be.minelabs.block.entity;
 
-import be.minelabs.entity.ChargedEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ElectricFieldSensorBlockEntity extends BlockEntity {
 
-    private Vec3d field = new Vec3d(0,0,0);
+    private Vec3d field = new Vec3d(0, 0, 0);
 
     public ElectricFieldSensorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -55,22 +55,22 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
     }
 
     public void calculateField(World world, BlockPos pos) {
-        int e_radius = ChargedEntity.e_radius;
+        int e_radius = ParticleEntity.e_radius;
         Iterable<Entity> entities_in_radius = world.getOtherEntities(null, Box.of(pos.toCenterPos(), e_radius, e_radius, e_radius));
 
         field = Vec3d.ZERO; // Clean field / RESET the field
-
+        /*
         for (Entity entity : entities_in_radius) {
-            if (entity instanceof ChargedEntity chargedEntity) {
-                if (!chargedEntity.getPos().equals(pos.toCenterPos()) && chargedEntity.hasAField()) {
+            if (entity instanceof ParticleEntity particleEntity) {
+                if (!particleEntity.getPos().equals(pos.toCenterPos()) && particleEntity.hasAField()) {
                     // Moving + not in sensor
-                    Vec3d vec_pos = getPos().toCenterPos().subtract(chargedEntity.getPos()).normalize();
-                    double force = 8.987f * chargedEntity.getCharge() / getPos().toCenterPos().squaredDistanceTo(chargedEntity.getPos());
+                    Vec3d vec_pos = getPos().toCenterPos().subtract(particleEntity.getPos()).normalize();
+                    double force = 8.987f * particleEntity.getCharge() / getPos().toCenterPos().squaredDistanceTo(particleEntity.getPos());
                     vec_pos.multiply(force * 100);
                     field = field.add(vec_pos);
                 }
             }
-        }
+        }*/
         markDirty();
     }
 

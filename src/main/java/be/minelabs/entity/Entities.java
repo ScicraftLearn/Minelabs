@@ -5,6 +5,8 @@ import be.minelabs.entity.decoration.painting.Paintings;
 import be.minelabs.entity.effect.Effects;
 import be.minelabs.entity.mob.BalloonEntity;
 import be.minelabs.entity.mob.EntropyCreeperEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
+import be.minelabs.entity.projectile.thrown.PointChargedEntity;
 import be.minelabs.util.AtomConfiguration;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
@@ -38,8 +40,11 @@ public class Entities {
     public static final EntityType<CorrosiveEntity> CORROSIVE_ENTITY = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, CorrosiveEntity::new)
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).disableSummon().fireImmune().build(), "corrosive");
 
-    public static final EntityType<ChargedEntity> CHARGED_ENTITY =  register(FabricEntityTypeBuilder.<ChargedEntity>create(SpawnGroup.MISC, ChargedEntity::new)
+    public static final EntityType<ParticleEntity> PARTICLE_ENTITY = register(FabricEntityTypeBuilder.<ParticleEntity>create(SpawnGroup.MISC, ParticleEntity::new)
             .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(3).forceTrackedVelocityUpdates(true).build(), "charged_entity");
+
+    public static final EntityType<PointChargedEntity> POINT_CHARGED_ENTITY = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, PointChargedEntity::new)
+            .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(3).forceTrackedVelocityUpdates(true).build(), "point_charged_entity");
 
     /**
      * Register a single entity
