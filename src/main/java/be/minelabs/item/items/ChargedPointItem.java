@@ -1,25 +1,28 @@
 package be.minelabs.item.items;
 
+import be.minelabs.entity.projectile.thrown.PointChargedEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ChargedPointItem extends ChargedItem{
+public class ChargedPointItem extends ChargedItem {
     public ChargedPointItem(Settings settings) {
         super(settings);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        return super.useOnBlock(context);
+    protected ProjectileEntity createThrownEntity(PlayerEntity user, World world, ItemStack stack) {
+        return new PointChargedEntity(user, world, stack);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return super.use(world, user, hand);
+    protected ProjectileEntity createPlacedEntity(World world, BlockPos pos, ItemStack stack) {
+        return new PointChargedEntity(world, pos, stack);
     }
 }

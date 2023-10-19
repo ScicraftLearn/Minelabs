@@ -11,6 +11,7 @@ public class EntityRenderers {
         EntityRendererRegistry.register(Entities.BALLOON, BalloonEntityRenderer::new);
         EntityRendererRegistry.register(Entities.CORROSIVE_ENTITY, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(Entities.PARTICLE_ENTITY, ChargedEntityRenderer::new);
+        EntityRendererRegistry.register(Entities.POINT_CHARGED_ENTITY, ChargedEntityRenderer::new);
     }
 
 }

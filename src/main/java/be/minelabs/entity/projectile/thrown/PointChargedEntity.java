@@ -1,8 +1,10 @@
 package be.minelabs.entity.projectile.thrown;
 
+import be.minelabs.entity.Entities;
 import be.minelabs.screen.ChargedPointScreenHandler;
 import be.minelabs.util.Tags;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -12,6 +14,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class PointChargedEntity extends ChargedEntity {
@@ -38,6 +41,14 @@ public class PointChargedEntity extends ChargedEntity {
 
     public PointChargedEntity(EntityType<? extends PointChargedEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    public PointChargedEntity(LivingEntity owner, World world, ItemStack stack) {
+        super(Entities.POINT_CHARGED_ENTITY, owner, world, stack);
+    }
+
+    public PointChargedEntity(World world, BlockPos pos, ItemStack stack) {
+        super(Entities.POINT_CHARGED_ENTITY, world, pos, stack);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class Entities {
     public static final EntityType<ParticleEntity> PARTICLE_ENTITY = register(FabricEntityTypeBuilder.<ParticleEntity>create(SpawnGroup.MISC, ParticleEntity::new)
             .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(3).forceTrackedVelocityUpdates(true).build(), "charged_entity");
 
-    public static final EntityType<PointChargedEntity> POINT_CHARGED_ENTITY = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, PointChargedEntity::new)
+    public static final EntityType<PointChargedEntity> POINT_CHARGED_ENTITY = register(FabricEntityTypeBuilder.<PointChargedEntity>create(SpawnGroup.MISC, PointChargedEntity::new)
             .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(3).forceTrackedVelocityUpdates(true).build(), "point_charged_entity");
 
     /**

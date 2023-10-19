@@ -31,34 +31,16 @@ public class ParticleEntity extends ChargedEntity {
 
     private CoulombGson data;
 
-
     public ParticleEntity(EntityType<? extends ParticleEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    /**
-     * Summon/Spawn a new Entity
-     *
-     * @param world : in what world should we make the entity
-     * @param pos   : position in the world to spawn the entity
-     * @param stack : Item used for throwing
-     */
     public ParticleEntity(World world, BlockPos pos, ItemStack stack) {
-        this(Entities.PARTICLE_ENTITY, world);
-        setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
-        setItem(stack);
+        super(Entities.PARTICLE_ENTITY, world, pos, stack);
     }
 
-    /**
-     * Make a new Thrown Entity
-     *
-     * @param owner : who threw the Entity/Item
-     * @param world : what world did we do this in
-     * @param stack : Item used for throwing
-     */
     public ParticleEntity(LivingEntity owner, World world, ItemStack stack) {
-        super(Entities.PARTICLE_ENTITY, owner, world);
-        setItem(stack);
+        super(Entities.PARTICLE_ENTITY, owner, world, stack);
     }
 
     private void loadData(String file) {
@@ -100,7 +82,7 @@ public class ParticleEntity extends ChargedEntity {
             return;
         }
 
-        addVelocity(getField());
+        addVelocity(getField().multiply(1 / data.mass));
         // TODO rework after actual movement :
         Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
 

@@ -99,5 +99,6 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, "Bohr Entity");
         builder.add(Entities.CORROSIVE_ENTITY, "");
         builder.add(Entities.PARTICLE_ENTITY, "Charged Entity");
+        builder.add(Entities.POINT_CHARGED_ENTITY, "Point Charged Entity");
     }
 }

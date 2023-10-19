@@ -1,6 +1,7 @@
 package be.minelabs.entity.projectile.thrown;
 
 import be.minelabs.entity.BohrBlueprintEntity;
+import be.minelabs.entity.Entities;
 import be.minelabs.item.Items;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -36,8 +38,29 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         super(entityType, world);
     }
 
-    public ChargedEntity(EntityType<? extends ThrownItemEntity> entityType, LivingEntity owner, World world) {
+    /**
+     * Summon/Spawn a new Entity
+     *
+     * @param world : in what world should we make the entity
+     * @param pos   : position in the world to spawn the entity
+     * @param stack : Item used for throwing
+     */
+    public ChargedEntity(EntityType<? extends ThrownItemEntity> type, World world, BlockPos pos, ItemStack stack) {
+        this(type, world);
+        setPosition(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
+        setItem(stack);
+    }
+
+    /**
+     * Make a new Thrown Entity
+     *
+     * @param owner : who threw the Entity/Item
+     * @param world : what world did we do this in
+     * @param stack : Item used for throwing
+     */
+    public ChargedEntity(EntityType<? extends ThrownItemEntity> entityType, LivingEntity owner, World world, ItemStack stack) {
         super(entityType, owner, world);
+        setItem(stack);
     }
 
     @Override
