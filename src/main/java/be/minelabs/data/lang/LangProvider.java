@@ -74,6 +74,7 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Items.PION_PLUS, "Pion Plus");
         builder.add(Items.GLUON, "Gluon");
         builder.add(Items.PHOTON, "Photon");
+        builder.add(Items.CHARGED_POINT, "Point Charge");
 
         builder.add(Items.ANTI_DOWNQUARK_BLUE, "Anti Downquark");
         builder.add(Items.ANTI_DOWNQUARK_GREEN, "Anti Downquark");

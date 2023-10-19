@@ -1,0 +1,19 @@
+{
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/aluminium_atom",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minelabs:atom/oxygen_atom",
+          "weight": 3
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}
