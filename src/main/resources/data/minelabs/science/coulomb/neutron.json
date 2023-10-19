@@ -3,7 +3,7 @@
   "stable": false,
   "decay_chance": 0.0005,
   "charge": 0,
-  "mass": 0.003,
+  "mass": 3,
   "annihilation_drop": {
     "item" : "minelabs:subatomic/photon",
     "count": 2

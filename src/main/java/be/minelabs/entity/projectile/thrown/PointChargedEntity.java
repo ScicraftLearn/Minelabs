@@ -1,5 +1,7 @@
 package be.minelabs.entity.projectile.thrown;
 
+import be.minelabs.advancement.criterion.CoulombCriterion;
+import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.entity.Entities;
 import be.minelabs.screen.ChargedPointScreenHandler;
 import be.minelabs.util.Tags;
@@ -13,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -53,6 +56,20 @@ public class PointChargedEntity extends ChargedEntity {
     public PointChargedEntity(World world, BlockPos pos, ItemStack stack) {
         super(Entities.POINT_CHARGED_ENTITY, world, pos, stack);
     }
+
+    @Override
+    public void tick() {
+        if (world.isClient) {
+            super.tick();
+            return;
+        }
+
+        addVelocity(getField());
+        // TODO rework after actual movement :
+        Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
+        super.tick();
+    }
+
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {

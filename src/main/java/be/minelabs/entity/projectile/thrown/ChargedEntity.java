@@ -1,9 +1,9 @@
 package be.minelabs.entity.projectile.thrown;
 
+import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.blocks.TimeFreezeBlock;
 import be.minelabs.entity.BohrBlueprintEntity;
-import be.minelabs.entity.Entities;
 import be.minelabs.item.Items;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -146,9 +146,13 @@ public abstract class ChargedEntity extends ThrownItemEntity {
                 double force = 8.987f * getCharge() * charged.getCharge() / squaredDistanceTo(charged);
                 Vec3d vector = getPos().subtract(charged.getPos()).normalize(); // Vector between entities
                 vector = vector.multiply(force); //scale vector with Force
-                vector = vector.multiply(0.0001);
+                vector = vector.multiply(0.01);
 
-                field = vector.multiply(MAX_FIELD / vector.length()); // SCALE TO MAX_FIELD
+                field = field.add(vector);
+
+                if (field.length() >= MAX_FIELD) {
+                    field = field.multiply(MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
+                }
             }
         }
 
@@ -191,6 +195,7 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         super.initDataTracker();
         this.setNoGravity(true);
         dataTracker.startTracking(CHARGE, 0);
+        dataTracker.startTracking(STASIS_FIELD, false);
     }
 
     @Override
@@ -207,6 +212,11 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         nbt.putBoolean("stasis_frozen", dataTracker.get(STASIS_FIELD));
     }
 
+    @Override
+    protected ItemStack getItem() {
+        return super.getItem();
+    }
+
     protected int getCharge() {
         return dataTracker.get(CHARGE);
     }
@@ -215,7 +225,7 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         dataTracker.set(CHARGE, charge);
     }
 
-    public boolean isStasisFrozen() {
+    public boolean isInStasisField() {
         return dataTracker.get(STASIS_FIELD);
     }
 

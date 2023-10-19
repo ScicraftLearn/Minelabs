@@ -113,7 +113,7 @@ public class ParticleEntity extends ChargedEntity {
         if (world.isClient)
             return;
         Entity entity = entityHitResult.getEntity();
-        if (entity instanceof ParticleEntity charged) {
+        if (entity instanceof ChargedEntity charged) {
             // Could do way more with this!
             if (data.getAntiItem() != null && charged.getItem().isOf(data.getAntiItem())) {
                 ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
