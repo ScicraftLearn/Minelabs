@@ -63,20 +63,9 @@ public class ParticleEntity extends ChargedEntity {
         loadData(item.getItem().getTranslationKey());
     }
 
+    // Must call super.tick(), for field update
     @Override
     public void tick() {
-        Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
-        for (BlockPos pos : positions) {
-            if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
-                if (world.getBlockState(pos).get(TimeFreezeBlock.LIT)) {
-                    //"Force" a stop
-                    setVelocity(Vec3d.ZERO);
-                    super.tick();
-                    return;
-                }
-            }
-        }
-
         if (world.isClient) {
             super.tick();
             return;
@@ -138,18 +127,7 @@ public class ParticleEntity extends ChargedEntity {
                 charged.setVelocity(Vec3d.ZERO);
             }
         }
-    }
-
-    @Override
-    protected void onBlockHit(BlockHitResult blockHitResult) {
-        BlockState state = world.getBlockState(blockHitResult.getBlockPos());
-        if (state.getCollisionShape(EmptyBlockView.INSTANCE, blockHitResult.getBlockPos(), ShapeContext.absent()) == VoxelShapes.empty()) {
-            // No collision keep moving
-            return;
-        }
-        Vec3d sideHit = Vec3d.of(blockHitResult.getSide().getVector()); // Side that the entity hit
-        addVelocity(getVelocity().multiply(sideHit));
-        super.onBlockHit(blockHitResult);
+        super.onEntityHit(entityHitResult);
     }
 
     /**
@@ -173,7 +151,6 @@ public class ParticleEntity extends ChargedEntity {
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
-        this.setNoGravity(true);
     }
 
     @Override

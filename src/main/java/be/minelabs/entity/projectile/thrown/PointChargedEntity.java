@@ -7,13 +7,16 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -56,7 +59,7 @@ public class PointChargedEntity extends ChargedEntity {
         player.openHandledScreen(new NamedScreenHandlerFactory() {
             @Override
             public Text getDisplayName() {
-                return Text.translatable("entity.minelabs.point_charge");
+                return Text.translatable("entity.minelabs.point_charged_entity");
             }
 
             @Override
@@ -65,5 +68,23 @@ public class PointChargedEntity extends ChargedEntity {
             }
         });
         return ActionResult.success(world.isClient);
+    }
+
+    @Override
+    public void kill() {
+        super.kill();
+        ItemScatterer.spawn(getWorld(), getBlockPos(), inventory);
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        Inventories.readNbt(nbt, inventory.stacks);
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        Inventories.writeNbt(nbt, inventory.stacks);
+        super.writeCustomDataToNbt(nbt);
     }
 }
