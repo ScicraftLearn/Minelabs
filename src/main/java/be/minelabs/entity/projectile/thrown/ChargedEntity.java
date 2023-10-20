@@ -1,6 +1,5 @@
 package be.minelabs.entity.projectile.thrown;
 
-import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.blocks.TimeFreezeBlock;
 import be.minelabs.entity.BohrBlueprintEntity;
@@ -32,7 +31,7 @@ import java.util.List;
 
 public abstract class ChargedEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Boolean> STASIS_FIELD = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> STUCK = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     private Vec3d field = Vec3d.ZERO;
 
@@ -195,21 +194,21 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         super.initDataTracker();
         this.setNoGravity(true);
         dataTracker.startTracking(CHARGE, 0);
-        dataTracker.startTracking(STASIS_FIELD, false);
+        dataTracker.startTracking(STUCK, false);
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         dataTracker.set(CHARGE, nbt.getInt("charge"));
-        dataTracker.set(STASIS_FIELD, nbt.getBoolean("stasis_frozen"));
+        dataTracker.set(STUCK, nbt.getBoolean("stasis_frozen"));
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("charge", dataTracker.get(CHARGE));
-        nbt.putBoolean("stasis_frozen", dataTracker.get(STASIS_FIELD));
+        nbt.putBoolean("stasis_frozen", dataTracker.get(STUCK));
     }
 
     @Override
@@ -225,12 +224,12 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         dataTracker.set(CHARGE, charge);
     }
 
-    public boolean isInStasisField() {
-        return dataTracker.get(STASIS_FIELD);
+    public boolean isStuck() {
+        return dataTracker.get(STUCK);
     }
 
-    public void setStasisFrozen(boolean bool) {
-        dataTracker.set(STASIS_FIELD, bool);
+    public void setStuck(boolean bool) {
+        dataTracker.set(STUCK, bool);
     }
 
     public Vec3d getField() {
