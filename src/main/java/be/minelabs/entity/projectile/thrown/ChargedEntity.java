@@ -125,15 +125,21 @@ public abstract class ChargedEntity extends ThrownItemEntity {
 
     @Override
     public void tick() {
-        Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
-        for (BlockPos pos : positions) {
-            if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
-                if (world.getBlockState(pos).get(TimeFreezeBlock.LIT)) {
-                    //"Force" a stop
-                    setVelocity(Vec3d.ZERO);
+        if (isStuck()) {
+            this.setVelocity(Vec3d.ZERO);
+        } else {
+            // No need to check for freeze if we are already stuck
+            Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
+            for (BlockPos pos : positions) {
+                if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
+                    if (world.getBlockState(pos).get(TimeFreezeBlock.LIT)) {
+                        //"Force" a stop
+                        setVelocity(Vec3d.ZERO);
+                    }
                 }
             }
         }
+
 
         List<Entity> entities = world.getOtherEntities(this,
                 Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
