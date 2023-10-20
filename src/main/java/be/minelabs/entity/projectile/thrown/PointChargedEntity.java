@@ -20,7 +20,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PointChargedEntity extends ChargedEntity {
@@ -69,7 +71,6 @@ public class PointChargedEntity extends ChargedEntity {
         Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
         super.tick();
     }
-
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {

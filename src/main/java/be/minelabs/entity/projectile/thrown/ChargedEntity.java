@@ -164,7 +164,11 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         super.tick();
     }
 
-
+    /**
+     * Entity collision
+     *
+     * @param entityHitResult : info regarding the collision
+     */
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         if (world.isClient)
@@ -178,9 +182,16 @@ public abstract class ChargedEntity extends ThrownItemEntity {
             creeperEntity.extinguish();
             creeperEntity.setInvulnerable(false);
             this.discard();
+        } else if (entity instanceof ChargedEntity charged) {
+            onChargedEntityHit(charged);
         }
 
         super.onEntityHit(entityHitResult);
+    }
+
+    public void onChargedEntityHit(ChargedEntity entity) {
+        setVelocity(Vec3d.ZERO);
+        entity.setVelocity(Vec3d.ZERO);
     }
 
     @Override

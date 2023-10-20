@@ -103,31 +103,18 @@ public class ParticleEntity extends ChargedEntity {
         }
     }
 
-    /**
-     * Entity collision
-     *
-     * @param entityHitResult : info regarding the collision
-     */
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (world.isClient)
-            return;
-        Entity entity = entityHitResult.getEntity();
-        if (entity instanceof ChargedEntity charged) {
-            // Could do way more with this!
-            if (data.getAntiItem() != null && charged.getItem().isOf(data.getAntiItem())) {
-                ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
-                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
-                        (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
-                playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
-                this.discard();
-                charged.discard();
-            } else {
-                setVelocity(Vec3d.ZERO);
-                charged.setVelocity(Vec3d.ZERO);
-            }
+    public void onChargedEntityHit(ChargedEntity entity) {
+        if (data.getAntiItem() != null && entity.getItem().isOf(data.getAntiItem())) {
+            ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
+            Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
+                    (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
+            playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
+            this.discard();
+            entity.discard();
+        } else {
+            super.onChargedEntityHit(entity);
         }
-        super.onEntityHit(entityHitResult);
     }
 
     /**
