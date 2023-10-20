@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class InGameHudMixin {
 
     private static final Identifier SAFETY_GLASS = new Identifier(Minelabs.MOD_ID, "textures/misc/safety_glass.png");
+    private static final Identifier FORCE_GLASS = new Identifier(Minelabs.MOD_ID, "textures/misc/force.glass.png");
+
     @Shadow
     @Final
     private MinecraftClient client;
@@ -33,6 +35,8 @@ public abstract class InGameHudMixin {
         ItemStack itemStack = client.player.getInventory().getArmorStack(3);
         if (itemStack.isOf(Items.SAFETY_GLASSES)) {
             renderOverlay(matrices, SAFETY_GLASS, 1.0F);
+        } else if (itemStack.isOf(Items.FORCE_GLASSES)) {
+            renderOverlay(matrices, FORCE_GLASS, 1.0f);
         }
     }
 }

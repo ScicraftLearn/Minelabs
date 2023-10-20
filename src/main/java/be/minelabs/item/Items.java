@@ -60,6 +60,8 @@ public class Items {
 
     public static final Item SAFETY_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
             new FabricItemSettings()), "lab/safety_glasses");
+    public static final Item FORCE_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
+            new FabricItemSettings()), "lab/force_glasses");
 
    /* public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
             new FabricItemSettings()), "lab/lab_coat");*/

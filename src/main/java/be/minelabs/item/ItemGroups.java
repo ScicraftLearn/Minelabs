@@ -17,6 +17,7 @@ public class ItemGroups {
             .entries((displayContext, entries) -> {
                 entries.add(new ItemStack(Items.ATOM_FLOOR));
                 entries.add(new ItemStack(Items.SAFETY_GLASSES));
+                entries.add(new ItemStack(Items.FORCE_GLASSES));
                 entries.add(new ItemStack(Items.LAB_COAT));
                 entries.add(new ItemStack(Items.LAB_CABIN));
                 entries.add(new ItemStack(Items.LAB_DRAWER));
@@ -135,7 +136,7 @@ public class ItemGroups {
     public static final ItemGroup ELEMENTARY_PARTICLES = FabricItemGroup.builder(
                     new Identifier(Minelabs.MOD_ID, "elementary_particles"))
             .icon(() -> new ItemStack(Items.PION_NUL))
-            .entries((displayContext, entries) ->{
+            .entries((displayContext, entries) -> {
                 entries.add(new ItemStack(Items.UPQUARK_RED));
                 entries.add(new ItemStack(Items.UPQUARK_GREEN));
                 entries.add(new ItemStack(Items.UPQUARK_BLUE));
@@ -181,6 +182,6 @@ public class ItemGroups {
             .build();
 
 
-    public static void onInitialize(){
+    public static void onInitialize() {
     }
 }

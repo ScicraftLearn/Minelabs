@@ -42,6 +42,7 @@ public class LangProvider extends MinelabsLangProvider {
 
         builder.add(Items.LAB_COAT, "Lab Coat");
         builder.add(Items.SAFETY_GLASSES, "Safety Glasses");
+        builder.add(Items.FORCE_GLASSES, "Force Glasses");
         builder.add(Items.LENS, "Microscope Lens");
         builder.add(Items.BIG_LENS, "Microscope Lens x2");
         builder.add(Blocks.LAB_DRAWER, "Lab Drawers");

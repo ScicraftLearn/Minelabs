@@ -40,6 +40,7 @@ public class FlemishLangProvider extends MinelabsLangProvider {
 
         builder.add(Items.LAB_COAT, "Labojas");
         builder.add(Items.SAFETY_GLASSES, "Veiligheidsbril");
+        builder.add(Items.FORCE_GLASSES, "Kracht Bril");
         builder.add(Items.LENS, "Microscooplens");
         builder.add(Items.BIG_LENS, "Microscooplens x2");
         builder.add(Blocks.LAB_DRAWER, "Labo Ladenkast");
