@@ -31,6 +31,7 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.BIG_LENS));
                 entries.add(new ItemStack(Items.TIME_FREEZE_BLOCK));
                 entries.add(new ItemStack(Items.ELECTRIC_FIELD_SENSOR));
+                entries.add(new ItemStack(Items.FORCE_COMPASS));
                 entries.add(new ItemStack(Items.MOLOGRAM));
                 entries.add(new ItemStack(Items.BALLOON));
                 entries.add(new ItemStack(Items.BOHR_BLUEPRINT));

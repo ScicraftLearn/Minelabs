@@ -35,7 +35,7 @@ public abstract class ChargedEntity extends ThrownItemEntity {
 
     private Vec3d field = Vec3d.ZERO;
 
-    private static final int MAX_FIELD = 5;
+    public static final int MAX_FIELD = 5;
 
     public final static int e_radius = 12;
     public static final float DEFAULT_SPEED = 0.3f;
@@ -233,7 +233,7 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         return super.getItem();
     }
 
-    protected int getCharge() {
+    public int getCharge() {
         return dataTracker.get(CHARGE);
     }
 

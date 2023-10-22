@@ -230,6 +230,9 @@ public class Items {
     public static final Item CHARGED_POINT = register(new ChargedPointItem(new FabricItemSettings()), "charged_point");
     public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings()), "electric_field_sensor");
 
+    public static final Item FORCE_COMPASS = register(new ForceCompassItem(new FabricItemSettings().maxCount(1)),
+            "force_compass");
+
     public static final Item MOLOGRAM = register(new BlockItem(Blocks.MOLOGRAM_BLOCK, new FabricItemSettings()), "mologram");
 
     public static final Item BALLOON = register(new BalloonItem(new Item.Settings().maxCount(1)), "balloon");

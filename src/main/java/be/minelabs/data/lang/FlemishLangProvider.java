@@ -58,6 +58,7 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Items.LASERTOOL_DIAMOND, "Diamanten Laser Tool");
         builder.add(Items.MAGNET, "Magneet");
         builder.add(Items.POCKET_HOLE, "Miniatuur Zwart Gat");
+        builder.add(Items.FORCE_COMPASS, "Kracht Kompas");
 
         builder.add(Items.ANTI_NEUTRON, "Anti-Neutron");
         builder.add(Items.ANTI_PROTON, "Anti-Proton");
