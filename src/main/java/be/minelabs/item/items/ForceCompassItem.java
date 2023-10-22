@@ -60,9 +60,12 @@ public class ForceCompassItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (world.isClient) {
+            return TypedActionResult.fail(user.getStackInHand(hand));
+        }
         // print/send message to player about field
-        user.sendMessage(Text.of(getField(user.getStackInHand(Hand.MAIN_HAND)).toString()), false);
-        return super.use(world, user, hand);
+        user.sendMessage(Text.of(getField(user.getStackInHand(hand)).toString()), false);
+        return TypedActionResult.consume(user.getStackInHand(hand));
     }
 
     public void setField(ItemStack stack, Vec3d field) {
