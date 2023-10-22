@@ -16,7 +16,6 @@ public class SoundEvents {
     public static final SoundEvent COULOMB_DECAY = register("entity.coulomb.decay");
 
     private static SoundEvent register(String id) {
-
         return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(new Identifier(Minelabs.MOD_ID, id)));
     }
 

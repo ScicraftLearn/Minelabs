@@ -2,27 +2,18 @@ package be.minelabs.entity.projectile.thrown;
 
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
-import be.minelabs.block.Blocks;
-import be.minelabs.block.blocks.TimeFreezeBlock;
 import be.minelabs.entity.Entities;
 import be.minelabs.science.CoulombGson;
 import be.minelabs.sound.SoundEvents;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.EmptyBlockView;
 import net.minecraft.world.World;
 
 import java.io.InputStreamReader;
