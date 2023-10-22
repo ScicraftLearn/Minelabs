@@ -33,8 +33,10 @@ public class ForceCompassItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (world.isClient)
+        if (world.isClient || !selected){
+            // Stop calculation if client and if not selected
             return;
+        }
 
         Vec3d field = Vec3d.ZERO;
 
