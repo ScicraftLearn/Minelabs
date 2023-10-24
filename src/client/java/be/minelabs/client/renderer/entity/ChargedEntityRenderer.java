@@ -1,7 +1,6 @@
 package be.minelabs.client.renderer.entity;
 
 import be.minelabs.entity.projectile.thrown.ChargedEntity;
-import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import be.minelabs.item.Items;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
@@ -10,10 +9,6 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 
 public class ChargedEntityRenderer<T extends ChargedEntity> extends FlyingItemEntityRenderer<T> {
@@ -31,7 +26,7 @@ public class ChargedEntityRenderer<T extends ChargedEntity> extends FlyingItemEn
 
         Vec3d velocity = entity.getVelocity().multiply(30);
 
-        if (MinecraftClient.getInstance().player.getInventory().getArmorStack(3).isOf(Items.SAFETY_GLASSES)) {
+        if (MinecraftClient.getInstance().player.getInventory().getArmorStack(3).isOf(Items.FORCE_GLASSES)) {
             velocity = entity.getField().multiply(30);
         }
 

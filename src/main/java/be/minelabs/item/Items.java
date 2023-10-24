@@ -2,11 +2,10 @@ package be.minelabs.item;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.item.items.*;
-import be.minelabs.science.Atom;
 import be.minelabs.entity.Entities;
 import be.minelabs.fluid.Fluids;
-import be.minelabs.item.items.GasPotion;
+import be.minelabs.item.items.*;
+import be.minelabs.science.Atom;
 import be.minelabs.science.Molecule;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
@@ -60,6 +59,7 @@ public class Items {
 
     public static final Item SAFETY_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
             new FabricItemSettings()), "lab/safety_glasses");
+    // TODO CHANGE ARMOR MAT (different texture on player's head)
     public static final Item FORCE_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
             new FabricItemSettings()), "lab/force_glasses");
 

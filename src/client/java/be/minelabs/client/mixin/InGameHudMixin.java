@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class InGameHudMixin {
 
     private static final Identifier SAFETY_GLASS = new Identifier(Minelabs.MOD_ID, "textures/misc/safety_glass.png");
-    private static final Identifier FORCE_GLASS = new Identifier(Minelabs.MOD_ID, "textures/misc/force.glass.png");
+    private static final Identifier FORCE_GLASS = new Identifier(Minelabs.MOD_ID, "textures/misc/force_glass.png");
 
     @Shadow
     @Final
