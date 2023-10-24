@@ -77,7 +77,7 @@ public class Blocks {
 
     public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(FabricBlockSettings.of(Material.GLASS)
             .noCollision().strength(0.5f,2.0f)), "time_freeze_block");
-    public static final ElectricFieldSensorBlock ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
+    public static final Block ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE, MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "fire/green_fire");

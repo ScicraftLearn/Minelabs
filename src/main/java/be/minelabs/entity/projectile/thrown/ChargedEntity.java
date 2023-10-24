@@ -4,6 +4,7 @@ import be.minelabs.block.Blocks;
 import be.minelabs.block.blocks.TimeFreezeBlock;
 import be.minelabs.entity.BohrBlueprintEntity;
 import be.minelabs.item.Items;
+import be.minelabs.util.Tags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.piston.PistonBehavior;
@@ -13,11 +14,15 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -39,6 +44,8 @@ public abstract class ChargedEntity extends ThrownItemEntity {
 
     public final static int e_radius = 12;
     public static final float DEFAULT_SPEED = 0.3f;
+
+    private int count = 0;
 
 
     public ChargedEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
@@ -127,6 +134,11 @@ public abstract class ChargedEntity extends ThrownItemEntity {
     public void tick() {
         if (isStuck()) {
             this.setVelocity(Vec3d.ZERO);
+            if (world.isClient() && count % 5 == 0) {
+                world.addParticle(ParticleTypes.SNOWFLAKE, getX(), getY() + 0.1, getZ(), 0, -0.01, 0);
+                count = 0;
+            }
+            count++;
         } else {
             // No need to check for freeze if we are already stuck
             Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
@@ -204,6 +216,34 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         Vec3d sideHit = Vec3d.of(blockHitResult.getSide().getVector()); // Side that the entity hit
         addVelocity(getVelocity().multiply(sideHit));
         super.onBlockHit(blockHitResult);
+    }
+
+    @Override
+    public ActionResult interact(PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+        if (stack.isIn(Tags.Items.STICKY_ITEMS) && !isStuck()) {
+            useSticky(player, stack);
+            return ActionResult.success(player.world.isClient());
+        } else if (stack.isOf(net.minecraft.item.Items.WATER_BUCKET) && isStuck()) {
+            useCleanse(player, hand);
+            return ActionResult.success(player.world.isClient());
+        }
+
+        return super.interact(player, hand);
+    }
+
+    private void useSticky(PlayerEntity player, ItemStack stack) {
+        setStuck(true);
+        if (!player.getAbilities().creativeMode) {
+            stack.decrement(1);
+        }
+    }
+
+    private void useCleanse(PlayerEntity player, Hand hand) {
+        setStuck(false);
+        if (!player.getAbilities().creativeMode) {
+            player.setStackInHand(hand, new ItemStack(net.minecraft.item.Items.BUCKET));
+        }
     }
 
     @Override

@@ -72,6 +72,12 @@ public class PointChargedEntity extends ChargedEntity {
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
+        ActionResult result = super.interact(player, hand);
+        if (result != ActionResult.PASS) {
+            // super gave "stuck" instruction
+            return result;
+        }
+
         player.openHandledScreen(new NamedScreenHandlerFactory() {
             @Override
             public Text getDisplayName() {
