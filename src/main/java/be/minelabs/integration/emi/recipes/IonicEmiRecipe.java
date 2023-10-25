@@ -1,6 +1,6 @@
 package be.minelabs.integration.emi.recipes;
 
-import be.minelabs.integration.emi.MinelabsEMIPlugin;
+import be.minelabs.integration.emi.MinelabsEmiPlugin;
 import be.minelabs.item.Items;
 import be.minelabs.recipe.ionic.IonicRecipe;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
@@ -9,12 +9,12 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 
-public class IonicEMIRecipe extends BasicEmiRecipe {
+public class IonicEmiRecipe extends BasicEmiRecipe {
 
     private final EmiIngredient container;
 
-    public IonicEMIRecipe(IonicRecipe recipe) {
-        super(MinelabsEMIPlugin.IONIC_CATEGORY, recipe.getId(), 160, 100);
+    public IonicEmiRecipe(IonicRecipe recipe) {
+        super(MinelabsEmiPlugin.IONIC_CATEGORY, recipe.getId(), 160, 100);
         if (recipe.needsContainer()) {
             container = EmiStack.of(Items.ERLENMEYER);
         } else {

@@ -47,6 +47,10 @@ repositories {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
     }
+
+    maven {
+        url = "https://maven.shedaniel.me"
+    }
 }
 
 dependencies {
@@ -60,6 +64,8 @@ dependencies {
 
     // soft Dependency -> Could be installed alongside our mod
     modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}"
 
     // hard dependency -> actually includes it in our jar
     include "net.kyrptonaught:customportalapi:${project.portal_api_verion}" exclude module: "sodium"
@@ -77,8 +83,9 @@ dependencies {
     modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
     modRuntimeOnly "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 
-    // at runtime, use the full JEI jar for Fabric
+    // at runtime, use the full jar for Fabric
     modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
+    //modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 }
 
 processResources {

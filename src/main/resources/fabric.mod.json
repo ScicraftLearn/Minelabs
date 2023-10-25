@@ -27,7 +27,10 @@
       "be.minelabs.data.Datagen"
     ],
     "emi": [
-      "be.minelabs.integration.emi.MinelabsEMIPlugin"
+      "be.minelabs.integration.emi.MinelabsEmiPlugin"
+    ],
+    "rei_client": [
+      "be.minelabs.integration.rei.MinelabsReiPlugin"
     ]
   },
   "mixins": [

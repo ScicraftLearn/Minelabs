@@ -1,7 +1,7 @@
 package be.minelabs.integration.emi.recipes;
 
 import be.minelabs.Minelabs;
-import be.minelabs.integration.emi.MinelabsEMIPlugin;
+import be.minelabs.integration.emi.MinelabsEmiPlugin;
 import be.minelabs.item.Items;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.science.Atom;
@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 
 public class BohrEmiRecipe extends BasicEmiRecipe {
     public BohrEmiRecipe(AtomItem atomItem) {
-        super(MinelabsEMIPlugin.BOHR_CATEGORY, new Identifier(Minelabs.MOD_ID, ""), 160, 100);
+        super(MinelabsEmiPlugin.BOHR_CATEGORY, new Identifier(Minelabs.MOD_ID, ""), 160, 100);
         Atom atom = atomItem.getAtom();
         inputs.add(EmiIngredient.of(Ingredient.ofStacks(new ItemStack(Items.ELECTRON)), atom.getAtomNumber()));
         inputs.add(EmiIngredient.of(Ingredient.ofStacks(new ItemStack(Items.NEUTRON)), atom.getInitialNeutrons()));

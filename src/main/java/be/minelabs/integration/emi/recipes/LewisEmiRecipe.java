@@ -1,6 +1,6 @@
 package be.minelabs.integration.emi.recipes;
 
-import be.minelabs.integration.emi.MinelabsEMIPlugin;
+import be.minelabs.integration.emi.MinelabsEmiPlugin;
 import be.minelabs.item.Items;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
@@ -15,7 +15,7 @@ public class LewisEmiRecipe extends BasicEmiRecipe {
     private final EmiIngredient container;
 
     public LewisEmiRecipe(MoleculeRecipe recipe) {
-        super(MinelabsEMIPlugin.LEWIS_CATEGORY, recipe.getId(), 160, 110);
+        super(MinelabsEmiPlugin.LEWIS_CATEGORY, recipe.getId(), 160, 110);
         recipe.getIngredients().forEach(ingredient -> inputs.add(EmiIngredient.of(ingredient)));
         if (recipe.needsContainer()) {
             container = EmiStack.of(Items.ERLENMEYER);
