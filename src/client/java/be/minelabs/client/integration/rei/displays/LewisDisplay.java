@@ -1,6 +1,6 @@
-package be.minelabs.integration.rei.displays;
+package be.minelabs.client.integration.rei.displays;
 
-import be.minelabs.integration.rei.categories.LewisCategory;
+import be.minelabs.client.integration.rei.categories.LewisCategory;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
@@ -25,7 +25,6 @@ public class LewisDisplay extends BasicDisplay {
         super(getInputList(recipe.getIngredients()),
                 List.of(EntryIngredient.of(EntryStacks.of(recipe.getOutput(DynamicRegistryManager.EMPTY)))));
     }
-
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {

@@ -1,6 +1,6 @@
-package be.minelabs.integration.emi.recipes;
+package be.minelabs.client.integration.emi.recipes;
 
-import be.minelabs.integration.emi.MinelabsEmiPlugin;
+import be.minelabs.client.integration.emi.MinelabsEmiPlugin;
 import be.minelabs.item.Items;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
@@ -13,6 +13,7 @@ import net.minecraft.registry.DynamicRegistryManager;
 public class LewisEmiRecipe extends BasicEmiRecipe {
 
     private final EmiIngredient container;
+    private final int time;
 
     public LewisEmiRecipe(MoleculeRecipe recipe) {
         super(MinelabsEmiPlugin.LEWIS_CATEGORY, recipe.getId(), 160, 110);
@@ -22,12 +23,14 @@ public class LewisEmiRecipe extends BasicEmiRecipe {
         } else {
             container = EmiStack.EMPTY;
         }
+        time = recipe.getTime();
         outputs.add(EmiStack.of(recipe.getOutput(DynamicRegistryManager.EMPTY)));
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
         widgets.addTexture(EmiTexture.EMPTY_ARROW, 105, 44);
+        widgets.addFillingArrow(105, 44, time * 50);
 
         // TODO GRAPH POS
         for (int m = 0; m < 5; ++m) {

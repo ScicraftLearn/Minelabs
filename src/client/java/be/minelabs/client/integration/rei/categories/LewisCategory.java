@@ -1,8 +1,8 @@
-package be.minelabs.integration.rei.categories;
+package be.minelabs.client.integration.rei.categories;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.integration.rei.displays.LewisDisplay;
+import be.minelabs.client.integration.rei.displays.LewisDisplay;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;

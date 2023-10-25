@@ -265,6 +265,8 @@
   "reaction.minelabs.poisonous": "Poisonous",
   "reaction.minelabs.flammable": "Flammable",
   "emi.category.minelabs.molecule_crafting": "Molecule Crafting",
+  "emi.category.minelabs.atom_crafting": "Atom Crafting",
+  "emi.category.minelabs.ionic_crafting": "Ion Crafting",
   "tag.item.minelabs.atom_item": "Atom Items",
   "tag.item.minelabs.charge": "Charged Items",
   "tag.item.minelabs.negative_charge": "Negative Charged Items",

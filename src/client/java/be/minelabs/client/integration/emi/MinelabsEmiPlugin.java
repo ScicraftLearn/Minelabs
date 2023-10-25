@@ -1,10 +1,10 @@
-package be.minelabs.integration.emi;
+package be.minelabs.client.integration.emi;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.integration.emi.recipes.BohrEmiRecipe;
-import be.minelabs.integration.emi.recipes.IonicEmiRecipe;
-import be.minelabs.integration.emi.recipes.LewisEmiRecipe;
+import be.minelabs.client.integration.emi.recipes.BohrEmiRecipe;
+import be.minelabs.client.integration.emi.recipes.IonicEmiRecipe;
+import be.minelabs.client.integration.emi.recipes.LewisEmiRecipe;
 import be.minelabs.item.Items;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.recipe.ionic.IonicRecipe;
@@ -13,13 +13,17 @@ import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 public class MinelabsEmiPlugin implements EmiPlugin {
+    // EMI WORKS ON CLIENT ONLY
     private static EmiStack BOHR_STACK = EmiStack.of(Blocks.BOHR_BLUEPRINT);
     public static final EmiRecipeCategory BOHR_CATEGORY = new EmiRecipeCategory(
-            new Identifier(Minelabs.MOD_ID, ""), BOHR_STACK);
+            new Identifier(Minelabs.MOD_ID, "atom_crafting"), BOHR_STACK);
     private static EmiStack LEWIS_STACK = EmiStack.of(Blocks.LEWIS_BLOCK);
     public static EmiRecipeCategory LEWIS_CATEGORY = new EmiRecipeCategory(
             new Identifier(Minelabs.MOD_ID, "molecule_crafting"), LEWIS_STACK);

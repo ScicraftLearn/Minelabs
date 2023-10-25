@@ -47,7 +47,7 @@ repositories {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
     }
-
+    // info: https://github.com/shedaniel/RoughlyEnoughItems
     maven {
         url = "https://maven.shedaniel.me"
     }

@@ -59,6 +59,8 @@
   "block.minelabs.subatomic.weak_boson": "Weak Boson",
   "block.minelabs.time_freeze_block": "Time Freeze Block",
   "blockEntity.minelabs.charged_block": "Charged Block",
+  "emi.category.minelabs.atom_crafting": "Atom Crafting",
+  "emi.category.minelabs.ionic_crafting": "Ion Crafting",
   "emi.category.minelabs.molecule_crafting": "Molecule Crafting",
   "entity.minecraft.villager.sciencevillager": "Science Villager",
   "entity.minelabs.balloon": "Balloon",

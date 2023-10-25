@@ -1,6 +1,6 @@
-package be.minelabs.integration.emi.recipes;
+package be.minelabs.client.integration.emi.recipes;
 
-import be.minelabs.integration.emi.MinelabsEmiPlugin;
+import be.minelabs.client.integration.emi.MinelabsEmiPlugin;
 import be.minelabs.item.Items;
 import be.minelabs.recipe.ionic.IonicRecipe;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
