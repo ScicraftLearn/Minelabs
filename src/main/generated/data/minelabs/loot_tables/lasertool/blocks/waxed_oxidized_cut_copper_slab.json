@@ -17,8 +17,20 @@
                       "function": "minecraft:apply_bonus"
                     }
                   ],
-                  "name": "minelabs:lasertool/blocks/mushroom_stem",
-                  "weight": 100
+                  "name": "minelabs:lasertool/blocks/oxidized_copper",
+                  "weight": 95
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "functions": [
+                    {
+                      "enchantment": "minecraft:fortune",
+                      "formula": "minecraft:ore_drops",
+                      "function": "minecraft:apply_bonus"
+                    }
+                  ],
+                  "name": "minelabs:lasertool/blocks/honeycomb_block",
+                  "weight": 5
                 }
               ],
               "conditions": [
@@ -55,7 +67,7 @@
             },
             {
               "type": "minecraft:loot_table",
-              "name": "minecraft:blocks/stripped_warped_stem"
+              "name": "minecraft:blocks/waxed_oxidized_cut_copper_slab"
             }
           ]
         }

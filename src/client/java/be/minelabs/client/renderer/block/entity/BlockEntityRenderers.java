@@ -9,5 +9,6 @@ public class BlockEntityRenderers {
         BlockEntityRendererFactories.register(BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY, ChargedBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY, ChargedPlaceholderBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(BlockEntities.ELECTRIC_FIELD_SENSOR, ElectricFieldSensorRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntities.ERLENMEYER_STAND_BLOCK_ENTITY, ErlenmeyerStandRenderer::new);
     }
 }

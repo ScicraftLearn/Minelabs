@@ -13,5 +13,6 @@
   "result": {
     "item": "minelabs:dust/silicon_carbide_dust"
   },
-  "density": 8
+  "density": 8,
+  "container": false
 }

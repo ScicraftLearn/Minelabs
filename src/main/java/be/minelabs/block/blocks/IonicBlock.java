@@ -13,6 +13,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -29,23 +30,26 @@ import org.jetbrains.annotations.Nullable;
 
 public class IonicBlock extends BlockWithEntity implements BlockEntityProvider, Waterloggable {
 
+    private static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+
     private static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
     public IonicBlock(Settings settings) {
         super(settings);
-        setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false));
+        setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false).with(FACING, Direction.NORTH));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED);
+        builder.add(WATERLOGGED, FACING);
     }
 
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         return this.getDefaultState()
-                .with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER);
+                .with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER)
+                .with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Override
@@ -82,7 +86,7 @@ public class IonicBlock extends BlockWithEntity implements BlockEntityProvider, 
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new IonicBlockEntity(pos,state);
+        return new IonicBlockEntity(pos, state);
     }
 
 
@@ -92,8 +96,8 @@ public class IonicBlock extends BlockWithEntity implements BlockEntityProvider, 
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof IonicBlockEntity) {
-                ItemScatterer.spawn(world, pos, (IonicBlockEntity)blockEntity);
-                world.updateComparators(pos,this);
+                ItemScatterer.spawn(world, pos, (IonicBlockEntity) blockEntity);
+                world.updateComparators(pos, this);
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
@@ -115,6 +119,11 @@ public class IonicBlock extends BlockWithEntity implements BlockEntityProvider, 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.IONIC_BLOCK_ENTITY, world.isClient? null : IonicBlockEntity::tick);
+        //Only tick server, the result will be synced in this case
+        return checkType(type, BlockEntities.IONIC_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> {
+            if (!world1.isClient()) {
+                blockEntity.tick(world1, pos, state1);
+            }
+        });
     }
 }

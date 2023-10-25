@@ -18,6 +18,11 @@ public class Properties {
     // 2 : Lab Block (2 pixel offset)        -> float offset = 0.1250f
     public static final IntProperty COUNTER = IntProperty.of("counter", 0, 2);
 
+    // 0 : On the floor
+    // 1 : Diagonal behind
+    // 2 : Vertical
+    public static final IntProperty TYPE = IntProperty.of("type", 0, 2);
+
     public static final BooleanProperty FILLED = BooleanProperty.of("filled");
     public static final BooleanProperty OXYGENATED = BooleanProperty.of("oxygenated");
     public static final EnumProperty<CornerShape> CONNECT = EnumProperty.of("connect", CornerShape.class);

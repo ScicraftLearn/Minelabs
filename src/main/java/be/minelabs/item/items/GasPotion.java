@@ -11,12 +11,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.LingeringPotionItem;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.Util;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,5 +90,10 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     @Override
     public String getMolecule() {
         return molecule.toString();
+    }
+
+    @Override
+    public String getTranslationKey(ItemStack stack) {
+        return Util.createTranslationKey("item", Registries.ITEM.getId(this));
     }
 }
