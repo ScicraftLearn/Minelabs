@@ -32,6 +32,7 @@ public class MinelabsClient implements ClientModInitializer {
 
         Screens.onInitializeClient();
 
+        ModelLoadingRegistry.INSTANCE.registerModelProvider(new ModelProvider.Requester());
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(ModelProvider::new);
 
         ClientModsEvents.onInitializeClient();
