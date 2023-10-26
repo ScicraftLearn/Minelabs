@@ -1,29 +1,35 @@
 package be.minelabs.client.integration.rei.displays;
 
 import be.minelabs.client.integration.rei.categories.LewisCategory;
+import be.minelabs.client.integration.rei.util.Util;
+import be.minelabs.item.Items;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.collection.DefaultedList;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class LewisDisplay extends BasicDisplay {
 
+    private final EntryIngredient container;
+
     public LewisDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs) {
         super(inputs, outputs);
+        container = EntryIngredient.empty();
     }
 
     public LewisDisplay(MoleculeRecipe recipe) {
-        super(getInputList(recipe.getIngredients()),
+        super(Util.getInputList(recipe.getIngredients()),
                 List.of(EntryIngredient.of(EntryStacks.of(recipe.getOutput(DynamicRegistryManager.EMPTY)))));
+        if (recipe.needsContainer()) {
+            container = EntryIngredient.of(EntryStacks.of(Items.ERLENMEYER));
+        } else {
+            container = EntryIngredient.empty();
+        }
+
     }
 
     @Override
@@ -31,10 +37,7 @@ public class LewisDisplay extends BasicDisplay {
         return LewisCategory.MOLECULE_CRAFTING;
     }
 
-    private static List<EntryIngredient> getInputList(DefaultedList<Ingredient> ingredients) {
-        if (ingredients.isEmpty()) return Collections.emptyList();
-        List<EntryIngredient> list = new ArrayList<>();
-        ingredients.forEach(EntryIngredients::ofIngredient);
-        return list;
+    public EntryIngredient getContainer() {
+        return container;
     }
 }
