@@ -28,7 +28,7 @@ public class IonicCategory implements DisplayCategory<BasicDisplay> {
 
     @Override
     public Text getTitle() {
-        return Text.translatable("Ion Crafting");
+        return Text.translatable("rei.category.minelabs.ionic_crafting");
     }
 
     @Override

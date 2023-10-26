@@ -33,7 +33,7 @@ public class LewisCategory implements DisplayCategory<BasicDisplay> {
 
     @Override
     public Text getTitle() {
-        return Text.translatable("integration.rei.molecule_crafting");
+        return Text.translatable("rei.category.minelabs.molecule_crafting");
     }
 
     @Override
@@ -80,7 +80,6 @@ public class LewisCategory implements DisplayCategory<BasicDisplay> {
 
     @Override
     public int getDisplayHeight() {
-        // TODO check
         return 130;
     }
 }
