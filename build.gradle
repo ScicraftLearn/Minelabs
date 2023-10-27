@@ -84,8 +84,8 @@ dependencies {
     modRuntimeOnly "curse.maven:DisableCustomWorldsAdvice-401978:${project.dcwa_file}"
 
     // at runtime, use the full jar for Fabric
-    //modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
+    //modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 }
 
 processResources {
