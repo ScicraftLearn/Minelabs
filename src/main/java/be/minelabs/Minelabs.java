@@ -3,6 +3,7 @@ package be.minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.recipe.CraftingRecipes;
+import be.minelabs.science.coulomb.CoulombResource;
 import be.minelabs.world.dimension.ModDimensions;
 import be.minelabs.entity.Entities;
 import be.minelabs.village.Villagers;
@@ -31,6 +32,7 @@ public class Minelabs implements ModInitializer {
     @Override
     public void onInitialize() {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(NucleusStabilityTable.INSTANCE);
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(CoulombResource.INSTANCE);
 
         Items.onInitialize();
         Blocks.onInitialize();

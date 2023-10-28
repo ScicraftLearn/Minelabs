@@ -1,4 +1,4 @@
-package be.minelabs.science;
+package be.minelabs.science.coulomb;
 
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.Item;
@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
-public class CoulombGson {
+public class CoulombData {
 
     public String anti_item;
     public Boolean stable;

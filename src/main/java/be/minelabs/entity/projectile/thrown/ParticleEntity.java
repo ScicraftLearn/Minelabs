@@ -3,10 +3,9 @@ package be.minelabs.entity.projectile.thrown;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.entity.Entities;
-import be.minelabs.science.CoulombGson;
+import be.minelabs.science.coulomb.CoulombResource;
+import be.minelabs.science.coulomb.CoulombData;
 import be.minelabs.sound.SoundEvents;
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import net.minecraft.entity.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -16,11 +15,9 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.io.InputStreamReader;
-
 public class ParticleEntity extends ChargedEntity {
 
-    private CoulombGson data;
+    private CoulombData data;
 
     public ParticleEntity(EntityType<? extends ParticleEntity> entityType, World world) {
         super(entityType, world);
@@ -34,24 +31,17 @@ public class ParticleEntity extends ChargedEntity {
         super(Entities.PARTICLE_ENTITY, owner, world, stack);
     }
 
-    private void loadData(String file) {
-        setCustomName(Text.translatable(file));
-        if (world.isClient)
-            return;
-        // item.minelabs.subatomic.name
-        String[] split = file.split("\\.");
-        file = "/data/minelabs/science/coulomb/" + split[split.length - 1] + ".json";
-        CoulombGson json = new Gson().fromJson(JsonParser.parseReader(
-                new InputStreamReader(getClass().getResourceAsStream(file))), CoulombGson.class);
-        json.validate();
-        setCharge(json.charge);
-        this.data = json;
+    private void setData(String name) {
+        setCustomName(Text.translatable(name));
+        String split = name.split("\\.")[3];
+        this.data = CoulombResource.INSTANCE.getCoulombData(split);
+        setCharge(data.charge);
     }
 
     @Override
     public void setItem(ItemStack item) {
         super.setItem(item);
-        loadData(item.getItem().getTranslationKey());
+        setData(item.getItem().getTranslationKey());
     }
 
     // Must call super.tick(), for field update
@@ -133,7 +123,10 @@ public class ParticleEntity extends ChargedEntity {
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
-        loadData(nbt.getString("data"));
+        //loadData(nbt.getString("data"));
+        setData(nbt.getString("data"));
+        setCharge(data.charge);
+
         super.readCustomDataFromNbt(nbt);
     }
 
