@@ -1,5 +1,6 @@
 package be.minelabs.entity.projectile.thrown;
 
+import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.entity.Entities;
@@ -32,9 +33,10 @@ public class ParticleEntity extends ChargedEntity {
     }
 
     private void setData(String name) {
+        Minelabs.LOGGER.info(name);
         setCustomName(Text.translatable(name));
-        String split = name.split("\\.")[3];
-        this.data = CoulombResource.INSTANCE.getCoulombData(split);
+        String[] split = name.split("\\.");
+        this.data = CoulombResource.INSTANCE.getCoulombData(split[split.length - 1]);
         setCharge(data.charge);
     }
 
@@ -123,16 +125,13 @@ public class ParticleEntity extends ChargedEntity {
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
-        //loadData(nbt.getString("data"));
         setData(nbt.getString("data"));
-        setCharge(data.charge);
-
         super.readCustomDataFromNbt(nbt);
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putString("data", getName().getString());
+        nbt.putString("data", getItem().getItem().getTranslationKey());
     }
 }

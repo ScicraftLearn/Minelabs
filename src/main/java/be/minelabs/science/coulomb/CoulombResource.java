@@ -25,8 +25,9 @@ public class CoulombResource implements SimpleSynchronousResourceReloadListener 
     }
 
     public CoulombData getCoulombData(String name) {
+        Identifier identifier = new Identifier(Minelabs.MOD_ID, "science/coulomb/" + name.toLowerCase() + ".json");
         for (Identifier id : resource_data.keySet()) {
-            if (id.getPath().contains(name)) {
+            if (id.equals(identifier)) {
                 return getCoulombData(id);
             }
         }
