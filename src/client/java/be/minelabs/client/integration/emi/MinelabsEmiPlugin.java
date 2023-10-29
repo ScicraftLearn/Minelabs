@@ -28,7 +28,7 @@ public class MinelabsEmiPlugin implements EmiPlugin {
     public static EmiRecipeCategory LEWIS_CATEGORY = new EmiRecipeCategory(
             new Identifier(Minelabs.MOD_ID, "molecule_crafting"), LEWIS_STACK);
 
-    private static EmiStack IONIC_STACK = EmiStack.of(Blocks.LEWIS_BLOCK);
+    private static EmiStack IONIC_STACK = EmiStack.of(Blocks.IONIC_BLOCK);
     public static EmiRecipeCategory IONIC_CATEGORY = new EmiRecipeCategory(
             new Identifier(Minelabs.MOD_ID, "ionic_crafting"), IONIC_STACK);
 
