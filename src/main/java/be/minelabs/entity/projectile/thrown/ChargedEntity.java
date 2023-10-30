@@ -213,9 +213,11 @@ public abstract class ChargedEntity extends ThrownItemEntity {
             // No collision keep moving
             return;
         }
-        Vec3d sideHit = Vec3d.of(blockHitResult.getSide().getVector()); // Side that the entity hit
-        addVelocity(getVelocity().multiply(sideHit));
-        super.onBlockHit(blockHitResult);
+        setVelocity(Vec3d.ZERO);
+        return;
+        //Vec3d sideHit = Vec3d.of(blockHitResult.getSide().getVector()); // Side that the entity hit
+        //addVelocity(getVelocity().multiply(sideHit));
+        //super.onBlockHit(blockHitResult);
     }
 
     @Override

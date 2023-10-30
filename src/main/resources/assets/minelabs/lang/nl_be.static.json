@@ -24,6 +24,7 @@
   "text.minelabs.anti_quark.color.red": "Kleur: Anti-Rood",
   "text.minelabs.anti_quark.color.green": "Kleur: Anti-Groen",
   "text.minelabs.anti_quark.color.blue": "Kleur: Anti-Blauw",
+  "gamerule.allow_decay": "Laat Deeltjes vervallen",
   "block.minelabs.chemical.ccl4": "Tetrachloormethaan (CCl\u2084)",
   "block.minelabs.chemical.ch4o": "Methanol (CH\u2084O)",
   "block.minelabs.chemical.cs2": "Koolstofdisulfide (CS\u2082)",

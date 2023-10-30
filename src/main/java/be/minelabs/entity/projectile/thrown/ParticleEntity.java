@@ -7,6 +7,7 @@ import be.minelabs.entity.Entities;
 import be.minelabs.science.coulomb.CoulombResource;
 import be.minelabs.science.coulomb.CoulombData;
 import be.minelabs.sound.SoundEvents;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.entity.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -69,7 +70,7 @@ public class ParticleEntity extends ChargedEntity {
      * Called 20 times a second !
      */
     private void tryDecay() {
-        if (!data.stable) {
+        if (!data.stable && world.getGameRules().getBoolean(MinelabsGameRules.ALLOW_DECAY)) {
             if (world.getRandom().nextFloat() < data.decay_chance) {
                 ItemEntity item = new ItemEntity(world, getX(), getY() + .5, getZ(), getDecayStack());
                 item.setVelocity(getVelocity().multiply(2));
