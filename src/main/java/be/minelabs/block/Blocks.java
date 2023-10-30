@@ -119,6 +119,8 @@ public class Blocks {
     public static final Block LEWIS_BLOCK = register(new LewisBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "lewis_block");
     public static final Block IONIC_BLOCK = register(new IonicBlock(FabricBlockSettings.of(Material.METAL).nonOpaque()), "ionic_block");
 
+    public static final Block AUTOMATED_LASER_BLOCK = register(new AutomatedLaserBlock(FabricBlockSettings.of(Material.METAL)), "automated_laser");
+
     public static final Block HNO3 = register(new ChemicalFluidBlock(Fluids.STILL_HNO3, Molecule.HNO3), "chemical/hno3");
     public static final Block H2O = register(new ChemicalFluidBlock(Fluids.STILL_H2O, Molecule.H2O), "chemical/h2o");
     public static final Block CS2 = register(new ChemicalFluidBlock(Fluids.STILL_CS2, Molecule.CS2), "chemical/cs2");

@@ -43,6 +43,8 @@ public class BlockEntities {
 
     public static BlockEntityType<MologramBlockEntity> MOLOGRAM_BLOCK_ENTITY;
 
+    public static BlockEntityType<AutomatedLaserBlockEntity> AUTOMATED_LASER_BLOCK_ENTITY;
+
 
     static {
         ArrayList<ItemStack> weak_boson_drop = new ArrayList<>();
@@ -133,6 +135,9 @@ public class BlockEntities {
 
         MOLOGRAM_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(MologramBlockEntity::new,
                 Blocks.MOLOGRAM_BLOCK).build(null), "mologram_block_entity");
+
+        AUTOMATED_LASER_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(AutomatedLaserBlockEntity::new,
+                Blocks.AUTOMATED_LASER_BLOCK).build(null), "automated_laser_block_entity");
 
         ERLENMEYER_STAND_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(ErlenmeyerBlockEntity::new,
                 Blocks.ERLENMEYER_STAND).build(), "erlenmeyer_stand_block_entity");
