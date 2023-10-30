@@ -38,6 +38,7 @@ public class LaserRecipe implements Recipe<LaserInventory> {
 
     @Override
     public ItemStack craft(LaserInventory inventory, DynamicRegistryManager registryManager) {
+
         return getOutput(registryManager);
     }
 

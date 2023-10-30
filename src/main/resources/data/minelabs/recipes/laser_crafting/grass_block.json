@@ -9,12 +9,12 @@
     {
       "item": "minelabs:atom/hydrogen_atom",
       "count": 1,
-      "chance": 1
+      "chance": 10
     },
     {
       "item": "minelabs:atom/aluminium_atom",
       "count": 1,
-      "chance": 1
+      "chance": 25
     }
   ],
   "time": 25

@@ -1,12 +1,15 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.item.Items;
 import be.minelabs.recipe.laser.LaserInventory;
+import be.minelabs.recipe.laser.LaserRecipe;
 import be.minelabs.screen.AutomatedLaserScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
@@ -16,13 +19,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class AutomatedLaserBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
     private final PropertyDelegate propertyDelegate;
 
     private final LaserInventory inventory = new LaserInventory();
 
-    private int progress;
-    private int max_progress;
+    private int progress = 0;
+    private int max_progress = 28;
 
     public AutomatedLaserBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.AUTOMATED_LASER_BLOCK_ENTITY, pos, state);
@@ -41,7 +46,8 @@ public class AutomatedLaserBlockEntity extends BlockEntity implements NamedScree
                 switch (index) {
                     case 0 -> AutomatedLaserBlockEntity.this.progress = value;
                     case 1 -> AutomatedLaserBlockEntity.this.max_progress = value;
-                };
+                }
+                ;
             }
 
             @Override
@@ -49,11 +55,6 @@ public class AutomatedLaserBlockEntity extends BlockEntity implements NamedScree
                 return 2;
             }
         };
-    }
-
-
-    public void tick(World world, BlockPos pos, BlockState state) {
-        //todo
     }
 
     @Override
@@ -82,4 +83,44 @@ public class AutomatedLaserBlockEntity extends BlockEntity implements NamedScree
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new AutomatedLaserScreenHandler(syncId, playerInventory, inventory, propertyDelegate);
     }
+
+    public void tick(World world, BlockPos pos, BlockState state) {
+        //todo
+        if (canOutput() && hasRecipe()) {
+            this.progress++;
+            markDirty(world, pos, state);
+
+            if (progress >= max_progress) {
+                craftItem();
+                resetProgress();
+            }
+
+        } else {
+            resetProgress();
+        }
+    }
+
+    private void resetProgress() {
+        progress = 0;
+    }
+
+    private boolean canOutput() {
+        return true;
+    }
+
+    public boolean hasRecipe() {
+        Optional<LaserRecipe> recipe = getCurrentRecipe();
+        return !inventory.getInputStack().isEmpty();
+    }
+
+    private Optional<LaserRecipe> getCurrentRecipe() {
+        return world.getRecipeManager().getFirstMatch(LaserRecipe.Type.INSTANCE, inventory, this.getWorld());
+    }
+
+    private void craftItem() {
+        inventory.removeStack(0, 1);
+        inventory.setStack(1, new ItemStack(Items.ATOMS.get(2)));
+        // TODO output(s)
+    }
+
 }

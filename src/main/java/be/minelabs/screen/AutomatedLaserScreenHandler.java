@@ -27,6 +27,7 @@ public class AutomatedLaserScreenHandler extends ScreenHandler {
 
         this.inventory = inventory;
         this.inventory.onOpen(playerInventory.player);
+        addProperties(propertyDelegate);
 
         addSlots();
 
@@ -89,7 +90,7 @@ public class AutomatedLaserScreenHandler extends ScreenHandler {
     public int getScaledProgress() {
         int progress = propertyDelegate.get(0);
         int max_progress = propertyDelegate.get(1);
-        int size = 29;
+        int size = 32;
         return max_progress != 0 && progress != 0 ? progress * size / max_progress : 0;
     }
 
