@@ -152,23 +152,26 @@ public abstract class ChargedEntity extends ThrownItemEntity {
             }
         }
 
-
-        List<Entity> entities = world.getOtherEntities(this,
-                Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
-
         field = Vec3d.ZERO;
 
-        for (Entity entity : entities) {
-            if (entity instanceof ChargedEntity charged) {
-                double force = 8.987f * getCharge() * charged.getCharge() / squaredDistanceTo(charged);
-                Vec3d vector = getPos().subtract(charged.getPos()).normalize(); // Vector between entities
-                vector = vector.multiply(force); //scale vector with Force
-                vector = vector.multiply(0.01);
+        if (hasCharge()) {
 
-                field = field.add(vector);
+            List<Entity> entities = world.getOtherEntities(this,
+                    Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
+            for (Entity entity : entities) {
+                if (entity instanceof ChargedEntity charged) {
+                    if (charged.hasCharge()) {
+                        double force = 8.987f * getCharge() * charged.getCharge() / squaredDistanceTo(charged);
+                        Vec3d vector = getPos().subtract(charged.getPos()).normalize(); // Vector between entities
+                        vector = vector.multiply(force); //scale vector with Force
+                        vector = vector.multiply(0.05);
 
-                if (field.length() >= MAX_FIELD) {
-                    field = field.multiply(MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
+                        field = field.add(vector);
+
+                        if (field.length() >= MAX_FIELD) {
+                            field = field.multiply(MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
+                        }
+                    }
                 }
             }
         }
@@ -293,5 +296,9 @@ public abstract class ChargedEntity extends ThrownItemEntity {
 
     public Vec3d getField() {
         return field;
+    }
+
+    public boolean hasCharge() {
+        return getCharge() != 0;
     }
 }
