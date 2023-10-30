@@ -62,25 +62,25 @@ public class LaserRecipe implements Recipe<LaserInventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return LaserRecipeSerializer.INSTANCE;
+        return Serializer.INSTANCE;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return LaserRecipeType.INSTANCE;
+        return Type.INSTANCE;
     }
 
-    public static class LaserRecipeType implements RecipeType<LaserRecipe> {
-        public static final LaserRecipeType INSTANCE = new LaserRecipeType();
+    public static class Type implements RecipeType<LaserRecipe> {
+        public static final Type INSTANCE = new Type();
         public static final String ID = "laser_crafting";
 
-        public LaserRecipeType() {
+        public Type() {
         }
     }
 
-    public static class LaserRecipeSerializer implements RecipeSerializer<LaserRecipe> {
+    public static class Serializer implements RecipeSerializer<LaserRecipe> {
 
-        public static final LaserRecipeSerializer INSTANCE = new LaserRecipeSerializer();
+        public static final Serializer INSTANCE = new Serializer();
         public static final String ID = "laser_crafting";
 
         @Override

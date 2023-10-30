@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,waterlogged=false": {
+      "model": "minelabs:block/automated_laser"
+    },
+    "facing=north,waterlogged=true": {
+      "model": "minelabs:block/automated_laser"
+    },
+    "facing=east,waterlogged=false": {
+      "model": "minelabs:block/automated_laser",
+      "y": 90
+    },
+    "facing=east,waterlogged=true": {
+      "model": "minelabs:block/automated_laser",
+      "y": 90
+    },
+    "facing=west,waterlogged=false": {
+      "model": "minelabs:block/automated_laser",
+      "y": 270
+    },
+    "facing=west,waterlogged=true": {
+      "model": "minelabs:block/automated_laser",
+      "y": 270
+    },
+    "facing=south,waterlogged=false": {
+      "model": "minelabs:block/automated_laser",
+      "y": 180
+    },
+    "facing=south,waterlogged=true": {
+      "model": "minelabs:block/automated_laser",
+      "y": 180
+    }
+  }
+}

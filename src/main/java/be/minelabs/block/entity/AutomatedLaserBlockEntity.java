@@ -1,6 +1,7 @@
 package be.minelabs.block.entity;
 
 import be.minelabs.recipe.laser.LaserInventory;
+import be.minelabs.screen.AutomatedLaserScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -79,6 +80,6 @@ public class AutomatedLaserBlockEntity extends BlockEntity implements NamedScree
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return null;
+        return new AutomatedLaserScreenHandler(syncId, playerInventory, inventory, propertyDelegate);
     }
 }

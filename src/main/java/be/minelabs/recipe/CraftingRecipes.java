@@ -2,6 +2,7 @@ package be.minelabs.recipe;
 
 import be.minelabs.Minelabs;
 import be.minelabs.recipe.ionic.IonicRecipe;
+import be.minelabs.recipe.laser.LaserRecipe;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -27,5 +28,12 @@ public class CraftingRecipes {
                 new Identifier(Minelabs.MOD_ID, MoleculeRecipe.MoleculeRecipeType.ID),
                 MoleculeRecipe.MoleculeRecipeType.INSTANCE);
 
+
+        Registry.register(Registries.RECIPE_SERIALIZER,
+                new Identifier(Minelabs.MOD_ID, LaserRecipe.Serializer.ID),
+                LaserRecipe.Serializer.INSTANCE);
+        Registry.register(Registries.RECIPE_TYPE,
+                new Identifier(Minelabs.MOD_ID, LaserRecipe.Type.ID),
+                LaserRecipe.Type.INSTANCE);
     }
 }
