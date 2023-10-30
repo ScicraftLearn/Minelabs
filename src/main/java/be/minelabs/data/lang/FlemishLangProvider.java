@@ -26,6 +26,7 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Blocks.IONIC_BLOCK, "Ion Werkbank");
         builder.add(Blocks.BOHR_BLUEPRINT, "Bohr Blauwdruk");
         builder.add(Blocks.MOLOGRAM_BLOCK, "Molograaf");
+        builder.add(Blocks.AUTOMATED_LASER_BLOCK, "Automatische Laser");
 
         builder.add(Items.SALT, "Zout");
         builder.add(Items.SALT_SHARD, "Zoutscherf");

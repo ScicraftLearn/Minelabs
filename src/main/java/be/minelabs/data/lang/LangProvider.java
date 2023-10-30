@@ -28,6 +28,7 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Blocks.IONIC_BLOCK, "Ionic Crafting Table");
         builder.add(Blocks.BOHR_BLUEPRINT, "Bohr Blueprint");
         builder.add(Blocks.MOLOGRAM_BLOCK, "Mologram");
+        builder.add(Blocks.AUTOMATED_LASER_BLOCK, "Automated Laser");
 
         builder.add(Items.SALT, "Salt");
         builder.add(Items.SALT_SHARD, "Salt Shard");

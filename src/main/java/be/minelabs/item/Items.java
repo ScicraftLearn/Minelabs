@@ -29,6 +29,8 @@ public class Items {
     public static final Item LASERTOOL_GOLD = register(new LaserTool(2.5f, -2.4f, ToolMaterials.GOLD, new Item.Settings()), "lasertool_gold");
     public static final Item LASERTOOL_DIAMOND = register(new LaserTool(2.5f, -2.4f, ToolMaterials.DIAMOND, new Item.Settings()), "lasertool_diamond");
 
+    public static final Item AUTOMATED_LASER = register(new BlockItem(Blocks.AUTOMATED_LASER_BLOCK, new FabricItemSettings()), "automated_laser");
+
     public static final Item SALT = register(new FireReactionBlockItem(Blocks.SALT_WIRE,
             new FabricItemSettings().maxCount(64), 4, "NaCl"), "salt/salt");
 

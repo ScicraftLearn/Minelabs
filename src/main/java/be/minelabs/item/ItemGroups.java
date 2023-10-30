@@ -38,6 +38,7 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.LASERTOOL_IRON));
                 entries.add(new ItemStack(Items.LASERTOOL_GOLD));
                 entries.add(new ItemStack(Items.LASERTOOL_DIAMOND));
+                entries.add(new ItemStack(Items.AUTOMATED_LASER));
                 entries.add(new ItemStack(Items.ENTROPY_CREEPER_SPAWN_EGG));
                 entries.add(new ItemStack(Items.MAGNET));
                 entries.add(new ItemStack(Items.POCKET_HOLE));

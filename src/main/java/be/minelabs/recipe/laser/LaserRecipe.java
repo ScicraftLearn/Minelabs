@@ -2,6 +2,7 @@ package be.minelabs.recipe.laser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
@@ -85,13 +86,9 @@ public class LaserRecipe implements Recipe<LaserInventory> {
 
         @Override
         public LaserRecipe read(Identifier id, JsonObject json) {
-
-            JsonArray ingredients = JsonHelper.getArray(json, "ingredients");
+            Item input = JsonHelper.getItem(json, "input");
             DefaultedList<Ingredient> inputs = DefaultedList.ofSize(1, Ingredient.EMPTY);
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-
+            inputs.set(0, Ingredient.ofItems(input));
 
             JsonArray out = JsonHelper.getArray(json, "output");
             DefaultedList<ChanceStack> outputs = DefaultedList.ofSize(5, ChanceStack.EMPTY);

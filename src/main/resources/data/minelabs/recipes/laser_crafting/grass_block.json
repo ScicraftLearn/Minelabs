@@ -1,0 +1,21 @@
+{
+  "input": "minecraft:grass_block",
+  "outputs": [
+    {
+      "item": "minelabs:atom/carbon_atom",
+      "count": 1,
+      "chance": 100
+    },
+    {
+      "item": "minelabs:atom/hydrogen_atom",
+      "count": 1,
+      "chance": 1
+    },
+    {
+      "item": "minelabs:atom/aluminium_atom",
+      "count": 1,
+      "chance": 1
+    }
+  ],
+  "time": 25
+}
