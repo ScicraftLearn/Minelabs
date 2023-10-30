@@ -165,10 +165,10 @@ public abstract class ChargedEntity extends ThrownItemEntity {
                     });
             for (Entity entity : entities) {
                 if (entity instanceof ChargedEntity charged) {
-                    double force = 8.987f * getCharge() * charged.getCharge() / squaredDistanceTo(charged);
+                    double force = 8.987f * getCharge() * charged.getCharge() / distanceTo(charged);
                     Vec3d vector = getPos().subtract(charged.getPos()).normalize(); // Vector between entities
                     vector = vector.multiply(force); //scale vector with Force
-                    vector = vector.multiply(0.05);
+                    vector = vector.multiply(0.01);
 
                     field = field.add(vector);
 
