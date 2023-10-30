@@ -1,6 +1,5 @@
 package be.minelabs.entity.projectile.thrown;
 
-import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.entity.Entities;
@@ -34,7 +33,6 @@ public class ParticleEntity extends ChargedEntity {
     }
 
     private void setData(String name) {
-        Minelabs.LOGGER.info(name);
         setCustomName(Text.translatable(name));
         String[] split = name.split("\\.");
         this.data = CoulombResource.INSTANCE.getCoulombData(split[split.length - 1]);

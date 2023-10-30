@@ -156,22 +156,26 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         field = Vec3d.ZERO;
 
         if (hasCharge()) {
-            List<Entity> entities = world.getOtherEntities(this,
-                    Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
+            List<Entity> entities = world.getOtherEntities(this, Box.of(this.getPos(), e_radius, e_radius, e_radius),
+                    entity -> {
+                        if (entity instanceof ChargedEntity charged) {
+                            return charged.hasCharge();
+                        }
+                        return false;
+                    });
             for (Entity entity : entities) {
                 if (entity instanceof ChargedEntity charged) {
-                    if (charged.hasCharge()) {
-                        double force = 8.987f * getCharge() * charged.getCharge() / squaredDistanceTo(charged);
-                        Vec3d vector = getPos().subtract(charged.getPos()).normalize(); // Vector between entities
-                        vector = vector.multiply(force); //scale vector with Force
-                        vector = vector.multiply(0.05);
+                    double force = 8.987f * getCharge() * charged.getCharge() / squaredDistanceTo(charged);
+                    Vec3d vector = getPos().subtract(charged.getPos()).normalize(); // Vector between entities
+                    vector = vector.multiply(force); //scale vector with Force
+                    vector = vector.multiply(0.05);
 
-                        field = field.add(vector);
+                    field = field.add(vector);
 
-                        if (field.length() >= MAX_FIELD) {
-                            field = field.multiply(MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
-                        }
+                    if (field.length() >= MAX_FIELD) {
+                        field = field.multiply(MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
                     }
+
                 }
             }
         }

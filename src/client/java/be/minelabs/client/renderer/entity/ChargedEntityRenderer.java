@@ -33,7 +33,9 @@ public class ChargedEntityRenderer<T extends ChargedEntity> extends FlyingItemEn
         matrices.push();
         matrices.translate(0, entity.getHeight() / 2, 0);
         // velocity
-        drawLine(matrices, vertexConsumers, velocity);
+        if (velocity.length() > 0.1) {
+            drawLine(matrices, vertexConsumers, velocity);
+        }
 
         matrices.pop();
     }
