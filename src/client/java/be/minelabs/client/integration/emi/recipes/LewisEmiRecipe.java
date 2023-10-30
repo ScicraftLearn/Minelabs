@@ -8,6 +8,8 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.item.Item;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.DynamicRegistryManager;
 
 public class LewisEmiRecipe extends BasicEmiRecipe {
@@ -20,6 +22,7 @@ public class LewisEmiRecipe extends BasicEmiRecipe {
         recipe.getIngredients().forEach(ingredient -> inputs.add(EmiIngredient.of(ingredient)));
         if (recipe.needsContainer()) {
             container = EmiStack.of(Items.ERLENMEYER);
+            inputs.add(EmiIngredient.of(Ingredient.ofItems(Items.ERLENMEYER)));
         } else {
             container = EmiStack.EMPTY;
         }
