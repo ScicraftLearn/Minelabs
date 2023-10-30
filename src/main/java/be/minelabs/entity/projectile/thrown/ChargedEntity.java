@@ -147,6 +147,7 @@ public abstract class ChargedEntity extends ThrownItemEntity {
                     if (world.getBlockState(pos).get(TimeFreezeBlock.LIT)) {
                         //"Force" a stop
                         setVelocity(Vec3d.ZERO);
+                        break;
                     }
                 }
             }
@@ -155,7 +156,6 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         field = Vec3d.ZERO;
 
         if (hasCharge()) {
-
             List<Entity> entities = world.getOtherEntities(this,
                     Box.of(this.getPos(), e_radius, e_radius, e_radius), entity -> entity instanceof ChargedEntity);
             for (Entity entity : entities) {
