@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 
 public class BlockEntities {
+    public static final BlockEntityType<ErlenmeyerBlockEntity> ERLENMEYER_STAND_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> ELECTRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> POSTIRON_BLOCK_ENTITY;
     public static BlockEntityType<ChargedBlockEntity> PROTON_BLOCK_ENTITY;
@@ -132,6 +133,9 @@ public class BlockEntities {
 
         MOLOGRAM_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(MologramBlockEntity::new,
                 Blocks.MOLOGRAM_BLOCK).build(null), "mologram_block_entity");
+
+        ERLENMEYER_STAND_BLOCK_ENTITY = register(FabricBlockEntityTypeBuilder.create(ErlenmeyerBlockEntity::new,
+                Blocks.ERLENMEYER_STAND).build(), "erlenmeyer_stand_block_entity");
     }
 
     /**

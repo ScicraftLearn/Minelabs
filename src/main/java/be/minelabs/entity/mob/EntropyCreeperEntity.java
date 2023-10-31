@@ -66,22 +66,6 @@ public class EntropyCreeperEntity extends CreeperEntity {
     }
 
     /**
-     * We don't care what the Effectiveness is
-     *
-     * @param explosion  : explosion object
-     * @param world      : in what world
-     * @param pos        : position
-     * @param blockState : blockstate but a block
-     * @param fluidState : blockstate but a fluid
-     * @param max        max resistance
-     * @return 0f, Float
-     */
-    @Override
-    public float getEffectiveExplosionResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, float max) {
-        return 0f;
-    }
-
-    /**
      * Based on Explosion::collectBlocksAndDamageEntities
      * Get all the affected blocks in the explosion radius
      *

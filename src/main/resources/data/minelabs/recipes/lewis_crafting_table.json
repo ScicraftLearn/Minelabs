@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " L ",
+    "LTL",
+    "CEC"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:light_blue_terracotta"
+    },
+    "C": {
+      "item": "minecraft:cyan_terracotta"
+    },
+    "E": {
+      "item": "minelabs:erlenmeyer/erlenmeyer"
+    },
+    "T": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "result": {
+    "item": "minelabs:lewis_block",
+    "count": 1
+  }
+}

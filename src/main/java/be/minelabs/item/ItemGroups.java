@@ -81,7 +81,6 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.DUST_ALN));
                 entries.add(new ItemStack(Items.DUST_MGO));
                 entries.add(new ItemStack(Items.DUST_SO3));
-                entries.add(new ItemStack(Items.ERLENMEYER_STAND));
                 entries.add(new ItemStack(Items.ERLENMEYER));
                 entries.add(new ItemStack(Items.ERLENMEYER_O2));
                 entries.add(new ItemStack(Items.ERLENMEYER_N2));
@@ -113,6 +112,7 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.ERLENMEYER_SO2));
                 entries.add(new ItemStack(Items.ERLENMEYER_CLF));
                 entries.add(new ItemStack(Items.ERLENMEYER_F2));
+                entries.add(new ItemStack(Items.ERLENMEYER_C2H6O));
                 entries.add(new ItemStack(Items.ERLENMEYER_HNO3));
                 entries.add(new ItemStack(Items.ERLENMEYER_H2O));
                 entries.add(new ItemStack(Items.ERLENMEYER_NCL3));

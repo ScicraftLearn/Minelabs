@@ -1,10 +1,12 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.network.NetworkingConstants;
 import be.minelabs.recipe.ionic.IonicInventory;
 import be.minelabs.recipe.ionic.IonicRecipe;
-import be.minelabs.item.Items;
-import be.minelabs.network.IonicDataPacket;
 import be.minelabs.screen.IonicBlockScreenHandler;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -24,15 +26,12 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
-
-import static be.minelabs.screen.IonicBlockScreenHandler.GRIDSIZE;
 
 /**
  * IonicBlockEntity. We still implement {@link Inventory} for compat.
@@ -43,20 +42,20 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private IonicInventory inventory = new IonicInventory(9, 9, 11);
     //PropertyDelegate that holds the progress, density and charge of both sides. synced to the client
     private final PropertyDelegate propertyDelegate;
-    //private final RecipeManager.MatchGetter<IonicInventory, IonicRecipe> matchGetter;
-    //List of needed input left ingredients; Synced by IonicDataPacket
+    //List of needed input left ingredients; Synced
     private DefaultedList<Ingredient> leftIngredients = DefaultedList.of();
-    //List of needed input right ingredients; Synced by IonicDataPacket
+    //List of needed input right ingredients; Synced
     private DefaultedList<Ingredient> rightIngredients = DefaultedList.of();
     //Progress of the recipe; -1 means not started; Synced by propertyDelegate
-    private int progress = -1;
+    private int progress = 0;
+    private int maxProgress = 23;
     //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int leftdensity;
     //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int rightdensity;
     //Charge of items needed for the recipe;Synced by propertyDelegate
     private int leftCharge;
-    //Charge of items needed for the recipe;Synced by propertyDelegat
+    //Charge of items needed for the recipe;Synced by propertyDelegate
     private int rightCharge;
     //Current recipe selected; NOT synced
     private IonicRecipe currentrecipe;
@@ -70,61 +69,47 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.propertyDelegate = new PropertyDelegate() {
             @Override
             public int get(int index) {
-                switch (index) {
-                    case 0:
-                        return IonicBlockEntity.this.progress;
-                    case 1:
-                        return IonicBlockEntity.this.leftdensity;
-                    case 2:
-                        return IonicBlockEntity.this.rightdensity;
-                    case 3:
-                        return IonicBlockEntity.this.leftCharge;
-                    case 4:
-                        return IonicBlockEntity.this.rightCharge;
-                    default:
-                        return 0;
-                }
+                return switch (index) {
+                    case 0 -> IonicBlockEntity.this.progress;
+                    case 1 -> IonicBlockEntity.this.leftdensity;
+                    case 2 -> IonicBlockEntity.this.rightdensity;
+                    case 3 -> IonicBlockEntity.this.leftCharge;
+                    case 4 -> IonicBlockEntity.this.rightCharge;
+                    case 5 -> IonicBlockEntity.this.maxProgress;
+                    default -> 0;
+                };
             }
 
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0:
-                        IonicBlockEntity.this.progress = value;
-                        break;
-                    case 1:
-                        IonicBlockEntity.this.leftdensity = value;
-                        break;
-                    case 2:
-                        IonicBlockEntity.this.rightdensity = value;
-                        break;
-                    case 3:
-                        IonicBlockEntity.this.leftCharge = value;
-                        break;
-                    case 4:
-                        IonicBlockEntity.this.rightCharge = value;
-                        break;
-                    default:
-
+                    case 0 -> IonicBlockEntity.this.progress = value;
+                    case 1 -> IonicBlockEntity.this.leftdensity = value;
+                    case 2 -> IonicBlockEntity.this.rightdensity = value;
+                    case 3 -> IonicBlockEntity.this.leftCharge = value;
+                    case 4 -> IonicBlockEntity.this.rightCharge = value;
+                    case 5 -> IonicBlockEntity.this.maxProgress = value;
+                    default -> {
+                    }
                 }
             }
 
             @Override
             public int size() {
-                return 5;
+                return 6;
             }
         };
     }
 
     @Override
     public Text getDisplayName() {
-        return Text.translatable("Crafting");
+        return Text.translatable(getCachedState().getBlock().getTranslationKey());
     }
 
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new IonicBlockScreenHandler(syncId,inv,inventory, propertyDelegate, pos);
+        return new IonicBlockScreenHandler(syncId, inv, inventory, propertyDelegate, pos);
     }
 
     @Override
@@ -132,7 +117,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         super.readNbt(nbt);
         NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         this.inventory = new IonicInventory(9, 9, 11);
-        for(int i = 0; i < nbtList.size(); ++i) {
+        for (int i = 0; i < nbtList.size(); ++i) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
             int j = nbtCompound.getByte("Slot") & 255;
             if (j >= 0 && j < inventory.size()) {
@@ -146,11 +131,11 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         super.writeNbt(nbt);
         NbtList nbtList = new NbtList();
 
-        for(int i = 0; i < inventory.size(); ++i) {
+        for (int i = 0; i < inventory.size(); ++i) {
             ItemStack itemStack = inventory.getStack(i);
             if (!itemStack.isEmpty()) {
                 NbtCompound nbtCompound = new NbtCompound();
-                nbtCompound.putByte("Slot", (byte)i);
+                nbtCompound.putByte("Slot", (byte) i);
                 itemStack.writeNbt(nbtCompound);
                 nbtList.add(nbtCompound);
             }
@@ -168,75 +153,92 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return BlockEntityUpdateS2CPacket.create(this);
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, IonicBlockEntity ionic){
-        //No recipe loaded, try to load one.
-        if (ionic.currentrecipe == null) {
-            Optional<IonicRecipe> recipe = world.getRecipeManager().getFirstMatch(IonicRecipe.IonicRecipeType.INSTANCE, ionic.inventory, world);
-            //Optional<IonicRecipe> recipe = ionic.mactchGetter.getFirstMatch(ionic.inventory, world)
-            recipe.ifPresent(r -> {
-                ionic.currentrecipe = r;
-                ionic.leftIngredients = r.getLeftingredients();
-                ionic.rightIngredients = r.getRightingredients();
-                ionic.leftdensity = r.getLeftdensity();
-                ionic.rightdensity = r.getRightdensity();
-                ionic.leftCharge = r.getLeftCharge();
-                ionic.rightCharge = r.getRightCharge();
-                IonicDataPacket packet = new IonicDataPacket(pos, ionic.leftIngredients, ionic.rightIngredients);
-                packet.sent(world, pos);
-            });
+    public void tick(World world, BlockPos pos, BlockState state) {
+        DynamicRegistryManager manager = world.getRegistryManager();
+        if (hasRecipe() && canExport(manager) && containerCheck() && hasEnoughItems()) {
+            progress++;
+            markDirty();
+
+            if (progress >= maxProgress) {
+                // Craft
+                craft(manager);
+                resetProgress();
+            }
+        } else {
+            resetProgress();
+            advancementCheck();
         }
-        //recipe loaded, check if enough items
-        // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
-        else if (ionic.inventory.getStack(28).isEmpty()
-                || ionic.inventory.getStack(28).isOf(ionic.currentrecipe.getOutput(DynamicRegistryManager.EMPTY).getItem())){
-            if (!ionic.inventory.getStack(27).isOf(Items.ERLENMEYER) || ionic.inventory.getStack(27).getCount() < 1) return; //has erlenmeyer
-            boolean correct = false;
-            for (int i = 0; i < ionic.leftIngredients.size(); i++) {
-                correct = true;
-                if (!ionic.leftIngredients.get(i).test(ionic.inventory.getStack(2*GRIDSIZE+i)) || ionic.inventory.getStack(2*GRIDSIZE+i).getCount() < ionic.leftdensity) {
-                    correct = false; // not enough items
-                    break;
-                }
-            }
-            for (int i = 0; i < ionic.rightIngredients.size(); i++) {
-                if (!ionic.rightIngredients.get(i).test(ionic.inventory.getStack(2*GRIDSIZE+i + ionic.leftIngredients.size())) || ionic.inventory.getStack(2*GRIDSIZE+i+ionic.leftIngredients.size()).getCount() < ionic.currentrecipe.getRightdensity()) {
-                    correct = false; // not enough items
-                    break;
-                }
-            }
-            if (ionic.progress > 0) {
-                ionic.progress = correct? ionic.progress : -1; //enough items? continue or reset;
-            } else {
-                ionic.progress = correct? 0 : -1; //enough items? start or reset;
-            }
+    }
+
+    private boolean hasRecipe() {
+        return currentrecipe != null;
+    }
+
+    /**
+     * Callback used for advancements
+     */
+    private void advancementCheck() {
+        // TODO advancements
+
+    }
+
+    private void resetProgress() {
+        progress = 0;
+    }
+
+    private void craft(DynamicRegistryManager manager) {
+        //Remove actual ingredients
+        for (int i = 0; i < leftIngredients.size(); i++) {
+            inventory.getStack(i).decrement(leftdensity);
         }
-        //Busy crafting
-        if (ionic.progress > -1) {
-            ionic.progress += 1;
-            if (ionic.progress >= 23) { //Done crafting
-                if (ionic.inventory.getStack(28).isEmpty()) { //Set output slot
-                    // TODO : CHECK IS THIS FINE ? DynamicRegistryManager.EMPTY
-                    ionic.inventory.setStack(28, ionic.currentrecipe.getOutput(DynamicRegistryManager.EMPTY));
-                }
-                else {
-                    ionic.inventory.getStack(28).increment(1);
-                }
-                ionic.inventory.getStack(27).decrement(1);
-                for (int i = 0; i < ionic.leftIngredients.size(); i++) {
-                    ionic.inventory.getStack(2*GRIDSIZE+i).decrement(ionic.leftdensity);
-                }
-                for (int i = 0; i < ionic.rightIngredients.size(); i++) {
-                    ionic.inventory.getStack(2*GRIDSIZE+i+ionic.leftIngredients.size()).decrement(ionic.rightdensity);
-                }
-                ionic.resetRecipe();
+
+        //Remove actual ingredients
+        for (int i = 0; i < rightIngredients.size(); i++) {
+            inventory.getStack(i).decrement(rightdensity);
+        }
+
+        // Remove a container item if needed
+        if (currentrecipe.needsContainer()) {
+            inventory.getContainerStack().decrement(1);
+        }
+        // Update output stack
+        inventory.setStack(28, new ItemStack(currentrecipe.getOutput(manager).getItem(),
+                inventory.getStack(28).getCount() + currentrecipe.getOutput(manager).getCount()));
+    }
+
+    private boolean hasEnoughItems() {
+        for (int i = 0; i < leftIngredients.size(); i++) {
+            if (!leftIngredients.get(i).test(inventory.getLeftGrid().getStack(i)) || inventory.getLeftGrid().getStack(i).getCount() < leftdensity) {
+                return false; // not enough items
             }
         }
-        ionic.markDirty();
+        for (int i = 0; i < rightIngredients.size(); i++) {
+            if (!rightIngredients.get(i).test(inventory.getRightGrid().getStack(i)) || inventory.getRightGrid().getStack(i).getCount() < rightdensity) {
+                return false; // not enough items
+            }
+        }
+        return true;
+    }
+
+    private boolean containerCheck() {
+        return hasContainer() && currentrecipe.needsContainer() || !currentrecipe.needsContainer();
+    }
+
+    private boolean hasContainer() {
+        return !inventory.getContainerStack().isEmpty() && inventory.getContainerStack().getCount() >= 1;
+    }
+
+    private boolean canExport(DynamicRegistryManager manager) {
+        return inventory.getOutputStack().isEmpty()
+                || inventory.getOutputStack().getCount() + currentrecipe.getOutput(manager).getCount() <= inventory.getOutputStack().getMaxCount()
+                && inventory.getOutputStack().isOf(currentrecipe.getOutput(getWorld().getRegistryManager()).getItem());
+
     }
 
     public void resetRecipe() {
         this.currentrecipe = null;
         this.progress = -1;
+        this.maxProgress = 23;
         this.leftdensity = 0;
         this.rightdensity = 0;
         this.leftCharge = 0;
@@ -244,6 +246,46 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.leftIngredients = DefaultedList.of();
         this.rightIngredients = DefaultedList.of();
         this.markDirty();
+    }
+
+    public void updateRecipe() {
+        getWorld().getRecipeManager().getFirstMatch(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
+                .ifPresentOrElse(recipe -> {
+                    if (recipe != currentrecipe) {
+                        // Different recipe
+                        this.currentrecipe = recipe;
+                        this.progress = 0;
+                        this.leftIngredients = recipe.getLeftingredients();
+                        this.rightIngredients = recipe.getRightingredients();
+                        this.leftdensity = recipe.getLeftdensity();
+                        this.rightdensity = recipe.getRightdensity();
+                        this.leftCharge = recipe.getLeftCharge();
+                        this.rightCharge = recipe.getRightCharge();
+                        this.maxProgress = recipe.getTime();
+                        markDirty();
+                        sendDataPacket();
+                    }
+                }, this::resetRecipe);
+    }
+
+    private void sendDataPacket() {
+        if (world.isClient) {
+            return;
+        }
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(this.pos);
+        buf.writeInt(this.leftIngredients.size());
+        for (Ingredient ingredient : this.leftIngredients) {
+            ingredient.write(buf);
+        }
+        buf.writeInt(this.rightIngredients.size());
+        for (Ingredient ingredient : this.rightIngredients) {
+            ingredient.write(buf);
+        }
+
+        for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
+            ServerPlayNetworking.send(player, NetworkingConstants.IONICDATASYNC, buf);
+        }
     }
 
     /**
