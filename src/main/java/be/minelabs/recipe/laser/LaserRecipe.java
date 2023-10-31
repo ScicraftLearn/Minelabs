@@ -10,11 +10,11 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class LaserRecipe implements Recipe<LaserInventory> {
     private final Identifier id;
-
     private final DefaultedList<Ingredient> ingredients;
     private final DefaultedList<ChanceStack> outputs;
 
@@ -57,6 +57,41 @@ public class LaserRecipe implements Recipe<LaserInventory> {
         return outputs;
     }
 
+    /**
+     * Gets all possible stacks that this recipe CAN produce
+     *
+     * @param registryManager : manger
+     * @return DefaultedList<Itemstack>
+     */
+    public DefaultedList<ItemStack> getOutputs(DynamicRegistryManager registryManager) {
+        DefaultedList<ItemStack> stacks = DefaultedList.ofSize(outputs.size(), ItemStack.EMPTY);
+        for (int i = 0; i < outputs.size(); i++) {
+            stacks.set(i, outputs.get(i).getStack().copy());
+        }
+        return stacks;
+    }
+
+    /**
+     * Get the actual output of the recipe
+     *
+     * @param random : random instance
+     * @return DefaultedList<Itemstack>
+     */
+    public DefaultedList<ItemStack> getOutput(Random random) {
+        DefaultedList<ItemStack> stacks = DefaultedList.ofSize(outputs.size(), ItemStack.EMPTY);
+        for (int i = 0; i < stacks.size(); i++) {
+            ChanceStack chanceStack = outputs.get(i);
+            if (chanceStack.isGuaranteed()) {
+                stacks.set(i, chanceStack.getStack());
+                continue;
+            }
+            if (chanceStack.getChance() > random.nextInt(100)) {
+                stacks.set(i, chanceStack.getStack());
+            }
+        }
+        return stacks;
+    }
+
     @Override
     public Identifier getId() {
         return id;
@@ -91,10 +126,9 @@ public class LaserRecipe implements Recipe<LaserInventory> {
             DefaultedList<Ingredient> inputs = DefaultedList.ofSize(1, Ingredient.EMPTY);
             inputs.set(0, Ingredient.ofItems(input));
 
-            JsonArray out = JsonHelper.getArray(json, "output");
+            JsonArray out = JsonHelper.getArray(json, "outputs");
             DefaultedList<ChanceStack> outputs = DefaultedList.ofSize(5, ChanceStack.EMPTY);
-
-            for (int i = 0; i < inputs.size(); i++) {
+            for (int i = 0; i < out.size(); i++) {
                 outputs.set(i, ChanceStack.fromJson(out.get(i)));
             }
 

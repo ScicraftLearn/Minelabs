@@ -228,7 +228,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private boolean canExport(DynamicRegistryManager manager) {
         return ioInventory.getStack(10).isEmpty()
                 || ioInventory.getStack(10).getCount() + currentRecipe.getOutput(manager).getCount() <= ioInventory.getStack(10).getMaxCount()
-                && ioInventory.getStack(10).isOf(currentRecipe.getOutput(getWorld().getRegistryManager()).getItem());
+                && ioInventory.getStack(10).isOf(currentRecipe.getOutput(manager).getItem());
     }
 
     private boolean hasRecipe() {

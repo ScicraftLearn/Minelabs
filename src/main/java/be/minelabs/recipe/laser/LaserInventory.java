@@ -24,4 +24,10 @@ public class LaserInventory extends SimpleInventory {
         }
         return getStack(index);
     }
+
+    public boolean isOutputEmpty() {
+        return getOutputStack(1).isEmpty() && getOutputStack(2).isEmpty()
+                && getOutputStack(3).isEmpty() && getOutputStack(4).isEmpty()
+                && getOutputStack(5).isEmpty();
+    }
 }

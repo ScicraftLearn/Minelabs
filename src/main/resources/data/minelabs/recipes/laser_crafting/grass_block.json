@@ -1,10 +1,21 @@
 {
+  "type": "minelabs:laser_crafting",
   "input": "minecraft:grass_block",
   "outputs": [
     {
-      "item": "minelabs:atom/carbon_atom",
+      "item": "minelabs:atom/oxygen_atom",
       "count": 1,
       "chance": 100
+    },
+    {
+      "item": "minelabs:atom/silicon_atom",
+      "count": 1,
+      "chance": 10
+    },
+    {
+      "item": "minelabs:atom/aluminium_atom",
+      "count": 1,
+      "chance": 30
     },
     {
       "item": "minelabs:atom/hydrogen_atom",
@@ -12,9 +23,9 @@
       "chance": 10
     },
     {
-      "item": "minelabs:atom/aluminium_atom",
+      "item": "minelabs:atom/carbon_atom",
       "count": 1,
-      "chance": 25
+      "chance": 10
     }
   ],
   "time": 25

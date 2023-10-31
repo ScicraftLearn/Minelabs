@@ -36,7 +36,7 @@ public class ChanceStack {
         if (json.isJsonObject()) {
             JsonObject object = json.getAsJsonObject();
             ItemStack stack = ShapedRecipe.outputFromJson(object);
-            int chance = 1;
+            int chance = 100; // If no chance is put it is guaranteed
             if (object.has("chance")) {
                 chance = object.get("chance").getAsInt();
             }
@@ -61,5 +61,7 @@ public class ChanceStack {
         return new ChanceStack(stack, chance);
     }
 
-
+    public boolean isGuaranteed() {
+        return chance == 100;
+    }
 }
