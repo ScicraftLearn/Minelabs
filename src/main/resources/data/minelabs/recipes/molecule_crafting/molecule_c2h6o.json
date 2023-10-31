@@ -1,0 +1,31 @@
+{
+  "type": "minelabs:molecule_crafting",
+  "structure":
+  {
+    "atoms": [
+      {"key":  "C1", "atom":  "C"},
+      {"key":  "C2", "atom":  "C"},
+      {"key":  "O1", "atom":  "O"},
+      {"key":  "H1", "atom":  "H"},
+      {"key":  "H2", "atom":  "H"},
+      {"key":  "H3", "atom":  "H"},
+      {"key":  "H4", "atom":  "H"},
+      {"key":  "H5", "atom":  "H"},
+      {"key":  "H6", "atom":  "H"}
+    ],
+    "bonds": [
+      {"from": "H1", "to": "C1", "bondOrder": 1},
+      {"from": "H2", "to": "C1", "bondOrder": 1},
+      {"from": "H3", "to": "C1", "bondOrder": 1},
+      {"from": "C1", "to": "C2", "bondOrder": 1},
+      {"from": "H4", "to": "C2", "bondOrder": 1},
+      {"from": "H5", "to": "C2", "bondOrder": 1},
+      {"from": "O1", "to": "C2", "bondOrder": 1},
+      {"from": "H6", "to": "O1", "bondOrder": 1}
+    ]
+  },
+  "result": {
+    "item": "minelabs:erlenmeyer/erlenmeyer_ethanol"
+  },
+  "density": 8
+}
