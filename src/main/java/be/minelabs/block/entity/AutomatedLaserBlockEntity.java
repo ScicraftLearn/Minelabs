@@ -3,11 +3,16 @@ package be.minelabs.block.entity;
 import be.minelabs.recipe.laser.LaserInventory;
 import be.minelabs.recipe.laser.LaserRecipe;
 import be.minelabs.screen.AutomatedLaserScreenHandler;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -17,12 +22,13 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class AutomatedLaserBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
+public class AutomatedLaserBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, SidedStorageBlockEntity {
     private final PropertyDelegate propertyDelegate;
 
     private final LaserInventory inventory = new LaserInventory();
@@ -168,4 +174,13 @@ public class AutomatedLaserBlockEntity extends BlockEntity implements NamedScree
         }
     }
 
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    @Nullable
+    @Override
+    public Storage<ItemVariant> getItemStorage(Direction side) {
+        return InventoryStorage.of(inventory, side);
+    }
 }
