@@ -1,6 +1,7 @@
 package be.minelabs.block.entity;
 
 import be.minelabs.entity.projectile.thrown.ChargedEntity;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -55,7 +56,7 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
     }
 
     public void calculateField(World world, BlockPos pos) {
-        int e_radius = ChargedEntity.e_radius;
+        int e_radius =  world.getGameRules().getInt(MinelabsGameRules.E_RADIUS);;
         Iterable<Entity> entities_in_radius = world.getOtherEntities(null, Box.of(pos.toCenterPos(), e_radius, e_radius, e_radius));
 
         field = Vec3d.ZERO; // Clean field / RESET the field

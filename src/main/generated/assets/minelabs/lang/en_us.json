@@ -57,6 +57,7 @@
   "entity.minelabs.entropy_creeper": "Entropy Creeper",
   "entity.minelabs.point_charged_entity": "Point Charged Entity",
   "gamerule.allow_decay": "Allow Particles to decay",
+  "gamerule.e_radius": "Radius of coulomb effect",
   "item.minelabs.atom.actinium_atom": "Actinium",
   "item.minelabs.atom.aluminium_atom": "Aluminium",
   "item.minelabs.atom.americium_atom": "Americium",

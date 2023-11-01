@@ -34,9 +34,12 @@ public class ParticleEntity extends ChargedEntity {
 
     private void setData(String name) {
         setCustomName(Text.translatable(name));
-        String[] split = name.split("\\.");
-        this.data = CoulombResource.INSTANCE.getCoulombData(split[split.length - 1]);
-        setCharge(data.charge);
+        if (!world.isClient){
+            // Dont' want to load "server data" on the client
+            String[] split = name.split("\\.");
+            this.data = CoulombResource.INSTANCE.getCoulombData(split[split.length - 1]);
+            setCharge(data.charge);
+        }
     }
 
     @Override

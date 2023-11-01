@@ -25,6 +25,7 @@
   "text.minelabs.anti_quark.color.green": "Color: Anti-Green",
   "text.minelabs.anti_quark.color.blue": "Color: Anti-Blue",
   "gamerule.allow_decay": "Allow Particles to decay",
+  "gamerule.e_radius": "Radius of coulomb effect",
   "block.minelabs.charged_point": "Point Charge",
   "block.minelabs.fire.green_fire": "Green Fire",
   "block.minelabs.chemical.ccl4": "Carbon Tetrachloride (CCl\u2084)",

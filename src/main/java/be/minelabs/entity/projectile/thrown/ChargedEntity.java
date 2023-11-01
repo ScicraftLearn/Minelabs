@@ -5,6 +5,7 @@ import be.minelabs.block.blocks.TimeFreezeBlock;
 import be.minelabs.entity.BohrBlueprintEntity;
 import be.minelabs.item.Items;
 import be.minelabs.util.Tags;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.piston.PistonBehavior;
@@ -39,10 +40,7 @@ public abstract class ChargedEntity extends ThrownItemEntity {
     private static final TrackedData<Boolean> STUCK = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     private Vec3d field = Vec3d.ZERO;
-
     public static final int MAX_FIELD = 5;
-
-    public final static int e_radius = 12;
     public static final float DEFAULT_SPEED = 0.3f;
 
     private int count = 0;
@@ -132,6 +130,8 @@ public abstract class ChargedEntity extends ThrownItemEntity {
 
     @Override
     public void tick() {
+        int e_radius = world.getGameRules().getInt(MinelabsGameRules.E_RADIUS);
+
         if (isStuck()) {
             this.setVelocity(Vec3d.ZERO);
             if (world.isClient() && count % 5 == 0) {

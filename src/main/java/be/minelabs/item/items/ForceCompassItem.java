@@ -1,6 +1,7 @@
 package be.minelabs.item.items;
 
 import be.minelabs.entity.projectile.thrown.ChargedEntity;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,15 +34,15 @@ public class ForceCompassItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (world.isClient || !selected){
+        if (world.isClient || !selected) {
             // Stop calculation if client and if not selected
             return;
         }
 
         Vec3d field = Vec3d.ZERO;
-
+        int e_radius = world.getGameRules().getInt(MinelabsGameRules.E_RADIUS);
         List<Entity> entities = world.getOtherEntities(entity,
-                Box.of(entity.getPos(), ChargedEntity.e_radius, ChargedEntity.e_radius, ChargedEntity.e_radius), e -> e instanceof ChargedEntity);
+                Box.of(entity.getPos(), e_radius, e_radius, e_radius), e -> e instanceof ChargedEntity);
 
         for (Entity entiti : entities) {
             if (entiti instanceof ChargedEntity charged) {

@@ -57,6 +57,7 @@
   "entity.minelabs.entropy_creeper": "Entropie Creeper",
   "entity.minelabs.point_charged_entity": "Puntlading Entity",
   "gamerule.allow_decay": "Laat Deeltjes vervallen",
+  "gamerule.e_radius": "Coulomb effect straal",
   "item.minelabs.atom.actinium_atom": "Actinium",
   "item.minelabs.atom.aluminium_atom": "Aluminium",
   "item.minelabs.atom.americium_atom": "Americium",
