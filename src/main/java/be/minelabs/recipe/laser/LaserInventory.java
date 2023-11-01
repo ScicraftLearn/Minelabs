@@ -52,7 +52,7 @@ public class LaserInventory extends SimpleInventory implements SidedInventory {
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
         if (dir == Direction.DOWN) {
-            return slot >= 1 && slot < 5;
+            return slot >= 1 && slot <= 5;
         }
         return false;
     }
