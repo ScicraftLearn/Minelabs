@@ -171,12 +171,11 @@ public abstract class ChargedEntity extends ThrownItemEntity {
                     vector = vector.multiply(0.01);
 
                     field = field.add(vector);
-
-                    if (field.length() >= MAX_FIELD) {
-                        field = field.multiply(MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
-                    }
-
                 }
+            }
+
+            if (field.length() >= MAX_FIELD) {
+                field = field.multiply(MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
             }
         }
 
