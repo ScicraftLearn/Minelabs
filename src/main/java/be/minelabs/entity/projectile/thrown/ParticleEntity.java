@@ -45,6 +45,7 @@ public class ParticleEntity extends ChargedEntity {
         setData(item.getItem().getTranslationKey());
     }
 
+
     // Must call super.tick(), for field update
     @Override
     public void tick() {
@@ -52,8 +53,9 @@ public class ParticleEntity extends ChargedEntity {
             super.tick();
             return;
         }
-
-        addVelocity(getField().multiply(1 / data.mass));
+        if (getLastTickDuration() != 0) {
+            addVelocity(getForce().multiply(1 / (data.mass * getLastTickDuration())));
+        }
         // TODO rework after actual movement :
         Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
 

@@ -1,10 +1,13 @@
 package be.minelabs.entity.projectile.thrown;
 
+import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.blocks.TimeFreezeBlock;
 import be.minelabs.entity.BohrBlueprintEntity;
 import be.minelabs.item.Items;
 import be.minelabs.util.Tags;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.piston.PistonBehavior;
@@ -38,9 +41,15 @@ public abstract class ChargedEntity extends ThrownItemEntity {
     private static final TrackedData<Integer> CHARGE = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> STUCK = DataTracker.registerData(ChargedEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
-    private Vec3d field = Vec3d.ZERO;
+    private Vec3d e_field = Vec3d.ZERO;
+    private Vec3d b_field = Vec3d.ZERO;
 
-    public static final int MAX_FIELD = 5;
+    private Vec3d force = Vec3d.ZERO;
+    private long lastTickTime;
+    private long lastTickDuration;
+
+    public static final int MAX_E_FIELD = 5;
+    public static final int MAX_B_FIELD = 5;
 
     public final static int e_radius = 12;
     public static final float DEFAULT_SPEED = 0.3f;
@@ -153,9 +162,10 @@ public abstract class ChargedEntity extends ThrownItemEntity {
             }
         }
 
-        field = Vec3d.ZERO;
-
-        if (hasCharge()) {
+        e_field = Vec3d.ZERO;
+        long currentTime = System.currentTimeMillis();
+        if (hasCharge() && lastTickDuration != 0) {
+            // E field
             List<Entity> entities = world.getOtherEntities(this, Box.of(this.getPos(), e_radius, e_radius, e_radius),
                     entity -> {
                         if (entity instanceof ChargedEntity charged) {
@@ -165,20 +175,46 @@ public abstract class ChargedEntity extends ThrownItemEntity {
                     });
             for (Entity entity : entities) {
                 if (entity instanceof ChargedEntity charged) {
-                    double force = 8.987f * getCharge() * charged.getCharge() / distanceTo(charged);
+                    double partial_field = charged.getCharge() / squaredDistanceTo(charged);
                     Vec3d vector = getPos().subtract(charged.getPos()).normalize(); // Vector between entities
-                    vector = vector.multiply(force); //scale vector with Force
-                    vector = vector.multiply(0.01);
-
-                    field = field.add(vector);
-
-                    if (field.length() >= MAX_FIELD) {
-                        field = field.multiply(MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
-                    }
-
+                    vector = vector.multiply(partial_field); //scale vector with Force
+                    e_field = e_field.add(vector);
                 }
             }
+
+            // B field
+            Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(getBlockPos().mutableCopy().add(-e_radius, -e_radius, -e_radius), getBlockPos().mutableCopy().add(e_radius, e_radius, e_radius));
+            for (BlockPos pos_block : blocks_in_radius) {
+                if (world.getBlockState(pos_block).isOf(net.minecraft.block.Blocks.DIAMOND_BLOCK)) {
+                    // top part, positive
+                    Vec3d pos_part = pos_block.toCenterPos().add(0, .3f, 0);
+                    double partial_field = 1 / squaredDistanceTo(pos_part);
+                    Vec3d vector = getPos().subtract(pos_part).normalize(); // Vector between entities
+                    vector = vector.multiply(partial_field); //scale vector with Force
+                    b_field = b_field.add(vector);
+
+                    // bot part, negative
+                    pos_part = pos_block.toCenterPos().add(0, -.3f, 0);
+                    partial_field = -1 / squaredDistanceTo(pos_part);
+                    vector = getPos().subtract(pos_part).normalize(); // Vector between entities
+                    vector = vector.multiply(partial_field); //scale vector with Force
+                    b_field = b_field.add(vector);
+                }
+            }
+            if (e_field.length() >= MAX_E_FIELD) {
+                e_field = e_field.multiply(MAX_E_FIELD / e_field.length()); // SCALE TO MAX_FIELD
+            }
+            if (b_field.length() >= MAX_B_FIELD) {
+                b_field = b_field.multiply(MAX_B_FIELD / b_field.length()); // SCALE TO MAX_FIELD
+            }
         }
+
+        // calculate the total force with F = q * (E + B x v)
+        force = e_field.add(b_field.crossProduct(getVelocity())).multiply(getCharge());
+
+        // get Delta T for a = Delta v / Delta t
+        lastTickDuration = currentTime - lastTickTime;
+        lastTickTime = currentTime;
 
         super.tick();
     }
@@ -298,8 +334,20 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         dataTracker.set(STUCK, bool);
     }
 
-    public Vec3d getField() {
-        return field;
+    public Vec3d getEField() {
+        return e_field;
+    }
+
+    public Vec3d getBField() {
+        return b_field;
+    }
+
+    public Vec3d getForce() {
+        return this.force;
+    }
+
+    public long getLastTickDuration() {
+        return lastTickDuration;
     }
 
     public boolean hasCharge() {

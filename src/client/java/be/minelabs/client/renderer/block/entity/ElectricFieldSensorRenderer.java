@@ -28,8 +28,8 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
     @Override
     public void render(ElectricFieldSensorBlockEntity entity, float tickDelta, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        Minelabs.LOGGER.info("enity: " + entity.getField());
-        Vector3f field = new Vector3f(entity.getField().toVector3f());
+        Minelabs.LOGGER.info("enity: " + entity.getEField());
+        Vector3f field = new Vector3f(entity.getEField().toVector3f());
         Minelabs.LOGGER.info("render:" + field);
         matrices.push();
 

@@ -41,7 +41,7 @@ public class ElectricFieldSensorBlock extends BlockWithEntity {
         if (!world.isClient) {
             BlockEntity be = world.getBlockEntity(pos);
             if (be instanceof ElectricFieldSensorBlockEntity sensor) {
-                player.sendMessage(Text.of(sensor.getField().toString()), false);
+                player.sendMessage(Text.of(sensor.getEField().toString()), false);
             }
 
         }

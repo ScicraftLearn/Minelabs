@@ -64,7 +64,7 @@ public class PointChargedEntity extends ChargedEntity {
             return;
         }
 
-        addVelocity(getField());
+        addVelocity(getEField());
         // TODO rework after actual movement :
         Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
         super.tick();

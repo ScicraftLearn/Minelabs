@@ -2,7 +2,6 @@ package be.minelabs.item.items;
 
 import be.minelabs.entity.projectile.thrown.ChargedEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,8 +51,8 @@ public class ForceCompassItem extends Item {
 
                 field = field.add(vector);
 
-                if (field.length() >= ChargedEntity.MAX_FIELD) {
-                    field = field.multiply(ChargedEntity.MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
+                if (field.length() >= ChargedEntity.MAX_E_FIELD) {
+                    field = field.multiply(ChargedEntity.MAX_E_FIELD / field.length()); // SCALE TO MAX_FIELD
                 }
             }
         }
@@ -66,7 +65,7 @@ public class ForceCompassItem extends Item {
             return TypedActionResult.fail(user.getStackInHand(hand));
         }
         // print/send message to player about field
-        user.sendMessage(Text.of(getField(user.getStackInHand(hand)).toString()), false);
+        user.sendMessage(Text.of(getEField(user.getStackInHand(hand)).toString()), false);
         return TypedActionResult.consume(user.getStackInHand(hand));
     }
 
@@ -78,7 +77,7 @@ public class ForceCompassItem extends Item {
         stack.setNbt(nbt);
     }
 
-    private Vec3d getField(ItemStack stack) {
+    private Vec3d getEField(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         if (nbt != null && nbt.contains("ex") && nbt.contains("ey") && nbt.contains("ez")) {
             return new Vec3d(nbt.getDouble("ex"), nbt.getDouble("ey"), nbt.getDouble("ez"));

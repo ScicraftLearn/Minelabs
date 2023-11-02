@@ -16,22 +16,22 @@ import net.minecraft.world.World;
 
 public class ElectricFieldSensorBlockEntity extends BlockEntity {
 
-    private Vec3d field = new Vec3d(0, 0, 0);
+    private Vec3d e_field = new Vec3d(0, 0, 0);
 
     public ElectricFieldSensorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
-    public Vec3d getField() {
-        return field;
+    public Vec3d getEField() {
+        return e_field;
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
-        if (field != null) {
-            nbt.putDouble("ex", field.x);
-            nbt.putDouble("ey", field.y);
-            nbt.putDouble("ez", field.z);
+        if (e_field != null) {
+            nbt.putDouble("ex", e_field.x);
+            nbt.putDouble("ey", e_field.y);
+            nbt.putDouble("ez", e_field.z);
         }
         super.writeNbt(nbt);
     }
@@ -40,7 +40,7 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         if (nbt.contains("ex")) {
-            field = new Vec3d(nbt.getDouble("ex"), nbt.getDouble("ey"), nbt.getDouble("ez"));
+            e_field = new Vec3d(nbt.getDouble("ex"), nbt.getDouble("ey"), nbt.getDouble("ez"));
         }
     }
 
@@ -58,7 +58,7 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
         int e_radius = ChargedEntity.e_radius;
         Iterable<Entity> entities_in_radius = world.getOtherEntities(null, Box.of(pos.toCenterPos(), e_radius, e_radius, e_radius));
 
-        field = Vec3d.ZERO; // Clean field / RESET the field
+        e_field = Vec3d.ZERO; // Clean field / RESET the field
         /*
         for (Entity entity : entities_in_radius) {
             if (entity instanceof ParticleEntity particleEntity) {

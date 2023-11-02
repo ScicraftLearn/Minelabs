@@ -24,37 +24,46 @@ public class ChargedEntityRenderer<T extends ChargedEntity> extends FlyingItemEn
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
         matrices.pop();
 
-        Vec3d velocity = entity.getVelocity().multiply(30);
+        Vec3d velocity = Vec3d.ZERO;
+        Vec3d velb = Vec3d.ZERO;
+        Vec3d velf = Vec3d.ZERO;
 
         if (MinecraftClient.getInstance().player.getInventory().getArmorStack(3).isOf(Items.FORCE_GLASSES)) {
-            velocity = entity.getField().multiply(30);
+            velocity = entity.getEField().multiply(30);
+            velb = entity.getBField().multiply(1);
+            velf = entity.getForce().multiply(30);
         }
 
         matrices.push();
         matrices.translate(0, entity.getHeight() / 2, 0);
         // velocity
         if (velocity.length() > 0.1) {
-            drawLine(matrices, vertexConsumers, velocity);
+            drawLine(matrices, vertexConsumers, velocity, 0);
+        }
+        if (velb.length() > 0.1) {
+            drawLine(matrices, vertexConsumers, velb, 100);
+        }
+        if (velf.length() > 0.1) {
+            drawLine(matrices, vertexConsumers, velf, 200);
         }
 
         matrices.pop();
     }
 
-    private void drawLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vec3d vector) {
+    private void drawLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vec3d vector, int line_color) {
         VertexConsumer lineBuffer = vertexConsumers.getBuffer(RenderLayer.getLines());
 
-        int LINE_GRAYSCALE_COLOR = 0;
         Vec3d normal = vector.normalize();
 
 
         MatrixStack.Entry matrixEntry = matrices.peek();
         lineBuffer.vertex(matrixEntry.getPositionMatrix(), 0, 0, 0)
-                .color(LINE_GRAYSCALE_COLOR, LINE_GRAYSCALE_COLOR, LINE_GRAYSCALE_COLOR, 255)
+                .color(line_color, line_color, line_color, 255)
                 .normal(matrixEntry.getNormalMatrix(), (float) normal.x, (float) normal.y, (float) normal.z)
                 .next();
 
         lineBuffer.vertex(matrixEntry.getPositionMatrix(), (float) vector.x, (float) vector.y, (float) vector.z)
-                .color(LINE_GRAYSCALE_COLOR, LINE_GRAYSCALE_COLOR, LINE_GRAYSCALE_COLOR, 255)
+                .color(line_color, line_color, line_color, 255)
                 .normal(matrixEntry.getNormalMatrix(), (float) normal.x, (float) normal.y, (float) normal.z)
                 .next();
     }
