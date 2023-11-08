@@ -2,7 +2,9 @@ package be.minelabs.block.blocks;
 
 import be.minelabs.block.Blocks;
 import be.minelabs.block.entity.QuantumFieldBlockEntity;
+import be.minelabs.item.Items;
 import be.minelabs.state.property.Properties;
+import be.minelabs.world.MinelabsGameRules;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -10,8 +12,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
@@ -23,6 +28,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     public static final int MAX_AGE = 10;
     public static final int DECAYRATE = 1;
@@ -33,6 +41,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
 
     public static final BooleanProperty MASTER = Properties.MASTER;
     public static final IntProperty AGE = IntProperty.of("age", 0, MAX_AGE);
+    public static final IntProperty DROP_KIND = IntProperty.of("kind", 0, 5);
 
 
     public QuantumfieldBlock() {
@@ -45,7 +54,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
                 .ticksRandomly()
                 .luminance(state -> (int) Math.ceil(MathHelper.clampedLerp(MAX_LIGHT, MIN_LIGHT, (float) getAge(state) / MAX_AGE)))
         );
-        this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false));
+        this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false).with(DROP_KIND, 0));
 
     }
 
@@ -53,7 +62,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
         return state.get(MASTER);
     }
 
-    public static int getAge(BlockState state){
+    public static int getAge(BlockState state) {
         return state.get(AGE);
     }
 
@@ -85,15 +94,15 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
             }
             return state.with(AGE, age);
         }
-        return super.getStateForNeighborUpdate(state,direction,neighborState,world,pos,neighborPos);
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(AGE, MASTER);
+        builder.add(AGE, MASTER, DROP_KIND);
     }
 
-    public void removeQuantumBlockIfNeeded(BlockState state, ServerWorld world, BlockPos pos){
+    public void removeQuantumBlockIfNeeded(BlockState state, ServerWorld world, BlockPos pos) {
         if (MAX_AGE == getAge(state)) {
             world.removeBlock(pos, false);
             if (pos.getY() == AtomicFloor.ATOMIC_FLOOR_LAYER) {
@@ -104,7 +113,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        removeQuantumBlockIfNeeded(state,world,pos);
+        removeQuantumBlockIfNeeded(state, world, pos);
         super.scheduledTick(state, world, pos, random);
     }
 
@@ -121,7 +130,24 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
         if (!world.isClient()) {
-            world.setBlockState(pos, state,Block.NOTIFY_ALL);
+            int drop = state.get(DROP_KIND);
+            drop++;
+            if (drop >= 6) {
+                drop = 0;
+            }
+            world.setBlockState(pos, state.with(DROP_KIND, drop), Block.NOTIFY_ALL);
+        }
+    }
+
+    @Override
+    public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+        if (builder.getWorld().getGameRules().getBoolean(MinelabsGameRules.RANDOM_QUANTUM_DROPS)) {
+            return super.getDroppedStacks(state, builder);
+        } else {
+            boolean down = getTranslationKey().contains("downquark");
+            return List.of(new ItemStack(
+                    down ? Items.down_stacks.get(state.get(DROP_KIND)) : Items.up_stacks.get(state.get(DROP_KIND))
+            ));
         }
     }
 }

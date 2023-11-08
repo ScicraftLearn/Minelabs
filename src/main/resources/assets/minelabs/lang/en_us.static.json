@@ -24,6 +24,11 @@
   "text.minelabs.anti_quark.color.red": "Color: Anti-Red",
   "text.minelabs.anti_quark.color.green": "Color: Anti-Green",
   "text.minelabs.anti_quark.color.blue": "Color: Anti-Blue",
+
+  "gamerule.random_quantum_drops": "Should Quantum blocks drop random items",
+  "gamerule.bohr_projectiles": "Should Bohr shoot items as projectiles",
+  "gamerule.allow_chemical_projectiles": "Allow chemicals to be thrown",
+  "text.minelabs.no_chemical_projectiles": "A Gamerule prevents you from throwing chemicals!",
   "block.minelabs.charged_point": "Point Charge",
   "block.minelabs.fire.green_fire": "Green Fire",
   "block.minelabs.chemical.ccl4": "Carbon Tetrachloride (CCl\u2084)",

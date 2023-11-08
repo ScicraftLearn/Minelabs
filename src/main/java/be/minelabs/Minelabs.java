@@ -5,6 +5,7 @@ import be.minelabs.block.Blocks;
 import be.minelabs.block.ExtraDispenserBehavior;
 import be.minelabs.block.entity.BlockEntities;
 import be.minelabs.recipe.CraftingRecipes;
+import be.minelabs.world.MinelabsGameRules;
 import be.minelabs.world.dimension.ModDimensions;
 import be.minelabs.entity.effect.Effects;
 import be.minelabs.entity.Entities;
@@ -53,6 +54,7 @@ public class Minelabs implements ModInitializer {
         CraftingRecipes.onInitialize();
         Villagers.onInitialize();
 
+        MinelabsGameRules.onInitialize();
         ServerModEvents.onInitialize();
         Criteria.onInitialize();
     }
