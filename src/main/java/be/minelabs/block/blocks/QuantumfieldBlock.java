@@ -1,5 +1,6 @@
 package be.minelabs.block.blocks;
 
+import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.entity.QuantumFieldBlockEntity;
 import be.minelabs.item.Items;
@@ -41,7 +42,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
 
     public static final BooleanProperty MASTER = Properties.MASTER;
     public static final IntProperty AGE = IntProperty.of("age", 0, MAX_AGE);
-    public static final IntProperty DROP_KIND = IntProperty.of("kind", 0, 5);
+    public static final IntProperty DROP_KIND = IntProperty.of("kind", 0, 2);
 
 
     public QuantumfieldBlock() {
@@ -132,7 +133,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
         if (!world.isClient()) {
             int drop = state.get(DROP_KIND);
             drop++;
-            if (drop >= 6) {
+            if (drop % 3 == 0) {
                 drop = 0;
             }
             world.setBlockState(pos, state.with(DROP_KIND, drop), Block.NOTIFY_ALL);
@@ -145,9 +146,11 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
             return super.getDroppedStacks(state, builder);
         } else {
             boolean down = getTranslationKey().contains("downquark");
-            return List.of(new ItemStack(
-                    down ? Items.down_stacks.get(state.get(DROP_KIND)) : Items.up_stacks.get(state.get(DROP_KIND))
-            ));
+            int kind = state.get(DROP_KIND);
+            Minelabs.LOGGER.info("KIND NUM: " + kind);
+            return List.of(
+                    new ItemStack(down ? Items.down_stacks.get(kind) : Items.up_stacks.get(kind)),
+                    new ItemStack(down ? Items.down_stacks.get(kind + 3) : Items.up_stacks.get(kind + 3)));
         }
     }
 }
