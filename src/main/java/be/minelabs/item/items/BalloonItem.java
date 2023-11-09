@@ -48,6 +48,7 @@ public class BalloonItem extends Item {
                         // TODO FIX custom effect (temp fix: use levitation)
                         //System.out.println("Try to fly: call effect");
                         //StatusEffectInstance sei = new StatusEffectInstance(Effects.FLYING, 2, 2, false, false);
+
                         StatusEffectInstance sei = new StatusEffectInstance(StatusEffects.LEVITATION, 4, 2, false, false);
                         pe.addStatusEffect(sei);
                     }
@@ -65,11 +66,10 @@ public class BalloonItem extends Item {
                     BalloonEntity be = summon(world, entity);
                     be.attachLeash(entity, true);
                     stack.decrement(1);
-                } else {
-                    return ActionResult.FAIL;
+                    return ActionResult.SUCCESS;
                 }
+                return ActionResult.FAIL;
             }
-            return ActionResult.success(world.isClient);
         }
         return ActionResult.PASS;
     }

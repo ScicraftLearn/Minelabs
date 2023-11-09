@@ -47,8 +47,10 @@ public class BalloonEntity extends MobEntity {
 
     @Override
     public void onDeath(DamageSource source) {
+        if(target != null && target instanceof LeashKnotEntity) {
+            target.discard();
+        }
         detachLeash(true, false);
-        dropItem(Items.RABBIT_HIDE);
         super.onDeath(source);
     }
 
@@ -120,14 +122,17 @@ public class BalloonEntity extends MobEntity {
                     // The target might move around and should follow the levitation
 
                     if(this.target != null) {
-                        // So apparently untamed rideables cannot be lifted in the air once ridden
+                        // So apparently untamed rideables cannot be lifted in the air once saddled
                         //  There is no reason for this, they just... can't...
                         //  Let's just call this a feature :)
-
-                        this.target.setVelocity(new Vec3d(-xz.x, 0.11, -xz.z));
+                        if(getY() - tpos.getY() > max_mob_distance) {
+                            this.target.setVelocity(new Vec3d(-xz.x, 0.11, -xz.z));
+                        }
                     }
                 }
             }
+        } else {
+            kill();
         }
     }
 
