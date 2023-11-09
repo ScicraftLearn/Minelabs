@@ -24,10 +24,9 @@
   "text.minelabs.anti_quark.color.red": "Kleur: Anti-Rood",
   "text.minelabs.anti_quark.color.green": "Kleur: Anti-Groen",
   "text.minelabs.anti_quark.color.blue": "Kleur: Anti-Blauw",
-
-  "gamerule.random_quantum_drops": "Horen Kwantumblokken willekeurige items te laten vallen",
-  "gamerule.bohr_projectiles": "Kan Bohr items afschieten",
-  "gamerule.allow_chemical_projectiles": "Kan je met Chemicalien gooien",
+  "gamerule.randomQuantumDrops": "Horen Kwantumblokken willekeurige items te laten vallen",
+  "gamerule.bohrProjectiles": "Kan Bohr items afschieten",
+  "gamerule.allowChemicalProjectiles": "Kan je met Chemicalien gooien",
   "text.minelabs.no_chemical_projectiles": "Een Gameregel verbied het gooien van Chemicalien!",
   "block.minelabs.chemical.ccl4": "Tetrachloormethaan (CCl\u2084)",
   "block.minelabs.chemical.ch4o": "Methanol (CH\u2084O)",

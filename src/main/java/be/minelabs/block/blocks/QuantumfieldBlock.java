@@ -1,6 +1,5 @@
 package be.minelabs.block.blocks;
 
-import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.entity.QuantumFieldBlockEntity;
 import be.minelabs.item.Items;
@@ -13,11 +12,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
@@ -29,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class QuantumfieldBlock extends Block implements BlockEntityProvider {
@@ -142,7 +138,8 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
 
     @Override
     public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-        if (builder.getWorld().getGameRules().getBoolean(MinelabsGameRules.RANDOM_QUANTUM_DROPS)) {
+        if (builder.getWorld().getGameRules().getBoolean(MinelabsGameRules.RANDOM_QUANTUM_DROPS)
+                || !getTranslationKey().contains("quark")) {
             return super.getDroppedStacks(state, builder);
         } else {
             boolean down = getTranslationKey().contains("downquark");
