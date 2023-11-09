@@ -3,7 +3,6 @@ package be.minelabs.item.items;
 import be.minelabs.entity.projectile.thrown.ChargedEntity;
 import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,9 +17,6 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class ForceCompassItem extends Item {
-
-    // Need an "3DAnglePredicate" for texture decision
-    // FULL CUSTOM MODEL ??
 
     public ForceCompassItem(Settings settings) {
         super(settings);
@@ -71,7 +67,7 @@ public class ForceCompassItem extends Item {
         return TypedActionResult.consume(user.getStackInHand(hand));
     }
 
-    public void setField(ItemStack stack, Vec3d field) {
+    public static void setField(ItemStack stack, Vec3d field) {
         NbtCompound nbt = stack.getOrCreateNbt(); // Don't want to "remove/destroy" other nbt data
         nbt.putDouble("ex", field.x);
         nbt.putDouble("ey", field.y);
@@ -79,7 +75,7 @@ public class ForceCompassItem extends Item {
         stack.setNbt(nbt);
     }
 
-    private Vec3d getField(ItemStack stack) {
+    public static Vec3d getField(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         if (nbt != null && nbt.contains("ex") && nbt.contains("ey") && nbt.contains("ez")) {
             return new Vec3d(nbt.getDouble("ex"), nbt.getDouble("ey"), nbt.getDouble("ez"));
