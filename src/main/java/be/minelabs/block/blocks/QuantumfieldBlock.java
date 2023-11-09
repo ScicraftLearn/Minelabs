@@ -147,7 +147,6 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
         } else {
             boolean down = getTranslationKey().contains("downquark");
             int kind = state.get(DROP_KIND);
-            Minelabs.LOGGER.info("KIND NUM: " + kind);
             return List.of(
                     new ItemStack(down ? Items.down_stacks.get(kind) : Items.up_stacks.get(kind)),
                     new ItemStack(down ? Items.down_stacks.get(kind + 3) : Items.up_stacks.get(kind + 3)));
