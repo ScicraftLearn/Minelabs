@@ -17,12 +17,8 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-
-import java.util.Iterator;
-import java.util.List;
 
 
 public class BalloonItem extends Item {
@@ -32,7 +28,7 @@ public class BalloonItem extends Item {
 
     private BalloonEntity summon(World world, Entity entity) {
         BalloonEntity balloon = Entities.BALLOON.create(world);
-        balloon.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), 0.0F, 0.0F);
+        balloon.refreshPositionAndAngles(entity.getX(), entity.getY() + 1.0, entity.getZ(), 0.0F, 0.0F);
         world.spawnEntity(balloon);
         return balloon;
     }
@@ -64,7 +60,7 @@ public class BalloonItem extends Item {
             if(!world.isClient) {
                 if(!((MobEntity)entity).isLeashed()) {
                     BalloonEntity be = summon(world, entity);
-                    be.attachLeash(entity, true);
+                    be.attachOwner(entity);
                     stack.decrement(1);
                     return ActionResult.SUCCESS;
                 }
@@ -84,9 +80,11 @@ public class BalloonItem extends Item {
                 LeashKnotEntity leashKnotEntity = LeashKnotEntity.getOrCreate(world, blockPos);
                 leashKnotEntity.onPlace();
                 BalloonEntity be = summon(world, leashKnotEntity);
-                be.attachLeash(leashKnotEntity, true);
+                be.attachOwner(leashKnotEntity);
 
                 world.emitGameEvent(GameEvent.BLOCK_ATTACH, blockPos, GameEvent.Emitter.of(playerEntity));
+
+                return ActionResult.SUCCESS;
             }
 
             return ActionResult.success(world.isClient);

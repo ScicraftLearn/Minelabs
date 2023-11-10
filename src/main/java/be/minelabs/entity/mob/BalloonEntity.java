@@ -4,62 +4,61 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.decoration.AbstractDecorationEntity;
 import net.minecraft.entity.decoration.LeashKnotEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Console;
+import java.util.UUID;
 
 public class BalloonEntity extends MobEntity {
     private static final double MAX_DISTANCE = 10.0;
     private static final double MAX_HEIGHT = 320.0;
 
-    private final float rotationY;
     private boolean helium = true;
 
     private double max_mob_distance = 2.0;
-    private Entity target = null;
+    private Entity owner = null;
+
+    @Nullable
+    private NbtCompound ownerNbt;
 
     public BalloonEntity(EntityType<? extends MobEntity> entityType, World world) {
         super(entityType, world);
-        rotationY = getRandom().nextFloat() * 360.0F;
-        setHealth(1.0f);
+        setHealth(1.0F);
         setNoGravity(true);
     }
 
-    // GENERAL
-
-    public float getRotationY() {
-        return rotationY;
-    }
-
-    @Override
-    public void onDeath(DamageSource source) {
-        if(target != null && target instanceof LeashKnotEntity) {
-            target.discard();
-        }
-        detachLeash(true, false);
-        super.onDeath(source);
-    }
-
+    // GETTERS AND SETTERS
     public void setHelium(boolean new_value) {
         helium = new_value;
     }
 
     public boolean getHelium() {
         return helium;
+    }
+
+    public Entity getOwner() {
+        return owner;
+    }
+
+
+    // GENERAL
+    public void heal(float amount) {}
+
+    @Override
+    public void onDeath(DamageSource source) {
+        detachOwner();
+        super.onDeath(source);
     }
 
     protected void initGoals() {
@@ -82,29 +81,29 @@ public class BalloonEntity extends MobEntity {
     @Override
     protected void removeFromDimension() {
         super.removeFromDimension();
-        this.detachLeash(true, false);
+        this.detachOwner();
     }
 
     @Override
     public void tick() {
         super.tick();
 
+        if (!this.world.isClient) {
+            updateOwner();
+        }
+
         if(helium) {
             addStatusEffect(new StatusEffectInstance(StatusEffects.LEVITATION, 10, 3, false, false));
         }
-        Entity target = this.target;  // Prevent crashes when the target becomes null during the tick
+        Entity target = owner;  // Prevent crashes when the target becomes null during the tick
         if(target != null) {
-            if(!target.isAlive()) {
-                kill();
-            }
-            Vec3d mpos = getPos();
-            if(mpos.getY() >= MAX_HEIGHT) {
+            if(getY() >= MAX_HEIGHT) {
                 // POP GOES THE BALLOON
                 kill();
                 return;
             }
             Vec3d tpos = target.getPos();
-            double distance = tpos.distanceTo(mpos);
+            double distance = tpos.distanceTo(getPos());
             if(distance >= MAX_DISTANCE) {
                 // Fixes Issue #406
                 kill();
@@ -121,12 +120,12 @@ public class BalloonEntity extends MobEntity {
                 if(!(target instanceof LeashKnotEntity) && !(target instanceof MobEntity && ((MobEntity) target).isAiDisabled())) {
                     // The target might move around and should follow the levitation
 
-                    if(this.target != null) {
+                    if(owner != null) {
                         // So apparently untamed rideables cannot be lifted in the air once saddled
                         //  There is no reason for this, they just... can't...
                         //  Let's just call this a feature :)
                         if(getY() - tpos.getY() > max_mob_distance) {
-                            this.target.setVelocity(new Vec3d(-xz.x, 0.11, -xz.z));
+                            owner.setVelocity(new Vec3d(-xz.x, 0.11, -xz.z));
                         }
                     }
                 }
@@ -136,37 +135,10 @@ public class BalloonEntity extends MobEntity {
         }
     }
 
-    // LEASH
+    // LEASH & OWNER
     @Override
     public boolean canBeLeashedBy(PlayerEntity player) {
         return false;
-    }
-
-    @Override
-    public void attachLeash(Entity entity, boolean sendPacket) {
-        // By attaching a leash to the target, all positions appear to be valid
-        // Fixes Issues #404 and #399
-        target = entity;
-        if(target instanceof LeashKnotEntity) {
-            max_mob_distance = 2.0;
-        } else if (target instanceof MobEntity tgt) {
-            if(!tgt.isLeashed()) {
-                tgt.attachLeash(this, sendPacket);
-            }
-
-            // Longer leashes for larger mobs
-            Box bbox = entity.getBoundingBox();
-            double a = bbox.getXLength();
-            double b = bbox.getYLength();
-            double c = bbox.getZLength();
-            max_mob_distance = Math.sqrt(a * a + b * b + c * c);
-        }
-    }
-
-    @Override
-    public void detachLeash(boolean sendPacket, boolean dropItem) {
-        super.detachLeash(sendPacket, dropItem);
-        target = null;
     }
 
     public Vec3d getLeashOffset() {
@@ -178,15 +150,99 @@ public class BalloonEntity extends MobEntity {
         return true;
     }
 
+    protected void updateOwner() {
+        if (ownerNbt != null) {
+            readOwnerNbt();
+        }
+
+        if(getHoldingEntity() != null) {
+            owner = getHoldingEntity();
+            updateLeash();
+        }
+
+        if (owner != null) {
+            if (!isAlive() || !owner.isAlive()) {
+                detachOwner();
+                kill();
+            }
+        }
+    }
+
+    public void attachOwner(Entity entity) {
+        // By attaching a leash to the target, all positions appear to be valid
+        // Fixes Issues #404 and #399
+        owner = entity;
+        if (!this.world.isClient && world instanceof ServerWorld) {
+            // Send this to update all data?
+            attachLeash(owner, true);
+        }
+
+        if(owner != null) {
+            ownerNbt = null;
+            if(owner instanceof LeashKnotEntity) {
+                max_mob_distance = 2.0;
+            } else if (owner instanceof MobEntity) {
+                // Longer leashes for larger mobs
+                Box bbox = entity.getBoundingBox();
+                double a = bbox.getXLength();
+                double b = bbox.getYLength();
+                double c = bbox.getZLength();
+                max_mob_distance = 1.3 * Math.sqrt(a * a + b * b + c * c);
+            }
+        }
+    }
+
+    public void detachOwner() {
+        detachLeash(true, false);
+        if(owner != null && owner instanceof LeashKnotEntity) {
+            owner.discard();
+        }
+        owner = null;
+    }
+
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("CanLiftOff", helium);
+        if(owner != null) {
+            NbtCompound nbtCompound = new NbtCompound();
+            if(owner instanceof LeashKnotEntity) {
+                BlockPos blockPos = ((LeashKnotEntity)owner).getDecorationBlockPos();
+                nbtCompound.putInt("X", blockPos.getX());
+                nbtCompound.putInt("Y", blockPos.getY());
+                nbtCompound.putInt("Z", blockPos.getZ());
+            } else {
+                UUID uUID = owner.getUuid();
+                nbtCompound.putUuid("UUID", uUID);
+            }
+
+            nbt.put("Owner", nbtCompound);
+        } else if (ownerNbt != null) {
+            nbt.put("Owner", ownerNbt.copy());
+        }
     }
 
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if(nbt.contains("CanLiftOff")) {
             helium = nbt.getBoolean("CanLiftOff");
+        }
+        if(nbt.contains("Owner", 10)) {
+            ownerNbt = nbt.getCompound("Owner");
+        }
+    }
+
+    private void readOwnerNbt() {
+        if (ownerNbt != null && this.world instanceof ServerWorld) {
+            if (ownerNbt.containsUuid("UUID")) {
+                UUID uUID = ownerNbt.getUuid("UUID");
+                Entity entity = ((ServerWorld)this.world).getEntity(uUID);
+                if (entity != null) {
+                    attachOwner(entity);
+                }
+            } else if (ownerNbt.contains("X", 99) && ownerNbt.contains("Y", 99) && ownerNbt.contains("Z", 99)) {
+                BlockPos blockPos = NbtHelper.toBlockPos(ownerNbt);
+                attachOwner(LeashKnotEntity.getOrCreate(this.world, blockPos));
+            }
         }
     }
 }
