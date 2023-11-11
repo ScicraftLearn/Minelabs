@@ -3,6 +3,7 @@ package be.minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.recipe.CraftingRecipes;
+import be.minelabs.world.MinelabsGameRules;
 import be.minelabs.science.coulomb.CoulombResource;
 import be.minelabs.world.MinelabsGameRules;
 import be.minelabs.world.dimension.ModDimensions;

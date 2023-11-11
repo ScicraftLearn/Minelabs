@@ -11,6 +11,7 @@ import be.minelabs.item.items.AtomItem;
 import be.minelabs.item.Items;
 import be.minelabs.mixin.FishingBobberEntityAccessor;
 import be.minelabs.util.AtomConfiguration;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -33,6 +34,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -135,7 +137,7 @@ public class BohrBlueprintEntity extends Entity {
 
             if (electronEjectProgress <= 0f) {
                 if (removeItem(Items.ELECTRON))
-                    launchParticle(Items.ELECTRON);
+                    tryLaunchParticle(Items.ELECTRON);
                 electronEjectProgress = 1f;
             }
         }
@@ -331,11 +333,24 @@ public class BohrBlueprintEntity extends Entity {
         world.spawnEntity(entity);
     }
 
-    private void decomposeAtom() {
-        for (int p = 0; p < getProtons(); p++) launchParticle(Items.PROTON);
-        for (int n = 0; n < getNeutrons(); n++) launchParticle(Items.NEUTRON);
-        for (int e = 0; e < getElectrons(); e++) launchParticle(Items.ELECTRON);
+    /**
+     * Try to Launch this particle
+     * Will drop if GameRule doesn't allow projectile
+     *
+     * @param item : item to launch/drop
+     */
+    public void tryLaunchParticle(Item item) {
+        if (world.getGameRules().getBoolean(MinelabsGameRules.BOHR_PROJECTILES)) {
+            launchParticle(item);
+        } else {
+            dropStack(new ItemStack(item));
+        }
+    }
 
+    private void decomposeAtom() {
+        for (int p = 0; p < getProtons(); p++) tryLaunchParticle(Items.PROTON);
+        for (int n = 0; n < getNeutrons(); n++) tryLaunchParticle(Items.NEUTRON);
+        for (int e = 0; e < getElectrons(); e++) tryLaunchParticle(Items.ELECTRON);
         clear();
     }
 

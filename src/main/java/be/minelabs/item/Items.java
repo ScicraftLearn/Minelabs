@@ -13,6 +13,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -182,15 +183,6 @@ public class Items {
     public static final Item BOND = register(new Item(new Item.Settings()), "bond");
     public static final Item VALENCEE = register(new Item(new Item.Settings()), "valence_electrons");
 
-    // Items > Quantum fields
-    public static final Item UPQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.UPQUARK_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/upquark_quantumfield");
-    public static final Item DOWNQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.DOWNQUARK_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/downquark_quantumfield");
-    public static final Item GLUON_QUANTUMFIELD = register(new BlockItem(Blocks.GLUON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/gluon_quantumfield");
-    public static final Item ELECTRON_QUANTUMFIELD = register(new BlockItem(Blocks.ELECTRON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/electron_quantumfield");
-    public static final Item PHOTON_QUANTUMFIELD = register(new BlockItem(Blocks.PHOTON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/photon_quantumfield");
-    public static final Item NEUTRINO_QUANTUMFIELD = register(new BlockItem(Blocks.NEUTRINO_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/neutrino_quantumfield");
-    public static final Item WEAK_BOSON_QUANTUMFIELD = register(new BlockItem(Blocks.WEAK_BOSON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/weak_boson_quantumfield");
-
     // Items > Electric field
     public static final Item TIME_FREEZE_BLOCK = register(new BlockItem(Blocks.TIME_FREEZE_BLOCK, new FabricItemSettings()), "time_freeze_block");
 
@@ -226,6 +218,17 @@ public class Items {
     public static final Item PION_NUL = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_nul");
     public static final Item PION_MINUS = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_minus");
     public static final Item PION_PLUS = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_plus");
+
+
+    // Items > Quantum fields
+    public static final Item UPQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.UPQUARK_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/upquark_quantumfield");
+    public static final Item DOWNQUARK_QUANTUMFIELD = register(new BlockItem(Blocks.DOWNQUARK_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/downquark_quantumfield");
+    public static final Item GLUON_QUANTUMFIELD = register(new BlockItem(Blocks.GLUON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/gluon_quantumfield");
+    public static final Item ELECTRON_QUANTUMFIELD = register(new BlockItem(Blocks.ELECTRON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/electron_quantumfield");
+    public static final Item PHOTON_QUANTUMFIELD = register(new BlockItem(Blocks.PHOTON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/photon_quantumfield");
+    public static final Item NEUTRINO_QUANTUMFIELD = register(new BlockItem(Blocks.NEUTRINO_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/neutrino_quantumfield");
+    public static final Item WEAK_BOSON_QUANTUMFIELD = register(new BlockItem(Blocks.WEAK_BOSON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/weak_boson_quantumfield");
+
 
     public static final Item CHARGED_POINT = register(new ChargedPointItem(new FabricItemSettings()), "charged_point");
     public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings()), "electric_field_sensor");
@@ -333,6 +336,21 @@ public class Items {
     public static final Item ERLENMEYER_SICL4 = register(new ErlenmeyerItem(
             Fluids.STILL_SiCl4, new Item.Settings().recipeRemainder(ERLENMEYER), "SiCl4"), "erlenmeyer/erlenmeyer_sicl4");
 
+    public static final List<Item> up_stacks = new ArrayList<>(List.of(
+            Items.UPQUARK_RED,
+            Items.UPQUARK_GREEN,
+            Items.UPQUARK_BLUE,
+            Items.ANTI_UPQUARK_RED,
+            Items.ANTI_UPQUARK_GREEN,
+            Items.ANTI_UPQUARK_BLUE));
+
+    public static final List<Item> down_stacks = new ArrayList<>(List.of(
+            Items.DOWNQUARK_RED,
+            Items.DOWNQUARK_GREEN,
+            Items.DOWNQUARK_BLUE,
+            Items.ANTI_DOWNQUARK_RED,
+            Items.ANTI_DOWNQUARK_GREEN,
+            Items.ANTI_DOWNQUARK_BLUE));
 
     /**
      * Register an Item

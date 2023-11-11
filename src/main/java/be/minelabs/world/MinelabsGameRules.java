@@ -6,12 +6,20 @@ import net.minecraft.world.GameRules;
 
 public class MinelabsGameRules {
 
+    public static final GameRules.Key<GameRules.BooleanRule> RANDOM_QUANTUM_DROPS = GameRuleRegistry.register(
+            "randomQuantumDrops", GameRules.Category.DROPS, GameRuleFactory.createBooleanRule(true));
+
+    public static final GameRules.Key<GameRules.BooleanRule> BOHR_PROJECTILES = GameRuleRegistry.register(
+            "bohrProjectiles", GameRules.Category.SPAWNING, GameRuleFactory.createBooleanRule(true));
+
+    public static final GameRules.Key<GameRules.BooleanRule> ALLOW_CHEMICAL_PROJECTILES = GameRuleRegistry.register(
+            "allowChemicalProjectiles", GameRules.Category.SPAWNING, GameRuleFactory.createBooleanRule(true));
+
     public static final GameRules.Key<GameRules.BooleanRule> ALLOW_DECAY = GameRuleRegistry.register(
-            "allow_decay", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true));
+            "allowDecay", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true));
 
-    public static final GameRules.Key<GameRules.IntRule> E_RADIUS = GameRuleRegistry.register("e_radius",
+    public static final GameRules.Key<GameRules.IntRule> E_RADIUS = GameRuleRegistry.register("eRadius",
             GameRules.Category.UPDATES, GameRuleFactory.createIntRule(12));
-
 
     public static void onInitialize() {
     }
