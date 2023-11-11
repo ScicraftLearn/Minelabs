@@ -23,6 +23,7 @@ import java.util.UUID;
 public class BalloonEntity extends MobEntity {
     private static final double MAX_DISTANCE = 10.0;
     private static final double MAX_HEIGHT = 320.0;
+    public static final double LEVITATION_SPEED = 0.11;
 
     private boolean helium = true;
 
@@ -93,7 +94,7 @@ public class BalloonEntity extends MobEntity {
         }
 
         if(helium) {
-            addStatusEffect(new StatusEffectInstance(StatusEffects.LEVITATION, 10, 3, false, false));
+            setVelocity(new Vec3d(0.0, LEVITATION_SPEED, 0.0));
         }
         Entity target = owner;  // Prevent crashes when the target becomes null during the tick
         if(target != null) {
@@ -109,25 +110,35 @@ public class BalloonEntity extends MobEntity {
                 kill();
                 return;
             }
+
+            // Stop the jiggle
+            double x = tpos.getX() - this.getX();
+            double z = tpos.getZ() - this.getZ();
+            double d2 = Math.sqrt(x*x+z*z);
+            double factor;
+            if(d2 < 0.2) {
+                factor = 0;
+            } else if(d2 <= 1) {
+                factor = d2 * d2;
+            } else {
+                factor = Math.sqrt(d2);
+            }
+            Vec3d xz = new Vec3d(x, 0.0, z).normalize().multiply(factor/10);
+            addVelocity(xz);
+
             if(distance >= max_mob_distance) {
-                double x = (tpos.getX() - this.getX()) / (double)distance;
-                double z = (tpos.getZ() - this.getZ()) / (double)distance;
-
-                // Fixes Issue #401
-                Vec3d xz = new Vec3d(x, 0.0, z).normalize().multiply(0.1);
-                this.setVelocity(xz);
-
                 if(!(target instanceof LeashKnotEntity) && !(target instanceof MobEntity && ((MobEntity) target).isAiDisabled())) {
-                    // The target might move around and should follow the levitation
-
-                    if(owner != null) {
-                        // So apparently untamed rideables cannot be lifted in the air once saddled
-                        //  There is no reason for this, they just... can't...
-                        //  Let's just call this a feature :)
-                        if(getY() - tpos.getY() > max_mob_distance) {
-                            owner.setVelocity(new Vec3d(-xz.x, 0.11, -xz.z));
-                        }
+                    // So apparently untamed rideables cannot be lifted in the air once saddled
+                    //  There is no reason for this, they just... can't...
+                    //  Let's just call this a feature for now...
+                    if(getY() - tpos.getY() > max_mob_distance / 2.0) {
+                        target.setVelocity(new Vec3d(0.0, LEVITATION_SPEED, 0.0));
+                        target.onLanding();  // prevent infinite fall damage accumulation
                     }
+                } else {
+                    // Don't go up anymore
+                    Vec3d vel = getVelocity();
+                    setVelocity(vel.x, 0.0, vel.z);
                 }
             }
         } else {
