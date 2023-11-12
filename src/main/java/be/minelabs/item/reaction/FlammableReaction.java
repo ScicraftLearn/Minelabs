@@ -25,20 +25,22 @@ public class FlammableReaction extends Reaction {
 
     @Override
     protected void react(World world, Vec3d pos) {
-        Utils.applyRadius(pos, radius, block -> {
+        // Radius halved because Ine said so
+        Utils.applyBlocksRadiusTraced(world, pos, radius / 2, block -> {
             if(!world.getGameRules().getBoolean(GameRules.DO_FIRE_TICK))
                 return;
-            if (world.getBlockState(BlockPos.ofFloored(block)).getBlock() != Blocks.AIR)
+            if (world.getBlockState(block).getBlock() != Blocks.AIR)
                 return;
-            if (this.pyrophoric || Utils.isFlameNearby(world, block, 3)
+            if (this.pyrophoric || Utils.isFlameNearby(world, block.toCenterPos(), 3)
                     || world.getBiome(BlockPos.ofFloored(pos.x, pos.y, pos.z)).isIn(Tags.Biomes.FLAMMABLE_BIOMES))
-                world.setBlockState(BlockPos.ofFloored(block), Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
+                world.setBlockState(block, Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
         });
     }
 
     @Override
     public void react(LivingEntity entity) {
-        Utils.applyRadius(entity.getWorld(), entity.getPos(), radius, e -> {
+        // Radius halved because Ine said so
+        Utils.applyEntitiesRadiusTraced(entity.getWorld(), entity.getPos(), radius / 2, e -> {
             //if (this.pyrophoric || Utils.isFlameNearby(e.getWorld(), e.getPos(), 3)) {
             //    e.setFireTicks(duration);
             //}
