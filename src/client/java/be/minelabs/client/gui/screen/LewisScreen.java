@@ -217,9 +217,9 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
     private void renderRecipeCheck(DrawContext context, int x, int y) {
         switch (handler.getStatus()) {
-            case 1 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 38, 16, 16); // NOT IMPLEMENTED
-            case 2 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 55, 16, 16); // VALID
-            case 3 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 38, 16, 16);
+            case 1 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 55, 16, 16); // NOT IMPLEMENTED
+            case 2 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 72, 16, 16); // VALID
+            case 3 -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 38, 16, 16); // TO MANY MOL
             default -> context.drawTexture(TEXTURE, x + 105, y + 17, 176, 21, 16, 16); // INVALID
         }
     }

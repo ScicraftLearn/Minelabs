@@ -108,6 +108,19 @@ public abstract class MinelabsLangProvider extends FabricLanguageProvider {
         translationBuilder.add("text.minelabs.active", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.inactive", EMPTY_TRANSLATION);
         translationBuilder.add("text.minelabs.toggle_instruction", EMPTY_TRANSLATION);
+
+        translationBuilder.add("text.minelabs.anti_quark.electric_down", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.anti_quark.electric_up", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.quark.electric_down", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.quark.electric_up", EMPTY_TRANSLATION);
+
+        translationBuilder.add("text.minelabs.quark.color.red", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.quark.color.green", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.quark.color.blue", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.anti_quark.color.red", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.anti_quark.color.green", EMPTY_TRANSLATION);
+        translationBuilder.add("text.minelabs.anti_quark.color.blue", EMPTY_TRANSLATION);
+
         // manual : PAINTING author/title
         translationBuilder.add("painting.minelabs.lab_compressedgas.author", DEFAULT_ARTIST);
         translationBuilder.add("painting.minelabs.lab_compressedgas.title", EMPTY_TRANSLATION);
