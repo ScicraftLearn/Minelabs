@@ -159,4 +159,8 @@ public class ErlenmeyerItem extends Item implements FluidModificationItem, IMole
     public String getMolecule() {
         return molecule;
     }
+
+    public Fluid getFluid() {
+        return fluid;
+    }
 }

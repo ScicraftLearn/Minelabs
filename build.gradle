@@ -114,6 +114,10 @@ loom {
 			vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
 			vmArg "-Dfabric-api.datagen.modid=${mod_id}"
 		}
+
+		client {
+			vmArg "-Dgeckolib.disable_examples=true"
+		}
 	}
 
 	splitEnvironmentSourceSets()

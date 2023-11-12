@@ -1,5 +1,8 @@
 package be.minelabs.data;
 
+import be.minelabs.data.lang.DutchLangProvider;
+import be.minelabs.data.lang.FlemishLangProvider;
+import be.minelabs.data.lang.LangProvider;
 import be.minelabs.world.gen.feature.ConfiguredFeatures;
 import be.minelabs.world.gen.feature.PlacedFeatures;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -13,10 +16,10 @@ public class Datagen implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 		pack.addProvider(LaserToolDataProvider::new);
-		// TODO REMOVE/UPDATE OLD TRANSLATIONS
+
 		pack.addProvider(LangProvider::new);
-//		pack.addProvider(DutchLangProvider::new);
 		pack.addProvider(FlemishLangProvider::new);
+		pack.addProvider(DutchLangProvider::new);
 
 		// Try keeping this at the end.
 		pack.addProvider(WorldGenerator::new);

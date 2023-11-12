@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "L L",
+    "CZC"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:light_blue_terracotta"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "C": {
+      "item": "minecraft:cyan_terracotta"
+    },
+    "Z": {
+      "item": "minecraft:glowstone"
+    }
+  },
+  "result": {
+    "item": "minelabs:mologram",
+    "count": 1
+  }
+}

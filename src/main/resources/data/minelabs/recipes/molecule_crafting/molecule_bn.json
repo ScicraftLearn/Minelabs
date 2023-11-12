@@ -13,5 +13,6 @@
   "result": {
     "item": "minelabs:dust/boron_nitride_dust"
   },
-  "density": 8
+  "density": 8,
+  "container": false
 }

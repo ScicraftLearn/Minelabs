@@ -3,6 +3,7 @@ package be.minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.recipe.CraftingRecipes;
+import be.minelabs.world.MinelabsGameRules;
 import be.minelabs.world.dimension.ModDimensions;
 import be.minelabs.entity.Entities;
 import be.minelabs.village.Villagers;
@@ -47,6 +48,7 @@ public class Minelabs implements ModInitializer {
         CraftingRecipes.onInitialize();
         Villagers.onInitialize();
 
+        MinelabsGameRules.onInitialize();
         ServerModEvents.onInitialize();
         Criteria.onInitialize();
     }

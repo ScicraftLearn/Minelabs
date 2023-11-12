@@ -48,6 +48,7 @@ public class Erlenmeyers {
         registerErlenmeyer(Items.ERLENMEYER_SO2,0xCFCFFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_CLF,0xCFCFFF, 0);
         registerErlenmeyer(Items.ERLENMEYER_F2,0xCFCFFF, 0);
+        registerErlenmeyer(Items.ERLENMEYER_C2H6O, 0xCFCFFF, 0);
 
         //Fluids
         registerErlenmeyer(Items.ERLENMEYER_HNO3, 0xFFCC33, 0);

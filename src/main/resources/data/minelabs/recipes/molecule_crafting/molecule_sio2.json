@@ -15,5 +15,6 @@
   "result": {
     "item": "minelabs:dust/silicon_dioxide_dust"
   },
-  "density": 8
+  "density": 8,
+  "container" : false
 }

@@ -6,17 +6,20 @@ import be.minelabs.entity.projectile.thrown.GasPotionEntity;
 import be.minelabs.item.IMoleculeItem;
 import be.minelabs.item.Items;
 import be.minelabs.science.Molecule;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.LingeringPotionItem;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.Util;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,17 +32,6 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
         super(settings);
         this.molecule = molecule;
     }
-
-   /*TODO : NO LONGER NEEDED ?
-    @Override
-    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-        Potion potion = new Potion("Test");
-        if (this.isIn(group)) {
-            ItemStack item = PotionUtil.setPotion(new ItemStack(this), potion);
-            item.setNbt(null);
-            stacks.add(item);
-        }
-    }*/
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
@@ -54,6 +46,12 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+
+        if (!world.getGameRules().getBoolean(MinelabsGameRules.ALLOW_CHEMICAL_PROJECTILES)) {
+            user.sendMessage(Text.translatable("text.minelabs.no_chemical_projectiles"));
+            return TypedActionResult.fail(itemStack);
+        }
+
         if (!world.isClient) {
             GasPotionEntity gasEntity = new GasPotionEntity(world, user, this.molecule);
             gasEntity.setItem(itemStack);
@@ -88,5 +86,10 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     @Override
     public String getMolecule() {
         return molecule.toString();
+    }
+
+    @Override
+    public String getTranslationKey(ItemStack stack) {
+        return Util.createTranslationKey("item", Registries.ITEM.getId(this));
     }
 }
