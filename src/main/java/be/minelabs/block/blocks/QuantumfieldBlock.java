@@ -12,7 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -136,7 +136,7 @@ public class QuantumfieldBlock extends Block implements BlockEntityProvider {
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
         if (builder.getWorld().getGameRules().getBoolean(MinelabsGameRules.RANDOM_QUANTUM_DROPS)
                 || !getTranslationKey().contains("quark")) {
             return super.getDroppedStacks(state, builder);
