@@ -17,8 +17,6 @@ public class ItemModels {
 
         registerBond(Items.BOND);
         registerValence(Items.VALENCEE);
-
-        registerBalloon(Items.BALLOON);
     }
 
     /**
@@ -75,10 +73,5 @@ public class ItemModels {
                     return 0.0f;
                 });
         }
-    }
-
-    private static void registerBalloon(Item item) {
-        ModelPredicateProviderRegistry.register(item, new Identifier("filled"),
-                (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 0.0f : 1.0f);
     }
 }

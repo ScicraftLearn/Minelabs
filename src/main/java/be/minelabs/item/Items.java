@@ -232,6 +232,7 @@ public class Items {
     public static final Item MOLOGRAM = register(new BlockItem(Blocks.MOLOGRAM_BLOCK, new FabricItemSettings()), "mologram");
 
     public static final Item BALLOON = register(new BalloonItem(new Item.Settings().maxCount(1)), "balloon");
+    public static final Item BALLOON_IN_HAND = register(new Item(new Item.Settings()), "balloon_in_hand");
 
     public static final Item BOHR_BLUEPRINT = register(new BlockItem(Blocks.BOHR_BLUEPRINT, new Item.Settings()), "bohr_block");
 

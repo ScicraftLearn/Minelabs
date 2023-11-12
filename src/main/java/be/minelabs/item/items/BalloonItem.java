@@ -54,7 +54,7 @@ public class BalloonItem extends Item {
             return false;
         } else {
             LivingEntity livingEntity = (LivingEntity)list.get(0);
-            useOnEntity(balloon, balloon.getHolder(), livingEntity);
+            useOnEntity(balloon, livingEntity, livingEntity);
             return true;
         }
     }
