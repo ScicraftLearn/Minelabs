@@ -15,12 +15,11 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
-public class ModelProvider implements ModelResourceProvider, ExtraModelProvider {
+public class ModelProvider implements ModelResourceProvider {
     private final ResourceManager resourceManager;
 
     public ModelProvider(ResourceManager rm) {
         this.resourceManager = rm;
-        ModelLoadingRegistry.INSTANCE.registerModelProvider(this);
     }
 
     @Override
@@ -39,15 +38,18 @@ public class ModelProvider implements ModelResourceProvider, ExtraModelProvider 
         return null;
     }
 
-    /**
-     * Request extra models to be loaded here
-     */
-    @Override
-    public void provideExtraModels(ResourceManager manager, Consumer<Identifier> out) {
-        Map<Identifier, Resource> molecules = manager.findResources("models/molecules", (i) -> true);
-        for (Identifier resource: molecules.keySet()) {
-            out.accept(new Identifier(resource.getNamespace(), resource.getPath().split("models/")[1].split(".json")[0]));
+    public static class Requester implements ExtraModelProvider{
+        /**
+         * Request extra models to be loaded here.
+         */
+        @Override
+        public void provideExtraModels(ResourceManager manager, Consumer<Identifier> out) {
+            Map<Identifier, Resource> molecules = manager.findResources("models/molecules", (i) -> true);
+            for (Identifier resource: molecules.keySet()) {
+                out.accept(new Identifier(resource.getNamespace(), resource.getPath().split("models/")[1].split(".json")[0]));
+            }
+            out.accept(new Identifier(Minelabs.MOD_ID,"block/mologram_beam"));
         }
-        out.accept(new Identifier(Minelabs.MOD_ID,"block/mologram_beam"));
     }
+
 }
