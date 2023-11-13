@@ -220,6 +220,9 @@ public abstract class ChargedEntity extends ThrownItemEntity {
             return;
         }
         setVelocity(Vec3d.ZERO);
+        if (world.getGameRules().getBoolean(MinelabsGameRules.CHARGED_DROPS_ON_BLOCKHIT)) {
+            kill();
+        }
         return;
         //Vec3d sideHit = Vec3d.of(blockHitResult.getSide().getVector()); // Side that the entity hit
         //addVelocity(getVelocity().multiply(sideHit));

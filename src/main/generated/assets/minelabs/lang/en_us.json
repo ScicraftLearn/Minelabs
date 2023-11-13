@@ -59,6 +59,7 @@
   "gamerule.allowChemicalProjectiles": "Allow chemicals to be thrown",
   "gamerule.allowDecay": "Allow Particles to decay",
   "gamerule.bohrProjectiles": "Should Bohr shoot items as projectiles",
+  "gamerule.chargedDropsOnBlockhit": "Should Charged Entities drop their items when they hit a block",
   "gamerule.eRadius": "Radius of coulomb effect",
   "gamerule.randomQuantumDrops": "Should Quantum blocks drop random items",
   "item.minelabs.atom.actinium_atom": "Actinium",
