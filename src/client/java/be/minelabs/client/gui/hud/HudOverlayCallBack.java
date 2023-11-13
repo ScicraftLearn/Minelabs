@@ -20,7 +20,9 @@ public class HudOverlayCallBack implements HudRenderCallback {
         RenderSystem.depthMask(false);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, opacity);
         RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.enableBlend();
         InGameHud.drawTexture(matrices, 0, 0, -90, 0.0f, 0.0f, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
+        RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
