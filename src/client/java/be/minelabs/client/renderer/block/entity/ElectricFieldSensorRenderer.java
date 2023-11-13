@@ -1,6 +1,5 @@
 package be.minelabs.client.renderer.block.entity;
 
-import be.minelabs.Minelabs;
 import be.minelabs.block.entity.ElectricFieldSensorBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -28,9 +27,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
     @Override
     public void render(ElectricFieldSensorBlockEntity entity, float tickDelta, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        Minelabs.LOGGER.info("enity: " + entity.getField());
         Vector3f field = new Vector3f(entity.getField().toVector3f());
-        Minelabs.LOGGER.info("render:" + field);
         matrices.push();
 
         ItemStack arrow;
@@ -70,8 +67,8 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         }
 
         matrices.scale(reference, reference, reference);
-        context.getItemRenderer().renderItem(arrow, ModelTransformationMode.GUI,
-                light, overlay, matrices, vertexConsumers, null, 0);
+        context.getItemRenderer().renderItem(arrow, ModelTransformationMode.GUI, light, overlay, matrices,
+                vertexConsumers, null, 0);
         matrices.pop();
     }
 }

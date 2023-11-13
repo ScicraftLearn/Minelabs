@@ -45,14 +45,13 @@ public class ForceCompassItem extends Item {
                 double force = 8.987f * charged.getCharge() / charged.distanceTo(entity);
                 Vec3d vector = entity.getPos().subtract(charged.getPos()).normalize(); // Vector between entities
                 vector = vector.multiply(force); //scale vector with Force
-                vector = vector.multiply(0.01);
+                vector = vector.multiply(0.1);
 
                 field = field.add(vector);
-
-                if (field.length() >= ChargedEntity.MAX_FIELD) {
-                    field = field.multiply(ChargedEntity.MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
-                }
             }
+        }
+        if (field.length() >= ChargedEntity.MAX_FIELD) {
+            field = field.multiply(ChargedEntity.MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
         }
         setField(stack, field);
     }

@@ -55,27 +55,33 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
         return this.createNbtWithIdentifyingData();
     }
 
-    public void calculateField(World world, BlockPos pos) {
-        int e_radius =  world.getGameRules().getInt(MinelabsGameRules.E_RADIUS);;
+    public void calculateField(World world, BlockPos pos, BlockState state) {
+        int e_radius = world.getGameRules().getInt(MinelabsGameRules.E_RADIUS);
         Iterable<Entity> entities_in_radius = world.getOtherEntities(null, Box.of(pos.toCenterPos(), e_radius, e_radius, e_radius));
 
         field = Vec3d.ZERO; // Clean field / RESET the field
-        /*
+
+        Vec3d vec_pos = pos.toCenterPos();
         for (Entity entity : entities_in_radius) {
-            if (entity instanceof ParticleEntity particleEntity) {
-                if (!particleEntity.getPos().equals(pos.toCenterPos()) && particleEntity.hasAField()) {
-                    // Moving + not in sensor
-                    Vec3d vec_pos = getPos().toCenterPos().subtract(particleEntity.getPos()).normalize();
-                    double force = 8.987f * particleEntity.getCharge() / getPos().toCenterPos().squaredDistanceTo(particleEntity.getPos());
-                    vec_pos.multiply(force * 100);
-                    field = field.add(vec_pos);
-                }
+            if (entity instanceof ChargedEntity charged) {
+                double force = 8.987f * charged.getCharge() / charged.getPos().distanceTo(vec_pos);
+                Vec3d vector = vec_pos.subtract(charged.getPos()).normalize(); // Vector between entities
+                vector = vector.multiply(force); //scale vector with Force
+                vector = vector.multiply(0.1);
+
+                field = field.add(vector);
             }
-        }*/
-        markDirty();
+        }
+        if (field.length() >= ChargedEntity.MAX_FIELD) {
+            field = field.multiply(ChargedEntity.MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
+        }
+
+        markDirty(world, pos, state);
+        world.markDirty(pos);
+        world.updateListeners(pos, getCachedState(), getCachedState(), 3);
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        calculateField(world, pos);
+        calculateField(world, pos, state);
     }
 }
