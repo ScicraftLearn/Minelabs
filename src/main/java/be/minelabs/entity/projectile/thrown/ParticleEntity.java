@@ -3,6 +3,7 @@ package be.minelabs.entity.projectile.thrown;
 import be.minelabs.advancement.criterion.CoulombCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.entity.Entities;
+import be.minelabs.item.Items;
 import be.minelabs.science.coulomb.CoulombResource;
 import be.minelabs.science.coulomb.CoulombData;
 import be.minelabs.sound.SoundEvents;
@@ -33,9 +34,12 @@ public class ParticleEntity extends ChargedEntity {
     }
 
     private void setData(String name) {
+        if (name.contains("air")) {
+            name = Items.ELECTRON.getTranslationKey();
+        }
         setCustomName(Text.translatable(name));
-        if (!world.isClient){
-            // Dont' want to load "server data" on the client
+        if (!world.isClient) {
+            // Don't want to load "server data" on the client
             String[] split = name.split("\\.");
             this.data = CoulombResource.INSTANCE.getCoulombData(split[split.length - 1]);
             setCharge(data.charge);
@@ -43,9 +47,9 @@ public class ParticleEntity extends ChargedEntity {
     }
 
     @Override
-    public void setItem(ItemStack item) {
-        super.setItem(item);
-        setData(item.getItem().getTranslationKey());
+    public void setItem(ItemStack stack) {
+        super.setItem(stack);
+        setData(stack.getItem().getTranslationKey());
     }
 
     // Must call super.tick(), for field update
@@ -134,6 +138,6 @@ public class ParticleEntity extends ChargedEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putString("data", getItem().getItem().getTranslationKey());
+        nbt.putString("data", getStack().getItem().getTranslationKey());
     }
 }
