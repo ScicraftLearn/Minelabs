@@ -1,10 +1,14 @@
 package be.minelabs.client.particle;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 class BohrPlateParticle extends SpriteBillboardParticle {
@@ -16,9 +20,19 @@ class BohrPlateParticle extends SpriteBillboardParticle {
         this.velocityZ = velocityZ * 0.01f + vz;
         this.angle = angle;
         this.prevAngle = angle;
-        setAlpha(0.4f);
-        maxAge = 15;
-        scale *= 0.5f;
+        maxAge = 17;
+        scale *= 0.45f;
+        updateAlpha();
+    }
+
+    private void updateAlpha(){
+        alpha = 0.8f * (float) Math.exp(-Math.pow((age-7f)/6f, 2));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        updateAlpha();
     }
 
     @Override
@@ -38,15 +52,17 @@ class BohrPlateParticle extends SpriteBillboardParticle {
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
             // Note: usually vx, vy and vz should be kept at zero and this factory provides the correct velocity.
             Random random = world.getRandom();
-            Vector3f offset = new Vector3f(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).normalize().mul(0.3f);
-            Vector3f velocity = new Vector3f(offset).mul(-0.05f);
 
-            // random angles
-//            float angle = (float) (random.nextFloat() * 2 * Math.PI);
+            // Offset is random position in projected plane around camera
+            Vector3f offset = new Vector3f(0, 0.25f, 0);
+            Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+            Quaternionf rotation = new Quaternionf(camera.getRotation());
+            float angle = (float) (random.nextFloat() * 2 * Math.PI);
+            rotation.rotateZ(angle);
+            offset.rotate(rotation);
 
-            // Heuristic to have the particle face the center
-            float offsetX = Math.abs(offset.x) > Math.abs(offset.y) ? offset.x : offset.y;
-            float angle = (float) (-Math.atan2(offsetX, offset.y));
+            // Move towards center
+            Vector3f velocity = new Vector3f(offset).mul(-0.06f);
 
             BohrPlateParticle particle = new BohrPlateParticle(world, x + offset.x, y + offset.y, z + offset.z, vx + velocity.x, vy + velocity.y, vz + velocity.z, angle);
             particle.setSprite(this.spriteProvider);
