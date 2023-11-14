@@ -37,7 +37,7 @@ class BohrPlateParticle extends SpriteBillboardParticle {
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
             // Note: usually vx, vy and vz should be kept at zero and this factory provides the correct velocity.
-            Random random = Random.create();
+            Random random = world.getRandom();
             Vector3f offset = new Vector3f(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f, random.nextFloat() - 0.5f).normalize().mul(0.3f);
             Vector3f velocity = new Vector3f(offset).mul(-0.05f);
 
