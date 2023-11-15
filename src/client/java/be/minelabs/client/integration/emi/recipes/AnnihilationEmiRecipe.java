@@ -1,6 +1,7 @@
 package be.minelabs.client.integration.emi.recipes;
 
 import be.minelabs.client.integration.emi.MinelabsEmiPlugin;
+import be.minelabs.science.coulomb.CoulombData;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.widget.WidgetHolder;
@@ -15,7 +16,7 @@ public class AnnihilationEmiRecipe extends BasicEmiRecipe {
         super(MinelabsEmiPlugin.ANNIHILATION_CATEGORY, id, 100, 160);
         this.data = data;
 
-        inputs.add(EmiIngredient.of(Ingredient.ofStacks(new ItemStack())))
+        inputs.add(EmiIngredient.of(Ingredient.ofStacks(new ItemStack())));
     }
 
     @Override

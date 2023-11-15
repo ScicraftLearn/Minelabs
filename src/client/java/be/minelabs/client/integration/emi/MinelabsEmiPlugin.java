@@ -11,6 +11,8 @@ import be.minelabs.item.Items;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.recipe.ionic.IonicRecipe;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
+import be.minelabs.science.coulomb.CoulombData;
+import be.minelabs.science.coulomb.CoulombResource;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -21,6 +23,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.util.Identifier;
+
+import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class MinelabsEmiPlugin implements EmiPlugin {
@@ -63,8 +67,8 @@ public class MinelabsEmiPlugin implements EmiPlugin {
         for (AtomItem atom : Items.ATOMS) {
             registry.addRecipe(new BohrEmiRecipe(atom));
         }
-        //for (CoulombData data : CoulombResource.INSTANCE.toList()) {
-        //    registry.addRecipe(new AnnihilationEmiRecipe());
-        //}
+        for (Map.Entry<Identifier, CoulombData> entry : CoulombResource.INSTANCE.getResourceData().entrySet()) {
+            registry.addRecipe(new AnnihilationEmiRecipe(entry.getKey(), entry.getValue()));
+        }
     }
 }
