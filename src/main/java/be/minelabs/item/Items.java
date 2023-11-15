@@ -2,11 +2,10 @@ package be.minelabs.item;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.item.items.*;
-import be.minelabs.science.Atom;
 import be.minelabs.entity.Entities;
 import be.minelabs.fluid.Fluids;
-import be.minelabs.item.items.GasPotion;
+import be.minelabs.item.items.*;
+import be.minelabs.science.Atom;
 import be.minelabs.science.Molecule;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
@@ -19,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Items {
-
     public static final Item ATOM_FLOOR = register(new BlockItem((Blocks.ATOM_FLOOR), new FabricItemSettings()), "atomic_floor");
 
     // Items
@@ -62,6 +60,9 @@ public class Items {
 
     public static final Item SAFETY_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
             new FabricItemSettings()), "lab/safety_glasses");
+    // TODO CHANGE ARMOR MAT (different texture on player's head)
+    public static final Item FORCE_GLASSES = register(new ArmorItem(ArmorMaterials.CLOTH, ArmorItem.Type.HELMET,
+            new FabricItemSettings()), "lab/force_glasses");
 
    /* public static final Item LAB_COAT = register(new ArmorItem(ArmorMaterials.CLOTH, EquipmentSlot.CHEST,
             new FabricItemSettings()), "lab/lab_coat");*/
@@ -200,23 +201,23 @@ public class Items {
     public static final Item ANTI_DOWNQUARK_GREEN = register(new QuarkItem(new FabricItemSettings()), "subatomic/anti_downquark_green");
     public static final Item ANTI_DOWNQUARK_BLUE = register(new QuarkItem(new FabricItemSettings()), "subatomic/anti_downquark_blue");
 
-    public static final Item GLUON = register(new Item(new Item.Settings().maxCount(64)), "subatomic/gluon");
+    public static final Item GLUON = register(new Item(new FabricItemSettings()), "subatomic/gluon");
 
-    public static final Item ELECTRON = register(new SubatomicParticleItem(Blocks.ELECTRON, new Item.Settings().maxCount(64)), "subatomic/electron");
-    public static final Item POSITRON = register(new SubatomicParticleItem(Blocks.POSITRON, new Item.Settings().maxCount(64)), "subatomic/positron");
-    public static final Item PHOTON = register(new Item(new Item.Settings().maxCount(64)), "subatomic/photon");
+    public static final Item ELECTRON = register(new ChargedItem(new FabricItemSettings()), "subatomic/electron");
+    public static final Item POSITRON = register(new ChargedItem(new FabricItemSettings()), "subatomic/positron");
+    public static final Item PHOTON = register(new Item(new FabricItemSettings()), "subatomic/photon");
 
     public static final Item NEUTRINO = register(new BlockItem(Blocks.NEUTRINO, new FabricItemSettings()), "subatomic/neutrino");
     public static final Item ANTINEUTRINO = register(new BlockItem(Blocks.ANTINEUTRINO, new FabricItemSettings()), "subatomic/antineutrino");
-    public static final Item WEAK_BOSON = register(new BlockItem(Blocks.WEAK_BOSON, new FabricItemSettings()), "subatomic/weak_boson");
+    public static final Item WEAK_BOSON = register(new ChargedItem(new FabricItemSettings()), "subatomic/weak_boson");
 
-    public static final Item PROTON = register(new SubatomicParticleItem(Blocks.PROTON, new Item.Settings().maxCount(64)), "subatomic/proton");
-    public static final Item ANTI_PROTON = register(new SubatomicParticleItem(Blocks.ANTI_PROTON, new Item.Settings().maxCount(64)), "subatomic/anti_proton");
-    public static final Item NEUTRON = register(new SubatomicParticleItem(Blocks.NEUTRON, new Item.Settings().maxCount(64)), "subatomic/neutron");
-    public static final Item ANTI_NEUTRON = register(new SubatomicParticleItem(Blocks.ANTI_NEUTRON, new Item.Settings().maxCount(64)), "subatomic/anti_neutron");
-    public static final Item PION_NUL = register(new BlockItem(Blocks.PION_NUL, new FabricItemSettings()), "subatomic/pion_nul");
-    public static final Item PION_MINUS = register(new BlockItem(Blocks.PION_MINUS, new FabricItemSettings()), "subatomic/pion_minus");
-    public static final Item PION_PLUS = register(new BlockItem(Blocks.PION_PLUS, new FabricItemSettings()), "subatomic/pion_plus");
+    public static final Item PROTON = register(new ChargedItem(new FabricItemSettings()), "subatomic/proton");
+    public static final Item ANTI_PROTON = register(new ChargedItem(new FabricItemSettings()), "subatomic/anti_proton");
+    public static final Item NEUTRON = register(new ChargedItem(new FabricItemSettings()), "subatomic/neutron");
+    public static final Item ANTI_NEUTRON = register(new ChargedItem(new FabricItemSettings()), "subatomic/anti_neutron");
+    public static final Item PION_NUL = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_nul");
+    public static final Item PION_MINUS = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_minus");
+    public static final Item PION_PLUS = register(new ChargedItem(new FabricItemSettings()), "subatomic/pion_plus");
 
 
     // Items > Quantum fields
@@ -229,8 +230,11 @@ public class Items {
     public static final Item WEAK_BOSON_QUANTUMFIELD = register(new BlockItem(Blocks.WEAK_BOSON_QUANTUMFIELD, new FabricItemSettings()), "quantumfield/weak_boson_quantumfield");
 
 
-    public static final Item CHARGED_POINT = register(new BlockItem(Blocks.CHARGED_POINT_BLOCK, new FabricItemSettings()), "charged_point");
+    public static final Item CHARGED_POINT = register(new ChargedPointItem(new FabricItemSettings()), "charged_point");
     public static final Item ELECTRIC_FIELD_SENSOR = register(new BlockItem(Blocks.ELECTRIC_FIELD_SENSOR_BLOCK, new FabricItemSettings()), "electric_field_sensor");
+
+    public static final Item FORCE_COMPASS = register(new ForceCompassItem(new FabricItemSettings().maxCount(1)),
+            "force_compass");
 
     public static final Item MOLOGRAM = register(new BlockItem(Blocks.MOLOGRAM_BLOCK, new FabricItemSettings()), "mologram");
 
