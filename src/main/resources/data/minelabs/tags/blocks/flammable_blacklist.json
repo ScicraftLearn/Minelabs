@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minelabs:mologram"
+    "minelabs:mologram",
+    "minelabs:time_freeze_block"
   ]
 }
