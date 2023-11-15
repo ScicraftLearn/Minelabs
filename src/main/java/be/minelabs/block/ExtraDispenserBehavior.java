@@ -1,6 +1,6 @@
 package be.minelabs.block;
 
-import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import be.minelabs.item.Items;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.math.BlockPointer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
@@ -30,12 +31,13 @@ public class ExtraDispenserBehavior {
          * The entity is shot up slight as defined in dispenseSilently in ProjectileDispenserBehavior:
          * direction.getOffsetY() + 0.1F
          */
-        registerSubatomicParticle(Items.ELECTRON);
-        registerSubatomicParticle(Items.PROTON);
-        registerSubatomicParticle(Items.NEUTRON);
-        registerSubatomicParticle(Items.POSITRON);
-        registerSubatomicParticle(Items.ANTI_PROTON);
-        registerSubatomicParticle(Items.ANTI_NEUTRON);
+        registerChargedEntity(Items.ELECTRON);
+        registerChargedEntity(Items.PROTON);
+        registerChargedEntity(Items.NEUTRON);
+        registerChargedEntity(Items.POSITRON);
+        registerChargedEntity(Items.ANTI_PROTON);
+        registerChargedEntity(Items.ANTI_NEUTRON);
+
 
         /**
          * Register dispenser behavior for using Entropy Creeper Spawn Egg
@@ -62,15 +64,15 @@ public class ExtraDispenserBehavior {
     }
 
     /**
-     * Register a single SubatomicParticle for the dispenser
+     * Register a single ChargedItem for the dispenser
      *
-     * @param item   : Item that should be used
-     **/
-    private static void registerSubatomicParticle(Item item) {
+     * @param item : Item that should be used
+     */
+    private static void registerChargedEntity(Item item) {
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return new SubatomicParticleEntity(position.getX(), position.getY(), position.getZ(), world, stack);
+                return new ParticleEntity(world, BlockPos.ofFloored(position), stack);
             }
         });
     }

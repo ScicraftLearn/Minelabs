@@ -5,6 +5,8 @@ import be.minelabs.block.entity.ElectricFieldSensorBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -30,14 +32,6 @@ public class ElectricFieldSensorBlock extends BlockWithEntity {
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof ElectricFieldSensorBlockEntity sensor) {
-            sensor.calculateField(world, pos, null);
-        }
-        super.onPlaced(world, pos, state, placer, itemStack);
-    }
-    @Override
     public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
         return true;
     }
@@ -49,8 +43,20 @@ public class ElectricFieldSensorBlock extends BlockWithEntity {
             if (be instanceof ElectricFieldSensorBlockEntity sensor) {
                 player.sendMessage(Text.of(sensor.getField().toString()), false);
             }
-
         }
         return super.onUse(state, world, pos, player, hand, hit);
     }
+
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        //Only tick server, the result will be synced in this case
+        return checkType(type, BlockEntities.ELECTRIC_FIELD_SENSOR, (world1, pos, state1, blockEntity) -> {
+            if (!world1.isClient()) {
+                blockEntity.tick(world1, pos, state1);
+            }
+        });
+    }
+
 }

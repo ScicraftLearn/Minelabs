@@ -6,6 +6,7 @@ import be.minelabs.entity.projectile.thrown.GasPotionEntity;
 import be.minelabs.item.IMoleculeItem;
 import be.minelabs.item.Items;
 import be.minelabs.science.Molecule;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -32,17 +33,6 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
         this.molecule = molecule;
     }
 
-   /*TODO : NO LONGER NEEDED ?
-    @Override
-    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-        Potion potion = new Potion("Test");
-        if (this.isIn(group)) {
-            ItemStack item = PotionUtil.setPotion(new ItemStack(this), potion);
-            item.setNbt(null);
-            stacks.add(item);
-        }
-    }*/
-
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         molecule.makeTooltip(tooltip);
@@ -56,6 +46,12 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+
+        if (!world.getGameRules().getBoolean(MinelabsGameRules.ALLOW_CHEMICAL_PROJECTILES)) {
+            user.sendMessage(Text.translatable("text.minelabs.no_chemical_projectiles"));
+            return TypedActionResult.fail(itemStack);
+        }
+
         if (!world.isClient) {
             GasPotionEntity gasEntity = new GasPotionEntity(world, user, this.molecule);
             gasEntity.setItem(itemStack);

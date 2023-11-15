@@ -1,7 +1,7 @@
 package be.minelabs.client.gui.screen;
 
 import be.minelabs.Minelabs;
-import be.minelabs.screen.ChargedPointBlockScreenHandler;
+import be.minelabs.screen.ChargedPointScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,11 +13,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class ChargedPointScreen extends HandledScreen<ChargedPointBlockScreenHandler> {
+public class ChargedPointScreen extends HandledScreen<ChargedPointScreenHandler> {
     private static final Identifier TEXTURE =
             new Identifier(Minelabs.MOD_ID, "textures/gui/charged_point.png");
 
-    public ChargedPointScreen(ChargedPointBlockScreenHandler handler, PlayerInventory inventory, Text title) {
+    public ChargedPointScreen(ChargedPointScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }
 

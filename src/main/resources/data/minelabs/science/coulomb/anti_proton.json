@@ -1,0 +1,10 @@
+{
+  "anti_item": "minelabs:subatomic/proton",
+  "stable": true,
+  "charge": -1,
+  "mass": 9,
+  "annihilation_drop": {
+    "item": "minelabs:subatomic/photon",
+    "count": 2
+  }
+}

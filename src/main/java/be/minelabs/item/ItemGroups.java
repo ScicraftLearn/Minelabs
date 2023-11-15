@@ -17,6 +17,7 @@ public class ItemGroups {
             .entries((displayContext, entries) -> {
                 entries.add(new ItemStack(Items.ATOM_FLOOR));
                 entries.add(new ItemStack(Items.SAFETY_GLASSES));
+                entries.add(new ItemStack(Items.FORCE_GLASSES));
                 entries.add(new ItemStack(Items.LAB_COAT));
                 entries.add(new ItemStack(Items.LAB_CABIN));
                 entries.add(new ItemStack(Items.LAB_DRAWER));
@@ -30,6 +31,7 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.BIG_LENS));
                 entries.add(new ItemStack(Items.TIME_FREEZE_BLOCK));
                 entries.add(new ItemStack(Items.ELECTRIC_FIELD_SENSOR));
+                entries.add(new ItemStack(Items.FORCE_COMPASS));
                 entries.add(new ItemStack(Items.MOLOGRAM));
                 entries.add(new ItemStack(Items.BALLOON));
                 entries.add(new ItemStack(Items.BOHR_BLUEPRINT));
@@ -136,7 +138,7 @@ public class ItemGroups {
     public static final ItemGroup ELEMENTARY_PARTICLES = FabricItemGroup.builder(
                     new Identifier(Minelabs.MOD_ID, "elementary_particles"))
             .icon(() -> new ItemStack(Items.PION_NUL))
-            .entries((displayContext, entries) ->{
+            .entries((displayContext, entries) -> {
                 entries.add(new ItemStack(Items.UPQUARK_RED));
                 entries.add(new ItemStack(Items.UPQUARK_GREEN));
                 entries.add(new ItemStack(Items.UPQUARK_BLUE));
@@ -182,6 +184,6 @@ public class ItemGroups {
             .build();
 
 
-    public static void onInitialize(){
+    public static void onInitialize() {
     }
 }
