@@ -1,4 +1,4 @@
-package be.minelabs.item;
+package be.minelabs.item.items;
 
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;

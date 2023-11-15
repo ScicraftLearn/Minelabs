@@ -4,5 +4,13 @@
     "layer0": "minelabs:item/atom_grey",
     "layer1": "minelabs:item/gallium",
     "layer2": "minelabs:item/electrons3"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "lct": 1
+      },
+      "model": "minelabs:item/internal_atoms/gallium_atom_internal"
+    }
+  ]
 }

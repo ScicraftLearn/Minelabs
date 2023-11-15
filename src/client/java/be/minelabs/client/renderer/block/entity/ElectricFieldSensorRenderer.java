@@ -27,8 +27,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
     @Override
     public void render(ElectricFieldSensorBlockEntity entity, float tickDelta, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        Vector3f field = new Vector3f(entity.getField());
-
+        Vector3f field = new Vector3f(entity.getField().toVector3f());
         matrices.push();
 
         ItemStack arrow;
@@ -37,7 +36,7 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         // Center arrow in block
         matrices.translate(0.5, 0.5, 0.5);
 
-        if(field.equals(new Vector3f())) {
+        if (field.equals(new Vector3f())) {
             // Don't display arrow if the field is zero
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90));
             // arrow = gray arrow
@@ -68,8 +67,8 @@ public class ElectricFieldSensorRenderer implements BlockEntityRenderer<Electric
         }
 
         matrices.scale(reference, reference, reference);
-        context.getItemRenderer().renderItem(arrow, ModelTransformationMode.GUI,
-                light, overlay, matrices, vertexConsumers,null,0);
+        context.getItemRenderer().renderItem(arrow, ModelTransformationMode.GUI, light, overlay, matrices,
+                vertexConsumers, null, 0);
         matrices.pop();
     }
 }

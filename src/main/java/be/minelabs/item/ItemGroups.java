@@ -19,34 +19,36 @@ public class ItemGroups {
                     .icon(() -> new ItemStack(Items.MOLOGRAM))
                     .displayName(Text.translatable("itemGroup.minelabs.minelabs"))
                     .entries((displayContext, entries) -> {
-                        entries.add(new ItemStack(Items.ATOM_FLOOR));
-                        entries.add(new ItemStack(Items.SAFETY_GLASSES));
-                        entries.add(new ItemStack(Items.LAB_COAT));
-                        entries.add(new ItemStack(Items.LAB_CABIN));
-                        entries.add(new ItemStack(Items.LAB_DRAWER));
-                        entries.add(new ItemStack(Items.LAB_SINK));
-                        entries.add(new ItemStack(Items.LAB_CENTER));
-                        entries.add(new ItemStack(Items.LAB_CORNER));
-                        entries.add(new ItemStack(Items.MICROSCOPE));
-                        entries.add(new ItemStack(Items.BURNER));
-                        entries.add(new ItemStack(Items.TUBERACK));
-                        entries.add(new ItemStack(Items.LENS));
-                        entries.add(new ItemStack(Items.BIG_LENS));
-                        entries.add(new ItemStack(Items.TIME_FREEZE_BLOCK));
-                        entries.add(new ItemStack(Items.ELECTRIC_FIELD_SENSOR));
-                        entries.add(new ItemStack(Items.MOLOGRAM));
-                        entries.add(new ItemStack(Items.BALLOON));
-                        entries.add(new ItemStack(Items.BOHR_BLUEPRINT));
-                        entries.add(new ItemStack(Items.LEWIS_BLOCK_ITEM));
-                        entries.add(new ItemStack(Items.IONIC_BLOCK_ITEM));
-                        entries.add(new ItemStack(Items.LASERTOOL_IRON));
-                        entries.add(new ItemStack(Items.LASERTOOL_GOLD));
-                        entries.add(new ItemStack(Items.LASERTOOL_DIAMOND));
-                        entries.add(new ItemStack(Items.ENTROPY_CREEPER_SPAWN_EGG));
-                        entries.add(new ItemStack(Items.MAGNET));
-                        entries.add(new ItemStack(Items.POCKET_HOLE));
-                    })
-                    .build());
+                entries.add(new ItemStack(Items.ATOM_FLOOR));
+                entries.add(new ItemStack(Items.SAFETY_GLASSES));
+                entries.add(new ItemStack(Items.FORCE_GLASSES));
+                entries.add(new ItemStack(Items.LAB_COAT));
+                entries.add(new ItemStack(Items.LAB_CABIN));
+                entries.add(new ItemStack(Items.LAB_DRAWER));
+                entries.add(new ItemStack(Items.LAB_SINK));
+                entries.add(new ItemStack(Items.LAB_CENTER));
+                entries.add(new ItemStack(Items.LAB_CORNER));
+                entries.add(new ItemStack(Items.MICROSCOPE));
+                entries.add(new ItemStack(Items.BURNER));
+                entries.add(new ItemStack(Items.TUBERACK));
+                entries.add(new ItemStack(Items.LENS));
+                entries.add(new ItemStack(Items.BIG_LENS));
+                entries.add(new ItemStack(Items.TIME_FREEZE_BLOCK));
+                entries.add(new ItemStack(Items.ELECTRIC_FIELD_SENSOR));
+                entries.add(new ItemStack(Items.FORCE_COMPASS));
+                entries.add(new ItemStack(Items.MOLOGRAM));
+                entries.add(new ItemStack(Items.BALLOON));
+                entries.add(new ItemStack(Items.BOHR_BLUEPRINT));
+                entries.add(new ItemStack(Items.LEWIS_BLOCK_ITEM));
+                entries.add(new ItemStack(Items.IONIC_BLOCK_ITEM));
+                entries.add(new ItemStack(Items.LASERTOOL_IRON));
+                entries.add(new ItemStack(Items.LASERTOOL_GOLD));
+                entries.add(new ItemStack(Items.LASERTOOL_DIAMOND));
+                entries.add(new ItemStack(Items.ENTROPY_CREEPER_SPAWN_EGG));
+                entries.add(new ItemStack(Items.MAGNET));
+                entries.add(new ItemStack(Items.POCKET_HOLE));
+            })
+            .build();
 
     public static final ItemGroup CHEMICALS = Registry.register(Registries.ITEM_GROUP,
             new Identifier(Minelabs.MOD_ID, "chemicals"), FabricItemGroup.builder()
