@@ -5,7 +5,8 @@ import be.minelabs.advancement.criterion.BohrCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.blocks.BohrBlueprintBlock;
-import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
+import be.minelabs.entity.projectile.thrown.ChargedEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.item.Items;
 import be.minelabs.mixin.FishingBobberEntityAccessor;
@@ -142,8 +143,8 @@ public class BohrBlueprintEntity extends Entity {
         }
     }
 
-    // Called by subatomic particle when it collides with this entity.
-    public void onParticleCollision(SubatomicParticleEntity particle) {
+    // Called by particle when it collides with this entity.
+    public void onParticleCollision(ChargedEntity particle) {
         if (world.isClient)
             return;
         ItemStack stack = particle.getStack();
@@ -325,15 +326,15 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void launchParticle(Item item) {
         // launch particle
-        ItemStack stack = item.getDefaultStack();
-        SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack, false);
+        ParticleEntity entity = new ParticleEntity(world,
+                BlockPos.ofFloored(getX(), getY() + getHeight() / 2f, getZ()), new ItemStack(item));
         // velocity chosen such that it launches up and around, but not too much at the ground
         Vec3d velocity = new Vec3d(0, 0.2, 0)
                 .add(
                         this.random.nextTriangular(0, 1d) * 2,
                         this.random.nextTriangular(0, 1d) * 1,
                         this.random.nextTriangular(0, 1d) * 2
-                ).normalize().multiply(SubatomicParticleEntity.DEFAULT_SPEED);
+                ).normalize().multiply(ParticleEntity.DEFAULT_SPEED);
         entity.setVelocity(velocity);
         world.spawnEntity(entity);
     }

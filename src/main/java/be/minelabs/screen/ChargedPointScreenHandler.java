@@ -11,15 +11,15 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.NotNull;
 
-public class ChargedPointBlockScreenHandler extends ScreenHandler {
+public class ChargedPointScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
 
-    public ChargedPointBlockScreenHandler(int syncId, PlayerInventory inventory) {
+    public ChargedPointScreenHandler(int syncId, PlayerInventory inventory) {
         this(syncId, inventory, new SimpleInventory(1));
     }
 
-    public ChargedPointBlockScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
+    public ChargedPointScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
         super(ScreenHandlers.CHARGED_POINT_SCREEN_HANDLER, syncId);
         checkSize(inventory, 1);
         this.inventory = inventory;

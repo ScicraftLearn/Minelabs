@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "NFN",
+    " W "
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:red_concrete"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "F": {
+      "item": "minecraft:item_frame"
+    },
+    "W": {
+      "item": "minecraft:white_concrete"
+    }
+  },
+  "result": {
+    "item": "minelabs:charged_point",
+    "count": 1
+  }
+}

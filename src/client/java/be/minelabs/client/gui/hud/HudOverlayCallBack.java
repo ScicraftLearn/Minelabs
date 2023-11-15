@@ -13,13 +13,16 @@ import net.minecraft.util.Identifier;
 public class HudOverlayCallBack implements HudRenderCallback {
 
     private static final Identifier SAFETY_GLASS = new Identifier(Minelabs.MOD_ID, "textures/misc/safety_glass.png");
+    private static final Identifier FORCE_GLASS = new Identifier(Minelabs.MOD_ID, "textures/misc/force_glass.png");
 
     private void renderOverlay(MatrixStack matrices, Identifier texture, float opacity, int scaledWidth,int scaledHeight) {
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, opacity);
         RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.enableBlend();
         InGameHud.drawTexture(matrices, 0, 0, -90, 0.0f, 0.0f, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
+        RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -28,11 +31,13 @@ public class HudOverlayCallBack implements HudRenderCallback {
     @Override
     public void onHudRender(MatrixStack matrices, float tickDelta) {
         ItemStack itemStack = MinecraftClient.getInstance().player.getInventory().getArmorStack(3);
+        int scaledWith = MinecraftClient.getInstance().getWindow().getScaledWidth();
+        int scaledHeight = MinecraftClient.getInstance().getWindow().getScaledHeight();
 
         if (itemStack.isOf(Items.SAFETY_GLASSES)) {
-            renderOverlay(matrices, SAFETY_GLASS, 1.0F,
-                    MinecraftClient.getInstance().getWindow().getScaledWidth(),
-                    MinecraftClient.getInstance().getWindow().getScaledHeight());
+            renderOverlay(matrices, SAFETY_GLASS, 1.0F, scaledWith, scaledHeight);
+        } else if (itemStack.isOf(Items.FORCE_GLASSES)) {
+            renderOverlay(matrices, FORCE_GLASS, 1.0f, scaledWith, scaledHeight);
         }
     }
 }

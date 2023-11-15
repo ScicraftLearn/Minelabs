@@ -40,6 +40,7 @@ public class FlemishLangProvider extends MinelabsLangProvider {
 
         builder.add(Items.LAB_COAT, "Labojas");
         builder.add(Items.SAFETY_GLASSES, "Veiligheidsbril");
+        builder.add(Items.FORCE_GLASSES, "Kracht Bril");
         builder.add(Items.LENS, "Microscooplens");
         builder.add(Items.BIG_LENS, "Microscooplens x2");
         builder.add(Blocks.LAB_DRAWER, "Labo Ladenkast");
@@ -57,6 +58,7 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Items.LASERTOOL_DIAMOND, "Diamanten Laser Tool");
         builder.add(Items.MAGNET, "Magneet");
         builder.add(Items.POCKET_HOLE, "Miniatuur Zwart Gat");
+        builder.add(Items.FORCE_COMPASS, "Kracht Kompas");
 
         builder.add(Items.ANTI_NEUTRON, "Anti-Neutron");
         builder.add(Items.ANTI_PROTON, "Anti-Proton");
@@ -72,6 +74,7 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Items.PION_PLUS, "Pion Plus");
         builder.add(Items.GLUON, "Gluon");
         builder.add(Items.PHOTON, "Foton");
+        builder.add(Items.CHARGED_POINT, "Puntlading");
 
         builder.add(Items.ANTI_DOWNQUARK_BLUE, "Anti-Downquark");
         builder.add(Items.ANTI_DOWNQUARK_GREEN, "Anti-Downquark");
@@ -95,6 +98,8 @@ public class FlemishLangProvider extends MinelabsLangProvider {
         builder.add(Blocks.GLUON_QUANTUMFIELD, "Gluon Kwantumveld");
 
         builder.add(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, "Bohr Entity");
-        builder.add(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, "Subatomisch Deeltje");
+        builder.add(Entities.CORROSIVE_ENTITY, "");
+        builder.add(Entities.PARTICLE_ENTITY, "Geladen Entity");
+        builder.add(Entities.POINT_CHARGED_ENTITY, "Puntlading Entity");
     }
 }
