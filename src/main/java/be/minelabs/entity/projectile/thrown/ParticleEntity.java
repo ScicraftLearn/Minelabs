@@ -38,7 +38,7 @@ public class ParticleEntity extends ChargedEntity {
             name = Items.ELECTRON.getTranslationKey();
         }
         setCustomName(Text.translatable(name));
-        if (!world.isClient) {
+        if (!getWorld().isClient) {
             // Don't want to load "server data" on the client
             String[] split = name.split("\\.");
             this.data = CoulombResource.INSTANCE.getCoulombData(split[split.length - 1]);
@@ -55,14 +55,14 @@ public class ParticleEntity extends ChargedEntity {
     // Must call super.tick(), for field update
     @Override
     public void tick() {
-        if (world.isClient) {
+        if (getWorld().isClient) {
             super.tick();
             return;
         }
 
         addVelocity(getField().multiply(1 / data.mass));
         // TODO rework after actual movement :
-        Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
+        Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) getWorld(), getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
 
         super.tick();
         tryDecay();
@@ -75,12 +75,12 @@ public class ParticleEntity extends ChargedEntity {
      * Called 20 times a second !
      */
     private void tryDecay() {
-        if (!data.stable && world.getGameRules().getBoolean(MinelabsGameRules.ALLOW_DECAY)) {
-            if (world.getRandom().nextFloat() < data.decay_chance) {
-                ItemEntity item = new ItemEntity(world, getX(), getY() + .5, getZ(), getDecayStack());
+        if (!data.stable && getWorld().getGameRules().getBoolean(MinelabsGameRules.ALLOW_DECAY)) {
+            if (getWorld().getRandom().nextFloat() < data.decay_chance) {
+                ItemEntity item = new ItemEntity(getWorld(), getX(), getY() + .5, getZ(), getDecayStack());
                 item.setVelocity(getVelocity().multiply(2));
-                world.spawnEntity(item);
-                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
+                getWorld().spawnEntity(item);
+                Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) getWorld(), getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.DECAY));
                 playSound(SoundEvents.COULOMB_DECAY, 1f, 1f);
                 if (data.shouldReplace()) {
                     setItem(data.getDecayReplacement());
@@ -96,7 +96,7 @@ public class ParticleEntity extends ChargedEntity {
     public void onChargedEntityHit(ChargedEntity entity) {
         if (data.getAntiItem() != null && entity.getItem().isOf(data.getAntiItem())) {
             ItemScatterer.spawn(getWorld(), getX(), getY(), getZ(), getAnnihilationStack());
-            Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5,
+            Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) getWorld(), getBlockPos(), 5,
                     (condition) -> condition.test(CoulombCriterion.Type.ANNIHILATE));
             playSound(SoundEvents.COULOMB_ANNIHILATE, 1f, 1f);
             this.discard();

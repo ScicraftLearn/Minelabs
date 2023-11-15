@@ -1,5 +1,6 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.block.BlockEntities;
 import be.minelabs.network.NetworkingConstants;
 import be.minelabs.recipe.ionic.IonicInventory;
 import be.minelabs.recipe.ionic.IonicRecipe;

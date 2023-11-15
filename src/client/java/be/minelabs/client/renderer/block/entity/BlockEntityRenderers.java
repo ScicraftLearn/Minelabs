@@ -1,6 +1,6 @@
 package be.minelabs.client.renderer.block.entity;
 
-import be.minelabs.block.entity.BlockEntities;
+import be.minelabs.block.BlockEntities;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 public class BlockEntityRenderers {

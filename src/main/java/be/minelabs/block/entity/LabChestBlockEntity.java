@@ -1,5 +1,6 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.block.BlockEntities;
 import be.minelabs.screen.LabChestScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LootableContainerBlockEntity;

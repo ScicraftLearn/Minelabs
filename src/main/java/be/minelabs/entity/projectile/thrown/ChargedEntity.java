@@ -121,21 +121,21 @@ public abstract class ChargedEntity extends ThrownItemEntity {
     @Override
     public void kill() {
         if (getItem() == null || getItem().isOf(net.minecraft.item.Items.AIR)) {
-            world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), new ItemStack(getDefaultItem())));
+            getWorld().spawnEntity(new ItemEntity(getWorld(), getX(), getY() + 0.2, getZ(), new ItemStack(getDefaultItem())));
         } else {
-            world.spawnEntity(new ItemEntity(world, getX(), getY() + 0.2, getZ(), getItem()));
+            getWorld().spawnEntity(new ItemEntity(getWorld(), getX(), getY() + 0.2, getZ(), getItem()));
         }
         super.kill();
     }
 
     @Override
     public void tick() {
-        int e_radius = world.getGameRules().getInt(MinelabsGameRules.E_RADIUS);
+        int e_radius = getWorld().getGameRules().getInt(MinelabsGameRules.E_RADIUS);
 
         if (isStuck()) {
             this.setVelocity(Vec3d.ZERO);
-            if (world.isClient() && count % 5 == 0) {
-                world.addParticle(ParticleTypes.SNOWFLAKE, getX(), getY() + 0.1, getZ(), 0, -0.01, 0);
+            if (getWorld().isClient() && count % 5 == 0) {
+                getWorld().addParticle(ParticleTypes.SNOWFLAKE, getX(), getY() + 0.1, getZ(), 0, -0.01, 0);
                 count = 0;
             }
             count++;
@@ -143,8 +143,8 @@ public abstract class ChargedEntity extends ThrownItemEntity {
             // No need to check for freeze if we are already stuck
             Iterable<BlockPos> positions = BlockPos.iterateOutwards(getBlockPos(), e_radius, e_radius, e_radius);
             for (BlockPos pos : positions) {
-                if (world.getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
-                    if (world.getBlockState(pos).get(TimeFreezeBlock.LIT)) {
+                if (getWorld().getBlockState(pos).isOf(Blocks.TIME_FREEZE_BLOCK)) {
+                    if (getWorld().getBlockState(pos).get(TimeFreezeBlock.LIT)) {
                         //"Force" a stop
                         setVelocity(Vec3d.ZERO);
                         break;
@@ -156,7 +156,7 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         field = Vec3d.ZERO;
 
         if (hasCharge()) {
-            List<Entity> entities = world.getOtherEntities(this, Box.of(this.getPos(), e_radius, e_radius, e_radius),
+            List<Entity> entities = getWorld().getOtherEntities(this, Box.of(this.getPos(), e_radius, e_radius, e_radius),
                     entity -> {
                         if (entity instanceof ChargedEntity charged) {
                             return charged.hasCharge();
@@ -189,14 +189,14 @@ public abstract class ChargedEntity extends ThrownItemEntity {
      */
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (world.isClient)
+        if (getWorld().isClient)
             return;
         Entity entity = entityHitResult.getEntity();
         if (entity instanceof BohrBlueprintEntity bohr) {
             bohr.onParticleCollision(this);
         } else if (entity instanceof CreeperEntity creeperEntity) {
             creeperEntity.setInvulnerable(true);
-            creeperEntity.onStruckByLightning((ServerWorld) world, new LightningEntity(EntityType.LIGHTNING_BOLT, world));
+            creeperEntity.onStruckByLightning((ServerWorld) getWorld(), new LightningEntity(EntityType.LIGHTNING_BOLT, getWorld()));
             creeperEntity.extinguish();
             creeperEntity.setInvulnerable(false);
             this.discard();
@@ -214,13 +214,13 @@ public abstract class ChargedEntity extends ThrownItemEntity {
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
-        BlockState state = world.getBlockState(blockHitResult.getBlockPos());
+        BlockState state = getWorld().getBlockState(blockHitResult.getBlockPos());
         if (state.getCollisionShape(EmptyBlockView.INSTANCE, blockHitResult.getBlockPos(), ShapeContext.absent()) == VoxelShapes.empty()) {
             // No collision keep moving
             return;
         }
         setVelocity(Vec3d.ZERO);
-        if (world.getGameRules().getBoolean(MinelabsGameRules.CHARGED_DROPS_ON_BLOCKHIT)) {
+        if (getWorld().getGameRules().getBoolean(MinelabsGameRules.CHARGED_DROPS_ON_BLOCKHIT)) {
             kill();
         }
         return;
@@ -234,10 +234,10 @@ public abstract class ChargedEntity extends ThrownItemEntity {
         ItemStack stack = player.getStackInHand(hand);
         if (stack.isIn(Tags.Items.STICKY_ITEMS) && !isStuck()) {
             useSticky(player, stack);
-            return ActionResult.success(player.world.isClient());
+            return ActionResult.success(player.getWorld().isClient());
         } else if (stack.isOf(net.minecraft.item.Items.WATER_BUCKET) && isStuck()) {
             useCleanse(player, hand);
-            return ActionResult.success(player.world.isClient());
+            return ActionResult.success(player.getWorld().isClient());
         }
 
         return super.interact(player, hand);

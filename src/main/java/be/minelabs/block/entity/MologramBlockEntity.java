@@ -1,5 +1,6 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.block.BlockEntities;
 import be.minelabs.block.blocks.MologramBlock;
 import be.minelabs.item.IMoleculeItem;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
@@ -19,7 +20,6 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class MologramBlockEntity extends BlockEntity implements SidedStorageBlockEntity {

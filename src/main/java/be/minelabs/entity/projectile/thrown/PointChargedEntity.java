@@ -59,14 +59,14 @@ public class PointChargedEntity extends ChargedEntity {
 
     @Override
     public void tick() {
-        if (world.isClient) {
+        if (getWorld().isClient) {
             super.tick();
             return;
         }
 
         addVelocity(getField());
         // TODO rework after actual movement :
-        Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) world, getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
+        Criteria.COULOMB_FORCE_CRITERION.trigger((ServerWorld) getWorld(), getBlockPos(), 5, (condition) -> condition.test(CoulombCriterion.Type.MOVE));
         super.tick();
     }
 
@@ -89,7 +89,7 @@ public class PointChargedEntity extends ChargedEntity {
                 return new ChargedPointScreenHandler(syncId, playerInventory, inventory);
             }
         });
-        return ActionResult.success(world.isClient);
+        return ActionResult.success(getWorld().isClient);
     }
 
     @Override

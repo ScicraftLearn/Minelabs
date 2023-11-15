@@ -1,5 +1,6 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.block.BlockEntities;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
 import be.minelabs.network.NetworkingConstants;

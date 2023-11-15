@@ -2,7 +2,6 @@ package be.minelabs.block;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.blocks.*;
-import be.minelabs.block.entity.BlockEntities;
 import be.minelabs.block.entity.ChemicalFluidBlock;
 import be.minelabs.fluid.Fluids;
 import be.minelabs.science.Molecule;
@@ -59,7 +58,7 @@ public class Blocks {
             .copyOf(net.minecraft.block.Blocks.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_corner");
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
-    public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
+    public static final Block NEUTRINO = register(new Block(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "subatomic/neutrino");
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.WHITE_WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "subatomic/antineutrino");
@@ -75,7 +74,8 @@ public class Blocks {
     public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/electron_quantumfield");
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/neutrino_quantumfield");
 
-    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(), "time_freeze_block");
+    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(
+            FabricBlockSettings.copyOf(net.minecraft.block.Blocks.GLASS)), "time_freeze_block");
     public static final Block ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings
             .copyOf(net.minecraft.block.Blocks.IRON_BLOCK).noCollision().nonOpaque()), "electric_field_sensor");
 
@@ -106,7 +106,7 @@ public class Blocks {
     public static final Block TUBERACK = register(new TubeRackBlock(
             FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK).strength(1f)), "lab/tuberack");
     public static final Block BURNER = register(new BurnerBlock(FabricBlockSettings.copyOf(net.minecraft.block.Blocks.IRON_BLOCK)
-            .strength(1f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "lab/burner");
+            .strength(1f).luminance(state -> state.get(Properties.LIT) ? 8 : 0)), "lab/burner");
 
     /**
      * Register a Block

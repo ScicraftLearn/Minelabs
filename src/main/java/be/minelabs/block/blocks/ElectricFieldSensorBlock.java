@@ -1,15 +1,13 @@
 package be.minelabs.block.blocks;
 
-import be.minelabs.block.entity.BlockEntities;
+import be.minelabs.block.BlockEntities;
 import be.minelabs.block.entity.ElectricFieldSensorBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;

@@ -48,7 +48,7 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.MAGNET));
                 entries.add(new ItemStack(Items.POCKET_HOLE));
             })
-            .build();
+            .build());
 
     public static final ItemGroup CHEMICALS = Registry.register(Registries.ITEM_GROUP,
             new Identifier(Minelabs.MOD_ID, "chemicals"), FabricItemGroup.builder()

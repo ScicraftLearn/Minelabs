@@ -325,7 +325,7 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void launchParticle(Item item) {
         // launch particle
-        ParticleEntity entity = new ParticleEntity(world,
+        ParticleEntity entity = new ParticleEntity(getWorld(),
                 BlockPos.ofFloored(getX(), getY() + getHeight() / 2f, getZ()), new ItemStack(item));
         // velocity chosen such that it launches up and around, but not too much at the ground
         Vec3d velocity = new Vec3d(0, 0.2, 0)
