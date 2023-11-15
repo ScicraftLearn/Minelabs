@@ -2,20 +2,19 @@ package be.minelabs;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
-import be.minelabs.recipe.CraftingRecipes;
-import be.minelabs.world.MinelabsGameRules;
-import be.minelabs.science.coulomb.CoulombResource;
-import be.minelabs.world.MinelabsGameRules;
-import be.minelabs.world.dimension.ModDimensions;
 import be.minelabs.entity.Entities;
-import be.minelabs.village.Villagers;
 import be.minelabs.event.ServerModEvents;
 import be.minelabs.fluid.Fluids;
 import be.minelabs.item.Items;
-import be.minelabs.particle.Particles;
+import be.minelabs.particle.ParticleTypes;
+import be.minelabs.recipe.CraftingRecipes;
+import be.minelabs.science.coulomb.CoulombResource;
 import be.minelabs.screen.ScreenHandlers;
 import be.minelabs.sound.SoundEvents;
 import be.minelabs.util.NucleusStabilityTable;
+import be.minelabs.village.Villagers;
+import be.minelabs.world.MinelabsGameRules;
+import be.minelabs.world.dimension.ModDimensions;
 import be.minelabs.world.gen.WorldGeneration;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -42,7 +41,7 @@ public class Minelabs implements ModInitializer {
         Entities.onInitialize();
 
         SoundEvents.onInitialize();
-        Particles.onInitialize();
+        ParticleTypes.onInitialize();
         ScreenHandlers.onInitialize();
 
         WorldGeneration.onInitialize();
