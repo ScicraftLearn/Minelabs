@@ -2,6 +2,7 @@ package be.minelabs.entity.mob;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.LeashKnotEntity;
@@ -9,6 +10,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
@@ -37,6 +39,7 @@ public class BalloonEntity extends MobEntity {
         super(entityType, world);
         setHealth(1.0F);
         setNoGravity(true);
+        setPersistent();
     }
 
     // GETTERS AND SETTERS
@@ -55,6 +58,11 @@ public class BalloonEntity extends MobEntity {
 
     // GENERAL
     public void heal(float amount) {}
+
+    @Override
+    public boolean canPickupItem(ItemStack stack) {
+        return false;
+    }
 
     @Override
     public void onDeath(DamageSource source) {

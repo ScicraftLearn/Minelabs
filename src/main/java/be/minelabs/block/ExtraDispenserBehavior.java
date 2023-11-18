@@ -2,20 +2,23 @@ package be.minelabs.block;
 
 import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
 import be.minelabs.item.Items;
+import be.minelabs.item.items.BalloonItem;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.util.math.BlockPointer;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Position;
+import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+
+import java.util.List;
 
 public class ExtraDispenserBehavior {
     /**
@@ -57,6 +60,23 @@ public class ExtraDispenserBehavior {
                 stack.decrement(1);
                 pointer.getWorld().emitGameEvent(null, GameEvent.ENTITY_PLACE, pointer.getPos());
                 return stack;
+            }
+        });
+
+        DispenserBlock.registerBehavior(Items.BALLOON, new ItemDispenserBehavior() {
+            protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
+                if(stack.getItem() instanceof BalloonItem bi) {
+                    BlockPos blockPos = pointer.getPos().offset((Direction)pointer.getBlockState().get(DispenserBlock.FACING));
+                    List<LivingEntity> list = pointer.getWorld().getEntitiesByClass(LivingEntity.class, new Box(blockPos), EntityPredicates.EXCEPT_SPECTATOR);
+                    if (list.isEmpty()) {
+                        return super.dispenseSilently(pointer, stack);
+                    } else {
+                        LivingEntity livingEntity = (LivingEntity)list.get(0);
+                        bi.useOnEntity(stack, null, livingEntity, null);
+                        return stack;
+                    }
+                }
+                return super.dispenseSilently(pointer, stack);
             }
         });
     }
