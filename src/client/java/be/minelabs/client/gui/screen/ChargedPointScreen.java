@@ -19,11 +19,6 @@ public class ChargedPointScreen extends HandledScreen<ChargedPointScreenHandler>
 
     public ChargedPointScreen(ChargedPointScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-    }
-
-    @Override
-    protected void init() {
-        super.init();
         playerInventoryTitleY -= 15;
     }
 
