@@ -14,5 +14,13 @@
     "sounds": [
       "minelabs:entity_entropy_creeper_explode"
     ]
+  },
+  "entity.coulomb.annihilate": {
+    "sounds": [
+    ]
+  },
+  "entity.coulomb.decay": {
+    "sounds": [
+    ]
   }
 } 

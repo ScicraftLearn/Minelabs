@@ -5,11 +5,14 @@ import be.minelabs.advancement.criterion.BohrCriterion;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.blocks.BohrBlueprintBlock;
-import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
+import be.minelabs.entity.projectile.thrown.ChargedEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.item.Items;
 import be.minelabs.mixin.FishingBobberEntityAccessor;
+import be.minelabs.particle.ParticleTypes;
 import be.minelabs.util.AtomConfiguration;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
@@ -26,12 +29,12 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -102,7 +105,7 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void clientTick() {
         if (getProtons() == 0 && getNeutrons() == 0) {
-            this.world.addParticle(ParticleTypes.ELECTRIC_SPARK, this.getX(), this.getY() + 0.5f * getHeight(), this.getZ(), 0, 0, 0);
+            this.world.addParticle(ParticleTypes.BOHR_PLATE_PARTICLE, this.getX(), this.getY() + 0.5f * getHeight(), this.getZ(), 0, 0, 0);
         }
     }
 
@@ -132,16 +135,16 @@ public class BohrBlueprintEntity extends Entity {
         if (getAtomConfig().isElectronDecomposing()) {
             electronEjectProgress -= electronEjectProgressPerTick * getAtomConfig().getDecomposingElectronCount();
 
-            if (electronEjectProgress <= 0f){
-                if(removeItem(Items.ELECTRON))
-                    launchParticle(Items.ELECTRON);
+            if (electronEjectProgress <= 0f) {
+                if (removeItem(Items.ELECTRON))
+                    tryLaunchParticle(Items.ELECTRON);
                 electronEjectProgress = 1f;
             }
         }
     }
 
-    // Called by subatomic particle when it collides with this entity.
-    public void onParticleCollision(SubatomicParticleEntity particle) {
+    // Called by particle when it collides with this entity.
+    public void onParticleCollision(ChargedEntity particle) {
         if (world.isClient)
             return;
         ItemStack stack = particle.getStack();
@@ -170,7 +173,7 @@ public class BohrBlueprintEntity extends Entity {
     public void remove(RemovalReason reason) {
         super.remove(reason);
         // cleanup after entity is removed
-        if (reason.shouldDestroy()){
+        if (reason.shouldDestroy()) {
             dropContents();
             BlockState state = world.getBlockState(getBohrBlueprintPos());
             if (state.isOf(Blocks.BOHR_BLUEPRINT))
@@ -203,11 +206,15 @@ public class BohrBlueprintEntity extends Entity {
         if (item.equals(Items.ELECTRON))
             return getElectrons() < MAX_ELECTRONS;
 
-        return false;
-    }
+        // Anti items have min capacity (unless we want to make anti-matter
+        if (item.equals(Items.ANTI_PROTON))
+            return getProtons() > 0;
+        if (item.equals(Items.ANTI_NEUTRON))
+            return getNeutrons() > 0;
+        if (item.equals(Items.POSITRON))
+            return getElectrons() > 0;
 
-    private static boolean isRemovalItem(Item item) {
-        return List.of(Items.ANTI_PROTON, Items.ANTI_NEUTRON, Items.POSITRON).contains(item);
+        return false;
     }
 
     @Nullable
@@ -227,9 +234,6 @@ public class BohrBlueprintEntity extends Entity {
         // we don't want the client to modify inventory. Always return false because we can't check inventory for remove.
         if (world.isClient)
             return false;
-
-        if (isRemovalItem(item))
-            return removeItem(getAntiItem(item), source);
 
         if (!canAcceptItem(item))
             return false;
@@ -281,11 +285,19 @@ public class BohrBlueprintEntity extends Entity {
         return stack;
     }
 
-    private void onItemAdded(ItemStack stack, @Nullable ServerPlayerEntity source) {
-        if (stack.isOf(Items.PROTON)) incrementProtons(1);
-        else if (stack.isOf(Items.ELECTRON)) incrementElectrons(1);
-        else if (stack.isOf(Items.NEUTRON)) incrementNeutrons(1);
+    private void updateCountsItemUpdate(ItemStack stack, int amount) {
+        if (stack.isOf(Items.PROTON)) incrementProtons(amount);
+        else if (stack.isOf(Items.ELECTRON)) incrementElectrons(amount);
+        else if (stack.isOf(Items.NEUTRON)) incrementNeutrons(amount);
+        else if (stack.isOf(Items.ANTI_PROTON)) incrementProtons(-1 * amount);
+        else if (stack.isOf(Items.POSITRON)) incrementElectrons(-1 * amount);
+        else if (stack.isOf(Items.ANTI_NEUTRON)) incrementNeutrons(-1 * amount);
         else if (stack.getItem() instanceof AtomItem) updateCountsFromContent();
+        else Minelabs.LOGGER.warn("Unkown ItemStack in Bohr Blueprint: " + stack);
+    }
+
+    private void onItemAdded(ItemStack stack, @Nullable ServerPlayerEntity source) {
+        updateCountsItemUpdate(stack, 1);
 
         // advancements
         if (source != null) {
@@ -297,10 +309,7 @@ public class BohrBlueprintEntity extends Entity {
     }
 
     private void onItemRemoved(ItemStack stack, @Nullable ServerPlayerEntity source) {
-        if (stack.isOf(Items.PROTON)) incrementProtons(-1);
-        else if (stack.isOf(Items.ELECTRON)) incrementElectrons(-1);
-        else if (stack.isOf(Items.NEUTRON)) incrementNeutrons(-1);
-        else if (stack.getItem() instanceof AtomItem) updateCountsFromContent();
+        updateCountsItemUpdate(stack, -1);
 
         // advancements
         if (source != null) {
@@ -317,24 +326,37 @@ public class BohrBlueprintEntity extends Entity {
      */
     private void launchParticle(Item item) {
         // launch particle
-        ItemStack stack = item.getDefaultStack();
-        SubatomicParticleEntity entity = new SubatomicParticleEntity(getX(), getY() + getHeight() / 2f, getZ(), world, stack, false);
+        ParticleEntity entity = new ParticleEntity(world,
+                BlockPos.ofFloored(getX(), getY() + getHeight() / 2f, getZ()), new ItemStack(item));
         // velocity chosen such that it launches up and around, but not too much at the ground
         Vec3d velocity = new Vec3d(0, 0.2, 0)
                 .add(
                         this.random.nextTriangular(0, 1d) * 2,
                         this.random.nextTriangular(0, 1d) * 1,
                         this.random.nextTriangular(0, 1d) * 2
-                ).normalize().multiply(SubatomicParticleEntity.DEFAULT_SPEED);
+                ).normalize().multiply(ParticleEntity.DEFAULT_SPEED);
         entity.setVelocity(velocity);
         world.spawnEntity(entity);
     }
 
-    private void decomposeAtom() {
-        for (int p = 0; p < getProtons(); p++) launchParticle(Items.PROTON);
-        for (int n = 0; n < getNeutrons(); n++) launchParticle(Items.NEUTRON);
-        for (int e = 0; e < getElectrons(); e++) launchParticle(Items.ELECTRON);
+    /**
+     * Try to Launch this particle
+     * Will drop if GameRule doesn't allow projectile
+     *
+     * @param item : item to launch/drop
+     */
+    public void tryLaunchParticle(Item item) {
+        if (world.getGameRules().getBoolean(MinelabsGameRules.BOHR_PROJECTILES)) {
+            launchParticle(item);
+        } else {
+            dropStack(new ItemStack(item));
+        }
+    }
 
+    private void decomposeAtom() {
+        for (int p = 0; p < getProtons(); p++) tryLaunchParticle(Items.PROTON);
+        for (int n = 0; n < getNeutrons(); n++) tryLaunchParticle(Items.NEUTRON);
+        for (int e = 0; e < getElectrons(); e++) tryLaunchParticle(Items.ELECTRON);
         clear();
     }
 
@@ -430,11 +452,11 @@ public class BohrBlueprintEntity extends Entity {
 
         // Remove other bohr blueprint entities already present.
         // We put this check here because the position needs to be known and it is loaded from nbt, for example when copied by structure block
-        if (!world.isClient){
+        if (!world.isClient) {
             List<Entity> entities = world.getOtherEntities(this, getBoundingBox(), e -> e instanceof BohrBlueprintEntity);
-            for (Entity entity: entities){
+            for (Entity entity : entities) {
                 // move below map first so the bohr plate below won't be found and it doesn't destroy it.
-                entity.setPosition(getX(), world.getBottomY()-1, getZ());
+                entity.setPosition(getX(), world.getBottomY() - 1, getZ());
                 entity.discard();
             }
         }
@@ -461,7 +483,7 @@ public class BohrBlueprintEntity extends Entity {
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         inventory.clear();
-        if (nbt.contains("Items")){
+        if (nbt.contains("Items")) {
             // load inventory
             NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
             for (int i = 0; i < nbtList.size(); i++) {
@@ -492,6 +514,9 @@ public class BohrBlueprintEntity extends Entity {
             if (stack.isOf(Items.PROTON)) protons++;
             else if (stack.isOf(Items.ELECTRON)) electrons++;
             else if (stack.isOf(Items.NEUTRON)) neutrons++;
+            else if (stack.isOf(Items.ANTI_PROTON)) protons--;
+            else if (stack.isOf(Items.POSITRON)) electrons--;
+            else if (stack.isOf(Items.ANTI_NEUTRON)) neutrons--;
             else if (stack.getItem() instanceof AtomItem atomItem) {
                 protons += atomItem.getAtom().getAtomNumber();
                 electrons += atomItem.getAtom().getAtomNumber();
@@ -529,7 +554,7 @@ public class BohrBlueprintEntity extends Entity {
         // set block state
         BohrBlueprintBlock.Status status = BohrBlueprintBlock.Status.EMPTY;
         if (!getCraftableAtom().isEmpty()) status = BohrBlueprintBlock.Status.CRAFTABLE;
-        else if(!getAtomConfig().isStable()) status = BohrBlueprintBlock.Status.UNSTABLE;
+        else if (!getAtomConfig().isStable()) status = BohrBlueprintBlock.Status.UNSTABLE;
         BohrBlueprintBlock.updateStatus(world, getBohrBlueprintPos(), status);
     }
 
@@ -537,11 +562,11 @@ public class BohrBlueprintEntity extends Entity {
         return dataTracker.get(ATOM_CONFIGURATION);
     }
 
-    protected void setAtomConfiguration(int protons, int neutrons, int electrons){
+    protected void setAtomConfiguration(int protons, int neutrons, int electrons) {
         setAtomConfiguration(new AtomConfiguration(protons, neutrons, electrons));
     }
 
-    protected void setAtomConfiguration(AtomConfiguration atomConfig){
+    protected void setAtomConfiguration(AtomConfiguration atomConfig) {
         dataTracker.set(ATOM_CONFIGURATION, atomConfig);
     }
 

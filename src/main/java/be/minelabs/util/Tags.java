@@ -93,6 +93,7 @@ public class Tags {
 
         public static final TagKey<Item> BLACK_HOLE_BLACKLIST = createTag("black_hole_blacklist");
         public static final TagKey<Item> MAGNET_WHITELIST = createTag("magnet_whitelist");
+        public static final TagKey<Item> STICKY_ITEMS = createTag("sticky_items");
 
         /**
          * Create an Item tag (tag is only used inside this mod)

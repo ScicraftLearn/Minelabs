@@ -1,7 +1,6 @@
 package be.minelabs.science;
 
 import be.minelabs.Minelabs;
-import be.minelabs.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;

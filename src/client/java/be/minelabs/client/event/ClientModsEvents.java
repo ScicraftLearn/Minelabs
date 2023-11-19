@@ -1,6 +1,7 @@
 package be.minelabs.client.event;
 
 import be.minelabs.client.gui.hud.BohrBlueprintHUDRenderer;
+import be.minelabs.client.gui.hud.HudOverlayCallBack;
 import be.minelabs.entity.BohrBlueprintEntity;
 import be.minelabs.entity.Entities;
 import net.fabricmc.api.EnvType;
@@ -57,5 +58,6 @@ public class ClientModsEvents {
                     }
                 }
         );
+        HudRenderCallback.EVENT.register(new HudOverlayCallBack());
     }
 }

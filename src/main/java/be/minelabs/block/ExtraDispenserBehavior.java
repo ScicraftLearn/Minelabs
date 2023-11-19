@@ -1,6 +1,6 @@
 package be.minelabs.block;
 
-import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
 import be.minelabs.item.Items;
 import be.minelabs.item.items.BalloonItem;
 import net.minecraft.block.DispenserBlock;
@@ -33,12 +33,13 @@ public class ExtraDispenserBehavior {
          * The entity is shot up slight as defined in dispenseSilently in ProjectileDispenserBehavior:
          * direction.getOffsetY() + 0.1F
          */
-        registerSubatomicParticle(Items.ELECTRON);
-        registerSubatomicParticle(Items.PROTON);
-        registerSubatomicParticle(Items.NEUTRON);
-        registerSubatomicParticle(Items.POSITRON);
-        registerSubatomicParticle(Items.ANTI_PROTON);
-        registerSubatomicParticle(Items.ANTI_NEUTRON);
+        registerChargedEntity(Items.ELECTRON);
+        registerChargedEntity(Items.PROTON);
+        registerChargedEntity(Items.NEUTRON);
+        registerChargedEntity(Items.POSITRON);
+        registerChargedEntity(Items.ANTI_PROTON);
+        registerChargedEntity(Items.ANTI_NEUTRON);
+
 
         /**
          * Register dispenser behavior for using Entropy Creeper Spawn Egg
@@ -66,12 +67,12 @@ public class ExtraDispenserBehavior {
         DispenserBlock.registerBehavior(Items.BALLOON, new ItemDispenserBehavior() {
             protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
                 if(stack.getItem() instanceof BalloonItem bi) {
-                    BlockPos blockPos = pointer.getPos().offset((Direction)pointer.getBlockState().get(DispenserBlock.FACING));
+                    BlockPos blockPos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
                     List<LivingEntity> list = pointer.getWorld().getEntitiesByClass(LivingEntity.class, new Box(blockPos), EntityPredicates.EXCEPT_SPECTATOR);
                     if (list.isEmpty()) {
                         return super.dispenseSilently(pointer, stack);
                     } else {
-                        LivingEntity livingEntity = (LivingEntity)list.get(0);
+                        LivingEntity livingEntity = list.get(0);
                         bi.useOnEntity(stack, null, livingEntity, null);
                         return stack;
                     }
@@ -82,15 +83,15 @@ public class ExtraDispenserBehavior {
     }
 
     /**
-     * Register a single SubatomicParticle for the dispenser
+     * Register a single ChargedItem for the dispenser
      *
-     * @param item   : Item that should be used
-     **/
-    private static void registerSubatomicParticle(Item item) {
+     * @param item : Item that should be used
+     */
+    private static void registerChargedEntity(Item item) {
         DispenserBlock.registerBehavior(item, new ProjectileDispenserBehavior() {
             @Override
             protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                return new SubatomicParticleEntity(position.getX(), position.getY(), position.getZ(), world, stack);
+                return new ParticleEntity(world, BlockPos.ofFloored(position), stack);
             }
         });
     }

@@ -5,7 +5,8 @@ import be.minelabs.entity.decoration.painting.Paintings;
 import be.minelabs.entity.effect.Effects;
 import be.minelabs.entity.mob.BalloonEntity;
 import be.minelabs.entity.mob.EntropyCreeperEntity;
-import be.minelabs.entity.projectile.thrown.SubatomicParticleEntity;
+import be.minelabs.entity.projectile.thrown.ParticleEntity;
+import be.minelabs.entity.projectile.thrown.PointChargedEntity;
 import be.minelabs.util.AtomConfiguration;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
@@ -13,8 +14,6 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -30,9 +29,6 @@ import java.util.function.Predicate;
 
 public class Entities {
     // EntityTypes
-    public static final EntityType<SubatomicParticleEntity> SUBATOMIC_PARTICLE_ENTITY_TYPE = register(FabricEntityTypeBuilder.<SubatomicParticleEntity>create(SpawnGroup.MISC, SubatomicParticleEntity::new)
-            .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).build(), "subatomic_particle_entity");
-
     public static final EntityType<BohrBlueprintEntity> BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE = register(FabricEntityTypeBuilder.<BohrBlueprintEntity>create(SpawnGroup.MISC, BohrBlueprintEntity::new)
             .dimensions(EntityDimensions.fixed(1.5F, 1.5F)).trackRangeChunks(3).disableSummon().fireImmune().build(), "bohr_blueprint_entity");
 
@@ -44,6 +40,11 @@ public class Entities {
     public static final EntityType<CorrosiveEntity> CORROSIVE_ENTITY = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, CorrosiveEntity::new)
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).disableSummon().fireImmune().build(), "corrosive");
 
+    public static final EntityType<ParticleEntity> PARTICLE_ENTITY = register(FabricEntityTypeBuilder.<ParticleEntity>create(SpawnGroup.MISC, ParticleEntity::new)
+            .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(3).forceTrackedVelocityUpdates(true).build(), "charged_entity");
+
+    public static final EntityType<PointChargedEntity> POINT_CHARGED_ENTITY = register(FabricEntityTypeBuilder.<PointChargedEntity>create(SpawnGroup.MISC, PointChargedEntity::new)
+            .dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackRangeChunks(3).forceTrackedVelocityUpdates(true).build(), "point_charged_entity");
 
     /**
      * Register a single entity
@@ -55,18 +56,6 @@ public class Entities {
      */
     private static <T extends Entity> EntityType<T> register(EntityType<T> entityType, String identifier) {
         return Registry.register(Registries.ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), entityType);
-    }
-
-    /**
-     * Register a single block entity
-     * <p>
-     *
-     * @param blockEntityType : BlockEntityType to register
-     * @param identifier      : String name of the entity
-     * @return registered BlockEntityType
-     */
-    private static <T extends BlockEntity> BlockEntityType<T> register(BlockEntityType<T> blockEntityType, String identifier) {
-        return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Minelabs.MOD_ID, identifier), blockEntityType);
     }
 
     /**
