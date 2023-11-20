@@ -31,7 +31,7 @@ jobs:
             echo "::error::PR version is the same as the main branch version, $current_version == $main_version"
             exit 1
           else
-            echo "Version check passed."
+            echo "Version check passed, $current_version != $main_version"
           fi
 
       - name: Setup Gradle
