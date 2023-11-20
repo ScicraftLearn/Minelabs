@@ -18,6 +18,19 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Version check on Main
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main' }}
+        run: |
+          current_version=$(grep -oP 'mod_version=\K[^ ]+' gradle.properties)
+          main_version=$(git show origin/main:gradle.properties | grep -oP 'mod_version=\K[^ ]+')
+          
+          if [ "$current_version" == "$main_version" ]; then
+            echo "::error::PR version is the same as the main branch version, $current_version == $main_version"
+            exit 1
+          else
+            echo "Version check passed."
+          fi
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
