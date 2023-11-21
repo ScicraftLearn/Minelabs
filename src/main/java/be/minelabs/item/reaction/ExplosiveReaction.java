@@ -21,12 +21,12 @@ public class ExplosiveReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d pos) {
+    protected void react(World world, Vec3d sourcePos) {
         GameRules gameRules = world.getGameRules();
         if (!gameRules.getBoolean(GameRules.DO_MOB_GRIEFING))
             return;
-        if (this.pyrophoric || Utils.isFlameNearby(world, pos, power))
-            world.createExplosion(null, pos.x, pos.y, pos.z,
+        if (this.pyrophoric || Utils.isFlameNearby(world, sourcePos, power))
+            world.createExplosion(null, sourcePos.x, sourcePos.y, sourcePos.z,
                     power, flammable && gameRules.getBoolean(GameRules.DO_FIRE_TICK), World.ExplosionSourceType.BLOCK);
 
     }
