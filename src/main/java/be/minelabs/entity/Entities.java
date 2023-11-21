@@ -36,7 +36,7 @@ public class Entities {
             .dimensions(EntityDimensions.fixed(0.6f, 1.7f)).build(), "entropy_creeper");
 
     public static final EntityType<BalloonEntity> BALLOON = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, BalloonEntity::new)
-            .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).build(), "balloon");
+            .dimensions(EntityDimensions.fixed(0.8f, 1.0f)).disableSummon().build(), "balloon");
     public static final EntityType<CorrosiveEntity> CORROSIVE_ENTITY = register(FabricEntityTypeBuilder.create(SpawnGroup.MISC, CorrosiveEntity::new)
             .dimensions(EntityDimensions.fixed(1.0f, 1.0f)).disableSummon().fireImmune().build(), "corrosive");
 

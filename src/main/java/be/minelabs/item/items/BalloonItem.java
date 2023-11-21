@@ -2,62 +2,104 @@ package be.minelabs.item.items;
 
 import be.minelabs.entity.mob.BalloonEntity;
 import be.minelabs.entity.Entities;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.decoration.LeashKnotEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.item.*;
+import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
+import java.util.List;
 
 public class BalloonItem extends Item {
+
     public BalloonItem(Item.Settings settings) {
         super(settings);
     }
 
-    private BalloonEntity summon(World world, LivingEntity entity) {
+    private BalloonEntity summon(World world, Entity entity) {
         BalloonEntity balloon = Entities.BALLOON.create(world);
-        balloon.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), 0.0F, 0.0F);
+        balloon.refreshPositionAndAngles(entity.getX(), entity.getY() + 1.0, entity.getZ(), 0.0F, 0.0F);
         world.spawnEntity(balloon);
-        balloon.attachLeash(entity, true);
         return balloon;
     }
 
     @Override
-    public void inventoryTick(ItemStack itemStack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(itemStack, world, entity, slot, selected);
-        if (!world.isClient()) {
-            if (entity instanceof PlayerEntity pe) {
-                if (!(pe.getAbilities().creativeMode)) {
-                    if (pe.getOffHandStack().getItem() instanceof BalloonItem
-                            || pe.getMainHandStack().getItem() instanceof BalloonItem) {
-                        // TODO FIX custom effect (temp fix: use levitation)
-                        //System.out.println("Try to fly: call effect");
-                        //StatusEffectInstance sei = new StatusEffectInstance(Effects.FLYING, 2, 2, false, false);
-                        StatusEffectInstance sei = new StatusEffectInstance(StatusEffects.LEVITATION, 4, 2, false, false);
-                        pe.addStatusEffect(sei);
-                    }
-                }
-            }
+    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        if (user instanceof PlayerEntity pe) {
+            Vec3d vel = pe.getVelocity();
+            user.setVelocity(vel.x * 1.02, BalloonEntity.LEVITATION_SPEED, vel.z * 1.02);
+            user.onLanding();
         }
+    }
+
+    public int getMaxUseTime(ItemStack stack) {
+        return 7200;
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        user.setCurrentHand(hand);
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         if(!(entity instanceof PlayerEntity) && !(entity instanceof BalloonEntity)) {
-            World world = user.getWorld();
+            World world = entity.getWorld();
             if(!world.isClient) {
-                summon(world, entity);
-                stack.decrement(1);
+                List<BalloonEntity> list = entity.getWorld().getEntitiesByClass(BalloonEntity.class,
+                        new Box(entity.getBlockPos()).expand(10), EntityPredicates.EXCEPT_SPECTATOR);
+                boolean isLeashed = false;
+                for(BalloonEntity be: list) {
+                    if(be.getOwner().equals(entity)) {
+                        isLeashed = true;
+                        break;
+                    }
+                }
+
+                if(!isLeashed) {
+                    BalloonEntity be = summon(world, entity);
+                    be.attachOwner(entity);
+                    stack.decrement(1);
+                    return ActionResult.success(true);
+                }
             }
-            return ActionResult.success(world.isClient);
+            return ActionResult.success(false);
         }
-        return ActionResult.PASS;
+        return super.useOnEntity(stack, user, entity, hand);
     }
 
-    // TODO: connect to fence? => see LeadItem
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        World world = context.getWorld();
+        BlockPos blockPos = context.getBlockPos();
+        BlockState blockState = world.getBlockState(blockPos);
+        if (blockState.isIn(BlockTags.FENCES)) {
+            PlayerEntity playerEntity = context.getPlayer();
+            if (!world.isClient && playerEntity != null) {
+                LeashKnotEntity leashKnotEntity = LeashKnotEntity.getOrCreate(world, blockPos);
+                leashKnotEntity.onPlace();
+                BalloonEntity be = summon(world, leashKnotEntity);
+                be.attachOwner(leashKnotEntity);
+
+                context.getStack().decrement(1);
+
+                world.emitGameEvent(GameEvent.BLOCK_ATTACH, blockPos, GameEvent.Emitter.of(playerEntity));
+
+                return ActionResult.CONSUME;
+            }
+
+            return ActionResult.success(world.isClient);
+        } else {
+            return super.useOnBlock(context);
+        }
+    }
 }
