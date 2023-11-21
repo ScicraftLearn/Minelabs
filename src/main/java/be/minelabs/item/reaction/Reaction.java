@@ -61,7 +61,7 @@ public abstract class Reaction {
             react(world, entityHitResult.getEntity().getPos());
     }
 
-    protected abstract void react(World world, Vec3d position);
+    protected abstract void react(World world, Vec3d sourcePos);
 
     public abstract void react(LivingEntity entity);
 

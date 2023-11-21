@@ -10,9 +10,9 @@ import net.minecraft.world.World;
 public class DissolveReaction extends Reaction {
 
     @Override
-    protected void react(World world, Vec3d pos) {
+    protected void react(World world, Vec3d sourcePos) {
         for (int i = 0; i < 10; i++) {
-            world.addParticle(ParticleTypes.CLOUD, pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
+            world.addParticle(ParticleTypes.CLOUD, sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), 0, 0, 0);
         }
     }
 

@@ -17,7 +17,6 @@ import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -26,11 +25,9 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,6 +43,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         super(handler, inventory, title);
         // 3x18 for 3 inventory slots | +4 for extra offset to match the double chest | +5 for the row between the 5x5 grid and the input slots
         backgroundHeight += (18 * 3 + 4) + 5;
+        // move the title to the correct place
+        playerInventoryTitleY += 61;
     }
 
     /*
@@ -152,9 +151,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     @Override
     protected void init() {
         super.init();
-
-        // move the title to the correct place
-        playerInventoryTitleY += 61;
 
         registerButtonWidget();
     }
