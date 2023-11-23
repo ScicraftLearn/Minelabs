@@ -53,7 +53,8 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
                 .suffocates((state, world, pos) -> false)
                 .blockVision((state, world, pos) -> false)
                 .ticksRandomly()
-                .luminance(state -> (int) Math.ceil(MathHelper.clampedLerp(MAX_LIGHT, MIN_LIGHT, (float) getAge(state) / MAX_AGE)))
+                .emissiveLighting((state, world, pos) -> true)
+//                .luminance(state -> (int) Math.ceil(MathHelper.clampedLerp(MAX_LIGHT, MIN_LIGHT, (float) getAge(state) / MAX_AGE)))
         );
         this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false).with(DROP_KIND, 0));
 

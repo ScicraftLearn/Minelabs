@@ -1,9 +1,14 @@
 package be.minelabs.client.renderer.model;
 
 import be.minelabs.Minelabs;
+import be.minelabs.block.blocks.QuantumfieldBlock;
+import net.fabricmc.fabric.api.renderer.v1.Renderer;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
+import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.ModelOverrideList;
@@ -61,11 +66,24 @@ public class AlphaTransformModel implements UnbakedModel {
             return false;
         }
 
+        /**
+         * exp(-((x-0.5)/0.4)^2) from 0 to 1
+         */
+        private float computeAlpha(float ageRatio){
+            return (float) Math.exp(- Math.pow(((ageRatio - 0.5) / 0.4) , 2));
+        }
+
         @Override
         public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-            context.pushTransform(new AlphaTranform(0.5f));
+            if (state.getBlock() instanceof QuantumfieldBlock){
+                float ageRatio = (float) QuantumfieldBlock.getAge(state) / QuantumfieldBlock.MAX_AGE;
+                float alpha = computeAlpha(ageRatio);
+                context.pushTransform(new AlphaTranform(alpha));
+                context.bakedModelConsumer().accept(baseModel, state);
+                context.popTransform();
+                return;
+            }
             context.bakedModelConsumer().accept(baseModel, state);
-            context.popTransform();
         }
 
         @Override
@@ -116,6 +134,7 @@ public class AlphaTransformModel implements UnbakedModel {
         private static class AlphaTranform implements RenderContext.QuadTransform {
 
             private final float alpha;
+            private static final RenderMaterial MATERIAL = RendererAccess.INSTANCE.getRenderer().materialFinder().emissive(0, true).find();
 
             protected AlphaTranform(float alpha) {
                 this.alpha = alpha;
@@ -123,6 +142,7 @@ public class AlphaTransformModel implements UnbakedModel {
 
             @Override
             public boolean transform(MutableQuadView quad) {
+                quad.material(MATERIAL);
                 int c = ColorHelper.Argb.getArgb((int) (alpha * 255), 255, 255, 255);
                 quad.spriteColor(0, c, c, c, c);
                 return true;
