@@ -67,10 +67,10 @@ public class AlphaTransformModel implements UnbakedModel {
         }
 
         /**
-         * exp(-((x-0.5)/0.4)^2) from 0 to 1
+         * 0.8 exp(-((x-0.5)/0.4)^2) from 0 to 1
          */
         private float computeAlpha(float ageRatio){
-            return (float) Math.exp(- Math.pow(((ageRatio - 0.5) / 0.4) , 2));
+            return 0.8f * (float) Math.exp(- Math.pow(((ageRatio - 0.5) / 0.4) , 2));
         }
 
         @Override

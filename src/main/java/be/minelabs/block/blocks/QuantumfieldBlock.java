@@ -1,5 +1,6 @@
 package be.minelabs.block.blocks;
 
+import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
 import be.minelabs.block.entity.QuantumFieldBlockEntity;
 import be.minelabs.item.Items;
@@ -26,7 +27,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class QuantumfieldBlock extends TransparentBlock implements BlockEntityProvider {
     public static final int MAX_AGE = 10;
@@ -46,14 +48,14 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
         // Change the first value in strength to get the wanted mining speed
         // Made material not solid so portals can't spawn on it.
         super(FabricBlockSettings
-                .of(Material.POWDER_SNOW)
-                .strength(0.5f, 2.0f)
-                .nonOpaque()
-                .solidBlock((state, world, pos) -> false)
-                .suffocates((state, world, pos) -> false)
-                .blockVision((state, world, pos) -> false)
-                .ticksRandomly()
-                .emissiveLighting((state, world, pos) -> true)
+                        .of(Material.POWDER_SNOW)
+                        .strength(0f, 2.0f)
+                        .nonOpaque()
+                        .solidBlock((state, world, pos) -> false)
+                        .suffocates((state, world, pos) -> false)
+                        .blockVision((state, world, pos) -> false)
+                        .ticksRandomly()
+                        .emissiveLighting((state, world, pos) -> true)
 //                .luminance(state -> (int) Math.ceil(MathHelper.clampedLerp(MAX_LIGHT, MIN_LIGHT, (float) getAge(state) / MAX_AGE)))
         );
         this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false).with(DROP_KIND, 0));
@@ -76,7 +78,7 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
     }
 
     public static boolean isMaster(BlockState state) {
-        return state.get(MASTER);
+        return state.getBlock() instanceof QuantumfieldBlock && state.get(MASTER);
     }
 
     public static int getAge(BlockState state) {
@@ -122,9 +124,6 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
     public void removeQuantumBlockIfNeeded(BlockState state, ServerWorld world, BlockPos pos) {
         if (MAX_AGE == getAge(state)) {
             world.removeBlock(pos, false);
-            if (pos.getY() == AtomicFloor.ATOMIC_FLOOR_LAYER) {
-                world.setBlockState(pos, Blocks.ATOM_FLOOR.getDefaultState(), Block.NO_REDRAW);
-            }
         }
     }
 
@@ -146,13 +145,64 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
     @Override
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
-        if (!world.isClient()) {
-            int drop = state.get(DROP_KIND);
-            drop++;
-            if (drop % 3 == 0) {
-                drop = 0;
-            }
-            world.setBlockState(pos, state.with(DROP_KIND, drop), Block.NOTIFY_ALL);
+        int drop = state.get(DROP_KIND);
+        drop++;
+        if (drop % 3 == 0) {
+            drop = 0;
+        }
+        world.setBlockState(pos, state.with(DROP_KIND, drop), Block.NOTIFY_ALL);
+        shrinkField(world, pos);
+    }
+
+    private Optional<BlockPos> getMasterPos(World world, BlockPos pos) {
+        if (isMaster(world.getBlockState(pos))) return Optional.of(pos);
+
+        return collectFieldBlocks(world, pos).stream().filter(p -> isMaster(world.getBlockState(p))).findFirst();
+    }
+
+    /**
+     * Trace field by traversing all directions and count neighbors.
+     */
+    private Set<BlockPos> collectFieldBlocks(World world, BlockPos pos) {
+        return collectFieldBlocks(world, pos, world.getBlockState(pos).getBlock(), new HashSet<>());
+    }
+
+    private Set<BlockPos> collectFieldBlocks(World world, BlockPos pos, Block block, Set<BlockPos> visited) {
+        visited.add(pos);
+        for (BlockPos neighbor : Arrays.stream(DIRECTIONS).map(pos::offset).toList()) {
+            if (!world.getBlockState(neighbor).isOf(block)) continue;
+            if (!visited.contains(neighbor))
+                collectFieldBlocks(world, neighbor, block, visited);
+        }
+        return visited;
+    }
+
+    private void shrinkField(World world, BlockPos pos) {
+        Set<BlockPos> field = collectFieldBlocks(world, pos);
+
+        Optional<BlockPos> masterOpt = getMasterPos(world, pos);
+
+        // No master found -> disconnected component so remove block itself
+        if (masterOpt.isEmpty()){
+            world.removeBlock(pos, false);
+            return;
+        }
+
+        BlockPos master = masterOpt.get();
+        Optional<BlockPos> edgePos = field.stream()
+                .max(Comparator.comparing(master::getSquaredDistance));
+        edgePos.ifPresent(p -> world.removeBlock(p, false));
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        super.onStateReplaced(state, world, pos, newState, moved);
+        if (state.isOf(newState.getBlock()))
+            return;
+
+        // block removed
+        if (pos.getY() == AtomicFloor.ATOMIC_FLOOR_LAYER) {
+            world.setBlockState(pos, Blocks.ATOM_FLOOR.getDefaultState(), Block.NOTIFY_ALL);
         }
     }
 
