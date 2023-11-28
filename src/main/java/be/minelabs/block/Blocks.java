@@ -48,15 +48,15 @@ public class Blocks {
                     .sounds(BlockSoundGroup.AMETHYST_BLOCK).requiresTool()), "salt/budding_salt_block");
 
     public static final Block LAB_CABIN = register(new LabChestBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_cabin");
+            .of(Material.STONE).mapColor(MapColor.GRAY).dynamicBounds().strength(2.0F).requiresTool()), "lab/lab_cabin");
     public static final Block LAB_DRAWER = register(new LabChestBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_drawer");
+            .of(Material.STONE).mapColor(MapColor.GRAY).dynamicBounds().strength(2.0F).requiresTool()), "lab/lab_drawer");
     public static final Block LAB_SINK = register(new LabSinkBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_sink");
+            .of(Material.STONE).mapColor(MapColor.GRAY).dynamicBounds().strength(2.0F).requiresTool()), "lab/lab_sink");
     public static final Block LAB_CENTER = register(new LabCenterBlock(FabricBlockSettings
             .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_center");
     public static final Block LAB_CORNER = register(new LabCornerBlock(FabricBlockSettings
-            .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_corner");
+            .of(Material.STONE).mapColor(MapColor.GRAY).dynamicBounds().strength(2.0F).requiresTool()), "lab/lab_corner");
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
