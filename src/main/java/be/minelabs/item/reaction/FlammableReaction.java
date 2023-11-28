@@ -24,16 +24,18 @@ public class FlammableReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d pos) {
-        // Radius halved because Ine said so
-        Utils.applyBlocksRadiusTraced(world, pos, radius / 2, block -> {
+    protected void react(World world, Vec3d sourcePos) {
+        boolean doFire = this.pyrophoric
+                || Utils.isFlameNearby(world, sourcePos, radius)
+                || world.getBiome(BlockPos.ofFloored(sourcePos.x, sourcePos.y, sourcePos.z)).isIn(Tags.Biomes.FLAMMABLE_BIOMES);
+
+        Utils.applyBlocksRadiusTraced(world, sourcePos, radius / 2, pos -> {
             if(!world.getGameRules().getBoolean(GameRules.DO_FIRE_TICK))
                 return;
-            if (world.getBlockState(block).getBlock() != Blocks.AIR)
+            if (!world.getBlockState(pos).isOf(Blocks.AIR))
                 return;
-            if (this.pyrophoric || Utils.isFlameNearby(world, block.toCenterPos(), 3)
-                    || world.getBiome(BlockPos.ofFloored(pos.x, pos.y, pos.z)).isIn(Tags.Biomes.FLAMMABLE_BIOMES))
-                world.setBlockState(block, Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
+            if (doFire)
+                world.setBlockState(pos, Blocks.FIRE.getDefaultState().with(FireBlock.AGE, 1));
         });
     }
 

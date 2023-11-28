@@ -1,38 +1,38 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.entity.projectile.thrown.ChargedEntity;
+import be.minelabs.world.MinelabsGameRules;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.joml.Vector3f;
 
 public class ElectricFieldSensorBlockEntity extends BlockEntity {
 
-    private Vector3f field = new Vector3f(0,0,0);
+    private Vec3d field = new Vec3d(0, 0, 0);
 
     public ElectricFieldSensorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
-    public Vector3f getField() {
+    public Vec3d getField() {
         return field;
-    }
-
-    public void setField(Vector3f f) {
-        field = f;
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
         if (field != null) {
-            nbt.putFloat("ex", field.x);
-            nbt.putFloat("ey", field.y);
-            nbt.putFloat("ez", field.z);
+            nbt.putDouble("ex", field.x);
+            nbt.putDouble("ey", field.y);
+            nbt.putDouble("ez", field.z);
         }
         super.writeNbt(nbt);
     }
@@ -41,7 +41,7 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         if (nbt.contains("ex")) {
-            field = new Vector3f(nbt.getFloat("ex"), nbt.getFloat("ey"), nbt.getFloat("ez"));
+            field = new Vec3d(nbt.getDouble("ex"), nbt.getDouble("ey"), nbt.getDouble("ez"));
         }
     }
 
@@ -55,32 +55,33 @@ public class ElectricFieldSensorBlockEntity extends BlockEntity {
         return this.createNbtWithIdentifyingData();
     }
 
-    public void sync() {
-        world.updateListeners(pos,getCachedState(),getCachedState(),3);
-    }
+    public void calculateField(World world, BlockPos pos, BlockState state) {
+        int e_radius = world.getGameRules().getInt(MinelabsGameRules.E_RADIUS);
+        Iterable<Entity> entities_in_radius = world.getOtherEntities(null, Box.of(pos.toCenterPos(), e_radius, e_radius, e_radius));
 
-    public void calculateField(World world, BlockPos pos, BlockPos removedBlockPos) {
-        int e_radius = 12;
-        double kc = 1;
-        Iterable<BlockPos> blocks_in_radius = BlockPos.iterate(pos.mutableCopy().add(-e_radius, -e_radius, -e_radius), pos.mutableCopy().add(e_radius, e_radius, e_radius));
-        field = new Vector3f(0f, 0f, 0f);
-        for (BlockPos pos_block : blocks_in_radius) {
+        field = Vec3d.ZERO; // Clean field / RESET the field
 
-            //if a charge is removed, we calculate the entire field of the sensor again
-            //otherwise if you only calculate the relative field, rounding errors will occur almost always
-            //since this function is called when the block still exists, we need to skip the block
-            if(removedBlockPos != null) {
-                if (pos_block.equals(removedBlockPos)) {
-                    continue;
-                }
-            }
-            if (world.getBlockEntity(pos_block) instanceof ChargedBlockEntity particle2 && !pos.equals(pos_block) && particle2.getField() != null) {
-                Vector3f vec_pos = new Vector3f(pos.getX()-pos_block.getX(), pos.getY()-pos_block.getY(), pos.getZ()-pos_block.getZ());
-                float d_E = (float) ((1 * particle2.getCharge() * kc) / Math.pow(vec_pos.dot(vec_pos), 1.5));
-                vec_pos.mul(d_E);
-                field.add(vec_pos);
+        Vec3d vec_pos = pos.toCenterPos();
+        for (Entity entity : entities_in_radius) {
+            if (entity instanceof ChargedEntity charged) {
+                double force = 8.987f * charged.getCharge() / charged.getPos().distanceTo(vec_pos);
+                Vec3d vector = vec_pos.subtract(charged.getPos()).normalize(); // Vector between entities
+                vector = vector.multiply(force); //scale vector with Force
+                vector = vector.multiply(0.1);
+
+                field = field.add(vector);
             }
         }
-        markDirty();
+        if (field.length() >= ChargedEntity.MAX_FIELD) {
+            field = field.multiply(ChargedEntity.MAX_FIELD / field.length()); // SCALE TO MAX_FIELD
+        }
+
+        markDirty(world, pos, state);
+        world.markDirty(pos);
+        world.updateListeners(pos, getCachedState(), getCachedState(), 3);
+    }
+
+    public void tick(World world, BlockPos pos, BlockState state) {
+        calculateField(world, pos, state);
     }
 }

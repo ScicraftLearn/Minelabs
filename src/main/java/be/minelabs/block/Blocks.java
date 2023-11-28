@@ -59,45 +59,11 @@ public class Blocks {
             .of(Material.STONE).mapColor(MapColor.GRAY).strength(2.0F).requiresTool()), "lab/lab_corner");
 
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
-    public static final Block PION_NUL = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_NUL_BLOCK_ENTITY), "subatomic/pion_nul");
-    public static final Block PION_MINUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_MINUS_BLOCK_ENTITY), "subatomic/pion_minus");
-    public static final Block PION_PLUS = register(new ChargedPionBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PION_PLUS_BLOCK_ENTITY), "subatomic/pion_plus");
-
-    public static final Block WEAK_BOSON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.WEAK_BOSON_BLOCK_ENTITY), "subatomic/weak_boson");
     public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "subatomic/neutrino");
     public static final Block ANTINEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "subatomic/antineutrino");
 
-    public static final ChargedBlock POSITRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.POSTIRON_BLOCK_ENTITY), "subatomic/positron");
-    public static final ChargedBlock ELECTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ELECTRON_BLOCK_ENTITY), "subatomic/electron");
-
-    public static final ChargedBlock PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.PROTON_BLOCK_ENTITY), "subatomic/proton");
-    public static final ChargedBlock ANTI_PROTON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANTI_PROTON_BLOCK_ENTITY), "subatomic/anti_proton");
-
-    public static final ChargedBlock NEUTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.NEUTRON_BLOCK_ENTITY), "subatomic/neutron");
-
-    public static final ChargedBlock ANTI_NEUTRON = register(new ChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANTI_NEUTRON_BLOCK_ENTITY), "subatomic/anti_neutron");
-
-
-    public static final ChargedBlock CHARGED_POINT_BLOCK = register(new ChargedPointBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f), () -> BlockEntities.CHARGED_POINT_BLOCK_ENTITY), "charged_point");
-
-
-    public static final Block CHARGED_PLACEHOLDER = register(new ChargedPlaceholderBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision().nonOpaque(), () -> BlockEntities.CHARGED_PLACEHOLDER_BLOCK_ENTITY), "charged_placeholder");
-    public static final Block ANIMATED_CHARGED = register(new AnimatedChargedBlock(FabricBlockSettings.of(Material.WOOL)
-            .mapColor(MapColor.WHITE).strength(2f).noCollision(), () -> BlockEntities.ANIMATED_CHARGED_BLOCK_ENTITY), "animated_charged");
 
     // Quantumfields
     public static final Block GLUON_QUANTUMFIELD = register(new PositionalQuantumFieldBlock(), "quantumfield/gluon_quantumfield");
@@ -109,8 +75,9 @@ public class Blocks {
     public static final Block ELECTRON_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/electron_quantumfield");
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/neutrino_quantumfield");
 
-    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(), "time_freeze_block");
-    public static final ElectricFieldSensorBlock ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
+    public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(FabricBlockSettings.of(Material.GLASS)
+            .noCollision().strength(0.5f,2.0f)), "time_freeze_block");
+    public static final Block ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
     public static final Block GREEN_FIRE = register(new GreenFire(FabricBlockSettings.of(Material.FIRE, MapColor.EMERALD_GREEN).noCollision().breakInstantly().luminance(12).sounds(BlockSoundGroup.WOOL)), "fire/green_fire");

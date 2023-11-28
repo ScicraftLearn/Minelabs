@@ -6,8 +6,9 @@ import be.minelabs.entity.Entities;
 import be.minelabs.event.ServerModEvents;
 import be.minelabs.fluid.Fluids;
 import be.minelabs.item.Items;
-import be.minelabs.particle.Particles;
+import be.minelabs.particle.ParticleTypes;
 import be.minelabs.recipe.CraftingRecipes;
+import be.minelabs.science.coulomb.CoulombResource;
 import be.minelabs.screen.ScreenHandlers;
 import be.minelabs.sound.SoundEvents;
 import be.minelabs.util.NucleusStabilityTable;
@@ -31,6 +32,7 @@ public class Minelabs implements ModInitializer {
     @Override
     public void onInitialize() {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(NucleusStabilityTable.INSTANCE);
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(CoulombResource.INSTANCE);
 
         Items.onInitialize();
         Blocks.onInitialize();
@@ -38,7 +40,7 @@ public class Minelabs implements ModInitializer {
         Entities.onInitialize();
 
         SoundEvents.onInitialize();
-        Particles.onInitialize();
+        ParticleTypes.onInitialize();
         ScreenHandlers.onInitialize();
 
         WorldGeneration.onInitialize();

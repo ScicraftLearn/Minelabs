@@ -42,6 +42,7 @@ public class LangProvider extends MinelabsLangProvider {
 
         builder.add(Items.LAB_COAT, "Lab Coat");
         builder.add(Items.SAFETY_GLASSES, "Safety Glasses");
+        builder.add(Items.FORCE_GLASSES, "Force Glasses");
         builder.add(Items.LENS, "Microscope Lens");
         builder.add(Items.BIG_LENS, "Microscope Lens x2");
         builder.add(Blocks.LAB_DRAWER, "Lab Drawers");
@@ -59,6 +60,7 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Items.LASERTOOL_DIAMOND, "Diamond Laser Tool");
         builder.add(Items.MAGNET, "Magnet");
         builder.add(Items.POCKET_HOLE, "Pocket Black Hole");
+        builder.add(Items.FORCE_COMPASS, "Force Compass");
         builder.add(Items.ATOM_PACK, "Atom pack");
         builder.add(Blocks.ATOMIC_STORAGE, "Atomic Storage");
 
@@ -76,6 +78,7 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Items.PION_PLUS, "Pion Plus");
         builder.add(Items.GLUON, "Gluon");
         builder.add(Items.PHOTON, "Photon");
+        builder.add(Items.CHARGED_POINT, "Point Charge");
 
         builder.add(Items.ANTI_DOWNQUARK_BLUE, "Anti Downquark");
         builder.add(Items.ANTI_DOWNQUARK_GREEN, "Anti Downquark");
@@ -99,6 +102,8 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Blocks.GLUON_QUANTUMFIELD, "Gluon Quantumfield");
 
         builder.add(Entities.BOHR_BLUEPRINT_ENTITY_ENTITY_TYPE, "Bohr Entity");
-        builder.add(Entities.SUBATOMIC_PARTICLE_ENTITY_TYPE, "Subatomic Particle");
+        builder.add(Entities.CORROSIVE_ENTITY, "");
+        builder.add(Entities.PARTICLE_ENTITY, "Charged Entity");
+        builder.add(Entities.POINT_CHARGED_ENTITY, "Point Charged Entity");
     }
 }
