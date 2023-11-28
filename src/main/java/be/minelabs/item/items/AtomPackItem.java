@@ -27,7 +27,7 @@ public class AtomPackItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (hand == Hand.MAIN_HAND && !world.isClient){
+        if (hand == Hand.MAIN_HAND && !world.isClient) {
             AtomicInventory inventory = new AtomicInventory(256);
 
             user.openHandledScreen(new NamedScreenHandlerFactory() {
@@ -46,6 +46,12 @@ public class AtomPackItem extends Item {
         return TypedActionResult.fail(user.getStackInHand(hand));
     }
 
+    @Override
+    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+        // Stops the bobbing of the item when the field gets updated
+        return false;
+    }
+
     /**
      * Transfer Item from Atom Pack to Atom Storage (All other usages are skipped)
      *
@@ -54,7 +60,7 @@ public class AtomPackItem extends Item {
      */
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        if (context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.ATOMIC_STORAGE && context.getPlayer().isSneaking()){
+        if (context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.ATOMIC_STORAGE && context.getPlayer().isSneaking()) {
             AtomicInventory storage_inventory = ((AtomicStorageBlockEntity) context.getWorld().getBlockEntity(context.getBlockPos())).getInventory();
             AtomicInventory pack_inventory = new AtomicInventory(256);
             pack_inventory.onOpen(context.getPlayer());
