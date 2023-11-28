@@ -39,7 +39,7 @@
 			"faces": {
 				"north": {"uv": [0, 0, 8, 0.5], "texture": "#0"},
 				"east": {"uv": [0, 0, 0.5, 0.5], "texture": "#0"},
-				"south": {"uv": [0, 0, 8, 0.5], "texture": "#0"},
+				"south": {"uv": [0, 7.5, 8, 8], "texture": "#0"},
 				"west": {"uv": [0, 0, 0.5, 0.5], "texture": "#0"},
 				"up": {"uv": [8, 0.5, 0, 0], "texture": "#0"},
 				"down": {"uv": [8, 8, 0, 8.5], "texture": "#0"}
