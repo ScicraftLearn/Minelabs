@@ -20,22 +20,21 @@ public class ExtinguishReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d pos) {
-        Utils.applyBlocksRadiusTraced(world, pos, this.radius, blockPosition -> {
-            BlockState block = world.getBlockState(blockPosition);
-            BlockPos blockPos = BlockPos.ofFloored(pos);
+    protected void react(World world, Vec3d sourcePos) {
+        Utils.applyBlocksRadiusTraced(world, sourcePos, this.radius, pos -> {
+            BlockState block = world.getBlockState(pos);
             if (block.isIn(BlockTags.FIRE)) {
-                world.removeBlock(blockPos, false);
+                world.removeBlock(pos, false);
             } else if (AbstractCandleBlock.isLitCandle(block)) {
-                AbstractCandleBlock.extinguish(null, block, world, blockPos);
+                AbstractCandleBlock.extinguish(null, block, world, pos);
             } else if (CampfireBlock.isLitCampfire(block)) {
-                world.syncWorldEvent(null, 1009, blockPos, 0);
-                CampfireBlock.extinguish(null, world, blockPos, block);
-                world.setBlockState(blockPos, block.with(CampfireBlock.LIT, false));
+                world.syncWorldEvent(null, 1009, pos, 0);
+                CampfireBlock.extinguish(null, world, pos, block);
+                world.setBlockState(pos, block.with(CampfireBlock.LIT, false));
             }
         });
 
-        Utils.applyEntitiesRadiusTraced(world, pos, this.radius, this::react);
+        Utils.applyEntitiesRadiusTraced(world, sourcePos, this.radius, this::react);
     }
 
     @Override

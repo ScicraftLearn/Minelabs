@@ -21,22 +21,22 @@ public class CorrosiveReaction extends Reaction {
     }
 
     @Override
-    protected void react(World world, Vec3d pos) {
-        Utils.applyBlocksRadiusTraced(world, pos, this.radius, block -> {
-            BlockState blockState = world.getBlockState(BlockPos.ofFloored(pos));
+    protected void react(World world, Vec3d sourcePos) {
+        Utils.applyBlocksRadiusTraced(world, sourcePos, this.radius, pos -> {
+            BlockState blockState = world.getBlockState(pos);
             if (blockState.getBlock() == net.minecraft.block.Blocks.WATER)
                 world.addParticle(ParticleTypes.CLOUD, pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
             else
-                if(canReact(world.getBlockState(block))) {
+                if(canReact(world.getBlockState(pos))) {
                     // Calculate the distance between pos and block
-                    double distance = pos.distanceTo(Vec3d.ofCenter(block));
+                    double distance = sourcePos.distanceTo(Vec3d.ofCenter(pos));
                     // Create a new CorrosiveEntity at the given blockpos
-                    CorrosiveEntity entity = CorrosiveEntity.create(world, block, distance);
+                    CorrosiveEntity entity = CorrosiveEntity.create(world, pos, distance);
                     // Spawn the entity
                     world.spawnEntity(entity);
                 }
         });
-        Utils.applyEntitiesRadiusTraced(world, pos, radius, this::react);
+        Utils.applyEntitiesRadiusTraced(world, sourcePos, radius, this::react);
     }
 
     @Override

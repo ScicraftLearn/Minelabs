@@ -3,7 +3,10 @@
   "package": "be.minelabs.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "LabCoatArmorItemMixin"
+    "ItemRendererAccessor",
+    "ItemRendererMixin",
+    "LabCoatArmorItemMixin",
+    "ModelLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
