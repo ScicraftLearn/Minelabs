@@ -40,8 +40,6 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
 
     public static final BooleanProperty MASTER = Properties.MASTER;
     public static final IntProperty AGE = IntProperty.of("age", 0, MAX_AGE);
-    public static final IntProperty DROP_KIND = IntProperty.of("kind", 0, 2);
-
 
     public QuantumfieldBlock() {
         // Properties of all quantumfield blocks
@@ -58,7 +56,7 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
                         .emissiveLighting((state, world, pos) -> true)
 //                .luminance(state -> (int) Math.ceil(MathHelper.clampedLerp(MAX_LIGHT, MIN_LIGHT, (float) getAge(state) / MAX_AGE)))
         );
-        this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false).with(DROP_KIND, 0));
+        this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false));
 
     }
 
@@ -118,7 +116,7 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(AGE, MASTER, DROP_KIND);
+        builder.add(AGE, MASTER);
     }
 
     public void removeQuantumBlockIfNeeded(BlockState state, ServerWorld world, BlockPos pos) {
@@ -145,12 +143,9 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
     @Override
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
-        int drop = state.get(DROP_KIND);
-        drop++;
-        if (drop % 3 == 0) {
-            drop = 0;
-        }
-        world.setBlockState(pos, state.with(DROP_KIND, drop), Block.NOTIFY_ALL);
+        // Place block back
+        world.setBlockState(pos, state, Block.NOTIFY_ALL);
+
         shrinkField(world, pos);
     }
 
@@ -203,20 +198,6 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
         // block removed
         if (pos.getY() == AtomicFloor.ATOMIC_FLOOR_LAYER) {
             world.setBlockState(pos, Blocks.ATOM_FLOOR.getDefaultState(), Block.NOTIFY_ALL);
-        }
-    }
-
-    @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-        if (builder.getWorld().getGameRules().getBoolean(MinelabsGameRules.RANDOM_QUANTUM_DROPS)
-                || !getTranslationKey().contains("quark")) {
-            return super.getDroppedStacks(state, builder);
-        } else {
-            boolean down = getTranslationKey().contains("downquark");
-            int kind = state.get(DROP_KIND);
-            return List.of(
-                    new ItemStack(down ? Items.down_stacks.get(kind) : Items.up_stacks.get(kind)),
-                    new ItemStack(down ? Items.down_stacks.get(kind + 3) : Items.up_stacks.get(kind + 3)));
         }
     }
 }
