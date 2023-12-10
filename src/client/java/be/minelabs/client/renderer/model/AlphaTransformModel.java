@@ -77,7 +77,7 @@ public class AlphaTransformModel implements UnbakedModel {
         public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
             if (state.getBlock() instanceof QuantumfieldBlock){
                 float ageRatio = (float) QuantumfieldBlock.getAge(state) / QuantumfieldBlock.MAX_AGE;
-                float alpha = computeAlpha(ageRatio);
+                float alpha = 0.2f * computeAlpha(ageRatio);
                 context.pushTransform(new AlphaTranform(alpha));
                 context.bakedModelConsumer().accept(baseModel, state);
                 context.popTransform();
@@ -143,6 +143,9 @@ public class AlphaTransformModel implements UnbakedModel {
             @Override
             public boolean transform(MutableQuadView quad) {
                 quad.material(MATERIAL);
+                // Don't add alpha to quads with symbol
+                if (quad.colorIndex() == 0)
+                    return true;
                 int c = ColorHelper.Argb.getArgb((int) (alpha * 255), 255, 255, 255);
                 quad.spriteColor(0, c, c, c, c);
                 return true;

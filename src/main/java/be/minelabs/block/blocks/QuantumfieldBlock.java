@@ -34,10 +34,6 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
     public static final int MAX_AGE = 10;
     public static final int DECAYRATE = 1;
 
-    //    max 15 in minecraft
-    protected static final int MAX_LIGHT = 15;
-    protected static final int MIN_LIGHT = 0;
-
     public static final BooleanProperty MASTER = Properties.MASTER;
     public static final IntProperty AGE = IntProperty.of("age", 0, MAX_AGE);
 
@@ -54,7 +50,6 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
                         .blockVision((state, world, pos) -> false)
                         .ticksRandomly()
                         .emissiveLighting((state, world, pos) -> true)
-//                .luminance(state -> (int) Math.ceil(MathHelper.clampedLerp(MAX_LIGHT, MIN_LIGHT, (float) getAge(state) / MAX_AGE)))
         );
         this.setDefaultState(getDefaultState().with(AGE, 0).with(MASTER, false));
 
@@ -73,6 +68,11 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
     @Override
     public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
         return true;
+    }
+
+    @Override
+    public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
+        return false;
     }
 
     public static boolean isMaster(BlockState state) {
@@ -199,5 +199,14 @@ public class QuantumfieldBlock extends TransparentBlock implements BlockEntityPr
         if (pos.getY() == AtomicFloor.ATOMIC_FLOOR_LAYER) {
             world.setBlockState(pos, Blocks.ATOM_FLOOR.getDefaultState(), Block.NOTIFY_ALL);
         }
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        // Only has collision from top
+        if (!context.isAbove(VoxelShapes.fullCube(), pos, true) || context.isDescending()) {
+            return VoxelShapes.empty();
+        }
+        return VoxelShapes.fullCube();
     }
 }
