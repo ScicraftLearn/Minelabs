@@ -58,6 +58,9 @@ public class Blocks {
     public static final Block LAB_CORNER = register(new LabCornerBlock(FabricBlockSettings
             .of(Material.STONE).mapColor(MapColor.GRAY).dynamicBounds().strength(2.0F).requiresTool()), "lab/lab_corner");
 
+    public static final Block LAB_LEWIS = register(new LabLewisBlock(FabricBlockSettings
+            .of(Material.METAL).mapColor(MapColor.GRAY).dynamicBounds().strength(2.0F).requiresTool()), "lab/lab_lewis");
+
     // Value of charge here will be used temporarily when the block is still 'fresh' at the server, before a reload
     public static final Block NEUTRINO = register(new Block(FabricBlockSettings.of(Material.WOOL)
             .mapColor(MapColor.WHITE).strength(2f).noCollision()), "subatomic/neutrino");
@@ -76,7 +79,7 @@ public class Blocks {
     public static final Block NEUTRINO_QUANTUMFIELD = register(new QuantumfieldBlock(), "quantumfield/neutrino_quantumfield");
 
     public static final Block TIME_FREEZE_BLOCK = register(new TimeFreezeBlock(FabricBlockSettings.of(Material.GLASS)
-            .noCollision().strength(0.5f,2.0f)), "time_freeze_block");
+            .noCollision().strength(0.5f, 2.0f)), "time_freeze_block");
     public static final Block ELECTRIC_FIELD_SENSOR_BLOCK = register(new ElectricFieldSensorBlock(FabricBlockSettings.of(Material.METAL).noCollision().nonOpaque()), "electric_field_sensor");
 
     // Normal fire has luminance 15, soul fire 10 -> we choose 12 arbitrarily
@@ -105,7 +108,7 @@ public class Blocks {
     public static final Block TUBERACK = register(new TubeRackBlock(
             FabricBlockSettings.of(Material.METAL).strength(1f)), "lab/tuberack");
     public static final Block BURNER = register(new BurnerBlock(FabricBlockSettings.of(Material.METAL)
-            .strength(1f).luminance(state -> state.get(Properties.LIT)? 8 : 0)), "lab/burner");
+            .strength(1f).luminance(state -> state.get(Properties.LIT) ? 8 : 0)), "lab/burner");
 
     /**
      * Register a Block
