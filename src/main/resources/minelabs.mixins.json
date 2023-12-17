@@ -16,6 +16,7 @@
     "FireMixin",
     "FishingBobberEntityAccessor",
     "IceBlockMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "MobEntityMixin"
   ]
 }
