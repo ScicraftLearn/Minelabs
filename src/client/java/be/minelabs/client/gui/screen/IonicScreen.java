@@ -62,7 +62,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
             Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
             BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
-            context.drawItem(bond.getStack(), bond.getX()+x, bond.getY()+y);
+            context.drawItem(bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 
         /*
@@ -74,7 +74,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             Slot slot1 = stackToSlotMap.get(graph2.getItemStackOfVertex(edge.getFirst()));
             Slot slot2 = stackToSlotMap.get(graph2.getItemStackOfVertex(edge.getSecond()));
             BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
-            context.drawItem(bond.getStack(), bond.getX()+x, bond.getY()+y);
+            context.drawItem(bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
 
         /*
@@ -91,7 +91,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             } else {
                 context.drawItem(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i, 86 + y);
             }
-            context.drawItem(atom,x + 12 + 18*i, 86+y);
+            context.drawItem(atom, x + 12 + 18 * i, 86 + y);
         }
 
         /*
@@ -103,7 +103,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             if (this.handler.getRightDensity() == 0 || atom.isEmpty()) {
                 break;
             }
-            if (handler.getInventory().getStack(2*IonicBlockScreenHandler.GRIDSIZE + i + leftIngredients.size()).getCount() < handler.getRightDensity()) {
+            if (handler.getInventory().getStack(2 * IonicBlockScreenHandler.GRIDSIZE + i + leftIngredients.size()).getCount() < handler.getRightDensity()) {
                 context.drawItem(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
             } else {
                 context.drawItem(new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
@@ -111,8 +111,8 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             context.drawItem(atom, x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
         }
         if (handler.getLeftCharge() != 0 && handler.getRightCharge() != 0) {
-            context.drawText(this.textRenderer,  "+" + handler.getLeftCharge(), 66 + x,6 + y, 0, false);
-            context.drawText(this.textRenderer,  "-" + handler.getRightCharge(), 139 + x,6 + y, 0, false);
+            context.drawText(this.textRenderer, "+" + handler.getLeftCharge(), 66 + x, 6 + y, 0, false);
+            context.drawText(this.textRenderer, "-" + handler.getRightCharge(), 139 + x, 6 + y, 0, false);
         }
 
     }
