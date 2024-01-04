@@ -87,6 +87,10 @@ public class Items {
     public static final Item LAB_CORNER = register(new BlockItem(Blocks.LAB_CORNER,
             new FabricItemSettings()), "lab/lab_corner");
 
+    public static final Item LAB_LEWIS = register(new BlockItem(Blocks.LAB_LEWIS,
+            new FabricItemSettings()), "lab/lab_lewis");
+
+
     public static final Item MICROSCOPE = register(new BlockItem(Blocks.MICROSCOPE,
             new FabricItemSettings().maxCount(1)), "lab/microscope");
 
