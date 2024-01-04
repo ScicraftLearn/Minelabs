@@ -16,16 +16,11 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
     @Shadow @Final private MinecraftClient client;
 
-    // Note: should stay consistent with variable in ServerPlayNetworkHandlerMixin
-    @Unique
-    private static final float SUBATOMIC_REACH_DISTANCE = 20f;
-
-
     @Inject(method="Lnet/minecraft/client/network/ClientPlayerInteractionManager;getReachDistance()F", at=@At("HEAD"), cancellable = true)
     public void injectGetReachDistance(CallbackInfoReturnable<Float> cir) {
         // Increase reach distance in Subatomic dimension. Note that this may not work for targeting entities.
         if (client.world.getRegistryKey().equals(ModDimensions.SUBATOM_KEY))
-            cir.setReturnValue(SUBATOMIC_REACH_DISTANCE);
+            cir.setReturnValue(ModDimensions.SUBATOMIC_REACH_DISTANCE);
     }
 
 }

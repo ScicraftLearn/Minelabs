@@ -1,18 +1,15 @@
 package be.minelabs.mixin;
 
+import be.minelabs.world.dimension.ModDimensions;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public abstract class ServerPlayNetworkHandlerMixin {
-    // Note: should stay consistent with variable in ClientPlayerInteractionManagerMixin
-    @Unique
-    private static final float SUBATOMIC_REACH_DISTANCE = 20f;
-
+    // Allows packets through with a further away break distance. This is needed for the subatomic dimension.
     @Shadow @Final
-    public static double MAX_BREAK_SQUARED_DISTANCE = MathHelper.square(SUBATOMIC_REACH_DISTANCE);
+    public static double MAX_BREAK_SQUARED_DISTANCE = MathHelper.square(ModDimensions.SUBATOMIC_REACH_DISTANCE);
 }
