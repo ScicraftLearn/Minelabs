@@ -1,11 +1,35 @@
 {
 	"credit": "Made with Blockbench",
-	"texture_size": [32, 32],
 	"textures": {
 		"1": "minelabs:block/lab_blocks",
+		"2": "minelabs:block/towel",
 		"particle": "minelabs:block/lab_blocks"
 	},
 	"elements": [
+		{
+			"from": [2, 10, 0],
+			"to": [14, 11, 1],
+			"faces": {
+				"north": {"uv": [8.5, 15, 14.5, 15.5], "texture": "#1"},
+				"east": {"uv": [8.5, 15, 9, 15.5], "texture": "#1"},
+				"south": {"uv": [8.5, 15, 14.5, 15.5], "texture": "#1"},
+				"west": {"uv": [14, 15, 14.5, 15.5], "texture": "#1"},
+				"up": {"uv": [8.5, 15, 14.5, 15.5], "texture": "#1"},
+				"down": {"uv": [17, 30, 29, 31], "texture": "#missing"}
+			}
+		},
+		{
+			"from": [4, 4, -0.001],
+			"to": [10, 11, -0.001],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 7], "texture": "#2"},
+				"east": {"uv": [0, 0, 0, 7], "texture": "#2"},
+				"south": {"uv": [0, 0, 6, 7], "texture": "#2"},
+				"west": {"uv": [0, 0, 0, 7], "texture": "#2"},
+				"up": {"uv": [6, 0, 0, 0], "texture": "#2"},
+				"down": {"uv": [6, 0, 0, 0], "texture": "#2"}
+			}
+		},
 		{
 			"name": "sink top west",
 			"from": [0, 13, 3],
@@ -183,18 +207,20 @@
 		}
 	},
 	"groups": [
+		0,
+		1,
 		{
 			"name": "sink top",
 			"origin": [0, 0, 0],
 			"color": 0,
-			"children": [0, 1, 2, 3, 4]
+			"children": [2, 3, 4, 5, 6]
 		},
 		{
 			"name": "sink base",
 			"origin": [0, 0, 0],
 			"color": 0,
-			"children": [5, 6, 7, 8, 9]
+			"children": [7, 8, 9, 10, 11]
 		},
-		10
+		12
 	]
 }
