@@ -3,7 +3,7 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"1": "minelabs:block/lab_blocks",
-		"particle": "minelabs:block/lab_blocks"
+		"particle": "block/quartz_block_side"
 	},
 	"elements": [
 		{
