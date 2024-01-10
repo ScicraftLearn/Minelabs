@@ -3,7 +3,7 @@
 	"textures": {
 		"1": "minelabs:block/lab_blocks",
 		"2": "minelabs:block/towel",
-		"particle": "block/quartz_block"
+		"particle": "block/quartz_side"
 	},
 	"elements": [
 		{
