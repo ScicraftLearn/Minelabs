@@ -203,6 +203,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
      */
     private boolean hasEnoughItems() {
         for (int i = 0; i < ingredients.size(); i++) {
+            // TODO LCT LINK, check (left, behind, right)
+
             if (!ingredients.get(i).test(ioInventory.getStack(i)) || ioInventory.getStack(i).getCount() < currentRecipe.getDensity()) {
                 return false;
             }

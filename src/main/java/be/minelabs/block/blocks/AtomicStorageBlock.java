@@ -1,9 +1,7 @@
 package be.minelabs.block.blocks;
 
 import be.minelabs.block.entity.AtomicStorageBlockEntity;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -12,10 +10,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class AtomicStorageBlock extends BlockWithEntity {
+public class AtomicStorageBlock extends LabBlock implements BlockEntityProvider {
     public AtomicStorageBlock(Settings settings) {
         super(settings);
     }
@@ -24,6 +24,16 @@ public class AtomicStorageBlock extends BlockWithEntity {
     public BlockRenderType getRenderType(BlockState state) {
         //With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
         return BlockRenderType.MODEL;
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return switch (state.get(FACING)) {
+            default -> LabBlock.SHAPE_N;
+            case SOUTH -> LabBlock.SHAPE_S;
+            case EAST -> LabBlock.SHAPE_E;
+            case WEST -> LabBlock.SHAPE_W;
+        };
     }
 
     @Nullable
@@ -54,5 +64,12 @@ public class AtomicStorageBlock extends BlockWithEntity {
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
+    }
+
+    @Override
+    @Nullable
+    public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory)(blockEntity) : null;
     }
 }
