@@ -2,6 +2,10 @@ package be.minelabs.block.entity;
 
 import be.minelabs.inventory.AtomicInventory;
 import be.minelabs.screen.AtomStorageScreenHandler;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,9 +15,10 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
-public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
+public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, SidedStorageBlockEntity {
     private AtomicInventory inventory = new AtomicInventory(512);
 
     public AtomicStorageBlockEntity(BlockPos pos, BlockState state) {
@@ -46,5 +51,13 @@ public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreen
 
     public AtomicInventory getInventory() {
         return inventory;
+    }
+
+    @Override
+    public @Nullable Storage<ItemVariant> getItemStorage(Direction side) {
+        if (side == Direction.UP) {
+            return null; // no insert/extract for up
+        }
+        return InventoryStorage.of(inventory, side);
     }
 }

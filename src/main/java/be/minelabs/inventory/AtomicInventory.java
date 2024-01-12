@@ -15,6 +15,10 @@ import net.minecraft.util.Identifier;
 
 public class AtomicInventory extends SimpleInventory {
 
+    // TODO FIX HOPPER MAX STACK 64
+    //  it uses the stack.getMaxStackSize() instead of the inventory's
+
+
     // Allows stacks with more then 64 inside of the inventory
     private final int MAX_SIZE;
 
@@ -77,11 +81,12 @@ public class AtomicInventory extends SimpleInventory {
      */
     @Override
     public ItemStack addStack(ItemStack stack) {
-        if (stack.getItem() instanceof AtomItem atom) {
-            ItemStack inv_stack = stacks.get(atom.getAtom().getAtomNumber() - 1);
+        int atomicIndex = getAtomicIndex(stack);
+        if (stack.getItem() instanceof AtomItem) {
+            ItemStack inv_stack = stacks.get(atomicIndex);
             if (inv_stack.isEmpty()) {
                 // Empty stack
-                setStack(atom.getAtom().getAtomNumber() - 1, stack.copy());
+                setStack(atomicIndex, stack.copy());
                 stack.setCount(0);
                 return ItemStack.EMPTY;
             } else {
@@ -173,4 +178,42 @@ public class AtomicInventory extends SimpleInventory {
         }
         return false;
     }
+
+    /**
+     * What is allowed to be inserted
+     *
+     * @param stack : try to insert
+     * @return boolean
+     */
+    @Override
+    public boolean canInsert(ItemStack stack) {
+        return stack.getItem() instanceof AtomItem;
+    }
+
+    /**
+     * Get the index of the stack in the AtomicInventory
+     *
+     * @param stack : stack to get index for
+     * @return integer: atomic number - 1 OR -1 (on fail)
+     */
+    private int getAtomicIndex(ItemStack stack) {
+        if (stack.getItem() instanceof AtomItem item) {
+            return (item.getAtom().getAtomNumber() - 1);
+        }
+        return -1;
+    }
+
+    /**
+     * Can insert stack into slot
+     *
+     * @param slot  : slot to insert into
+     * @param stack : stack to insert
+     * @return boolean
+     */
+    @Override
+    public boolean isValid(int slot, ItemStack stack) {
+        int atomic = getAtomicIndex(stack);
+        return atomic != -1 && atomic == slot;
+    }
+
 }
