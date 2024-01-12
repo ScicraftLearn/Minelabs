@@ -1,7 +1,9 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
+import be.minelabs.inventory.AtomicInventory;
 import be.minelabs.network.NetworkingConstants;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
@@ -30,9 +32,11 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import java.util.Optional;
@@ -174,6 +178,10 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private void craft(DynamicRegistryManager manager) {
         //Remove actual ingredients
         for (int i = 0; i < ingredients.size(); i++) {
+            AtomicStorageBlockEntity atomic_storage = getAtomicStorage();
+            if (atomic_storage != null) {
+                atomic_storage.getInventory().removeStack(ingredients.get(i), currentRecipe.getDensity());
+            }
             ioInventory.getStack(i).decrement(currentRecipe.getDensity());
         }
         // Remove a container item if needed
@@ -202,14 +210,30 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
      * @return boolean
      */
     private boolean hasEnoughItems() {
+        AtomicStorageBlockEntity atomic_storage = getAtomicStorage();
+        // TODO REFINE, DONT want to disable old working only add new (else if needs to change)
         for (int i = 0; i < ingredients.size(); i++) {
-            // TODO LCT LINK, check (left, behind, right)
-
-            if (!ingredients.get(i).test(ioInventory.getStack(i)) || ioInventory.getStack(i).getCount() < currentRecipe.getDensity()) {
+            Ingredient ingredient = ingredients.get(i);
+            if (atomic_storage != null) {
+                if (!atomic_storage.getInventory().contains(ingredient, currentRecipe.getRequiredAmount(ingredient))) {
+                    return false;
+                }
+            } else if (!ingredient.test(ioInventory.getStack(i)) || ioInventory.getStack(i).getCount() < currentRecipe.getDensity()) {
                 return false;
             }
         }
         return true;
+    }
+
+    private AtomicStorageBlockEntity getAtomicStorage() {
+        Direction direction = this.getCachedState().get(Properties.HORIZONTAL_FACING);
+        for (int j = 0; j < 3; j++) {
+            direction = direction.rotateYClockwise();
+            if (world.getBlockEntity(pos.offset(direction)) instanceof AtomicStorageBlockEntity storage) {
+                return storage;
+            }
+        }
+        return null;
     }
 
     /**
