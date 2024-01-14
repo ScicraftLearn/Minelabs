@@ -288,9 +288,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     public void closeAtomicStorage() {
         // TODO fix NBT SAVE : SYNC ??
-        getSlot(clickedIndex).getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
-        atomicStorage = null;
-        clickedIndex = -1;
+        if (clickedIndex != -1 && atomicStorage != null){
+            getSlot(clickedIndex).getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
+            atomicStorage = null;
+            clickedIndex = -1;
+        }
     }
 
     /**
@@ -380,6 +382,12 @@ public class LewisBlockScreenHandler extends ScreenHandler {
 
     public LewisCraftingGrid getLewisCraftingGrid() {
         return craftingGrid;
+    }
+
+    @Override
+    public void onClosed(PlayerEntity player) {
+        this.closeAtomicStorage();
+        super.onClosed(player);
     }
 
     @Override

@@ -8,11 +8,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 
 public class AtomicInventory extends SimpleInventory {
+
+    // TODO FIX HOPPER MAX STACK 64
+    //  it uses the stack.getMaxStackSize() instead of the inventory's
+
 
     // Allows stacks with more then 64 inside of the inventory
     private final int MAX_SIZE;
@@ -22,7 +27,7 @@ public class AtomicInventory extends SimpleInventory {
         MAX_SIZE = stack_size;
     }
 
-    public AtomicInventory(NbtCompound nbt){
+    public AtomicInventory(NbtCompound nbt) {
         this(256);
         this.readNbt(nbt);
     }
@@ -31,7 +36,7 @@ public class AtomicInventory extends SimpleInventory {
     @Override
     public void onClose(PlayerEntity player) {
         super.onClose(player);
-        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == 256){
+        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == 256) {
             NbtCompound nbt = player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt();
             this.writeNbt(nbt);
         }
@@ -40,7 +45,7 @@ public class AtomicInventory extends SimpleInventory {
     // Load inventory from NBT if it's the Atom Pack
     @Override
     public void onOpen(PlayerEntity player) {
-        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == 256){
+        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == 256) {
             readNbt(player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt());
         }
         super.onOpen(player);
@@ -51,14 +56,14 @@ public class AtomicInventory extends SimpleInventory {
      *
      * @param origin : Inventory to TAKE from
      */
-    public void tryToFill(AtomicInventory origin){
+    public void tryToFill(AtomicInventory origin) {
         for (int i = 0; i < stacks.size(); i++) {
-            if (stacks.get(i).getCount() == getMaxCountPerStack() || origin.getStack(i).isEmpty()){
+            if (stacks.get(i).getCount() == getMaxCountPerStack() || origin.getStack(i).isEmpty()) {
                 // Slot if FULL || Nothing to fill with
                 continue;
             } else {
                 // Try to fill
-                if (stacks.get(i).isEmpty()){
+                if (stacks.get(i).isEmpty()) {
                     stacks.set(i, origin.getStack(i).copy());
                     origin.stacks.set(i, ItemStack.EMPTY);
                 } else {
@@ -76,11 +81,12 @@ public class AtomicInventory extends SimpleInventory {
      */
     @Override
     public ItemStack addStack(ItemStack stack) {
-        if (stack.getItem() instanceof AtomItem atom) {
-            ItemStack inv_stack = stacks.get(atom.getAtom().getAtomNumber() - 1);
+        int atomicIndex = getAtomicIndex(stack);
+        if (stack.getItem() instanceof AtomItem) {
+            ItemStack inv_stack = stacks.get(atomicIndex);
             if (inv_stack.isEmpty()) {
                 // Empty stack
-                setStack(atom.getAtom().getAtomNumber() - 1, stack.copy());
+                setStack(atomicIndex, stack.copy());
                 stack.setCount(0);
                 return ItemStack.EMPTY;
             } else {
@@ -94,6 +100,15 @@ public class AtomicInventory extends SimpleInventory {
             }
         }
         return stack;
+    }
+
+    public void removeStack(Ingredient ingredient, int count) {
+        for (ItemStack stack : stacks) {
+            if (ingredient.test(stack)) {
+                stack.decrement(count);
+                return;
+            }
+        }
     }
 
     /**
@@ -116,7 +131,7 @@ public class AtomicInventory extends SimpleInventory {
         return MAX_SIZE;
     }
 
-    public void readNbt(NbtCompound nbt){
+    public void readNbt(NbtCompound nbt) {
         NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         for (int i = 0; i < nbtList.size(); ++i) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
@@ -130,13 +145,13 @@ public class AtomicInventory extends SimpleInventory {
         }
     }
 
-    public NbtCompound writeNbt(NbtCompound nbt){
+    public NbtCompound writeNbt(NbtCompound nbt) {
         NbtList nbtList = new NbtList();
         for (int i = 0; i < stacks.size(); ++i) {
             ItemStack itemStack = stacks.get(i);
             if (itemStack.isEmpty()) continue;
             NbtCompound nbtCompound = new NbtCompound();
-            nbtCompound.putByte("Slot", (byte)i);
+            nbtCompound.putByte("Slot", (byte) i);
 
             Identifier identifier = Registries.ITEM.getId(itemStack.getItem());
             nbtCompound.putString("id", identifier == null ? "minecraft:air" : identifier.toString());
@@ -147,4 +162,58 @@ public class AtomicInventory extends SimpleInventory {
         nbt.put("Items", nbtList);
         return nbt;
     }
+
+    /**
+     * Check if the inventory has the ingredient and the correct amount
+     *
+     * @param ingredient : ingredient/Item to compare
+     * @param amount     : amount to be present in inverntory
+     * @return boolean, true/false
+     */
+    public boolean contains(Ingredient ingredient, int amount) {
+        for (ItemStack stack : stacks) {
+            if (ingredient.test(stack) && stack.getCount() >= amount) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * What is allowed to be inserted
+     *
+     * @param stack : try to insert
+     * @return boolean
+     */
+    @Override
+    public boolean canInsert(ItemStack stack) {
+        return stack.getItem() instanceof AtomItem;
+    }
+
+    /**
+     * Get the index of the stack in the AtomicInventory
+     *
+     * @param stack : stack to get index for
+     * @return integer: atomic number - 1 OR -1 (on fail)
+     */
+    private int getAtomicIndex(ItemStack stack) {
+        if (stack.getItem() instanceof AtomItem item) {
+            return (item.getAtom().getAtomNumber() - 1);
+        }
+        return -1;
+    }
+
+    /**
+     * Can insert stack into slot
+     *
+     * @param slot  : slot to insert into
+     * @param stack : stack to insert
+     * @return boolean
+     */
+    @Override
+    public boolean isValid(int slot, ItemStack stack) {
+        int atomic = getAtomicIndex(stack);
+        return atomic != -1 && atomic == slot;
+    }
+
 }
