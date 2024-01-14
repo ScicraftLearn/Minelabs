@@ -18,6 +18,7 @@
     "IceBlockMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
-    "MobEntityMixin"
+    "MobEntityMixin",
+    "ServerPlayNetworkHandlerMixin"
   ]
 }
