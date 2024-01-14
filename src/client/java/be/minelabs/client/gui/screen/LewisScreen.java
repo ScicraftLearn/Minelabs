@@ -16,6 +16,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -40,10 +41,12 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private static final Identifier TEXTURE2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory.png");
     private static final Identifier TEXTURE_STORAGE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_craftable_with_pack.png");
     private static final Identifier TEXTURE_STORAGE_2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_with_pack.png");
+    private static final Identifier TOGGLE_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/atom_toggle");
 
     private ButtonWidget buttonWidget;
 
     private ButtonWidget returnButton;
+    private TexturedButtonWidget atomicButton;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -61,7 +64,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        if (handler.showAtomStorage()){
+        // TODO needs to change dynamic render layers
+        if (handler.showAtomStorage()) {
             backgroundHeight = 256;
             if (this.handler.hasRecipe()) {
                 RenderSystem.setShaderTexture(0, TEXTURE_STORAGE);
@@ -191,6 +195,21 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         }).position(x + 144, y + 131).size(25, 12).build();
         returnButton.visible = false;
         addDrawableChild(returnButton);
+
+        // TODO INE: texture
+
+        atomicButton = new TexturedButtonWidget(x + 177, y + 112, 18, 18,
+                18, 18, 0, TOGGLE_TEXTURE, 18, 18, button -> {
+            handler.toggleAtomic();
+            client.interactionManager.clickButton(handler.syncId, 2);
+            button.setFocused(false);
+        });
+
+        atomicButton.setTooltip(Tooltip.of(Text
+                .translatableWithFallback("text.minelabs.atomic_storage", "Toggle Atomic Storage")));
+
+        atomicButton.visible = handler.hasStorage(); // DISABLE WHEN NO STORAGE BLOCK IS PRESENT
+        addDrawable(atomicButton);
     }
 
     @Override

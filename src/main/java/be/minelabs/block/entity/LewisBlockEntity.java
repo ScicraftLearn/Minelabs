@@ -225,7 +225,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return true;
     }
 
-    private AtomicStorageBlockEntity getAtomicStorage() {
+    public AtomicStorageBlockEntity getAtomicStorage() {
         Direction direction = this.getCachedState().get(Properties.HORIZONTAL_FACING);
         for (int j = 0; j < 3; j++) {
             direction = direction.rotateYClockwise();

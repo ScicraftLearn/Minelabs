@@ -280,18 +280,35 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     public void openAtomicStorage(ItemStack stack) {
-        atomicStorage = new AtomicInventory(stack.getOrCreateNbt());
+        openAtomic(new AtomicInventory(stack.getOrCreateNbt()));
+    }
+
+    private void openAtomic(AtomicInventory atomicInventory) {
+        this.atomicStorage = atomicInventory;
         // "update" the Atomic slots with the new inventory (link between inv and slots is final)
         // Just replacing with correctly linked ones
         updateAtomicSlots();
     }
 
     public void closeAtomicStorage() {
-        // TODO fix NBT SAVE : SYNC ??
-        if (clickedIndex != -1 && atomicStorage != null){
-            getSlot(clickedIndex).getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
+        if (atomicStorage != null) {
+            if (clickedIndex != -1) {
+                // ATOM PACK
+                getSlot(clickedIndex).getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
+                clickedIndex = -1;
+            } else {
+                // ATOMIC STORAGE
+                // TODO ?
+            }
             atomicStorage = null;
-            clickedIndex = -1;
+        }
+    }
+
+    public void toggleAtomic() {
+        if (atomicStorage == null && hasStorage()) {
+            openAtomic(lewis.getAtomicStorage().getInventory());
+        } else if (atomicStorage != null) {
+            closeAtomicStorage();
         }
     }
 
@@ -413,10 +430,18 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 closeAtomicStorage(); // Need to call serverside close (save nbt)
                 return true;
             }
+            case 2 -> {
+                toggleAtomic();
+                return true;
+            }
             default -> {
                 return false;
             }
         }
+    }
+
+    public boolean hasStorage() {
+        return lewis.getAtomicStorage() != null;
     }
 
     public boolean isCrafting() {
