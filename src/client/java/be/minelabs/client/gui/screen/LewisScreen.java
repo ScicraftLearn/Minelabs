@@ -17,6 +17,7 @@ import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.IconButtonWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -48,7 +49,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private ButtonWidget buttonWidget;
 
     private ButtonWidget returnButton;
-    private IconButtonWidget atomicButton;
+    private ButtonWidget atomicButton;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -199,15 +200,27 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         returnButton.visible = false;
         addDrawableChild(returnButton);
 
-        atomicButton = new IconButtonWidget.Builder(Text.of(""), TOGGLE_TEXTURE, button -> {
+        // TODO DECIDE HOW TO RENDER BUTTON / ICON
+
+        atomicButton = new TexturedButtonWidget(x + 177, y + 112, 18, 18,
+                0, 0, 0, TOGGLE_TEXTURE, 16, 16, button -> {
             handler.openAtomicStorage();
             client.interactionManager.clickButton(handler.syncId, 2);
             button.setFocused(false);
             returnButton.visible = true;
             button.active = false;
-        }).uv(18, 18).textureSize(18, 18).build();
-        atomicButton.setPosition(x + 177, y + 112);
-        atomicButton.setWidth(18);
+        });
+
+
+//        atomicButton = new IconButtonWidget.Builder(Text.of(""), TOGGLE_TEXTURE, button -> {
+//            handler.openAtomicStorage();
+//            client.interactionManager.clickButton(handler.syncId, 2);
+//            button.setFocused(false);
+//            returnButton.visible = true;
+//            button.active = false;
+//        }).uv(0, 0).textureSize(16, 16).xyOffset(0,0).hoveredVOffset(0).build();
+//        atomicButton.setPosition(x + 177, y + 112);
+//        atomicButton.setWidth(18);
 
         atomicButton.setTooltip(Tooltip.of(Text
                 .translatableWithFallback("text.minelabs.atomic_storage", "Toggle Atomic Storage")));
