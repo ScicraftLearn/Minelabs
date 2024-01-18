@@ -37,10 +37,12 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implements ScreenHandlerProvider<LewisBlockScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory_craftable.png");
-    private static final Identifier TEXTURE2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory.png");
-    private static final Identifier TEXTURE_STORAGE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_craftable_with_pack.png");
-    private static final Identifier TEXTURE_STORAGE_2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_with_pack.png");
+
+    private static final Identifier BASE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory.png");
+    private static final Identifier IO_SLOTS = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/io_slots.png");
+    private static final Identifier ATOMIC_SLOTS = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/atomic_slots.png");
+
+    // TODO ART: texture
     private static final Identifier TOGGLE_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/item/atom_pack.png");
 
     private ButtonWidget buttonWidget;
@@ -64,24 +66,20 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        // TODO needs to change dynamic render layers
-        if (handler.showAtomStorage()) {
-            backgroundHeight = 256;
-            if (this.handler.hasRecipe()) {
-                RenderSystem.setShaderTexture(0, TEXTURE_STORAGE);
-            } else {
-                RenderSystem.setShaderTexture(0, TEXTURE_STORAGE_2);
-            }
-        } else {
-            backgroundHeight = 229;
-            if (this.handler.hasRecipe()) {
-                RenderSystem.setShaderTexture(0, TEXTURE);
-            } else {
-                RenderSystem.setShaderTexture(0, TEXTURE2);
-            }
+        RenderSystem.enableBlend();
+        backgroundHeight = 229;
+        this.drawTexture(matrices, BASE);
+
+        if (this.handler.hasRecipe()) {
+            this.drawTexture(matrices, IO_SLOTS);
         }
 
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        if (handler.showAtomStorage()) {
+            backgroundHeight = 256;
+            this.drawTexture(matrices, ATOMIC_SLOTS);
+        }
+
+        RenderSystem.disableBlend();
         renderProgressArrow(matrices, this.x, this.y);
         renderRecipeCheck(matrices, this.x, this.y);
 
@@ -168,6 +166,10 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         matrices.pop();
     }
 
+    private void drawTexture(MatrixStack matrices, Identifier id) {
+        RenderSystem.setShaderTexture(0, id);
+        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+    }
 
     @Override
     protected void init() {
@@ -196,8 +198,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         }).position(x + 144, y + 131).size(25, 12).build();
         returnButton.visible = false;
         addDrawableChild(returnButton);
-
-        // TODO INE: texture
 
         atomicButton = new IconButtonWidget.Builder(Text.of(""), TOGGLE_TEXTURE, button -> {
             handler.openAtomicStorage();
@@ -276,11 +276,13 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
     private void renderProgressArrow(MatrixStack matrices, int x, int y) {
         if (handler.isCrafting()) {
+            RenderSystem.setShaderTexture(0, BASE);
             drawTexture(matrices, x + 102, y + 52, 176, 0, handler.getScaledProgress(), 20);
         }
     }
 
     private void renderRecipeCheck(MatrixStack matrices, int x, int y) {
+        RenderSystem.setShaderTexture(0, BASE);
         switch (handler.getStatus()) {
             case 1 -> drawTexture(matrices, x + 105, y + 17, 176, 55, 16, 16); // NOT IMPLEMENTED
             case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 72, 16, 16); // VALID
