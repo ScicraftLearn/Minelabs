@@ -1,5 +1,6 @@
 package be.minelabs.screen;
 
+import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.entity.LewisBlockEntity;
 import be.minelabs.inventory.AtomicInventory;
@@ -12,7 +13,6 @@ import be.minelabs.screen.slot.AtomSlot;
 import be.minelabs.screen.slot.CraftingResultSlot;
 import be.minelabs.screen.slot.FilteredSlot;
 import be.minelabs.screen.slot.LockableGridSlot;
-import be.minelabs.item.Items;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -42,8 +42,9 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     private final LewisCraftingGrid craftingGrid;
 
     private final SimpleInventory ioInventory;
+    private final AtomicInventory EMPTY_STORAGE = new AtomicInventory(64);
 
-    private AtomicInventory atomicStorage = new AtomicInventory(512);
+    private AtomicInventory atomicStorage = EMPTY_STORAGE;
 
     //PropertyDelegate that holds the progress and density
     private final PropertyDelegate propertyDelegate;
@@ -272,15 +273,20 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         if (slotIndex > 0 && getSlot(slotIndex).inventory instanceof PlayerInventory) {
             if (getSlot(slotIndex).getStack().isOf(Items.ATOM_PACK)) {
                 clickedIndex = slotIndex;
-                openAtomicStorage(getSlot(slotIndex).getStack());
+                openAtomPack(getSlot(slotIndex).getStack());
                 return;
             }
         }
         super.onSlotClick(slotIndex, button, actionType, player);
     }
 
-    public void openAtomicStorage(ItemStack stack) {
+    public void openAtomPack(ItemStack stack) {
         openAtomic(new AtomicInventory(stack.getOrCreateNbt()));
+    }
+
+    public void openAtomicStorage() {
+        openAtomic(lewis.getAtomicStorage().getInventory());
+        clickedIndex = -2;
     }
 
     private void openAtomic(AtomicInventory atomicInventory) {
@@ -291,24 +297,14 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     }
 
     public void closeAtomicStorage() {
-        if (atomicStorage != null) {
-            if (clickedIndex != -1) {
+        if (atomicStorage != EMPTY_STORAGE) {
+            if (clickedIndex > -1) {
                 // ATOM PACK
                 getSlot(clickedIndex).getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
-                clickedIndex = -1;
-            } else {
-                // ATOMIC STORAGE
-                // TODO ?
             }
-            atomicStorage = null;
-        }
-    }
+            clickedIndex = -1;
 
-    public void toggleAtomic() {
-        if (atomicStorage == null && hasStorage()) {
-            openAtomic(lewis.getAtomicStorage().getInventory());
-        } else if (atomicStorage != null) {
-            closeAtomicStorage();
+            atomicStorage = EMPTY_STORAGE;
         }
     }
 
@@ -394,7 +390,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * @return boolean
      */
     public boolean showAtomStorage() {
-        return clickedIndex >= 0;
+        return clickedIndex >= 0 || clickedIndex == -2;
     }
 
     public LewisCraftingGrid getLewisCraftingGrid() {
@@ -431,7 +427,8 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 return true;
             }
             case 2 -> {
-                toggleAtomic();
+                Minelabs.LOGGER.info("click");
+                openAtomicStorage();
                 return true;
             }
             default -> {

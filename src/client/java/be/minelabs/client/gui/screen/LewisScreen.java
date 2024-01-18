@@ -16,7 +16,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.gui.widget.IconButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -41,12 +41,12 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private static final Identifier TEXTURE2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_inventory.png");
     private static final Identifier TEXTURE_STORAGE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_craftable_with_pack.png");
     private static final Identifier TEXTURE_STORAGE_2 = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/lewis_block_with_pack.png");
-    private static final Identifier TOGGLE_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/atom_toggle");
+    private static final Identifier TOGGLE_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/item/atom_pack.png");
 
     private ButtonWidget buttonWidget;
 
     private ButtonWidget returnButton;
-    private TexturedButtonWidget atomicButton;
+    private IconButtonWidget atomicButton;
 
     public LewisScreen(LewisBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -192,24 +192,28 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             // unfocus button && hide
             returnButton.visible = false;
             button.setFocused(false);
+            atomicButton.active = true;
         }).position(x + 144, y + 131).size(25, 12).build();
         returnButton.visible = false;
         addDrawableChild(returnButton);
 
         // TODO INE: texture
 
-        atomicButton = new TexturedButtonWidget(x + 177, y + 112, 18, 18,
-                18, 18, 0, TOGGLE_TEXTURE, 18, 18, button -> {
-            handler.toggleAtomic();
+        atomicButton = new IconButtonWidget.Builder(Text.of(""), TOGGLE_TEXTURE, button -> {
+            handler.openAtomicStorage();
             client.interactionManager.clickButton(handler.syncId, 2);
             button.setFocused(false);
-        });
+            returnButton.visible = true;
+            button.active = false;
+        }).uv(18, 18).textureSize(18, 18).build();
+        atomicButton.setPosition(x + 177, y + 112);
+        atomicButton.setWidth(18);
 
         atomicButton.setTooltip(Tooltip.of(Text
                 .translatableWithFallback("text.minelabs.atomic_storage", "Toggle Atomic Storage")));
 
         atomicButton.visible = handler.hasStorage(); // DISABLE WHEN NO STORAGE BLOCK IS PRESENT
-        addDrawable(atomicButton);
+        addDrawableChild(atomicButton);
     }
 
     @Override
@@ -219,6 +223,14 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         if (ret)
             setFocused(null);
         return ret;
+    }
+
+    @Override
+    protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
+        if (atomicButton.isMouseOver(mouseX, mouseY)) {
+            return false;
+        }
+        return super.isClickOutsideBounds(mouseX, mouseY, left, top, button);
     }
 
     @Override
