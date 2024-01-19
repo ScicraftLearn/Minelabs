@@ -1,6 +1,5 @@
 package be.minelabs.screen;
 
-import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.entity.LewisBlockEntity;
 import be.minelabs.inventory.AtomicInventory;
@@ -42,7 +41,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
     private final LewisCraftingGrid craftingGrid;
 
     private final SimpleInventory ioInventory;
-    private final AtomicInventory EMPTY_STORAGE = new AtomicInventory(64);
+    private final AtomicInventory EMPTY_STORAGE = new AtomicInventory(1);
 
     private AtomicInventory atomicStorage = EMPTY_STORAGE;
 
@@ -303,7 +302,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 getSlot(clickedIndex).getStack().setNbt(atomicStorage.writeNbt(new NbtCompound()));
             }
             clickedIndex = -1;
-
             atomicStorage = EMPTY_STORAGE;
         }
     }
@@ -332,11 +330,11 @@ public class LewisBlockScreenHandler extends ScreenHandler {
      * Inserts the item into a slot, trying indexes from {@param startIndex} to {@param endIndex}.
      * If {@param fromLast}, it goes from {@param endIndex} to {@param startIndex}.
      *
-     * @param stack
-     * @param startIndex
-     * @param endIndex
-     * @param fromLast
-     * @return
+     * @param stack      : stack to insert
+     * @param startIndex : first slot to insert into
+     * @param endIndex   : last slot to insert into
+     * @param fromLast   : start from last slot to first
+     * @return boolean, fail insertion / successfully inserted
      */
     @Override
     protected boolean insertItem(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
@@ -427,7 +425,6 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 return true;
             }
             case 2 -> {
-                Minelabs.LOGGER.info("click");
                 openAtomicStorage();
                 return true;
             }

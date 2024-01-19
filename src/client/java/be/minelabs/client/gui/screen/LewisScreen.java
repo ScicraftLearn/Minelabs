@@ -1,6 +1,5 @@
 package be.minelabs.client.gui.screen;
 
-
 import be.minelabs.Minelabs;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
@@ -17,7 +16,6 @@ import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.IconButtonWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -47,7 +45,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private static final Identifier TOGGLE_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/item/atom_pack.png");
 
     private ButtonWidget buttonWidget;
-
     private ButtonWidget returnButton;
     private ButtonWidget atomicButton;
 
@@ -200,30 +197,20 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         returnButton.visible = false;
         addDrawableChild(returnButton);
 
-        // TODO DECIDE HOW TO RENDER BUTTON / ICON
-
-        atomicButton = new TexturedButtonWidget(x + 177, y + 112, 18, 18,
-                0, 0, 0, TOGGLE_TEXTURE, 16, 16, button -> {
+        atomicButton = new IconButtonWidget.Builder(Text.of(""), TOGGLE_TEXTURE, button -> {
             handler.openAtomicStorage();
             client.interactionManager.clickButton(handler.syncId, 2);
+            // unfocus button && deactivate
             button.setFocused(false);
-            returnButton.visible = true;
             button.active = false;
-        });
-
-
-//        atomicButton = new IconButtonWidget.Builder(Text.of(""), TOGGLE_TEXTURE, button -> {
-//            handler.openAtomicStorage();
-//            client.interactionManager.clickButton(handler.syncId, 2);
-//            button.setFocused(false);
-//            returnButton.visible = true;
-//            button.active = false;
-//        }).uv(0, 0).textureSize(16, 16).xyOffset(0,0).hoveredVOffset(0).build();
-//        atomicButton.setPosition(x + 177, y + 112);
-//        atomicButton.setWidth(18);
+            returnButton.visible = true;
+        }).iconSize(16, 16).uv(0, 0).textureSize(16, 16)
+                .xyOffset(0, 2).hoveredVOffset(0).build();
+        atomicButton.setPosition(x + 177, y + 112);
+        atomicButton.setWidth(20); // default is 150
 
         atomicButton.setTooltip(Tooltip.of(Text
-                .translatableWithFallback("text.minelabs.atomic_storage", "Toggle Atomic Storage")));
+                .translatableWithFallback("text.minelabs.atomic_storage", "Open Atomic Storage")));
 
         atomicButton.visible = handler.hasStorage(); // DISABLE WHEN NO STORAGE BLOCK IS PRESENT
         addDrawableChild(atomicButton);
