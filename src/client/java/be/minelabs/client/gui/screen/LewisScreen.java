@@ -186,15 +186,16 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         }).position(x + 133, y + 17).size(18, 18).build();
         addDrawableChild(buttonWidget);
 
-        returnButton = new ButtonWidget.Builder(Text.of("<--"), button -> {
+        // TODO ICON BTN, see atomic button
+        returnButton = new ButtonWidget.Builder(Text.of(""), button -> {
             handler.closeAtomicStorage(); // visual close + no de-sync
             client.interactionManager.clickButton(handler.syncId, 1);
             // unfocus button && hide
-            returnButton.visible = false;
+            returnButton.active = false;
             button.setFocused(false);
             atomicButton.active = true;
-        }).position(x + 144, y + 131).size(25, 12).build();
-        returnButton.visible = false;
+        }).position(x + 177, y + 90).size(20, 20).build();
+        returnButton.active = false;
         addDrawableChild(returnButton);
 
         atomicButton = new IconButtonWidget.Builder(Text.of(""), TOGGLE_TEXTURE, button -> {
@@ -203,7 +204,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             // unfocus button && deactivate
             button.setFocused(false);
             button.active = false;
-            returnButton.visible = true;
+            returnButton.active = true;
         }).iconSize(16, 16).uv(0, 0).textureSize(16, 16)
                 .xyOffset(0, 2).hoveredVOffset(0).build();
         atomicButton.setPosition(x + 177, y + 112);
@@ -227,7 +228,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
 
     @Override
     protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
-        if (atomicButton.isMouseOver(mouseX, mouseY)) {
+        if (atomicButton.isMouseOver(mouseX, mouseY) || returnButton.isMouseOver(mouseX, mouseY)) {
             return false;
         }
         return super.isClickOutsideBounds(mouseX, mouseY, left, top, button);
@@ -239,7 +240,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         if (slot != null) { // Might be null - Method is also called for normal clicks (outside bounds)
             if (slot.inventory instanceof PlayerInventory && slot.getStack().isOf(be.minelabs.item.Items.ATOM_PACK)) {
                 if (handler.showAtomStorage()) { // Handler ensures correct
-                    returnButton.visible = true;
+                    returnButton.active = true;
+                    atomicButton.active = false;
                 }
             }
         }
