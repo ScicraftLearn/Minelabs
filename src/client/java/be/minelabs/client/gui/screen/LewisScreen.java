@@ -195,6 +195,8 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             button.setFocused(false);
             atomicButton.active = true;
         }).position(x + 177, y + 90).size(20, 20).build();
+        returnButton.setTooltip(Tooltip.of(
+                Text.translatableWithFallback("text.minelabs.return", "Return to Inventory")));
         returnButton.active = false;
         addDrawableChild(returnButton);
 
