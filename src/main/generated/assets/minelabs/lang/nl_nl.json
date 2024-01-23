@@ -345,6 +345,7 @@
   "text.minelabs.quark.color.red": "Kleur: Rood",
   "text.minelabs.quark.electric_down": "Lading: -1/3",
   "text.minelabs.quark.electric_up": "Lading: +2/3",
+  "text.minelabs.return": "Terug naar de Inventaris",
   "text.minelabs.toggle_instruction": "Shift Klik met de rechtermuisknop om te wisselen",
   "text.minelabs.valid": "Correcte Molecule"
 }

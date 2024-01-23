@@ -41,7 +41,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     private static final Identifier IO_SLOTS = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/io_slots.png");
     private static final Identifier ATOMIC_SLOTS = new Identifier(Minelabs.MOD_ID, "textures/gui/lewis_block/atomic_slots.png");
 
-    // TODO ART: texture
+    // TODO ART: texture ?
     private static final Identifier TOGGLE_TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/item/atom_pack.png");
 
     private ButtonWidget buttonWidget;
@@ -186,7 +186,6 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
         }).position(x + 133, y + 17).size(18, 18).build();
         addDrawableChild(buttonWidget);
 
-        // TODO ICON BTN, see atomic button
         returnButton = new ButtonWidget.Builder(Text.of(""), button -> {
             handler.closeAtomicStorage(); // visual close + no de-sync
             client.interactionManager.clickButton(handler.syncId, 1);
@@ -253,6 +252,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
+        itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.CHEST), x + 179, y + 91);
 
         // TODO: this should be updated on state change, not during render call
         buttonWidget.setTooltip(Tooltip.of(handler.isInputEmpty() ?
