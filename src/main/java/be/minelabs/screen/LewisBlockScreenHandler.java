@@ -421,7 +421,7 @@ public class LewisBlockScreenHandler extends ScreenHandler {
                 return true;
             }
             case 1 -> {
-                closeAtomicStorage(); // Need to call serverside close (save nbt)
+                closeAtomicStorage();
                 return true;
             }
             case 2 -> {

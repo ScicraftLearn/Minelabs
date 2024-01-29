@@ -102,13 +102,22 @@ public class AtomicInventory extends SimpleInventory {
         return stack;
     }
 
-    public void removeStack(Ingredient ingredient, int count) {
+    /**
+     * Remove a given amount if possible from the inventory
+     *
+     * @param ingredient : what item type to remove
+     * @param count      : amount to remove
+     * @return return what needs to be removed.
+     */
+    public int removeStack(Ingredient ingredient, int count) {
         for (ItemStack stack : stacks) {
             if (ingredient.test(stack)) {
+                int amount = stack.getCount();
                 stack.decrement(count);
-                return;
+                return amount >= count ? 0 : count - amount;
             }
         }
+        return count;
     }
 
     /**

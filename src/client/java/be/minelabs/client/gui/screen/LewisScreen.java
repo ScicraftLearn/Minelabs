@@ -158,7 +158,7 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
                 break;
             }
             if (handler.getIoInventory().getStack(i).getCount() == 0) {
-                MinecraftClient.getInstance().textRenderer.draw(matrices, Integer.toString(handler.getDensity()), 2 * (x + 8 + 18 * i) + 25, (int) 2 * (133 + y - 20) + 23, 5592405);
+                this.textRenderer.draw(matrices, Integer.toString(handler.getDensity()), 2 * (x + 8 + 18 * i) + 25, (int) 2 * (133 + y - 20) + 23, 5592405);
             }
         }
         matrices.pop();

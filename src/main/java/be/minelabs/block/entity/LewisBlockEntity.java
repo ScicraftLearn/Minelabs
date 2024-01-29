@@ -1,9 +1,7 @@
 package be.minelabs.block.entity;
 
-import be.minelabs.Minelabs;
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.advancement.criterion.LCTCriterion;
-import be.minelabs.inventory.AtomicInventory;
 import be.minelabs.network.NetworkingConstants;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.lewis.MoleculeRecipe;
@@ -27,6 +25,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -150,7 +149,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
         } else {
             resetProgress();
-            advancementCheck();
+            advancementCheck(world.getRecipeManager());
         }
     }
 
@@ -158,8 +157,8 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
      * Callback used for advancement
      * Don't use currentRecipe, it might trigger the advancement
      */
-    private void advancementCheck() {
-        Optional<MoleculeRecipe> recipe = getWorld().getRecipeManager().getFirstMatch(MoleculeRecipe.MoleculeRecipeType.INSTANCE, craftingGrid, getWorld());
+    private void advancementCheck(RecipeManager manager) {
+        Optional<MoleculeRecipe> recipe = manager.getFirstMatch(MoleculeRecipe.MoleculeRecipeType.INSTANCE, craftingGrid, getWorld());
         if (recipe.isEmpty() && getWorld() instanceof ServerWorld serverWorld) {
             MoleculeGraph structure = craftingGrid.getPartialMolecule().getStructure();
             if (!structure.getVertices().isEmpty() && structure.getTotalOpenConnections() == 0 && structure.isConnectedManagerFunctieOmdatJoeyZaagtZoalsVaak()) {
@@ -176,13 +175,15 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
      * @param manager : DynamicRegistryManager, pass through
      */
     private void craft(DynamicRegistryManager manager) {
+        // TODO REFINE, DONT want to disable old working only add new (else if needs to change)
         //Remove actual ingredients
         for (int i = 0; i < ingredients.size(); i++) {
             AtomicStorageBlockEntity atomic_storage = getAtomicStorage();
+            int count = currentRecipe.getDensity();
             if (atomic_storage != null) {
-                atomic_storage.getInventory().removeStack(ingredients.get(i), currentRecipe.getDensity());
+                count = atomic_storage.getInventory().removeStack(ingredients.get(i), count);
             }
-            ioInventory.getStack(i).decrement(currentRecipe.getDensity());
+            ioInventory.getStack(i).decrement(count);
         }
         // Remove a container item if needed
         if (currentRecipe.needsContainer()) {
@@ -229,7 +230,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
         Direction direction = this.getCachedState().get(Properties.HORIZONTAL_FACING);
         for (int j = 0; j < 3; j++) {
             direction = direction.rotateYClockwise();
-            if (world.getBlockEntity(pos.offset(direction)) instanceof AtomicStorageBlockEntity storage) {
+            if (getWorld().getBlockEntity(getPos().offset(direction)) instanceof AtomicStorageBlockEntity storage) {
                 return storage;
             }
         }
@@ -254,7 +255,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     private boolean canExport(DynamicRegistryManager manager) {
         return ioInventory.getStack(10).isEmpty()
                 || ioInventory.getStack(10).getCount() + currentRecipe.getOutput(manager).getCount() <= ioInventory.getStack(10).getMaxCount()
-                && ioInventory.getStack(10).isOf(currentRecipe.getOutput(getWorld().getRegistryManager()).getItem());
+                && ioInventory.getStack(10).isOf(currentRecipe.getOutput(manager).getItem());
     }
 
     private boolean hasRecipe() {
@@ -313,7 +314,7 @@ public class LewisBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     private void sendDataPacket() {
-        if (world.isClient) {
+        if (getWorld().isClient) {
             return;
         }
         PacketByteBuf buf = PacketByteBufs.create();
