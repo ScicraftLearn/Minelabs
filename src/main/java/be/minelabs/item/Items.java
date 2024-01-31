@@ -23,6 +23,8 @@ public class Items {
     // Items
     public static final Item ENTROPY_CREEPER_SPAWN_EGG = register(new SpawnEggItem(Entities.ENTROPY_CREEPER,
             0xbb64e1, 0x5d0486, new FabricItemSettings()), "entropy_creeper_spawn_egg");
+    // Items > Atoms
+    public static final List<AtomItem> ATOMS = Arrays.stream(Atom.values()).map(Items::registerAtom).toList();
 
     public static final Item LASERTOOL_IRON = register(new LaserTool(2.5f, -2.4f, ToolMaterials.IRON, new Item.Settings()), "lasertool_iron");
     public static final Item LASERTOOL_GOLD = register(new LaserTool(2.5f, -2.4f, ToolMaterials.GOLD, new Item.Settings()), "lasertool_gold");
@@ -87,6 +89,10 @@ public class Items {
     public static final Item LAB_CORNER = register(new BlockItem(Blocks.LAB_CORNER,
             new FabricItemSettings()), "lab/lab_corner");
 
+    public static final Item LAB_LEWIS = register(new BlockItem(Blocks.LAB_LEWIS,
+            new FabricItemSettings()), "lab/lab_lewis");
+
+
     public static final Item MICROSCOPE = register(new BlockItem(Blocks.MICROSCOPE,
             new FabricItemSettings().maxCount(1)), "lab/microscope");
 
@@ -106,6 +112,9 @@ public class Items {
 
     public static final Item POCKET_HOLE = register(new BlackHoleItem(
             new FabricItemSettings().maxCount(1)), "pocket_hole");
+
+    public static final Item ATOM_PACK = register(new AtomPackItem(
+            new FabricItemSettings().maxCount(1)), "atom_pack");
 
     public static final Item LITHIUM_CHLORIDE_DUST = register(new FireReactionItem(new FabricItemSettings()
             .maxCount(64), 1, "LiCl"), "dust/lithium_chloride_dust");
@@ -176,9 +185,6 @@ public class Items {
     public static final Item DUST_SO3 = register(new MoleculeItem(new FabricItemSettings()
             .maxCount(64), "SO3"), "dust/sulfur_trioxide_dust");
 
-    // Items > Atoms
-    public static final List<AtomItem> ATOMS = Arrays.stream(Atom.values()).map(Items::registerAtom).toList();
-
     // Items > Bond to display in LCT (internal)
     public static final Item BOND = register(new Item(new Item.Settings()), "bond");
     public static final Item VALENCEE = register(new Item(new Item.Settings()), "valence_electrons");
@@ -244,6 +250,8 @@ public class Items {
 
     public static final Item LEWIS_BLOCK_ITEM = register(new BlockItem(Blocks.LEWIS_BLOCK, new Item.Settings()), "lewis_block");
     public static final Item IONIC_BLOCK_ITEM = register(new BlockItem(Blocks.IONIC_BLOCK, new Item.Settings()), "ionic_block");
+
+    public static final Item ATOMIC_STORAGE =  register(new BlockItem(Blocks.ATOMIC_STORAGE, new Item.Settings()), "atomic_storage");
 
     // Erlenmeyer
     public static final Item ERLENMEYER_STAND = register(new BlockItem(Blocks.ERLENMEYER_STAND,
@@ -336,21 +344,6 @@ public class Items {
     public static final Item ERLENMEYER_SICL4 = register(new ErlenmeyerItem(
             Fluids.STILL_SiCl4, new Item.Settings().recipeRemainder(ERLENMEYER), "SiCl4"), "erlenmeyer/erlenmeyer_sicl4");
 
-    public static final List<Item> up_stacks = new ArrayList<>(List.of(
-            Items.UPQUARK_RED,
-            Items.UPQUARK_GREEN,
-            Items.UPQUARK_BLUE,
-            Items.ANTI_UPQUARK_RED,
-            Items.ANTI_UPQUARK_GREEN,
-            Items.ANTI_UPQUARK_BLUE));
-
-    public static final List<Item> down_stacks = new ArrayList<>(List.of(
-            Items.DOWNQUARK_RED,
-            Items.DOWNQUARK_GREEN,
-            Items.DOWNQUARK_BLUE,
-            Items.ANTI_DOWNQUARK_RED,
-            Items.ANTI_DOWNQUARK_GREEN,
-            Items.ANTI_DOWNQUARK_BLUE));
 
     /**
      * Register an Item

@@ -48,6 +48,7 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Blocks.LAB_DRAWER, "Lab Drawers");
         builder.add(Blocks.LAB_SINK, "Lab Sink");
         builder.add(Blocks.LAB_CABIN, "Lab Cabin");
+        builder.add(Blocks.LAB_LEWIS, "Lewis Crafting Table");
         builder.add(Blocks.LAB_CENTER, "Lab Center");
         builder.add(Blocks.LAB_CORNER, "Lab Corner");
         builder.add(Blocks.MICROSCOPE, "Microscope");
@@ -61,6 +62,8 @@ public class LangProvider extends MinelabsLangProvider {
         builder.add(Items.MAGNET, "Magnet");
         builder.add(Items.POCKET_HOLE, "Pocket Black Hole");
         builder.add(Items.FORCE_COMPASS, "Force Compass");
+        builder.add(Items.ATOM_PACK, "Atom pack");
+        builder.add(Blocks.ATOMIC_STORAGE, "Atomic Storage");
 
         builder.add(Items.ANTI_NEUTRON, "AntiNeutron");
         builder.add(Items.ANTI_PROTON, "AntiProton");

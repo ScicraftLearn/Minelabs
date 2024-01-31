@@ -22,6 +22,7 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.LAB_CABIN));
                 entries.add(new ItemStack(Items.LAB_DRAWER));
                 entries.add(new ItemStack(Items.LAB_SINK));
+                entries.add(new ItemStack(Items.LAB_LEWIS));
                 entries.add(new ItemStack(Items.LAB_CENTER));
                 entries.add(new ItemStack(Items.LAB_CORNER));
                 entries.add(new ItemStack(Items.MICROSCOPE));
@@ -43,6 +44,8 @@ public class ItemGroups {
                 entries.add(new ItemStack(Items.ENTROPY_CREEPER_SPAWN_EGG));
                 entries.add(new ItemStack(Items.MAGNET));
                 entries.add(new ItemStack(Items.POCKET_HOLE));
+                entries.add(new ItemStack(Items.ATOM_PACK));
+                entries.add(new ItemStack(Items.ATOMIC_STORAGE));
             })
             .build();
 
