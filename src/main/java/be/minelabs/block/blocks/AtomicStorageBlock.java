@@ -70,6 +70,16 @@ public class AtomicStorageBlock extends LabBlock implements BlockEntityProvider 
     @Nullable
     public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory)(blockEntity) : null;
+        return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory) blockEntity : null;
+    }
+
+    @Override
+    public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
+        super.onSyncedBlockEvent(state, world, pos, type, data);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity == null) {
+            return false;
+        }
+        return blockEntity.onSyncedBlockEvent(type, data);
     }
 }

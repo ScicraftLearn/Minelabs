@@ -145,11 +145,6 @@ public class AtomStorageScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public boolean isValid(int slot) {
-        return super.isValid(slot);
-    }
-
-    @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
     }
