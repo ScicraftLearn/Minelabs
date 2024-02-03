@@ -17,7 +17,7 @@ public class AtomStorageScreenHandler extends ScreenHandler {
     private final AtomicInventory inventory;
 
     public AtomStorageScreenHandler(int syncId, PlayerInventory inventory) {
-        this(syncId, inventory, new AtomicInventory(512));
+        this(syncId, inventory, new AtomicInventory(AtomicInventory.STORAGE_STACK));
     }
 
     public AtomStorageScreenHandler(int syncId, @NotNull PlayerInventory playerInventory, Inventory inventory) {
@@ -36,9 +36,9 @@ public class AtomStorageScreenHandler extends ScreenHandler {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
-            if (player.getMainHandStack().isOf(Items.ATOM_PACK)){
+            if (player.getMainHandStack().isOf(Items.ATOM_PACK)) {
                 // Don't allow the pack to be moved
-                if (ItemStack.areEqual(slot.getStack(), player.getMainHandStack())){
+                if (ItemStack.areEqual(slot.getStack(), player.getMainHandStack())) {
                     return ItemStack.EMPTY; // SOMETHING ELSE ??
                 }
             }
@@ -126,7 +126,7 @@ public class AtomStorageScreenHandler extends ScreenHandler {
 
     @Override
     public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
-        if (slot.inventory instanceof AtomicInventory){
+        if (slot.inventory instanceof AtomicInventory) {
             return false;
         }
         return super.canInsertIntoSlot(stack, slot);
@@ -145,11 +145,6 @@ public class AtomStorageScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public boolean isValid(int slot) {
-        return super.isValid(slot);
-    }
-
-    @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
     }
@@ -160,7 +155,7 @@ public class AtomStorageScreenHandler extends ScreenHandler {
         inventory.onClose(player);
     }
 
-    private void addAtomSlots(){
+    private void addAtomSlots() {
         this.addSlot(new AtomSlot(inventory, 0, 8, 7));
         this.addSlot(new AtomSlot(inventory, 1, 322, 7));
 
@@ -169,7 +164,7 @@ public class AtomStorageScreenHandler extends ScreenHandler {
             for (int j = 0; j < 18; j++) {
                 int offset = 8;
 
-                if (j > 1 && j <= 16){
+                if (j > 1 && j <= 16) {
                     offset += 4;
                 } else if (j > 16) {
                     offset += 8;
@@ -177,7 +172,7 @@ public class AtomStorageScreenHandler extends ScreenHandler {
                 if (i < 2 && j > 1 && j < 12)
                     continue;
 
-                if (index == 56 || index == 88){
+                if (index == 56 || index == 88) {
                     for (int k = 0; k < 15; k++) {
                         this.addSlot(new AtomSlot(inventory, index, 48 + k * 18, index < 87 ? 137 : 155));
                         index++;

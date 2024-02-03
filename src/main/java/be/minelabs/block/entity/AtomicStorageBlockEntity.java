@@ -11,6 +11,9 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -19,7 +22,8 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, SidedStorageBlockEntity {
-    private AtomicInventory inventory = new AtomicInventory(512);
+
+    private AtomicInventory inventory = new AtomicInventory(AtomicInventory.STORAGE_STACK);
 
     public AtomicStorageBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.ATOMIC_STORAGE_BLOCK_ENTITY, pos, state);
@@ -37,6 +41,16 @@ public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreen
     }
 
     @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        return super.createNbt();
+    }
+
+    @Override
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         inventory.writeNbt(nbt);
@@ -44,7 +58,7 @@ public class AtomicStorageBlockEntity extends BlockEntity implements NamedScreen
 
     @Override
     public void readNbt(NbtCompound nbt) {
-        this.inventory = new AtomicInventory(512);
+        this.inventory = new AtomicInventory(AtomicInventory.STORAGE_STACK);
         inventory.readNbt(nbt);
         super.readNbt(nbt);
     }
