@@ -17,6 +17,8 @@ public class AtomicInventory extends SimpleInventory {
 
     // TODO FIX HOPPER MAX STACK 64
     //  it uses the stack.getMaxStackSize() instead of the inventory's
+    public static final int STORAGE_STACK = 512;
+    public static final int PACK_STACK = 256;
 
 
     // Allows stacks with more then 64 inside of the inventory
@@ -28,7 +30,7 @@ public class AtomicInventory extends SimpleInventory {
     }
 
     public AtomicInventory(NbtCompound nbt) {
-        this(256);
+        this(PACK_STACK);
         this.readNbt(nbt);
     }
 
@@ -36,7 +38,7 @@ public class AtomicInventory extends SimpleInventory {
     @Override
     public void onClose(PlayerEntity player) {
         super.onClose(player);
-        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == 256) {
+        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == PACK_STACK) {
             NbtCompound nbt = player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt();
             this.writeNbt(nbt);
         }
@@ -45,7 +47,7 @@ public class AtomicInventory extends SimpleInventory {
     // Load inventory from NBT if it's the Atom Pack
     @Override
     public void onOpen(PlayerEntity player) {
-        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == 256) {
+        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == PACK_STACK) {
             readNbt(player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt());
         }
         super.onOpen(player);

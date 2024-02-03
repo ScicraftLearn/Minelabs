@@ -20,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class AtomPackItem extends Item {
 
-
     public AtomPackItem(Settings settings) {
         super(settings);
     }
@@ -28,7 +27,7 @@ public class AtomPackItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (hand == Hand.MAIN_HAND && !world.isClient) {
-            AtomicInventory inventory = new AtomicInventory(256);
+            AtomicInventory inventory = new AtomicInventory(AtomicInventory.PACK_STACK);
 
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
@@ -62,7 +61,7 @@ public class AtomPackItem extends Item {
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.ATOMIC_STORAGE && context.getPlayer().isSneaking()) {
             AtomicInventory storage_inventory = ((AtomicStorageBlockEntity) context.getWorld().getBlockEntity(context.getBlockPos())).getInventory();
-            AtomicInventory pack_inventory = new AtomicInventory(256);
+            AtomicInventory pack_inventory = new AtomicInventory(AtomicInventory.PACK_STACK);
             pack_inventory.onOpen(context.getPlayer());
             storage_inventory.tryToFill(pack_inventory);
             pack_inventory.onClose(context.getPlayer());
