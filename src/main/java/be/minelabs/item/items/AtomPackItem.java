@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -27,7 +28,16 @@ public class AtomPackItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (hand == Hand.MAIN_HAND && !world.isClient) {
-            AtomicInventory inventory = new AtomicInventory(AtomicInventory.PACK_STACK);
+            // Use NBT to load INV
+            AtomicInventory inventory = new AtomicInventory(user.getStackInHand(hand).getOrCreateNbt()) {
+                // Save NBT on close (no unnecessary syncs)
+                @Override
+                public void onClose(PlayerEntity player) {
+                    super.onClose(player);
+                    NbtCompound nbt = player.getStackInHand(hand).getOrCreateNbt();
+                    writeNbt(nbt);
+                }
+            };
 
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override

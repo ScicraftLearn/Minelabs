@@ -34,25 +34,6 @@ public class AtomicInventory extends SimpleInventory {
         this.readNbt(nbt);
     }
 
-    // Save inventory to NBT if it's the Atom Pack
-    @Override
-    public void onClose(PlayerEntity player) {
-        super.onClose(player);
-        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == PACK_STACK) {
-            NbtCompound nbt = player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt();
-            this.writeNbt(nbt);
-        }
-    }
-
-    // Load inventory from NBT if it's the Atom Pack
-    @Override
-    public void onOpen(PlayerEntity player) {
-        if (player.getStackInHand(Hand.MAIN_HAND).getItem() == Items.ATOM_PACK && MAX_SIZE == PACK_STACK) {
-            readNbt(player.getStackInHand(Hand.MAIN_HAND).getOrCreateNbt());
-        }
-        super.onOpen(player);
-    }
-
     /**
      * Try to fill THIS inventory with the origin
      *
