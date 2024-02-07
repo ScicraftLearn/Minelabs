@@ -35,7 +35,7 @@ public abstract class ItemRendererMixin {
 
     @Unique
     @Inject(method = "renderGuiItemOverlay(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "HEAD"), cancellable = true)
-    public void renderGuiItemOverlay(MatrixStack matrices, TextRenderer textRenderer, ItemStack stack, int x, int y, String countLabel, CallbackInfo ci) {
+    public void injectRenderGuiItemOverlay(MatrixStack matrices, TextRenderer textRenderer, ItemStack stack, int x, int y, String countLabel, CallbackInfo ci) {
         if (ItemRendererHook.renderGuiItemOverlay((ItemRenderer) (Object) this, matrices, stack, x, y)) {
             ci.cancel();
         }
