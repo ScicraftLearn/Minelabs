@@ -2,11 +2,10 @@ package be.minelabs.client.integration.emi;
 
 import be.minelabs.Minelabs;
 import be.minelabs.block.Blocks;
-import be.minelabs.client.integration.emi.recipes.AnnihilationEmiRecipe;
+import be.minelabs.client.integration.emi.recipes.CoulombInfoEmiRecipe;
 import be.minelabs.client.integration.emi.recipes.BohrEmiRecipe;
 import be.minelabs.client.integration.emi.recipes.IonicEmiRecipe;
 import be.minelabs.client.integration.emi.recipes.LewisEmiRecipe;
-import be.minelabs.item.ItemGroups;
 import be.minelabs.item.Items;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.recipe.ionic.IonicRecipe;
@@ -19,8 +18,6 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.util.Identifier;
 
@@ -68,7 +65,7 @@ public class MinelabsEmiPlugin implements EmiPlugin {
             registry.addRecipe(new BohrEmiRecipe(atom));
         }
         for (Map.Entry<Identifier, CoulombData> entry : CoulombResource.INSTANCE.getResourceData().entrySet()) {
-            registry.addRecipe(new AnnihilationEmiRecipe(entry.getKey(), entry.getValue()));
+            registry.addRecipe(new CoulombInfoEmiRecipe(entry.getKey(), entry.getValue()));
         }
     }
 }
