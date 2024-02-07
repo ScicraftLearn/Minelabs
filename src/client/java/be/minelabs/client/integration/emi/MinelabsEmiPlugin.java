@@ -15,6 +15,7 @@ import be.minelabs.science.coulomb.CoulombResource;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
+import dev.emi.emi.api.recipe.EmiRecipeSorting;
 import dev.emi.emi.api.stack.EmiStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -38,15 +39,15 @@ public class MinelabsEmiPlugin implements EmiPlugin {
             new Identifier(Minelabs.MOD_ID, "ionic_crafting"), IONIC_STACK);
 
     private static EmiStack COULOMB_STACK = EmiStack.of(Items.ELECTRON);
-    public static EmiRecipeCategory ANNIHILATION_CATEGORY = new EmiRecipeCategory(
-            new Identifier(Minelabs.MOD_ID, "coulomb_annihilation"), COULOMB_STACK);
+    public static EmiRecipeCategory COULOMB_INFO_CATEGORY = new EmiRecipeCategory(
+            new Identifier(Minelabs.MOD_ID, "coulomb_info"), COULOMB_STACK);
 
     @Override
     public void register(EmiRegistry registry) {
         registry.addCategory(LEWIS_CATEGORY);
         registry.addCategory(IONIC_CATEGORY);
         registry.addCategory(BOHR_CATEGORY);
-        registry.addCategory(ANNIHILATION_CATEGORY);
+        registry.addCategory(COULOMB_INFO_CATEGORY);
 
         registry.addWorkstation(LEWIS_CATEGORY, LEWIS_STACK);
         registry.addWorkstation(IONIC_CATEGORY, IONIC_STACK);
