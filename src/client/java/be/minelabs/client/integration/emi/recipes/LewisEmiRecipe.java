@@ -8,7 +8,6 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.item.Item;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.DynamicRegistryManager;
 
@@ -48,6 +47,6 @@ public class LewisEmiRecipe extends BasicEmiRecipe {
             widgets.addSlot(120, 68);
         }
 
-        widgets.addSlot(outputs.get(0), 140, 38);
+        widgets.addSlot(outputs.get(0), 140, 38).recipeContext(this);
     }
 }
