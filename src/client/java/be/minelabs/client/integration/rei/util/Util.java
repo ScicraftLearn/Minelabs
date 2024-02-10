@@ -5,7 +5,6 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.collection.DefaultedList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
