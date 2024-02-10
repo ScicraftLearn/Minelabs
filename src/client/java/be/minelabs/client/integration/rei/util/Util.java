@@ -13,8 +13,6 @@ public class Util {
 
     public static List<EntryIngredient> getInputList(DefaultedList<Ingredient> ingredients) {
         if (ingredients.isEmpty()) return Collections.emptyList();
-        List<EntryIngredient> list = new ArrayList<>();
-        ingredients.forEach(EntryIngredients::ofIngredient);
-        return list;
+        return ingredients.stream().map(EntryIngredients::ofIngredient).toList();
     }
 }
