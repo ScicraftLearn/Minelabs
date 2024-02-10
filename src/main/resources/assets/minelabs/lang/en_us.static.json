@@ -284,5 +284,7 @@
   "tag.item.minelabs.molecule_item": "Molecule Items",
   "tag.item.c.fire_changer": "Fire Coloring Items",
   "tag.item.minelabs.lab_blocks": "Laboratory Blocks",
-  "tag.item.minelabs.sticky_items": "Sticky Items"
+  "tag.item.minelabs.sticky_items": "Sticky Items",
+  "rei.category.minelabs.molecule_crafting": "Molecule Crafting",
+  "rei.category.minelabs.ionic_crafting": "Ionic Crafting"
 }

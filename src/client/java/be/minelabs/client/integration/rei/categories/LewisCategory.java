@@ -43,8 +43,9 @@ public class LewisCategory implements DisplayCategory<BasicDisplay> {
 
     @Override
     public List<Widget> setupDisplay(BasicDisplay display, Rectangle bounds) {
-        // TODO https://www.youtube.com/watch?v=HbZ6ocABo-M minute 7...
+        // https://www.youtube.com/watch?v=HbZ6ocABo-M minute 7...
 
+        // TODO MOLECULE GRAPH -> SLOT INDEX
         final Point startPoint = new Point(bounds.getCenterX() - 87, bounds.getCenterY() - 60);
         List<Widget> widgets = new LinkedList<>();
 

@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class IonicCategory implements DisplayCategory<BasicDisplay> {
-    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/ionic_gui.png");
+    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/ionic/ionic_gui_rei.png");
 
     public static final CategoryIdentifier<IonicDisplay> IONIC_CRAFTING =
             CategoryIdentifier.of(Minelabs.MOD_ID, "ionic_crafting");
@@ -44,7 +44,7 @@ public class IonicCategory implements DisplayCategory<BasicDisplay> {
         final Point startPoint = new Point(bounds.getCenterX() - 105, bounds.getCenterY() - 45);
         List<Widget> widgets = new LinkedList<>();
         widgets.add(Widgets.createTexturedWidget(TEXTURE,
-                new Rectangle(startPoint.x, startPoint.y, 200, 84)));
+                new Rectangle(startPoint.x, startPoint.y, 206, 111)));
         // TODO ingredients
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 176, startPoint.y + 40)).disableBackground()
@@ -60,7 +60,7 @@ public class IonicCategory implements DisplayCategory<BasicDisplay> {
 
     @Override
     public int getDisplayHeight() {
-        return 90;
+        return 120;
     }
 
     @Override
