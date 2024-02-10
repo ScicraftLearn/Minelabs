@@ -6,6 +6,7 @@ import be.minelabs.client.integration.rei.displays.LewisDisplay;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Slot;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
@@ -13,15 +14,11 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class LewisCategory implements DisplayCategory<BasicDisplay> {
-
-    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID,
-            "textures/gui/lewis_block/lewis_block_rei.png");
 
     public static final CategoryIdentifier<LewisDisplay> MOLECULE_CRAFTING =
             CategoryIdentifier.of(Minelabs.MOD_ID, "molecule_crafting");
@@ -44,43 +41,56 @@ public class LewisCategory implements DisplayCategory<BasicDisplay> {
     @Override
     public List<Widget> setupDisplay(BasicDisplay display, Rectangle bounds) {
         // https://www.youtube.com/watch?v=HbZ6ocABo-M minute 7...
+        LewisDisplay disp = (LewisDisplay) display;
 
         // TODO MOLECULE GRAPH -> SLOT INDEX
         final Point startPoint = new Point(bounds.getCenterX() - 87, bounds.getCenterY() - 60);
         List<Widget> widgets = new LinkedList<>();
 
-        widgets.add(Widgets.createTexturedWidget(TEXTURE,
-                new Rectangle(startPoint.x, startPoint.y, 176, 108)));
+        widgets.add(Widgets.createRecipeBase(bounds));
 
         for (int m = 0; m < 5; ++m) {
             for (int l = 0; l < 5; ++l) {
                 int index = l + m * 5;
                 if (index < display.getInputEntries().size() - 1) {
-                    widgets.add(Widgets.createSlot(
-                                    new Point(startPoint.x + 8 + l * 18, startPoint.y + m * 18 + 9))
-                            .entries(display.getInputEntries().get(index)));
+                    widgets.add(Widgets.createSlot(new Point(startPoint.x + 8 + l * 18, startPoint.y + m * 18 + 13))
+                            .entries(display.getInputEntries().get(index))
+                            .markInput());
                 } else {
                     widgets.add(Widgets.createSlot(
-                            new Point(startPoint.x + 8 + l * 18, startPoint.y + m * 18 + 9)));
+                            new Point(startPoint.x + 8 + l * 18, startPoint.y + m * 18 + 13)));
                 }
             }
         }
 
-        widgets.add(Widgets.createSlot(
-                        new Point(startPoint.x + 134, startPoint.y + 46)).disableBackground()
-                .entries(display.getOutputEntries().get(0)));
+        widgets.add(Widgets.createArrow(new Point(startPoint.x + 100, startPoint.y + 50))
+                .animationDurationTicks(disp.getDuration()));
 
-        LewisDisplay disp = (LewisDisplay) display;
+        Point result_point = new Point(startPoint.x + 134, startPoint.y + 50);
+        widgets.add(Widgets.createResultSlotBackground(result_point));
+        widgets.add(Widgets.createSlot(result_point)
+                .disableBackground()
+                .entries(display.getOutputEntries().get(0))
+                .markOutput());
+
+        Slot container_slot = Widgets.createSlot(new Point(startPoint.x + 134, startPoint.y + 85));
         if (!disp.getContainer().isEmpty()) {
-            widgets.add(Widgets.createSlot(new Point(startPoint.x + 134, startPoint.y + 82)).disableBackground()
-                    .entries(disp.getContainer()));
+            container_slot.entries(disp.getContainer());
+        } else {
+            // TODO render empty erlenmeyer slot
         }
+        widgets.add(container_slot);
 
         return widgets;
     }
 
     @Override
     public int getDisplayHeight() {
-        return 130;
+        return 108;
+    }
+
+    @Override
+    public int getDisplayWidth(BasicDisplay display) {
+        return 180;
     }
 }

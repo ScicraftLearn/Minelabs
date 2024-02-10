@@ -15,10 +15,12 @@ import java.util.List;
 public class LewisDisplay extends BasicDisplay {
 
     private final EntryIngredient container;
+    private final int duration;
 
     public LewisDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs) {
         super(inputs, outputs);
         container = EntryIngredient.empty();
+        duration = 0;
     }
 
     public LewisDisplay(MoleculeRecipe recipe) {
@@ -29,6 +31,7 @@ public class LewisDisplay extends BasicDisplay {
         } else {
             container = EntryIngredient.empty();
         }
+        duration = recipe.getTime();
     }
 
     @Override
@@ -38,5 +41,9 @@ public class LewisDisplay extends BasicDisplay {
 
     public EntryIngredient getContainer() {
         return container;
+    }
+
+    public int getDuration() {
+        return this.duration;
     }
 }
