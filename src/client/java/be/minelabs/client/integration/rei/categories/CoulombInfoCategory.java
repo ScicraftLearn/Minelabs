@@ -3,6 +3,7 @@ package be.minelabs.client.integration.rei.categories;
 import be.minelabs.Minelabs;
 import be.minelabs.client.integration.rei.displays.CoulombInfoDisplay;
 import be.minelabs.item.Items;
+import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
@@ -38,8 +39,13 @@ public class CoulombInfoCategory implements DisplayCategory<BasicDisplay> {
 
     @Override
     public List<Widget> setupDisplay(BasicDisplay display, Rectangle bounds) {
+        final Point startPoint = new Point(bounds.getCenterX() - 87, bounds.getCenterY() - 60);
         List<Widget> widgets = new ArrayList<>();
         widgets.add(Widgets.createRecipeBase(bounds));
+
+        widgets.add(Widgets.createSlot(
+                new Point(startPoint.x + 15, startPoint.y + 20))
+                .entries(display.getInputEntries().get(0)));
 
         return widgets;
     }
