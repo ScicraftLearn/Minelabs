@@ -29,7 +29,6 @@ public class LewisDisplay extends BasicDisplay {
         } else {
             container = EntryIngredient.empty();
         }
-
     }
 
     @Override
