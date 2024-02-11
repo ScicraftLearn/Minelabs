@@ -274,7 +274,7 @@
   "emi.category.minelabs.molecule_crafting": "Molecule Crafting",
   "emi.category.minelabs.atom_crafting": "Atom Crafting",
   "emi.category.minelabs.ionic_crafting": "Ion Crafting",
-  "emi.category.minecraft.coulomb_info": "Coulomb Info",
+  "emi.category.minelabs.coulomb_info": "Coulomb Info",
   "tag.item.minelabs.atom_item": "Atom Items",
   "tag.item.minelabs.charge": "Charged Items",
   "tag.item.minelabs.negative_charge": "Negative Charged Items",
