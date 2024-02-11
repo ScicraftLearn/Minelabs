@@ -287,5 +287,6 @@
   "tag.item.minelabs.sticky_items": "Sticky Items",
   "rei.category.minelabs.molecule_crafting": "Molecule Crafting",
   "rei.category.minelabs.ionic_crafting": "Ionic Crafting",
-  "rei.category.minelabs.coulomb_info": "Coulomb Info"
+  "rei.category.minelabs.coulomb_info": "Coulomb Info",
+  "rei.category.minelabs.atom_crafting": "Atom Crafting"
 }
