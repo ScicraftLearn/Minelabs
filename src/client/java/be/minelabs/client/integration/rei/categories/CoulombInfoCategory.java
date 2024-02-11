@@ -51,19 +51,19 @@ public class CoulombInfoCategory implements DisplayCategory<BasicDisplay> {
                 .entries(display.getInputEntries().get(0)));
 
         widgets.add(Widgets.createLabel(new Point(startPoint.x + 55, startPoint.y + 10),
-                Text.of("Charge:    " + data.charge.toString())).leftAligned());
+                Text.translatable("text.minelabs.coulomb_info.charge").append(data.charge.toString())).leftAligned());
 
         widgets.add(Widgets.createLabel(new Point(startPoint.x + 55, startPoint.y + 20),
-                Text.of("Mass:      " + data.mass.toString())).leftAligned());
+                Text.translatable("text.minelabs.coulomb_info.mass").append(data.mass.toString())).leftAligned());
 
         widgets.add(Widgets.createLabel(new Point(startPoint.x + 55, startPoint.y + 30),
-                Text.of(data.stable ? "Stable" : "Unstable")).leftAligned());
+                data.stable ? Text.translatable("text.minelabs.coulomb_info.stable") : Text.translatable("text.minelabs.coulomb_info.unstable")).leftAligned());
 
         widgets.add(Widgets.createLabel(new Point(startPoint.x + 10, startPoint.y + 50),
                 Text.of("======================")).color(0xffffff).leftAligned());
 
         widgets.add(Widgets.createLabel(new Point(startPoint.x + 10, startPoint.y + 65),
-                Text.of("Annihilation:")).leftAligned());
+                Text.translatable("text.minelabs.coulomb_info.annihilation")).leftAligned());
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 10, startPoint.y + 80))
                 .entries(display.getInputEntries().get(0)));
@@ -78,7 +78,7 @@ public class CoulombInfoCategory implements DisplayCategory<BasicDisplay> {
 
         if (!data.stable) {
             widgets.add(Widgets.createLabel(new Point(startPoint.x + 10, startPoint.y + 100),
-                    Text.of("Decay:")).leftAligned());
+                    Text.translatable("text.minelabs.coulomb_info.decay")).leftAligned());
 
             widgets.add(Widgets.createSlot(new Point(startPoint.x + 10, startPoint.y + 115))
                     .entries(display.getInputEntries().get(1)));
@@ -88,7 +88,7 @@ public class CoulombInfoCategory implements DisplayCategory<BasicDisplay> {
                     .entries(display.getOutputEntries().get(1)));
 
             widgets.add(Widgets.createLabel(new Point(startPoint.x + 80, startPoint.y + 115),
-                    Text.of("Chance:")).leftAligned());
+                    Text.translatable("text.minelabs.coulomb_info.chance")).leftAligned());
             widgets.add(Widgets.createLabel(new Point(startPoint.x + 90, startPoint.y + 125),
                     Text.of(data.decay_chance * 100 + "%")).leftAligned());
         }

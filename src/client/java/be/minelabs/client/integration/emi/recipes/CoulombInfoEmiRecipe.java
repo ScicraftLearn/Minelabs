@@ -36,17 +36,20 @@ public class CoulombInfoEmiRecipe extends BasicEmiRecipe {
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        // TODO CHANGE TO TRANSLATE KEYS
         // TODO REMOVE TEMPLATE FILE (data/minelabs/science/coulomb/template.json)
         int text_color = 0xffffffff;
 
         widgets.addSlot(inputs.get(0), 15, 20);
-        widgets.addText(Text.of("Charge:    " + data.charge.toString()), 60, 20, text_color, true);
-        widgets.addText(Text.of("Mass:      " + data.mass.toString()), 60, 30, text_color, true);
-        widgets.addText(Text.of(data.stable ? "Stable" : "Unstable"), 60, 40, text_color, true);
+        widgets.addText(Text.translatable("text.minelabs.coulomb_info.charge").append(data.charge.toString()),
+                60, 20, text_color, true);
+        widgets.addText(Text.translatable("text.minelabs.coulomb_info.mass").append(data.mass.toString()),
+                60, 30, text_color, true);
+        widgets.addText(data.stable ? Text.translatable("text.minelabs.coulomb_info.stable") : Text.translatable("text.minelabs.coulomb_info.unstable"),
+                60, 40, text_color, true);
 
         widgets.addText(Text.of("======================"), 5, 60, text_color, true);
-        widgets.addText(Text.of("Annihilation:"), 5, 75, text_color, true);
+        widgets.addText(Text.translatable("text.minelabs.coulomb_info.annihilation"),
+                5, 75, text_color, true);
         widgets.addSlot(inputs.get(0), 15, 85);
         widgets.addTexture(EmiTexture.PLUS, 40, 88);
         widgets.addSlot(inputs.get(1), 60, 85);
@@ -54,13 +57,15 @@ public class CoulombInfoEmiRecipe extends BasicEmiRecipe {
         widgets.addSlot(outputs.get(0), 110, 85);
 
         if (!data.stable) {
-            widgets.addText(Text.of("Decay:"), 5, 110, text_color, true);
+            widgets.addText(Text.translatable("text.minelabs.coulomb_info.decay"),
+                    5, 110, text_color, true);
             widgets.addSlot(inputs.get(0), 15, 120);
             widgets.addTexture(EmiTexture.EMPTY_ARROW, 40, 120);
 
             // Emi has a way to render chances, but we don't like the look
             widgets.addSlot(outputs.get(1), 70, 120);
-            widgets.addText(Text.of("Chance:"), 95, 120, text_color, true);
+            widgets.addText(Text.translatable("text.minelabs.coulomb_info.chance"),
+                    95, 120, text_color, true);
             widgets.addText(Text.of(data.decay_chance * 100 + "%"), 100, 130, text_color, true);
         }
     }

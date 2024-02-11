@@ -288,5 +288,12 @@
   "rei.category.minelabs.molecule_crafting": "Molecule Crafting",
   "rei.category.minelabs.ionic_crafting": "Ionic Crafting",
   "rei.category.minelabs.coulomb_info": "Coulomb Info",
-  "rei.category.minelabs.atom_crafting": "Atom Crafting"
+  "rei.category.minelabs.atom_crafting": "Atom Crafting",
+  "text.minelabs.coulomb_info.mass": "Mass:      ",
+  "text.minelabs.coulomb_info.charge": "Charge:    ",
+  "text.minelabs.coulomb_info.stable": "Stable",
+  "text.minelabs.coulomb_info.unstable": "Unstable",
+  "text.minelabs.coulomb_info.decay": "Decay:",
+  "text.minelabs.coulomb_info.annihilation": "Annihilation:",
+  "text.minelabs.coulomb_info.chance": "Chance:"
 }
