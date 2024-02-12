@@ -182,6 +182,20 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         return true;
     }
 
+    @Override
+    public boolean onButtonClick(PlayerEntity player, int id) {
+        return switch (id) {
+            case 0 -> // Clear btn
+                    true;
+            case 1 -> true;
+            case 2 -> true;
+            case 3 -> true;
+            case 4 -> true;
+
+            default -> throw new IllegalStateException("Unexpected value: " + id);
+        };
+    }
+
     public int getProgress() {
         return propertyDelegate.get(0);
     }

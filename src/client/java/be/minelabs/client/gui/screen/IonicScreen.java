@@ -1,6 +1,7 @@
 package be.minelabs.client.gui.screen;
 
 import be.minelabs.Minelabs;
+import be.minelabs.client.gui.widget.CounterButtonWidget;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.molecules.BondManager;
 import be.minelabs.recipe.molecules.MoleculeItemGraph;
@@ -10,6 +11,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,6 +31,13 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
 
     private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/block/ioniccrafting/ionic_gui.png");
 
+    private ButtonWidget clear_btn;
+
+    private CounterButtonWidget left_minus;
+    private CounterButtonWidget left_plus;
+    private CounterButtonWidget right_minus;
+    private CounterButtonWidget right_plus;
+
     //just the height and width of the texture
     public IonicScreen(IonicBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -36,6 +45,49 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         backgroundWidth = 206;
         playerInventoryTitleX = 22;
         playerInventoryTitleY = 105;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        registerButtons();
+    }
+
+    private void registerButtons() {
+        clear_btn = ButtonWidget.builder(Text.of("C"), button -> {
+            client.interactionManager.clickButton(handler.syncId, 0);
+            button.setFocused(false);
+        }).dimensions(x + 150, y + 10, 20, 20).build();
+
+        int start_left = x + 30;
+        int start_right = x + 100;
+
+        left_minus = new CounterButtonWidget(start_left, y + 70, CounterButtonWidget.Type.MINUS, button -> {
+            client.interactionManager.clickButton(handler.syncId, 1);
+            button.setFocused(false);
+        });
+
+        left_plus = new CounterButtonWidget(start_left + 11, y + 70, CounterButtonWidget.Type.PLUS, button -> {
+            client.interactionManager.clickButton(handler.syncId, 2);
+            button.setFocused(false);
+        });
+
+        right_minus = new CounterButtonWidget(start_right, y + 70, CounterButtonWidget.Type.MINUS, button -> {
+            client.interactionManager.clickButton(handler.syncId, 3);
+            button.setFocused(false);
+        });
+
+        right_plus = new CounterButtonWidget(start_right + 11, y + 70, CounterButtonWidget.Type.PLUS, button -> {
+            client.interactionManager.clickButton(handler.syncId, 4);
+            button.setFocused(false);
+        });
+
+        addDrawableChild(clear_btn);
+        addDrawableChild(left_minus);
+        addDrawableChild(left_plus);
+        addDrawableChild(right_minus);
+        addDrawableChild(right_plus);
     }
 
     @Override
