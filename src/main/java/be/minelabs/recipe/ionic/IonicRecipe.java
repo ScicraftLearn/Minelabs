@@ -44,9 +44,11 @@ public class IonicRecipe implements Recipe<IonicInventory> {
         this.leftjson = leftjson;
         this.leftdensity = leftdensity;
         this.leftCharge = leftCharge;
+
         this.rightjson = rightjson;
         this.rightdensity = rightdensity;
         this.rightCharge = rightCharge;
+
         this.output = output;
         this.id = id;
         this.time = 23;
@@ -70,7 +72,11 @@ public class IonicRecipe implements Recipe<IonicInventory> {
     public boolean matches(IonicInventory inventory, World world) {
         boolean left = inventory.getLeftGrid().getPartialMolecule().getStructure().isIsomorphicTo(leftMolecule.getStructure());
         boolean right = inventory.getRightGrid().getPartialMolecule().getStructure().isIsomorphicTo(rightMolecule.getStructure());
-        return left && right;
+
+        boolean i_left = inventory.getRightGrid().getPartialMolecule().getStructure().isIsomorphicTo(leftMolecule.getStructure());
+        boolean i_right = inventory.getLeftGrid().getPartialMolecule().getStructure().isIsomorphicTo(rightMolecule.getStructure());
+
+        return left && right || i_left && i_right;
     }
 
     @Override
