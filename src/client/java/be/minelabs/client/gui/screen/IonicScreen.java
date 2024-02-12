@@ -67,21 +67,29 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         left_minus = new CounterButtonWidget(start_left, y_counter, CounterButtonWidget.Type.MINUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 1);
             button.setFocused(false);
+            button.active = handler.getLeftCharge() > 1;
+            left_plus.active = true;
         });
 
         left_plus = new CounterButtonWidget(start_left + 11, y_counter, CounterButtonWidget.Type.PLUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 2);
             button.setFocused(false);
+            button.active = handler.getLeftCharge() < 9;
+            left_minus.active = true;
         });
 
         right_minus = new CounterButtonWidget(start_right, y_counter, CounterButtonWidget.Type.MINUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 3);
             button.setFocused(false);
+            button.active = handler.getRightCharge() > 1;
+            right_plus.active = true;
         });
 
         right_plus = new CounterButtonWidget(start_right + 11, y_counter, CounterButtonWidget.Type.PLUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 4);
             button.setFocused(false);
+            button.active = handler.getLeftCharge() < 9;
+            right_minus.active = true;
         });
 
         addDrawableChild(clear_btn);
@@ -109,26 +117,8 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         /*
          * Draw Bonds on screen
          */
-        LewisCraftingGrid grid = getScreenHandler().getInventory().getLeftGrid();
-        MoleculeItemGraph graph = (MoleculeItemGraph) grid.getPartialMolecule().getStructure();
-        for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
-            Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
-            Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
-            BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
-            this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
-        }
-
-        /*
-         * Draw Bonds on screen
-         */
-        LewisCraftingGrid grid2 = getScreenHandler().getInventory().getRightGrid();
-        MoleculeItemGraph graph2 = (MoleculeItemGraph) grid2.getPartialMolecule().getStructure();
-        for (MoleculeItemGraph.Edge edge : graph2.getEdges()) {
-            Slot slot1 = stackToSlotMap.get(graph2.getItemStackOfVertex(edge.getFirst()));
-            Slot slot2 = stackToSlotMap.get(graph2.getItemStackOfVertex(edge.getSecond()));
-            BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
-            this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
-        }
+        renderBonds(matrices, getScreenHandler().getInventory().getLeftGrid(), stackToSlotMap, x, y);
+        renderBonds(matrices, getScreenHandler().getInventory().getRightGrid(), stackToSlotMap, x, y);
 
         /*
          * Render input slot overlays
@@ -139,7 +129,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             if (this.handler.getLeftDensity() == 0 || atom.isEmpty()) {
                 break;
             }
-            if (handler.getInventory().getStack(2 * IonicBlockScreenHandler.GRIDSIZE + i).getCount() < handler.getLeftDensity()) {
+            if (handler.getInventory().getLeftGrid().getStack(i).getCount() < handler.getLeftDensity()) {
                 this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18 * i, 86 + y);
             } else {
                 this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i, 86 + y);
@@ -156,18 +146,27 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             if (this.handler.getRightDensity() == 0 || atom.isEmpty()) {
                 break;
             }
-            if (handler.getInventory().getStack(2 * IonicBlockScreenHandler.GRIDSIZE + i + leftIngredients.size()).getCount() < handler.getRightDensity()) {
+            if (handler.getInventory().getRightGrid().getStack(i).getCount() < handler.getRightDensity()) {
                 this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
             } else {
                 this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
             }
             this.itemRenderer.renderInGuiWithOverrides(matrices, atom, x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
         }
-        if (handler.getLeftCharge() != 0 && handler.getRightCharge() != 0) {
-            this.textRenderer.draw(matrices, "+" + handler.getLeftCharge(), 66 + x, 6 + y, 0);
-            this.textRenderer.draw(matrices, "-" + handler.getRightCharge(), 139 + x, 6 + y, 0);
-        }
 
+        // TODO switch LEFT/RIGHT
+        this.textRenderer.draw(matrices, "+" + handler.getLeftCharge(), 70 + x, 20 + y, 0);
+        this.textRenderer.draw(matrices, "-" + handler.getRightCharge(), 147 + x, 20 + y, 0);
+    }
+
+    private void renderBonds(MatrixStack matrices, LewisCraftingGrid grid2, Map<ItemStack, Slot> stackToSlotMap, int x, int y) {
+        MoleculeItemGraph graph = (MoleculeItemGraph) grid2.getPartialMolecule().getStructure();
+        for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
+            Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
+            Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
+            BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
+            this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
+        }
     }
 
     @Override

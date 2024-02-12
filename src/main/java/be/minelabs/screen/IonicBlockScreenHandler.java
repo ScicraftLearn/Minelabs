@@ -80,6 +80,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             @Override
             public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
                 updateToClient();
+                ionic.markDirty();
             }
         });
 
@@ -187,11 +188,43 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         return switch (id) {
             case 0 -> // Clear btn
                     true;
-            case 1 -> true;
-            case 2 -> true;
-            case 3 -> true;
-            case 4 -> true;
+            case 1 -> {
+                // LEFT MINUS
+                int charge = getLeftCharge();
+                if (charge <= 1) {
+                    yield false;
+                }
+                setLeftCharge(charge - 1);
+                yield true;
+            }
+            case 2 -> {
+                // LEFT PLUS
+                int charge = getLeftCharge();
+                if (charge >= 9) {
+                    yield false;
+                }
+                setLeftCharge(charge + 1);
+                yield true;
+            }
+            case 3 -> {
+                // RIGHT MINUS
+                int charge = getRightCharge();
+                if (charge <= 1) {
+                    yield false;
+                }
+                setRightCharge(charge - 1);
+                yield true;
+            }
+            case 4 -> {
 
+                // RIGHT PLUS
+                int charge = getRightCharge();
+                if (charge >= 9) {
+                    yield false;
+                }
+                setRightCharge(charge + 1);
+                yield true;
+            }
             default -> throw new IllegalStateException("Unexpected value: " + id);
         };
     }
@@ -216,8 +249,32 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         return propertyDelegate.get(2);
     }
 
+    public void setLeftCharge(int amount) {
+        if (amount < 0) {
+            propertyDelegate.set(3, 1);
+            return;
+        }
+        if (amount > 9) {
+            propertyDelegate.set(3, 9);
+            return;
+        }
+        propertyDelegate.set(3, amount);
+    }
+
     public int getLeftCharge() {
         return propertyDelegate.get(3);
+    }
+
+    public void setRightCharge(int amount) {
+        if (amount < 0) {
+            propertyDelegate.set(4, 1);
+            return;
+        }
+        if (amount > 9) {
+            propertyDelegate.set(4, 9);
+            return;
+        }
+        propertyDelegate.set(4, amount);
     }
 
     public int getRightCharge() {

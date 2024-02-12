@@ -54,9 +54,9 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int rightdensity;
     //Charge of items needed for the recipe;Synced by propertyDelegate
-    private int leftCharge;
+    private int leftCharge = 1;
     //Charge of items needed for the recipe;Synced by propertyDelegate
-    private int rightCharge;
+    private int rightCharge = 1;
     //Current recipe selected; NOT synced
     private IonicRecipe currentrecipe;
 
@@ -241,8 +241,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.maxProgress = 23;
         this.leftdensity = 0;
         this.rightdensity = 0;
-        this.leftCharge = 0;
-        this.rightCharge = 0;
+        this.leftCharge = 1;
+        this.rightCharge = 1;
         this.leftIngredients = DefaultedList.of();
         this.rightIngredients = DefaultedList.of();
         this.markDirty();
@@ -251,6 +251,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public void updateRecipe() {
         getWorld().getRecipeManager().getFirstMatch(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
                 .ifPresentOrElse(recipe -> {
+                    // TODO CUSTOM CHARGE CHECK
                     if (recipe != currentrecipe) {
                         // Different recipe
                         this.currentrecipe = recipe;
@@ -259,8 +260,6 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                         this.rightIngredients = recipe.getRightingredients();
                         this.leftdensity = recipe.getLeftdensity();
                         this.rightdensity = recipe.getRightdensity();
-                        this.leftCharge = recipe.getLeftCharge();
-                        this.rightCharge = recipe.getRightCharge();
                         this.maxProgress = recipe.getTime();
                         markDirty();
                         sendDataPacket();
