@@ -29,7 +29,7 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implements ScreenHandlerProvider<IonicBlockScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/block/ioniccrafting/ionic_gui.png");
+    private static final Identifier TEXTURE = new Identifier(Minelabs.MOD_ID, "textures/gui/ionic_gui.png");
 
     private ButtonWidget clear_btn;
 
@@ -41,10 +41,10 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
     //just the height and width of the texture
     public IonicScreen(IonicBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        backgroundHeight = 200;
-        backgroundWidth = 206;
+        backgroundHeight = 220;
+        backgroundWidth = 205;
         playerInventoryTitleX = 22;
-        playerInventoryTitleY = 105;
+        playerInventoryTitleY = 127;
     }
 
     @Override
@@ -58,27 +58,28 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         clear_btn = ButtonWidget.builder(Text.of("C"), button -> {
             client.interactionManager.clickButton(handler.syncId, 0);
             button.setFocused(false);
-        }).dimensions(x + 150, y + 10, 20, 20).build();
+        }).dimensions(x + 178, y + 80, 20, 20).build();
 
-        int start_left = x + 30;
-        int start_right = x + 100;
+        int start_left = x + 42;
+        int start_right = x + 112;
+        int y_counter = y + 88;
 
-        left_minus = new CounterButtonWidget(start_left, y + 70, CounterButtonWidget.Type.MINUS, button -> {
+        left_minus = new CounterButtonWidget(start_left, y_counter, CounterButtonWidget.Type.MINUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 1);
             button.setFocused(false);
         });
 
-        left_plus = new CounterButtonWidget(start_left + 11, y + 70, CounterButtonWidget.Type.PLUS, button -> {
+        left_plus = new CounterButtonWidget(start_left + 11, y_counter, CounterButtonWidget.Type.PLUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 2);
             button.setFocused(false);
         });
 
-        right_minus = new CounterButtonWidget(start_right, y + 70, CounterButtonWidget.Type.MINUS, button -> {
+        right_minus = new CounterButtonWidget(start_right, y_counter, CounterButtonWidget.Type.MINUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 3);
             button.setFocused(false);
         });
 
-        right_plus = new CounterButtonWidget(start_right + 11, y + 70, CounterButtonWidget.Type.PLUS, button -> {
+        right_plus = new CounterButtonWidget(start_right + 11, y_counter, CounterButtonWidget.Type.PLUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 4);
             button.setFocused(false);
         });

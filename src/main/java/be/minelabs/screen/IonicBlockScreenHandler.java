@@ -234,15 +234,10 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     }
 
     private void addIOSlots() {
+        int y = 107;
         //row of inputslots
         for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(inventory, i + 18, 12 + i * 18, 86) {
-
-                @Override
-                public boolean isEnabled() {
-                    return hasRecipe();
-                }
-
+            this.addSlot(new Slot(inventory, i + 18, 12 + i * 18, y) {
                 @Override
                 public boolean canInsert(ItemStack stack) {
                     if (getLeftIngredients().size() > this.getIndex() - 2 * GRIDSIZE && this.getIndex() - 2 * GRIDSIZE >= 0) {
@@ -253,23 +248,12 @@ public class IonicBlockScreenHandler extends ScreenHandler {
                     }
                     return false;
                 }
-
-                @Override
-                public int getMaxItemCount(ItemStack stack) {
-                    if (getLeftIngredients().size() > this.getIndex() - 2 * GRIDSIZE) { //Slot difference of GRIDSIZE due to the grid
-                        return getLeftDensity();
-                    }
-                    if (getRightIngredients().size() > this.getIndex() - 2 * GRIDSIZE - getLeftIngredients().size()) { //Slot difference of GRIDSIZE due to the grid
-                        return getRightDensity();
-                    }
-                    return 0;
-                }
             });
         }
         //erlemeyer slot
-        this.addSlot(new FilteredSlot(inventory, 27, 178, 86, s -> s.isOf(Items.ERLENMEYER)));
+        this.addSlot(new FilteredSlot(inventory, 27, 178, y, s -> s.isOf(Items.ERLENMEYER)));
         //result slot
-        this.addSlot(new CraftingResultSlot(inventory, 28, 176, 40));
+        this.addSlot(new CraftingResultSlot(inventory, 28, 178, 47));
     }
 
     private void addGridSlots() {
@@ -278,7 +262,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         //22 is the y position where the top-left corner of the square needs to be
         for (int i = 0; i < 3; i++) {
             for (int y = 0; y < 3; y++) {
-                this.addSlot(new LockableGridSlot(inventory, i * 3 + y, 14 + y * 18, 22 + i * 18) {
+                this.addSlot(new LockableGridSlot(inventory, i * 3 + y, 12 + y * 18, 28 + i * 18) {
                     @Override
                     public boolean isLocked() {
                         return !isInputEmpty();
@@ -289,7 +273,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         //second 3x3 gridslots(right)
         for (int i = 0; i < 3; i++) {
             for (int y = 0; y < 3; y++) {
-                this.addSlot(new LockableGridSlot(inventory, i * 3 + y + 9, 87 + y * 18, 22 + i * 18) {
+                this.addSlot(new LockableGridSlot(inventory, i * 3 + y + 9, 87 + y * 18, 28 + i * 18) {
                     @Override
                     public boolean isLocked() {
                         return !isInputEmpty();
@@ -303,12 +287,12 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         //The player inventory (3x9 slots)
         for (int m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 23 + l * 18, 118 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 23 + l * 18, 139 + m * 18));
             }
         }
         //The player Hotbar (9 slots)
         for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 23 + m * 18, 176));
+            this.addSlot(new Slot(playerInventory, m, 23 + m * 18, 197));
         }
     }
 }
