@@ -230,7 +230,6 @@ public class IonicBlockScreenHandler extends ScreenHandler {
                 yield true;
             }
             case 4 -> {
-
                 // RIGHT PLUS
                 int charge = getRightCharge();
                 if (charge >= 9) {
@@ -264,11 +263,11 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     }
 
     public void setLeftCharge(int amount) {
-        if (amount < 0) {
+        if (amount <= 1) {
             propertyDelegate.set(3, 1);
             return;
         }
-        if (amount > 9) {
+        if (amount >= 9) {
             propertyDelegate.set(3, 9);
             return;
         }
@@ -280,11 +279,11 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     }
 
     public void setRightCharge(int amount) {
-        if (amount < 0) {
+        if (amount <= 1) {
             propertyDelegate.set(4, 1);
             return;
         }
-        if (amount > 9) {
+        if (amount >= 9) {
             propertyDelegate.set(4, 9);
             return;
         }

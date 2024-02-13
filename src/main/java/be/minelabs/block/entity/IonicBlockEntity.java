@@ -115,6 +115,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
+        rightCharge = nbt.getInt("rightCharge");
+        leftCharge = nbt.getInt("lefCharge");
         NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         this.inventory = new IonicInventory(9, 9, 11);
         for (int i = 0; i < nbtList.size(); ++i) {
@@ -141,6 +143,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
         }
         nbt.put("Items", nbtList);
+        nbt.putInt("leftCharge", leftCharge);
+        nbt.putInt("rightCharge", rightCharge);
     }
 
     @Override
@@ -241,8 +245,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.maxProgress = 23;
         this.leftdensity = 0;
         this.rightdensity = 0;
-        this.leftCharge = 1;
-        this.rightCharge = 1;
+        //this.leftCharge = 1;
+        //this.rightCharge = 1;
         this.leftIngredients = DefaultedList.of();
         this.rightIngredients = DefaultedList.of();
         this.markDirty();
