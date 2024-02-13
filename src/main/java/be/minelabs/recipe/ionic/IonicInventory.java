@@ -20,7 +20,7 @@ public class IonicInventory extends SimpleInventory {
         for (int i = 0; i < 9; i++) {
             items[i] = this.getStack(i);
         }
-        return new LewisCraftingGrid(3, 3, items);
+        return new IonicCraftingGrid(3, 3, items);
     }
 
     public LewisCraftingGrid getRightGrid() {
@@ -28,7 +28,7 @@ public class IonicInventory extends SimpleInventory {
         for (int i = 0; i < IonicBlockScreenHandler.GRIDSIZE; i++) {
             items[i] = this.getStack(i + IonicBlockScreenHandler.GRIDSIZE);
         }
-        return new LewisCraftingGrid(3, 3, items);
+        return new IonicCraftingGrid(3, 3, items);
     }
 
     public ItemStack getContainerStack() {
