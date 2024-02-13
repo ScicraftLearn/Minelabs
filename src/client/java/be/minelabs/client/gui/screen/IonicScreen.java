@@ -54,6 +54,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         registerButtons();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void registerButtons() {
         clear_btn = ButtonWidget.builder(Text.of("C"), button -> {
             client.interactionManager.clickButton(handler.syncId, 0);
@@ -67,30 +68,24 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         left_minus = new CounterButtonWidget(start_left, y_counter, CounterButtonWidget.Type.MINUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 1);
             button.setFocused(false);
-            button.active = handler.getLeftCharge() > 1;
-            left_plus.active = true;
         });
 
         left_plus = new CounterButtonWidget(start_left + 11, y_counter, CounterButtonWidget.Type.PLUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 2);
             button.setFocused(false);
-            button.active = handler.getLeftCharge() < 9;
-            left_minus.active = true;
         });
 
         right_minus = new CounterButtonWidget(start_right, y_counter, CounterButtonWidget.Type.MINUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 3);
             button.setFocused(false);
-            button.active = handler.getRightCharge() > 1;
-            right_plus.active = true;
         });
 
         right_plus = new CounterButtonWidget(start_right + 11, y_counter, CounterButtonWidget.Type.PLUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 4);
             button.setFocused(false);
-            button.active = handler.getLeftCharge() < 9;
-            right_minus.active = true;
         });
+
+        activeBTN();
 
         addDrawableChild(clear_btn);
         addDrawableChild(left_minus);
@@ -174,5 +169,28 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        boolean ret = super.mouseClicked(mouseX, mouseY, button);
+        // button stays focussed after click which we don't want. This prevents it.
+        if (ret)
+            setFocused(null);
+        return ret;
+    }
+
+    @Override
+    protected void handledScreenTick() {
+        activeBTN();
+    }
+
+
+    private void activeBTN() {
+        left_minus.active = handler.getLeftCharge() > 1;
+        left_plus.active = handler.getLeftCharge() < 9;
+
+        right_minus.active = handler.getRightCharge() > 1;
+        right_plus.active = handler.getRightCharge() < 9;
     }
 }

@@ -282,6 +282,9 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
             ingredient.write(buf);
         }
 
+        buf.writeByte(leftCharge);
+        buf.writeByte(leftCharge);
+
         for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
             ServerPlayNetworking.send(player, NetworkingConstants.IONICDATASYNC, buf);
         }
@@ -302,6 +305,11 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public void setIngredients(DefaultedList<Ingredient> leftIngredients, DefaultedList<Ingredient> rightIngredients) {
         this.leftIngredients = leftIngredients;
         this.rightIngredients = rightIngredients;
+    }
+
+    public void setCharges(int left, int right) {
+        this.leftCharge = left;
+        this.rightCharge = right;
     }
 
     public DefaultedList<Ingredient> getLeftIngredients() {

@@ -186,8 +186,22 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
         return switch (id) {
-            case 0 -> // Clear btn
-                    true;
+            case 0 -> {// Clear btn
+                if (isInputEmpty()) {
+                    for (int i = 0; i < GRIDSIZE * 2; i++) {
+                        inventory.setStack(i, ItemStack.EMPTY);
+                    }
+                    inventory.markDirty();
+                } else {
+                    for (int i = 18; i < 27; i++) {
+                        ItemStack itemStack = inventory.removeStack(i);
+                        if (!player.getInventory().insertStack(itemStack)) {
+                            player.dropItem(itemStack, false);
+                        }
+                    }
+                }
+                yield true;
+            }
             case 1 -> {
                 // LEFT MINUS
                 int charge = getLeftCharge();
