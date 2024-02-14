@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * IonicBlockEntity. We still implement {@link Inventory} for compat.
  */
-public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, Inventory {
+public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory {
 
     //The actual inventory
     private IonicInventory inventory = new IonicInventory(9, 9, 11);
@@ -330,45 +330,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return rightIngredients;
     }
 
-    //Iventory overrides, for compatibility
-
-    @Override
-    public int size() {
-        return inventory.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return inventory.isEmpty();
-    }
-
-    @Override
-    public ItemStack getStack(int slot) {
-        return inventory.getStack(slot);
-    }
-
-    @Override
-    public ItemStack removeStack(int slot, int amount) {
-        return inventory.removeStack(slot, amount);
-    }
-
-    @Override
-    public ItemStack removeStack(int slot) {
-        return inventory.removeStack(slot);
-    }
-
-    @Override
-    public void setStack(int slot, ItemStack stack) {
-        inventory.setStack(slot, stack);
-    }
-
-    @Override
-    public boolean canPlayerUse(PlayerEntity player) {
-        return inventory.canPlayerUse(player);
-    }
-
-    @Override
-    public void clear() {
-        inventory.clear();
+    public Inventory getIOInventory() {
+        return inventory.getIO();
     }
 }

@@ -3,6 +3,7 @@ package be.minelabs.recipe.ionic;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.molecules.PartialMolecule;
 import be.minelabs.screen.IonicBlockScreenHandler;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 
@@ -37,5 +38,9 @@ public class IonicInventory extends SimpleInventory {
 
     public ItemStack getOutputStack() {
         return getStack(28);
+    }
+
+    public Inventory getIO() {
+        return new SimpleInventory(stacks.stream().skip(18).toArray(ItemStack[]::new));
     }
 }
