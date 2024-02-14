@@ -39,7 +39,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
      * This gives it the Blockpos of the BlockEntity
      */
     public IonicBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buff) {
-        this(syncId, playerInventory, new IonicInventory(9, 9, 11), new ArrayPropertyDelegate(6), buff.readBlockPos());
+        this(syncId, playerInventory, new IonicInventory(9, 9, 11), new ArrayPropertyDelegate(8), buff.readBlockPos());
     }
 
     /**
@@ -71,6 +71,9 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId < GRIDSIZE * 2) {
+                    setLeftCharge(inventory.getLeftGrid().getCharge());
+                    setRightCharge(inventory.getRightGrid().getCharge());
+
                     ionic.updateRecipe();
                     onGridChanged(playerInventory.player);
                 }
@@ -186,11 +189,16 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
         return switch (id) {
-            case 0 -> {// Clear btn
+            case 0 -> {
+                // Clear btn
                 if (isInputEmpty()) {
+                    // clear grid + amount numbers
                     for (int i = 0; i < GRIDSIZE * 2; i++) {
                         inventory.setStack(i, ItemStack.EMPTY);
                     }
+                    setLeftAmount(1);
+                    setRightAmount(1);
+
                     inventory.markDirty();
                 } else {
                     for (int i = 18; i < 27; i++) {
@@ -204,38 +212,38 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             }
             case 1 -> {
                 // LEFT MINUS
-                int charge = getLeftCharge();
+                int charge = getLeftAmount();
                 if (charge <= 1) {
                     yield false;
                 }
-                setLeftCharge(charge - 1);
+                setLeftAmount(charge - 1);
                 yield true;
             }
             case 2 -> {
                 // LEFT PLUS
-                int charge = getLeftCharge();
+                int charge = getLeftAmount();
                 if (charge >= 9) {
                     yield false;
                 }
-                setLeftCharge(charge + 1);
+                setLeftAmount(charge + 1);
                 yield true;
             }
             case 3 -> {
                 // RIGHT MINUS
-                int charge = getRightCharge();
+                int charge = getRightAmount();
                 if (charge <= 1) {
                     yield false;
                 }
-                setRightCharge(charge - 1);
+                setRightAmount(charge - 1);
                 yield true;
             }
             case 4 -> {
                 // RIGHT PLUS
-                int charge = getRightCharge();
+                int charge = getRightAmount();
                 if (charge >= 9) {
                     yield false;
                 }
-                setRightCharge(charge + 1);
+                setRightAmount(charge + 1);
                 yield true;
             }
             default -> throw new IllegalStateException("Unexpected value: " + id);
@@ -263,14 +271,6 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     }
 
     public void setLeftCharge(int amount) {
-        if (amount <= 1) {
-            propertyDelegate.set(3, 1);
-            return;
-        }
-        if (amount >= 9) {
-            propertyDelegate.set(3, 9);
-            return;
-        }
         propertyDelegate.set(3, amount);
     }
 
@@ -279,20 +279,46 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     }
 
     public void setRightCharge(int amount) {
-        if (amount <= 1) {
-            propertyDelegate.set(4, 1);
-            return;
-        }
-        if (amount >= 9) {
-            propertyDelegate.set(4, 9);
-            return;
-        }
         propertyDelegate.set(4, amount);
     }
 
     public int getRightCharge() {
         return propertyDelegate.get(4);
     }
+
+
+    public int getLeftAmount() {
+        return propertyDelegate.get(6);
+    }
+
+    public void setLeftAmount(int value) {
+        if (value <= 1) {
+            propertyDelegate.set(6, 1);
+            return;
+        }
+        if (value >= 9) {
+            propertyDelegate.set(6, 9);
+            return;
+        }
+        propertyDelegate.set(6, value);
+    }
+
+    public int getRightAmount() {
+        return propertyDelegate.get(7);
+    }
+
+    public void setRightAmount(int value) {
+        if (value <= 1) {
+            propertyDelegate.set(7, 1);
+            return;
+        }
+        if (value >= 9) {
+            propertyDelegate.set(7, 9);
+            return;
+        }
+        propertyDelegate.set(7, value);
+    }
+
 
     //A recipe is found (so the density is larger than 0)
     public boolean hasRecipe() {

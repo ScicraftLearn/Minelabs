@@ -59,18 +59,20 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         clear_btn = ButtonWidget.builder(Text.of("C"), button -> {
             client.interactionManager.clickButton(handler.syncId, 0);
             button.setFocused(false);
-        }).dimensions(x + 178, y + 80, 20, 20).build();
+        }).dimensions(x + 177, y + 80, 18, 18).build();
 
-        int start_left = x + 42;
-        int start_right = x + 112;
+        int start_left = x + 21;
+        int start_right = x + 96;
         int y_counter = y + 88;
+
+        int offsest = 24;
 
         left_minus = new CounterButtonWidget(start_left, y_counter, CounterButtonWidget.Type.MINUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 1);
             button.setFocused(false);
         });
 
-        left_plus = new CounterButtonWidget(start_left + 11, y_counter, CounterButtonWidget.Type.PLUS, button -> {
+        left_plus = new CounterButtonWidget(start_left + offsest, y_counter, CounterButtonWidget.Type.PLUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 2);
             button.setFocused(false);
         });
@@ -80,7 +82,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             button.setFocused(false);
         });
 
-        right_plus = new CounterButtonWidget(start_right + 11, y_counter, CounterButtonWidget.Type.PLUS, button -> {
+        right_plus = new CounterButtonWidget(start_right + offsest, y_counter, CounterButtonWidget.Type.PLUS, button -> {
             client.interactionManager.clickButton(handler.syncId, 4);
             button.setFocused(false);
         });
@@ -149,9 +151,14 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             this.itemRenderer.renderInGuiWithOverrides(matrices, atom, x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
         }
 
-        // TODO switch LEFT/RIGHT
-        this.textRenderer.draw(matrices, "+" + handler.getLeftCharge(), 70 + x, 20 + y, 0);
-        this.textRenderer.draw(matrices, "-" + handler.getRightCharge(), 147 + x, 20 + y, 0);
+        int charge = handler.getLeftCharge();
+        this.textRenderer.draw(matrices, charge >= 0 ? "+" + charge : String.valueOf(charge), 70 + x, 20 + y, 0);
+
+        charge = handler.getRightCharge();
+        this.textRenderer.draw(matrices, charge >= 0 ? "+" + charge : String.valueOf(charge), 147 + x, 20 + y, 0);
+
+        this.textRenderer.draw(matrices, Text.of(String.valueOf(handler.getLeftAmount())), x + 36, y + 91, 0x404040);
+        this.textRenderer.draw(matrices, Text.of(String.valueOf(handler.getRightAmount())), x + 111, y + 91, 0x404040);
     }
 
     private void renderBonds(MatrixStack matrices, LewisCraftingGrid grid2, Map<ItemStack, Slot> stackToSlotMap, int x, int y) {
@@ -187,10 +194,10 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
 
 
     private void activeBTN() {
-        left_minus.active = handler.getLeftCharge() > 1;
-        left_plus.active = handler.getLeftCharge() < 9;
+        left_minus.active = handler.getLeftAmount() > 1;
+        left_plus.active = handler.getLeftAmount() < 9;
 
-        right_minus.active = handler.getRightCharge() > 1;
-        right_plus.active = handler.getRightCharge() < 9;
+        right_minus.active = handler.getRightAmount() > 1;
+        right_plus.active = handler.getRightAmount() < 9;
     }
 }

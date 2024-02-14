@@ -15,6 +15,15 @@ public class IonicCraftingGrid extends LewisCraftingGrid {
         super(width, height, items);
     }
 
+    /**
+     * Get the charge of the current "Partial" molecule
+     *
+     * @return integer value (-9 <-> 9)
+     */
+    public int getCharge() {
+        return 0;
+    }
+
     @Override
     protected MoleculeItemGraph positionGraphToMoleculeItemGraph(MoleculeItemGraph structure) {
         // TODO new ALGORITHM!

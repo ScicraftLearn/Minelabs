@@ -15,15 +15,15 @@ public class IonicInventory extends SimpleInventory {
         super(gridLeft + gridRight + other);
     }
 
-    public LewisCraftingGrid getLeftGrid() {
+    public IonicCraftingGrid getLeftGrid() {
         ItemStack[] items = new ItemStack[9];
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < IonicBlockScreenHandler.GRIDSIZE; i++) {
             items[i] = this.getStack(i);
         }
         return new IonicCraftingGrid(3, 3, items);
     }
 
-    public LewisCraftingGrid getRightGrid() {
+    public IonicCraftingGrid getRightGrid() {
         ItemStack[] items = new ItemStack[9];
         for (int i = 0; i < IonicBlockScreenHandler.GRIDSIZE; i++) {
             items[i] = this.getStack(i + IonicBlockScreenHandler.GRIDSIZE);

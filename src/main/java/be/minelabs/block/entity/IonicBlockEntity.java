@@ -54,9 +54,14 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     //Density (amount) of items needed for the recipe;  Also used to tell the client a recipe is found;Synced by propertyDelegate
     private int rightdensity;
     //Charge of items needed for the recipe;Synced by propertyDelegate
-    private int leftCharge = 1;
+    private int leftCharge = 0;
     //Charge of items needed for the recipe;Synced by propertyDelegate
-    private int rightCharge = 1;
+    private int rightCharge = 0;
+    //Amount of "partial"molecule needed for the recipe;Synced by propertyDelegate
+    private int leftAmount = 1;
+    //Amount of "partial"molecule needed for the recipe;Synced by propertyDelegate
+    private int rightAmount = 1;
+
     //Current recipe selected; NOT synced
     private IonicRecipe currentrecipe;
 
@@ -76,6 +81,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                     case 3 -> IonicBlockEntity.this.leftCharge;
                     case 4 -> IonicBlockEntity.this.rightCharge;
                     case 5 -> IonicBlockEntity.this.maxProgress;
+                    case 6 -> IonicBlockEntity.this.leftAmount;
+                    case 7 -> IonicBlockEntity.this.rightAmount;
                     default -> 0;
                 };
             }
@@ -89,6 +96,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                     case 3 -> IonicBlockEntity.this.leftCharge = value;
                     case 4 -> IonicBlockEntity.this.rightCharge = value;
                     case 5 -> IonicBlockEntity.this.maxProgress = value;
+                    case 6 -> IonicBlockEntity.this.leftAmount = value;
+                    case 7 -> IonicBlockEntity.this.rightAmount = value;
                     default -> {
                     }
                 }
@@ -96,7 +105,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
             @Override
             public int size() {
-                return 6;
+                return 8;
             }
         };
     }
@@ -115,8 +124,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        rightCharge = nbt.getInt("rightCharge");
-        leftCharge = nbt.getInt("lefCharge");
+        rightAmount = nbt.getByte("rightAmount");
+        leftAmount = nbt.getByte("leftAmount");
         NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         this.inventory = new IonicInventory(9, 9, 11);
         for (int i = 0; i < nbtList.size(); ++i) {
@@ -143,8 +152,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
             }
         }
         nbt.put("Items", nbtList);
-        nbt.putInt("leftCharge", leftCharge);
-        nbt.putInt("rightCharge", rightCharge);
+        nbt.putByte("leftAmount", (byte) leftAmount);
+        nbt.putByte("rightAmount", (byte) rightAmount);
     }
 
     @Override
@@ -245,8 +254,6 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
         this.maxProgress = 23;
         this.leftdensity = 0;
         this.rightdensity = 0;
-        //this.leftCharge = 1;
-        //this.rightCharge = 1;
         this.leftIngredients = DefaultedList.of();
         this.rightIngredients = DefaultedList.of();
         this.markDirty();
@@ -286,8 +293,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
             ingredient.write(buf);
         }
 
-        buf.writeByte(leftCharge);
-        buf.writeByte(leftCharge);
+        // MIGHT have to sync Amount / Charge
 
         for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, pos)) {
             ServerPlayNetworking.send(player, NetworkingConstants.IONICDATASYNC, buf);
