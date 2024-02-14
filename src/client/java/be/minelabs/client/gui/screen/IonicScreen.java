@@ -170,6 +170,20 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
     }
+    private void renderProgressArrow(MatrixStack matrices, int x, int y) {
+        if (handler.isCrafting()) {
+            drawTexture(matrices, x + 102, y + 52, 176, 0, handler.getScaledProgress(), 20);
+        }
+    }
+
+    private void renderRecipeCheck(MatrixStack matrices, int x, int y) {
+        switch (handler.getStatus()) {
+            case 1 -> drawTexture(matrices, x + 105, y + 17, 176, 55, 16, 16); // NOT IMPLEMENTED
+            case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 72, 16, 16); // VALID
+            case 3 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16); // TO MANY MOL
+            default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
+        }
+    }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {

@@ -218,6 +218,4 @@ public class LewisScreen extends HandledScreen<LewisBlockScreenHandler> implemen
             default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
         }
     }
-
-
 }

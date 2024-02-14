@@ -390,4 +390,19 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, m, 23 + m * 18, 197));
         }
     }
+
+    public int getScaledProgress() {
+        int progress = getProgress();
+        int maxProgress = propertyDelegate.get(5);
+        int arrowSize = 26;
+        return maxProgress != 0 && progress != 0 ? progress * arrowSize / maxProgress : 0;
+    }
+
+    public boolean isCrafting() {
+        return getProgress() > 0;
+    }
+
+    public int getStatus() {
+        return 0;
+    }
 }
