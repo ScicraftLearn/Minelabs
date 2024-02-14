@@ -21,12 +21,13 @@ public class IonicCraftingGrid extends LewisCraftingGrid {
      * @return integer value (-9 <-> 9)
      */
     public int getCharge() {
-        return 0;
+        // TODO BETER CALC
+        return -this.currentMolecule.getStructure().getTotalOpenConnections();
     }
 
     @Override
     protected MoleculeItemGraph positionGraphToMoleculeItemGraph(MoleculeItemGraph structure) {
-        // TODO new ALGORITHM!
+        // TODO new ALGORITHM?
         return super.positionGraphToMoleculeItemGraph(structure);
     }
 }

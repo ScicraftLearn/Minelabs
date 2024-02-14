@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class LewisCraftingGrid extends OrderedInventory {
 
-    private PartialMolecule currentMolecule = new PartialMolecule();
+    protected PartialMolecule currentMolecule = new PartialMolecule();
 
     private final int width;
     private final int height;

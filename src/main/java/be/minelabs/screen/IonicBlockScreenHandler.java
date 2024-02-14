@@ -83,7 +83,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             @Override
             public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
                 updateToClient();
-                ionic.markDirty();
+                //ionic.markDirty();
             }
         });
 
@@ -92,7 +92,6 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         addGridSlots();
         addIOSlots();
         addPlayerSlots(playerInventory);
-
     }
 
     /**
