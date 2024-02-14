@@ -191,12 +191,12 @@ public class IonicRecipe implements Recipe<IonicInventory> {
             ItemStack output = ShapedRecipe.outputFromJson(json.getAsJsonObject("result"));
 
             boolean container = true;
-            if (!json.get("container").isJsonNull()) {
+            if (json.get("container") != null) {
                 container = json.get("container").getAsBoolean();
             }
 
             int time = 23;
-            if (!json.get("time").isJsonNull()) {
+            if (json.get("time") != null) {
                 time = json.get("time").getAsInt();
             }
 

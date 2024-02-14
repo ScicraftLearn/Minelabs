@@ -9,22 +9,28 @@
       "bonds": [
       ]
     },
+    "amount": 1,
     "density": 8,
     "charge": 1
   },
   "anion": {
-    "structure":
-    {
+    "structure": {
       "atoms": [
-        {"key":  "CL1", "atom":  "Cl"}
+        {
+          "key": "CL1",
+          "atom": "Cl"
+        }
       ],
       "bonds": [
       ]
     },
+    "amount": 1,
     "density": 8,
     "charge": 1
   },
   "result": {
     "item": "minelabs:salt/salt"
-  }
+  },
+  "container": false,
+  "time": 23
 }
