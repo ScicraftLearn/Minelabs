@@ -104,6 +104,8 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        renderRecipeCheck(matrices, this.x, this.y);
+        renderProgressArrow(matrices, this.x, this.y);
 
         // Keep mapping between stack (in graph) and slots (for rendering)
         Map<ItemStack, Slot> stackToSlotMap = new HashMap<>();
@@ -170,18 +172,20 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
     }
+
     private void renderProgressArrow(MatrixStack matrices, int x, int y) {
         if (handler.isCrafting()) {
-            drawTexture(matrices, x + 102, y + 52, 176, 0, handler.getScaledProgress(), 20);
+            drawTexture(matrices, x + 146, y + 45, 206, 0, handler.getScaledProgress(), 20);
         }
     }
 
     private void renderRecipeCheck(MatrixStack matrices, int x, int y) {
+        int x_coord = x + 177, y_coord = y + 17;
         switch (handler.getStatus()) {
-            case 1 -> drawTexture(matrices, x + 105, y + 17, 176, 55, 16, 16); // NOT IMPLEMENTED
-            case 2 -> drawTexture(matrices, x + 105, y + 17, 176, 72, 16, 16); // VALID
-            case 3 -> drawTexture(matrices, x + 105, y + 17, 176, 38, 16, 16); // TO MANY MOL
-            default -> drawTexture(matrices, x + 105, y + 17, 176, 21, 16, 16); // INVALID
+            case 1 -> drawTexture(matrices, x_coord, y_coord, 206, 52, 16, 16); // NOT IMPLEMENTED
+            case 2 -> drawTexture(matrices, x_coord, y_coord, 206, 69, 16, 16); // VALID
+            case 3 -> drawTexture(matrices, x_coord, y_coord, 206, 35, 16, 16); // TO MANY MOL
+            default -> drawTexture(matrices, x_coord, y_coord, 206, 18, 16, 16); // INVALID
         }
     }
 
