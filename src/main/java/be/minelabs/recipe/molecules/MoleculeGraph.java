@@ -54,10 +54,11 @@ public class MoleculeGraph extends Graph<Atom, Bond> {
     }
 
     public int getTotalOpenConnections() {
-        int totalOpenConnections = 0;
-        for (Vertex vertex : new ArrayList<>(getVertices())) {
-            totalOpenConnections += getOpenConnections(vertex);
-        }
-        return totalOpenConnections;
+        return getVertices().stream().map(this::getOpenConnections).mapToInt(Integer::intValue).sum();
+//        int totalOpenConnections = 0;
+//        for (Vertex vertex : new ArrayList<>(getVertices())) {
+//            totalOpenConnections += getOpenConnections(vertex);
+//        }
+//        return totalOpenConnections;
     }
 }

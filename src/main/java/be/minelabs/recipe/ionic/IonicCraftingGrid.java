@@ -21,7 +21,7 @@ public class IonicCraftingGrid extends LewisCraftingGrid {
      * @return integer value (-9 <-> 9)
      */
     public int getCharge() {
-        // TODO BETER CALC
+        // TODO BETER CALC FOR EXCEPTIONS (Fe, S, ...)
         return this.currentMolecule.getStructure().getTotalOpenConnections();
     }
 

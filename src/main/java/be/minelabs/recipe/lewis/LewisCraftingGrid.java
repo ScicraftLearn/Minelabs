@@ -1,11 +1,13 @@
 package be.minelabs.recipe.lewis;
 
+import be.minelabs.Minelabs;
 import be.minelabs.science.Atom;
 import be.minelabs.recipe.molecules.Bond;
 import be.minelabs.recipe.molecules.MoleculeItemGraph;
 import be.minelabs.recipe.molecules.PartialMolecule;
 import be.minelabs.inventory.OrderedInventory;
 import be.minelabs.item.items.AtomItem;
+import be.minelabs.util.Graph;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtList;
 
@@ -121,7 +123,7 @@ public class LewisCraftingGrid extends OrderedInventory {
      * Make the actual bonds between elements.
      */
     protected MoleculeItemGraph positionGraphToMoleculeItemGraph(MoleculeItemGraph structure) {
-        List<Atom> sourceOrder = Stream.of("H", "F", "Cl", "Br", "I", "O", "N", "C", "B", "S", "P", "Si", "Al", "Sn", "Pb").map(Atom::getBySymbol).toList();
+        List<Atom> sourceOrder = Stream.of("H", "F", "Cl", "Br", "I", "S", "N", "C", "B", "P", "O", "Si", "Al", "Sn", "Pb").map(Atom::getBySymbol).toList();
         List<Atom> targetOrder = Stream.of("O", "N", "C", "B", "S", "P", "Si", "Al", "Sn", "Pb", "I", "Br", "Cl", "F", "H").map(Atom::getBySymbol).toList();
 
         for (Atom sourceAtom : sourceOrder) {
@@ -133,6 +135,7 @@ public class LewisCraftingGrid extends OrderedInventory {
                     if (structure.getOpenConnections(source) < 1) continue;
                     MoleculeItemGraph.Vertex target = source.getNeighbours().stream()
                             .filter(t -> structure.getOpenConnections(t) > 0)
+                            .sorted(Comparator.comparingInt(o -> structure.getEdge(source, o).data.bondOrder))
                             .min(Comparator.comparingInt(t -> targetOrder.indexOf(((AtomItem) t.data.getItem()).getAtom())))
                             .orElse(null);
                     if (target == null) continue;
