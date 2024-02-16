@@ -11,10 +11,9 @@ import be.minelabs.util.Graph;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtList;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class LewisCraftingGrid extends OrderedInventory {
@@ -133,11 +132,25 @@ public class LewisCraftingGrid extends OrderedInventory {
                 for (MoleculeItemGraph.Vertex source : structure.getVertices()) {
                     if (source.data != sourceAtom) continue;
                     if (structure.getOpenConnections(source) < 1) continue;
-                    MoleculeItemGraph.Vertex target = source.getNeighbours().stream()
+
+                    Map<MoleculeItemGraph.Vertex, Integer> openConnectionsMap = source.getNeighbours().stream()
                             .filter(t -> structure.getOpenConnections(t) > 0)
-                            .sorted(Comparator.comparingInt(o -> structure.getEdge(source, o).data.bondOrder))
-                            .min(Comparator.comparingInt(t -> targetOrder.indexOf(((AtomItem) t.data.getItem()).getAtom())))
+                            .collect(Collectors.toMap(Function.identity(), structure::getOpenConnections));
+
+                    Map<MoleculeItemGraph.Vertex, Bond> edgeDataMap = openConnectionsMap.keySet().stream()
+                            .collect(Collectors.toMap(Function.identity(), o -> structure.getEdge(source, o).data));
+
+                    MoleculeItemGraph.Vertex target = openConnectionsMap.entrySet().stream()
+                            .sorted(Comparator.comparingInt(entry -> edgeDataMap.get(entry.getKey()).bondOrder))
+                            .min(Comparator.comparingInt(entry -> targetOrder.indexOf(((AtomItem) entry.getKey().data.getItem()).getAtom())))
+                            .map(Map.Entry::getKey)
                             .orElse(null);
+
+//                    MoleculeItemGraph.Vertex target = source.getNeighbours().stream()
+//                            .filter(t -> structure.getOpenConnections(t) > 0)
+//                            .sorted(Comparator.comparingInt(o -> structure.getEdge(source, o).data.bondOrder))
+//                            .min(Comparator.comparingInt(t -> targetOrder.indexOf(((AtomItem) t.data.getItem()).getAtom())))
+//                            .orElse(null);
                     if (target == null) continue;
                     changed = changed || structure.incrementBond(source, target);
                 }
