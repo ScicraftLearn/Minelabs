@@ -72,7 +72,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
                 if (slotId < GRIDSIZE * 2) {
                     setLeftCharge(inventory.getLeftGrid().getCharge());
-                    setRightCharge(inventory.getRightGrid().getCharge());
+                    setRightCharge(-inventory.getRightGrid().getCharge());
 
                     ionic.updateRecipe();
                     onGridChanged(playerInventory.player);

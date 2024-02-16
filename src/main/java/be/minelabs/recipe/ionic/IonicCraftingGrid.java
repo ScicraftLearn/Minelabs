@@ -22,7 +22,7 @@ public class IonicCraftingGrid extends LewisCraftingGrid {
      */
     public int getCharge() {
         // TODO BETER CALC
-        return -this.currentMolecule.getStructure().getTotalOpenConnections();
+        return this.currentMolecule.getStructure().getTotalOpenConnections();
     }
 
     @Override
