@@ -2,6 +2,7 @@ package be.minelabs.screen;
 
 import be.minelabs.advancement.criterion.Criteria;
 import be.minelabs.block.entity.LewisBlockEntity;
+import be.minelabs.item.items.AtomItem;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.molecules.Bond;
 import be.minelabs.recipe.molecules.MoleculeGraph;
@@ -118,7 +119,15 @@ public class LewisBlockScreenHandler extends ScreenHandler {
         // Lewis Crafting Table Inventory (5x5 grid)
         for (int m = 0; m < 5; ++m) {
             for (int l = 0; l < 5; ++l) {
-                this.addSlot(new LockableGridSlot(craftingGrid, l + m * 5, 8 + l * 18, m * 18 + 18) {//Anonymous implementation to link it to the slots.
+                this.addSlot(new LockableGridSlot(craftingGrid, l + m * 5, 8 + l * 18, m * 18 + 18, stack -> {
+                    if (stack.getItem() instanceof AtomItem atom) {
+                        return switch (atom.getAtom().getType()) {
+                            case POST_TRANSITION_METAL, NON_METAL, NOBLE_GAS -> true;
+                            default -> false;
+                        };
+                    }
+                    return false;
+                }) {//Anonymous implementation to link it to the slots.
                     @Override
                     public boolean isLocked() {
                         return !isInputEmpty(); //Locked if the input had items

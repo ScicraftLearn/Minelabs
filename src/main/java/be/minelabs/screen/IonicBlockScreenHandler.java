@@ -357,7 +357,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         //22 is the y position where the top-left corner of the square needs to be
         for (int i = 0; i < 3; i++) {
             for (int y = 0; y < 3; y++) {
-                this.addSlot(new LockableGridSlot(inventory, i * 3 + y, 12 + y * 18, 28 + i * 18) {
+                this.addSlot(new LockableGridSlot(inventory, i * 3 + y, 12 + y * 18, 28 + i * 18, stack -> true) {
                     @Override
                     public boolean isLocked() {
                         return !isInputEmpty();
@@ -368,7 +368,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         //second 3x3 gridslots(right)
         for (int i = 0; i < 3; i++) {
             for (int y = 0; y < 3; y++) {
-                this.addSlot(new LockableGridSlot(inventory, i * 3 + y + 9, 87 + y * 18, 28 + i * 18) {
+                this.addSlot(new LockableGridSlot(inventory, i * 3 + y + 9, 87 + y * 18, 28 + i * 18, stack -> true) {
                     @Override
                     public boolean isLocked() {
                         return !isInputEmpty();
@@ -403,6 +403,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     }
 
     public int getStatus() {
+        // TODO finish
         return 0;
     }
 }

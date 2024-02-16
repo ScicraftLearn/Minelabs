@@ -81,10 +81,11 @@ public class IonicRecipe implements Recipe<IonicInventory> {
         boolean left = inventory.getLeftGrid().getPartialMolecule().getStructure().isIsomorphicTo(leftMolecule.getStructure());
         boolean right = inventory.getRightGrid().getPartialMolecule().getStructure().isIsomorphicTo(rightMolecule.getStructure());
 
-        boolean i_left = inventory.getRightGrid().getPartialMolecule().getStructure().isIsomorphicTo(leftMolecule.getStructure());
-        boolean i_right = inventory.getLeftGrid().getPartialMolecule().getStructure().isIsomorphicTo(rightMolecule.getStructure());
+        //boolean i_left = inventory.getRightGrid().getPartialMolecule().getStructure().isIsomorphicTo(leftMolecule.getStructure());
+        //boolean i_right = inventory.getLeftGrid().getPartialMolecule().getStructure().isIsomorphicTo(rightMolecule.getStructure());
 
-        return left && right || i_left && i_right;
+        //return left && right || i_left && i_right;
+        return left && right;
     }
 
     @Override

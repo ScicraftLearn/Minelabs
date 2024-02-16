@@ -130,7 +130,7 @@ public enum Atom {
     TENNESSINE(117, "Ts", 0, AtomType.METALLOID, 0, 177, Color.GRAY),
     OGANESSON(118, "Og", 0, AtomType.NOBLE_GAS, 0, 176, Color.GRAY);
 
-    private static class Color{
+    private static class Color {
         public static final int WHITE = 0xFFFFFF;
         public static final int BLACK = 0x121215;
         public static final int CYAN = 0x0091D4;
@@ -145,6 +145,7 @@ public enum Atom {
         public static final int YELLOW = 0xADA10F;
         public static final int PINK = 0x9B4D7A;
     }
+
     private static final Atom[] ATOM_BY_PROTONS = createAtomProtonIndex();
     private static final Map<String, Atom> ATOM_BY_SYMBOL = createAtomSymbolIndex();
 
@@ -168,7 +169,9 @@ public enum Atom {
         TRANSITION_METAL,
         POST_TRANSITION_METAL,
         NON_METAL,
-        UNKNOWN, METALLOID, NOBLE_GAS
+        UNKNOWN,
+        METALLOID,
+        NOBLE_GAS
     }
 
     Atom(int p, String symbol, double en, AtomType type, int ve, int n, int color) {
@@ -181,14 +184,14 @@ public enum Atom {
         this.color = color;
     }
 
-    private static Atom[] createAtomProtonIndex(){
-        Atom[] array = new Atom[OGANESSON.getAtomNumber()+1];
+    private static Atom[] createAtomProtonIndex() {
+        Atom[] array = new Atom[OGANESSON.getAtomNumber() + 1];
         for (Atom atom : values())
             array[atom.getAtomNumber()] = atom;
         return array;
     }
 
-    private static Map<String, Atom> createAtomSymbolIndex(){
+    private static Map<String, Atom> createAtomSymbolIndex() {
         return Arrays.stream(values()).collect(Collectors.toMap(Atom::getSymbol, a -> a));
     }
 
@@ -212,7 +215,9 @@ public enum Atom {
         return symbol;
     }
 
-    public String getName(){return Text.translatable(getItem().getTranslationKey()).getString();}
+    public String getName() {
+        return Text.translatable(getItem().getTranslationKey()).getString();
+    }
 
     public double getElectronegativity() {
         return electronegativity;
@@ -242,7 +247,10 @@ public enum Atom {
         this.item = item;
     }
 
-    public int getMaxPossibleBonds(){
+    public int getMaxPossibleBonds() {
+        if (this == SULFUR || this == SELENIUM) {
+            return 6;
+        }
         if (type == AtomType.NOBLE_GAS)
             return 0;
         else
