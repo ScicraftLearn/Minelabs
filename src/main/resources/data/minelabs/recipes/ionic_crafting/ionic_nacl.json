@@ -6,8 +6,7 @@
       "atoms": [
         {"key":  "NA1", "atom":  "Na"}
       ],
-      "bonds": [
-      ]
+      "bonds": []
     },
     "amount": 1,
     "density": 8,
@@ -16,13 +15,9 @@
   "anion": {
     "structure": {
       "atoms": [
-        {
-          "key": "CL1",
-          "atom": "Cl"
-        }
+        {"key": "CL1", "atom": "Cl"}
       ],
-      "bonds": [
-      ]
+      "bonds": []
     },
     "amount": 1,
     "density": 8,

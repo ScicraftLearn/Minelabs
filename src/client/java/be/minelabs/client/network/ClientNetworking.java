@@ -49,13 +49,10 @@ public class ClientNetworking {
                     rightIngredients.add(Ingredient.fromPacket(buf));
                 }
             }
-            int left = buf.readByte();
-            int right = buf.readByte();
 
             BlockEntity be = c.world.getBlockEntity(pos);
             if (be instanceof IonicBlockEntity ionic) {
                 ionic.setIngredients(leftIngredients, rightIngredients);
-                ionic.setCharges(left, right);
             }
         });
     }

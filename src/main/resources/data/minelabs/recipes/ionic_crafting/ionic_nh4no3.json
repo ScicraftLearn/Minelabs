@@ -25,26 +25,10 @@
         }
       ],
       "bonds": [
-        {
-          "from": "H1",
-          "to": "N1",
-          "bondOrder": 1
-        },
-        {
-          "from": "H2",
-          "to": "N1",
-          "bondOrder": 1
-        },
-        {
-          "from": "H3",
-          "to": "N1",
-          "bondOrder": 1
-        },
-        {
-          "from": "H4",
-          "to": "N1",
-          "bondOrder": 1
-        }
+        {"from": "H1", "to": "N1", "bondOrder": 1},
+        {"from": "H2", "to": "N1", "bondOrder": 1},
+        {"from": "H3", "to": "N1", "bondOrder": 1},
+        {"from": "H4", "to": "N1", "bondOrder": 1}
       ]
     },
     "amount": 1,
@@ -54,39 +38,15 @@
   "anion": {
     "structure": {
       "atoms": [
-        {
-          "key": "O1",
-          "atom": "O"
-        },
-        {
-          "key": "O2",
-          "atom": "O"
-        },
-        {
-          "key": "O3",
-          "atom": "O"
-        },
-        {
-          "key": "N1",
-          "atom": "N"
-        }
+        {"key": "O1", "atom": "O"},
+        {"key": "O2", "atom": "O"},
+        {"key": "O3", "atom": "O"},
+        {"key": "N1", "atom": "N"}
       ],
       "bonds": [
-        {
-          "from": "O1",
-          "to": "N1",
-          "bondOrder": 2
-        },
-        {
-          "from": "O2",
-          "to": "N1",
-          "bondOrder": 1
-        },
-        {
-          "from": "O3",
-          "to": "N1",
-          "bondOrder": 1
-        }
+        {"from": "O1", "to": "N1", "bondOrder": 2},
+        {"from": "O2", "to": "N1", "bondOrder": 1},
+        {"from": "O3", "to": "N1", "bondOrder": 1}
       ]
     },
     "amount": 1,

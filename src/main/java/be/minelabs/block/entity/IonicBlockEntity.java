@@ -262,7 +262,7 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public void updateRecipe() {
         getWorld().getRecipeManager().getFirstMatch(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
                 .ifPresentOrElse(recipe -> {
-                    // TODO CUSTOM CHARGE CHECK
+                    // TODO CUSTOM CHARGE + AMOUNT CHECK
                     if (recipe != currentrecipe) {
                         // Different recipe
                         this.currentrecipe = recipe;
