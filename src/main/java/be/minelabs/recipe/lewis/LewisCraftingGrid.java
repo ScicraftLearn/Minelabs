@@ -123,7 +123,7 @@ public class LewisCraftingGrid extends OrderedInventory {
      */
     protected MoleculeItemGraph positionGraphToMoleculeItemGraph(MoleculeItemGraph structure) {
         List<Atom> sourceOrder = Stream.of("H", "F", "Cl", "Br", "I", "S", "N", "C", "B", "P", "O", "Si", "Al", "Sn", "Pb").map(Atom::getBySymbol).toList();
-        List<Atom> targetOrder = Stream.of("O", "N", "C", "B", "S", "P", "Si", "Al", "Sn", "Pb", "I", "Br", "Cl", "F", "H").map(Atom::getBySymbol).toList();
+        List<Atom> targetOrder = Stream.of("C", "N", "O", "B", "S", "P", "Si", "Al", "Sn", "Pb", "I", "Br", "Cl", "F", "H").map(Atom::getBySymbol).toList();
 
         for (Atom sourceAtom : sourceOrder) {
             boolean changed = true;

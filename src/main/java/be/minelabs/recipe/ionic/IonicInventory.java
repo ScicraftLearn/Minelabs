@@ -1,7 +1,5 @@
 package be.minelabs.recipe.ionic;
 
-import be.minelabs.recipe.lewis.LewisCraftingGrid;
-import be.minelabs.recipe.molecules.PartialMolecule;
 import be.minelabs.screen.IonicBlockScreenHandler;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;

@@ -18,6 +18,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -101,8 +103,6 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
         renderRecipeCheck(matrices, this.x, this.y);
         renderProgressArrow(matrices, this.x, this.y);
@@ -116,8 +116,8 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         /*
          * Draw Bonds on screen
          */
-        renderBonds(matrices, getScreenHandler().getInventory().getLeftGrid(), stackToSlotMap, x, y);
-        renderBonds(matrices, getScreenHandler().getInventory().getRightGrid(), stackToSlotMap, x, y);
+        renderBonds(matrices, getScreenHandler().getInventory().getLeftGrid(), stackToSlotMap);
+        renderBonds(matrices, getScreenHandler().getInventory().getRightGrid(), stackToSlotMap);
 
         /*
          * Render input slot overlays
@@ -163,12 +163,13 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         this.textRenderer.draw(matrices, Text.of(String.valueOf(handler.getRightAmount())), x + 111, y + 91, 0x404040);
     }
 
-    private void renderBonds(MatrixStack matrices, LewisCraftingGrid grid2, Map<ItemStack, Slot> stackToSlotMap, int x, int y) {
-        MoleculeItemGraph graph = (MoleculeItemGraph) grid2.getPartialMolecule().getStructure();
+    private void renderBonds(MatrixStack matrices, LewisCraftingGrid grid, Map<ItemStack, Slot> stackToSlotMap) {
+        MoleculeItemGraph graph = (MoleculeItemGraph) grid.getPartialMolecule().getStructure();
+        BondManager manager = new BondManager();
         for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
             Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
             Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
-            BondManager.Bond bond = new BondManager.Bond(slot1, slot2, edge.data.bondOrder);
+            BondManager.Bond bond = manager.getOrCreateBond(slot1, slot2, edge.data.bondOrder);
             this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
         }
     }
