@@ -256,9 +256,11 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     public void updateRecipe() {
-        getWorld().getRecipeManager().getFirstMatch(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
-                .ifPresentOrElse(recipe -> {
-                    // TODO CUSTOM CHARGE + AMOUNT CHECK
+        // TODO check correct ?
+        getWorld().getRecipeManager().getAllMatches(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
+                .stream().filter(recipe -> recipe.getLeftCharge() == leftCharge && recipe.getRightCharge() == rightCharge
+                        && recipe.getLeftAmount() == leftAmount && recipe.getRightAmount() == rightAmount)
+                .findFirst().ifPresentOrElse(recipe -> {
                     if (recipe != currentrecipe) {
                         // Different recipe
                         this.currentrecipe = recipe;
@@ -272,6 +274,23 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                         sendDataPacket();
                     }
                 }, this::resetRecipe);
+
+//        getWorld().getRecipeManager().getFirstMatch(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
+//                .ifPresentOrElse(recipe -> {
+
+//                    if (recipe != currentrecipe) {
+//                        // Different recipe
+//                        this.currentrecipe = recipe;
+//                        this.progress = 0;
+//                        this.ingredients = recipe.getIngredients();
+//                        this.split = recipe.getLeftingredients().size();
+//                        this.leftdensity = recipe.getLeftdensity();
+//                        this.rightdensity = recipe.getRightdensity();
+//                        this.maxProgress = recipe.getTime();
+//                        markDirty();
+//                        sendDataPacket();
+//                    }
+//                }, this::resetRecipe);
     }
 
     private void sendDataPacket() {
