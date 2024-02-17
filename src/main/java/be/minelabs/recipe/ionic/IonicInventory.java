@@ -1,6 +1,5 @@
 package be.minelabs.recipe.ionic;
 
-import be.minelabs.screen.IonicBlockScreenHandler;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -10,24 +9,34 @@ import net.minecraft.item.ItemStack;
  */
 public class IonicInventory extends SimpleInventory {
 
+    private final IonicCraftingGrid left_grid;
+    private final IonicCraftingGrid right_grid;
+
+
     public IonicInventory(int gridLeft, int gridRight, int other) {
         super(gridLeft + gridRight + other);
+        left_grid = new IonicCraftingGrid(3, 3);
+        right_grid = new IonicCraftingGrid(3, 3);
+
+        addListener(sender -> {
+            for (int i = 0; i < 18; i++) {
+                if (i < 9) {
+                    left_grid.setStack(i, sender.getStack(i));
+                } else {
+                    right_grid.setStack(i-9, sender.getStack(i));
+                }
+            }
+            left_grid.markDirty();
+            right_grid.markDirty();
+        });
     }
 
     public IonicCraftingGrid getLeftGrid() {
-        ItemStack[] items = new ItemStack[9];
-        for (int i = 0; i < IonicBlockScreenHandler.GRIDSIZE; i++) {
-            items[i] = this.getStack(i);
-        }
-        return new IonicCraftingGrid(3, 3, items);
+        return left_grid;
     }
 
     public IonicCraftingGrid getRightGrid() {
-        ItemStack[] items = new ItemStack[9];
-        for (int i = 0; i < IonicBlockScreenHandler.GRIDSIZE; i++) {
-            items[i] = this.getStack(i + IonicBlockScreenHandler.GRIDSIZE);
-        }
-        return new IonicCraftingGrid(3, 3, items);
+        return right_grid;
     }
 
     public ItemStack getContainerStack() {

@@ -164,13 +164,14 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
     }
 
     private void renderBonds(MatrixStack matrices, LewisCraftingGrid grid, Map<ItemStack, Slot> stackToSlotMap) {
-        MoleculeItemGraph graph = (MoleculeItemGraph) grid.getPartialMolecule().getStructure();
-        BondManager manager = new BondManager();
-        for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
-            Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
-            Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
-            BondManager.Bond bond = manager.getOrCreateBond(slot1, slot2, edge.data.bondOrder);
-            this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
+        if (grid.getPartialMolecule().getStructure() instanceof MoleculeItemGraph graph) {
+            BondManager manager = new BondManager();
+            for (MoleculeItemGraph.Edge edge : graph.getEdges()) {
+                Slot slot1 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getFirst()));
+                Slot slot2 = stackToSlotMap.get(graph.getItemStackOfVertex(edge.getSecond()));
+                BondManager.Bond bond = manager.getOrCreateBond(slot1, slot2, edge.data.bondOrder);
+                this.itemRenderer.renderInGuiWithOverrides(matrices, bond.getStack(), bond.getX() + x, bond.getY() + y);
+            }
         }
     }
 
