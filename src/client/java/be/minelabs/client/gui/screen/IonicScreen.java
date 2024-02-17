@@ -2,6 +2,7 @@ package be.minelabs.client.gui.screen;
 
 import be.minelabs.Minelabs;
 import be.minelabs.client.gui.widget.CounterButtonWidget;
+import be.minelabs.item.items.AtomItem;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.molecules.BondManager;
 import be.minelabs.recipe.molecules.MoleculeItemGraph;
@@ -9,16 +10,19 @@ import be.minelabs.screen.IonicBlockScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -121,36 +125,43 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         /*
          * Render input slot overlays
          */
-        DefaultedList<Ingredient> leftIngredients = handler.getLeftIngredients();
-        for (int i = 0; i < leftIngredients.size(); i++) {
-            ItemStack atom = leftIngredients.get(i).getMatchingStacks()[0];
-            if (this.handler.getLeftDensity() == 0 || atom.isEmpty()) {
+        DefaultedList<Ingredient> ingredients = handler.getIngredients();
+        for (int i = 0; i < ingredients.size(); i++) {
+            ItemStack atom = ingredients.get(i).getMatchingStacks()[0];
+            if (!this.handler.hasRecipe() || atom.isEmpty()) {
                 break;
             }
-            if (handler.getInventory().getLeftGrid().getStack(i).getCount() < handler.getLeftDensity()) {
-                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18 * i, 86 + y);
-            } else {
-                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i, 86 + y);
-            }
-            this.itemRenderer.renderInGuiWithOverrides(matrices, atom, x + 12 + 18 * i, 86 + y);
-        }
 
-        /*
-         * Render input slot overlays
-         */
-        DefaultedList<Ingredient> rightIngredients = handler.getRightIngredients();
-        for (int i = 0; i < rightIngredients.size(); i++) {
-            ItemStack atom = rightIngredients.get(i).getMatchingStacks()[0];
-            if (this.handler.getRightDensity() == 0 || atom.isEmpty()) {
-                break;
-            }
-            if (handler.getInventory().getRightGrid().getStack(i).getCount() < handler.getRightDensity()) {
-                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
+            AtomItem atomItem = (AtomItem) atom.getItem();
+            String atomId = atomItem.getAtom().name().toLowerCase();
+            SpriteIdentifier spriteId = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "item/" + atomId));
+
+            RenderSystem.setShaderColor(0.2F, 0.2F, 0.2F, 0.8F);
+            RenderSystem.enableBlend();
+            matrices.push();
+            matrices.scale(0.5f, 0.5f, 0.5f);
+            drawSprite(matrices, 2 * (x + 12 + 18 * i), 2 * (107 + y), 1, 32, 32, spriteId.getSprite());
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+            matrices.pop();
+
+            if (handler.getInventory().getIO().getStack(i).getCount() < getCorrectAmount(i)) {
+                //this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
             } else {
-                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
+                this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i, 107 + y);
             }
-            this.itemRenderer.renderInGuiWithOverrides(matrices, atom, x + 12 + 18 * i + 18 * leftIngredients.size(), 86 + y);
+            //this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
+            RenderSystem.disableBlend();
         }
+        matrices.push();
+        matrices.scale(0.5f, 0.5f, 0.5f);
+        for (int i = 0; i < ingredients.size(); i++) {
+            if (handler.getInventory().getIO().getStack(i).getCount() == 0) {
+                textRenderer.draw(matrices, Text.of(String.valueOf(getCorrectAmount(i))),
+                        2 * (x + 12 + 18 * i) + 20, 2 * (107 + y) + 23, 5592405);
+            }
+
+        }
+        matrices.pop();
 
         int charge = handler.getLeftCharge();
         this.textRenderer.draw(matrices, charge >= 0 ? "+" + charge : String.valueOf(charge), 70 + x, 20 + y, 0);
@@ -176,7 +187,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
 
     private void renderProgressArrow(MatrixStack matrices, int x, int y) {
         if (handler.isCrafting()) {
-            drawTexture(matrices, x + 146, y + 45, 206, 0, handler.getScaledProgress(), 20);
+            drawTexture(matrices, x + 146, y + 45, 206, 0, handler.getScaledProgress(), 19);
         }
     }
 
@@ -242,5 +253,12 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
 
         right_minus.active = handler.getRightAmount() > 1;
         right_plus.active = handler.getRightAmount() < 9;
+    }
+
+    private int getCorrectAmount(int index) {
+        if (index < handler.getSplitIndex()) {
+            return handler.getLeftDensity() * handler.getLeftAmount();
+        }
+        return handler.getRightDensity() * handler.getRightAmount();
     }
 }

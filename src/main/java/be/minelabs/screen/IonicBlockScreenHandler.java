@@ -247,16 +247,17 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         };
     }
 
+
+    public DefaultedList<Ingredient> getIngredients() {
+        return ionic.getIngredients();
+    }
+
+    public int getSplitIndex() {
+        return ionic.getSplit();
+    }
+
     public int getProgress() {
         return propertyDelegate.get(0);
-    }
-
-    public DefaultedList<Ingredient> getLeftIngredients() {
-        return ionic.getLeftIngredients();
-    }
-
-    public DefaultedList<Ingredient> getRightIngredients() {
-        return ionic.getRightIngredients();
     }
 
     public int getLeftDensity() {
@@ -333,11 +334,8 @@ public class IonicBlockScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(inventory, i + 18, 12 + i * 18, y) {
                 @Override
                 public boolean canInsert(ItemStack stack) {
-                    if (getLeftIngredients().size() > this.getIndex() - 2 * GRIDSIZE && this.getIndex() - 2 * GRIDSIZE >= 0) {
-                        return getLeftIngredients().get(this.getIndex() - 2 * GRIDSIZE).test(stack);
-                    }
-                    if (getRightIngredients().size() > this.getIndex() - 2 * GRIDSIZE - getLeftIngredients().size() && this.getIndex() - 2 * GRIDSIZE - getLeftIngredients().size() >= 0) {
-                        return getRightIngredients().get(this.getIndex() - 2 * GRIDSIZE - getLeftIngredients().size()).test(stack);
+                    if (getIngredients().size() > this.getIndex() - GRIDSIZE * 2) {
+                        return getIngredients().get(this.getIndex() - GRIDSIZE * 2).test(stack);
                     }
                     return false;
                 }
