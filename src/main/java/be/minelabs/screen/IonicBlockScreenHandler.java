@@ -400,6 +400,9 @@ public class IonicBlockScreenHandler extends ScreenHandler {
 
     public int getStatus() {
         // TODO improve (to many MOL)
+        if (inventory.getLeftGrid().isEmpty() || inventory.getRightGrid().isEmpty()) {
+            return 0;
+        }
         if (getLeftAmount() * getLeftCharge() + getRightAmount() * getRightCharge() == 0) {
             if (hasRecipe()) {
                 // GREEN
