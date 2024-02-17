@@ -11,6 +11,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -18,13 +19,12 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +54,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         super.init();
 
         registerButtons();
+        activeBTN();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -88,8 +89,6 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             client.interactionManager.clickButton(handler.syncId, 4);
             button.setFocused(false);
         });
-
-        activeBTN();
 
         addDrawableChild(clear_btn);
         addDrawableChild(left_minus);
@@ -196,6 +195,22 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
+
+        if (this.handler.getCursorStack().isEmpty()) {
+            if (mouseX >= x + 177 && mouseX < x + 177 + 16 && mouseY >= y + 17 && mouseY < y + 17 + 16) {
+                switch (handler.getStatus()) {
+                    case 1 -> renderTooltip(matrices, Arrays.asList(
+                            Text.translatable("text.minelabs.valid"),
+                            Text.translatable("text.minelabs.not_implemented")), mouseX, mouseY);
+                    case 2 -> renderTooltip(matrices,
+                            Text.translatable("text.minelabs.valid"), mouseX, mouseY);
+                    case 3 -> renderTooltip(matrices,
+                            Text.translatable("text.minelabs.multiple_molecules"), mouseX, mouseY);
+                    default -> renderTooltip(matrices,
+                            Text.translatable("text.minelabs.invalid"), mouseX, mouseY);
+                }
+            }
+        }
     }
 
     @Override
@@ -208,10 +223,18 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
     }
 
     @Override
-    protected void handledScreenTick() {
-        activeBTN();
+    protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
+        super.drawMouseoverTooltip(matrices, x, y);
     }
 
+    @Override
+    protected void handledScreenTick() {
+        activeBTN();
+
+        clear_btn.setTooltip(Tooltip.of(handler.isInputEmpty() ?
+                Text.translatableWithFallback("text.minelabs.clear_grid", "Clear Grid") :
+                Text.translatableWithFallback("text.minelabs.clear_slots", "Clear Slots")));
+    }
 
     private void activeBTN() {
         left_minus.active = handler.getLeftAmount() > 1;

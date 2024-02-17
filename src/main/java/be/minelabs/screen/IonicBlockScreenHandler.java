@@ -82,8 +82,6 @@ public class IonicBlockScreenHandler extends ScreenHandler {
 
             @Override
             public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
-                updateToClient();
-                //ionic.markDirty();
             }
         });
 
@@ -403,7 +401,16 @@ public class IonicBlockScreenHandler extends ScreenHandler {
     }
 
     public int getStatus() {
-        // TODO finish
+        // TODO improve (to many MOL)
+        if (getLeftAmount() * getLeftCharge() + getRightAmount() * getRightCharge() == 0) {
+            if (hasRecipe()) {
+                // GREEN
+                return 2;
+            } else {
+                // NOT IMPLEMENTED
+                return 1;
+            }
+        }
         return 0;
     }
 }
