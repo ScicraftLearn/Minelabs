@@ -82,6 +82,9 @@ public class IonicBlockScreenHandler extends ScreenHandler {
 
             @Override
             public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+                if (property == 6 || property == 7){
+                    ionic.updateRecipe();
+                }
             }
         });
 

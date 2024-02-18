@@ -1,5 +1,6 @@
 package be.minelabs.block.entity;
 
+import be.minelabs.Minelabs;
 import be.minelabs.network.NetworkingConstants;
 import be.minelabs.recipe.ionic.IonicInventory;
 import be.minelabs.recipe.ionic.IonicRecipe;
@@ -32,6 +33,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * IonicBlockEntity. We still implement {@link Inventory} for compat.
@@ -258,7 +261,8 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     public void updateRecipe() {
         // TODO check correct ?
         getWorld().getRecipeManager().getAllMatches(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
-                .stream().filter(recipe -> recipe.getLeftCharge() == leftCharge && recipe.getRightCharge() == rightCharge
+                .stream()
+                .filter(recipe -> recipe.getLeftCharge() == leftCharge && -recipe.getRightCharge() == rightCharge
                         && recipe.getLeftAmount() == leftAmount && recipe.getRightAmount() == rightAmount)
                 .findFirst().ifPresentOrElse(recipe -> {
                     if (recipe != currentrecipe) {
@@ -274,23 +278,6 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
                         sendDataPacket();
                     }
                 }, this::resetRecipe);
-
-//        getWorld().getRecipeManager().getFirstMatch(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
-//                .ifPresentOrElse(recipe -> {
-
-//                    if (recipe != currentrecipe) {
-//                        // Different recipe
-//                        this.currentrecipe = recipe;
-//                        this.progress = 0;
-//                        this.ingredients = recipe.getIngredients();
-//                        this.split = recipe.getLeftingredients().size();
-//                        this.leftdensity = recipe.getLeftdensity();
-//                        this.rightdensity = recipe.getRightdensity();
-//                        this.maxProgress = recipe.getTime();
-//                        markDirty();
-//                        sendDataPacket();
-//                    }
-//                }, this::resetRecipe);
     }
 
     private void sendDataPacket() {

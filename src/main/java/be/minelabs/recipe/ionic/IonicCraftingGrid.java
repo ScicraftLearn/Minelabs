@@ -11,14 +11,10 @@ public class IonicCraftingGrid extends LewisCraftingGrid {
         super(width, height);
     }
 
-    public IonicCraftingGrid(int width, int height, ItemStack... items) {
-        super(width, height, items);
-    }
-
     /**
      * Get the charge of the current "Partial" molecule
      *
-     * @return integer value (-9 <-> 9)
+     * @return integer value
      */
     public int getCharge() {
         // TODO BETER CALC FOR EXCEPTIONS (Fe, S, ...)

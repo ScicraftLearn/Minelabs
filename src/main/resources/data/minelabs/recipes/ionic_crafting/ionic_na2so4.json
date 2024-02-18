@@ -16,48 +16,17 @@
   "anion": {
     "structure": {
       "atoms": [
-        {
-          "key": "S1",
-          "atom": "S"
-        },
-        {
-          "key": "O1",
-          "atom": "O"
-        },
-        {
-          "key": "O2",
-          "atom": "O"
-        },
-        {
-          "key": "O3",
-          "atom": "O"
-        },
-        {
-          "key": "O4",
-          "atom": "O"
-        }
+        {"key": "S1", "atom": "S"},
+        {"key": "O1", "atom": "O"},
+        {"key": "O2", "atom": "O"},
+        {"key": "O3", "atom": "O"},
+        {"key": "O4", "atom": "O"}
       ],
       "bonds": [
-        {
-          "from": "O1",
-          "to": "S1",
-          "bondOrder": 2
-        },
-        {
-          "from": "O2",
-          "to": "S1",
-          "bondOrder": 2
-        },
-        {
-          "from": "O3",
-          "to": "S1",
-          "bondOrder": 1
-        },
-        {
-          "from": "O4",
-          "to": "S1",
-          "bondOrder": 1
-        }
+        {"from": "O1", "to": "S1", "bondOrder": 2},
+        {"from": "O2", "to": "S1", "bondOrder": 2},
+        {"from": "O3", "to": "S1", "bondOrder": 1},
+        {"from": "O4", "to": "S1", "bondOrder": 1}
       ]
     },
     "amount": 1,

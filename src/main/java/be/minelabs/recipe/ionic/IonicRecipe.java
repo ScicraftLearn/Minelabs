@@ -186,8 +186,8 @@ public class IonicRecipe implements Recipe<IonicInventory> {
 
             JsonObject right = json.getAsJsonObject("anion");
             int rightDensity = right.get("density").getAsInt();
-            int rightCharge = left.get("charge").getAsInt();
-            int rightAmount = left.get("amount").getAsInt();
+            int rightCharge = right.get("charge").getAsInt();
+            int rightAmount = right.get("amount").getAsInt();
 
             ItemStack output = ShapedRecipe.outputFromJson(json.getAsJsonObject("result"));
 

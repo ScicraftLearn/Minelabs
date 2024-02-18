@@ -159,7 +159,6 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
                 textRenderer.draw(matrices, Text.of(String.valueOf(getCorrectAmount(i))),
                         2 * (x + 12 + 18 * i) + 20, 2 * (107 + y) + 23, 5592405);
             }
-
         }
         matrices.pop();
 

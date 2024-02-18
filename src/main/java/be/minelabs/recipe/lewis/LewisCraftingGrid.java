@@ -29,13 +29,6 @@ public class LewisCraftingGrid extends OrderedInventory {
         this.height = height;
     }
 
-    public LewisCraftingGrid(int width, int height, ItemStack... items) {
-        super(items);
-        this.width = width;
-        this.height = height;
-        markDirty();
-    }
-
     @Override
     public void readNbtList(NbtList nbtList) {
         super.readNbtList(nbtList);
@@ -145,12 +138,6 @@ public class LewisCraftingGrid extends OrderedInventory {
                             .min(Comparator.comparingInt(entry -> targetOrder.indexOf(((AtomItem) entry.getKey().data.getItem()).getAtom())))
                             .map(Map.Entry::getKey)
                             .orElse(null);
-
-//                    MoleculeItemGraph.Vertex target = source.getNeighbours().stream()
-//                            .filter(t -> structure.getOpenConnections(t) > 0)
-//                            .sorted(Comparator.comparingInt(o -> structure.getEdge(source, o).data.bondOrder))
-//                            .min(Comparator.comparingInt(t -> targetOrder.indexOf(((AtomItem) t.data.getItem()).getAtom())))
-//                            .orElse(null);
                     if (target == null) continue;
                     changed = changed || structure.incrementBond(source, target);
                 }
