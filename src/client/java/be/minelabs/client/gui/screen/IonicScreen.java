@@ -24,6 +24,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -136,25 +137,26 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             String atomId = atomItem.getAtom().name().toLowerCase();
             SpriteIdentifier spriteId = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "item/" + atomId));
 
-            RenderSystem.setShaderColor(0.2F, 0.2F, 0.2F, 0.8F);
-            RenderSystem.enableBlend();
-            matrices.push();
-            matrices.scale(0.5f, 0.5f, 0.5f);
-            drawSprite(matrices, 2 * (x + 12 + 18 * i), 2 * (107 + y), 1, 32, 32, spriteId.getSprite());
-            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-            matrices.pop();
-
             if (handler.getInventory().getIO().getStack(i).getCount() < getCorrectAmount(i)) {
+                RenderSystem.enableBlend();
+                matrices.push();
+                matrices.scale(0.5f, 0.5f, 0.5f);
+                drawSprite(matrices, 2*(x + 12 + 18 * i), 2*(107 + y), 1, 32, 32, spriteId.getSprite(), 0.2F, 0.2F, 0.2F, 0.8F);
                 //this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
+                matrices.pop();
             } else {
                 this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i, 107 + y);
             }
-            //this.itemRenderer.renderInGuiWithOverrides(atom, x + 8 + 18*i, 133+y-20);
             RenderSystem.disableBlend();
         }
+
         matrices.push();
         matrices.scale(0.5f, 0.5f, 0.5f);
         for (int i = 0; i < ingredients.size(); i++) {
+            ItemStack stack = ingredients.get(i).getMatchingStacks()[0];
+            if (!this.handler.hasRecipe() || stack.isEmpty()) {
+                break;
+            }
             if (handler.getInventory().getIO().getStack(i).getCount() == 0) {
                 textRenderer.draw(matrices, Text.of(String.valueOf(getCorrectAmount(i))),
                         2 * (x + 12 + 18 * i) + 20, 2 * (107 + y) + 23, 5592405);

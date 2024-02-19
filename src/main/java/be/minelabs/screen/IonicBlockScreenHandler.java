@@ -17,6 +17,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -82,7 +83,7 @@ public class IonicBlockScreenHandler extends ScreenHandler {
 
             @Override
             public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
-                if (property == 6 || property == 7){
+                if (property == 6 || property == 7) {
                     ionic.updateRecipe();
                 }
             }
@@ -250,6 +251,26 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         };
     }
 
+    @Override
+    public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+        if (slotIndex > 0 && slotIndex < GRIDSIZE * 2) {
+            // ONLY GRID slots
+            if (SlotActionType.CLONE == actionType && player.getAbilities().creativeMode && getCursorStack().isEmpty()) {
+                Slot slot = this.slots.get(slotIndex);
+                if (!slot.hasStack())
+                    return;
+                ItemStack itemStack2 = slot.getStack().getItem().getDefaultStack().copy();
+                itemStack2.setCount(itemStack2.getMaxCount());
+                this.setCursorStack(itemStack2);
+                return;
+            } else if (actionType == SlotActionType.PICKUP && getSlot(slotIndex).getStack() != ItemStack.EMPTY && getCursorStack() != ItemStack.EMPTY) {
+                // Don't "swap" items
+                getSlot(slotIndex).canInsert(getCursorStack());
+                return;
+            }
+        }
+        super.onSlotClick(slotIndex, button, actionType, player);
+    }
 
     public DefaultedList<Ingredient> getIngredients() {
         return ionic.getIngredients();

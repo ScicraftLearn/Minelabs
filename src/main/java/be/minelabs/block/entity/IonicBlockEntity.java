@@ -259,7 +259,6 @@ public class IonicBlockEntity extends BlockEntity implements ExtendedScreenHandl
     }
 
     public void updateRecipe() {
-        // TODO check correct ?
         getWorld().getRecipeManager().getAllMatches(IonicRecipe.IonicRecipeType.INSTANCE, inventory, getWorld())
                 .stream()
                 .filter(recipe -> recipe.getLeftCharge() == leftCharge && -recipe.getRightCharge() == rightCharge
