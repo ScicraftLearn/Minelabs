@@ -422,6 +422,12 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         return getProgress() > 0;
     }
 
+    /*
+     * 0: Invalid
+     * 1: To many molecules
+     * 2: Not implemented
+     * 3: Valid
+     */
     public int getStatus() {
         // TODO improve (to many MOL)
         if (inventory.getLeftGrid().isEmpty() || inventory.getRightGrid().isEmpty()) {
@@ -430,10 +436,10 @@ public class IonicBlockScreenHandler extends ScreenHandler {
         if (getLeftAmount() * getLeftCharge() + getRightAmount() * getRightCharge() == 0) {
             if (hasRecipe()) {
                 // GREEN
-                return 2;
+                return 3;
             } else {
                 // NOT IMPLEMENTED
-                return 1;
+                return 2;
             }
         }
         return 0;

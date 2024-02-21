@@ -2,18 +2,20 @@ package be.minelabs.client.gui.screen;
 
 import be.minelabs.Minelabs;
 import be.minelabs.client.gui.widget.CounterButtonWidget;
+import be.minelabs.client.gui.widget.ValidationWidget;
 import be.minelabs.item.items.AtomItem;
 import be.minelabs.recipe.lewis.LewisCraftingGrid;
 import be.minelabs.recipe.molecules.BondManager;
 import be.minelabs.recipe.molecules.MoleculeItemGraph;
 import be.minelabs.screen.IonicBlockScreenHandler;
+import be.minelabs.util.Graph;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.tooltip.Tooltip;
+import net.minecraft.client.gui.tooltip.TooltipPositioner;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -24,14 +26,11 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implements ScreenHandlerProvider<IonicBlockScreenHandler> {
@@ -100,6 +99,15 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         addDrawableChild(left_plus);
         addDrawableChild(right_minus);
         addDrawableChild(right_plus);
+        addDrawable(new ValidationWidget(x + 177, y + 17, (status) -> switch (status) {
+            case 0 -> List.of(Text.translatable("text.minelabs.invalid"));
+            case 1 -> List.of(Text.translatable("text.minelabs.multiple_molecules"));
+            case 2 -> List.of(
+                    Text.translatable("text.minelabs.valid"),
+                    Text.translatable("text.minelabs.not_implemented"));
+            case 3 -> List.of(Text.translatable("text.minelabs.valid"));
+            default -> throw new IllegalStateException("Unexpected value: " + status);
+        }, this.handler::getStatus));
     }
 
     @Override
@@ -108,7 +116,6 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, TEXTURE);
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
-        renderRecipeCheck(matrices, this.x, this.y);
         renderProgressArrow(matrices, this.x, this.y);
 
         // Keep mapping between stack (in graph) and slots (for rendering)
@@ -141,7 +148,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
                 RenderSystem.enableBlend();
                 matrices.push();
                 matrices.scale(0.5f, 0.5f, 0.5f);
-                drawSprite(matrices, 2*(x + 12 + 18 * i), 2*(107 + y), 1, 32, 32, spriteId.getSprite(), 0.2F, 0.2F, 0.2F, 0.8F);
+                drawSprite(matrices, 2 * (x + 12 + 18 * i), 2 * (107 + y), 1, 32, 32, spriteId.getSprite(), 0.2F, 0.2F, 0.2F, 0.8F);
                 //this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
                 matrices.pop();
             } else {
@@ -192,37 +199,11 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         }
     }
 
-    private void renderRecipeCheck(MatrixStack matrices, int x, int y) {
-        int x_coord = x + 177, y_coord = y + 17;
-        switch (handler.getStatus()) {
-            case 1 -> drawTexture(matrices, x_coord, y_coord, 206, 52, 16, 16); // NOT IMPLEMENTED
-            case 2 -> drawTexture(matrices, x_coord, y_coord, 206, 69, 16, 16); // VALID
-            case 3 -> drawTexture(matrices, x_coord, y_coord, 206, 35, 16, 16); // TO MANY MOL
-            default -> drawTexture(matrices, x_coord, y_coord, 206, 18, 16, 16); // INVALID
-        }
-    }
-
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
-
-        if (this.handler.getCursorStack().isEmpty()) {
-            if (mouseX >= x + 177 && mouseX < x + 177 + 16 && mouseY >= y + 17 && mouseY < y + 17 + 16) {
-                switch (handler.getStatus()) {
-                    case 1 -> renderTooltip(matrices, Arrays.asList(
-                            Text.translatable("text.minelabs.valid"),
-                            Text.translatable("text.minelabs.not_implemented")), mouseX, mouseY);
-                    case 2 -> renderTooltip(matrices,
-                            Text.translatable("text.minelabs.valid"), mouseX, mouseY);
-                    case 3 -> renderTooltip(matrices,
-                            Text.translatable("text.minelabs.multiple_molecules"), mouseX, mouseY);
-                    default -> renderTooltip(matrices,
-                            Text.translatable("text.minelabs.invalid"), mouseX, mouseY);
-                }
-            }
-        }
     }
 
     @Override
