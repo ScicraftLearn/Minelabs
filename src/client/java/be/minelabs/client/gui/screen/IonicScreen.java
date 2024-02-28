@@ -133,6 +133,7 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
         /*
          * Render input slot overlays
          */
+        RenderSystem.enableBlend();
         DefaultedList<Ingredient> ingredients = handler.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
             ItemStack atom = ingredients.get(i).getMatchingStacks()[0];
@@ -145,16 +146,11 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             SpriteIdentifier spriteId = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, new Identifier(Minelabs.MOD_ID, "item/" + atomId));
 
             if (handler.getInventory().getIO().getStack(i).getCount() < getCorrectAmount(i)) {
-                RenderSystem.enableBlend();
-                matrices.push();
-                matrices.scale(0.5f, 0.5f, 0.5f);
-                drawSprite(matrices, 2 * (x + 12 + 18 * i), 2 * (107 + y), 1, 32, 32, spriteId.getSprite(), 0.2F, 0.2F, 0.2F, 0.8F);
-                //this.itemRenderer.renderInGuiWithOverrides(new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 8 + 18 * i, 133 + y - 20);
-                matrices.pop();
+                drawSprite(matrices, x + 12 + 18 * i, y + 107, 0, 16, 16, spriteId.getSprite(), 0.2F, 0.2F, 0.2F, 0.8F);
+                //this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.RED_STAINED_GLASS_PANE), x + 12 + 18 * i, y + 107);
             } else {
                 this.itemRenderer.renderInGuiWithOverrides(matrices, new ItemStack(Items.GREEN_STAINED_GLASS_PANE), x + 12 + 18 * i, 107 + y);
             }
-            RenderSystem.disableBlend();
         }
 
         matrices.push();
@@ -170,6 +166,8 @@ public class IonicScreen extends HandledScreen<IonicBlockScreenHandler> implemen
             }
         }
         matrices.pop();
+
+        RenderSystem.disableBlend();
 
         int charge = handler.getLeftCharge();
         this.textRenderer.draw(matrices, charge >= 0 ? "+" + charge : String.valueOf(charge), 70 + x, 20 + y, 0);
