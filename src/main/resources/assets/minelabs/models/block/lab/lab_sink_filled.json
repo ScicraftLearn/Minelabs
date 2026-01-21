@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
-	"texture_size": [32, 32],
 	"textures": {
 		"1": "minelabs:block/lab_blocks",
-		"particle": "minelabs:block/lab_blocks",
+		"2": "minelabs:block/towel",
+		"particle": "block/quartz_block_side",
 		"content": "block/water_still"
 	},
 	"elements": [
@@ -12,7 +12,7 @@
 			"from": [2, 9, 3],
 			"to": [14, 13, 13],
 			"faces": {
-				"up": {"uv": [0.5, 0.75, 3.5, 3.25], "texture": "#content", "tintindex": 0}
+				"up": {"uv": [0, 0, 16, 16], "texture": "#content", "tintindex": 1}
 			}
 		},
 		{
@@ -111,7 +111,7 @@
 			"from": [2, 0, 1],
 			"to": [14, 13, 3],
 			"faces": {
-				"north": {"uv": [1, 8.5, 7, 15], "texture": "#1"},
+				"north": {"uv": [2, 1, 14, 14], "texture": "#2"},
 				"east": {"uv": [9, 3.25, 9.5, 6.5], "texture": "#missing"},
 				"south": {"uv": [8.5, 0, 14.5, 6.5], "texture": "#1"},
 				"west": {"uv": [9, 3.25, 9.5, 6.5], "texture": "#missing"},
@@ -143,19 +143,6 @@
 				"west": {"uv": [0.75, 1, 3.25, 3.25], "texture": "#missing"},
 				"up": {"uv": [8.5, 0, 14.5, 5], "texture": "#1"},
 				"down": {"uv": [1, 10, 7, 15], "texture": "#1"}
-			}
-		},
-		{
-			"name": "cabin door",
-			"from": [2, 2, 0],
-			"to": [14, 11, 1],
-			"faces": {
-				"north": {"uv": [8.5, 6.5, 14.5, 11], "texture": "#1"},
-				"east": {"uv": [8.5, 6.5, 9, 11], "texture": "#1"},
-				"south": {"uv": [0.5, 3.75, 3.5, 6], "texture": "#missing"},
-				"west": {"uv": [14, 6.5, 14.5, 11], "texture": "#1"},
-				"up": {"uv": [8.5, 6.5, 14.5, 7], "texture": "#1"},
-				"down": {"uv": [8.5, 10.5, 14.5, 11], "texture": "#1"}
 			}
 		}
 	],
@@ -205,7 +192,6 @@
 			"color": 0,
 			"children": [6, 7, 8, 9, 10]
 		},
-		11,
 		{
 			"name": "sink top",
 			"origin": [0, 0, 0],

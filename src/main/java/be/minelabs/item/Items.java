@@ -340,21 +340,6 @@ public class Items {
     public static final Item ERLENMEYER_SICL4 = register(new ErlenmeyerItem(
             Fluids.STILL_SiCl4, new Item.Settings().recipeRemainder(ERLENMEYER), "SiCl4"), "erlenmeyer/erlenmeyer_sicl4");
 
-    public static final List<Item> up_stacks = new ArrayList<>(List.of(
-            Items.UPQUARK_RED,
-            Items.UPQUARK_GREEN,
-            Items.UPQUARK_BLUE,
-            Items.ANTI_UPQUARK_RED,
-            Items.ANTI_UPQUARK_GREEN,
-            Items.ANTI_UPQUARK_BLUE));
-
-    public static final List<Item> down_stacks = new ArrayList<>(List.of(
-            Items.DOWNQUARK_RED,
-            Items.DOWNQUARK_GREEN,
-            Items.DOWNQUARK_BLUE,
-            Items.ANTI_DOWNQUARK_RED,
-            Items.ANTI_DOWNQUARK_GREEN,
-            Items.ANTI_DOWNQUARK_BLUE));
 
     /**
      * Register an Item
