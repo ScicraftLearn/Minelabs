@@ -17,7 +17,7 @@
       "conditions": {
         "location": {
           "block": {
-            "blocks": ["minelabs:lewis_block"]
+            "blocks": ["minelabs:lewis_block", "minelabs:lab/lab_lewis"]
           }
         },
         "player": {
