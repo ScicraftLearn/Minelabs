@@ -46,6 +46,9 @@ public class GasPotion extends LingeringPotionItem implements IMoleculeItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if (!user.getAbilities().allowModifyWorld) {
+            return TypedActionResult.fail(itemStack);
+        }
 
         if (!world.getGameRules().getBoolean(MinelabsGameRules.ALLOW_CHEMICAL_PROJECTILES)) {
             user.sendMessage(Text.translatable("text.minelabs.no_chemical_projectiles"));
